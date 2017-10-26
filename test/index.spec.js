@@ -1,5 +1,5 @@
-const add = require('./add')
-const expect = require('chai').expect
+import { add } from './add'
+import { expect } from 'chai'
 
 describe('加法函数的测试', () => {
   it('1 加 1 应该等于 2', () => {
