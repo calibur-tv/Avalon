@@ -8,8 +8,7 @@ node_js:
 before_script: npm install
 script: npm run test
 after_success:
-- sshpass -p $DEPLOY_PASS ssh $DEPLOY_USER@$DEPLOY_HOST
-- 'cd /var/www/avalon && git pull'
+- sshpass -p $DEPLOY_PASS ssh $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/avalon && git pull'
 env:
   global:
   - secure: "KDGstwzwmvLh7nqWicms7WK6XCskwZ/MXSLeLA8dx/FKqRr1f/ropu/q59xdPyxG7zAA1maIlMW/pILryb5cuxL/ev7Enz+/liSGFvAL/cR8OTg1/8z46gyYbjrtt8+91qomMcT3AhdnnGT/wKFoGljHLhfFBm5HMLbIxI/X+HIuJfSyuWYFZan8IigcM9VvzBYnR7Y+mT/olT3148u1qBAj7RW0pK+a7aoXeGTiBut2pMlVh0U/BBqwMlaXYD0Dl2KlEz6BPwFrsXrR01d7udXR5A3oKafErZB1HmuJJumxN+tvC5GBXz7AiuRpeD1/NpgT5oXviVJveORKOul5BLNZ7AwA0UFWgmLTplV4AHfIOryETPtyc/eURNo7k5P5IycPBZiNuJiYPxu5gpXI2WFK6PoLkhWnLc9EDsBebRuF80717FA6Pu8ONi79NJeQkeuCemVojlDRt558+O39Zstj73a6fujJTpiCPJtto8MhHSQ4+SjmmDceXdJSdzGTxEPV6WKIhKZFNbgVWPTFk9yhHf/ix1CvSIH5DGifvZQijIsTIGdc+37CbwAHzT1iUVwH5s9FySaHyWQGAyBk1IKU3JpLmgmQvAwAkhjF/efvLlTqjJaXA+T+bMkA6ErEQb2tCijFdNFIwU9UZ3cksaXBwPDY/0WelTkJvuxPPGs="
