@@ -7,9 +7,6 @@ node_js:
 - 8.6.0
 before_script: npm install
 script: npm run test
-before_install:
-- openssl aes-256-cbc -K $encrypted_8286726edf71_key -iv $encrypted_8286726edf71_iv
-  -in id_rsa.enc -out ~/.ssh/id_rsa -d
 after_success:
 - sshpass -p $DEPLOY_PASS ssh $DEPLOY_USER@$DEPLOY_HOST
 - 'cd /var/www/avalon && git pull'
