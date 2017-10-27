@@ -9,6 +9,7 @@ before_script: npm install
 script: npm run test
 after_success:
 - sshpass -p $DEPLOY_PASS ssh $DEPLOY_USER@$DEPLOY_HOST
+- mkdir test
 - cd /var/www/avalon
 - git pull
 env:
