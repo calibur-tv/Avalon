@@ -1,0 +1,17 @@
+.backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: .1s background-color linear;
+  z-index: 11;
+
+  &.show {
+    background-color: rgba(0, 0, 0, .3);
+  }
+
+  &.hide {
+    background-color: transparent;
+  }
+}

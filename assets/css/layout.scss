@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 1050px) {
+  .container {
+    width: 1050px;
+  }
+}
+
+.col-main {
+  width: 75%;
+}
+
+.col-aside {
+  width: 25%;
+}
+
+.col-main,
+.col-aside {
+  position: relative;
+  min-height: 1px;
+  float: left;
+}
+
+@media (max-width: 768px) {
+  .col-main,
+  .col-aside {
+    width: 100%;
+    float: none;
+  }
+}

@@ -1,0 +1,184 @@
+[v-cloak] {
+  display: none
+}
+
+.bg,
+.face {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.face {
+  border-radius: 5px;
+}
+
+.oneline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.twoline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.subtitle {
+  font-size: 24px;
+  color: $color-text-normal;
+  line-height: 24px;
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 20px;
+  font-weight: 400;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: $color-blue-normal;
+    border-radius: 8px;
+  }
+}
+
+.celltitle {
+  color: $color-text-light;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  height: 20px;
+  margin-bottom: 30px;
+  font-family: 'iconfont' !important;
+  position: relative;
+  padding-left: 40px;
+
+  &:before {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    content: "\e6b1";
+    color: $color-blue-normal;
+    font-size: 20px;
+  }
+
+  &, * {
+    font-size: 16px;
+    color: $color-link;
+    line-height: 20px;
+    font-weight: 400;
+  }
+
+  a {
+    position: relative;
+    margin-right: 20px;
+
+    &:hover {
+      color: $color-blue-normal;
+    }
+
+    &:after {
+      content: '>';
+      position: absolute;
+      right: -20px;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      text-align: center;
+      line-height: 18px;
+      font-size: 13px;
+      color: $color-link;
+    }
+  }
+}
+
+.clearfix {
+  @extend %clearfix;
+}
+
+.icon-item {
+  display: inline-block;
+  color: $color-text-light;
+  font-size: 13px;
+  line-height: 16px;
+  height: 16px;
+  padding-left: 20px;
+  position: relative;
+  font-family: 'iconfont' !important;
+
+  &:before {
+    position: absolute;
+    left: 3px;
+    top: 0;
+    font-size: 14px;
+  }
+
+  &.icon-item-tag {
+    &:before {
+      content: "\e662";
+    }
+  }
+}
+
+.abs {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.flexbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.flex-col {
+    flex-direction: column;
+  }
+
+  &.flex-row {
+    flex-direction: row;
+  }
+}
+
+.tag {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: $color-white;
+  padding: 0 5px;
+  height: 24px;
+  line-height: 22px;
+  font-size: 12px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid $color-pink-normal;
+  white-space: nowrap;
+  color: $color-pink-normal;
+  cursor: pointer;
+
+  a {
+    color: $color-pink-normal;
+  }
+
+  &.selected,
+  &:hover {
+    background-color: $color-pink-deep;
+    border: 1px solid $color-pink-deep;
+    color: $color-white;
+
+    a {
+      color: $color-white;
+    }
+  }
+}
