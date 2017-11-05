@@ -208,6 +208,7 @@
         this.$emit('input', val)
       },
       value (val) {
+        val ? document.body.classList.add('v-popup') : document.body.classList.remove('v-popup')
         this.toggle = val
       }
     },
