@@ -14,9 +14,9 @@ before_script:
 script:
 - npm run test
 after_success:
-- ssh -P $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && git pull'
-- ssh -P $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && npm run build'
-- ssh -P $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && pm2 startOrRestart pm2.config.js
+- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && git pull'
+- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && npm run build'
+- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && pm2 startOrRestart pm2.config.js
   --env=production'
 env:
   global:
