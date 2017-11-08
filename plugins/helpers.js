@@ -5,9 +5,9 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 // utils
 import { groupBy, orderBy, throttle } from '~/utils/lodash'
-// services
-import Backdrop from '~/services/backdrop'
-import Toast from '~/services/toast'
+// assets/js
+import Backdrop from '~/assets/js/backdrop'
+import Toast from '~/assets/js/toast'
 // init
 const Helpers = {}
 

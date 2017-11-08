@@ -55,7 +55,8 @@ module.exports = {
   */
   build: {
     vendor: [
-      'js-cookie'
+      'js-cookie',
+      'axios'
     ],
     extractCSS: true,
     postcss: [

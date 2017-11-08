@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import Image from '~/services/imagelazy.js'
+import Image from '~/assets/js/imagelazy.js'
 
 Vue.component(Image.name, Image)
