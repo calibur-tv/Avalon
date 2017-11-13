@@ -398,44 +398,41 @@
         this.showSignIn = true
         this.showSignUp = false
       },
-      showRegister () {
+      async showRegister () {
         this.showModal = true
         this.showSignUp = true
         this.showSignIn = false
         if (this.signUpStep === 0) {
           this.signUpStep = 1
-          this.getCaptcha('bind').then((captcha) => {
-            const eventId = this.$eventManager.add(this.$refs.checkAndSend, 'click', () => {
-              this.$validator.validate('sign-up.nickname').then((result) => {
-                if (result) {
-                  this.$validator.validate('sign-up.access').then((result) => {
-                    if (result) {
-                      if (this.signUp.access !== this.signUp.tempAccess) {
-                        captcha.verify()
-                      } else {
-                        this.$toast.show(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
-                      }
-                    } else {
-                      this.$toast.show(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
-                    }
-                  })
+          const captcha = await this.getCaptcha('bind')
+          const eventId = this.$eventManager.add(this.$refs.checkAndSend, 'click', async () => {
+            const nicknameIsOK = await this.$validator.validate('sign-up.nickname')
+            if (nicknameIsOK) {
+              const accessIsOK = await this.$validator.validate('sign-up.access')
+              if (accessIsOK) {
+                if (this.signUp.access !== this.signUp.tempAccess) {
+                  captcha.verify()
                 } else {
-                  this.$toast.show('请先选择一个昵称')
+                  this.$toast.show(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
                 }
-              })
-            })
-            captcha.onSuccess(() => {
-              this.signUpStep = 2
-              this.checkAccessCanUse().then((canUse) => {
-                if (canUse) {
-                  this.signUpStep = 3
-                  this.getAuthCode()
-                  this.$eventManager.del(eventId)
-                } else {
-                  this.signUp.tempAccess = this.signUp.access
-                  this.$toast.show(`该${this.signUp.method === 'email' ? '邮箱' : '手机'}已绑定另外一个账号`)
-                }
-              })
+              } else {
+                this.$toast.show(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+              }
+            } else {
+              this.$toast.show('请先填写一个昵称')
+            }
+          })
+          captcha.onSuccess(() => {
+            this.signUpStep = 2
+            this.checkAccessCanUse().then((canUse) => {
+              if (canUse) {
+                this.signUpStep = 3
+                this.getAuthCode()
+                this.$eventManager.del(eventId)
+              } else {
+                this.signUp.tempAccess = this.signUp.access
+                this.$toast.show(`该${this.signUp.method === 'email' ? '邮箱' : '手机'}已绑定另外一个账号`)
+              }
             })
           })
         }
