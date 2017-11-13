@@ -218,7 +218,7 @@
         videos: []
       }
     },
-    created () {
+    mounted () {
       this.$channel.$emit('change-page-background', {
         theme: 'mask',
         img: ''

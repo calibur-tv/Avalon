@@ -28,6 +28,7 @@
 
       .header-right {
         float: right;
+        position: relative;
 
         .search-box {
           height: $search-height;
