@@ -326,7 +326,7 @@
       const released = {}
       const releaseNews = []
       data.forEach((bangumi) => {
-        const time = bangumi.season
+        const time = bangumi.published_at
         if (timeline.indexOf(time) === -1) {
           timeline.push(time)
         }
@@ -346,8 +346,8 @@
         timeline: timeline.sort((a, b) => {
           return b - a
         }),
-        list: orderBy(groupBy(data, 'season'), (time) => {
-          return time[0].season
+        list: orderBy(groupBy(data, 'published_at'), (time) => {
+          return time[0].published_at
         }).reverse()
       }
     },
@@ -362,7 +362,7 @@
     },
     methods: {
       formatTime (time) {
-        return `${time.toString().replace('.', ' 年 ')} 月`
+        return `${this.$format.timeLong(time).split(' ').shift().replace('-', ' 年 ').split('-').shift()} 月`
       },
       computePartStyle (timestamp) {
         return nowTime / 1000 - timestamp < 604800

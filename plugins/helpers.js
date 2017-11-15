@@ -8,6 +8,7 @@ import { groupBy, orderBy, throttle } from '~/utils/lodash'
 // assets/js
 import Backdrop from '~/assets/js/backdrop'
 import Toast from '~/assets/js/toast'
+import format from '~/utils/format'
 // init
 const Helpers = {}
 
@@ -19,6 +20,8 @@ Helpers.install = function (Vue, options) {
   Vue.prototype.$throttle = throttle
 
   Vue.prototype.$cdn = host.cdn
+
+  Vue.prototype.$format = format
 
   Vue.prototype.$channel = new Vue()
 
