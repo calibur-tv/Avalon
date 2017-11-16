@@ -288,7 +288,7 @@
                     <div class="foot">
                       <ul class="icon-item icon-item-tag oneline" v-if="item.tags.length">
                         <li v-for="tag in item.tags">
-                          <nuxt-link :to="`/bangumi/tags/${tag.pivot.tag_id}`" v-text="tag.name"></nuxt-link>
+                          <nuxt-link :to="`/bangumi/tags/${tag.id}`" v-text="tag.name"></nuxt-link>
                         </li>
                       </ul>
                       <!--<span v-text="item.count_like"></span>-->

@@ -177,8 +177,8 @@
         <div id="tags">
           <h2 class="subtitle">标签</h2>
           <ul>
-            <li class="tag" v-for="tag in tags" :key="tag.pivot.tag_id">
-              <nuxt-link :to="`/bangumi/tags/${tag.pivot.tag_id}`" v-text="tag.name"></nuxt-link>
+            <li class="tag" v-for="tag in tags" :key="tag.id">
+              <nuxt-link :to="`/bangumi/tags/${tag.id}`" v-text="tag.name"></nuxt-link>
             </li>
           </ul>
         </div>
