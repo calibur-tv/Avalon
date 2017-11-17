@@ -24,6 +24,7 @@
   "scripts": {
     "generate": "nuxt generate",
     "dev": "backpack dev",
+    "analyze": "nuxt build --analyze",
     "build": "npm install && nuxt build && backpack build",
     "start": "cross-env NODE_ENV=production node build/main.js",
     "precommit": "npm run lint",
@@ -31,19 +32,20 @@
     "test": "mocha --require babel-register"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
     "babel-eslint": "^7.1.1",
+    "babel-plugin-component": "^0.10.1",
+    "babel-preset-env": "^1.6.1",
     "backpack-core": "^0.3.0",
+    "chai": "^4.1.2",
     "eslint": "^3.15.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-html": "^3.0.0",
     "eslint-plugin-promise": "^3.4.1",
     "eslint-plugin-standard": "^2.0.1",
+    "mocha": "^4.0.1",
     "nodemon": "^1.11.0",
-    "scmp": "^2.0.0",
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1"
+    "scmp": "^2.0.0"
   }
 }

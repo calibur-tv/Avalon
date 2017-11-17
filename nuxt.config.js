@@ -4,7 +4,6 @@ const loader = require('./config/loader')
 const webpack = require('webpack')
 
 module.exports = {
-  cache: true,
   plugins: [
     { src: '~/plugins/analytics.js', ssr: false },
     { src: '~/plugins/helpers.js' },
@@ -16,7 +15,7 @@ module.exports = {
   ],
   modules: [
     ['@nuxtjs/google-analytics', { ua: 'UA-80338273-2' }],
-    ['@nuxtjs/axios', http.config],
+    ['@nuxtjs/axios', http.config]
   ],
   /*
   ** Headers of the page
@@ -54,9 +53,14 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    analyze: true,
     vendor: [
       'js-cookie',
-      'axios'
+      'axios',
+      'vee-validate'
+    ],
+    plugins: [
+      new webpack.ProvidePlugin({})
     ],
     extractCSS: true,
     postcss: [

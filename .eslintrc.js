@@ -12,5 +12,7 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {},
-  globals: {}
+  globals: {
+    moment: true
+  }
 }

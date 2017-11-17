@@ -362,7 +362,8 @@
     },
     methods: {
       formatTime (time) {
-        return `${this.$format.timeLong(time).split(' ').shift().replace('-', ' 年 ').split('-').shift()} 月`
+        const date = new Date(time * 1000)
+        return `${date.getFullYear()} 年 ${date.getMonth() + 1} 月`
       },
       computePartStyle (timestamp) {
         return nowTime / 1000 - timestamp < 604800
