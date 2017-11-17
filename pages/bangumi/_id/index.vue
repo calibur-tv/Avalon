@@ -191,11 +191,15 @@
   export default {
     name: 'bangumi-home',
     head () {
+      let keywords = this.info.alias.search
+      this.tags.forEach(tag => {
+        keywords += `,${tag.name}`
+      })
       return {
         title: `${this.info.name} - 番剧`,
         meta: [
           { hid: 'description', name: 'description', content: this.info.summary },
-          { hid: 'keywords', name: 'keywords', content: `${this.info.keywords}` }
+          { hid: 'keywords', name: 'keywords', content: keywords }
         ]
       }
     },
@@ -203,17 +207,18 @@
       return /^\d+$/.test(params.id)
     },
     async asyncData ({ params, app }) {
-      const data = await app.$axios.$get(`bangumi/${params.id}/info`)
+      const bangumi = await app.$axios.$get(`bangumi/${params.id}/show`)
       return {
-        videos: data.videos,
-        tags: data.tags,
-        info: data.info
+        videos: bangumi.videoPackage,
+        tags: bangumi.tags,
+        info: bangumi
       }
     },
     data () {
       return {
         id: this.$route.params.id,
         info: null,
+        meta: null,
         tags: [],
         videos: []
       }
