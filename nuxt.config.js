@@ -53,7 +53,6 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    analyze: true,
     vendor: [
       'js-cookie',
       'axios',
