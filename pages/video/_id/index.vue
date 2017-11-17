@@ -129,7 +129,7 @@
       return /^\d+$/.test(params.id)
     },
     async asyncData ({ params, app }) {
-      const data = await app.$axios.$get(`video/${params.id}/info`)
+      const data = await app.$axios.$get(`video/${params.id}/show`)
       return {
         bangumi: data.bangumi,
         videos: data.videos,

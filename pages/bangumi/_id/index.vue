@@ -128,10 +128,10 @@
     </section>
     <div class="container clearfix">
       <div class="col-main">
-        <section id="videos" v-if="videos.length">
+        <section id="videos" v-if="videoPackage.videos.length">
           <h2 class="subtitle">视频列表</h2>
           <div v-if="info.season">
-            <template v-for="season in videos">
+            <template v-for="season in videoPackage.videos">
               <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
               <ul :key="season.name">
                 <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
@@ -144,7 +144,7 @@
                              :src="$resize(video.poster, { width: 192, height: 120 })">
                       </v-img>
                       <figcaption class="abs">
-                        <p class="oneline">第{{ info.repeat ? index + 1 : video.part }}话</p>
+                        <p class="oneline">第{{ videoPackage.repeat ? index + 1 : video.part }}话</p>
                         <span class="twoline" v-text="video.name"></span>
                       </figcaption>
                     </figure>
@@ -154,7 +154,7 @@
             </template>
           </div>
           <ul v-else>
-            <li v-for="video in sortVideos(videos)" :key="video.id">
+            <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
               <a :href="selfResource(video.url) ? `/video/${video.id}` : video.url"
                  :rel="selfResource(video.url) ? '' : 'nofollow'"
                  target="_blank">
@@ -209,7 +209,7 @@
     async asyncData ({ params, app }) {
       const bangumi = await app.$axios.$get(`bangumi/${params.id}/show`)
       return {
-        videos: bangumi.videoPackage,
+        videoPackage: bangumi.videoPackage,
         tags: bangumi.tags,
         info: bangumi
       }
@@ -218,9 +218,8 @@
       return {
         id: this.$route.params.id,
         info: null,
-        meta: null,
         tags: [],
-        videos: []
+        videoPackage: []
       }
     },
     mounted () {
