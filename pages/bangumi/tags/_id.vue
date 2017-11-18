@@ -166,7 +166,7 @@
       }
     },
     async asyncData ({ params, app }) {
-      const data = await app.$axios.$get('bangumi/tags', {
+      const data = await app.$axios.get('bangumi/tags', {
         params: {
           id: params.id
         }

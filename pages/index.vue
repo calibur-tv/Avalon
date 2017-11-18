@@ -125,7 +125,7 @@
         }
         return array
       }
-      let data = await app.$axios.$get('cartoon/banner')
+      let data = await app.$axios.get('cartoon/banner')
       data = shuffle(data)
       return {
         banners: data,

@@ -321,7 +321,7 @@
       vBanner, tabCard
     },
     async asyncData ({ app }) {
-      const data = await app.$axios.$get('bangumi/news')
+      const data = await app.$axios.get('bangumi/news')
       const timeline = []
       const released = {}
       const releaseNews = []

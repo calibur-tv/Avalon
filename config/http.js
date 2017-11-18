@@ -8,5 +8,8 @@ exports.config = {
   timeout: 10000,
   errorHandler (err) {
     return Promise.reject(err.response.data)
+  },
+  responseInterceptor: (res) => {
+    return res && res.data && res.data.data
   }
 }

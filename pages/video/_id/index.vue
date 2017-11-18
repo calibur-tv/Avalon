@@ -129,7 +129,7 @@
       return /^\d+$/.test(params.id)
     },
     async asyncData ({ params, app }) {
-      const data = await app.$axios.$get(`video/${params.id}/show`)
+      const data = await app.$axios.get(`video/${params.id}/show`)
       return {
         bangumi: data.bangumi,
         videos: data.videos,
@@ -180,7 +180,7 @@
       handlePlaying () {
         if (this.firstPlay) {
           this.firstPlay = false
-          this.$axios.$post(`/video/${this.id}/playing`)
+          this.$axios.post(`/video/${this.id}/playing`)
         }
       }
     },

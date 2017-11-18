@@ -207,7 +207,7 @@
       return /^\d+$/.test(params.id)
     },
     async asyncData ({ params, app }) {
-      const bangumi = await app.$axios.$get(`bangumi/${params.id}/show`)
+      const bangumi = await app.$axios.get(`bangumi/${params.id}/show`)
       return {
         videoPackage: bangumi.videoPackage,
         tags: bangumi.tags,

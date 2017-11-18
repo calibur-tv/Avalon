@@ -444,7 +444,7 @@
       },
       getCaptcha (product = 'float') {
         return new Promise((resolve, reject) => {
-          this.$axios.$get('door/captcha').then((data) => {
+          this.$axios.get('door/captcha').then((data) => {
             window.initGeetest({
               gt: data.gt,
               challenge: data.challenge,
@@ -470,7 +470,7 @@
                     this.$cookie.set('JWT-TOKEN', res, { expires: this.signIn.remember ? 365 : null })
                     window.location.reload()
                   }).catch((err) => {
-                    this.$toast.show(err)
+                    this.$toast.show(err.message)
                     setTimeout(() => {
                       captcha.reset()
                     }, 500)
@@ -495,7 +495,7 @@
                     this.$cookie.set('JWT-TOKEN', res)
                     window.location.reload()
                   }).catch((err) => {
-                    this.$toast.show(err)
+                    this.$toast.show(err.message)
                     setTimeout(() => {
                       captcha.reset()
                     }, 500)
@@ -509,7 +509,7 @@
         }
       },
       login () {
-        return this.$axios.$post('door/login', {
+        return this.$axios.post('door/login', {
           access: this.signIn.access,
           secret: this.signIn.secret,
           remember: this.signIn.remember,
@@ -517,7 +517,7 @@
         })
       },
       register () {
-        return this.$axios.$post('door/register', {
+        return this.$axios.post('door/register', {
           method: this.signUp.method,
           access: this.signUp.access,
           secret: this.signUp.secret,
