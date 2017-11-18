@@ -15,12 +15,14 @@ body {
     padding: 0;
     margin: 0;
   }
+
+  *:focus, *:active {
+    outline-width: 0;
+  }
 }
 
-ul {
+ul, li {
   list-style-type: none;
-  overflow: hidden;
-  _zoom: 1;
 }
 
 li {
@@ -37,10 +39,6 @@ button {
   cursor: pointer;
   background-color: transparent;
   border: 0;
-
-  &:focus {
-    outline: none;
-  }
 }
 
 a {
@@ -50,10 +48,6 @@ a {
 
 input {
   vertical-align: middle;
-
-  &:focus {
-    outline: none;
-  }
 
   &:-webkit-autofill {
     box-shadow: 0 0 0 100px #e9fbfe inset !important;

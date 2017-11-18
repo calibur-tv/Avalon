@@ -10,6 +10,7 @@ module.exports = {
     { src: '~/plugins/share.js' },
     { src: '~/plugins/modal.js' },
     { src: '~/plugins/imagelazy.js' },
+    { src: '~/plugins/elementUI.js' },
     { src: '~/plugins/geetest.js', ssr: false },
     { src: '~/plugins/validate.js', ssr: false }
   ],

@@ -139,9 +139,6 @@
 
         .user-section {
           height: $header-height;
-          cursor: pointer;
-          position: relative;
-          float: right;
           margin-left: 6px;
           margin-right: 25px;
 
@@ -150,28 +147,7 @@
             @include avatar($avatar-height);
           }
 
-          &:hover {
-            .user-panel {
-              visibility: visible;
-              opacity: 1;
-            }
-          }
-
           .user-panel {
-            cursor: default;
-            position: absolute;
-            left: -30px;
-            width: 100px;
-            height: 120px;
-            top: 100%;
-            background-color: #fff;
-            border-radius: 0 0 4px 4px;
-            visibility: hidden;
-            opacity: 0;
-            overflow: hidden;
-            box-shadow: rgba(0, 0, 0, 0.16) 0 2px 4px;
-            padding-bottom: 35px;
-
             .logout {
               height: 35px;
               width: 100%;
@@ -343,14 +319,18 @@
       <nav class="header-right">
         <v-search :placeholder="'搜索'" :history="true"></v-search>
         <template v-if="isLogin">
-          <a class="nav-link" href="javascript:;">消息</a>
-          <a class="nav-link" href="javascript:;">动态</a>
-          <div class="user-section">
-            <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
-            <div class="user-panel">
-              <button @click="signOut" class="logout href-fade-blue">退出</button>
-            </div>
-          </div>
+          <el-dropdown class="user-section" :placement="'bottom'">
+            <a class="el-dropdown-link">
+              <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
+            </a>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>消息</el-dropdown-item>
+              <el-dropdown-item>动态</el-dropdown-item>
+              <el-dropdown-item>
+                <button @click="signOut" class="logout href-fade-blue">退出</button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
         <template v-else>
           <button class="sign-btn sign-in" @click="signIn">登录</button>

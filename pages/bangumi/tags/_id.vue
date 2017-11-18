@@ -93,7 +93,7 @@
       <section class="col-main">
         <div class="tags">
           <h2 class="subtitle">标签列表</h2>
-          <ul>
+          <ul class="clearfix">
             <li class="tag"
                 v-for="tag in tags"
                 :class="{ 'selected': tag.selected }"
@@ -107,7 +107,7 @@
         </div>
         <div class="bangumis" v-if="bangumis.length">
           <h2 class="subtitle">番剧列表</h2>
-          <ul>
+          <ul class="clearfix">
             <li class="bangumi" v-for="item in bangumis">
               <figure>
                 <nuxt-link

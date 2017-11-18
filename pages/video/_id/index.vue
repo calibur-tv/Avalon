@@ -79,7 +79,7 @@
         </h1>
       </nav>
       <div id="metas">
-        <ul>
+        <ul class="clearfix">
           <li v-for="meta in sortVideos" :key="meta.id">
             <a class="meta"
                :class="{ 'nuxt-link-active' : $route.params.id == meta.id }"

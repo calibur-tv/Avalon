@@ -9,6 +9,7 @@
     "@nuxtjs/google-analytics": "^1.0.0",
     "axios": "^0.16.2",
     "cross-env": "^5.0.0",
+    "element-ui": "^2.0.5",
     "js-cookie": "^2.1.4",
     "koa": "^2.3.0",
     "lodash": "^4.17.4",

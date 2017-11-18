@@ -266,7 +266,7 @@
         <section class="history">
           <h2 class="subtitle">时间轴</h2>
           <ul class="collections">
-            <ul v-for="(col, index) in list" class="collection">
+            <ul v-for="(col, index) in list" class="collection clearfix">
               <h3 class="time" v-text="formatTime(timeline[index])"></h3>
               <li class="bangumi" v-for="item in col">
                 <figure>
