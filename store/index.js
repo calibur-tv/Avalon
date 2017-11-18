@@ -26,7 +26,7 @@ export const actions = {
         }
       })
       app.$axios.setToken(token, 'Bearer')
-      const user = await app.$axios.$get('door/user')
+      const user = await app.$axios.get('door/user')
       if (user) {
         commit('SET_TOKEN', token)
         commit('SET_USER', user)
