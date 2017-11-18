@@ -7,6 +7,8 @@
 
     .timeline {
       .el-tabs {
+        padding-left: $time-size;
+        
         .el-tabs__nav {
           width: 100%;
           display: flex;
