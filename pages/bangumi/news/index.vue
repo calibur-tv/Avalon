@@ -1,23 +1,34 @@
 <style lang="scss">
   #bangumi-news {
+    $time-size: 30px;
+    .subtitle {
+      margin-left: $time-size / 2;
+    }
+
     .timeline {
-      h2 {
-        margin-left: 15px;
-        margin-right: 30px;
-        margin-bottom: 0;
+      .el-tabs {
+        .el-tabs__nav {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          text-align: center;
+
+          .el-tabs__item {
+            flex: 1;
+          }
+        }
+        .el-tabs__content {
+          height: 300px;
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
       }
 
-      .card-wrap {
-        height: 294px;
-        margin-left: 45px;
-        margin-bottom: 26px;
-        overflow-y: auto;
-
-        .nothing {
-          font-size: 13px;
-          line-height: 100px;
-          color: $color-text-light;
-        }
+      .nothing {
+        font-size: 13px;
+        line-height: 100px;
+        color: $color-text-light;
+        text-align: center;
       }
 
       .bangumi {
@@ -81,11 +92,6 @@
     }
 
     .history {
-      $time-size: 30px;
-      .subtitle {
-        margin-left: $time-size / 2;
-      }
-
       .collections {
         position: relative;
 
@@ -220,22 +226,17 @@
     <div class="container clearfix">
       <div class="col-main">
         <section class="timeline">
-          <tab-card :tabs="showtime"
-                    :card="released"
-                    :show-index="thisWeek">
-            <h2 class="subtitle" slot="tabs-left">新番放送表</h2>
-            <template slot="card-item" scope="props">
-              <ul v-if="props.data.length">
-                <li class="bangumi" :key="item.id" v-for="item in props.data">
+          <h2 class="subtitle">新番放送表</h2>
+          <el-tabs v-model="thisWeek">
+            <el-tab-pane v-for="(tab, index) in showtime"
+                         :label="tab"
+                         :key="index"
+                         :name="tab">
+              <ul v-if="released[index]">
+                <li class="bangumi" :key="item.id" v-for="item in released[index]">
                   <figure class="clearfix">
-                    <nuxt-link
-                      :to="`/bangumi/${item.id}`">
-                      <v-img
-                        class="face"
-                        :title="item.name"
-                        :alt="item.name"
-                        :src="$resize(item.avatar, { width: 180 })">
-                      </v-img>
+                    <nuxt-link :to="`/bangumi/${item.id}`">
+                      <img class="face" :src="$resize(item.avatar, { width: 180 })" :alt="item.name">
                     </nuxt-link>
                     <figcaption class="abs">
                       <nuxt-link :to="`/bangumi/${item.id}`" class="href-fade-blue twoline" v-text="item.name"></nuxt-link>
@@ -260,8 +261,8 @@
               <div class="nothing" v-else>
                 还什么都没有
               </div>
-            </template>
-          </tab-card>
+            </el-tab-pane>
+          </el-tabs>
         </section>
         <section class="history">
           <h2 class="subtitle">时间轴</h2>
@@ -307,10 +308,10 @@
 
 <script>
   import vBanner from '~/components/views/Banner.vue'
-  import tabCard from '~/components/TabCard.vue'
   import { groupBy, orderBy } from '~/utils/lodash'
 
   const nowTime = new Date().getTime()
+  const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
 
   export default {
     name: 'bangumi-news',
@@ -318,7 +319,7 @@
       title: '番剧列表'
     },
     components: {
-      vBanner, tabCard
+      vBanner
     },
     async asyncData ({ app }) {
       const data = await app.$axios.get('bangumi/news')
@@ -353,11 +354,11 @@
     },
     data () {
       return {
-        showtime: ['最新', '一', '二', '三', '四', '五', '六', '日'],
+        showtime: weeklys,
         released: null,
-        thisWeek: new Date().getDay() ? new Date().getDay() : 7,
         timeline: [],
-        list: []
+        list: [],
+        thisWeek: weeklys[new Date().getDay() ? new Date().getDay() : 7]
       }
     },
     methods: {
