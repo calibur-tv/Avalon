@@ -344,6 +344,7 @@
           tempAccess: '',
           timeout: 0
         },
+        geetest: null,
         /**
          * signUpStep
          * 0：未获取 captcha
@@ -444,14 +445,15 @@
       },
       getCaptcha (product = 'float') {
         return new Promise((resolve, reject) => {
-          this.$axios.get('door/captcha').then((data) => {
+          this.$axios.get(`door/captcha?t=${new Date().getTime()}`).then((data) => {
+            this.geetest = data
             window.initGeetest({
-              gt: data.gt,
-              challenge: data.challenge,
+              gt: data.id,
+              challenge: data.secret,
               product: product,
               width: '100%',
-              offline: !data.success,
-              new_captcha: data.new_captcha
+              offline: true,
+              new_captcha: 1
             }, (captchaObj) => {
               resolve(captchaObj)
             })
@@ -513,7 +515,8 @@
           access: this.signIn.access,
           secret: this.signIn.secret,
           remember: this.signIn.remember,
-          method: this.signIn.method
+          method: this.signIn.method,
+          geetest: this.geetest
         })
       },
       register () {
@@ -523,7 +526,8 @@
           secret: this.signUp.secret,
           nickname: this.signUp.nickname,
           authCode: this.signUp.authCode,
-          inviteCode: this.signUp.inviteCode
+          inviteCode: this.signUp.inviteCode,
+          geetest: this.geetest
         })
       },
       showOAuth () {
