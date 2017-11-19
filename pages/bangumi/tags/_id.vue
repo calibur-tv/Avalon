@@ -67,7 +67,6 @@
       li {
         margin-right: 10px;
         margin-bottom: 10px;
-        cursor: pointer;
       }
 
       .btn {
@@ -95,7 +94,10 @@
           <h2 class="subtitle">标签列表</h2>
           <ul class="clearfix">
             <li v-for="tag in tags" @click="tag.selected = !tag.selected">
-              <strong class="el-tag" :class="{ 'selected': tag.selected }">{{ tag.name }}</strong>
+              <a @click.prevent
+                 :href="`/bangumi/tags/${tag.id}`" class="el-tag"
+                 :class="{ 'selected': tag.selected }"
+              >{{ tag.name }}</a>
             </li>
             <li>
               <button class="btn" @click="getList">点击查找</button>
