@@ -385,7 +385,7 @@
       },
       signOut () {
         this.$cookie.remove('JWT-TOKEN')
-        this.$axios.get('door/logout')
+        this.$axios.post('door/logout')
         window.location.reload()
       }
     },

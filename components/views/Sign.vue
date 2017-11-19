@@ -445,7 +445,7 @@
       },
       getCaptcha (product = 'float') {
         return new Promise((resolve, reject) => {
-          this.$axios.get(`door/captcha?t=${new Date().getTime()}`).then((data) => {
+          this.$axios.post('door/captcha').then((data) => {
             this.geetest = data
             window.initGeetest({
               gt: data.id,
