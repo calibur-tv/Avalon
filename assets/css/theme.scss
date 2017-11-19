@@ -15,7 +15,8 @@ $--color-transition-base: color .2s cubic-bezier(.645,.045,.355,1) !default;
 -------------------------- */
 $--color-white: #fff !default;
 $--color-black: #000 !default;
-
+$--color-pink: #f25d8e !default;
+$--color-pink-2: #ff8eb3 !default;;
 $--color-primary: #00a1d6 !default;
 $--color-primary-light-1: mix($--color-white, $--color-primary, 10%) !default; /* 53a8ff */
 $--color-primary-light-2: mix($--color-white, $--color-primary, 20%) !default; /* 66b1ff */
@@ -521,10 +522,10 @@ $--tooltip-padding: 10px !default;
 
 /* Tag
 -------------------------- */
-$--tag-padding: 0 10px !default;
-$--tag-fill: rgba($--color-primary, 0.10) !default;
-$--tag-color: $--color-primary !default;
-$--tag-border: rgba($--color-primary, 0.20) !default;
+$--tag-padding: 0 5px !default;
+$--tag-fill: transparent !default;
+$--tag-color: $--color-pink-2 !default;
+$--tag-border: $--color-pink-2 !default;
 $--tag-font-size: 12px !default;
 $--tag-border-radius: 4px !default;
 

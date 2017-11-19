@@ -64,19 +64,19 @@
     .tags {
       margin-bottom: 25px;
 
-      .btn {
-        display: inline-block;
-        padding: 0 5px;
-        height: 24px;
-        line-height: 22px;
-        font-size: 12px;
-        border-radius: 4px;
-        box-sizing: border-box;
+      li {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
       }
 
       .btn {
+        font-size: 12px;
         background-color: $color-white;
         border: 1px solid $color-gray-deep;
+        padding: 0 5px;
+        line-height: 22px;
+        border-radius: 4px;
 
         &:hover {
           background-color: $color-gray-deep;
@@ -94,11 +94,8 @@
         <div class="tags">
           <h2 class="subtitle">标签列表</h2>
           <ul class="clearfix">
-            <li class="tag"
-                v-for="tag in tags"
-                :class="{ 'selected': tag.selected }"
-                @click="tag.selected = !tag.selected">
-              <strong v-text="tag.name"></strong>
+            <li v-for="tag in tags" @click="tag.selected = !tag.selected">
+              <strong class="el-tag" :class="{ 'selected': tag.selected }">{{ tag.name }}</strong>
             </li>
             <li>
               <button class="btn" @click="getList">点击查找</button>

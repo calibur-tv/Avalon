@@ -5,14 +5,20 @@
   background-color: $--tag-fill;
   display: inline-block;
   padding: $--tag-padding;
-  height: 32px;
-  line-height: 30px;
+  height: 24px;
+  line-height: 22px;
   font-size: $--tag-font-size;
   color: $--tag-color;
   border-radius: $--tag-border-radius;
   box-sizing: border-box;
   border: 1px solid $--tag-border;
   white-space: nowrap;
+
+  &.selected, &:hover {
+    background-color: $--color-pink;
+    border: 1px solid $--color-pink;
+    color: $--color-white;
+  }
 
   .el-icon-close {
     border-radius: 50%;
