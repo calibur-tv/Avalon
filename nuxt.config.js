@@ -15,7 +15,7 @@ module.exports = {
     { src: '~/plugins/validate.js', ssr: false }
   ],
   modules: [
-    ['@nuxtjs/google-analytics', { ua: 'UA-80338273-2' }],
+    ['@nuxtjs/google-analytics', { ua: env.script.google }],
     ['@nuxtjs/axios', http.config]
   ],
   /*

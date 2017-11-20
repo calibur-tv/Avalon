@@ -9,7 +9,7 @@ export default ({ app }) => {
     const qh = document.createElement('script')
     qh.async = true
     qh.defer = true
-    qh.src = '//s.union.360.cn/174447.js'
+    qh.src = '//s.union.360.cn/203477.js'
     s.parentNode.insertBefore(qh, s)
   })()
   /*
