@@ -24,9 +24,8 @@ export default (ctx) => {
     }
     if (err.message === `timeout of ${timeout.client}ms exceeded`) {
       // TODO handle requiest timeout
-    } else {
-      return Promise.reject(err && err.response)
     }
+    return Promise.reject(err && (err.response || err.message))
   })
 
   return http

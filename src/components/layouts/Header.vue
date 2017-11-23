@@ -98,7 +98,7 @@
             font-size: 18px;
             border: 1px solid transparent;
             border-left: 0;
-            line-height: 30px;
+            line-height: 29px;
 
             &:before {
               content: '\e761';
@@ -145,19 +145,6 @@
           .avatar {
             margin-top: ($header-height - $avatar-height) / 2;
             @include avatar($avatar-height);
-          }
-
-          .user-panel {
-            .logout {
-              height: 35px;
-              width: 100%;
-              text-align: center;
-              position: absolute;
-              left: 0;
-              bottom: 0;
-              background-color: $color-gray-normal;
-              font-size: 13px;
-            }
           }
         }
       }
@@ -327,7 +314,7 @@
               <el-dropdown-item>消息</el-dropdown-item>
               <el-dropdown-item>动态</el-dropdown-item>
               <el-dropdown-item>
-                <button @click="signOut" class="logout href-fade-blue">退出</button>
+                <button @click="signOut">退出</button>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

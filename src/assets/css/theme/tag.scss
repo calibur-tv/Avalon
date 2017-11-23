@@ -13,6 +13,7 @@
   box-sizing: border-box;
   border: 1px solid $--tag-border;
   white-space: nowrap;
+  font-weight: 700;
 
   &.selected, &:hover {
     background-color: $--color-pink;

@@ -10,7 +10,6 @@ const resolve = file => path.resolve(__dirname, file)
 const Koa = require('koa')
 const LRU = require('lru-cache')
 const Route = require('koa-router')
-const serve = require('koa-static')
 
 const app = new Koa()
 const router = new Route()
@@ -47,8 +46,6 @@ if (isDev) {
 
   renderer = createRenderer(bundle, { template, clientManifest })
 }
-
-app.use(serve('./dist'))
 
 function createRenderer (bundle, options) {
   return createBundleRenderer(bundle, Object.assign(options, {
