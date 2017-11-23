@@ -93,9 +93,9 @@
         <div class="tags">
           <h2 class="subtitle">标签列表</h2>
           <ul class="clearfix">
-            <li v-for="tag in tags"
+            <li v-for="(tag, index) in tags"
                 :key="tag.id"
-                @click="tag.selected = !tag.selected">
+                @click="$store.commit('bangumi/selectTag', index)">
               <a @click.prevent
                  :href="`/bangumi/tags/${tag.id}`" class="el-tag"
                  :class="{ 'selected': tag.selected }"

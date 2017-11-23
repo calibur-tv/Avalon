@@ -40,6 +40,11 @@ export default {
         })
         state.list[id] = temp
       }
+    },
+    selectTag (state, index) {
+      const tag = state.tags[index]
+      tag.selected = !tag.selected
+      state.tags[index] = tag
     }
   },
   actions: {
@@ -52,7 +57,7 @@ export default {
       commit('pushNews', data)
     },
     async getTags ({ state, commit }, id) {
-      if (state.tags.length) {
+      if (state.tags.length && !id) {
         return
       }
       const api = new Api()
