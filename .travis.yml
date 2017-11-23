@@ -4,6 +4,10 @@ node_js:
 branches:
   only:
   - master
+cache:
+  bundler: true
+  directories:
+  - node_modules
 before_install:
 - openssl aes-256-cbc -K $encrypted_278b576efbf2_key -iv $encrypted_278b576efbf2_iv
   -in id_rsa.enc -out ~/.ssh/id_rsa -d
