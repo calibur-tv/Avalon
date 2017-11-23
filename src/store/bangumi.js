@@ -8,6 +8,7 @@ export default {
     return {
       news: [],
       tags: [],
+      rank: [],
       list: Object.create(null)
     }
   },
@@ -17,6 +18,9 @@ export default {
     },
     pushTags (state, data) {
       state.tags = data
+    },
+    pushRank (state, data) {
+      state.rank = data
     },
     pushList (state, data) {
       const ids = Object.keys(state.list)
@@ -53,7 +57,13 @@ export default {
       }
       const api = new Api()
       const data = await api.getTags(id)
-      commit('pushTags', data)
+      const tags = data.tags
+      const ids = id ? id.split('-') : undefined
+      tags.forEach((tag, index) => {
+        tags[index].selected = ids ? ids.indexOf(tag.id.toString()) !== -1 : false
+      })
+      commit('pushTags', tags)
+      commit('pushRank', data.bangumis)
     },
     async getShow ({ state, commit }, id) {
       if (state.list[id]) {

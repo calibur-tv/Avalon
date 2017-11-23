@@ -93,7 +93,9 @@
         <div class="tags">
           <h2 class="subtitle">标签列表</h2>
           <ul class="clearfix">
-            <li v-for="tag in tags" @click="tag.selected = !tag.selected">
+            <li v-for="tag in tags"
+                :key="tag.id"
+                @click="tag.selected = !tag.selected">
               <a @click.prevent
                  :href="`/bangumi/tags/${tag.id}`" class="el-tag"
                  :class="{ 'selected': tag.selected }"
@@ -168,22 +170,10 @@
     },
     computed: {
       bangumis () {
-        return this.$store.state.bangumi.tags.bangumis
-      }
-    },
-    created () {
-      const id = this.$route.params.id
-      const data = this.$store.state.bangumi.tags
-      const tags = data.tags
-      const ids = id ? id.split('-') : undefined
-      tags.forEach((tag, index) => {
-        tags[index].selected = ids ? ids.indexOf(tag.id.toString()) !== -1 : false
-      })
-      this.tags = tags
-    },
-    data () {
-      return {
-        tags: []
+        return this.$store.state.bangumi.rank
+      },
+      tags () {
+        return this.$store.state.bangumi.tags
       }
     },
     methods: {
