@@ -133,14 +133,17 @@
       id () {
         return parseInt(this.$route.params.id, 10)
       },
+      base () {
+        return this.$store.state.video.list[this.id]
+      },
       info () {
-        return this.$store.state.video.list[this.id].info
+        return this.base.info
       },
       videos () {
-        return this.$store.state.video.list[this.id].videos
+        return this.base.videos
       },
       bangumi () {
-        return this.$store.state.video.list[this.id].bangumi
+        return this.base.bangumi
       },
       sortVideos () {
         const begin = (this.page - 1) * this.take
