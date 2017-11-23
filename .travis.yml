@@ -15,9 +15,8 @@ script:
 - npm run test
 after_success:
 - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && git pull'
-- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && npm run build'
-- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && pm2 startOrRestart pm2.config.js
-  --env=production'
+- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && npm run staging'
+- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
 env:
   global:
   - secure: JlcMQ2O+PnW1yxQ0xzYV7Uu1kFkwCFIaW1QZt1t1LnKLqkrBWV7gM8cpJETS4mXex4g/JmauwqMFKm9jGD5ZlT6qPSjJnXrxfK03HPoiDkFyTM5mgkahhfovDjTGZMKnQwtr9S0ER/xHtCv6kkkRJxuORLLw7NT675hqLWv0cBWTI0Y5RpKuv/nh8TB7k3/DXsr3HN5BTYkNUFAno2Gm/93tzNbljjKFTYmHzdhxPTzAlKymcGKphO1sRuOdpX8g1o/3BNd3mHwV8HlDnGtcyCTinms4OHGbwZQBpuxOu0K+ZD3qqKs3sBxh173TmHZyfXZAbRUwI3zyF78k8AF+qhxQYxIS4Ax2I9E0H1PAA7FXJr1SaI/Rd4LGS5qIuOQp4YoAgFtFP/Jo6R6qzHMjAxF7avMJhuX8hiaDkbJaMbLfCymbe/u5wGT2XFwAXXIuhbQ4wth02PRihbTdmnMV4Pr+6GEI7sQdIe16G5eZn09HHDh4pqiR+WIZE5xBDiJnOAJRmB0ZNHThRvhufAOIRTvQKszhSbHutGWAsUL214J/WSwKwO0a9YEt+D5nBN5HnuEPydd6Q1EuHqQEDgQgR2JU5LHW1MqoD2+C8/PEL1A7ltIKOEVMnW309aReBZsCAb+7U3SdJBaP4TrxC64eH1mKwGkgWIfhybCmzFAr+30=
