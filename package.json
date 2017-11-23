@@ -12,7 +12,8 @@
     "staging:server": "cross-env NODE_ENV=staging webpack --config build/webpack.server.config.js --progress --hide-modules",
     "production": "rimraf dist && npm run production:client && npm run production:server",
     "production:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
-    "production:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
+    "production:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules",
+    "test": "mocha --require babel-register"
   },
   "engines": {
     "node": ">=8.9.0",
