@@ -131,7 +131,7 @@
     },
     computed: {
       id () {
-        return this.$route.params.id
+        return parseInt(this.$route.params.id, 10)
       },
       info () {
         return this.$store.state.video.list[this.id].info

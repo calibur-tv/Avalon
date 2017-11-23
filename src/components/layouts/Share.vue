@@ -192,7 +192,7 @@
         new socialShare(this.$el, {
           url: window.location.href.split('?')[0],
           title: document.title,
-          source: 'riuir 天下漫友是一家',
+          source: 'calibur - 天下漫友是一家',
           description: document.getElementsByTagName('meta')['description'].content,
           disabled: ['google', 'twitter', 'facebook', 'linkedin', 'diandian']
         })

@@ -6,8 +6,8 @@ import { createStore } from './store'
 import { createRouter } from './router'
 import './utils/elementUI'
 import utils from './utils'
-import ImageLazy from './utils/imagelazy'
-import Share from 'component/layouts/Share.vue'
+import ImageLazy from 'assets/js/imagelazy'
+import Share from 'assets/js/Share'
 import Modal from 'component/Modal.vue'
 
 Vue.use(utils)
