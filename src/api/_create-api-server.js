@@ -41,7 +41,10 @@ export default (ctx) => {
     return config
   })
 
-  http.interceptors.response.use(res => res && res.data && res.data.data, err => Promise.reject(err))
+  http.interceptors.response.use(res => res && res.data && res.data.data, err => {
+    err.code = err.response.status
+    throw err
+  })
 
   return http
 }
