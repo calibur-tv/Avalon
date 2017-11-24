@@ -100,6 +100,7 @@
         &:before {
           content: '';
           position: absolute;
+          display: block;
           left: 14.5px;
           top: 0;
           bottom: 0;
@@ -269,7 +270,7 @@
         <section class="history">
           <h2 class="subtitle">时间轴</h2>
           <ul class="collections">
-            <ul v-for="(col, index) in list" class="collection clearfix">
+            <ul v-for="(col, index) in list" class="collection">
               <h3 class="time" v-text="formatTime(timeline[index])"></h3>
               <li class="bangumi" v-for="item in col">
                 <figure>

@@ -25,6 +25,20 @@ ul, li {
   list-style-type: none;
 }
 
+ul {
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+
+  &:before {
+    content: '';
+    clear: both;
+    display: table;
+  }
+}
+
 li {
   float: left;
 }

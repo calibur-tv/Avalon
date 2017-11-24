@@ -79,7 +79,7 @@
         </h1>
       </nav>
       <div id="metas">
-        <ul class="clearfix">
+        <ul>
           <li v-for="meta in sortVideos" :key="meta.id">
             <a class="meta"
                :class="{ 'router-link-active' : $route.params.id == meta.id }"

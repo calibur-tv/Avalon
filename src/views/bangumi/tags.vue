@@ -92,7 +92,7 @@
       <section class="col-main">
         <div class="tags">
           <h2 class="subtitle">标签列表</h2>
-          <ul class="clearfix">
+          <ul>
             <li v-for="(tag, index) in tags"
                 :key="tag.id"
                 @click="$store.commit('bangumi/selectTag', index)">
@@ -108,7 +108,7 @@
         </div>
         <div class="bangumis" v-if="bangumis.length">
           <h2 class="subtitle">番剧列表</h2>
-          <ul class="clearfix">
+          <ul>
             <li class="bangumi" v-for="item in bangumis" :key="item.id">
               <figure>
                 <router-link
