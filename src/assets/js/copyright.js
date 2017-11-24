@@ -9,8 +9,8 @@ export default class Copyright {
    */
   constructor ({ minLength, shareLink } = {}) {
     this.config = {
-      org: 'riuir',
-      appendStr: 'riuir - 天下漫友是一家',
+      org: 'calibur',
+      appendStr: 'calibur - 天下漫友是一家',
       minLength: minLength || 140,
       shareLink: shareLink || window.location.href.split('?')[0]
     }

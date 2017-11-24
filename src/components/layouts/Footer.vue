@@ -11,6 +11,6 @@
 
 <template>
   <footer id="footer">
-    <p class="slogan" data-text="riuir - 天下漫友是一家"></p>
+    <p class="slogan" data-text="calibur - 天下漫友是一家"></p>
   </footer>
 </template>
