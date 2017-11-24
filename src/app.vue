@@ -21,8 +21,8 @@
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
         { name: 'renderer', content: 'webkit' },
-        { hid: 'description', name: 'description', content: 'riuir，兴趣使然的二次元综合网站' },
-        { hid: 'keywords', name: 'keywords', content: 'riuir，动漫，ACG，二次元，视频，番剧，动画，新番，神作' }
+        { hid: 'description', name: 'description', content: 'calibur，兴趣使然的二次元综合网站' },
+        { hid: 'keywords', name: 'keywords', content: 'calibur，动漫，ACG，二次元，视频，番剧，动画，新番，神作' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
