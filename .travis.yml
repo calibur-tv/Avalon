@@ -1,28 +1,39 @@
 language: node_js
+
 node_js:
-- 8.6.0
-branches:
-  only:
-  - master
+  - 8.6.0
+
 cache:
   bundler: true
-  directories:
+directories:
   - node_modules
+
 before_install:
-- openssl aes-256-cbc -K $encrypted_278b576efbf2_key -iv $encrypted_278b576efbf2_iv
-  -in id_rsa.enc -out ~/.ssh/id_rsa -d
-- chmod 600 ~/.ssh/id_rsa
-- echo -e "Host 101.132.169.136\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - openssl aes-256-cbc -K $encrypted_278b576efbf2_key -iv $encrypted_278b576efbf2_iv -in id_rsa.enc -out ~/.ssh/id_rsa -d
+  - chmod 600 ~/.ssh/id_rsa
+  - echo -e "Host $STAGING_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - echo -e "Host $PRODUCTION_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
 before_script:
-- npm install
+  - npm install
+
 script:
-- npm run test
-after_success:
-- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && git pull'
-- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && npm run staging'
-- ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
-env:
-  global:
-  - secure: JlcMQ2O+PnW1yxQ0xzYV7Uu1kFkwCFIaW1QZt1t1LnKLqkrBWV7gM8cpJETS4mXex4g/JmauwqMFKm9jGD5ZlT6qPSjJnXrxfK03HPoiDkFyTM5mgkahhfovDjTGZMKnQwtr9S0ER/xHtCv6kkkRJxuORLLw7NT675hqLWv0cBWTI0Y5RpKuv/nh8TB7k3/DXsr3HN5BTYkNUFAno2Gm/93tzNbljjKFTYmHzdhxPTzAlKymcGKphO1sRuOdpX8g1o/3BNd3mHwV8HlDnGtcyCTinms4OHGbwZQBpuxOu0K+ZD3qqKs3sBxh173TmHZyfXZAbRUwI3zyF78k8AF+qhxQYxIS4Ax2I9E0H1PAA7FXJr1SaI/Rd4LGS5qIuOQp4YoAgFtFP/Jo6R6qzHMjAxF7avMJhuX8hiaDkbJaMbLfCymbe/u5wGT2XFwAXXIuhbQ4wth02PRihbTdmnMV4Pr+6GEI7sQdIe16G5eZn09HHDh4pqiR+WIZE5xBDiJnOAJRmB0ZNHThRvhufAOIRTvQKszhSbHutGWAsUL214J/WSwKwO0a9YEt+D5nBN5HnuEPydd6Q1EuHqQEDgQgR2JU5LHW1MqoD2+C8/PEL1A7ltIKOEVMnW309aReBZsCAb+7U3SdJBaP4TrxC64eH1mKwGkgWIfhybCmzFAr+30=
-  - secure: PkifTSZFalokjNP+x2/e0BjXxYwTKoKpexw6k3YanZwWB5h2JEVhmWhPWE/ZStKVNwaCf2v1I+R44qToppbo1lTxOV5X7RGVgS2eoRaNMKHJPVF8zh1inQ95DKqczfSJ4lDBJFxZU5SyMFogeqdK+TROpwB5N8173phlhs+TMHEMh10uEjxU4ZlqtEI6ojJb7L+oS7wZsNkv9sBV3X0ZsDvNf6I8sHzcXlKR0m2HWJsWM6zxZAZ1gLuiqbZGLIpB+vqiYJ7UpNx7qASyo1/YnF12P3MNb3CqYU7Wc/Hjx2ZIm54jsAssuXsqWEn6ZAsk6vFFUUw0IAr+6SjfwI3czthcnV/oqgFNT4bQ+rgJUbWawCGtNO2LDyNedWf/rcP5+gVRf7FCcG178dFIIN+p8Fh4k0Pcx21L/UsXPsv2+wZQRWrbNHpnivlFG/tP2xsUm6wOtLwdseVstuYppsPP+K1L+CTIqK/aOxX+sLiZSWv4/YWMu+05QwDtNfTLYODc6tlPEd5bUhNeRIRxLO2MsD/MHlht9lVYk1ENc8v58VFGBa8ZyDbGzOFs3DwGr116iG2L8f4EEsV4n32VYDrMUF4n9jbmXqf9hppm42cTbY1B857sDLJ2O6H+G0PzQWBroAdPmbXhyuu5gCi1Vp+a7mzraWeQeFmX50mUUDkoC0c=
-  - secure: JB2EWIFWoKJPx/w7VfUiBR8a0fHgqE1sP28sAgPrpHd5mDv5Dotk6keEKNmdR0XRdBVVs8KmAhJyrhwmQcOW80N5DfNEdXIHloR/Q4XJnw3DtzwoPMWzHp3RyH3YBkNb1P+ITB09qIP9Jqu6GE8xvwXazSKQec5c7YjyK1qjhDrivaEVi5Ti2/Wzbz8LFdDYK4H2/0lg2DBCifTPD05JLbNpe78rW7qMhFKWOXIhIOALmq4+IAwSalFGHbINLTDPeosHNV5nB0xdX1CHIFuapQNY7GYGDwQJXT9f6jRoSWB2+Lk3u5Emg8UAeTZjoQ+j0FfjzFHSZ7EYLhByJrv4kYE784DS/vo0G0/OVW3rNAYIw7DhFMnNgl/bM0CynO/F+S4UYgg0OBhbEQnmOqT3ySbvuXOES2YivekVXDrLtG0YEvFzWDpMtbY8oUkL7solOLF4R84INLyB8wNhiksLt0qDV9XCWhUaXBbUrEfbp6xSv10sdn54lYDHRXvx8ueBYfI9wLy/Dk10svEzQOrHv6SrtGGb1tYtRRjOUVPct60amYlKwFvOcD3LkAe6GOgkA03leiEDNGDkxA2QZfZZHyAw9LvGxNhlkNbqlDSe4iNuplObKuv+DUcTpnwGPe6p3MsSt+ACsawQY6NyilbaRWcLDX4XQHeu5nG5iSsbdx8=
+  - npm run test
+
+deploy:
+  - provider: script
+  skip_cleanup: true
+  script:
+    - ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && git pull'
+    - ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && npm run staging'
+    - ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
+  on:
+    branch: dev
+  - provider: script
+  skip_cleanup: true
+  script:
+    - ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && git pull'
+    - ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && npm run staging'
+    - ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
+  on:
+    branch: master
