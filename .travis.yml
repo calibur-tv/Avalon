@@ -22,18 +22,18 @@ script:
 
 deploy:
   - provider: script
-  skip_cleanup: true
-  script:
-    ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && git pull' &
-    ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && npm run staging' &
-    ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
-  on:
-    branch: master
+    skip_cleanup: true
+    script:
+      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && git pull' &
+      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && npm run staging' &
+      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
+    on:
+      branch: master
   - provider: script
-  skip_cleanup: true
-  script:
-    ssh -p $PORT $USER@$PRODUCTION_SERVER 'cd /var/www/www && git pull' &
-    ssh -p $PORT $USER@$PRODUCTION_SERVER 'cd /var/www/www && npm run production' &
-    ssh -p $PORT $USER@$PRODUCTION_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=production'
-  on:
-    branch: deploy
+    skip_cleanup: true
+    script:
+      ssh -p $PORT $USER@$PRODUCTION_SERVER 'cd /var/www/www && git pull' &
+      ssh -p $PORT $USER@$PRODUCTION_SERVER 'cd /var/www/www && npm run production' &
+      ssh -p $PORT $USER@$PRODUCTION_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=production'
+    on:
+      branch: deploy
