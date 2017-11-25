@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { script } from '../.env'
+  import { qiniu, script } from '../.env'
 
   export default {
     name: 'Entry',
@@ -25,7 +25,7 @@
         { hid: 'keywords', name: 'keywords', content: 'calibur，动漫，ACG，二次元，视频，番剧，动画，新番，神作' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: `${qiniu.host}/favicon.ico` }
       ],
       script: [
         { src: '//cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js' },
