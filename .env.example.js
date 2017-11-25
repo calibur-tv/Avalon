@@ -8,6 +8,14 @@ const cdn = {
   host: 'https://cdn.calibur.tv/'
 }
 
+const qiniu = {
+  host: '',
+  access: '',
+  secret: '',
+  bucket: '',
+  prefix: ''
+}
+
 const timeout = {
   server: 60000,
   client: 30000
@@ -29,5 +37,6 @@ module.exports = {
   env,
   script,
   listCacheLimit,
-  cdn
+  cdn,
+  qiniu
 }
