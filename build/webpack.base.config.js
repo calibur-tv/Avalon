@@ -78,7 +78,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: '[name].[ext]?[hash:8]'
+          name: '[name].[hash:8].[ext]'
         }
       },
       {
@@ -86,7 +86,7 @@ module.exports = {
         loader: 'file-loader',
         query: {
           limit: 10000,
-          name: '[name].[ext]?[hash:8]'
+          name: '[name].[hash:8].[ext]'
         }
       },
       {
