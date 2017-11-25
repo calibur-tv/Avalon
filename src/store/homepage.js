@@ -1,18 +1,22 @@
 import Api from 'api/imageApi'
+import { shuffle } from 'utils/lodash'
 
-const state = {
-  banners: []
+const state = () => {
+  return {
+    banners: []
+  }
 }
 
 const mutations = {
   pushBanners (state, data) {
-    state.banners = data
+    state.banners = shuffle(data)
   }
 }
 
 const actions = {
   async getBanners ({ state, commit }) {
     if (state.banners.length) {
+      console.log('state is mixins')
       return
     }
     const api = new Api()

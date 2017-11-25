@@ -9,10 +9,12 @@ Vue.use(Vuex)
 
 export function createStore () {
   return new Vuex.Store({
-    state: {
-      user: null,
-      token: '',
-      login: false
+    state: () => {
+      return {
+        user: null,
+        token: '',
+        login: false
+      }
     },
     mutations: {
       SET_USER (state, user) {

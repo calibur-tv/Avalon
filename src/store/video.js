@@ -2,8 +2,10 @@ import Api from 'api/videoApi'
 
 import { listCacheLimit } from '../../.env'
 
-const state = {
-  list: Object.create(null)
+const state = () => {
+  return {
+    list: Object.create(null)
+  }
 }
 
 const mutations = {
