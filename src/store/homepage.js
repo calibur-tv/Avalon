@@ -16,7 +16,6 @@ const mutations = {
 const actions = {
   async getBanners ({ state, commit }) {
     if (state.banners.length) {
-      console.log('state is mixins')
       return
     }
     const api = new Api()
