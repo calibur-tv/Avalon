@@ -142,8 +142,8 @@
               <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
               <ul :key="season.name">
                 <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
-                  <a :href="selfResource(video.url) ? `/video/${video.id}` : video.url"
-                     :rel="selfResource(video.url) ? '' : 'nofollow'"
+                  <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                     :rel="info.others_site_video ? 'nofollow' : ''"
                      target="_blank">
                     <figure>
                       <v-img class="bg"
@@ -162,8 +162,8 @@
           </div>
           <ul v-else>
             <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
-              <a :href="selfResource(video.url) ? `/video/${video.id}` : video.url"
-                 :rel="selfResource(video.url) ? '' : 'nofollow'"
+              <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                 :rel="info.others_site_video ? 'nofollow' : ''"
                  target="_blank">
                 <figure>
                   <v-img class="bg"
