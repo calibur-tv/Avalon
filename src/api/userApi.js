@@ -28,6 +28,6 @@ export default class extends BaseApi {
   }
 
   checkAccessIsUnique ({ method, access }) {
-    return this.http.post(`door/check/${this.signUp.method}/${this.signUp.access}`)
+    return this.http.post(`door/check/${method}/${access}`)
   }
 }
