@@ -408,6 +408,7 @@
         this.showSignIn = false
         if (this.signUpStep === 0) {
           this.signUpStep = 1
+          // TODO: geetest 在10分钟过期后会弹出一个 error 框
           const captcha = await this.getCaptcha('bind')
           const eventId = this.$eventManager.add(this.$refs.checkAndSend, 'click', async () => {
             const nicknameIsOK = await this.$validator.validate('sign-up.nickname')
@@ -551,8 +552,11 @@
       checkAccessCanUse () {
         const api = new UserApi()
         return new Promise((resolve, reject) => {
-          api.checkAccessIsUnique().then((res) => {
-            resolve(!res.data)
+          api.checkAccessIsUnique({
+            method: this.signUp.method,
+            access: this.signUp.access
+          }).then((data) => {
+            resolve(!data)
           }).catch(reject)
         })
       },
