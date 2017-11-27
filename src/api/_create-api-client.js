@@ -19,13 +19,10 @@ export default (ctx) => {
   })
 
   http.interceptors.response.use(res => res && res.data && res.data.data, err => {
-    if (err.response) {
-      // TODO handle 401 403
-    }
     if (err.message === `timeout of ${timeout.client}ms exceeded`) {
-      // TODO handle requiest timeout
+      return Promise.reject(['网路请求超时']) // eslint-disable-line
     }
-    return Promise.reject(err && (err.response || err.message))
+    return Promise.reject(err && err.response && err.response.data)
   })
 
   return http
