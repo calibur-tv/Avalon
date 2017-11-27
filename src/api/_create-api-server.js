@@ -2,6 +2,9 @@ import axios from 'axios'
 import { env, host, timeout } from '../../.env'
 
 const getAuthToken = (ctx) => {
+  if (!ctx) {
+    return ''
+  }
   let token = ''
   if (ctx.header) {
     const cookie = ctx.header.cookie
@@ -22,29 +25,46 @@ const getAuthToken = (ctx) => {
 }
 
 export default (ctx) => {
-  const http = axios.create({
-    baseURL: env === 'development' ? host[env] : 'http://localhost/',
-    headers: { Accept: 'application/json' },
-    timeout: timeout.server
-  })
+  return {
+    async get (url, data) {
+      const token = getAuthToken(ctx)
+      const params = data && data.params ? data.params : {}
+      try {
+        const res = await axios({
+          method: 'GET',
+          url: (env === 'development' ? host[env] : 'http://localhost/') + url,
+          params,
+          timeout: timeout.server,
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        return res && res.data && res.data.data
+      } catch (e) {
+        e.code = e.response.status
+        throw e
+      }
+    },
 
-  http.interceptors.request.use(config => {
-    if (!ctx) {
-      return config
+    async post (url, params) {
+      const token = getAuthToken(ctx)
+      try {
+        const res = await axios({
+          method: 'POST',
+          url: (env === 'development' ? host[env] : 'http://localhost/') + url,
+          params,
+          timeout: timeout.server,
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        return res && res.data && res.data.data
+      } catch (e) {
+        e.code = e.response.status
+        throw e
+      }
     }
-    const token = getAuthToken(ctx)
-    if (token) {
-      Object.assign(config.headers, {
-        Authorization: `Bearer ${token}`
-      })
-    }
-    return config
-  })
-
-  http.interceptors.response.use(res => res && res.data && res.data.data, err => {
-    err.code = err.response.status
-    throw err
-  })
-
-  return http
+  }
 }

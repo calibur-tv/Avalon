@@ -352,10 +352,9 @@
          * signUpStep
          * 0：未获取 captcha
          * 1：已获取 captcha
-         * 2：captcha 已认证通过
-         * 3：access 是未被注册的
-         * 4：邮件或短信已发送，倒数中，不可重复发
-         * 5：可再次发送邮件或短信
+         * 2: captcha 验证通过
+         * 3：邮件或短信已发送，倒数中，不可重复发
+         * 4：可再次发送邮件或短信
          */
         signUpStep: 0
       }
@@ -367,11 +366,11 @@
         }) : this.$backdrop.hide()
       },
       signUpStep (val) {
-        if (val === 4) {
+        if (val === 3) {
           this.signUp.timeout = 60
           const timer = setInterval(() => {
             if (!--this.signUp.timeout) {
-              this.signUpStep = 5
+              this.signUpStep = 4
               clearInterval(timer)
             }
           }, 1000)
@@ -380,9 +379,9 @@
     },
     computed: {
       getAuthCodeBtnText () {
-        if (this.signUpStep === 4) {
+        if (this.signUpStep === 3) {
           return `${this.signUp.timeout}秒后可重新获取`
-        } else if (this.signUpStep === 5) {
+        } else if (this.signUpStep === 4) {
           return '点击重新获取'
         }
         return '点击获取验证码'
@@ -402,45 +401,10 @@
         this.showSignIn = true
         this.showSignUp = false
       },
-      async showRegister () {
+      showRegister () {
         this.showModal = true
         this.showSignUp = true
         this.showSignIn = false
-        if (this.signUpStep === 0) {
-          this.signUpStep = 1
-          // TODO: geetest 在10分钟过期后会弹出一个 error 框
-          const captcha = await this.getCaptcha('bind')
-          const eventId = this.$eventManager.add(this.$refs.checkAndSend, 'click', async () => {
-            const nicknameIsOK = await this.$validator.validate('sign-up.nickname')
-            if (nicknameIsOK) {
-              const accessIsOK = await this.$validator.validate('sign-up.access')
-              if (accessIsOK) {
-                if (this.signUp.access !== this.signUp.tempAccess) {
-                  captcha.verify()
-                } else {
-                  this.$toast.show(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
-                }
-              } else {
-                this.$toast.show(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
-              }
-            } else {
-              this.$toast.show('请先填写一个昵称')
-            }
-          })
-          captcha.onSuccess(() => {
-            this.signUpStep = 2
-            this.checkAccessCanUse().then((canUse) => {
-              if (canUse) {
-                this.signUpStep = 3
-                this.getAuthCode()
-                this.$eventManager.del(eventId)
-              } else {
-                this.signUp.tempAccess = this.signUp.access
-                this.$toast.show(`该${this.signUp.method === 'email' ? '邮箱' : '手机'}已绑定另外一个账号`)
-              }
-            })
-          })
-        }
       },
       hiddenSign () {
         this.showModal = false
@@ -478,7 +442,9 @@
                     this.$cookie.set('JWT-TOKEN', token)
                     window.location.reload()
                   }).catch((err) => {
-                    this.$toast.show(err.message)
+                    err.message.forEach(tip => {
+                      this.$toast.show(tip)
+                    })
                     setTimeout(() => {
                       captcha.reset()
                     }, 500)
@@ -503,7 +469,9 @@
                     this.$cookie.set('JWT-TOKEN', res)
                     window.location.reload()
                   }).catch((err) => {
-                    this.$toast.show(err.message)
+                    err.message.forEach(tip => {
+                      this.$toast.show(tip)
+                    })
                     setTimeout(() => {
                       captcha.reset()
                     }, 500)
@@ -544,31 +512,54 @@
       forgotPassword () {
         this.$toast.show('暂未开放')
       },
-      checkAndSend () {
-        if (this.signUpStep === 5) {
-          this.getAuthCode()
+      async checkAndSend () {
+        if (this.signUpStep === 3 || this.signUpStep === 1) {
+          return
         }
-      },
-      checkAccessCanUse () {
-        const api = new UserApi()
-        return new Promise((resolve, reject) => {
-          api.checkAccessIsUnique({
-            method: this.signUp.method,
-            access: this.signUp.access
-          }).then((data) => {
-            resolve(!data)
-          }).catch(reject)
-        })
+        const nicknameIsOK = await this.$validator.validate('sign-up.nickname')
+        if (nicknameIsOK) {
+          const accessIsOK = await this.$validator.validate('sign-up.access')
+          if (accessIsOK) {
+            if (this.signUp.access !== this.signUp.tempAccess) {
+              if (this.signUpStep === 0) {
+                this.signUpStep = 1
+                const captcha = await this.getCaptcha('bind')
+                captcha.onReady(() => {
+                  captcha.verify()
+                })
+                captcha.onSuccess(() => {
+                  this.signUpStep = 2
+                  this.getAuthCode()
+                })
+              } else {
+                this.getAuthCode()
+              }
+            } else {
+              this.$toast.show(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+            }
+          } else {
+            this.$toast.show(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+          }
+        } else {
+          this.$toast.show('请先填写一个昵称')
+        }
       },
       getAuthCode () {
         const api = new UserApi()
+        this.signUp.tempAccess = this.signUp.access
         api.sendSignAuthCode({
           method: this.signUp.method,
           access: this.signUp.access,
-          nickname: this.signUp.nickname
+          nickname: this.signUp.nickname,
+          mustNotRegister: true
         }).then(() => {
-          this.signUpStep = 4
+          this.signUp.tempAccess = ''
+          this.signUpStep = 3
           this.$toast.show(`${this.signUp.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
+        }).catch(err => {
+          err.message.forEach(tip => {
+            this.$toast.show(tip)
+          })
         })
       }
     }
