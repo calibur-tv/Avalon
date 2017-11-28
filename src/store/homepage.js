@@ -1,11 +1,9 @@
 import Api from 'api/imageApi'
 import { shuffle } from 'utils/lodash'
 
-const state = () => {
-  return {
-    banners: []
-  }
-}
+const state = () => ({
+  banners: []
+})
 
 const mutations = {
   pushBanners (state, data) {
