@@ -2,14 +2,12 @@ import Api from 'api/bangumiApi'
 
 import { listCacheLimit } from '../../.env'
 
-const state = () => {
-  return {
-    news: [],
-    tags: [],
-    rank: [],
-    list: Object.create(null)
-  }
-}
+const state = () => ({
+  news: [],
+  tags: [],
+  rank: [],
+  list: Object.create(null)
+})
 
 const mutations = {
   pushNews (state, data) {
