@@ -26,4 +26,10 @@ export default class extends BaseApi {
       method, access, nickname, mustNotRegister, mustRegistered
     })
   }
+
+  getUserInfo ({ zone }) {
+    return this.http.get('user/show', {
+      params: { zone }
+    })
+  }
 }

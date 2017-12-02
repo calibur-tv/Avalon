@@ -133,7 +133,7 @@
         <v-share></v-share>
       </div>
     </section>
-    <div class="container clearfix">
+    <div class="container">
       <div class="col-main">
         <section id="videos" v-if="videoPackage.videos.length">
           <h2 class="subtitle">视频列表</h2>
@@ -198,12 +198,12 @@
   export default {
     name: 'bangumi-show',
     head () {
-      let keywords = this.info.alias.search
+      let keywords = this.info.alias ? this.info.alias.search : ''
       this.tags.forEach(tag => {
         keywords += `,${tag.name}`
       })
       return {
-        title: `${this.info.name} - 番剧`,
+        title: `${this.info.name}`,
         meta: [
           { hid: 'description', name: 'description', content: this.info.summary },
           { hid: 'keywords', name: 'keywords', content: keywords }

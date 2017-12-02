@@ -4,6 +4,7 @@ import UserApi from 'api/userApi'
 import homepage from './homepage'
 import bangumi from './bangumi'
 import video from './video'
+import users from './users'
 
 Vue.use(Vuex)
 
@@ -49,7 +50,8 @@ export function createStore () {
     modules: {
       homepage,
       bangumi,
-      video
+      video,
+      users
     }
   })
 }

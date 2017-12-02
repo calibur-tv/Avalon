@@ -88,7 +88,7 @@
 <template>
   <div id="bangumi-tags" class="main">
     <v-banner></v-banner>
-    <div class="container clearfix">
+    <div class="container">
       <section class="col-main">
         <div class="tags">
           <h2 class="subtitle">标签列表</h2>

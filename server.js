@@ -18,13 +18,14 @@ const microCache = LRU({
   maxAge: isDev ? 0 : 1000 * 60 * 15
 })
 const cacheHTML = (status) => {
-  const hit = microCache.get(`render-html-${status}`)
+  const code = [200, 404, 500, 503].indexOf(status) !== -1 ? status : 500
+  const hit = microCache.get(`render-html-${code}`)
   let html
   if (hit) {
     html = hit
   } else {
-    html = fs.readFileSync(resolve(`./src/templates/${status}.template.html`), 'utf-8')
-    microCache.set(`render-html-${status}`, html)
+    html = fs.readFileSync(resolve(`./src/templates/${code}.template.html`), 'utf-8')
+    microCache.set(`render-html-${code}`, html)
   }
   return html
 }

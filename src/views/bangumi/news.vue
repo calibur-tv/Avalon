@@ -226,7 +226,7 @@
 <template>
   <div id="bangumi-news">
     <v-banner></v-banner>
-    <div class="container clearfix">
+    <div class="container">
       <div class="col-main">
         <section class="timeline">
           <h2 class="subtitle">新番放送表</h2>

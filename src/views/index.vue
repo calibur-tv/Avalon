@@ -112,7 +112,7 @@
   export default {
     name: 'homepage',
     head: {
-      title: '首页'
+      title: 'calibur'
     },
     components: {
       vSearch

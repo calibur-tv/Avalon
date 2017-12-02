@@ -40,6 +40,10 @@ export function createRouter () {
           {
             path: 'video/:id(\\d+)',
             component: () => import('view/video/show')
+          },
+          {
+            path: 'user/:slug',
+            component: () => import('view/user/show')
           }
         ]
       }

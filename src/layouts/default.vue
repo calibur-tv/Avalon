@@ -1,10 +1,10 @@
 <style lang="scss">
   #layout-default {
-    height: 100%;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
 
-    >.main {
+    >.main-view {
       flex-grow: 1;
     }
   }
@@ -13,7 +13,7 @@
 <template>
   <div id="layout-default">
     <v-header></v-header>
-    <router-view class="main"></router-view>
+    <router-view class="main-view"></router-view>
     <v-music></v-music>
     <v-footer></v-footer>
     <v-side-bar></v-side-bar>
@@ -29,9 +29,6 @@
   export default {
     components: {
       vHeader, vMusic, vFooter, vSideBar
-    },
-    beforeMount () {
-      // this.$axios.setToken(this.$store.state.token, 'Bearer')
     }
   }
 </script>
