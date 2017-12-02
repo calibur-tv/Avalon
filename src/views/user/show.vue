@@ -76,7 +76,9 @@
         return this.$store.state.users.list[this.slug]
       },
       isMe () {
-        return this.slug === this.$store.state.user.zone
+        return this.$store.state.login
+          ? this.slug === this.$store.state.user.zone
+          : false
       },
       tabs () {
         return [
