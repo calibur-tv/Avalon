@@ -14,4 +14,8 @@ export default class extends BaseApi {
   getShow (id) {
     return this.http.get(`bangumi/${id}/show`)
   }
+
+  follow (id) {
+    return this.http.post(`bangumi/${id}/follow`)
+  }
 }

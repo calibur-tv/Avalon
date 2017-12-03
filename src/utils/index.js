@@ -1,11 +1,15 @@
-import scrollToY from 'assets/js/scrollToY'
+import lodash from './lodash'
 import env from '../../.env'
 
 export default {
   install (Vue, options) {
-    Vue.prototype.$cdn = env.cdn.host
+    Vue.prototype.$throttle = lodash.throttle
 
-    Vue.prototype.$scrollToY = scrollToY
+    Vue.prototype.$orderBy = lodash.orderBy
+
+    Vue.prototype.$groupBy = lodash.groupBy
+
+    Vue.prototype.$cdn = env.cdn.host
 
     Vue.prototype.$channel = new Vue()
 

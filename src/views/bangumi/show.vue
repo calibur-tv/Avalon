@@ -53,10 +53,30 @@
           margin: 40px 0 20px 0;
         }
 
-        #share {
-          height: 40px;
+        .console {
           text-align: center;
+
+          .follow {
+            color: $color-white;
+            background-color: $color-pink-deep;
+            border-color: $color-pink-deep;
+
+            &:hover {
+              background-color: $color-pink-normal;
+              border-color: $color-pink-normal;
+            }
+
+            i {
+              margin-right: 5px;
+            }
+          }
         }
+      }
+
+      #share {
+        position: absolute;
+        right: 40px;
+        bottom: 10px;
       }
     }
 
@@ -130,8 +150,15 @@
       <div class="info">
         <h1 class="title" v-text="info.name"></h1>
         <p class="summary" v-text="info.summary"></p>
-        <v-share></v-share>
+        <div class="console">
+          <el-button class="follow"
+                     icon="iconfont icon-guanzhu"
+                     @click="follow"
+                     round
+          >关注</el-button>
+        </div>
       </div>
+      <v-share></v-share>
     </section>
     <div class="container">
       <div class="col-main">
@@ -195,6 +222,8 @@
 </template>
 
 <script>
+  import BangumiApi from 'api/bangumiApi'
+
   export default {
     name: 'bangumi-show',
     head () {
@@ -237,8 +266,13 @@
       sortVideos (videos) {
         return this.$orderBy(videos, 'part')
       },
-      selfResource (url) {
-        return url === '' || url.match(this.$cdn) !== null
+      follow () {
+        const api = new BangumiApi(this)
+        api.follow(this.id).then(() => {
+
+        }).catch(() => {
+
+        })
       }
     }
   }

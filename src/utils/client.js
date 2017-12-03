@@ -2,18 +2,11 @@ import Vue from 'vue'
 import scrollToY from 'assets/js/scrollToY'
 import Backdrop from 'assets/js/Backdrop'
 import Toast from 'assets/js/Toast'
-import lodash from './lodash'
 import Cookies from 'js-cookie'
 import env from '../../.env'
 
 const utils = {
   install (Vue, options) {
-    Vue.prototype.$throttle = lodash.throttle
-
-    Vue.prototype.$orderBy = lodash.orderBy
-
-    Vue.prototype.$groupBy = lodash.groupBy
-
     Vue.prototype.$cookie = Cookies
 
     Vue.prototype.$cdn = env.cdn.host
