@@ -274,10 +274,14 @@
         return this.$orderBy(videos, 'part')
       },
       follow () {
-        this.$store.dispatch('bangumi/follow', {
-          ctx: this,
-          id: this.id
-        })
+        if (this.$store.state.login) {
+          this.$store.dispatch('bangumi/follow', {
+            ctx: this,
+            id: this.id
+          })
+        } else {
+          this.$channel.$emit('sign-in')
+        }
       }
     }
   }
