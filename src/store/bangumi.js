@@ -42,6 +42,12 @@ const mutations = {
     const tag = state.tags[index]
     tag.selected = !tag.selected
     state.tags[index] = tag
+  },
+  followBangumi (state, { followed, id }) {
+    const bangumi = state.list[id]
+    if (bangumi) {
+      state.list[id].followed = followed
+    }
   }
 }
 
@@ -68,13 +74,23 @@ const actions = {
     commit('pushTags', tags)
     commit('pushRank', data.bangumis)
   },
-  async getShow ({ state, commit }, id) {
+  async getShow ({ state, commit }, { ctx, id }) {
     if (state.list[id]) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.getShow(id)
     commit('pushList', data)
+  },
+  follow ({ commit }, { ctx, id }) {
+    const api = new Api(ctx)
+    api.follow(id).then((followed) => {
+      commit('followBangumi', { followed, id })
+    }).catch((err) => {
+      err.message.forEach(tip => {
+        ctx.$toast.error(tip)
+      })
+    })
   }
 }
 

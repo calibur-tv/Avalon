@@ -57,13 +57,17 @@
           text-align: center;
 
           .follow {
-            color: $color-white;
-            background-color: $color-pink-deep;
-            border-color: $color-pink-deep;
+            padding: 10px 30px;
+            height: 40px;
+            font-size: 15px;
 
-            &:hover {
-              background-color: $color-pink-normal;
-              border-color: $color-pink-normal;
+            &.el-button--blank {
+              background-color: transparent;
+              color: $color-white;
+
+              &:hover {
+                background-color: rgba(#fff, .25);
+              }
             }
 
             i {
@@ -152,10 +156,12 @@
         <p class="summary" v-text="info.summary"></p>
         <div class="console">
           <el-button class="follow"
+                     :class="{ 'is-followed': info.followed }"
+                     :type="info.followed ? 'blank' : 'danger'"
                      icon="iconfont icon-guanzhu"
                      @click="follow"
                      round
-          >关注</el-button>
+          >{{ info.followed ? '已关注' : '关注' }}</el-button>
         </div>
       </div>
       <v-share></v-share>
@@ -222,8 +228,6 @@
 </template>
 
 <script>
-  import BangumiApi from 'api/bangumiApi'
-
   export default {
     name: 'bangumi-show',
     head () {
@@ -239,8 +243,11 @@
         ]
       }
     },
-    async asyncData ({ route, store }) {
-      await store.dispatch('bangumi/getShow', route.params.id)
+    async asyncData ({ route, store, ctx }) {
+      await store.dispatch('bangumi/getShow', {
+        ctx,
+        id: route.params.id
+      })
     },
     computed: {
       id () {
@@ -267,11 +274,9 @@
         return this.$orderBy(videos, 'part')
       },
       follow () {
-        const api = new BangumiApi(this)
-        api.follow(this.id).then(() => {
-
-        }).catch(() => {
-
+        this.$store.dispatch('bangumi/follow', {
+          ctx: this,
+          id: this.id
         })
       }
     }
