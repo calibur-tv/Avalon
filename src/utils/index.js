@@ -1,29 +1,13 @@
 import scrollToY from 'assets/js/scrollToY'
-import Backdrop from 'assets/js/Backdrop'
-import Toast from 'assets/js/Toast'
-import lodash from './lodash'
-import Cookies from 'cookie.js'
 import env from '../../.env'
 
 export default {
   install (Vue, options) {
-    Vue.prototype.$throttle = lodash.throttle
-
-    Vue.prototype.$orderBy = lodash.orderBy
-
-    Vue.prototype.$groupBy = lodash.groupBy
-
-    Vue.prototype.$cookie = Cookies
-
     Vue.prototype.$cdn = env.cdn.host
 
     Vue.prototype.$scrollToY = scrollToY
 
     Vue.prototype.$channel = new Vue()
-
-    Vue.prototype.$backdrop = new Backdrop()
-
-    Vue.prototype.$toast = new Toast()
 
     Vue.prototype.$resize = (url, options = {}) => {
       if (url === '') {
@@ -107,48 +91,6 @@ export default {
       }
 
       return parseInt(getGray(getRGB(ele)), 10)
-    }
-
-    Vue.prototype.$eventManager = (function () {
-      class Manager {
-        constructor () {
-          this.id = 0
-          this.listeners = {}
-        }
-
-        add (ele, evt, handler, capture = false) {
-          const events = typeof evt === 'string' ? [evt] : evt
-          const result = []
-          events.forEach(e => {
-            const id = this.id++
-            ele.addEventListener(e, handler, capture)
-            this.listeners[id] = {
-              element: ele,
-              event: e,
-              handler,
-              capture
-            }
-            result.push(id)
-          })
-          return result
-        }
-
-        del (id) {
-          id.forEach(item => {
-            if (this.listeners[item]) {
-              const h = this.listeners[item]
-              h.element.removeEventListener(h.event, h.handler, h.capture)
-              Reflect.deleteProperty(this.listeners, item)
-            }
-          })
-        }
-      }
-      return new Manager()
-    }())
-
-    Vue.prototype.$checkInView = (dom, scale = 1) => {
-      const rect = dom.getBoundingClientRect()
-      return (rect.top < window.innerHeight * scale && rect.bottom > 0) && (rect.left < window.innerWidth * scale && rect.right > 0)
     }
   }
 }

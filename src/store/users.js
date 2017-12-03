@@ -25,6 +25,11 @@ const mutations = {
       })
       state.list[id] = temp
     }
+  },
+  removeUser (state, zone) {
+    if (state.list[zone]) {
+      delete state.list[zone]
+    }
   }
 }
 

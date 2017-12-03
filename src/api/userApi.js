@@ -32,4 +32,8 @@ export default class extends BaseApi {
       params: { zone }
     })
   }
+
+  settingProfile (params) {
+    return this.http.post('user/setting/profile', params)
+  }
 }

@@ -120,7 +120,7 @@
           id: id,
           auto: auto,
           text: opts.text,
-          theme: opts.theme || 'info'
+          theme: opts.type || 'info'
         })
         if (auto) {
           setTimeout(() => {
