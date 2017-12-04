@@ -1,35 +1,21 @@
 import Api from 'api/userApi'
 
-import { listCacheLimit } from '../../.env'
-
 const state = () => ({
-  list: Object.create(null)
+  list: Object.create(null),
+  bangumis: Object.create(null)
 })
 
 const mutations = {
   pushList (state, data) {
-    const ids = Object.keys(state.list)
-    const id = data.zone
-    if (ids.indexOf(id) === -1) {
-      ids.length >= listCacheLimit && delete state.list[ids[0]]
-      delete data.id
-      state.list[id] = data
-    } else {
-      const temp = state.list[id]
-      Object.keys(temp).forEach(key => {
-        if (Array.isArray(temp[key])) {
-          temp[key] = temp[key].concat(data[key])
-        } else {
-          temp[key] = Object.assign(temp[key], data[key])
-        }
-      })
-      state.list[id] = temp
-    }
+    state.list[data.zone] = data
   },
   removeUser (state, zone) {
     if (state.list[zone]) {
       delete state.list[zone]
     }
+  },
+  pushFollowedList (state, { data, zone }) {
+    state.bangumis[zone] = data
   }
 }
 
@@ -41,6 +27,14 @@ const actions = {
     const api = new Api(ctx)
     const data = await api.getUserInfo({ zone })
     commit('pushList', data)
+  },
+  async getFollowBangumis ({ state, commit }, { zone }) {
+    if (state.bangumis[zone]) {
+      return
+    }
+    const api = new Api()
+    const data = await api.followBangumis(zone)
+    commit('pushFollowedList', { data, zone })
   }
 }
 

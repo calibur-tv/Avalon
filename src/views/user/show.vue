@@ -52,6 +52,54 @@
           @include avatar(100px)
         }
       }
+
+      $video-item-width: 220px;
+      $video-item-margin: 15px;
+      $video-item-height: 70px;
+      .bangumis {
+        li {
+          margin: 0 $video-item-margin 15px 0;
+        }
+
+        a {
+          display: block;
+          position: relative;
+        }
+
+        figure {
+          width: $video-item-width - $video-item-margin;
+          height: $video-item-height;
+          background-color: $color-gray-normal;
+          cursor: pointer;
+          border-radius: 3px;
+          overflow: hidden;
+
+          &:hover p {
+            color: $color-blue-normal;
+          }
+
+          img {
+            width: $video-item-height;
+            height: 100%;
+            cursor: pointer;
+            margin-right: 12px;
+          }
+
+          figcaption {
+            padding-left: $video-item-height + 12px;
+            padding-right: 12px;
+
+            p {
+              display: block;
+              color: $color-text-deep;
+              font-size: 12px;
+              line-height: 14px;
+              margin-top: 6px;
+              margin-bottom: 5px;
+            }
+          }
+        }
+      }
     }
   }
 </style>
@@ -66,7 +114,22 @@
         <img class="avatar" :src="$resize(user.avatar, { width: 200, height: 200 })" alt="avatar">
       </div>
       <el-tabs tab-position="left" @tab-click="handleTabClick">
-        <el-tab-pane label="番剧">番剧</el-tab-pane>
+        <el-tab-pane label="番剧">
+          <ul class="bangumis">
+            <li v-for="item in bangumis" :key="item.id">
+              <a :href="`/bangumi/${item.id}`" target="_blank">
+                <figure>
+                  <img class="bg"
+                       :alt="item.name"
+                       :src="$resize(item.avatar, { width: 160, height: 160 })"/>
+                  <figcaption class="abs">
+                    <p class="twoline" v-text="item.name"></p>
+                  </figcaption>
+                </figure>
+              </a>
+            </li>
+          </ul>
+        </el-tab-pane>
         <el-tab-pane label="帖子">帖子</el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
@@ -118,12 +181,21 @@
 
   export default {
     async asyncData ({ route, store, ctx }) {
-      await store.dispatch('users/getUser', {
-        ctx,
-        zone: route.params.slug
-      })
+      const zone = route.params.slug
+      const arr = [
+        store.dispatch('users/getUser', {
+          ctx, zone
+        }),
+        store.dispatch('users/getFollowBangumis', {
+          zone
+        })
+      ]
+      await Promise.all(arr)
     },
     head () {
+      if (!this.slug) {
+        return
+      }
       return {
         title: this.user.nickname,
         meta: [
@@ -148,6 +220,9 @@
         return this.isMe
           ? this.self
           : this.$store.state.users.list[this.slug]
+      },
+      bangumis () {
+        return this.$store.state.users.bangumis[this.slug]
       }
     },
     data () {

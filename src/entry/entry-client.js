@@ -54,7 +54,7 @@ router.onReady(() => {
     }
     bar.start()
     Promise.all(asyncDataHooks.map(hook => hook({
-      ctx: store.state.ssrContext,
+      ctx: store.state.token,
       store,
       route: to
     }))).then(() => {

@@ -60,13 +60,26 @@
             padding: 10px 30px;
             height: 40px;
             font-size: 15px;
+            border-radius: 40px;
+            border: 1px solid;
+            color: $color-white;
 
-            &.el-button--blank {
+            &.is-followed {
               background-color: transparent;
-              color: $color-white;
+              border-color: $color-white;
 
               &:hover {
                 background-color: rgba(#fff, .25);
+              }
+            }
+
+            &.not-follow {
+              background-color: $color-pink-deep;
+              border-color: $color-pink-deep;
+
+              &:hover {
+                border-color: $color-pink-normal;
+                background-color: $color-pink-normal;
               }
             }
 
@@ -138,10 +151,33 @@
       }
     }
 
-    #tags {
-      li {
-        margin-right: 10px;
-        margin-bottom: 10px;
+    .col-aside {
+      ul {
+        margin-bottom: 20px;
+      }
+
+      #tags {
+        li {
+          margin-right: 10px;
+          margin-bottom: 10px;
+        }
+      }
+
+      #followers {
+        a {
+          overflow: hidden;
+          border-radius: 50%;
+          margin-right: -10px;
+          display: inline-block;
+          border: 3px solid #fff;
+        }
+
+        img {
+          width: 32px;
+          height: 32px;
+          overflow: hidden;
+          display: block;
+        }
       }
     }
   }
@@ -155,13 +191,12 @@
         <h1 class="title" v-text="info.name"></h1>
         <p class="summary" v-text="info.summary"></p>
         <div class="console">
-          <el-button class="follow"
-                     :class="{ 'is-followed': info.followed }"
-                     :type="info.followed ? 'blank' : 'danger'"
-                     icon="iconfont icon-guanzhu"
-                     @click="follow"
-                     round
-          >{{ info.followed ? '已关注' : '关注' }}</el-button>
+          <button class="follow"
+                  @click="follow"
+                  :class="[ info.followed ? 'is-followed' : 'not-follow' ]">
+            <i class="iconfont icon-guanzhu"></i>
+            {{ info.followed ? '已关注' : '关注' }}
+          </button>
         </div>
       </div>
       <v-share></v-share>
@@ -222,6 +257,18 @@
             </li>
           </ul>
         </div>
+        <div id="followers">
+          <h2 class="subtitle">关注的人</h2>
+          <ul>
+            <li v-for="user in info.followers" :key="user.zone">
+              <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
+                <a :href="`/user/${user.zone}`" target="_blank">
+                  <img :src="$resize(user.avatar, { width: 64, height: 64 })" :alt="user.zone">
+                </a>
+              </el-tooltip>
+            </li>
+          </ul>
+        </div>
       </aside>
     </div>
   </div>
@@ -230,7 +277,16 @@
 <script>
   export default {
     name: 'bangumi-show',
+    async asyncData ({ route, store, ctx }) {
+      await store.dispatch('bangumi/getShow', {
+        ctx,
+        id: route.params.id
+      })
+    },
     head () {
+      if (!this.id) {
+        return
+      }
       let keywords = this.info.alias ? this.info.alias.search : ''
       this.tags.forEach(tag => {
         keywords += `,${tag.name}`
@@ -242,12 +298,6 @@
           { hid: 'keywords', name: 'keywords', content: keywords }
         ]
       }
-    },
-    async asyncData ({ route, store, ctx }) {
-      await store.dispatch('bangumi/getShow', {
-        ctx,
-        id: route.params.id
-      })
     },
     computed: {
       id () {

@@ -13,7 +13,7 @@ export default (ctx) => {
       return config
     }
     Object.assign(config.headers, {
-      Authorization: `Bearer ${ctx.$store.state.token}`
+      Authorization: `Bearer ${ctx.$store ? ctx.$store.state.token : ctx}`
     })
     return config
   })

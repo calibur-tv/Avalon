@@ -36,4 +36,8 @@ export default class extends BaseApi {
   settingProfile (params) {
     return this.http.post('user/setting/profile', params)
   }
+
+  followBangumis (zone) {
+    return this.http.get(`user/${zone}/followed/bangumi`)
+  }
 }
