@@ -296,7 +296,7 @@
 </style>
 
 <template>
-  <header id="header" :class="[theme, imageGrayLevel > 165 ? 'white' : 'black', scrollFlag ? 'scroll-show' : 'scroll-hide']">
+  <header id="header" :class="[theme, 'white', scrollFlag ? 'scroll-show' : 'scroll-hide']">
     <div class="text">
       <nav class="container header-left">
         <router-link class="nav-link" to="/">主站</router-link>
@@ -380,7 +380,7 @@
       }
     },
     beforeMount () {
-      this.$channel.$on('change-page-background', ({ img, hgt, theme, gray }) => {
+      this.$channel.$on('change-page-background', ({ img, theme, gray }) => {
         this.img = img
         this.theme = theme
         if (!this.imageGrayLevel) {
