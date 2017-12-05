@@ -119,9 +119,10 @@
             <li v-for="item in bangumis" :key="item.id">
               <a :href="`/bangumi/${item.id}`" target="_blank">
                 <figure>
-                  <img class="bg"
-                       :alt="item.name"
-                       :src="$resize(item.avatar, { width: 160, height: 160 })"/>
+                  <v-img class="bg"
+                         :alt="item.name"
+                         :src="$resize(item.avatar, { width: 160, height: 160 })"
+                  ></v-img>
                   <figcaption class="abs">
                     <p class="twoline" v-text="item.name"></p>
                   </figcaption>

@@ -98,6 +98,14 @@
       }
     }
 
+    .el-tabs__nav-wrap {
+      margin-top: -10px;
+
+      &:after {
+        background-color: transparent;
+      }
+    }
+
     $video-item-width: 255px;
     $video-item-margin: 15px;
     $video-item-height: 70px;
@@ -204,13 +212,34 @@
     </section>
     <div class="container">
       <div class="col-main">
-        <section id="videos" v-if="videoPackage.videos.length">
-          <h2 class="subtitle">视频列表</h2>
-          <div v-if="info.season">
-            <template v-for="season in videoPackage.videos">
-              <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
-              <ul :key="season.name">
-                <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
+        <el-tabs @tab-click="handleTabClick">
+          <el-tab-pane label="视频">
+            <section id="videos" v-if="videoPackage.videos.length">
+              <div v-if="info.season">
+                <template v-for="season in videoPackage.videos">
+                  <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
+                  <ul :key="season.name">
+                    <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
+                      <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                         :rel="info.others_site_video ? 'nofollow' : ''"
+                         target="_blank">
+                        <figure>
+                          <v-img class="bg"
+                                 :alt="video.name"
+                                 :src="$resize(video.poster, { width: 192, height: 120 })">
+                          </v-img>
+                          <figcaption class="abs">
+                            <p class="oneline">第{{ videoPackage.repeat ? index + 1 : video.part }}话</p>
+                            <span class="twoline" v-text="video.name"></span>
+                          </figcaption>
+                        </figure>
+                      </a>
+                    </li>
+                  </ul>
+                </template>
+              </div>
+              <ul v-else>
+                <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
                   <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
                      :rel="info.others_site_video ? 'nofollow' : ''"
                      target="_blank">
@@ -220,37 +249,22 @@
                              :src="$resize(video.poster, { width: 192, height: 120 })">
                       </v-img>
                       <figcaption class="abs">
-                        <p class="oneline">第{{ videoPackage.repeat ? index + 1 : video.part }}话</p>
+                        <p class="oneline">第{{ video.part }}话</p>
                         <span class="twoline" v-text="video.name"></span>
                       </figcaption>
                     </figure>
                   </a>
                 </li>
               </ul>
-            </template>
-          </div>
-          <ul v-else>
-            <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
-              <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
-                 :rel="info.others_site_video ? 'nofollow' : ''"
-                 target="_blank">
-                <figure>
-                  <v-img class="bg"
-                         :alt="video.name"
-                         :src="$resize(video.poster, { width: 192, height: 120 })">
-                  </v-img>
-                  <figcaption class="abs">
-                    <p class="oneline">第{{ video.part }}话</p>
-                    <span class="twoline" v-text="video.name"></span>
-                  </figcaption>
-                </figure>
-              </a>
-            </li>
-          </ul>
-        </section>
+            </section>
+          </el-tab-pane>
+          <el-tab-pane label="帖子"></el-tab-pane>
+          <el-tab-pane label="图片"></el-tab-pane>
+          <el-tab-pane label="管理"></el-tab-pane>
+        </el-tabs>
       </div>
       <aside class="col-aside">
-        <div id="tags">
+        <div id="tags" v-if="tags.length">
           <h2 class="subtitle">标签</h2>
           <ul>
             <li class="tag" v-for="tag in tags" :key="tag.id">
@@ -258,13 +272,15 @@
             </li>
           </ul>
         </div>
-        <div id="followers">
+        <div id="followers" v-if="info.followers.length">
           <h2 class="subtitle">关注的人</h2>
           <ul>
             <li v-for="user in info.followers" :key="user.zone">
               <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
                 <a :href="`/user/${user.zone}`" target="_blank">
-                  <img :src="$resize(user.avatar, { width: 64, height: 64 })" :alt="user.zone">
+                  <v-img :src="$resize(user.avatar, { width: 64, height: 64 })"
+                         :alt="user.zone"
+                  ></v-img>
                 </a>
               </el-tooltip>
             </li>
@@ -333,6 +349,9 @@
         } else {
           this.$channel.$emit('sign-in')
         }
+      },
+      handleTabClick (tab) {
+        console.log(tab.label)
       }
     }
   }
