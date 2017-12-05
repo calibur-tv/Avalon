@@ -67,6 +67,7 @@
             &.is-followed {
               background-color: transparent;
               border-color: $color-white;
+              text-shadow: 0 1px 10px gray;
 
               &:hover {
                 background-color: rgba(#fff, .25);

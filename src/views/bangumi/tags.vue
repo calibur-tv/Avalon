@@ -111,18 +111,17 @@
           <ul>
             <li class="bangumi" v-for="item in bangumis" :key="item.id">
               <figure>
-                <router-link
-                  :to="`/bangumi/${item.id}`">
+                <a :href="`/bangumi/${item.id}`" target="_blank">
                   <v-img
                     class="face"
                     :title="item.name"
                     :alt="item.name"
                     :src="$resize(item.avatar, { width: 180 })">
                   </v-img>
-                </router-link>
+                </a>
                 <figcaption class="content">
                   <p class="head">
-                    <router-link :to="`/bangumi/${item.id}`" class="name" v-text="item.name"></router-link>
+                    <a target="_blank" :href="`/bangumi/${item.id}`" class="name" v-text="item.name"></a>
                     <!--<span v-text="item.count_score"></span>-->
                   </p>
                   <p class="body twoline" v-text="item.summary"></p>
