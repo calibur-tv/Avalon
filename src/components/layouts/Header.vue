@@ -347,7 +347,6 @@
       return {
         theme: 'mask',
         img: '',
-        another: '',
         imageGrayLevel: 0,
         scrollFlag: false
       }

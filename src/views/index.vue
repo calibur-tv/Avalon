@@ -20,10 +20,6 @@
       }
     }
 
-    .another {
-      display: none;
-    }
-
     .index-panel {
       position: absolute;
       top: 50%;
@@ -92,13 +88,6 @@
   <div id="homepage">
     <div class="banner bg" :class="{'show' : toggle}" :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, { width: 1920, mode: 0 })})` : '' }"></div>
     <div class="banner bg" :class="{'show' : !toggle}" :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, { width: 1920, mode: 0 })})` : '' }"></div>
-    <img class="another"
-         crossOrigin="anonymous"
-         :src="`${another}?imageMogr2/auto-orient/strip/gravity/Center/crop/435x300`"
-         :flag="imageGrayLevel"
-         ref="another"
-         @load="computedGray"
-         alt="another">
     <div class="index-panel">
       <div class="slogan bg" :class="{ 'invert' : imageGrayLevel > 165 }"></div>
       <v-search :placeholder="'搜索二次元的一切'" :auto="true" :suggess="true"></v-search>
@@ -123,22 +112,24 @@
     computed: {
       banners () {
         return this.$store.state.homepage.banners
+      },
+      imageGrayLevel () {
+        return this.toggle
+          ? this.banner1.gray
+          : this.banner2.gray
       }
     },
     data () {
       return {
         banner1: null,
         banner2: null,
-        another: '',
         timer: null,
         toggle: true,
-        imageGrayLevel: 0,
         index: 0
       }
     },
     created () {
       this.banner1 = this.banners[0]
-      this.another = this.banner1.url
     },
     beforeMount () {
       this.$channel.$emit('change-page-background', {
@@ -154,17 +145,13 @@
         this.timer = setInterval(() => {
           this.index = 1 + this.index === this.banners.length ? 0 : this.index + 1
           const data = this.banners[this.index]
-          this.another = data.url
-          this.toggle ? this.banner2 = data : this.banner1 = data
+          this.toggle
+            ? this.banner2 = data
+            : this.banner1 = data
           setTimeout(() => {
             this.toggle = !this.toggle
           }, 7500)
         }, 15000)
-      },
-      computedGray () {
-        setTimeout(() => {
-          this.imageGrayLevel = this.$imageGrayLevel(this.$refs.another, 100)
-        }, 7500)
       }
     },
     beforeDestroy () {
