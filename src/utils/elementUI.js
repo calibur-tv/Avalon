@@ -5,7 +5,18 @@ import {
   DropdownItem,
   Tabs,
   TabPane,
-  Tag
+  Tag,
+  Form,
+  FormItem,
+  Input,
+  Button,
+  DatePicker,
+  Switch,
+  Alert,
+  Col,
+  Radio,
+  RadioGroup,
+  Tooltip
 } from 'element-ui'
 
 Vue.use(Dropdown)
@@ -14,3 +25,14 @@ Vue.use(DropdownItem)
 Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Tag)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
+Vue.use(Button)
+Vue.use(DatePicker)
+Vue.use(Switch)
+Vue.use(Alert)
+Vue.use(Col)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(Tooltip)

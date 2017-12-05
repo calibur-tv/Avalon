@@ -1,7 +1,5 @@
 import Api from 'api/bangumiApi'
 
-import { listCacheLimit } from '../../.env'
-
 const state = () => ({
   news: [],
   tags: [],
@@ -20,28 +18,27 @@ const mutations = {
     state.rank = data
   },
   pushList (state, data) {
-    const ids = Object.keys(state.list)
-    const id = data.id
-    if (ids.indexOf(id) === -1) {
-      ids.length >= listCacheLimit && delete state.list[ids[0]]
-      delete data.id
-      state.list[id] = data
-    } else {
-      const temp = state.list[id]
-      Object.keys(temp).forEach(key => {
-        if (Array.isArray(temp[key])) {
-          temp[key] = temp[key].concat(data[key])
-        } else {
-          temp[key] = Object.assign(temp[key], data[key])
-        }
-      })
-      state.list[id] = temp
-    }
+    state.list[data.id] = data
   },
   selectTag (state, index) {
     const tag = state.tags[index]
     tag.selected = !tag.selected
     state.tags[index] = tag
+  },
+  followBangumi (state, { followed, id, self }) {
+    const bangumi = state.list[id]
+    if (bangumi) {
+      state.list[id].followed = followed
+      if (followed) {
+        state.list[id].followers.push(self)
+      } else {
+        bangumi.followers.forEach((user, index) => {
+          if (user.zone === self.zone) {
+            state.list[id].followers.splice(index, 1)
+          }
+        })
+      }
+    }
   }
 }
 
@@ -68,13 +65,32 @@ const actions = {
     commit('pushTags', tags)
     commit('pushRank', data.bangumis)
   },
-  async getShow ({ state, commit }, id) {
+  async getShow ({ state, commit }, { ctx, id }) {
     if (state.list[id]) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.getShow(id)
     commit('pushList', data)
+  },
+  follow ({ commit, rootState }, { ctx, id }) {
+    const api = new Api(ctx)
+    api.follow(id).then((followed) => {
+      commit('followBangumi', {
+        followed,
+        id,
+        self: {
+          zone: rootState.user.zone,
+          avatar: rootState.user.avatar,
+          nickname: rootState.user.nickname
+        }
+      })
+    }).catch((err) => {
+      console.log(err)
+      err.message.forEach(tip => {
+        ctx.$toast.error(tip)
+      })
+    })
   }
 }
 

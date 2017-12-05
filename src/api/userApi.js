@@ -26,4 +26,18 @@ export default class extends BaseApi {
       method, access, nickname, mustNotRegister, mustRegistered
     })
   }
+
+  getUserInfo ({ zone }) {
+    return this.http.get('user/show', {
+      params: { zone }
+    })
+  }
+
+  settingProfile (params) {
+    return this.http.post('user/setting/profile', params)
+  }
+
+  followBangumis (zone) {
+    return this.http.get(`user/${zone}/followed/bangumi`)
+  }
 }

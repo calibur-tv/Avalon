@@ -4,6 +4,7 @@ import { createApp } from '../app'
 import ProgressBar from '../components/layouts/ProgressBar.vue'
 import '../utils/geetest'
 import '../utils/validate'
+import '../utils/client'
 
 const dev = process.env.NODE_ENV === 'development'
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
@@ -53,7 +54,7 @@ router.onReady(() => {
     }
     bar.start()
     Promise.all(asyncDataHooks.map(hook => hook({
-      ctx: store.state.ssrContext,
+      ctx: store.state.token,
       store,
       route: to
     }))).then(() => {

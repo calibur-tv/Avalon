@@ -1,8 +1,4 @@
-import scrollToY from 'assets/js/scrollToY'
-import Backdrop from 'assets/js/Backdrop'
-import Toast from 'assets/js/Toast'
 import lodash from './lodash'
-import Cookies from 'cookie.js'
 import env from '../../.env'
 
 export default {
@@ -13,17 +9,9 @@ export default {
 
     Vue.prototype.$groupBy = lodash.groupBy
 
-    Vue.prototype.$cookie = Cookies
-
     Vue.prototype.$cdn = env.cdn.host
 
-    Vue.prototype.$scrollToY = scrollToY
-
     Vue.prototype.$channel = new Vue()
-
-    Vue.prototype.$backdrop = new Backdrop()
-
-    Vue.prototype.$toast = new Toast()
 
     Vue.prototype.$resize = (url, options = {}) => {
       if (url === '') {
@@ -58,97 +46,6 @@ export default {
         return `${url}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
       }
       return `${url}?imageMogr2/auto-orient/strip${format}`
-    }
-
-    Vue.prototype.$imageGrayLevel = (ele, hgt = 0) => {
-      if (typeof window === 'undefined' || !ele) {
-        return 0
-      }
-
-      let [data, width, height, length, i = -4, count = 0] = []
-
-      const getRGB = (reallyImage) => {
-        const canvas = document.createElement('canvas')
-        const context = canvas.getContext && canvas.getContext('2d')
-        const rgb = { r: 0, g: 0, b: 0 }
-        const blockSize = 5 // only visit every 5 pixels
-
-        height = canvas.height = hgt || reallyImage.naturalHeight || reallyImage.offsetHeight || reallyImage.height
-        width = canvas.width = reallyImage.naturalWidth || reallyImage.offsetWidth || reallyImage.width
-
-        try {
-          context.drawImage(reallyImage, 0, 0, width, height)
-        } catch (e) {
-          return rgb
-        }
-        try {
-          data = context.getImageData(0, 0, width, height)
-        } catch (e) {
-          return rgb
-        }
-
-        length = data.data.length
-
-        while ((i += blockSize * 4) < length) {
-          ++count
-          rgb.r += data.data[i]
-          rgb.g += data.data[i + 1]
-          rgb.b += data.data[i + 2]
-        }
-
-        rgb.r = ~~(rgb.r / count)
-        rgb.g = ~~(rgb.g / count)
-        rgb.b = ~~(rgb.b / count)
-        return rgb
-      }
-
-      const getGray = (rgb) => {
-        return rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114
-      }
-
-      return parseInt(getGray(getRGB(ele)), 10)
-    }
-
-    Vue.prototype.$eventManager = (function () {
-      class Manager {
-        constructor () {
-          this.id = 0
-          this.listeners = {}
-        }
-
-        add (ele, evt, handler, capture = false) {
-          const events = typeof evt === 'string' ? [evt] : evt
-          const result = []
-          events.forEach(e => {
-            const id = this.id++
-            ele.addEventListener(e, handler, capture)
-            this.listeners[id] = {
-              element: ele,
-              event: e,
-              handler,
-              capture
-            }
-            result.push(id)
-          })
-          return result
-        }
-
-        del (id) {
-          id.forEach(item => {
-            if (this.listeners[item]) {
-              const h = this.listeners[item]
-              h.element.removeEventListener(h.event, h.handler, h.capture)
-              Reflect.deleteProperty(this.listeners, item)
-            }
-          })
-        }
-      }
-      return new Manager()
-    }())
-
-    Vue.prototype.$checkInView = (dom, scale = 1) => {
-      const rect = dom.getBoundingClientRect()
-      return (rect.top < window.innerHeight * scale && rect.bottom > 0) && (rect.left < window.innerWidth * scale && rect.right > 0)
     }
   }
 }

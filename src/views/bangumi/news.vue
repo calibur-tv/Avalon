@@ -226,7 +226,7 @@
 <template>
   <div id="bangumi-news">
     <v-banner></v-banner>
-    <div class="container clearfix">
+    <div class="container">
       <div class="col-main">
         <section class="timeline">
           <h2 class="subtitle">新番放送表</h2>
@@ -238,19 +238,24 @@
               <ul v-if="released[index]">
                 <li class="bangumi" :key="item.id" v-for="item in released[index]">
                   <figure class="clearfix">
-                    <router-link :to="`/bangumi/${item.id}`">
+                    <a target="_blank" :href="`/bangumi/${item.id}`">
                       <img class="face" :src="$resize(item.avatar, { width: 180 })" :alt="item.name">
-                    </router-link>
+                    </a>
                     <figcaption class="abs">
-                      <router-link :to="`/bangumi/${item.id}`" class="href-fade-blue twoline" v-text="item.name"></router-link>
+                      <a :href="`/bangumi/${item.id}`"
+                         class="href-fade-blue twoline"
+                         target="_blank"
+                         v-text="item.name"
+                      ></a>
                       <span>
                         更新至
-                        <router-link v-if="item.released_video_id"
-                                   :class="[computePartStyle(item.published_at) ? 'new' : 'old']"
-                                   :to="`/video/${item.released_video_id}`"
-                                   class="part oneline">
+                        <a v-if="item.released_video_id"
+                           :class="[computePartStyle(item.published_at) ? 'new' : 'old']"
+                           :href="`/video/${item.released_video_id}`"
+                           target="_blank"
+                           class="part oneline">
                           {{ `${item.released_part}话` }}
-                        </router-link>
+                        </a>
                         <strong class="part oneline"
                                 :class="[computePartStyle(item.published_at) ? 'new' : 'old']"
                                 v-else>
@@ -274,25 +279,24 @@
               <h3 class="time" v-text="formatTime(timeline[index])"></h3>
               <li class="bangumi" v-for="item in col">
                 <figure>
-                  <router-link
-                    :to="`/bangumi/${item.id}`">
+                  <a :href="`/bangumi/${item.id}`" target="_blank">
                     <v-img
                       class="face"
                       :title="item.name"
                       :alt="item.name"
                       :src="$resize(item.avatar, { width: 180 })">
                     </v-img>
-                  </router-link>
+                  </a>
                   <figcaption class="content">
                     <p class="head">
-                      <router-link :to="`/bangumi/${item.id}`" class="name" v-text="item.name"></router-link>
+                      <a target="_blank" :href="`/bangumi/${item.id}`" class="name" v-text="item.name"></a>
                       <!--<span v-text="item.count_score"></span>-->
                     </p>
                     <p class="body twoline" v-text="item.summary"></p>
                     <div class="foot">
                       <ul class="icon-item icon-item-tag oneline" v-if="item.tags.length">
                         <li v-for="tag in item.tags">
-                          <router-link :to="`/bangumi/tags/${tag.id}`" v-text="tag.name"></router-link>
+                          <a target="_blank" :href="`/bangumi/tags/${tag.id}`" v-text="tag.name"></a>
                         </li>
                       </ul>
                       <!--<span v-text="item.count_like"></span>-->

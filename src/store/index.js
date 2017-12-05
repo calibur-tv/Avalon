@@ -4,11 +4,13 @@ import UserApi from 'api/userApi'
 import homepage from './homepage'
 import bangumi from './bangumi'
 import video from './video'
+import users from './users'
 
 Vue.use(Vuex)
 
 export function createStore () {
   return new Vuex.Store({
+    strict: process.env.NODE_ENV !== 'production',
     state: () => ({
       user: null,
       token: '',
@@ -49,7 +51,8 @@ export function createStore () {
     modules: {
       homepage,
       bangumi,
-      video
+      video,
+      users
     }
   })
 }

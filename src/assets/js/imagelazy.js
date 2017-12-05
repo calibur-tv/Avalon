@@ -48,16 +48,18 @@ export default {
     }
   },
   mounted () {
-    const image = this.$el
-    if (this.$checkInView(image, this.scale)) {
-      this.loadResource(image)
-    }
-    const id = this.$eventManager.add(document, this.events, throttle(() => {
+    this.$nextTick(() => {
+      const image = this.$el
       if (this.$checkInView(image, this.scale)) {
         this.loadResource(image)
-        this.$eventManager.del(id)
       }
-    }, 500))
+      const id = this.$eventManager.add(document, this.events, throttle(() => {
+        if (this.$checkInView(image, this.scale)) {
+          this.loadResource(image)
+          this.$eventManager.del(id)
+        }
+      }, 500))
+    })
   },
   methods: {
     loadResource (image) {

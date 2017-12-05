@@ -13,14 +13,17 @@ export default (ctx) => {
       return config
     }
     Object.assign(config.headers, {
-      Authorization: `Bearer ${ctx.$store.state.token}`
+      Authorization: `Bearer ${ctx.$store ? ctx.$store.state.token : ctx}`
     })
     return config
   })
 
   http.interceptors.response.use(res => res && res.data && res.data.data, err => {
+    if (err.response.status === 429) {
+      return Promise.reject({message: ['请勿重复操作']}) // eslint-disable-line prefer-promise-reject-errors
+    }
     if (err.message === `timeout of ${timeout.client}ms exceeded`) {
-      return Promise.reject(['网路请求超时']) // eslint-disable-line
+      return Promise.reject({message: ['网路请求超时']}) // eslint-disable-line prefer-promise-reject-errors
     }
     return Promise.reject(err && err.response && err.response.data)
   })

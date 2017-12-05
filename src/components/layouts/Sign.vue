@@ -438,12 +438,11 @@
                 captcha.appendTo(this.$refs.signInCaptcha)
                 captcha.onSuccess(() => {
                   this.login().then((token) => {
-                    // { expires: this.signIn.remember ? 365 : 1 } can not set expired, i don't know why
-                    this.$cookie.set('JWT-TOKEN', token)
+                    this.$cookie.set('JWT-TOKEN', token, { expires: this.signIn.remember ? 365 : 1 })
                     window.location.reload()
                   }).catch((err) => {
                     err.message.forEach(tip => {
-                      this.$toast.show(tip)
+                      this.$toast.error(tip)
                     })
                     setTimeout(() => {
                       captcha.reset()
@@ -470,7 +469,7 @@
                     window.location.reload()
                   }).catch((err) => {
                     err.message.forEach(tip => {
-                      this.$toast.show(tip)
+                      this.$toast.error(tip)
                     })
                     setTimeout(() => {
                       captcha.reset()
@@ -535,13 +534,13 @@
                 this.getAuthCode()
               }
             } else {
-              this.$toast.show(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+              this.$toast.warning(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
             }
           } else {
-            this.$toast.show(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+            this.$toast.warning(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
           }
         } else {
-          this.$toast.show('请先填写一个昵称')
+          this.$toast.warning('请先填写一个昵称')
         }
       },
       getAuthCode () {
@@ -555,10 +554,10 @@
         }).then(() => {
           this.signUp.tempAccess = ''
           this.signUpStep = 3
-          this.$toast.show(`${this.signUp.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
+          this.$toast.warning(`${this.signUp.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
         }).catch(err => {
           err.message.forEach(tip => {
-            this.$toast.show(tip)
+            this.$toast.error(tip)
           })
         })
       }
