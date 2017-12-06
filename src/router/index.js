@@ -29,6 +29,14 @@ export function createRouter () {
             component: () => import('view/bangumi/news')
           },
           {
+            path: 'bangumi/rank',
+            component: () => import('view/bangumi/rank')
+          },
+          {
+            path: 'bangumi/timeline',
+            component: () => import('view/bangumi/time')
+          },
+          {
             name: 'bangumi-tags',
             path: 'bangumi/tags/:id?',
             component: () => import('view/bangumi/tags')
