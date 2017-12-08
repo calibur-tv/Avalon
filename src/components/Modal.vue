@@ -49,11 +49,11 @@
       opacity: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       height: auto;
       max-height: 80%;
       max-width: 50%;
-      min-width: 500px;
       cursor: default;
 
       >header, >main, >footer {

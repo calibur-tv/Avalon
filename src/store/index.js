@@ -5,6 +5,7 @@ import homepage from './homepage'
 import bangumi from './bangumi'
 import video from './video'
 import users from './users'
+import image from './image'
 
 Vue.use(Vuex)
 
@@ -23,6 +24,11 @@ export function createStore () {
       },
       SET_TOKEN (state, data) {
         state.token = data
+      },
+      SET_USER_INFO (state, data) {
+        Object.keys(data).forEach(key => {
+          state.user[key] = data[key]
+        })
       }
     },
     actions: {
@@ -52,7 +58,8 @@ export function createStore () {
       homepage,
       bangumi,
       video,
-      users
+      users,
+      image
     }
   })
 }

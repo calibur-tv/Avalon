@@ -14,7 +14,7 @@ const mutations = {
       delete state.list[zone]
     }
   },
-  pushFollowedList (state, { data, zone }) {
+  pushFollowBangumis (state, { data, zone }) {
     state.bangumis[zone] = data
   }
 }
@@ -34,7 +34,7 @@ const actions = {
     }
     const api = new Api()
     const data = await api.followBangumis(zone)
-    commit('pushFollowedList', { data, zone })
+    commit('pushFollowBangumis', { data, zone })
   }
 }
 

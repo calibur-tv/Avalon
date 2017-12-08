@@ -2,7 +2,72 @@
   #user-show {
     $banner-height: 400px;
 
-    #banner {
+    .file-input {
+      overflow: hidden;
+      position: relative;
+
+      &:hover:before {
+        opacity: 1;
+        transition-duration: .4s;
+      }
+
+      input {
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        cursor: pointer;
+      }
+
+      &:before {
+        content: '\e603';
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, .5);
+        @include iconfont(30px);
+        text-align: center;
+        line-height: 100px;
+        color: $color-white;
+      }
+    }
+
+    .avatar-cropper-modal {
+      .v-modal {
+        width: 400px;
+      }
+
+      .image-crop-area {
+        width: 360px;
+        height: 360px;
+        overflow: hidden;
+      }
+
+      .cropper-face {
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        background-color: transparent;
+        opacity: 1;
+
+        &:after {
+          content: '';
+          position: absolute;
+          left: 2%;
+          top: 2%;
+          border-radius: 100%;
+          width: 96%;
+          height: 96%;
+          box-shadow: 0 0 0 2000px #fff;
+          opacity: .85;
+        }
+      }
+    }
+
+    .banner {
       position: relative;
       width: 100%;
       overflow: hidden;
@@ -27,6 +92,76 @@
         background-size: cover;
         z-index: -1;
         @include filter-blur();
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      &.my-banner {
+        .file-input {
+          display: block;
+          position: absolute;
+          right: -60px;
+          bottom: -60px;
+          width: 120px;
+          height: 120px;
+          transition-duration: .4s;
+          transform: rotate(45deg);
+
+          &:before {
+            background-color: transparent;
+            transform: rotate(-45deg);
+            text-align: left;
+            line-height: 65px;
+            margin-left: 20px;
+          }
+
+          &:hover {
+            background-color: rgba(0, 0, 0, .9) !important;
+          }
+        }
+
+        &:hover .file-input {
+          background-color: rgba(0, 0, 0, .5);
+          overflow: visible;
+
+          &:before {
+            opacity: 1;
+          }
+        }
+      }
+
+      $selector-height: 80px;
+      .banner-select-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: $selector-height;
+        background-color: rgba(0, 0, 0, .7);
+        padding: 0 50px;
+
+        p {
+          font-size: 18px;
+          color: $color-white;
+          float: left;
+          line-height: $selector-height;
+        }
+
+        button {
+          float: right;
+          margin-top: 20px;
+        }
+
+        .el-button--primary {
+          margin-left: 30px;
+          width: 100px;
+        }
+
+        .el-button--text {
+          color: $color-white;
+        }
       }
     }
 
@@ -106,12 +241,41 @@
 
 <template>
   <div id="user-show">
-    <section id="banner">
-      <div class="img bg" :style="{ backgroundImage: `url(${$resize(user.banner, { width: 1920, mode: 0 })})`}"></div>
+    <section class="banner" :class="{ 'my-banner': isMe && !bannerSelector.loading }">
+      <div class="img bg" :style="{ backgroundImage: banner }"></div>
+      <div class="file-input bg">
+        <input type="file" ref="bannerInput" @change="selectBanner">
+      </div>
+      <transition name="el-zoom-in-bottom">
+        <div class="banner-select-bar" v-if="bannerSelector.showBar">
+          <p>确认要更换主页背景图吗？</p>
+          <el-button @click="submitBannerChange" :loading="bannerSelector.loading" type="primary" round>确认</el-button>
+          <el-button @click="cancelBannerChange" :disabled="bannerSelector.loading" type="text">取消</el-button>
+        </div>
+      </transition>
     </section>
     <div class="container">
       <div id="user-panel">
-        <img class="avatar" :src="$resize(user.avatar, { width: 200, height: 200 })" alt="avatar">
+        <div class="avatar bg file-input"
+             :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
+             v-if="isMe">
+          <input type="file" ref="avatarInput" @change="openAvatarModal">
+        </div>
+        <img class="avatar"
+             :src="$resize(user.avatar, { width: 200, height: 200 })"
+             alt="avatar"
+             v-else>
+        <v-modal class="avatar-cropper-modal"
+                 v-model="avatarCropper.showModal"
+                 header-text="头像裁剪"
+                 :footer="false">
+          <v-cropper :src="avatarCropper.src"
+                     :file-type="avatarCropper.type"
+                     :uploading="avatarCropper.loading"
+                     @cancel="handleAvatarCropperCancel"
+                     @submit="handleAvatarCropperSubmit">
+          </v-cropper>
+        </v-modal>
       </div>
       <el-tabs tab-position="left" @tab-click="handleTabClick">
         <el-tab-pane label="番剧">
@@ -178,7 +342,9 @@
 </template>
 
 <script>
+  import vCropper from 'component/base/cropper'
   import UserApi from 'api/userApi'
+  import ImageApi from 'api/imageApi'
 
   export default {
     async asyncData ({ route, store, ctx }) {
@@ -205,6 +371,9 @@
         ]
       }
     },
+    components: {
+      vCropper
+    },
     computed: {
       slug () {
         return this.$route.params.slug
@@ -224,6 +393,11 @@
       },
       bangumis () {
         return this.$store.state.users.bangumis[this.slug]
+      },
+      banner () {
+        return this.bannerSelector.showBar
+          ? `url(${this.bannerSelector.image})`
+          : `url(${this.$resize(this.user.banner, { width: 1920, mode: 0 })})`
       }
     },
     data () {
@@ -253,6 +427,18 @@
           signature: [
             { max: 20, message: '请缩减至20字以内', trigger: 'blur' }
           ]
+        },
+        avatarCropper: {
+          src: '',
+          type: '',
+          showModal: false,
+          loading: false
+        },
+        bannerSelector: {
+          file: null,
+          image: '',
+          showBar: false,
+          loading: false
         }
       }
     },
@@ -297,6 +483,98 @@
             return false
           }
         })
+      },
+      openAvatarModal (e) {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        this.avatarCropper.type = file.type
+        reader.onload = (evt) => {
+          this.avatarCropper.src = evt.target.result
+          this.avatarCropper.showModal = true
+        }
+        reader.readAsDataURL(file)
+      },
+      handleAvatarCropperCancel () {
+        this.avatarCropper.showModal = false
+        this.$nextTick(() => {
+          this.$refs.avatarInput.value = ''
+        })
+      },
+      async handleAvatarCropperSubmit (formData) {
+        this.avatarCropper.loading = true
+        await this.$store.dispatch('image/getUpToken', {
+          modal: 'user',
+          type: 'avatar',
+          id: this.user.id
+        })
+        const upToken = this.$store.state.image.upToken
+        formData.append('token', upToken.token)
+        formData.append('key', upToken.key)
+        const imageApi = new ImageApi()
+        try {
+          await imageApi.uploadToQiniu(formData)
+          const userApi = new UserApi(this)
+          await userApi.settingImage({
+            type: 'avatar',
+            url: upToken.key
+          })
+          this.$store.commit('SET_USER_INFO', {
+            avatar: `${this.$cdn.image}${upToken.key}`
+          })
+          this.$toast.success('头像更新成功')
+        } catch (e) {
+          console.log(e)
+          this.$toast.error('头像更新失败，请联系管理员查看')
+        }
+        this.avatarCropper.loading = false
+        this.handleAvatarCropperCancel()
+      },
+      selectBanner (e) {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        this.bannerSelector.file = file
+        reader.onload = (evt) => {
+          this.bannerSelector.image = evt.target.result
+          this.bannerSelector.showBar = true
+        }
+        reader.readAsDataURL(file)
+      },
+      cancelBannerChange () {
+        this.bannerSelector.showBar = false
+        this.$nextTick(() => {
+          this.$refs.bannerInput.value = ''
+        })
+      },
+      async submitBannerChange () {
+        this.bannerSelector.loading = true
+        await this.$store.dispatch('image/getUpToken', {
+          modal: 'user',
+          type: 'banner',
+          id: this.user.id
+        })
+        const formData = new FormData()
+        const upToken = this.$store.state.image.upToken
+        formData.append('file', this.bannerSelector.file)
+        formData.append('token', upToken.token)
+        formData.append('key', upToken.key)
+        const imageApi = new ImageApi()
+        try {
+          await imageApi.uploadToQiniu(formData)
+          const userApi = new UserApi(this)
+          await userApi.settingImage({
+            type: 'banner',
+            url: upToken.key
+          })
+          this.$store.commit('SET_USER_INFO', {
+            banner: `${this.$cdn.image}${upToken.key}`
+          })
+          this.$toast.success('背景更新成功')
+        } catch (e) {
+          console.log(e)
+          this.$toast.error('背景更新失败，请联系管理员查看')
+        }
+        this.bannerSelector.loading = false
+        this.cancelBannerChange()
       }
     }
   }
