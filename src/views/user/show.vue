@@ -102,7 +102,7 @@
         .file-input {
           display: block;
           position: absolute;
-          right: -60px;
+          right: -65px;
           bottom: -60px;
           width: 120px;
           height: 120px;
@@ -246,13 +246,6 @@
       <div class="file-input bg">
         <input type="file" ref="bannerInput" @change="selectBanner">
       </div>
-      <transition name="el-zoom-in-bottom">
-        <div class="banner-select-bar" v-if="bannerSelector.showBar">
-          <p>确认要更换主页背景图吗？</p>
-          <el-button @click="submitBannerChange" :loading="bannerSelector.loading" type="primary" round>确认</el-button>
-          <el-button @click="cancelBannerChange" :disabled="bannerSelector.loading" type="text">取消</el-button>
-        </div>
-      </transition>
     </section>
     <div class="container">
       <div id="user-panel">
