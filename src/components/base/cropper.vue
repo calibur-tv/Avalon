@@ -342,7 +342,7 @@
 <script>
   import Cropper from 'cropperjs'
 
-export default {
+  export default {
     name: 'Cropper',
     props: {
       src: {
