@@ -11,7 +11,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const qiniu = require('../.env').qiniu
 
 module.exports = {
-  devtool: isDev ? 'sourcemap' : false,
+  devtool: isProd ? false : 'sourcemap',
   output: {
     path: resolve('../dist'),
     publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
