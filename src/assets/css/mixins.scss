@@ -12,6 +12,14 @@
   }
 }
 
+@mixin iconfont($size: 16px) {
+  font-family: "iconfont" !important;
+  font-size: $size;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @mixin avatar($size) {
   width: $size;
   height: $size;

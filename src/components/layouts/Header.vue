@@ -301,6 +301,25 @@
       <nav class="container header-left">
         <router-link class="nav-link" to="/">主站</router-link>
         <router-link class="nav-link" to="/bangumi/news">番剧</router-link>
+        <!--
+        <el-dropdown>
+          <router-link class="nav-link el-dropdown-link" to="/bangumi/news">番剧</router-link>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <router-link class="nav-link" to="/bangumi/rank">排行榜</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link class="nav-link" to="/bangumi/timeline">时间轴</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link class="nav-link" to="/bangumi/news">新番放送</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link class="nav-link" to="/bangumi/tags">分类索引</router-link>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        -->
         <router-link class="nav-link" to="/bangumi/tags">分类</router-link>
       </nav>
       <nav class="header-right">
@@ -389,7 +408,7 @@
     },
     mounted () {
       document.addEventListener('scroll', () => {
-        this.scrollFlag = document.body.scrollTop > 200
+        this.scrollFlag = window.scrollY > 200
       })
     }
   }

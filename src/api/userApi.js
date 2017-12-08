@@ -40,4 +40,8 @@ export default class extends BaseApi {
   followBangumis (zone) {
     return this.http.get(`user/${zone}/followed/bangumi`)
   }
+
+  settingImage ({ type, url }) {
+    return this.http.post('user/setting/image', { type, url })
+  }
 }

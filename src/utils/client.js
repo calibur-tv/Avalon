@@ -9,7 +9,7 @@ const utils = {
   install (Vue, options) {
     Vue.prototype.$cookie = Cookies
 
-    Vue.prototype.$cdn = env.cdn.host
+    Vue.prototype.$cdn = env.cdn
 
     Vue.prototype.$scrollToY = scrollToY
 
