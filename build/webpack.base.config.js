@@ -124,6 +124,9 @@ module.exports = {
 
     if (isProd) {
       pluginArr = pluginArr.concat([
+        new UglifyJsPlugin({
+          sourceMap: false
+        }),
         new QiniuPlugin({
           ACCESS_KEY: qiniu.access,
           SECRET_KEY: qiniu.secret,
@@ -135,9 +138,6 @@ module.exports = {
 
     if (!isDev) {
       pluginArr = pluginArr.concat([
-        new UglifyJsPlugin({
-          sourceMap: false
-        }),
         new CopyWebpackPlugin([
           {from: resolve('../src/static')}
         ]),
@@ -145,13 +145,13 @@ module.exports = {
           filename: 'common.[chunkhash].css'
         }),
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new CompressionPlugin({
-          asset: '[path].gz[query]',
-          algorithm: 'gzip',
-          test: /\.js$|\.css$|\.html$/,
-          threshold: 10240,
-          minRatio: 0.8
-        })
+        // new CompressionPlugin({
+        //   asset: '[path].gz[query]',
+        //   algorithm: 'gzip',
+        //   test: /\.js$|\.css$|\.html$/,
+        //   threshold: 10240,
+        //   minRatio: 0.8
+        // })
       ])
     }
 
