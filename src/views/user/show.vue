@@ -279,28 +279,28 @@
           </v-cropper>
         </v-modal>
       </div>
-      <no-ssr>
-        <el-tabs tab-position="left" @tab-click="handleTabClick">
-          <el-tab-pane label="番剧">
-            <ul class="bangumis">
-              <li v-for="item in bangumis" :key="item.id">
-                <a :href="`/bangumi/${item.id}`" target="_blank">
-                  <figure>
-                    <v-img class="bg"
-                           :alt="item.name"
-                           :src="$resize(item.avatar, { width: 160, height: 160 })"
-                    ></v-img>
-                    <figcaption class="abs">
-                      <p class="twoline" v-text="item.name"></p>
-                    </figcaption>
-                  </figure>
-                </a>
-              </li>
-            </ul>
-          </el-tab-pane>
-          <el-tab-pane label="帖子">帖子</el-tab-pane>
-          <template v-if="isMe">
-            <el-tab-pane label="设置">
+      <el-tabs tab-position="left" @tab-click="handleTabClick">
+        <el-tab-pane label="番剧">
+          <ul class="bangumis">
+            <li v-for="item in bangumis" :key="item.id">
+              <a :href="`/bangumi/${item.id}`" target="_blank">
+                <figure>
+                  <v-img class="bg"
+                         :alt="item.name"
+                         :src="$resize(item.avatar, { width: 160, height: 160 })"
+                  ></v-img>
+                  <figcaption class="abs">
+                    <p class="twoline" v-text="item.name"></p>
+                  </figcaption>
+                </figure>
+              </a>
+            </li>
+          </ul>
+        </el-tab-pane>
+        <el-tab-pane label="帖子">帖子</el-tab-pane>
+        <template v-if="isMe">
+          <el-tab-pane label="设置">
+            <no-ssr>
               <el-form :model="settingForm" :rules="settingRule" ref="settingForm" label-width="50px">
                 <el-form-item label="昵称" prop="nickname">
                   <el-col :span="10">
@@ -337,10 +337,10 @@
                   <el-button type="primary" @click="saveSetting">提交</el-button>
                 </el-form-item>
               </el-form>
-            </el-tab-pane>
-          </template>
-        </el-tabs>
-      </no-ssr>
+            </no-ssr>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
     </div>
   </div>
 </template>
