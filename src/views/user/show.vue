@@ -279,6 +279,66 @@
           </v-cropper>
         </v-modal>
       </div>
+      <el-tabs v-model="tabActive" tab-position="left" @tab-click="handleTabClick">
+        <el-tab-pane name="bangumi" label="番剧">
+          <ul class="bangumis">
+            <li v-for="item in bangumis" :key="item.id">
+              <a :href="`/bangumi/${item.id}`" target="_blank">
+                <figure>
+                  <v-img class="bg"
+                         :alt="item.name"
+                         :src="$resize(item.avatar, { width: 160, height: 160 })"
+                  ></v-img>
+                  <figcaption class="abs">
+                    <p class="twoline" v-text="item.name"></p>
+                  </figcaption>
+                </figure>
+              </a>
+            </li>
+          </ul>
+        </el-tab-pane>
+        <el-tab-pane name="post" label="帖子">帖子</el-tab-pane>
+        <template v-if="isMe">
+          <el-tab-pane name="setting" label="设置">
+            <el-form :model="settingForm" :rules="settingRule" ref="settingForm" label-width="50px">
+              <el-form-item label="昵称" prop="nickname">
+                <el-col :span="10">
+                  <el-input v-model="settingForm.nickname"></el-input>
+                </el-col>
+              </el-form-item>
+              <el-form-item label="生日">
+                <el-date-picker
+                  v-model="settingForm.birthday"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="性别">
+                <el-col>
+                  <el-radio-group v-model="settingForm.sex">
+                    <el-radio :label="1">男</el-radio>
+                    <el-radio :label="2">女</el-radio>
+                  </el-radio-group>
+                </el-col>
+                <el-col v-if="settingForm.sex">
+                  <el-switch v-model="settingForm.sexSecret"
+                             active-text="公开"
+                             inactive-text="私密"
+                  ></el-switch>
+                </el-col>
+              </el-form-item>
+              <el-form-item label="签名" prop="signature">
+                <el-col :span="20">
+                  <el-input type="textarea" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
+                </el-col>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="saveSetting">提交</el-button>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -355,6 +415,7 @@
         callback()
       }
       return {
+        tabActive: 'bangumi',
         settingForm: {
           nickname: '',
           signature: '',
