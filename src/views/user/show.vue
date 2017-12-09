@@ -102,7 +102,7 @@
         .file-input {
           display: block;
           position: absolute;
-          right: -60px;
+          right: -65px;
           bottom: -60px;
           width: 120px;
           height: 120px;
@@ -246,13 +246,15 @@
       <div class="file-input bg">
         <input type="file" ref="bannerInput" @change="selectBanner">
       </div>
-      <transition name="el-zoom-in-bottom">
-        <div class="banner-select-bar" v-if="bannerSelector.showBar">
-          <p>确认要更换主页背景图吗？</p>
-          <el-button @click="submitBannerChange" :loading="bannerSelector.loading" type="primary" round>确认</el-button>
-          <el-button @click="cancelBannerChange" :disabled="bannerSelector.loading" type="text">取消</el-button>
-        </div>
-      </transition>
+      <no-ssr>
+        <transition name="el-zoom-in-bottom">
+          <div class="banner-select-bar" v-if="bannerSelector.showBar">
+            <p>确认要更换主页背景图吗？</p>
+            <el-button @click="submitBannerChange" :loading="bannerSelector.loading" type="primary" round>确认</el-button>
+            <el-button @click="cancelBannerChange" :disabled="bannerSelector.loading" type="text">取消</el-button>
+          </div>
+        </transition>
+      </no-ssr>
     </section>
     <div class="container">
       <div id="user-panel">
@@ -298,42 +300,44 @@
         <el-tab-pane label="帖子">帖子</el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
-            <el-form :model="settingForm" :rules="settingRule" ref="settingForm" label-width="50px">
-              <el-form-item label="昵称" prop="nickname">
-                <el-col :span="10">
-                  <el-input v-model="settingForm.nickname"></el-input>
-                </el-col>
-              </el-form-item>
-              <el-form-item label="生日">
-                <el-date-picker
-                  v-model="settingForm.birthday"
-                  type="date"
-                  placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
-              <el-form-item label="性别">
-                <el-col>
-                  <el-radio-group v-model="settingForm.sex">
-                    <el-radio :label="1">男</el-radio>
-                    <el-radio :label="2">女</el-radio>
-                  </el-radio-group>
-                </el-col>
-                <el-col v-if="settingForm.sex">
-                  <el-switch v-model="settingForm.sexSecret"
-                             active-text="公开"
-                             inactive-text="私密"
-                  ></el-switch>
-                </el-col>
-              </el-form-item>
-              <el-form-item label="签名" prop="signature">
-                <el-col :span="20">
-                  <el-input type="textarea" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
-                </el-col>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="saveSetting">提交</el-button>
-              </el-form-item>
-            </el-form>
+            <no-ssr>
+              <el-form :model="settingForm" :rules="settingRule" ref="settingForm" label-width="50px">
+                <el-form-item label="昵称" prop="nickname">
+                  <el-col :span="10">
+                    <el-input v-model="settingForm.nickname"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="生日">
+                  <el-date-picker
+                    v-model="settingForm.birthday"
+                    type="date"
+                    placeholder="选择日期">
+                  </el-date-picker>
+                </el-form-item>
+                <el-form-item label="性别">
+                  <el-col>
+                    <el-radio-group v-model="settingForm.sex">
+                      <el-radio :label="1">男</el-radio>
+                      <el-radio :label="2">女</el-radio>
+                    </el-radio-group>
+                  </el-col>
+                  <el-col v-if="settingForm.sex">
+                    <el-switch v-model="settingForm.sexSecret"
+                               active-text="公开"
+                               inactive-text="私密"
+                    ></el-switch>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="签名" prop="signature">
+                  <el-col :span="20">
+                    <el-input type="textarea" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="saveSetting">提交</el-button>
+                </el-form-item>
+              </el-form>
+            </no-ssr>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -413,6 +417,7 @@
         callback()
       }
       return {
+        tabActive: 'bangumi',
         settingForm: {
           nickname: '',
           signature: '',

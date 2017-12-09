@@ -146,28 +146,30 @@
 </style>
 
 <template>
-  <transition name="modal">
-    <section class="v-modal-wrap" v-if="toggle">
-      <div class="v-modal-mask" @click.stop.prevent="handleClose"></div>
-      <div class="v-modal" @click.stop.prevent>
-        <header v-if="header">
-          <slot name="header">
-            <h4 v-text="headerText"></h4>
-            <a v-if="close" class="close" @click="handleClose">&times;</a>
-          </slot>
-        </header>
-        <main>
-          <slot></slot>
-        </main>
-        <footer v-if="footer">
-          <slot name="footer">
-            <button class="submit" @click="handleSubmit" v-text="submitText"></button>
-            <button class="cancel" @click="handleCancel" v-text="cancelText"></button>
-          </slot>
-        </footer>
-      </div>
-    </section>
-  </transition>
+  <no-ssr>
+    <transition name="modal">
+      <section class="v-modal-wrap" v-if="toggle">
+        <div class="v-modal-mask" @click.stop.prevent="handleClose"></div>
+        <div class="v-modal" @click.stop.prevent>
+          <header v-if="header">
+            <slot name="header">
+              <h4 v-text="headerText"></h4>
+              <a v-if="close" class="close" @click="handleClose">&times;</a>
+            </slot>
+          </header>
+          <main>
+            <slot></slot>
+          </main>
+          <footer v-if="footer">
+            <slot name="footer">
+              <button class="submit" @click="handleSubmit" v-text="submitText"></button>
+              <button class="cancel" @click="handleCancel" v-text="cancelText"></button>
+            </slot>
+          </footer>
+        </div>
+      </section>
+    </transition>
+  </no-ssr>
 </template>
 
 <script>

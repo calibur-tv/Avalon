@@ -9,11 +9,13 @@ import utils from './utils'
 import ImageLazy from 'assets/js/imagelazy'
 import Share from 'assets/js/Share'
 import Modal from 'component/Modal.vue'
+import NoSSR from 'assets/js/nossr'
 
 Vue.use(utils)
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
 Vue.component(Modal.name, Modal)
+Vue.component(NoSSR.name, NoSSR)
 
 export function createApp () {
   const router = createRouter()
