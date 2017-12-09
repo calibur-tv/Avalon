@@ -43,18 +43,28 @@
 
 <template>
     <transition name="fade">
-      <div id="side-bar" v-show="show" :style="{ right: `${right}px` }">
-        <!--
-        <div class="item icon-fankui"
-             @click.stop.prevent="showFeedModal = true">
-          <v-modal v-model="showFeedModal">
-            feedback modal
-          </v-modal>
-        </div>
-        -->
-        <div class="item icon-fanhuidingbu"
-             @click="$scrollToY(0)"
-        ></div>
+      <div id="side-bar" v-show="right && show" :style="{ right: `${right}px` }">
+        <el-tooltip placement="left" effect="dark" content="发帖">
+          <div class="item icon-fatie1"
+               @click.stop.prevent="showPostModal = true">
+            <v-modal v-model="showPostModal">
+              create post modal
+            </v-modal>
+          </div>
+        </el-tooltip>
+        <el-tooltip placement="left" effect="dark" content="反馈">
+          <div class="item icon-fankui"
+               @click.stop.prevent="showFeedModal = true">
+            <v-modal v-model="showFeedModal">
+              feedback modal
+            </v-modal>
+          </div>
+        </el-tooltip>
+        <el-tooltip placement="left" effect="dark" content="返回顶部">
+          <div v-show="showToTop" class="item icon-fanhuidingbu"
+               @click="$scrollToY(0)"
+          ></div>
+        </el-tooltip>
       </div>
     </transition>
 </template>
@@ -64,18 +74,25 @@
     name: 'v-side-bar',
     data () {
       return {
-        show: false,
+        show: true,
         right: 0,
+        showToTop: false,
+        showPostModal: false,
         showFeedModal: false
       }
     },
     methods: {
       computeShow () {
-        this.show = window.scrollY > window.innerHeight
+        this.showToTop = window.scrollY > window.innerHeight
       },
       computeOffset () {
         this.right = (document.body.offsetWidth - document.querySelector('.container').offsetWidth) / 2 - 50
       }
+    },
+    beforeMount () {
+      this.$channel.$on('toggle-side-bar', (toggle) => {
+        this.show = toggle
+      })
     },
     mounted () {
       this.computeOffset()

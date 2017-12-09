@@ -137,7 +137,11 @@
         theme: 'mask'
       })
     },
+    destroyed () {
+      this.$channel.$emit('toggle-side-bar', true)
+    },
     mounted () {
+      this.$channel.$emit('toggle-side-bar', false)
       this.loopBanner()
     },
     methods: {

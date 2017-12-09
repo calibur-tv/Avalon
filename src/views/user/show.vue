@@ -76,9 +76,19 @@
       height: $banner-height;
       margin-bottom: 40px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      .signature {
+        color: $color-white;
+        word-break: break-all;
+        word-wrap: break-word;
+        font-size: 13px;
+        line-height: 20px;
+        margin: 40px 0 20px 0;
+        text-shadow: 0 1px 10px gray;
+      }
 
       .img {
         width: 110%;
@@ -165,7 +175,7 @@
       }
     }
 
-    $user-panel-height: 140px;
+    $user-panel-height: 160px;
     .container {
       .el-tabs__active-bar:after {
         display: none;
@@ -185,6 +195,12 @@
 
         .avatar {
           @include avatar(100px)
+        }
+
+        .nickname {
+          margin-top: 20px;
+          display: block;
+          text-align: center;
         }
       }
 
@@ -246,6 +262,8 @@
       <div class="file-input bg">
         <input type="file" ref="bannerInput" @change="selectBanner">
       </div>
+      <p class="signature" v-text="user.signature"></p>
+      <v-share></v-share>
       <no-ssr>
         <transition name="el-zoom-in-bottom">
           <div class="banner-select-bar" v-if="bannerSelector.showBar">
@@ -267,6 +285,7 @@
              :src="$resize(user.avatar, { width: 200, height: 200 })"
              alt="avatar"
              v-else>
+        <span class="nickname" v-text="user.nickname"></span>
         <v-modal class="avatar-cropper-modal"
                  v-model="avatarCropper.showModal"
                  header-text="头像裁剪"
