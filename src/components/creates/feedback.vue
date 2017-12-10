@@ -32,7 +32,7 @@
         },
         rules: {
           type: [
-            { required: true, message: '请选择反馈类型', trigger: 'change' }
+            { type: 'number', required: true, message: '请选择反馈类型', trigger: 'change' }
           ],
           desc: [
             { required: true, message: '请填写反馈内容', trigger: 'blur' },
