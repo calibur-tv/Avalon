@@ -347,7 +347,6 @@
     <div class="wrap abs">
       <div class="shim" :style="computedBg"></div>
     </div>
-    <v-sign></v-sign>
   </header>
 </template>
 
@@ -355,12 +354,11 @@
   import UserApi from 'api/userApi'
 
   import vSearch from 'component/layouts/Search.vue'
-  import vSign from 'component/layouts/Sign.vue'
 
   export default {
     name: 'v-header',
     components: {
-      vSearch, vSign
+      vSearch
     },
     data () {
       return {

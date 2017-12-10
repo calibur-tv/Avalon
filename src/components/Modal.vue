@@ -9,6 +9,7 @@
     bottom: 0;
     z-index: 999;
     background-color: transparent;
+    pointer-events: all;
 
     &.modal-leave-active {
       transition: opacity $time;

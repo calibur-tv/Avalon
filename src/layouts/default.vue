@@ -17,6 +17,7 @@
     <v-music></v-music>
     <v-footer></v-footer>
     <v-side-bar></v-side-bar>
+    <v-sign></v-sign>
   </div>
 </template>
 
@@ -25,10 +26,11 @@
   import vMusic from 'component/layouts/Music.vue'
   import vFooter from 'component/layouts/Footer.vue'
   import vSideBar from 'component/layouts/SideBar.vue'
+  import vSign from 'component/layouts/Sign.vue'
 
   export default {
     components: {
-      vHeader, vMusic, vFooter, vSideBar
+      vHeader, vMusic, vFooter, vSideBar, vSign
     }
   }
 </script>

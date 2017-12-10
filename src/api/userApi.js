@@ -44,4 +44,8 @@ export default class extends BaseApi {
   settingImage ({ type, url }) {
     return this.http.post('user/setting/image', { type, url })
   }
+
+  feedback ({ type, desc }) {
+    return this.http.post('user/feedback', { type, desc })
+  }
 }

@@ -1,81 +1,87 @@
 <style lang="scss">
-  $item-size: 50px;
-  #side-bar {
+  #side-bar-container {
     position: fixed;
-    bottom: 80px;
-    background-color: transparent;
-    width: $item-size;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     z-index: 10;
+    pointer-events: none;
+    background-color: transparent;
 
-    &.fade-enter-active,
-    &.fade-leave-active {
-      transition: opacity .5s
-    }
-    &.fade-enter,
-    &.fade-leave-to {
-      opacity: 0
-    }
-
-    .item {
-      background-color: $color-gray-deep;
+    $item-size: 50px;
+    #side-bar {
+      position: absolute;
+      bottom: 80px;
+      right: -$item-size;
+      background-color: transparent;
       width: $item-size;
-      height: $item-size;
-      margin-bottom: 5px;
-      border-radius: 4px;
-      font-size: 30px;
-      text-align: center;
-      line-height: 50px;
-      color: $color-white;
-      cursor: pointer;
-      font-family: 'iconfont' !important;
-      transition: opacity .5s;
+      pointer-events: all;
 
-      &:hover {
-        background-color: $color-dark-light;
-      }
+      .item {
+        background-color: $color-gray-deep;
+        width: $item-size;
+        height: $item-size;
+        margin-bottom: 5px;
+        border-radius: 4px;
+        font-size: 30px;
+        text-align: center;
+        line-height: 50px;
+        color: $color-white;
+        cursor: pointer;
+        font-family: 'iconfont' !important;
+        transition: opacity .5s;
 
-      &:last-child {
-        margin-bottom: 0;
+        &:hover {
+          background-color: $color-dark-light;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
+    }
+
+    .v-modal {
+      min-width: 720px;
     }
   }
 </style>
 
 <template>
-    <transition name="fade">
-      <div id="side-bar" v-show="right && show" :style="{ right: `${right}px` }">
-        <el-tooltip placement="left" effect="dark" content="发帖">
-          <div class="item icon-fatie1"
-               @click.stop.prevent="showPostModal = true">
-            <v-modal v-model="showPostModal">
-              create post modal
-            </v-modal>
-          </div>
-        </el-tooltip>
-        <el-tooltip placement="left" effect="dark" content="反馈">
-          <div class="item icon-fankui"
-               @click.stop.prevent="showFeedModal = true">
-            <v-modal v-model="showFeedModal">
-              feedback modal
-            </v-modal>
-          </div>
-        </el-tooltip>
-        <el-tooltip placement="left" effect="dark" content="返回顶部">
-          <div v-show="showToTop" class="item icon-fanhuidingbu"
-               @click="$scrollToY(0)"
-          ></div>
-        </el-tooltip>
-      </div>
-    </transition>
+  <div id="side-bar-container" class="container">
+    <div id="side-bar" v-show="show">
+      <el-tooltip placement="left" effect="dark" content="发帖">
+        <div class="item icon-fatie1" @click="showPostModal = true"></div>
+      </el-tooltip>
+      <el-tooltip placement="left" effect="dark" content="反馈">
+        <div class="item icon-fankui" @click="showFeedModal = true"></div>
+      </el-tooltip>
+      <el-tooltip placement="left" effect="dark" content="返回顶部">
+        <transition name="el-fade-in">
+          <div v-show="showToTop" class="item icon-fanhuidingbu" @click="$scrollToY(0)"></div>
+        </transition>
+      </el-tooltip>
+    </div>
+    <v-modal v-model="showPostModal">
+      <v-post></v-post>
+    </v-modal>
+    <v-feedback :show-modal.sync="showFeedModal"></v-feedback>
+  </div>
 </template>
 
 <script>
+  import vPost from 'component/creates/post'
+  import vFeedback from 'component/creates/feedback'
+
   export default {
     name: 'v-side-bar',
+    components: {
+      vPost, vFeedback
+    },
     data () {
       return {
         show: true,
-        right: 0,
         showToTop: false,
         showPostModal: false,
         showFeedModal: false
@@ -84,9 +90,6 @@
     methods: {
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight
-      },
-      computeOffset () {
-        this.right = (document.body.offsetWidth - document.querySelector('.container').offsetWidth) / 2 - 50
       }
     },
     beforeMount () {
@@ -95,13 +98,11 @@
       })
     },
     mounted () {
-      this.computeOffset()
       this.computeShow()
       document.addEventListener('scroll', this.$throttle(() => {
         this.computeShow()
       }, 500))
       window.addEventListener('resize', this.$throttle(() => {
-        this.computeOffset()
         this.computeShow()
       }, 500))
     }
