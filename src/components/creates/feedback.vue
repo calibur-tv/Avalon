@@ -23,9 +23,9 @@
 
   export default {
     name: 'create-feedback',
-    props: ['showModal'],
     data () {
       return {
+        showModal: false,
         forms: {
           type: '',
           desc: ''
@@ -41,6 +41,11 @@
         }
       }
     },
+    mounted () {
+      this.$channel.$on('show-feedback-modal', () => {
+        this.showModal = true
+      })
+    },
     methods: {
       submit () {
         this.$refs.forms.validate(async (valid) => {
@@ -50,8 +55,9 @@
               type: this.forms.type,
               desc: this.forms.desc
             })
-            this.$emit('update:showModal', false)
+            this.$refs.forms.resetFields()
             this.$toast.success('反馈成功，感谢您的反馈！')
+            this.showModal = false
           } else {
             return false
           }

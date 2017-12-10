@@ -55,7 +55,7 @@
         <div class="item icon-fatie1" @click="showPostModal = true"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="反馈">
-        <div class="item icon-fankui" @click="showFeedModal = true"></div>
+        <div class="item icon-fankui" @click="showFeedModal"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="返回顶部">
         <transition name="el-fade-in">
@@ -66,7 +66,7 @@
     <v-modal v-model="showPostModal">
       <v-post></v-post>
     </v-modal>
-    <v-feedback :show-modal.sync="showFeedModal"></v-feedback>
+    <v-feedback></v-feedback>
   </div>
 </template>
 
@@ -83,13 +83,15 @@
       return {
         show: true,
         showToTop: false,
-        showPostModal: false,
-        showFeedModal: false
+        showPostModal: false
       }
     },
     methods: {
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight
+      },
+      showFeedModal () {
+        this.$channel.$emit('show-feedback-modal')
       }
     },
     beforeMount () {
