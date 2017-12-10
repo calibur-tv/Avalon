@@ -228,7 +228,7 @@
 
         .shim {
           width: 100%;
-          height: 100px;
+          height: 99px;
           position: absolute;
           left: 0;
           top: 0;
