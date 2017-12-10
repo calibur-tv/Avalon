@@ -15,7 +15,8 @@ export function createStore () {
     state: () => ({
       user: null,
       token: '',
-      login: false
+      login: false,
+      banner: 'banner/1.jpg'
     }),
     mutations: {
       SET_USER (state, user) {

@@ -131,17 +131,7 @@
     created () {
       this.banner1 = this.banners[0]
     },
-    beforeMount () {
-      this.$channel.$emit('change-page-background', {
-        img: '',
-        theme: 'mask'
-      })
-    },
-    destroyed () {
-      this.$channel.$emit('toggle-side-bar', true)
-    },
     mounted () {
-      this.$channel.$emit('toggle-side-bar', false)
       this.loopBanner()
     },
     methods: {

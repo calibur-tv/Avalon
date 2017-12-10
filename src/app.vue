@@ -22,7 +22,8 @@
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
         { name: 'renderer', content: 'webkit' },
         { hid: 'description', name: 'description', content: 'calibur，兴趣使然的二次元综合网站' },
-        { hid: 'keywords', name: 'keywords', content: 'calibur，动漫，ACG，二次元，视频，番剧，动画，新番，神作' }
+        { hid: 'keywords', name: 'keywords', content: 'calibur，动漫，ACG，二次元，视频，番剧，动画，新番，神作' },
+        { name: 'banner', content: 'https://image.calibur.tv/banner/1.jpg' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: `${qiniu.host}/favicon.ico` }

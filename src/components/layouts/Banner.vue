@@ -13,22 +13,10 @@
 <script>
   export default {
     name: 'v-banner',
-    props: {
-      image: {
-        type: String,
-        default: 'https://cdn.calibur.tv/banner/1.jpg'
+    computed: {
+      bg () {
+        return this.$resize(this.$store.state.banner, { width: 1920, mode: 0 })
       }
-    },
-    data () {
-      return {
-        bg: this.$resize(this.image, { width: 1920, mode: 0 })
-      }
-    },
-    beforeMount () {
-      this.$channel.$emit('change-page-background', {
-        theme: 'blur',
-        img: this.bg
-      })
     }
   }
 </script>

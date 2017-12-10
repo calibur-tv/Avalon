@@ -466,12 +466,6 @@
         }
       }
     },
-    beforeMount () {
-      this.$channel.$emit('change-page-background', {
-        img: '',
-        theme: 'mask'
-      })
-    },
     methods: {
       handleTabClick (tab) {
         if (tab.label === '设置') {

@@ -50,7 +50,7 @@
 
 <template>
   <div id="side-bar-container" class="container">
-    <div id="side-bar" v-show="show">
+    <div id="side-bar" v-show="$route.name !== 'homepage'">
       <el-tooltip placement="left" effect="dark" content="发帖">
         <div class="item icon-fatie1" @click="showPostModal"></div>
       </el-tooltip>
@@ -79,7 +79,6 @@
     },
     data () {
       return {
-        show: true,
         showToTop: false
       }
     },
@@ -93,11 +92,6 @@
       showPostModal () {
         this.$channel.$emit('show-create-post-modal')
       }
-    },
-    beforeMount () {
-      this.$channel.$on('toggle-side-bar', (toggle) => {
-        this.show = toggle
-      })
     },
     mounted () {
       this.computeShow()

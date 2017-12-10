@@ -2,14 +2,11 @@ import Vue from 'vue'
 import scrollToY from 'assets/js/scrollToY'
 import Backdrop from 'assets/js/Backdrop'
 import Cookies from 'js-cookie'
-import env from '../../.env'
 import { Notification } from 'element-ui'
 
 const utils = {
   install (Vue, options) {
     Vue.prototype.$cookie = Cookies
-
-    Vue.prototype.$cdn = env.cdn
 
     Vue.prototype.$scrollToY = scrollToY
 

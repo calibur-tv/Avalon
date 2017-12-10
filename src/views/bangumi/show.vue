@@ -330,12 +330,6 @@
         return this.info.videoPackage
       }
     },
-    mounted () {
-      this.$channel.$emit('change-page-background', {
-        theme: 'mask',
-        img: ''
-      })
-    },
     methods: {
       sortVideos (videos) {
         return this.$orderBy(videos, 'part')
