@@ -1,10 +1,12 @@
-import Api from 'api/bangumiApi'
+import BangumiApi from 'api/bangumiApi'
+import UserApi from 'api/userApi'
 
 const state = () => ({
   news: [],
   tags: [],
   rank: [],
-  list: Object.create(null)
+  list: Object.create(null),
+  follows: Object.create(null)
 })
 
 const mutations = {
@@ -39,6 +41,9 @@ const mutations = {
         })
       }
     }
+  },
+  pushFollowBangumis (state, { data, zone }) {
+    state.follows[zone] = data
   }
 }
 
@@ -47,7 +52,7 @@ const actions = {
     if (state.news.length) {
       return
     }
-    const api = new Api()
+    const api = new BangumiApi()
     const data = await api.getNews()
     commit('pushNews', data)
   },
@@ -55,7 +60,7 @@ const actions = {
     if (state.tags.length && !id) {
       return
     }
-    const api = new Api()
+    const api = new BangumiApi()
     const data = await api.getTags(id)
     const tags = data.tags
     const ids = id ? id.split('-') : undefined
@@ -69,12 +74,12 @@ const actions = {
     if (state.list[id]) {
       return
     }
-    const api = new Api(ctx)
+    const api = new BangumiApi(ctx)
     const data = await api.getShow(id)
     commit('pushList', data)
   },
   follow ({ commit, rootState }, { ctx, id }) {
-    const api = new Api(ctx)
+    const api = new BangumiApi(ctx)
     api.follow(id).then((followed) => {
       commit('followBangumi', {
         followed,
@@ -86,11 +91,18 @@ const actions = {
         }
       })
     }).catch((err) => {
-      console.log(err)
       err.message.forEach(tip => {
         ctx.$toast.error(tip)
       })
     })
+  },
+  async getFollowBangumis ({ state, commit, rootState }, { zone }) {
+    if (state.follows[zone] && rootState.user.zone !== zone) {
+      return
+    }
+    const api = new UserApi()
+    const data = await api.followBangumis(zone)
+    commit('pushFollowBangumis', { data, zone })
   }
 }
 

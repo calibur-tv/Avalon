@@ -52,7 +52,7 @@
   <div id="side-bar-container" class="container">
     <div id="side-bar" v-show="show">
       <el-tooltip placement="left" effect="dark" content="发帖">
-        <div class="item icon-fatie1" @click="showPostModal = true"></div>
+        <div class="item icon-fatie1" @click="showPostModal"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="反馈">
         <div class="item icon-fankui" @click="showFeedModal"></div>
@@ -63,9 +63,7 @@
         </transition>
       </el-tooltip>
     </div>
-    <v-modal v-model="showPostModal">
-      <v-post></v-post>
-    </v-modal>
+    <v-post></v-post>
     <v-feedback></v-feedback>
   </div>
 </template>
@@ -82,8 +80,7 @@
     data () {
       return {
         show: true,
-        showToTop: false,
-        showPostModal: false
+        showToTop: false
       }
     },
     methods: {
@@ -91,7 +88,10 @@
         this.showToTop = window.scrollY > window.innerHeight
       },
       showFeedModal () {
-        this.$channel.$emit('show-feedback-modal')
+        this.$channel.$emit('show-create-feedback-modal')
+      },
+      showPostModal () {
+        this.$channel.$emit('show-create-post-modal')
       }
     },
     beforeMount () {

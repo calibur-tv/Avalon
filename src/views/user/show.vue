@@ -376,7 +376,7 @@
         store.dispatch('users/getUser', {
           ctx, zone
         }),
-        store.dispatch('users/getFollowBangumis', {
+        store.dispatch('bangumi/getFollowBangumis', {
           zone
         })
       ]
@@ -415,7 +415,7 @@
           : this.$store.state.users.list[this.slug]
       },
       bangumis () {
-        return this.$store.state.users.bangumis[this.slug]
+        return this.$store.state.bangumi.follows[this.slug]
       },
       banner () {
         return this.bannerSelector.showBar
@@ -510,6 +510,10 @@
       },
       openAvatarModal (e) {
         const file = e.target.files[0]
+        if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
+          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          return
+        }
         const reader = new FileReader()
         this.avatarCropper.type = file.type
         reader.onload = (evt) => {
@@ -555,6 +559,10 @@
       },
       selectBanner (e) {
         const file = e.target.files[0]
+        if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
+          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          return
+        }
         const reader = new FileReader()
         this.bannerSelector.file = file
         reader.onload = (evt) => {

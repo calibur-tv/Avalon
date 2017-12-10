@@ -1,6 +1,6 @@
 <template>
   <v-modal v-model="showModal" :footer="false" header-text="用户反馈">
-    <el-form :model="forms" :rules="rules" ref="forms" label-width="100px" class="demo-forms">
+    <el-form :model="forms" :rules="rules" ref="forms" label-width="100px">
       <el-form-item label="类型" prop="type">
         <el-select v-model="forms.type" placeholder="请选择活动区域">
           <el-option label="功能建议" :value="1"></el-option>
@@ -42,7 +42,7 @@
       }
     },
     mounted () {
-      this.$channel.$on('show-feedback-modal', () => {
+      this.$channel.$on('show-create-feedback-modal', () => {
         this.showModal = true
       })
     },
