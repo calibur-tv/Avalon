@@ -43,6 +43,7 @@ export function createRouter () {
           },
           {
             path: 'bangumi/:id(\\d+)',
+            name: 'bangumi-show',
             component: () => import('view/bangumi/show')
           },
           {
@@ -51,6 +52,7 @@ export function createRouter () {
           },
           {
             path: 'user/:slug',
+            name: 'user-show',
             component: () => import('view/user/show')
           }
         ]

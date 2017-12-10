@@ -347,33 +347,32 @@
     <div class="wrap abs">
       <div class="shim" :style="computedBg"></div>
     </div>
-    <v-sign></v-sign>
   </header>
 </template>
 
 <script>
   import UserApi from 'api/userApi'
-
   import vSearch from 'component/layouts/Search.vue'
-  import vSign from 'component/layouts/Sign.vue'
 
   export default {
     name: 'v-header',
     components: {
-      vSearch, vSign
+      vSearch
     },
     data () {
       return {
-        theme: 'mask',
-        img: '',
-        imageGrayLevel: 0,
         scrollFlag: false
       }
     },
     computed: {
+      theme () {
+        return ['homepage', 'bangumi-show', 'user-show'].indexOf(this.$route.name) !== -1
+          ? 'mask'
+          : 'blur'
+      },
       computedBg () {
-        return this.img ? {
-          backgroundImage: `url(${this.img})`
+        return this.theme === 'blur' ? {
+          backgroundImage: `url(${this.$resize(this.$store.state.banner, { width: 1920, mode: 0 })})`
         } : {}
       },
       isLogin () {
@@ -396,15 +395,6 @@
         api.logout()
         window.location.reload()
       }
-    },
-    beforeMount () {
-      this.$channel.$on('change-page-background', ({ img, theme, gray }) => {
-        this.img = img
-        this.theme = theme
-        if (!this.imageGrayLevel) {
-          this.imageGrayLevel = gray
-        }
-      })
     },
     mounted () {
       document.addEventListener('scroll', () => {

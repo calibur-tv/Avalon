@@ -76,9 +76,19 @@
       height: $banner-height;
       margin-bottom: 40px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      .signature {
+        color: $color-white;
+        word-break: break-all;
+        word-wrap: break-word;
+        font-size: 13px;
+        line-height: 20px;
+        margin: 40px 0 20px 0;
+        text-shadow: 0 1px 10px gray;
+      }
 
       .img {
         width: 110%;
@@ -165,7 +175,7 @@
       }
     }
 
-    $user-panel-height: 140px;
+    $user-panel-height: 160px;
     .container {
       .el-tabs__active-bar:after {
         display: none;
@@ -185,6 +195,12 @@
 
         .avatar {
           @include avatar(100px)
+        }
+
+        .nickname {
+          margin-top: 20px;
+          display: block;
+          text-align: center;
         }
       }
 
@@ -246,6 +262,8 @@
       <div class="file-input bg">
         <input type="file" ref="bannerInput" @change="selectBanner">
       </div>
+      <p class="signature" v-text="user.signature"></p>
+      <v-share></v-share>
       <no-ssr>
         <transition name="el-zoom-in-bottom">
           <div class="banner-select-bar" v-if="bannerSelector.showBar">
@@ -267,6 +285,7 @@
              :src="$resize(user.avatar, { width: 200, height: 200 })"
              alt="avatar"
              v-else>
+        <span class="nickname" v-text="user.nickname"></span>
         <v-modal class="avatar-cropper-modal"
                  v-model="avatarCropper.showModal"
                  header-text="头像裁剪"
@@ -357,7 +376,7 @@
         store.dispatch('users/getUser', {
           ctx, zone
         }),
-        store.dispatch('users/getFollowBangumis', {
+        store.dispatch('bangumi/getFollowBangumis', {
           zone
         })
       ]
@@ -396,7 +415,7 @@
           : this.$store.state.users.list[this.slug]
       },
       bangumis () {
-        return this.$store.state.users.bangumis[this.slug]
+        return this.$store.state.bangumi.follows[this.slug]
       },
       banner () {
         return this.bannerSelector.showBar
@@ -447,12 +466,6 @@
         }
       }
     },
-    beforeMount () {
-      this.$channel.$emit('change-page-background', {
-        img: '',
-        theme: 'mask'
-      })
-    },
     methods: {
       handleTabClick (tab) {
         if (tab.label === '设置') {
@@ -491,6 +504,10 @@
       },
       openAvatarModal (e) {
         const file = e.target.files[0]
+        if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
+          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          return
+        }
         const reader = new FileReader()
         this.avatarCropper.type = file.type
         reader.onload = (evt) => {
@@ -536,6 +553,10 @@
       },
       selectBanner (e) {
         const file = e.target.files[0]
+        if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
+          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          return
+        }
         const reader = new FileReader()
         this.bannerSelector.file = file
         reader.onload = (evt) => {

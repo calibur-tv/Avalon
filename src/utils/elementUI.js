@@ -16,7 +16,9 @@ import {
   Col,
   Radio,
   RadioGroup,
-  Tooltip
+  Tooltip,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Dropdown)
@@ -36,3 +38,5 @@ Vue.use(Col)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Tooltip)
+Vue.use(Select)
+Vue.use(Option)

@@ -1,5 +1,6 @@
 @import "mixins/mixins";
 @import "common/var";
+@import "tab-pane";
 
 @include b(tabs) {
   @include e(header) {

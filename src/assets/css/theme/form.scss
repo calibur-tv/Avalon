@@ -1,6 +1,8 @@
 @import "mixins/mixins";
 @import "mixins/utils";
 @import "common/var";
+@import "form-item";
+@import "input";
 
 @include b(form) {
   @include m(label-left) {

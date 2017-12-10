@@ -9,7 +9,7 @@ export default {
 
     Vue.prototype.$groupBy = lodash.groupBy
 
-    Vue.prototype.$cdn = env.cdn.host
+    Vue.prototype.$cdn = env.cdn
 
     Vue.prototype.$channel = new Vue()
 
@@ -17,6 +17,7 @@ export default {
       if (url === '') {
         return ''
       }
+      const link = url.match(/^http/) === null ? `${env.cdn.image}${url}` : url
       const canUseWebP = () => {
         if (Vue.prototype.$isServer) {
           return false
@@ -43,9 +44,9 @@ export default {
         const mode = options.mode === undefined ? 1 : options.mode
         const height = options.height ? `/h/${options.height}` : mode === 1 ? `/h/${options.width}` : ''
 
-        return `${url}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
+        return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
       }
-      return `${url}?imageMogr2/auto-orient/strip${format}`
+      return `${link}?imageMogr2/auto-orient/strip${format}`
     }
   }
 }

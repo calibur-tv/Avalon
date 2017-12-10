@@ -131,12 +131,6 @@
     created () {
       this.banner1 = this.banners[0]
     },
-    beforeMount () {
-      this.$channel.$emit('change-page-background', {
-        img: '',
-        theme: 'mask'
-      })
-    },
     mounted () {
       this.loopBanner()
     },

@@ -1,15 +1,12 @@
 import Vue from 'vue'
 import scrollToY from 'assets/js/scrollToY'
 import Backdrop from 'assets/js/Backdrop'
-import Toast from 'assets/js/Toast'
 import Cookies from 'js-cookie'
-import env from '../../.env'
+import { Notification } from 'element-ui'
 
 const utils = {
   install (Vue, options) {
     Vue.prototype.$cookie = Cookies
-
-    Vue.prototype.$cdn = env.cdn
 
     Vue.prototype.$scrollToY = scrollToY
 
@@ -17,7 +14,7 @@ const utils = {
 
     Vue.prototype.$backdrop = new Backdrop()
 
-    Vue.prototype.$toast = new Toast()
+    Vue.prototype.$toast = Notification
 
     Vue.prototype.$eventManager = (function () {
       class Manager {
