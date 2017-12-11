@@ -1,23 +1,27 @@
 import Api from 'api/imageApi'
-import { Notification as toast } from 'element-ui'
 
-export default ({ type, success, ready, ele }) => {
+export default ({ type, elem, success, ready, error }) => {
   const api = new Api()
   api.getCaptcha().then((data) => {
-    this.geetest = data
     window.initGeetest({
       gt: data.id,
       challenge: data.secret,
-      product: type,
+      product: type || 'bind',
       width: '100%',
       offline: true,
       new_captcha: 1
-    }, (captchaObj) => {
-      resolve(captchaObj)
+    }, (captcha) => {
+      if (type === 'float') {
+        captcha.appendTo(elem)
+      }
+      captcha.onSuccess(() => {
+        success && success({ data, captcha })
+      })
+      captcha.onReady(() => {
+        ready && ready(captcha)
+      })
     })
-  }).catch((err) => {
-    err.message.forEach(tip => {
-      toast.error(tip)
-    })
+  }).catch(() => {
+    error && error()
   })
 }

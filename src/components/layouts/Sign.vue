@@ -317,7 +317,6 @@
 </template>
 
 <script>
-  import ImageApi from 'api/imageApi'
   import UserApi from 'api/userApi'
 
   export default {
@@ -411,32 +410,16 @@
         this.showSignIn = false
         this.showSignUp = false
       },
-      getCaptcha (product = 'float') {
-        const api = new ImageApi()
-        return new Promise((resolve, reject) => {
-          api.getCaptcha().then((data) => {
-            this.geetest = data
-            window.initGeetest({
-              gt: data.id,
-              challenge: data.secret,
-              product: product,
-              width: '100%',
-              offline: true,
-              new_captcha: 1
-            }, (captchaObj) => {
-              resolve(captchaObj)
-            })
-          }).catch(reject)
-        })
-      },
       showSignInCaptcha () {
         if (!this.signIn.captcha) {
           this.$validator.validateAll('sign-in').then((result) => {
             if (result) {
               this.signIn.captcha = true
-              this.getCaptcha().then((captcha) => {
-                captcha.appendTo(this.$refs.signInCaptcha)
-                captcha.onSuccess(() => {
+              this.$captcha({
+                type: 'float',
+                elem: this.$refs.signInCaptcha,
+                success: ({ data, captcha }) => {
+                  this.geetest = data
                   this.login().then((token) => {
                     this.$cookie.set('JWT-TOKEN', token, { expires: this.signIn.remember ? 365 : 1 })
                     window.location.reload()
@@ -448,9 +431,10 @@
                       captcha.reset()
                     }, 500)
                   })
-                })
-              }).catch(() => {
-                this.signIn.captcha = false
+                },
+                error: () => {
+                  this.signIn.captcha = false
+                }
               })
             }
           })
@@ -461,9 +445,11 @@
           this.$validator.validateAll('sign-up').then((result) => {
             if (result) {
               this.signUp.captcha = true
-              this.getCaptcha().then((captcha) => {
-                captcha.appendTo(this.$refs.signUpCaptcha)
-                captcha.onSuccess(() => {
+              this.$captcha({
+                type: 'float',
+                elem: this.$refs.signUpCaptcha,
+                success: ({ data, captcha }) => {
+                  this.geetest = data
                   this.register().then((res) => {
                     this.$cookie.set('JWT-TOKEN', res)
                     window.location.reload()
@@ -475,9 +461,10 @@
                       captcha.reset()
                     }, 500)
                   })
-                })
-              }).catch(() => {
-                this.signUp.captcha = false
+                },
+                error: () => {
+                  this.signUp.captcha = false
+                }
               })
             }
           })
@@ -522,13 +509,14 @@
             if (this.signUp.access !== this.signUp.tempAccess) {
               if (this.signUpStep === 0) {
                 this.signUpStep = 1
-                const captcha = await this.getCaptcha('bind')
-                captcha.onReady(() => {
-                  captcha.verify()
-                })
-                captcha.onSuccess(() => {
-                  this.signUpStep = 2
-                  this.getAuthCode()
+                this.$captcha({
+                  success: () => {
+                    this.signUpStep = 2
+                    this.getAuthCode()
+                  },
+                  ready: (captcha) => {
+                    captcha.verify()
+                  }
                 })
               } else {
                 this.getAuthCode()
