@@ -59,7 +59,9 @@
       submit () {
         this.$refs.forms.validate((valid) => {
           if (valid) {
-            alert('submit!')
+            this.$captcha(() => {
+              alert('submit')
+            })
           } else {
             return false
           }

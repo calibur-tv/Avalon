@@ -509,14 +509,9 @@
             if (this.signUp.access !== this.signUp.tempAccess) {
               if (this.signUpStep === 0) {
                 this.signUpStep = 1
-                this.$captcha({
-                  success: () => {
-                    this.signUpStep = 2
-                    this.getAuthCode()
-                  },
-                  ready: (captcha) => {
-                    captcha.verify()
-                  }
+                this.$captcha(() => {
+                  this.signUpStep = 2
+                  this.getAuthCode()
                 })
               } else {
                 this.getAuthCode()
