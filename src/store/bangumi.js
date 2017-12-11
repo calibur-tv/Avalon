@@ -96,8 +96,8 @@ const actions = {
       })
     })
   },
-  async getFollowBangumis ({ state, commit, rootState }, { zone }) {
-    if (state.follows[zone] && rootState.user.zone !== zone) {
+  async getFollowBangumis ({ state, commit }, { zone }) {
+    if (state.follows[zone]) {
       return
     }
     const api = new UserApi()

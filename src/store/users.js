@@ -1,7 +1,10 @@
 import Api from 'api/userApi'
 
 const state = () => ({
-  list: Object.create(null)
+  list: Object.create(null),
+  self: {
+    bangumis: []
+  }
 })
 
 const mutations = {
@@ -12,6 +15,9 @@ const mutations = {
     if (state.list[zone]) {
       delete state.list[zone]
     }
+  },
+  pushFollowBangumis (state, data) {
+    state.self.bangumis = data
   }
 }
 
@@ -23,10 +29,19 @@ const actions = {
     const api = new Api(ctx)
     const data = await api.getUserInfo({ zone })
     commit('pushList', data)
+  },
+  async getFollowBangumis ({ commit }, { zone }) {
+    const api = new Api()
+    const data = await api.followBangumis(zone)
+    commit('pushFollowBangumis', data)
   }
 }
 
-const getters = {}
+const getters = {
+  bangumis: state => {
+    return state.self.bangumis
+  }
+}
 
 export default {
   namespaced: true,

@@ -42,6 +42,12 @@
       }
     }
 
+    @media (max-width: 1150px) {
+      #side-bar {
+        right: $item-size;
+      }
+    }
+
     .v-modal {
       min-width: 720px;
     }
