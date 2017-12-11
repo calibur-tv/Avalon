@@ -365,7 +365,7 @@
 </template>
 
 <script>
-  import vCropper from 'component/base/cropper'
+  import vCropper from 'component/base/Cropper'
   import UserApi from 'api/userApi'
   import ImageApi from 'api/imageApi'
 
