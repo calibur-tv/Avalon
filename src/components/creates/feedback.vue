@@ -9,7 +9,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="详情" prop="desc">
-        <el-input type="textarea" v-model="forms.desc"></el-input>
+        <el-input type="textarea" :rows="6" v-model.trim="forms.desc"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit">提交</el-button>
