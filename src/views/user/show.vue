@@ -327,11 +327,12 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item label="生日">
-                  <el-date-picker
-                    v-model="settingForm.birthday"
-                    type="date"
-                    placeholder="选择日期">
-                  </el-date-picker>
+                  <el-date-picker v-model="settingForm.birthday"
+                                  type="date"
+                                  :editable="false"
+                                  :clearable="false"
+                                  placeholder="选择日期"
+                  ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="性别">
                   <el-col>
@@ -342,8 +343,8 @@
                   </el-col>
                   <el-col v-if="settingForm.sex">
                     <el-switch v-model="settingForm.sexSecret"
-                               active-text="公开"
-                               inactive-text="私密"
+                               active-text="私密"
+                               inactive-text="公开"
                     ></el-switch>
                   </el-col>
                 </el-form-item>
@@ -481,16 +482,21 @@
       saveSetting () {
         this.$refs.settingForm.validate((valid) => {
           if (valid) {
+            const birthday = this.settingForm.birthday ? new Date(this.settingForm.birthday).getTime() / 1000 : 0
+            if (birthday && (Date.now() / 1000 - birthday < 315360000)) {
+              this.$toast.warning('小于10岁？不应该...')
+              return
+            }
             const api = new UserApi(this)
             const data = {
               nickname: this.settingForm.nickname,
               signature: this.settingForm.signature,
               sex: parseInt(this.settingForm.sex, 10) + (this.settingForm.sexSecret ? 2 : 0),
-              birthday: new Date(this.settingForm.birthday).getTime() / 1000
+              birthday: birthday
             }
             api.settingProfile(data).then(() => {
               this.$toast.success('设置成功')
-              this.$store.commit('SET_USER', Object.assign(this.self, data))
+              this.$store.commit('SET_USER_INFO', Object.assign({}, this.self, data))
               this.$store.commit('users/removeUser', this.slug)
             }).catch((err) => {
               err.message.forEach(tip => {
