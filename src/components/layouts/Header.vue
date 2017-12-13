@@ -352,8 +352,8 @@
 </template>
 
 <script>
-  import UserApi from 'api/userApi'
-  import vSearch from 'component/layouts/Search.vue'
+  import UserApi from '~/api/userApi'
+  import vSearch from '~/components/layouts/Search'
 
   export default {
     name: 'v-header',

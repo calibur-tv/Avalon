@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { env, host, timeout } from '../../.env'
+import { env, host, timeout } from 'env'
 
 export default (ctx) => {
   const http = axios.create({

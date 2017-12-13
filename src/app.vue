@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { qiniu, script } from '../.env'
+  import { qiniu, script } from 'env'
 
   export default {
     name: 'Entry',

@@ -1,4 +1,4 @@
-import Api from 'api/userApi'
+import Api from '~/api/userApi'
 
 const state = () => ({
   list: Object.create(null),

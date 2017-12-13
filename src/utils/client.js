@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import scrollToY from 'assets/js/scrollToY'
-import Backdrop from 'assets/js/Backdrop'
+import scrollToY from '~/assets/js/scrollToY'
+import Backdrop from '~/assets/js/Backdrop'
 import Cookies from 'js-cookie'
 import { Notification } from 'element-ui'
-import captcha from 'assets/js/captcha.js'
+import captcha from '~/assets/js/captcha.js'
 
 const utils = {
   install (Vue, options) {

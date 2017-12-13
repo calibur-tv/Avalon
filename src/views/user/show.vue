@@ -366,9 +366,9 @@
 </template>
 
 <script>
-  import vCropper from 'component/base/Cropper'
-  import UserApi from 'api/userApi'
-  import ImageApi from 'api/imageApi'
+  import vCropper from '~/components/base/Cropper'
+  import UserApi from '~/api/userApi'
+  import ImageApi from '~/api/imageApi'
 
   export default {
     async asyncData ({ route, store, ctx }) {

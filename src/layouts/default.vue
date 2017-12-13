@@ -22,11 +22,11 @@
 </template>
 
 <script>
-  import vHeader from 'component/layouts/Header.vue'
-  import vMusic from 'component/layouts/Music.vue'
-  import vFooter from 'component/layouts/Footer.vue'
-  import vSideBar from 'component/layouts/SideBar.vue'
-  import vSign from 'component/layouts/Sign.vue'
+  import vHeader from '~/components/layouts/Header'
+  import vMusic from '~/components/layouts/Music'
+  import vFooter from '~/components/layouts/Footer'
+  import vSideBar from '~/components/layouts/SideBar'
+  import vSign from '~/components/layouts/Sign'
 
   export default {
     components: {

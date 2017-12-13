@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueToast from './toast.vue'
+import VueToast from './toast'
 
 export default class {
   constructor () {

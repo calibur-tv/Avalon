@@ -17,43 +17,43 @@ export function createRouter () {
     routes: [
       {
         path: '/',
-        component: () => import('layout/default'),
+        component: () => import('~/layouts/default'),
         children: [
           {
             path: '',
             name: 'homepage',
-            component: () => import('view/index')
+            component: () => import('~/views/index')
           },
           {
             path: 'bangumi/news',
-            component: () => import('view/bangumi/news')
+            component: () => import('~/views/bangumi/news')
           },
           {
             path: 'bangumi/rank',
-            component: () => import('view/bangumi/rank')
+            component: () => import('~/views/bangumi/rank')
           },
           {
             path: 'bangumi/timeline',
-            component: () => import('view/bangumi/time')
+            component: () => import('~/views/bangumi/time')
           },
           {
             name: 'bangumi-tags',
             path: 'bangumi/tags/:id?',
-            component: () => import('view/bangumi/tags')
+            component: () => import('~/views/bangumi/tags')
           },
           {
             path: 'bangumi/:id(\\d+)',
             name: 'bangumi-show',
-            component: () => import('view/bangumi/show')
+            component: () => import('~/views/bangumi/show')
           },
           {
             path: 'video/:id(\\d+)',
-            component: () => import('view/video/show')
+            component: () => import('~/views/video/show')
           },
           {
             path: 'user/:slug',
             name: 'user-show',
-            component: () => import('view/user/show')
+            component: () => import('~/views/user/show')
           }
         ]
       }

@@ -1,4 +1,4 @@
-import Api from 'api/imageApi'
+import Api from '~/api/imageApi'
 
 export default (params) => {
   const { type, elem, success, error } = typeof params === 'object' ? params : {}

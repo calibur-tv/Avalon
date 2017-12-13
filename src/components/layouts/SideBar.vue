@@ -75,8 +75,8 @@
 </template>
 
 <script>
-  import vPost from 'component/creates/Post'
-  import vFeedback from 'component/creates/Feedback'
+  import vPost from '~/components/creates/Post'
+  import vFeedback from '~/components/creates/Feedback'
 
   export default {
     name: 'v-side-bar',

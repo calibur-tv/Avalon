@@ -1,5 +1,5 @@
-import BangumiApi from 'api/bangumiApi'
-import UserApi from 'api/userApi'
+import BangumiApi from '~/api/bangumiApi'
+import UserApi from '~/api/userApi'
 
 const state = () => ({
   news: [],

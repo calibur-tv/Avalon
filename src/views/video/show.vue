@@ -106,9 +106,9 @@
 </template>
 
 <script>
-  import vBanner from 'component/layouts/Banner.vue'
-  import vVideo from 'component/Video.vue'
-  import VideoApi from 'api/videoApi'
+  import vBanner from '~/components/layouts/Banner'
+  import vVideo from '~/components/Video'
+  import VideoApi from '~/api/videoApi'
 
   const metaMarginRgt = 8
 

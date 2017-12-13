@@ -317,7 +317,7 @@
 </template>
 
 <script>
-  import UserApi from 'api/userApi'
+  import UserApi from '~/api/userApi'
 
   export default {
     name: 'v-sign',

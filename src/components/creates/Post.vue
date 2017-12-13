@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import Api from 'api/postApi'
+  import Api from '~/api/postApi'
 
   export default {
     name: 'create-post',

@@ -1,4 +1,4 @@
-import Api from 'api/imageApi'
+import Api from '~/api/imageApi'
 
 const state = () => ({
   banners: []

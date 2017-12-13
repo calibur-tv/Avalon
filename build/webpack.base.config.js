@@ -1,7 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const CompressionPlugin = require('compression-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const QiniuPlugin = require('qiniu-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -19,13 +18,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'api': resolve('../src/api'),
-      'view': resolve('../src/views'),
-      'utils': resolve('../src/utils'),
-      'assets': resolve('../src/assets'),
-      'static': resolve('../src/static'),
-      'layout': resolve('../src/layouts'),
-      'component': resolve('../src/components')
+      '~': resolve('../src'),
+      'env': resolve('../.env.js'),
+      'img': resolve('../src/assets/img'),
+      'static': resolve('../src/static')
     },
     extensions: ['.js', '.vue', '.scss', 'css']
   },
@@ -144,14 +140,7 @@ module.exports = {
         new ExtractTextPlugin({
           filename: 'common.[chunkhash].css'
         }),
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        // new CompressionPlugin({
-        //   asset: '[path].gz[query]',
-        //   algorithm: 'gzip',
-        //   test: /\.js$|\.css$|\.html$/,
-        //   threshold: 10240,
-        //   minRatio: 0.8
-        // })
+        new webpack.optimize.ModuleConcatenationPlugin()
       ])
     }
 

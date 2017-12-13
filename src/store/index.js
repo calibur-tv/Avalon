@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UserApi from 'api/userApi'
+import UserApi from '~/api/userApi'
 import homepage from './homepage'
 import bangumi from './bangumi'
 import video from './video'

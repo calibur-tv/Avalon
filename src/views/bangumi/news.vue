@@ -314,7 +314,7 @@
 </template>
 
 <script>
-  import vBanner from 'component/layouts/Banner.vue'
+  import vBanner from '~/components/layouts/Banner'
 
   const nowTime = new Date().getTime()
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']

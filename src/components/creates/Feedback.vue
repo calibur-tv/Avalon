@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import Api from 'api/userApi'
+  import Api from '~/api/userApi'
 
   export default {
     name: 'create-feedback',
