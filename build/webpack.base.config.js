@@ -115,13 +115,19 @@ module.exports = {
     let pluginArr = [
       new webpack.ProvidePlugin({
 
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        }
       })
     ]
 
     if (isProd) {
       pluginArr = pluginArr.concat([
         new UglifyJsPlugin({
-          sourceMap: false
+          sourceMap: false,
+          warnings: false
         }),
         new QiniuPlugin({
           ACCESS_KEY: qiniu.access,
