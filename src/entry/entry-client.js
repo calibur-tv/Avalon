@@ -5,6 +5,7 @@ import ProgressBar from '~/components/layouts/ProgressBar'
 import '~/utils/geetest'
 import '~/utils/validate'
 import '~/utils/client'
+import Editor from '~/assets/js/editor'
 
 const dev = process.env.NODE_ENV === 'development'
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
@@ -15,6 +16,9 @@ const { app, router, store } = createApp()
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
+
+window.M = Object.create(null)
+M.Editor = Editor
 
 router.afterEach((to) => {
   const ele = document.getElementById('share')

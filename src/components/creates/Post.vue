@@ -14,7 +14,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="详情" prop="content">
-        <el-input type="textarea" :rows="10" v-model="forms.content"></el-input>
+        <v-editor v-model="forms.content" type="post"></v-editor>
+        <!--<el-input type="textarea" :rows="10" v-model="forms.content"></el-input>-->
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit">立即创建</el-button>
@@ -25,9 +26,13 @@
 
 <script>
   import Api from '~/api/postApi'
+  import vEditor from '~/components/Editor'
 
   export default {
     name: 'create-post',
+    components: {
+      vEditor
+    },
     data () {
       return {
         showModal: false,
