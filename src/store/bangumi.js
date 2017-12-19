@@ -2,23 +2,15 @@ import BangumiApi from '~/api/bangumiApi'
 import UserApi from '~/api/userApi'
 
 const state = () => ({
-  news: [],
   tags: [],
-  rank: [],
   list: Object.create(null),
-  follows: Object.create(null)
+  follows: Object.create(null),
+  released: [],
+  timeline: [],
+  category: []
 })
 
 const mutations = {
-  pushNews (state, data) {
-    state.news = data
-  },
-  pushTags (state, data) {
-    state.tags = data
-  },
-  pushRank (state, data) {
-    state.rank = data
-  },
   pushList (state, data) {
     state.list[data.id] = data
   },
@@ -44,31 +36,39 @@ const mutations = {
   },
   pushFollowBangumis (state, { data, zone }) {
     state.follows[zone] = data
-  }
-}
-
-const actions = {
-  async getNews ({ state, commit }) {
-    if (state.news.length) {
-      return
-    }
-    const api = new BangumiApi()
-    const data = await api.getNews()
-    commit('pushNews', data)
   },
-  async getTags ({ state, commit }, id) {
-    if (state.tags.length && !id) {
-      return
-    }
-    const api = new BangumiApi()
-    const data = await api.getTags(id)
-    const tags = data.tags
+  setReleased (state, data) {
+    state.released = data
+  },
+  setTimeline (state, data) {
+    state.timeline = data
+  },
+  setTags (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined
     tags.forEach((tag, index) => {
       tags[index].selected = ids ? ids.indexOf(tag.id.toString()) !== -1 : false
     })
-    commit('pushTags', tags)
-    commit('pushRank', data.bangumis)
+    state.tags = tags
+  },
+  setCategory (state, { data, page }) {
+    if (page === 1) {
+      state.category = data
+    } else {
+      data.forEach(item => {
+        state.category.push(item)
+      })
+    }
+  }
+}
+
+const actions = {
+  async getTags ({ state, commit }, { id }) {
+    if (state.tags.length) {
+      return
+    }
+    const api = new BangumiApi()
+    const tags = await api.tags()
+    commit('setTags', { tags, id })
   },
   async getShow ({ state, commit }, { ctx, id }) {
     if (state.list[id]) {
@@ -103,6 +103,24 @@ const actions = {
     const api = new UserApi()
     const data = await api.followBangumis(zone)
     commit('pushFollowBangumis', { data, zone })
+  },
+  async getReleased ({ state, commit }) {
+    if (state.released.length) {
+      return
+    }
+    const api = new BangumiApi()
+    const data = await api.released()
+    commit('setReleased', data)
+  },
+  async getTimeline ({ commit }, { time }) {
+    const api = new BangumiApi()
+    const data = await api.timeline({ time })
+    commit('setTimeline', data)
+  },
+  async getCategory ({ commit }, { id, page }) {
+    const api = new BangumiApi()
+    const data = await api.category({ id, page })
+    commit('setCategory', { data, page })
   }
 }
 

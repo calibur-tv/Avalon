@@ -150,26 +150,23 @@
     components: {
       vBanner
     },
-    beforeRouteEnter (to, from, next) {
-      const id = to.params.id
-      if (id === undefined || /^\d+$/.test(id) ||
-         (id.indexOf('-') !== -1 && id.split('-').every(item => /^\d+$/.test(item)))
-      ) {
-        next()
-      }
-      next(false)
-    },
-    watch: {
-      '$route' (val) {
-        this.$store.dispatch('bangumi/getTags', val.params.id)
-      }
-    },
     async asyncData ({ route, store }) {
-      await store.dispatch('bangumi/getTags', route.params.id)
+      const id = route.query.id
+      const arr = [store.dispatch('bangumi/getTags', { id })]
+      if (id && (
+        /^\d+$/.test(id) ||
+        (id.indexOf('-') !== -1 && id.split('-').every(item => /^\d+$/.test(item)))
+      )) {
+        arr.push(store.dispatch('bangumi/getCategory', {
+          id,
+          page: 1
+        }))
+      }
+      await Promise.all(arr)
     },
     computed: {
       bangumis () {
-        return this.$store.state.bangumi.rank
+        return this.$store.state.bangumi.category
       },
       tags () {
         return this.$store.state.bangumi.tags
@@ -184,12 +181,7 @@
           }
         })
         if (selected.length) {
-          this.$router.push({
-            name: 'bangumi-tags',
-            params: {
-              id: selected.join('-')
-            }
-          })
+          window.location = `${window.location.href.split('?').shift()}?id=${selected.join('-')}&page=1`
         }
       }
     }

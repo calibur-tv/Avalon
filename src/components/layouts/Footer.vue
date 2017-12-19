@@ -10,7 +10,18 @@
 </style>
 
 <template>
-  <footer id="footer">
+  <footer id="footer" v-if="show">
     <p class="slogan" data-text="calibur - 天下漫友是一家"></p>
   </footer>
 </template>
+
+<script>
+  export default {
+    name: 'v-footer',
+    computed: {
+      show () {
+        return this.$route.name !== 'homepage'
+      }
+    }
+  }
+</script>

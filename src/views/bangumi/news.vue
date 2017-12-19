@@ -235,7 +235,7 @@
                          :label="tab"
                          :key="index"
                          :name="tab">
-              <ul v-if="released[index]">
+              <ul v-if="released[index] && released[index].length">
                 <li class="bangumi" :key="item.id" v-for="item in released[index]">
                   <figure class="clearfix">
                     <a target="_blank" :href="`/bangumi/${item.id}`">
@@ -275,9 +275,9 @@
         <section class="history">
           <h2 class="subtitle">时间轴</h2>
           <ul class="collections">
-            <ul v-for="(col, index) in list" class="collection">
-              <h3 class="time" v-text="formatTime(timeline[index])"></h3>
-              <li class="bangumi" v-for="item in col">
+            <ul v-for="col in timeline" class="collection">
+              <h3 class="time" v-text="col.date"></h3>
+              <li class="bangumi" v-for="item in col.list">
                 <figure>
                   <a :href="`/bangumi/${item.id}`" target="_blank">
                     <v-img
@@ -328,51 +328,28 @@
       vBanner
     },
     async asyncData ({ store }) {
-      await store.dispatch('bangumi/getNews')
+      await Promise.all([
+        store.dispatch('bangumi/getReleased'),
+        store.dispatch('bangumi/getTimeline', {
+          time: parseInt(Date.now() / 1000)
+        })
+      ])
     },
-    created () {
-      const data = this.$store.state.bangumi.news
-      const timeline = []
-      const released = {}
-      const releaseNews = []
-      data.forEach((bangumi) => {
-        const time = bangumi.published_at
-        if (timeline.indexOf(time) === -1) {
-          timeline.push(time)
-        }
-        if (bangumi.released_at) {
-          if (released[bangumi.released_at] === undefined) {
-            released[bangumi.released_at] = []
-          }
-          released[bangumi.released_at].push(bangumi)
-          releaseNews.push(bangumi)
-        }
-      })
-      released[0] = releaseNews.sort((a, b) => {
-        return b - a
-      })
-      this.released = released
-      this.timeline = timeline.sort((a, b) => {
-        return b - a
-      })
-      this.list = this.$orderBy(this.$groupBy(data, 'published_at'), (time) => {
-        return time[0].published_at
-      }).reverse()
+    computed: {
+      timeline () {
+        return this.$store.state.bangumi.timeline
+      },
+      released () {
+        return this.$store.state.bangumi.released
+      }
     },
     data () {
       return {
         showtime: weeklys,
-        released: null,
-        timeline: [],
-        list: [],
         thisWeek: weeklys[new Date().getDay() ? new Date().getDay() : 7]
       }
     },
     methods: {
-      formatTime (time) {
-        const date = new Date(time * 1000)
-        return `${date.getFullYear()} 年 ${date.getMonth() + 1} 月`
-      },
       computePartStyle (timestamp) {
         return nowTime / 1000 - timestamp < 604800
       }
