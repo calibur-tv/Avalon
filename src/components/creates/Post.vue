@@ -81,7 +81,8 @@
         },
         uploadHeaders: {
           token: ''
-        }
+        },
+        images: []
       }
     },
     watch: {
@@ -89,6 +90,28 @@
         if (val) {
           this.getUserFollowedBangumis()
         }
+      }
+    },
+    computed: {
+      formatContent () {
+        let content = this.forms.content
+        while (content.match('\n\n') !== null) {
+          content = content.replace('\n\n', '\n')
+        }
+        content = content.split('\n')
+        const res = []
+        content.forEach(item => {
+          res.push(item ? `<p>${item}</p>` : '<p><br/></p>')
+        })
+        return res.join('')
+      },
+      formatImages () {
+        const images = this.images
+        const res = []
+        images.forEach(item => {
+          res.push(item.url)
+        })
+        return res
       }
     },
     methods: {
@@ -100,7 +123,8 @@
               api.create({
                 title: this.forms.title,
                 bangumi_id: this.forms.bangumi_id,
-                content: this.forms.content,
+                content: this.formatContent,
+                images: this.formatImages,
                 geetest: data
               }).then((id) => {
 
@@ -120,23 +144,31 @@
           zone: this.$store.state.user.zone
         })
       },
-      handlePreview () {
-
+      handlePreview (file) {
+        window.open(`${this.$cdn.image}${file.response.key}`)
       },
-      handleError () {
-
+      handleError (err, file) {
+        console.log(err)
+        this.$toast.error(`图片：${file.name} 上传失败`)
       },
-      handleRemove () {
-
+      handleRemove (file) {
+        this.images.forEach((item, index) => {
+          if (item.id === file.uid) {
+            this.images.splice(index, 1)
+          }
+        })
       },
-      handleSuccess () {
-
+      handleSuccess (res, file) {
+        this.images.push({
+          id: file.uid,
+          url: res.key
+        })
       },
       handleExceed () {
         this.$toast.error('最多可上传 3 张图片!')
       },
       beforeUpload (file) {
-        const isFormat = file.type === 'image/jpeg' || file.type === 'image/png'
+        const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
         const isLt2M = file.size / 1024 / 1024 < 2
 
         if (!isFormat) {
