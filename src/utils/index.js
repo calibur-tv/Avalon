@@ -24,7 +24,8 @@ import {
   RadioGroup,
   Tooltip,
   Select,
-  Option
+  Option,
+  Upload
 } from 'element-ui'
 
 Vue.use(Dropdown)
@@ -47,6 +48,7 @@ Vue.use(Tooltip)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(InfiniteScroll)
+Vue.use(Upload)
 
 Vue.use({
   install (Vue, options) {

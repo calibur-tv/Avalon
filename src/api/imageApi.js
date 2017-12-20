@@ -9,8 +9,8 @@ export default class extends BaseApi {
     return this.http.post('door/captcha')
   }
 
-  getUpToken ({ modal, type, id, setKey }) {
-    return this.http.post('image/token', { modal, type, id, setKey: setKey === undefined ? true : setKey })
+  getUpToken ({ model, type, id, setKey }) {
+    return this.http.post('image/token', { model, type, id, setKey: setKey === undefined ? true : setKey })
   }
 
   uploadToQiniu (formData) {

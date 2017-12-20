@@ -151,7 +151,7 @@
     <transition name="modal">
       <section class="v-modal-wrap" v-if="toggle">
         <div class="v-modal-mask" @click.stop.prevent="handleClose"></div>
-        <div class="v-modal" @click.stop.prevent>
+        <div class="v-modal" @click>
           <header v-if="header">
             <slot name="header">
               <h4 v-text="headerText"></h4>

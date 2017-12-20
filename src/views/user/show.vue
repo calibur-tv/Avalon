@@ -531,7 +531,7 @@
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
         await this.$store.dispatch('image/getUpToken', {
-          modal: 'user',
+          model: 'user',
           type: 'avatar',
           id: this.user.id
         })
@@ -580,7 +580,7 @@
       async submitBannerChange () {
         this.bannerSelector.loading = true
         await this.$store.dispatch('image/getUpToken', {
-          modal: 'user',
+          model: 'user',
           type: 'banner',
           id: this.user.id
         })
