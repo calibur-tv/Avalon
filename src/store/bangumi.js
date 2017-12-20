@@ -8,7 +8,7 @@ const state = () => ({
   follows: Object.create(null),
   released: [],
   timeline: [],
-  category: null
+  category: {}
 })
 
 const mutations = {

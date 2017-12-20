@@ -106,7 +106,7 @@
             </li>
           </ul>
         </div>
-        <div class="bangumis" v-if="bangumis.length">
+        <div class="bangumis" v-if="bangumis && bangumis.length">
           <h2 class="subtitle">番剧列表</h2>
           <ul v-infinite-scroll="loadMore"
               infinite-scroll-disabled="loading"
