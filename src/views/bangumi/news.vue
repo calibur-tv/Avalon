@@ -274,12 +274,11 @@
         </section>
         <section class="history">
           <h2 class="subtitle">时间轴</h2>
-          <ul class="collections">
-            <ul v-for="col in timeline"
-                class="collection"
-                v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="loading"
-                infinite-scroll-distance="200">
+          <ul class="collections"
+              v-infinite-scroll="loadMore"
+              infinite-scroll-disabled="loading"
+              infinite-scroll-distance="200">
+            <ul v-for="col in timeline" class="collection">
               <h3 class="time" v-text="col.date"></h3>
               <li class="bangumi" v-for="item in col.list">
                 <figure>
@@ -322,6 +321,9 @@
 
   const nowTime = new Date()
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
+  const defaultParams = {
+    year: nowTime.getFullYear() + 1
+  }
 
   export default {
     name: 'bangumi-news',
@@ -335,7 +337,7 @@
       await Promise.all([
         store.dispatch('bangumi/getReleased'),
         store.dispatch('bangumi/getTimeline', {
-          year: nowTime.getFullYear()
+          year: defaultParams.year
         })
       ])
     },
@@ -352,7 +354,7 @@
         showtime: weeklys,
         thisWeek: weeklys[nowTime.getDay() ? nowTime.getDay() : 7],
         loading: false,
-        year: nowTime.getFullYear()
+        year: defaultParams.year
       }
     },
     methods: {
