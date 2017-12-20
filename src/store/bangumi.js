@@ -1,5 +1,6 @@
 import BangumiApi from '~/api/bangumiApi'
 import UserApi from '~/api/userApi'
+import { listFetchCount } from 'env'
 
 const state = () => ({
   tags: [],
@@ -7,7 +8,7 @@ const state = () => ({
   follows: Object.create(null),
   released: [],
   timeline: [],
-  category: []
+  category: null
 })
 
 const mutations = {
@@ -41,7 +42,13 @@ const mutations = {
     state.released = data
   },
   setTimeline (state, data) {
-    state.timeline = data
+    if (state.timeline) {
+      data.forEach(item => {
+        state.timeline.push(item)
+      })
+    } else {
+      state.timeline = data
+    }
   },
   setTags (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined
@@ -52,12 +59,13 @@ const mutations = {
   },
   setCategory (state, { data, page }) {
     if (page === 1) {
-      state.category = data
+      state.category = { data }
     } else {
       data.forEach(item => {
-        state.category.push(item)
+        state.category.data.push(item)
       })
     }
+    state.category.noMore = data.length < listFetchCount
   }
 }
 
@@ -112,9 +120,9 @@ const actions = {
     const data = await api.released()
     commit('setReleased', data)
   },
-  async getTimeline ({ commit }, { time }) {
+  async getTimeline ({ commit }, { year }) {
     const api = new BangumiApi()
-    const data = await api.timeline({ time })
+    const data = await api.timeline({ year })
     commit('setTimeline', data)
   },
   async getCategory ({ commit }, { id, page }) {

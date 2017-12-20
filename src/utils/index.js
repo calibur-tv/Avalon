@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import lodash from './lodash'
 import env from 'env'
+import {
+  InfiniteScroll
+} from 'mint-ui'
 
 import {
   Dropdown,
@@ -43,6 +46,7 @@ Vue.use(RadioGroup)
 Vue.use(Tooltip)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(InfiniteScroll)
 
 Vue.use({
   install (Vue, options) {

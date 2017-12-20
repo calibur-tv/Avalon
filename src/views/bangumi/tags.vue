@@ -102,13 +102,15 @@
               >{{ tag.name }}</a>
             </li>
             <li>
-              <button class="btn" @click="getList">点击查找</button>
+              <button class="btn" @click="refresh">点击查找</button>
             </li>
           </ul>
         </div>
         <div class="bangumis" v-if="bangumis.length">
           <h2 class="subtitle">番剧列表</h2>
-          <ul>
+          <ul v-infinite-scroll="loadMore"
+              infinite-scroll-disabled="loading"
+              infinite-scroll-distance="200">
             <li class="bangumi" v-for="item in bangumis" :key="item.id">
               <figure>
                 <a :href="`/bangumi/${item.id}`" target="_blank">
@@ -141,6 +143,9 @@
 
 <script>
   import vBanner from '~/components/layouts/Banner'
+  const defaultParams = {
+    page: 1
+  }
 
   export default {
     name: 'bangumi-tags',
@@ -159,21 +164,30 @@
       )) {
         arr.push(store.dispatch('bangumi/getCategory', {
           id,
-          page: 1
+          page: defaultParams.page
         }))
       }
       await Promise.all(arr)
     },
     computed: {
       bangumis () {
-        return this.$store.state.bangumi.category
+        return this.$store.state.bangumi.category.data
       },
       tags () {
         return this.$store.state.bangumi.tags
+      },
+      noMore () {
+        return this.$store.state.bangumi.category.noMore
+      }
+    },
+    data () {
+      return {
+        page: defaultParams.page,
+        loading: false
       }
     },
     methods: {
-      getList () {
+      refresh () {
         const selected = []
         this.tags.forEach((tag) => {
           if (tag.selected) {
@@ -183,6 +197,22 @@
         if (selected.length) {
           window.location = `${window.location.href.split('?').shift()}?id=${selected.join('-')}&page=1`
         }
+      },
+      async loadMore () {
+        if (this.loading || this.noMore) {
+          return
+        }
+        this.loading = true
+
+        try {
+          await this.$store.dispatch('bangumi/getCategory', {
+            id: this.$route.query.id,
+            page: ++this.page
+          })
+        } catch (e) {
+          this.page--
+        }
+        this.loading = false
       }
     }
   }

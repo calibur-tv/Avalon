@@ -275,7 +275,11 @@
         <section class="history">
           <h2 class="subtitle">时间轴</h2>
           <ul class="collections">
-            <ul v-for="col in timeline" class="collection">
+            <ul v-for="col in timeline"
+                class="collection"
+                v-infinite-scroll="loadMore"
+                infinite-scroll-disabled="loading"
+                infinite-scroll-distance="200">
               <h3 class="time" v-text="col.date"></h3>
               <li class="bangumi" v-for="item in col.list">
                 <figure>
@@ -316,7 +320,7 @@
 <script>
   import vBanner from '~/components/layouts/Banner'
 
-  const nowTime = new Date().getTime()
+  const nowTime = new Date()
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
 
   export default {
@@ -331,7 +335,7 @@
       await Promise.all([
         store.dispatch('bangumi/getReleased'),
         store.dispatch('bangumi/getTimeline', {
-          time: parseInt(Date.now() / 1000)
+          year: nowTime.getFullYear()
         })
       ])
     },
@@ -346,12 +350,29 @@
     data () {
       return {
         showtime: weeklys,
-        thisWeek: weeklys[new Date().getDay() ? new Date().getDay() : 7]
+        thisWeek: weeklys[nowTime.getDay() ? nowTime.getDay() : 7],
+        loading: false,
+        year: nowTime.getFullYear()
       }
     },
     methods: {
       computePartStyle (timestamp) {
-        return nowTime / 1000 - timestamp < 604800
+        return parseInt(nowTime.getTime() / 1000, 10) - timestamp < 604800
+      },
+      async loadMore () {
+        if (this.loading || this.year === 1970) {
+          return
+        }
+        this.loading = true
+
+        try {
+          await this.$store.dispatch('bangumi/getTimeline', {
+            year: --this.year
+          })
+        } catch (e) {
+          this.year++
+        }
+        this.loading = false
       }
     }
   }

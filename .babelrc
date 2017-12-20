@@ -9,6 +9,10 @@
       {
         "libraryName": "element-ui",
         "style": false
+      },
+      {
+        "libraryName": "mint-ui",
+        "style": true
       }
     ]]
   ]
