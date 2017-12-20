@@ -7,7 +7,7 @@ const state = () => ({
   list: Object.create(null),
   follows: Object.create(null),
   released: [],
-  timeline: [],
+  timeline: {},
   category: {}
 })
 
@@ -42,13 +42,14 @@ const mutations = {
     state.released = data
   },
   setTimeline (state, data) {
-    if (state.timeline) {
-      data.forEach(item => {
-        state.timeline.push(item)
+    if (state.timeline.data) {
+      data.data.forEach(item => {
+        state.timeline.data.push(item)
       })
     } else {
-      state.timeline = data
+      state.timeline.data = data.data
     }
+    state.timeline.min = data.min
   },
   setTags (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined

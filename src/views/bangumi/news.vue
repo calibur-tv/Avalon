@@ -343,10 +343,13 @@
     },
     computed: {
       timeline () {
-        return this.$store.state.bangumi.timeline
+        return this.$store.state.bangumi.timeline.data
       },
       released () {
         return this.$store.state.bangumi.released
+      },
+      minYear () {
+        return this.$store.state.bangumi.timeline.min
       }
     },
     data () {
@@ -362,7 +365,7 @@
         return parseInt(nowTime.getTime() / 1000, 10) - timestamp < 604800
       },
       async loadMore () {
-        if (this.loading || this.year === 1970) {
+        if (this.loading || this.year === this.minYear) {
           return
         }
         this.loading = true
