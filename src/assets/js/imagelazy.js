@@ -66,16 +66,16 @@ export default {
       let src
       if (this.width && this.height) {
         src = this.$resize(this.resource, {
-          width: this.width,
-          height: this.height
+          width: this.width * 2,
+          height: this.height * 2
         })
       } else if (this.width) {
         src = this.$resize(this.resource, {
-          width: this.width
+          width: this.width * 2
         })
       } else if (this.height) {
         src = this.$resize(this.resource, {
-          height: this.height
+          height: this.height * 2
         })
       } else {
         src = this.resource

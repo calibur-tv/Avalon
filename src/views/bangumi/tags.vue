@@ -97,7 +97,7 @@
                 :key="tag.id"
                 @click="$store.commit('bangumi/selectTag', index)">
               <a @click.prevent
-                 :href="`/bangumi/tags/${tag.id}`" class="el-tag"
+                 :href="$alias.bangumiTag(tag.id)" class="el-tag"
                  :class="{ 'selected': tag.selected }"
               >{{ tag.name }}</a>
             </li>
@@ -113,7 +113,7 @@
               infinite-scroll-distance="200">
             <li class="bangumi" v-for="item in bangumis" :key="item.id">
               <figure>
-                <a :href="`/bangumi/${item.id}`" target="_blank">
+                <a :href="$alias.bangumi(item.id)" target="_blank">
                   <v-img
                     class="face"
                     :title="item.name"
@@ -123,7 +123,7 @@
                 </a>
                 <figcaption class="content">
                   <p class="head">
-                    <a target="_blank" :href="`/bangumi/${item.id}`" class="name" v-text="item.name"></a>
+                    <a target="_blank" :href="$alias.bangumi(item.id)" class="name" v-text="item.name"></a>
                     <!--<span v-text="item.count_score"></span>-->
                   </p>
                   <p class="body twoline" v-text="item.summary"></p>
@@ -142,7 +142,6 @@
 </template>
 
 <script>
-  import vBanner from '~/components/layouts/Banner'
   const defaultParams = {
     page: 1,
     take: 15
@@ -151,10 +150,7 @@
   export default {
     name: 'bangumi-tags',
     head: {
-      title: '番剧列表'
-    },
-    components: {
-      vBanner
+      title: '分类索引 - 番剧'
     },
     async asyncData ({ route, store }) {
       const id = route.query.id

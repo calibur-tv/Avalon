@@ -101,7 +101,7 @@
   export default {
     name: 'homepage',
     head: {
-      title: 'calibur'
+      title: '天下漫友是一家'
     },
     components: {
       vSearch

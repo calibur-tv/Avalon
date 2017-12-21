@@ -6,6 +6,7 @@ import bangumi from './bangumi'
 import video from './video'
 import users from './users'
 import image from './image'
+import post from './post'
 
 Vue.use(Vuex)
 
@@ -60,7 +61,8 @@ export function createStore () {
       bangumi,
       video,
       users,
-      image
+      image,
+      post
     }
   })
 }

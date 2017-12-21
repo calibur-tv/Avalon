@@ -220,7 +220,7 @@
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
                     <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
-                      <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                      <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
                          :rel="info.others_site_video ? 'nofollow' : ''"
                          target="_blank">
                         <figure>
@@ -240,7 +240,7 @@
               </div>
               <ul v-else>
                 <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
-                  <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                  <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
                      :rel="info.others_site_video ? 'nofollow' : ''"
                      target="_blank">
                     <figure>
@@ -268,7 +268,7 @@
           <h2 class="subtitle">标签</h2>
           <ul>
             <li class="tag" v-for="tag in tags" :key="tag.id">
-              <router-link class="el-tag" :to="`/bangumi/tags/${tag.id}`" v-text="tag.name"></router-link>
+              <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
             </li>
           </ul>
         </div>
@@ -277,7 +277,7 @@
           <ul>
             <li v-for="user in info.followers" :key="user.zone">
               <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
-                <a :href="`/user/${user.zone}`" target="_blank">
+                <a :href="$alias.user(user.zone)" target="_blank">
                   <v-img :src="$resize(user.avatar, { width: 64, height: 64 })"
                          :alt="user.zone"
                   ></v-img>
@@ -309,7 +309,7 @@
         keywords += `,${tag.name}`
       })
       return {
-        title: `${this.info.name}`,
+        title: `${this.info.name} - 番剧`,
         meta: [
           { hid: 'description', name: 'description', content: this.info.summary },
           { hid: 'keywords', name: 'keywords', content: keywords }

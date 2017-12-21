@@ -10,8 +10,8 @@
   export default {
     name: 'Entry',
     head: {
-      title: 'calibur',
-      titleTemplate: '%s - 天下漫友是一家',
+      title: '天下漫友是一家',
+      titleTemplate: '%s - calibur',
       htmlAttrs: {
         lang: 'zh-CN'
       },

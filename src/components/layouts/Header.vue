@@ -327,7 +327,7 @@
         <v-search :placeholder="'搜索'" :history="true"></v-search>
         <template v-if="isLogin">
           <el-dropdown class="user-section" :placement="'bottom'">
-            <router-link class="el-dropdown-link" :to="`/user/${user.zone}`">
+            <router-link class="el-dropdown-link" :to="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
             </router-link>
             <el-dropdown-menu slot="dropdown">

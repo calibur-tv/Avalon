@@ -238,11 +238,11 @@
               <ul v-if="released[index] && released[index].length">
                 <li class="bangumi" :key="item.id" v-for="item in released[index]">
                   <figure class="clearfix">
-                    <a target="_blank" :href="`/bangumi/${item.id}`">
+                    <a target="_blank" :href="$alias.bangumi(item.id)">
                       <img class="face" :src="$resize(item.avatar, { width: 180 })" :alt="item.name">
                     </a>
                     <figcaption class="abs">
-                      <a :href="`/bangumi/${item.id}`"
+                      <a :href="$alias.bangumi(item.id)"
                          class="href-fade-blue twoline"
                          target="_blank"
                          v-text="item.name"
@@ -251,7 +251,7 @@
                         更新至
                         <a v-if="item.released_video_id"
                            :class="[computePartStyle(item.published_at) ? 'new' : 'old']"
-                           :href="`/video/${item.released_video_id}`"
+                           :href="$alias.video(item.released_video_id)"
                            target="_blank"
                            class="part oneline">
                           {{ `${item.released_part}话` }}
@@ -282,7 +282,7 @@
               <h3 class="time" v-text="col.date"></h3>
               <li class="bangumi" v-for="item in col.list">
                 <figure>
-                  <a :href="`/bangumi/${item.id}`" target="_blank">
+                  <a :href="$alias.bangumi(item.id)" target="_blank">
                     <v-img
                       class="face"
                       :title="item.name"
@@ -292,14 +292,14 @@
                   </a>
                   <figcaption class="content">
                     <p class="head">
-                      <a target="_blank" :href="`/bangumi/${item.id}`" class="name" v-text="item.name"></a>
+                      <a target="_blank" :href="$alias.bangumi(item.id)" class="name" v-text="item.name"></a>
                       <!--<span v-text="item.count_score"></span>-->
                     </p>
                     <p class="body twoline" v-text="item.summary"></p>
                     <div class="foot">
                       <ul class="icon-item icon-item-tag oneline" v-if="item.tags.length">
                         <li v-for="tag in item.tags">
-                          <a target="_blank" :href="`/bangumi/tags/${tag.id}`" v-text="tag.name"></a>
+                          <a target="_blank" :href="$alias.bangumiTag(tag.id)" v-text="tag.name"></a>
                         </li>
                       </ul>
                       <!--<span v-text="item.count_like"></span>-->
@@ -317,8 +317,6 @@
 </template>
 
 <script>
-  import vBanner from '~/components/layouts/Banner'
-
   const nowTime = new Date()
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
   const defaultParams = {
@@ -329,10 +327,7 @@
   export default {
     name: 'bangumi-news',
     head: {
-      title: '番剧列表'
-    },
-    components: {
-      vBanner
+      title: '时间轴 - 番剧'
     },
     async asyncData ({ store }) {
       await Promise.all([

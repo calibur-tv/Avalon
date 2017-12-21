@@ -16,6 +16,7 @@ const mutations = {
         state.list[id].data.push(item)
       })
     }
+    state.list[id].noMore = data.list.length < take
   }
 }
 

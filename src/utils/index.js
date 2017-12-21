@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import lodash from './lodash'
+import Alias from '~/assets/js/alias'
 import env from 'env'
 import {
   InfiniteScroll
@@ -19,6 +20,7 @@ import {
   DatePicker,
   Switch,
   Alert,
+  Row,
   Col,
   Radio,
   RadioGroup,
@@ -42,6 +44,7 @@ Vue.use(DatePicker)
 Vue.use(Switch)
 Vue.use(Alert)
 Vue.use(Col)
+Vue.use(Row)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Tooltip)
@@ -61,6 +64,8 @@ Vue.use({
     Vue.prototype.$cdn = env.cdn
 
     Vue.prototype.$channel = new Vue()
+
+    Vue.prototype.$alias = Alias
 
     Vue.prototype.$resize = (url, options = {}) => {
       if (url === '') {

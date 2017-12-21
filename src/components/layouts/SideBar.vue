@@ -57,7 +57,7 @@
 <template>
   <div id="side-bar-container" class="container">
     <div id="side-bar" v-show="$route.name !== 'homepage'">
-      <el-tooltip placement="left" effect="dark" content="发帖">
+      <el-tooltip placement="left" effect="dark" :content="postTooltip">
         <div class="item icon-fatie1" @click="showPostModal"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="反馈">
@@ -97,6 +97,11 @@
       },
       showPostModal () {
         this.$channel.$emit('show-create-post-modal')
+      }
+    },
+    computed: {
+      postTooltip () {
+        return this.$route.name === 'post-show' ? '回复' : '发帖'
       }
     },
     mounted () {

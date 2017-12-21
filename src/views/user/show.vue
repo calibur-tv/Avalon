@@ -302,7 +302,7 @@
         <el-tab-pane label="番剧">
           <ul class="bangumis">
             <li v-for="item in bangumis" :key="item.id">
-              <a :href="`/bangumi/${item.id}`" target="_blank">
+              <a :href="$alias.bangumi(item.id)" target="_blank">
                 <figure>
                   <v-img class="bg"
                          :alt="item.name"
@@ -388,7 +388,7 @@
         return
       }
       return {
-        title: this.user.nickname,
+        title: `${this.user.nickname} - 用户`,
         meta: [
           { hid: 'description', name: 'description', content: this.user.signature },
           { hid: 'keywords', name: 'keywords', content: `calibur,用户,天下漫友是一家,${this.user.zone},${this.user.nickname}` }
