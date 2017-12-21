@@ -23,9 +23,9 @@ export default class extends BaseApi {
     return this.http.get('bangumi/tags')
   }
 
-  category ({ id, page }) {
+  category ({ id, page, take }) {
     return this.http.get('bangumi/category', {
-      params: { id, page }
+      params: { id, page, take }
     })
   }
 }

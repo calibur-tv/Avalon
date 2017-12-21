@@ -1,6 +1,5 @@
 import BangumiApi from '~/api/bangumiApi'
 import UserApi from '~/api/userApi'
-import { listFetchCount } from 'env'
 
 const state = () => ({
   tags: [],
@@ -58,7 +57,7 @@ const mutations = {
     })
     state.tags = tags
   },
-  setCategory (state, { data, page }) {
+  setCategory (state, { data, page, take }) {
     if (page === 1) {
       state.category = { data }
     } else {
@@ -66,7 +65,7 @@ const mutations = {
         state.category.data.push(item)
       })
     }
-    state.category.noMore = data.length < listFetchCount
+    state.category.noMore = data.length < take
   }
 }
 
@@ -126,10 +125,10 @@ const actions = {
     const data = await api.timeline({ year })
     commit('setTimeline', data)
   },
-  async getCategory ({ commit }, { id, page }) {
+  async getCategory ({ commit }, { id, page, take }) {
     const api = new BangumiApi()
-    const data = await api.category({ id, page })
-    commit('setCategory', { data, page })
+    const data = await api.category({ id, page, take })
+    commit('setCategory', { data, page, take })
   }
 }
 

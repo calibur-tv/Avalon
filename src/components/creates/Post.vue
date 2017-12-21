@@ -17,7 +17,7 @@
   <v-modal class="create-post-modal" v-model="showModal" :footer="false" header-text="新建帖子">
     <el-form :model="forms" :rules="rules" ref="forms" label-width="80px">
       <el-form-item label="标题" prop="title">
-        <el-input placeholder="请填写标题" v-model="forms.title"></el-input>
+        <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
       </el-form-item>
       <el-form-item label="番剧" prop="bangumi_id">
         <el-select v-model="forms.bangumi_id" placeholder="请选择活动区域">
@@ -45,7 +45,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <el-input type="textarea" resize="none" :rows="10" v-model="forms.content"></el-input>
+        <el-input type="textarea" resize="none" :rows="10" v-model.trim="forms.content"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit">立即创建</el-button>
@@ -106,12 +106,7 @@
         return res.join('')
       },
       formatImages () {
-        const images = this.images
-        const res = []
-        images.forEach(item => {
-          res.push(item.url)
-        })
-        return res
+        return this.images.map(item => item.url)
       }
     },
     methods: {
@@ -126,9 +121,16 @@
                 content: this.formatContent,
                 images: this.formatImages,
                 geetest: data
-              }).then((id) => {
-
-              }).catch((err) => {
+              }).then(id => {
+                this.images = []
+                this.$refs.forms.resetFields()
+                this.$toast.success('发布成功！')
+                this.showModal = false
+                this.$router.push({
+                  name: 'post-show',
+                  params: { id }
+                })
+              }).catch(err => {
                 err.message.forEach(tip => {
                   this.$toast.error(tip)
                 })

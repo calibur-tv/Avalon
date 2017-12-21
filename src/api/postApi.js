@@ -6,4 +6,10 @@ export default class extends BaseApi {
       title, bangumi_id, content, images, geetest
     })
   }
+
+  show ({ id, page, take }) {
+    return this.http.get(`post/${id}/show`, {
+      page, take
+    })
+  }
 }

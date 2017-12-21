@@ -144,7 +144,8 @@
 <script>
   import vBanner from '~/components/layouts/Banner'
   const defaultParams = {
-    page: 1
+    page: 1,
+    take: 15
   }
 
   export default {
@@ -164,7 +165,8 @@
       )) {
         arr.push(store.dispatch('bangumi/getCategory', {
           id,
-          page: defaultParams.page
+          page: defaultParams.page,
+          take: defaultParams.take
         }))
       }
       await Promise.all(arr)
@@ -183,6 +185,7 @@
     data () {
       return {
         page: defaultParams.page,
+        take: defaultParams.take,
         loading: false
       }
     },
@@ -207,7 +210,8 @@
         try {
           await this.$store.dispatch('bangumi/getCategory', {
             id: this.$route.query.id,
-            page: ++this.page
+            page: ++this.page,
+            take: this.take
           })
         } catch (e) {
           this.page--

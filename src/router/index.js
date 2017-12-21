@@ -54,6 +54,11 @@ export function createRouter () {
             path: 'user/:slug',
             name: 'user-show',
             component: () => import('~/views/user/show')
+          },
+          {
+            path: 'post/:id',
+            name: 'post-show',
+            component: () => import('~/views/post/show')
           }
         ]
       }
