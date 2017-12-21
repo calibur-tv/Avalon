@@ -322,7 +322,8 @@
   const nowTime = new Date()
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
   const defaultParams = {
-    year: nowTime.getFullYear() + 1
+    year: nowTime.getFullYear() + 1,
+    take: 3
   }
 
   export default {
@@ -337,7 +338,8 @@
       await Promise.all([
         store.dispatch('bangumi/getReleased'),
         store.dispatch('bangumi/getTimeline', {
-          year: defaultParams.year
+          year: defaultParams.year,
+          take: defaultParams.take
         })
       ])
     },
@@ -357,7 +359,8 @@
         showtime: weeklys,
         thisWeek: weeklys[nowTime.getDay() ? nowTime.getDay() : 7],
         loading: false,
-        year: defaultParams.year
+        year: defaultParams.year,
+        take: defaultParams.take
       }
     },
     methods: {
@@ -365,17 +368,18 @@
         return parseInt(nowTime.getTime() / 1000, 10) - timestamp < 604800
       },
       async loadMore () {
-        if (this.loading || this.year === this.minYear) {
+        if (this.loading || this.year <= this.minYear) {
           return
         }
         this.loading = true
 
         try {
           await this.$store.dispatch('bangumi/getTimeline', {
-            year: --this.year
+            year: this.year - this.take
           })
+          this.year -= this.take
         } catch (e) {
-          this.year++
+          console.log(e)
         }
         this.loading = false
       }
