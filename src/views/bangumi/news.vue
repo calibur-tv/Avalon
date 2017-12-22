@@ -370,7 +370,8 @@
 
         try {
           await this.$store.dispatch('bangumi/getTimeline', {
-            year: this.year - this.take
+            year: this.year - this.take,
+            take: this.take
           })
           this.year -= this.take
         } catch (e) {
