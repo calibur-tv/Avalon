@@ -123,7 +123,9 @@ const actions = {
   async getTimeline ({ commit }, { year, take }) {
     const api = new BangumiApi()
     const data = await api.timeline({ year, take })
-    commit('setTimeline', data)
+    if (data.data.length) {
+      commit('setTimeline', data)
+    }
   },
   async getCategory ({ commit }, { id, page, take }) {
     const api = new BangumiApi()

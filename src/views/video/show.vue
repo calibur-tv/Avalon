@@ -73,8 +73,8 @@
     <div class="container">
       <nav>
         <h1 class="breadcrumb" v-if="bangumi && info">
-          <router-link to="/">主站</router-link>
-          <router-link :to="$alias.bangumi(bangumi.id)" v-text="bangumi.name"></router-link>
+          <a :href="$alias.index" target="_blank">主站</a>
+          <a :href="$alias.bangumi(bangumi.id)" target="_blank" v-text="bangumi.name"></a>
           第{{ info.part }}话&nbsp;{{ info.name }}
         </h1>
       </nav>

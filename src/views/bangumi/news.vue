@@ -278,9 +278,9 @@
               v-infinite-scroll="loadMore"
               infinite-scroll-disabled="loading"
               infinite-scroll-distance="200">
-            <ul v-for="col in timeline" class="collection">
+            <ul v-for="col in timeline" :key="col.date" class="collection">
               <h3 class="time" v-text="col.date"></h3>
-              <li class="bangumi" v-for="item in col.list">
+              <li class="bangumi" v-for="item in col.list" :key="item.id">
                 <figure>
                   <a :href="$alias.bangumi(item.id)" target="_blank">
                     <v-img
@@ -321,7 +321,7 @@
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
   const defaultParams = {
     year: nowTime.getFullYear() + 1,
-    take: 3
+    take: 5
   }
 
   export default {

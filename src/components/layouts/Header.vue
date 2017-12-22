@@ -300,8 +300,8 @@
   <header id="header" :class="[theme, 'white', scrollFlag ? 'scroll-show' : 'scroll-hide']">
     <div class="text">
       <nav class="container header-left">
-        <router-link class="nav-link" to="/">主站</router-link>
-        <router-link class="nav-link" to="/bangumi/news">番剧</router-link>
+        <a class="nav-link" :href="$alias.index">主站</a>
+        <a class="nav-link" :href="$alias.bangumiNews()">番剧</a>
         <!--
         <el-dropdown>
           <router-link class="nav-link el-dropdown-link" to="/bangumi/news">番剧</router-link>
@@ -321,15 +321,15 @@
           </el-dropdown-menu>
         </el-dropdown>
         -->
-        <router-link class="nav-link" to="/bangumi/tags">分类</router-link>
+        <a class="nav-link" :href="$alias.bangumiTag()">分类</a>
       </nav>
       <nav class="header-right">
-        <v-search :placeholder="'搜索'" :history="true"></v-search>
+        <v-search placeholder="搜索" :history="true"></v-search>
         <template v-if="isLogin">
-          <el-dropdown class="user-section" :placement="'bottom'">
-            <router-link class="el-dropdown-link" :to="$alias.user(user.zone)">
+          <el-dropdown class="user-section" placement="bottom">
+            <a class="el-dropdown-link" :href="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
-            </router-link>
+            </a>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>消息</el-dropdown-item>
               <el-dropdown-item>动态</el-dropdown-item>
