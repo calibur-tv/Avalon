@@ -103,7 +103,7 @@
           </v-modal>
         </main>
         <footer>
-          <button @click="$channel.$emit('show-create-post-modal')">发表回复</button>
+          <post-form></post-form>
         </footer>
       </section>
       <aside class="col-aside"></aside>
@@ -112,6 +112,8 @@
 </template>
 
 <script>
+  import PostForm from '~/components/creates/CreatePostForm'
+
   const defaultParams = {
     take: 15,
     page: 1
@@ -128,7 +130,7 @@
       })
     },
     components: {
-
+      PostForm
     },
     head () {
       return {
