@@ -95,6 +95,10 @@
                   <v-img :src="img" :width="500"></v-img>
                 </div>
                 <div v-html="item.content"></div>
+                <div class="footer">
+                  <span>{{ item.floor_count }}楼</span>
+                  <v-time v-model="item.created_at"></v-time>
+                </div>
               </el-col>
             </el-row>
           </div>
@@ -103,7 +107,7 @@
           </v-modal>
         </main>
         <footer>
-          <post-form></post-form>
+          <v-post :post-id="id"></v-post>
         </footer>
       </section>
       <aside class="col-aside"></aside>
@@ -112,7 +116,7 @@
 </template>
 
 <script>
-  import PostForm from '~/components/creates/CreatePostForm'
+  import vPost from '~/components/creates/Post'
 
   const defaultParams = {
     take: 15,
@@ -130,7 +134,7 @@
       })
     },
     components: {
-      PostForm
+      vPost
     },
     head () {
       return {

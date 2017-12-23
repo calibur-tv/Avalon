@@ -530,24 +530,20 @@
       },
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
-        await this.$store.dispatch('image/getUpToken', {
-          model: 'user',
-          type: 'avatar',
-          id: this.user.id
-        })
-        const upToken = this.$store.state.image.upToken
-        formData.append('token', upToken.token)
-        formData.append('key', upToken.key)
+        await this.$store.dispatch('getUpToken')
+        const key = `user/avatar/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        formData.append('token', this.user.uptoken.data)
+        formData.append('key', key)
         const imageApi = new ImageApi()
         try {
           await imageApi.uploadToQiniu(formData)
           const userApi = new UserApi(this)
           await userApi.settingImage({
             type: 'avatar',
-            url: upToken.key
+            url: key
           })
           this.$store.commit('SET_USER_INFO', {
-            avatar: `${this.$cdn.image}${upToken.key}`
+            avatar: `${this.$cdn.image}${key}`
           })
           this.$toast.success('头像更新成功')
         } catch (e) {
@@ -579,26 +575,22 @@
       },
       async submitBannerChange () {
         this.bannerSelector.loading = true
-        await this.$store.dispatch('image/getUpToken', {
-          model: 'user',
-          type: 'banner',
-          id: this.user.id
-        })
+        await this.$store.dispatch('getUpToken')
+        const key = `user/banner/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         const formData = new FormData()
-        const upToken = this.$store.state.image.upToken
         formData.append('file', this.bannerSelector.file)
-        formData.append('token', upToken.token)
-        formData.append('key', upToken.key)
+        formData.append('token', this.user.uptoken.data)
+        formData.append('key', key)
         const imageApi = new ImageApi()
         try {
           await imageApi.uploadToQiniu(formData)
           const userApi = new UserApi(this)
           await userApi.settingImage({
             type: 'banner',
-            url: upToken.key
+            url: key
           })
           this.$store.commit('SET_USER_INFO', {
-            banner: `${this.$cdn.image}${upToken.key}`
+            banner: `${this.$cdn.image}${key}`
           })
           this.$toast.success('背景更新成功')
         } catch (e) {

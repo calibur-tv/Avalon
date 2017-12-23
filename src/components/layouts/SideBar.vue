@@ -57,11 +57,11 @@
 <template>
   <div id="side-bar-container" class="container">
     <div id="side-bar" v-show="$route.name !== 'homepage'">
-      <el-tooltip placement="left" effect="dark" :content="postTooltip">
-        <div class="item icon-fatie1" @click="showPostModal"></div>
+      <el-tooltip placement="left" effect="dark" :content="inPostShow ? '回复' : '发帖'">
+        <div class="item icon-fatie1" @click="showPostModal = true"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="反馈">
-        <div class="item icon-fankui" @click="showFeedModal"></div>
+        <div class="item icon-fankui" @click="showFeedModal = true"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="返回顶部">
         <transition name="el-fade-in">
@@ -69,14 +69,21 @@
         </transition>
       </el-tooltip>
     </div>
-    <v-post></v-post>
-    <v-feedback></v-feedback>
+    <v-modal class="create-post-modal"
+             v-model="showPostModal"
+             :footer="false"
+             :header-text="inPostShow ? '回复' : '发帖'">
+      <v-post :post-id="postId" :bangumi-id="bangumiId" @submit="showPostModal = false"></v-post>
+    </v-modal>
+    <v-modal v-model="showFeedModal" :footer="false" header-text="用户反馈">
+      <v-feedback @submit="showFeedModal = false"></v-feedback>
+    </v-modal>
   </div>
 </template>
 
 <script>
-  import vPost from '~/components/creates/Post'
   import vFeedback from '~/components/creates/Feedback'
+  import vPost from '~/components/creates/Post'
 
   export default {
     name: 'v-side-bar',
@@ -85,23 +92,28 @@
     },
     data () {
       return {
-        showToTop: false
+        showToTop: false,
+        showPostModal: false,
+        showFeedModal: false
       }
     },
     methods: {
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight
-      },
-      showFeedModal () {
-        this.$channel.$emit('show-create-feedback-modal')
-      },
-      showPostModal () {
-        this.$channel.$emit('show-create-post-modal')
       }
     },
     computed: {
-      postTooltip () {
-        return this.$route.name === 'post-show' ? '回复' : '发帖'
+      inPostShow () {
+        return this.$route.name === 'post-show'
+      },
+      inBangumiShow () {
+        return this.$route.name === 'bangumi-show'
+      },
+      postId () {
+        return this.inPostShow ? this.$route.params.id : ''
+      },
+      bangumiId () {
+        return this.inBangumiShow ? this.$route.params.id : ''
       }
     },
     mounted () {
@@ -112,6 +124,11 @@
       window.addEventListener('resize', this.$throttle(() => {
         this.computeShow()
       }, 500))
+      this.$channel.$on('show-create-post-modal', () => {
+        this.$store.state.login
+          ? this.showPostModal = true
+          : this.$channel.$emit('sign-in')
+      })
     }
   }
 </script>

@@ -10,12 +10,14 @@ import Share from '~/assets/js/Share'
 import NoSSR from '~/assets/js/nossr'
 import Modal from '~/components/Modal'
 import Banner from '~/components/layouts/Banner'
+import Time from '~/assets/js/timeago'
 
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
 Vue.component(Modal.name, Modal)
 Vue.component(NoSSR.name, NoSSR)
 Vue.component(Banner.name, Banner)
+Vue.component(Time.name, Time)
 
 export function createApp () {
   const router = createRouter()

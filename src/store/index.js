@@ -8,6 +8,8 @@ import users from './users'
 import image from './image'
 import post from './post'
 
+import ImageApi from '~/api/imageApi'
+
 Vue.use(Vuex)
 
 export function createStore () {
@@ -52,6 +54,15 @@ export function createStore () {
               commit('SET_USER', user)
             }
           }
+        }
+      },
+      async getUpToken ({ state, commit }) {
+        if (state.user.uptoken.time <= parseInt(Date.now() / 1000, 10)) {
+          const api = new ImageApi()
+          const data = await api.getUpToken()
+          commit('SET_USER_INFO', {
+            uptoken: data
+          })
         }
       }
     },
