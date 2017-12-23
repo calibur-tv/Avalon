@@ -82,7 +82,7 @@
           </div>
         </header>
         <main>
-          <div class="post-item" v-for="item in list">
+          <div class="post-item" v-for="(item, index) in list">
             <el-row class="wrap">
               <el-col class="user" :span="5">
                 <a :href="$alias.user(item.user.zone)" target="_blank">
@@ -96,7 +96,7 @@
                 </div>
                 <div v-html="item.content"></div>
                 <div class="footer">
-                  <span>{{ item.floor_count }}楼</span>
+                  <span>{{ index + 1 }}楼</span>
                   <v-time v-model="item.created_at"></v-time>
                 </div>
               </el-col>
@@ -107,7 +107,7 @@
           </v-modal>
         </main>
         <footer>
-          <v-post :post-id="id"></v-post>
+          <v-post :post-id="id" :last-id="lastId" :bangumi-id="post.bangumi_id"></v-post>
         </footer>
       </section>
       <aside class="col-aside"></aside>
@@ -162,6 +162,9 @@
       },
       masterId () {
         return this.post.user_id
+      },
+      lastId () {
+        return this.list[this.list.length - 1].id
       }
     },
     data () {
@@ -177,10 +180,13 @@
       handlePreviewImage (img) {
         this.previewImage = img
         this.showPreviewImage = true
+      },
+      scrollToReplyForm () {
+
       }
     },
     mounted () {
-
+      this.$channel.$on('side-bar-click-post', this.scrollToReplyForm)
     }
   }
 </script>

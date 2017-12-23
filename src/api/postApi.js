@@ -12,4 +12,10 @@ export default class extends BaseApi {
       page, take
     })
   }
+
+  reply ({ take, lastId, bangumiId, postId, images, content, geetest }) {
+    return this.http.post(`post/${postId}/reply`, {
+      take, lastId, bangumiId, images, content, geetest
+    })
+  }
 }

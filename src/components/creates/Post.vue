@@ -15,7 +15,7 @@
 
 <template>
   <el-form class="create-post-form" :model="forms" :rules="rules" ref="forms" label-width="80px">
-    <template v-if="!forms.post_id">
+    <template v-if="!postId">
       <el-form-item label="标题" prop="title">
         <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
       </el-form-item>
@@ -61,12 +61,16 @@
     name: 'create-post-form',
     props: {
       bangumiId: {
-        type: String,
+        type: [String, Number],
         default: ''
       },
       postId: {
         type: String,
         default: ''
+      },
+      lastId: {
+        type: Number,
+        default: 0
       }
     },
     data () {
@@ -74,7 +78,6 @@
         forms: {
           title: '',
           bangumi_id: this.bangumiId ? parseInt(this.bangumiId, 10) : '',
-          post_id: this.postId,
           content: ''
         },
         rules: {
@@ -118,28 +121,55 @@
           if (valid) {
             this.$captcha(({ data }) => {
               const api = new Api(this)
-              api.create({
-                title: this.forms.title,
-                bangumi_id: this.forms.bangumi_id,
-                content: this.formatContent,
-                images: this.formatImages,
-                geetest: data
-              }).then(id => {
-                this.images = []
-                this.$refs.forms.resetFields()
-                this.$emit('submit')
-                if (!this.postId) {
+              if (this.postId) {
+                const take = 5
+                api.reply({
+                  take,
+                  lastId: this.lastId,
+                  postId: this.postId - 0,
+                  bangumiId: this.bangumiId,
+                  content: this.formatContent,
+                  images: this.formatImages,
+                  geetest: data
+                }).then(data => {
+                  this.$store.commit('post/setPost', {
+                    data,
+                    take,
+                    id: this.postId,
+                    page: -1
+                  })
+                  this.images = []
+                  this.$refs.forms.resetFields()
+                  this.$emit('reply')
+                  this.$toast.success('回复成功！')
+                }).catch(err => {
+                  console.log(err)
+                  err.message.forEach(tip => {
+                    this.$toast.error(tip)
+                  })
+                })
+              } else {
+                api.create({
+                  title: this.forms.title,
+                  bangumi_id: this.forms.bangumi_id,
+                  content: this.formatContent,
+                  images: this.formatImages,
+                  geetest: data
+                }).then(id => {
+                  this.images = []
+                  this.$refs.forms.resetFields()
+                  this.$emit('submit')
                   this.$toast.success('发布成功！')
                   this.$router.push({
                     name: 'post-show',
                     params: { id: id.toString() }
                   })
-                }
-              }).catch(err => {
-                err.message.forEach(tip => {
-                  this.$toast.error(tip)
+                }).catch(err => {
+                  err.message.forEach(tip => {
+                    this.$toast.error(tip)
+                  })
                 })
-              })
+              }
             })
           } else {
             return false

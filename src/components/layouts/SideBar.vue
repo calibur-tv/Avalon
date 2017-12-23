@@ -58,7 +58,7 @@
   <div id="side-bar-container" class="container">
     <div id="side-bar" v-show="$route.name !== 'homepage'">
       <el-tooltip placement="left" effect="dark" :content="inPostShow ? '回复' : '发帖'">
-        <div class="item icon-fatie1" @click="showPostModal = true"></div>
+        <div class="item icon-fatie1" @click="handlePostClick"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="反馈">
         <div class="item icon-fankui" @click="showFeedModal = true"></div>
@@ -100,6 +100,11 @@
     methods: {
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight
+      },
+      handlePostClick () {
+        this.inPostShow
+          ? this.$channel.$emit('side-bar-click-post')
+          : this.showPostModal = true
       }
     },
     computed: {
