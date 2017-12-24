@@ -44,7 +44,7 @@
         min-height: 170px;
         padding: 20px 20px 8px 20px;
 
-        img {
+        .image {
           width: 100%;
           height: auto;
           margin-bottom: 12px;
@@ -56,6 +56,27 @@
           font-size: 14px;
           word-wrap: break-word;
           overflow: hidden;
+        }
+
+        .comments-wrap {
+          background-color: #f7f8fa;
+
+          .comments {
+            padding: 4px 15px 14px;
+
+            li {
+              display: block;
+              width: 100%;
+            }
+
+            .avatar {
+              @include avatar(32px)
+            }
+          }
+
+          .comment-reply {
+            padding: 4px 15px 14px;
+          }
         }
       }
     }
@@ -92,12 +113,43 @@
               </el-col>
               <el-col class="content" :span="19">
                 <div v-for="img in item.images" @click="handlePreviewImage(img)">
-                  <v-img :src="img" :width="500"></v-img>
+                  <v-img class="image" :src="img" :width="500"></v-img>
                 </div>
                 <div v-html="item.content"></div>
                 <div class="footer">
                   <span>{{ index + 1 }}楼</span>
                   <v-time v-model="item.created_at"></v-time>
+                  <button @click="toggleCommitForm(index)">{{ item.state.openCommit ? '收起回复' : '回复' }}</button>
+                  <div class="comments-wrap">
+                    <ul v-if="item.comments.length" class="comments">
+                      <li v-for="comment in item.comments">
+                        <a :href="$alias.user(comment.from_user_zone)" target="_blank">
+                          <v-img class="avatar" :src="comment.from_user_avatar" width="32" height="32"></v-img>
+                        </a>
+                        <a :href="$alias.user(comment.from_user_zone)" target="_blank" v-text="comment.from_user_name"></a>
+                        回复
+                        <a :href="$alias.user(comment.to_user_zone)" target="_blank" v-text="comment.to_user_name"></a>
+                        ：
+                        {{ comment.content }}
+                        <div>
+                          <v-time v-model="comment.created_at"></v-time>
+                        </div>
+                      </li>
+                    </ul>
+                    <div class="comment-reply" v-if="item.state.openCommit">
+                      <input type="text"
+                             placeholder="请缩减至50字以内"
+                             :value="item.state.comment"
+                             @input="updateCommit($event, index)"
+                             autofocus
+                             maxlength="50">
+                      <el-button type="primary"
+                                 @click="submitCommit(item, item.user_id, index)"
+                                 :loading="item.state.replying"
+                                 size="mini"
+                      >发表</el-button>
+                    </div>
+                  </div>
                 </div>
               </el-col>
             </el-row>
@@ -107,7 +159,14 @@
           </v-modal>
         </main>
         <footer>
-          <v-post :post-id="id" :last-id="lastId" :bangumi-id="post.bangumi_id"></v-post>
+          <div id="post-reply-form">
+            <v-post :post-id="id"
+                    :last-id="lastId"
+                    :bangumi-id="post.bangumi_id"
+                    :master-id="masterId"
+                    id="test"
+            ></v-post>
+          </div>
         </footer>
       </section>
       <aside class="col-aside"></aside>
@@ -117,6 +176,7 @@
 
 <script>
   import vPost from '~/components/creates/Post'
+  import Api from '~/api/postApi'
 
   const defaultParams = {
     take: 15,
@@ -140,9 +200,6 @@
       return {
         title: `${this.post.title} - 帖子`
       }
-    },
-    watch: {
-
     },
     computed: {
       id () {
@@ -173,16 +230,56 @@
         previewImage: ''
       }
     },
-    created () {
-
-    },
     methods: {
       handlePreviewImage (img) {
         this.previewImage = img
         this.showPreviewImage = true
       },
       scrollToReplyForm () {
+        this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
+      },
+      toggleCommitForm (index) {
+        index
+          ? this.changeState(index, 'openCommit', !this.list[index].state.openCommit)
+          : this.$channel.$emit('side-bar-click-post')
+      },
+      changeState (index, key, value) {
+        this.$store.commit('post/setState', {
+          id: this.post.id,
+          index,
+          key,
+          value
+        })
+      },
+      updateCommit (e, index) {
+        this.changeState(index, 'comment', e.target.value)
+      },
+      async submitCommit (post, target, index) {
+        const content = this.list[index].state.comment
+        if (!content) {
+          return
+        }
+        this.changeState(index, 'replying', true)
 
+        const api = new Api(this)
+        try {
+          const data = await api.comment({
+            postId: post.id,
+            targetUserId: target,
+            content
+          })
+          this.changeState(index, 'comment', '')
+          this.changeState(index, 'openCommit', false)
+          this.$toast.success('回复成功')
+          this.$store.commit('post/setComment', {
+            data,
+            id: this.post.id,
+            index
+          })
+        } catch (e) {
+          console.log(e)
+        }
+        this.changeState(index, 'replying', false)
       }
     },
     mounted () {

@@ -71,6 +71,10 @@
       lastId: {
         type: Number,
         default: 0
+      },
+      masterId: {
+        type: Number,
+        default: 0
       }
     },
     data () {
@@ -100,15 +104,21 @@
     },
     computed: {
       formatContent () {
+        if (this.postId) {
+          return this.forms.content
+        }
+
         let content = this.forms.content
         while (content.match('\n\n') !== null) {
           content = content.replace('\n\n', '\n')
         }
         content = content.split('\n')
+
         const res = []
         content.forEach(item => {
           res.push(item ? `<p>${item}</p>` : '<p><br/></p>')
         })
+
         return res.join('')
       },
       formatImages () {
@@ -127,9 +137,9 @@
                   take,
                   lastId: this.lastId,
                   postId: this.postId - 0,
-                  bangumiId: this.bangumiId,
                   content: this.formatContent,
                   images: this.formatImages,
+                  targetUserId: this.masterId,
                   geetest: data
                 }).then(data => {
                   this.$store.commit('post/setPost', {

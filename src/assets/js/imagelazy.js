@@ -13,15 +13,15 @@ export default {
       default: ''
     },
     width: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     height: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     scale: {
-      type: Number,
+      type: [Number, String],
       default: 2
     },
     events: {
@@ -50,11 +50,11 @@ export default {
   mounted () {
     this.$nextTick(() => {
       const image = this.$el
-      if (this.$checkInView(image, this.scale)) {
+      if (this.$checkInView(image, (this.scale - 0))) {
         this.loadResource(image)
       }
       const id = this.$eventManager.add(document, this.events, throttle(() => {
-        if (this.$checkInView(image, this.scale)) {
+        if (this.$checkInView(image, (this.scale - 0))) {
           this.loadResource(image)
           this.$eventManager.del(id)
         }
@@ -66,16 +66,16 @@ export default {
       let src
       if (this.width && this.height) {
         src = this.$resize(this.resource, {
-          width: this.width * 2,
-          height: this.height * 2
+          width: (this.width - 0) * 2,
+          height: (this.height - 0) * 2
         })
       } else if (this.width) {
         src = this.$resize(this.resource, {
-          width: this.width * 2
+          width: (this.width - 0) * 2
         })
       } else if (this.height) {
         src = this.$resize(this.resource, {
-          height: this.height * 2
+          height: (this.height - 0) * 2
         })
       } else {
         src = this.resource

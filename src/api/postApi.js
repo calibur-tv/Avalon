@@ -13,9 +13,15 @@ export default class extends BaseApi {
     })
   }
 
-  reply ({ take, lastId, bangumiId, postId, images, content, geetest }) {
+  reply ({ take, lastId, targetUserId, postId, images, content, geetest }) {
     return this.http.post(`post/${postId}/reply`, {
-      take, lastId, bangumiId, images, content, geetest
+      take, lastId, targetUserId, images, content, geetest
+    })
+  }
+
+  comment ({ postId, content, targetUserId }) {
+    return this.http.post(`post/${postId}/commit`, {
+      content, targetUserId
     })
   }
 }
