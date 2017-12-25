@@ -76,7 +76,7 @@
       <a class="nickname oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
     </el-col>
     <el-col class="content" :span="19">
-      <div v-for="img in item.images" @click="handlePreviewImage(img)">
+      <div v-for="img in item.images" @click="handleImagePreview(img)">
         <v-img class="image" :src="img" :width="500"></v-img>
       </div>
       <div v-html="item.content"></div>
@@ -90,7 +90,7 @@
         <div class="comments-wrap">
           <el-collapse-transition>
             <ul v-show="item.comments.length && !item.state.collapsed" class="comments">
-              <li v-for="comment in item.comments" :key="comment.id">
+              <li v-for="comment in comments" :key="comment.id">
                 <a :href="$alias.user(comment.from_user_zone)" target="_blank">
                   <v-img class="avatar" :src="comment.from_user_avatar" width="32" height="32"></v-img>
                 </a>
@@ -109,8 +109,10 @@
             <button @click="toggleCommentForm(index, false)">我也说一句</button>
             <el-pagination small
                            layout="prev, pager, next"
-                           :total="1000"
-                           @current-change="handleCurrentChange"
+                           :page-size="take"
+                           :total="item.comment_count"
+                           v-if="item.comment_count / take > 1"
+                           @current-change="getComments"
             ></el-pagination>
           </template>
           <div class="comment-reply" v-if="item.state.openComment">
@@ -133,8 +135,6 @@
 </template>
 
 <script>
-  import Api from '~/api/postApi'
-
   export default {
     name: 'post-item',
     props: {
@@ -145,17 +145,24 @@
       item: {
         type: Object,
         required: true
-      },
-      postId: {
-        required: true
+      }
+    },
+    data () {
+      return {
+        take: 10,
+        curPage: 1
       }
     },
     computed: {
       list () {
-        return this.$store.state.post.list[this.postId].data
+        return this.$store.state.post.list
       },
       post () {
-        return this.list[0]
+        return this.$store.state.post.post
+      },
+      comments () {
+        const begin = (this.curPage - 1) * this.take
+        return this.item.comments.slice(begin, begin + this.take)
       }
     },
     methods: {
@@ -169,6 +176,9 @@
       updateCommit (e, index) {
         this.changeState(index, 'comment', e.target.value)
       },
+      handleImagePreview (url) {
+        this.$emit('image-preview', url)
+      },
       async submitCommit (post, target, index) {
         const content = this.list[index].state.comment
         if (!content) {
@@ -176,28 +186,35 @@
         }
         this.changeState(index, 'replying', true)
 
-        const api = new Api(this)
         try {
-          const data = await api.comment({
-            postId: post.id,
+          await this.$store.dispatch('post/setComment', {
+            index: this.index,
+            postId: this.item.id,
             targetUserId: target,
-            content
+            content,
+            ctx: this
           })
           this.changeState(index, 'comment', '')
           this.changeState(index, 'openComment', false)
           this.$toast.success('回复成功')
-          this.$store.commit('post/setComment', {
-            data,
-            id: this.post.id,
-            index
-          })
         } catch (e) {
           console.log(e)
         }
         this.changeState(index, 'replying', false)
       },
-      handleCurrentChange (val) {
-        console.log(val)
+      async getComments (page) {
+        try {
+          await this.$store.dispatch('post/getComments', {
+            index: this.index,
+            postId: this.item.id,
+            page,
+            take: this.take
+          })
+          this.curPage = page
+        } catch (e) {
+          console.log(e)
+          this.$toast.error('网络错误，请稍后再试！')
+        }
       },
       changeState (index, key, value) {
         this.$store.commit('post/setState', {

@@ -9,7 +9,7 @@ export default class extends BaseApi {
 
   show ({ id, page, take }) {
     return this.http.get(`post/${id}/show`, {
-      page, take
+      params: { page, take }
     })
   }
 
@@ -22,6 +22,12 @@ export default class extends BaseApi {
   comment ({ postId, content, targetUserId }) {
     return this.http.post(`post/${postId}/commit`, {
       content, targetUserId
+    })
+  }
+
+  comments ({ postId, page, take }) {
+    return this.http.get(`post/${postId}/comments`, {
+      params: { page, take }
     })
   }
 }

@@ -1,36 +1,41 @@
 import Api from '~/api/postApi'
 
 const state = () => ({
-  list: {}
+  post: null,
+  list: [],
+  bangumi: null,
+  noMore: false
 })
 
 const mutations = {
-  setPost (state, { data, id, take, page }) {
-    if (page === 1) {
-      state.list[id] = {
-        data: [],
-        bangumi: data.bangumi
-      }
-    }
+  setPost (state, { data, take }) {
     data.list.forEach(item => {
       item.state = {
         openComment: false,
         loading: false,
         comment: '',
         replying: false,
-        page: 1,
+        maxPage: 1,
         collapsed: false
       }
-      state.list[id].data.push(item)
+      state.list.push(item)
     })
-    state.list[id].noMore = data.list.length < take
+    state.post = data.post
+    state.bangumi = data.bangumi
+    state.noMore = data.list.length < take
   },
-  setState (state, { id, index, key, value }) {
-    state.list[id].data[index].state[key] = value
+  setState (state, { index, key, value }) {
+    state.list[index].state[key] = value
   },
-  setComment (state, { id, index, data }) {
-    state.list[id].data[index].comments.push(data)
-    state.list[id].data[index].comment_count++
+  setComment (state, { index, data }) {
+    state.list[index].comments.push(data)
+    state.list[index].comment_count++
+  },
+  setComments (state, { index, data, page }) {
+    data.forEach(item => {
+      state.list[index].comments.push(item)
+    })
+    state.list[index].state.maxPage = page
   }
 }
 
@@ -38,7 +43,22 @@ const actions = {
   async getPost ({ commit }, { id, ctx, take, page }) {
     const api = new Api(ctx)
     const data = await api.show({ id, page, take })
-    commit('setPost', { data, id, take, page })
+    commit('setPost', { data, take, page })
+  },
+  async getComments ({ state, commit }, { index, postId, page, take }) {
+    if (state.list[index].state.maxPage >= page) {
+      return
+    }
+    const api = new Api()
+    const data = await api.comments({
+      postId, page, take
+    })
+    commit('setComments', { index, data, page })
+  },
+  async setComment ({ commit }, { index, postId, targetUserId, content, ctx }) {
+    const api = new Api(ctx)
+    const data = await api.comment({ postId, targetUserId, content })
+    commit('setComment', { data, index })
   }
 }
 

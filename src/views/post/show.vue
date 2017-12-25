@@ -39,12 +39,18 @@
                   :index="index"
                   :key="item.id"
                   :master-id="masterId"
-                  :post-id="id"
+                  @image-preview="handlePreviewImage"
           ></v-item>
           <v-modal class="image-preview-modal" v-model="showPreviewImage" :footer="false" :header="false">
             <img width="100%" :src="previewImage" alt="">
           </v-modal>
         </main>
+        <el-pagination background
+                       layout="total, prev, pager, next, jumper"
+                       :total="post.comment_count"
+                       :current-page="page"
+                       @current-change="getData"
+        ></el-pagination>
         <footer>
           <div id="post-reply-form">
             <v-post :post-id="id"
@@ -66,7 +72,7 @@
   import vItem from '~/components/items/Post'
 
   const defaultParams = {
-    take: 15,
+    take: 10,
     page: 1
   }
 
@@ -77,7 +83,7 @@
         id: route.params.id,
         ctx,
         take: defaultParams.take,
-        page: defaultParams.page
+        page: route.query.page || defaultParams.page
       })
     },
     components: {
@@ -93,16 +99,16 @@
         return this.$route.params.id
       },
       list () {
-        return this.$store.state.post.list[this.id].data
+        return this.$store.state.post.list
       },
       bangumi () {
-        return this.$store.state.post.list[this.id].bangumi
+        return this.$store.state.post.bangumi
       },
       noMore () {
-        return this.$store.state.post.list[this.id].noMore
+        return this.$store.state.post.noMore
       },
       post () {
-        return this.list[0]
+        return this.$store.state.post.post
       },
       masterId () {
         return this.post.user_id
@@ -114,7 +120,9 @@
     data () {
       return {
         showPreviewImage: false,
-        previewImage: ''
+        previewImage: '',
+        take: defaultParams.take,
+        page: parseInt(this.$route.query.page, 10) || defaultParams.page
       }
     },
     methods: {
@@ -124,6 +132,9 @@
       },
       scrollToReplyForm () {
         this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
+      },
+      getData (page) {
+        window.location = `${window.location.href.split('?').shift()}?page=${page}`
       }
     },
     mounted () {
