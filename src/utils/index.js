@@ -27,8 +27,11 @@ import {
   Tooltip,
   Select,
   Option,
-  Upload
+  Upload,
+  Pagination
 } from 'element-ui'
+
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
@@ -52,6 +55,8 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(InfiniteScroll)
 Vue.use(Upload)
+Vue.use(Pagination)
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.use({
   install (Vue, options) {

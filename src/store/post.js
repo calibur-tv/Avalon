@@ -14,12 +14,12 @@ const mutations = {
     }
     data.list.forEach(item => {
       item.state = {
-        openCommit: false,
+        openComment: false,
         loading: false,
         comment: '',
         replying: false,
         page: 1,
-        take: 5 // 帖子评论的个数在服务端写死是5个
+        collapsed: false
       }
       state.list[id].data.push(item)
     })
@@ -30,6 +30,7 @@ const mutations = {
   },
   setComment (state, { id, index, data }) {
     state.list[id].data[index].comments.push(data)
+    state.list[id].data[index].comment_count++
   }
 }
 
