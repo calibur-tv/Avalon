@@ -83,10 +83,10 @@
       <div class="footer">
         <span>{{ index + 1 }}楼</span>
         <v-time v-model="item.created_at"></v-time>
-        <button @click="toggleCommentForm(index, true)"
+        <button @click="toggleCommentForm(index)"
                 v-if="item.comments.length"
         >{{ item.state.collapsed ? `回复(${item.comment_count})` : '收起回复' }}</button>
-        <button @click="toggleCommentForm(index, false)" v-else>{{ item.state.openComment ? '收起回复' : '回复' }}</button>
+        <button @click="toggleCommentForm(index, false, 0)" v-else>{{ item.state.openComment ? '收起回复' : '回复' }}</button>
         <div class="comments-wrap">
           <el-collapse-transition>
             <ul v-show="item.comments.length && !item.state.collapsed" class="comments">
@@ -95,18 +95,23 @@
                   <v-img class="avatar" :src="comment.from_user_avatar" width="32" height="32"></v-img>
                 </a>
                 <a :href="$alias.user(comment.from_user_zone)" target="_blank" v-text="comment.from_user_name"></a>
-                回复
-                <a :href="$alias.user(comment.to_user_zone)" target="_blank" v-text="comment.to_user_name"></a>
-                ：
+                <template v-if="comment.to_user_zone">
+                  回复
+                  <a :href="$alias.user(comment.to_user_zone)" target="_blank" v-text="comment.to_user_name"></a>
+                </template>
+                :
                 {{ comment.content }}
                 <div>
                   <v-time v-model="comment.created_at"></v-time>
+                  <button @click="toggleCommentForm(index, false, comment.user_id)"
+                          v-if="comment.user_id !== currentUserId"
+                  >回复</button>
                 </div>
               </li>
             </ul>
           </el-collapse-transition>
           <template v-if="item.comments.length && !item.state.collapsed">
-            <button @click="toggleCommentForm(index, false)">我也说一句</button>
+            <button @click="toggleCommentForm(index, false, 0)">我也说一句</button>
             <el-pagination small
                            layout="prev, pager, next"
                            :page-size="take"
@@ -123,7 +128,7 @@
                    autofocus
                    maxlength="50">
             <el-button type="primary"
-                       @click="submitCommit(item, item.user_id, index)"
+                       @click="submitCommit(item, index)"
                        :loading="item.state.replying"
                        size="mini"
             >发表</el-button>
@@ -150,7 +155,8 @@
     data () {
       return {
         take: 10,
-        curPage: 1
+        curPage: 1,
+        targetUserId: 0
       }
     },
     computed: {
@@ -163,15 +169,23 @@
       comments () {
         const begin = (this.curPage - 1) * this.take
         return this.item.comments.slice(begin, begin + this.take)
+      },
+      currentUserId () {
+        return this.$store.state.login ? this.$store.state.user.id : 0
       }
     },
     methods: {
-      toggleCommentForm (index, haveComment) {
-        index
-          ? haveComment
-          ? this.changeState(index, 'collapsed', !this.list[index].state.collapsed)
-          : this.changeState(index, 'openComment', !this.list[index].state.openComment)
-          : this.$channel.$emit('side-bar-click-post')
+      toggleCommentForm (index, isCollapse = true, targetUserId) {
+        if (index) {
+          if (isCollapse) {
+            this.changeState(index, 'collapsed', !this.list[index].state.collapsed)
+          } else {
+            this.targetUserId = targetUserId
+            this.changeState(index, 'openComment', !this.list[index].state.openComment)
+          }
+        } else {
+          this.$channel.$emit('side-bar-click-post')
+        }
       },
       updateCommit (e, index) {
         this.changeState(index, 'comment', e.target.value)
@@ -179,7 +193,7 @@
       handleImagePreview (url) {
         this.$emit('image-preview', url)
       },
-      async submitCommit (post, target, index) {
+      async submitCommit (post, index) {
         const content = this.list[index].state.comment
         if (!content) {
           return
@@ -190,7 +204,7 @@
           await this.$store.dispatch('post/setComment', {
             index: this.index,
             postId: this.item.id,
-            targetUserId: target,
+            targetUserId: this.targetUserId,
             content,
             ctx: this
           })

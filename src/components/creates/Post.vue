@@ -19,8 +19,8 @@
       <el-form-item label="标题" prop="title">
         <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
       </el-form-item>
-      <el-form-item label="番剧" prop="bangumi_id">
-        <el-select v-model="forms.bangumi_id" placeholder="请选择活动区域">
+      <el-form-item label="番剧" prop="bangumiId">
+        <el-select v-model="forms.bangumiId" placeholder="请选择活动区域">
           <el-option v-for="item in $store.getters['users/bangumis']"
                      :label="item.name"
                      :key="item.id"
@@ -55,8 +55,6 @@
 </template>
 
 <script>
-  import Api from '~/api/postApi'
-
   export default {
     name: 'create-post-form',
     props: {
@@ -68,10 +66,6 @@
         type: String,
         default: ''
       },
-      lastId: {
-        type: Number,
-        default: 0
-      },
       masterId: {
         type: Number,
         default: 0
@@ -81,7 +75,7 @@
       return {
         forms: {
           title: '',
-          bangumi_id: this.bangumiId ? parseInt(this.bangumiId, 10) : '',
+          bangumiId: this.bangumiId ? parseInt(this.bangumiId, 10) : '',
           content: ''
         },
         rules: {
@@ -89,7 +83,7 @@
             { required: true, message: '请输入帖子标题', trigger: 'blur' },
             { max: 20, message: '请缩减至20字以内！', trigger: 'blur' }
           ],
-          bangumi_id: [
+          bangumiId: [
             { type: 'number', required: true, message: '请选择活动区域', trigger: 'change' }
           ],
           content: [
@@ -129,43 +123,36 @@
       submit () {
         this.$refs.forms.validate((valid) => {
           if (valid) {
-            this.$captcha(({ data }) => {
-              const api = new Api(this)
+            this.$captcha(async ({ data }) => {
               if (this.postId) {
-                const take = 5
-                api.reply({
-                  take,
-                  lastId: this.lastId,
-                  postId: this.postId - 0,
-                  content: this.formatContent,
-                  images: this.formatImages,
-                  targetUserId: this.masterId,
-                  geetest: data
-                }).then(data => {
-                  this.$store.commit('post/setPost', {
-                    data,
-                    take,
-                    id: this.postId,
-                    page: -1
+                try {
+                  await this.$store.dispatch('post/reply', {
+                    postId: this.postId - 0,
+                    content: this.formatContent,
+                    images: this.formatImages,
+                    targetUserId: this.masterId,
+                    geetest: data,
+                    ctx: this
                   })
                   this.images = []
                   this.$refs.forms.resetFields()
-                  this.$emit('reply')
                   this.$toast.success('回复成功！')
-                }).catch(err => {
+                } catch (err) {
                   console.log(err)
                   err.message.forEach(tip => {
                     this.$toast.error(tip)
                   })
-                })
+                }
               } else {
-                api.create({
-                  title: this.forms.title,
-                  bangumi_id: this.forms.bangumi_id,
-                  content: this.formatContent,
-                  images: this.formatImages,
-                  geetest: data
-                }).then(id => {
+                try {
+                  const id = await this.$store.dispatch('post/create', {
+                    title: this.forms.title,
+                    bangumiId: this.forms.bangumiId,
+                    content: this.formatContent,
+                    images: this.formatImages,
+                    geetest: data,
+                    ctx: this
+                  })
                   this.images = []
                   this.$refs.forms.resetFields()
                   this.$emit('submit')
@@ -174,11 +161,12 @@
                     name: 'post-show',
                     params: { id: id.toString() }
                   })
-                }).catch(err => {
+                } catch (err) {
+                  console.log(err)
                   err.message.forEach(tip => {
                     this.$toast.error(tip)
                   })
-                })
+                }
               }
             })
           } else {

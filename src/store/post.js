@@ -59,6 +59,17 @@ const actions = {
     const api = new Api(ctx)
     const data = await api.comment({ postId, targetUserId, content })
     commit('setComment', { data, index })
+  },
+  // eslint-disable-next-line no-empty-pattern
+  async create ({}, { title, bangumiId, content, images, geetest, ctx }) {
+    const api = new Api(ctx)
+    const id = await api.create({ title, bangumiId, content, images, geetest })
+    return id
+  },
+  // eslint-disable-next-line no-empty-pattern
+  async reply ({}, { postId, content, images, targetUserId, geetest, ctx }) {
+    const api = new Api(ctx)
+    await api.reply({ postId, targetUserId, content, images, geetest })
   }
 }
 

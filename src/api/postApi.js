@@ -1,9 +1,9 @@
 import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
-  create ({ title, bangumi_id, content, images, geetest }) {
+  create ({ title, bangumiId, content, images, geetest }) {
     return this.http.post('post/create', {
-      title, bangumi_id, content, images, geetest
+      title, bangumiId, content, images, geetest
     })
   }
 
@@ -13,9 +13,9 @@ export default class extends BaseApi {
     })
   }
 
-  reply ({ take, lastId, targetUserId, postId, images, content, geetest }) {
+  reply ({ targetUserId, postId, images, content, geetest }) {
     return this.http.post(`post/${postId}/reply`, {
-      take, lastId, targetUserId, images, content, geetest
+      targetUserId, images, content, geetest
     })
   }
 

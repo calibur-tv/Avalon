@@ -47,8 +47,9 @@
         </main>
         <el-pagination background
                        layout="total, prev, pager, next, jumper"
-                       :total="post.comment_count"
+                       :total="post.comment_count + 1"
                        :current-page="page"
+                       v-if="post.comment_count + 1 > take"
                        @current-change="getData"
         ></el-pagination>
         <footer>
