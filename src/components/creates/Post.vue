@@ -30,7 +30,7 @@
       </el-form-item>
     </template>
     <el-form-item label="图片">
-      <el-upload action="http://up.qiniu.com"
+      <el-upload action="https://up.qbox.me"
                  multiple
                  list-type="picture-card"
                  ref="uploader"
