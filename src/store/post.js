@@ -61,15 +61,15 @@ const actions = {
     commit('setComment', { data, index })
   },
   // eslint-disable-next-line no-empty-pattern
-  async create ({}, { title, bangumiId, content, images, geetest, ctx }) {
-    const api = new Api(ctx)
-    const id = await api.create({ title, bangumiId, content, images, geetest })
+  async create ({}, params) {
+    const api = new Api(params.ctx)
+    const id = await api.create(params)
     return id
   },
   // eslint-disable-next-line no-empty-pattern
-  async reply ({}, { postId, content, images, targetUserId, geetest, ctx }) {
-    const api = new Api(ctx)
-    await api.reply({ postId, targetUserId, content, images, geetest })
+  async reply ({}, params) {
+    const api = new Api(params.ctx)
+    await api.reply(params)
   }
 }
 

@@ -160,6 +160,18 @@
       }
     }
 
+    #posts {
+      li {
+        float: none;
+
+        .header {
+          .avatar {
+            @include avatar(32px)
+          }
+        }
+      }
+    }
+
     .col-aside {
       ul {
         margin-bottom: 20px;
@@ -258,9 +270,23 @@
               </ul>
             </section>
           </el-tab-pane>
-          <el-tab-pane label="帖子"></el-tab-pane>
-          <el-tab-pane label="图片"></el-tab-pane>
-          <el-tab-pane label="管理"></el-tab-pane>
+          <el-tab-pane label="帖子">
+            <ul id="posts">
+              <li v-for="item in posts">
+                <div class="header">
+                  <a :href="$alias.user(item.user.zone)">
+                    <v-img class="avatar" :src="item.user.avatar" width="32" height="32"></v-img>
+                  </a>
+                  <a class="title" :href="$alias.post(item.id)" v-text="item.title"></a>
+                  <div class="content">
+                    <p class="twoline" v-text="item.desc"></p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </el-tab-pane>
+          <!--<el-tab-pane label="图片"></el-tab-pane>-->
+          <!--<el-tab-pane label="管理"></el-tab-pane>-->
         </el-tabs>
       </div>
       <aside class="col-aside">
@@ -328,6 +354,16 @@
       },
       videoPackage () {
         return this.info.videoPackage
+      },
+      posts () {
+        return this.$store.state.bangumi.posts
+      }
+    },
+    data () {
+      return {
+        lastPostId: 0,
+        postTake: 10,
+        postType: 'new'
       }
     },
     methods: {
@@ -345,7 +381,24 @@
         }
       },
       handleTabClick (tab) {
-        console.log(tab.label)
+        if (tab.label === '帖子') {
+          this.getPosts(true)
+        }
+      },
+      async getPosts (init = false) {
+        const lastId = init ? 0 : this.lastPostId
+        try {
+          const id = await this.$store.dispatch('bangumi/getPosts', {
+            ctx: this,
+            lastId,
+            id: this.id,
+            take: this.postTake,
+            type: this.postType
+          })
+          this.lastPostId = id
+        } catch (e) {
+          console.log(e)
+        }
       }
     }
   }

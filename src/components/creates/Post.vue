@@ -40,7 +40,7 @@
                  :on-remove="handleRemove"
                  :on-success="handleSuccess"
                  :on-exceed="handleExceed"
-                 :limit="6"
+                 :limit="exceed"
                  :before-upload="beforeUpload">
         <i class="el-icon-plus"></i>
       </el-upload>
@@ -93,7 +93,8 @@
         uploadHeaders: {
           token: ''
         },
-        images: []
+        images: [],
+        exceed: 6
       }
     },
     computed: {
@@ -148,6 +149,7 @@
                   const id = await this.$store.dispatch('post/create', {
                     title: this.forms.title,
                     bangumiId: this.forms.bangumiId,
+                    desc: this.forms.content.substring(0, 120),
                     content: this.formatContent,
                     images: this.formatImages,
                     geetest: data,
@@ -200,7 +202,7 @@
         })
       },
       handleExceed () {
-        this.$toast.error('最多可上传 3 张图片!')
+        this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
       },
       beforeUpload (file) {
         const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1

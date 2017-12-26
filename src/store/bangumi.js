@@ -7,7 +7,8 @@ const state = () => ({
   follows: Object.create(null),
   released: [],
   timeline: {},
-  category: {}
+  category: {},
+  posts: []
 })
 
 const mutations = {
@@ -66,6 +67,15 @@ const mutations = {
       })
     }
     state.category.noMore = data.length < take
+  },
+  setPosts (state, { data, lastId }) {
+    if (lastId) {
+      data.forEach(item => {
+        state.posts.push(item)
+      })
+    } else {
+      state.posts = data
+    }
   }
 }
 
@@ -131,6 +141,12 @@ const actions = {
     const api = new BangumiApi()
     const data = await api.category({ id, page, take })
     commit('setCategory', { data, page, take })
+  },
+  async getPosts ({ commit }, { id, lastId, take, type, ctx }) {
+    const api = new BangumiApi(ctx)
+    const data = await api.posts({ id, lastId, take, type })
+    commit('setPosts', { data, lastId })
+    return data.length ? data[data.length - 1].id : 0
   }
 }
 

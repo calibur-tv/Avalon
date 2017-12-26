@@ -21,8 +21,8 @@ export default {
     return `/video/${id}`
   },
 
-  post (slug) {
-    return `/post/${slug}`
+  post (id) {
+    return `/post/${id}`
   },
 
   bangumiTag (id) {
