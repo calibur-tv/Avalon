@@ -11,11 +11,6 @@
         line-height: 55px;
       }
     }
-
-    .image-preview-modal .v-modal {
-      max-height: 80%;
-      max-width: 90%;
-    }
   }
 </style>
 
@@ -41,9 +36,6 @@
                   :master-id="masterId"
                   @image-preview="handlePreviewImage"
           ></v-item>
-          <v-modal class="image-preview-modal" v-model="showPreviewImage" :footer="false" :header="false">
-            <img width="100%" :src="previewImage" alt="">
-          </v-modal>
         </main>
         <el-pagination background
                        layout="total, prev, pager, next, jumper"
@@ -120,17 +112,11 @@
     },
     data () {
       return {
-        showPreviewImage: false,
-        previewImage: '',
         take: defaultParams.take,
         page: parseInt(this.$route.query.page, 10) || defaultParams.page
       }
     },
     methods: {
-      handlePreviewImage (img) {
-        this.previewImage = img
-        this.showPreviewImage = true
-      },
       scrollToReplyForm () {
         this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
       },

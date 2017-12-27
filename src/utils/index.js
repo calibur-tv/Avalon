@@ -28,7 +28,9 @@ import {
   Select,
   Option,
   Upload,
-  Pagination
+  Pagination,
+  Carousel,
+  CarouselItem
 } from 'element-ui'
 
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
@@ -56,6 +58,8 @@ Vue.use(Option)
 Vue.use(InfiniteScroll)
 Vue.use(Upload)
 Vue.use(Pagination)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.use({
@@ -97,15 +101,24 @@ Vue.use({
       }
 
       const format = canUseWebP() ? '/format/webp' : ''
+      const mode = options.mode || 1
 
-      if (options.width && options.width > 0) {
-        const width = `/w/${options.width}`
-        const mode = options.mode === undefined ? 1 : options.mode
-        const height = options.height ? `/h/${options.height}` : mode === 1 ? `/h/${options.width}` : ''
-
-        return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
+      if ((mode === 1 && !options.width) || (!options.width && !options.height)) {
+        return `${link}?imageMogr2/auto-orient/strip${format}`
       }
-      return `${link}?imageMogr2/auto-orient/strip${format}`
+
+      let width
+      let height
+
+      if (mode === 1) {
+        width = `/w/${options.width}`
+        height = options.height ? `/h/${options.height}` : `/h/${options.width}`
+      } else {
+        width = options.width ? `/w/${options.width}` : ''
+        height = options.height ? `/h/${options.height}` : ''
+      }
+
+      return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
     }
   }
 })

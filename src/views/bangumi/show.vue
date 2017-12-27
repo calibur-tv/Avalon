@@ -163,11 +163,108 @@
     #posts {
       li {
         float: none;
+        padding: 10px 10px 10px 70px;
+        border-bottom: 1px dotted #e4e6eb;
+        position: relative;
 
         .header {
+          position: relative;
+          height: 32px;
+
           .avatar {
-            @include avatar(32px)
+            display: block;
+            float: left;
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+
+            img {
+              display: block;
+              @include avatar(32px);
+            }
           }
+
+          .title {
+            font-size: 14px;
+            line-height: 32px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            padding-left: 42px;
+            padding-right: 200px;
+            z-index: 0;
+          }
+
+          .time {
+            float: right;
+            display: block;
+            line-height: 32px;
+            color: #999;
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+          }
+        }
+
+        .content {
+          margin-top: 3px;
+          color: #666;
+          font-size: 12px;
+          line-height: 22px;
+        }
+
+        .images {
+          height: 90px;
+          overflow: hidden;
+          margin-top: 10px;
+          margin-bottom: 15px;
+
+          .image-box {
+            margin-right: 10px;
+            height: 100%;
+            position: relative;
+            float: left;
+            cursor: zoom-in;
+
+            &:after {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              background-color: #fff;
+              opacity: 0;
+            }
+
+            &:hover {
+              &:after {
+                opacity: 0.1;
+              }
+            }
+
+            img {
+              height: 100%;
+              width: auto;
+            }
+          }
+        }
+
+        .counter {
+          position: absolute;
+          left: 8px;
+          top: 12px;
+          width: 50px;
+          height: 30px;
+          line-height: 26px;
+          font-size: 12px;
+          text-align: center;
+          background-color: RGB(247, 247, 247);
+          display: block;
+          border: 1px solid #e4e6eb;
+          border-radius: 3px;
         }
       }
     }
@@ -273,15 +370,34 @@
           <el-tab-pane label="帖子">
             <ul id="posts">
               <li v-for="item in posts">
-                <div class="header">
-                  <a :href="$alias.user(item.user.zone)">
-                    <v-img class="avatar" :src="item.user.avatar" width="32" height="32"></v-img>
-                  </a>
-                  <a class="title" :href="$alias.post(item.id)" v-text="item.title"></a>
-                  <div class="content">
-                    <p class="twoline" v-text="item.desc"></p>
+                <div class="header clearfix">
+                  <el-tooltip effect="dark" :content="item.user.nickname" placement="top">
+                    <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
+                      <v-img :src="item.user.avatar" width="32" height="32"></v-img>
+                    </a>
+                  </el-tooltip>
+                  <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+                  <el-tooltip effect="dark" :content="`发表于：${item.created_at}`" placement="top" v-if="item.comment_count">
+                    <span class="time">
+                      最后回复于: <v-time v-model="item.updated_at"></v-time>
+                    </span>
+                  </el-tooltip>
+                  <span class="time" v-else>
+                    发表于: <v-time v-model="item.updated_at"></v-time>
+                  </span>
+                </div>
+                <div class="content">
+                  <p class="twoline" v-text="item.desc"></p>
+                </div>
+                <div class="images clearfix" v-if="item.images.length">
+                  <div class="image-box"
+                       :key="image"
+                       v-for="(image, index) in item.images"
+                       @click="previewImages(item.images, index)">
+                    <v-img :src="image" height="90" mode="2"></v-img>
                   </div>
                 </div>
+                <span class="counter" v-text="item.comment_count"></span>
               </li>
             </ul>
           </el-tab-pane>
@@ -384,6 +500,11 @@
         if (tab.label === '帖子') {
           this.getPosts(true)
         }
+      },
+      previewImages (images, index) {
+        this.$channel.$emit('open-image-reader', {
+          images, index
+        })
       },
       async getPosts (init = false) {
         const lastId = init ? 0 : this.lastPostId

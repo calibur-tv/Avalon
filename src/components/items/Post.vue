@@ -76,8 +76,8 @@
       <a class="nickname oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
     </el-col>
     <el-col class="content" :span="19">
-      <div v-for="img in item.images" @click="handleImagePreview(img)">
-        <v-img class="image" :src="img" :width="500"></v-img>
+      <div v-for="(img, index) in item.images" @click="handleImagePreview(item.images, index)">
+        <v-img class="image" :src="img" width="500" mode="2"></v-img>
       </div>
       <div v-html="item.content"></div>
       <div class="footer">
@@ -190,8 +190,10 @@
       updateCommit (e, index) {
         this.changeState(index, 'comment', e.target.value)
       },
-      handleImagePreview (url) {
-        this.$emit('image-preview', url)
+      handleImagePreview (images, index) {
+        this.$channel.$emit('open-image-reader', {
+          images, index
+        })
       },
       async submitCommit (post, index) {
         const content = this.list[index].state.comment

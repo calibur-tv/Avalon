@@ -142,7 +142,10 @@ const actions = {
     const data = await api.category({ id, page, take })
     commit('setCategory', { data, page, take })
   },
-  async getPosts ({ commit }, { id, lastId, take, type, ctx }) {
+  async getPosts ({ state, commit }, { id, lastId, take, type, ctx }) {
+    if (lastId === 0 && state.posts.length) {
+      return
+    }
     const api = new BangumiApi(ctx)
     const data = await api.posts({ id, lastId, take, type })
     commit('setPosts', { data, lastId })

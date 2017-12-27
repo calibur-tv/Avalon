@@ -81,7 +81,7 @@
         rules: {
           title: [
             { required: true, message: '请输入帖子标题', trigger: 'blur' },
-            { max: 20, message: '请缩减至20字以内！', trigger: 'blur' }
+            { max: 40, message: '请缩减至40字以内！', trigger: 'blur' }
           ],
           bangumiId: [
             { type: 'number', required: true, message: '请选择活动区域', trigger: 'change' }
@@ -138,6 +138,7 @@
                   this.images = []
                   this.$refs.forms.resetFields()
                   this.$toast.success('回复成功！')
+                  window.location.reload()
                 } catch (err) {
                   console.log(err)
                   err.message.forEach(tip => {

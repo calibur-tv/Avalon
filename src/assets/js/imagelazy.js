@@ -24,6 +24,10 @@ export default {
       type: [Number, String],
       default: 2
     },
+    mode: {
+      type: [Number, String],
+      default: 1
+    },
     events: {
       type: Array,
       default: function () {
@@ -67,15 +71,18 @@ export default {
       if (this.width && this.height) {
         src = this.$resize(this.resource, {
           width: (this.width - 0) * 2,
-          height: (this.height - 0) * 2
+          height: (this.height - 0) * 2,
+          mode: (this.mode - 0)
         })
       } else if (this.width) {
         src = this.$resize(this.resource, {
-          width: (this.width - 0) * 2
+          width: (this.width - 0) * 2,
+          mode: (this.mode - 0)
         })
       } else if (this.height) {
         src = this.$resize(this.resource, {
-          height: (this.height - 0) * 2
+          height: (this.height - 0) * 2,
+          mode: (this.mode - 0)
         })
       } else {
         src = this.resource
