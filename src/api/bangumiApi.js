@@ -9,9 +9,9 @@ export default class extends BaseApi {
     return this.http.post(`bangumi/${id}/follow`)
   }
 
-  posts ({ id, lastId, take, type }) {
+  posts ({ id, seenIds, take, type }) {
     return this.http.get(`bangumi/${id}/posts`, {
-      params: { lastId, take, type }
+      params: { seenIds, take, type }
     })
   }
 

@@ -67,7 +67,7 @@
         default: ''
       },
       masterId: {
-        type: Number,
+        type: [Number, String],
         default: 0
       }
     },
@@ -132,6 +132,7 @@
                     content: this.formatContent,
                     images: this.formatImages,
                     targetUserId: this.masterId,
+                    bangumiId: this.bangumiId,
                     geetest: data,
                     ctx: this
                   })

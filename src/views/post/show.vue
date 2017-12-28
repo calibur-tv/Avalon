@@ -34,12 +34,11 @@
                   :index="index"
                   :key="item.id"
                   :master-id="masterId"
-                  @image-preview="handlePreviewImage"
           ></v-item>
         </main>
         <el-pagination background
                        layout="total, prev, pager, next, jumper"
-                       :total="post.comment_count + 1"
+                       :total="post.comment_count - 0 + 1"
                        :current-page="page"
                        v-if="post.comment_count + 1 > take"
                        @current-change="getData"

@@ -13,9 +13,9 @@ export default class extends BaseApi {
     })
   }
 
-  reply ({ targetUserId, postId, images, content, geetest }) {
+  reply ({ targetUserId, bangumiId, postId, images, content, geetest }) {
     return this.http.post(`post/${postId}/reply`, {
-      targetUserId, images, content, geetest
+      targetUserId, bangumiId, images, content, geetest
     })
   }
 
@@ -25,9 +25,9 @@ export default class extends BaseApi {
     })
   }
 
-  comments ({ postId, page, take }) {
+  comments ({ postId, seenIds, take }) {
     return this.http.get(`post/${postId}/comments`, {
-      params: { page, take }
+      params: { seenIds, take }
     })
   }
 }

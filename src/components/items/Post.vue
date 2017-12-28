@@ -90,7 +90,7 @@
         <div class="comments-wrap">
           <el-collapse-transition>
             <ul v-show="item.comments.length && !item.state.collapsed" class="comments">
-              <li v-for="comment in comments" :key="comment.id">
+              <li v-for="comment in item.comments" :key="comment.id">
                 <a :href="$alias.user(comment.from_user_zone)" target="_blank">
                   <v-img class="avatar" :src="comment.from_user_avatar" width="32" height="32"></v-img>
                 </a>
@@ -112,13 +112,12 @@
           </el-collapse-transition>
           <template v-if="item.comments.length && !item.state.collapsed">
             <button @click="toggleCommentForm(index, false, 0)">我也说一句</button>
-            <el-pagination small
-                           layout="prev, pager, next"
-                           :page-size="take"
-                           :total="item.comment_count"
-                           v-if="item.comment_count / take > 1"
-                           @current-change="getComments"
-            ></el-pagination>
+            <el-button v-if="!item.state.noMoreComment"
+                       type="primary"
+                       @click="getComments"
+                       size="mini"
+            >点击加载更多</el-button>
+            <span>共 {{ item.comment_count }} 条</span>
           </template>
           <div class="comment-reply" v-if="item.state.openComment">
             <input type="text"
@@ -165,10 +164,6 @@
       },
       post () {
         return this.$store.state.post.post
-      },
-      comments () {
-        const begin = (this.curPage - 1) * this.take
-        return this.item.comments.slice(begin, begin + this.take)
       },
       currentUserId () {
         return this.$store.state.login ? this.$store.state.user.id : 0
@@ -223,7 +218,6 @@
           await this.$store.dispatch('post/getComments', {
             index: this.index,
             postId: this.item.id,
-            page,
             take: this.take
           })
           this.curPage = page

@@ -68,14 +68,10 @@ const mutations = {
     }
     state.category.noMore = data.length < take
   },
-  setPosts (state, { data, lastId }) {
-    if (lastId) {
-      data.forEach(item => {
-        state.posts.push(item)
-      })
-    } else {
-      state.posts = data
-    }
+  setPosts (state, data) {
+    data.forEach(item => {
+      state.posts.push(item)
+    })
   }
 }
 
@@ -142,14 +138,11 @@ const actions = {
     const data = await api.category({ id, page, take })
     commit('setCategory', { data, page, take })
   },
-  async getPosts ({ state, commit }, { id, lastId, take, type, ctx }) {
-    if (lastId === 0 && state.posts.length) {
-      return
-    }
+  async getPosts ({ state, commit }, { id, take, type, ctx }) {
+    const seenIds = state.posts.length ? [] : state.posts.map(item => item.id)
     const api = new BangumiApi(ctx)
-    const data = await api.posts({ id, lastId, take, type })
-    commit('setPosts', { data, lastId })
-    return data.length ? data[data.length - 1].id : 0
+    const data = await api.posts({ id, take, type, seenIds })
+    commit('setPosts', data)
   }
 }
 

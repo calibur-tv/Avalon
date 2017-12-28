@@ -477,7 +477,6 @@
     },
     data () {
       return {
-        lastPostId: 0,
         postTake: 10,
         postType: 'new'
       }
@@ -498,7 +497,7 @@
       },
       handleTabClick (tab) {
         if (tab.label === '帖子') {
-          this.getPosts(true)
+          this.getPosts()
         }
       },
       previewImages (images, index) {
@@ -506,17 +505,14 @@
           images, index
         })
       },
-      async getPosts (init = false) {
-        const lastId = init ? 0 : this.lastPostId
+      async getPosts () {
         try {
-          const id = await this.$store.dispatch('bangumi/getPosts', {
+          await this.$store.dispatch('bangumi/getPosts', {
             ctx: this,
-            lastId,
             id: this.id,
             take: this.postTake,
             type: this.postType
           })
-          this.lastPostId = id
         } catch (e) {
           console.log(e)
         }

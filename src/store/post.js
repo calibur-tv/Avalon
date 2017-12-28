@@ -15,7 +15,7 @@ const mutations = {
         loading: false,
         comment: '',
         replying: false,
-        maxPage: 1,
+        noMoreComment: item.comments.length >= item.comment_count,
         collapsed: false
       }
       state.list.push(item)
@@ -31,29 +31,30 @@ const mutations = {
     state.list[index].comments.push(data)
     state.list[index].comment_count++
   },
-  setComments (state, { index, data, page }) {
+  setComments (state, { index, data }) {
     data.forEach(item => {
       state.list[index].comments.push(item)
     })
-    state.list[index].state.maxPage = page
+    state.list[index].state.noMoreComment = state.list[index].comments.length >= state.list[index].comment_count
   }
 }
 
 const actions = {
   async getPost ({ commit }, { id, ctx, take, page }) {
     const api = new Api(ctx)
-    const data = await api.show({ id, page, take })
+    const data = await api.show({ id, take, page })
     commit('setPost', { data, take, page })
   },
-  async getComments ({ state, commit }, { index, postId, page, take }) {
-    if (state.list[index].state.maxPage >= page) {
+  async getComments ({ state, commit }, { index, postId, take }) {
+    if (state.list[index].state.noMoreComment) {
       return
     }
     const api = new Api()
+    const seenIds = state.list[index].comments.length ? state.list[index].comments.map(item => item.id) : []
     const data = await api.comments({
-      postId, page, take
+      postId, take, seenIds
     })
-    commit('setComments', { index, data, page })
+    commit('setComments', { index, data })
   },
   async setComment ({ commit }, { index, postId, targetUserId, content, ctx }) {
     const api = new Api(ctx)
