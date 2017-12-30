@@ -153,8 +153,6 @@
     },
     data () {
       return {
-        take: 10,
-        curPage: 1,
         targetUserId: 0
       }
     },
@@ -213,14 +211,12 @@
         }
         this.changeState(index, 'replying', false)
       },
-      async getComments (page) {
+      async getComments () {
         try {
           await this.$store.dispatch('post/getComments', {
             index: this.index,
-            postId: this.item.id,
-            take: this.take
+            postId: this.item.id
           })
-          this.curPage = page
         } catch (e) {
           console.log(e)
           this.$toast.error('网络错误，请稍后再试！')

@@ -46,7 +46,6 @@
         <footer>
           <div id="post-reply-form">
             <v-post :post-id="id"
-                    :last-id="lastId"
                     :bangumi-id="post.bangumi_id"
                     :master-id="masterId"
                     id="test"
@@ -104,9 +103,6 @@
       },
       masterId () {
         return this.post.user_id
-      },
-      lastId () {
-        return this.list[this.list.length - 1].id
       }
     },
     data () {

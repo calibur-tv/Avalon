@@ -45,14 +45,14 @@ const actions = {
     const data = await api.show({ id, take, page })
     commit('setPost', { data, take, page })
   },
-  async getComments ({ state, commit }, { index, postId, take }) {
+  async getComments ({ state, commit }, { index, postId }) {
     if (state.list[index].state.noMoreComment) {
       return
     }
     const api = new Api()
     const seenIds = state.list[index].comments.length ? state.list[index].comments.map(item => item.id) : []
     const data = await api.comments({
-      postId, take, seenIds
+      postId, seenIds
     })
     commit('setComments', { index, data })
   },
