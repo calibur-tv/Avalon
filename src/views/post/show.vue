@@ -36,6 +36,7 @@
           <v-item v-for="(item, index) in list"
                   :item="item"
                   :index="index"
+                  :floor="computeFloor(index)"
                   :key="item.id"
                   :master-id="masterId"
           ></v-item>
@@ -128,6 +129,9 @@
       }
     },
     methods: {
+      computeFloor (index) {
+        return this.take * (this.page - 1) + index + 1
+      },
       scrollToReplyForm () {
         this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
       },

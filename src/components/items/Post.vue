@@ -81,7 +81,7 @@
       </div>
       <div v-html="item.content"></div>
       <div class="footer">
-        <span>{{ index + 1 }}楼</span>
+        <span>{{ floor }}楼</span>
         <v-time v-model="item.created_at"></v-time>
         <button @click="toggleCommentForm(index)"
                 v-if="item.comments.length"
@@ -143,6 +143,10 @@
     name: 'post-item',
     props: {
       index: {
+        type: Number,
+        required: true
+      },
+      floor: {
         type: Number,
         required: true
       },
