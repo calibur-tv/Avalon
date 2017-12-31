@@ -194,7 +194,7 @@
           }
         })
         if (selected.length) {
-          window.location = `${window.location.href.split('?').shift()}?id=${selected.join('-')}&page=1`
+          window.location = this.$alias.bangumiTag(selected.join('-'))
         }
       },
       async loadMore () {

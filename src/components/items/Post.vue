@@ -81,6 +81,7 @@
       </div>
       <div v-html="item.content"></div>
       <div class="footer">
+        <button v-if="canDelete" @click="deletePost">删除</button>
         <span>{{ floor }}楼</span>
         <v-time v-model="item.created_at"></v-time>
         <button @click="toggleCommentForm(index)"
@@ -153,6 +154,10 @@
       item: {
         type: Object,
         required: true
+      },
+      masterId: {
+        type: [Number, String],
+        required: true
       }
     },
     data () {
@@ -169,6 +174,10 @@
       },
       currentUserId () {
         return this.$store.state.login ? this.$store.state.user.id : 0
+      },
+      canDelete () {
+        const userId = this.$store.state.user.id
+        return this.masterId - userId === 0 || this.item['user_id'] - userId === 0
       }
     },
     methods: {
@@ -233,6 +242,9 @@
           key,
           value
         })
+      },
+      deletePost () {
+        this.$emit('delete', this.item.id)
       }
     }
   }

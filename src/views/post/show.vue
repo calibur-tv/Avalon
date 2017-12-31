@@ -34,11 +34,12 @@
         </header>
         <main>
           <v-item v-for="(item, index) in list"
+                  :key="item.id"
                   :item="item"
                   :index="index"
                   :floor="computeFloor(index)"
-                  :key="item.id"
                   :master-id="masterId"
+                  @delete="deletePost"
           ></v-item>
         </main>
         <el-pagination background
@@ -150,11 +151,14 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('post/deletePost', {
+        }).then(async () => {
+          await this.$store.dispatch('post/deletePost', {
             ctx: this,
             id
           })
+          if (id === this.post.id) {
+            window.location = this.$alias.bangumi(this.bangumi.id)
+          }
         }).catch(() => {})
       }
     },

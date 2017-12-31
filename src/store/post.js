@@ -38,6 +38,17 @@ const mutations = {
       state.list[index].comments.push(item)
     })
     state.list[index].state.noMoreComment = state.list[index].comments.length >= state.list[index].comment_count
+  },
+  delPost (state, id) {
+    if (id === state.post.id) {
+      return
+    }
+    state.list.forEach((item, index) => {
+      if (item.id === id) {
+        state.list.splice(1, index)
+      }
+    })
+    state.total--
   }
 }
 
@@ -76,10 +87,10 @@ const actions = {
     const api = new Api(params.ctx)
     await api.reply(params)
   },
-  // eslint-disable-next-line no-empty-pattern
-  async deletePost ({}, { ctx, id }) {
+  async deletePost ({ commit }, { ctx, id }) {
     const api = new Api(ctx)
     await api.delete(id)
+    commit('delPost', id)
   }
 }
 
