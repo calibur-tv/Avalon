@@ -45,7 +45,7 @@ const mutations = {
     }
     state.list.forEach((item, index) => {
       if (item.id === id) {
-        state.list.splice(1, index)
+        state.list.splice(index, 1)
       }
     })
     state.total--
