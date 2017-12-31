@@ -50,7 +50,9 @@ const actions = {
       return
     }
     const api = new Api()
-    const seenIds = state.list[index].comments.length ? state.list[index].comments.map(item => item.id) : []
+    const seenIds = state.list[index].comments.length
+      ? state.list[index].comments.map(item => item.id).join(',')
+      : null
     const data = await api.comments({
       postId, seenIds
     })

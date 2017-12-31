@@ -164,8 +164,11 @@
       li {
         float: none;
         padding: 10px 10px 10px 70px;
-        border-bottom: 1px dotted #e4e6eb;
         position: relative;
+
+        &:not(:last-child) {
+          border-bottom: 1px dotted #e4e6eb;
+        }
 
         .header {
           position: relative;
@@ -369,7 +372,7 @@
           </el-tab-pane>
           <el-tab-pane label="帖子">
             <ul id="posts">
-              <li v-for="item in posts">
+              <li v-for="item in posts" :key="item.id">
                 <div class="header clearfix">
                   <el-tooltip effect="dark" :content="item.user.nickname" placement="top">
                     <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
@@ -377,7 +380,7 @@
                     </a>
                   </el-tooltip>
                   <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
-                  <el-tooltip effect="dark" :content="`发表于：${item.created_at}`" placement="top" v-if="item.comment_count">
+                  <el-tooltip effect="dark" :content="`发表于：${item.created_at}`" placement="top" v-if="item.updated_at !== item.created_at">
                     <span class="time">
                       最后回复于: <v-time v-model="item.updated_at"></v-time>
                     </span>
@@ -400,6 +403,12 @@
                 <span class="counter" v-text="item.comment_count"></span>
               </li>
             </ul>
+            <el-button :loading="postState.loading"
+                       v-if="!postState.noMore"
+                       @click="getPosts(false)"
+                       type="info"
+                       plain
+            >加载更多</el-button>
           </el-tab-pane>
           <!--<el-tab-pane label="图片"></el-tab-pane>-->
           <!--<el-tab-pane label="管理"></el-tab-pane>-->
@@ -477,8 +486,12 @@
     },
     data () {
       return {
-        postTake: 10,
-        postType: 'new'
+        postState: {
+          take: 10,
+          type: 'new',
+          loading: false,
+          noMore: false
+        }
       }
     },
     methods: {
@@ -497,7 +510,7 @@
       },
       handleTabClick (tab) {
         if (tab.label === '帖子') {
-          this.getPosts()
+          this.getPosts(true)
         }
       },
       previewImages (images, index) {
@@ -505,17 +518,24 @@
           images, index
         })
       },
-      async getPosts () {
+      async getPosts (init) {
+        if ((init && this.posts.length) || this.postState.loading || this.postState.noMore) {
+          return
+        }
+        this.postState.loading = true
+
         try {
-          await this.$store.dispatch('bangumi/getPosts', {
+          const count = await this.$store.dispatch('bangumi/getPosts', {
             ctx: this,
             id: this.id,
-            take: this.postTake,
-            type: this.postType
+            take: this.postState.take,
+            type: this.postState.type
           })
+          this.postState.noMore = count < this.postState.take
         } catch (e) {
           console.log(e)
         }
+        this.postState.loading = false
       }
     }
   }
