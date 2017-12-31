@@ -7,9 +7,9 @@ export default class extends BaseApi {
     })
   }
 
-  show ({ id, page, take }) {
+  show ({ id, page, take, only }) {
     return this.http.get(`post/${id}/show`, {
-      params: { page, take }
+      params: { page, take, only }
     })
   }
 
@@ -29,5 +29,9 @@ export default class extends BaseApi {
     return this.http.get(`post/${postId}/comments`, {
       params: { seenIds }
     })
+  }
+
+  delete (id) {
+    return this.http.post(`post/${id}/delete`)
   }
 }

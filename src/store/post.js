@@ -4,7 +4,8 @@ const state = () => ({
   post: null,
   list: [],
   bangumi: null,
-  noMore: false
+  noMore: false,
+  total: 0
 })
 
 const mutations = {
@@ -23,6 +24,7 @@ const mutations = {
     state.post = data.post
     state.bangumi = data.bangumi
     state.noMore = data.list.length < take
+    state.total = data.total
   },
   setState (state, { index, key, value }) {
     state.list[index].state[key] = value
@@ -40,9 +42,9 @@ const mutations = {
 }
 
 const actions = {
-  async getPost ({ commit }, { id, ctx, take, page }) {
+  async getPost ({ commit }, { id, ctx, take, page, only }) {
     const api = new Api(ctx)
-    const data = await api.show({ id, take, page })
+    const data = await api.show({ id, take, page, only })
     commit('setPost', { data, take, page })
   },
   async getComments ({ state, commit }, { index, postId }) {
@@ -73,6 +75,11 @@ const actions = {
   async reply ({}, params) {
     const api = new Api(params.ctx)
     await api.reply(params)
+  },
+  // eslint-disable-next-line no-empty-pattern
+  async deletePost ({}, { ctx, id }) {
+    const api = new Api(ctx)
+    await api.delete(id)
   }
 }
 

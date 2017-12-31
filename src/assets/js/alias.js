@@ -2,7 +2,14 @@ export default {
   index: '/',
 
   __query (str, obj) {
-    return `${str}${JSON.stringify(obj).replace('{"', '?').replace('"}', '').replace(/":"/g, '=').replace(/","/g, '&')}`
+    if (!obj) {
+      return str
+    }
+    let query = '?'
+    Object.keys(obj).forEach(item => {
+      query += `${item}=${obj[item]}&`
+    })
+    return `${str.split('?').shift()}${query.substring(0, query.length - 1)}`
   },
 
   url (url, query) {
@@ -21,8 +28,8 @@ export default {
     return `/video/${id}`
   },
 
-  post (id) {
-    return `/post/${id}`
+  post (id, query) {
+    return this.__query(`/post/${id}`, query)
   },
 
   bangumiTag (id) {

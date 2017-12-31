@@ -9,6 +9,7 @@
         font-size: 16px;
         margin-left: 20px;
         line-height: 55px;
+        float: left;
       }
     }
   }
@@ -26,6 +27,9 @@
           <a :href="$alias.bangumi(bangumi.id)" target="_blank">《{{ bangumi.name }}》</a>
           <div class="title-wrap">
             <h1 v-text="post.title"></h1>
+            <button @click="switchOnlyMaster">{{ onlyMaster ? '取消只看楼主' : '只看楼主' }}</button>
+            <button @click="scrollToReplyForm">回复</button>
+            <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
           </div>
         </header>
         <main>
@@ -38,9 +42,9 @@
         </main>
         <el-pagination background
                        layout="total, prev, pager, next, jumper"
-                       :total="post.comment_count - 0 + 1"
+                       :total="total"
                        :current-page="page"
-                       v-if="post.comment_count + 1 > take"
+                       v-if="total > take"
                        @current-change="getData"
         ></el-pagination>
         <footer>
@@ -74,7 +78,10 @@
         id: route.params.id,
         ctx,
         take: defaultParams.take,
-        page: route.query.page || defaultParams.page
+        page: route.query.page || defaultParams.page,
+        only: route.query.only
+          ? parseInt(route.query.only, 10) ? 1 : 0
+          : 0
       })
     },
     components: {
@@ -101,8 +108,17 @@
       post () {
         return this.$store.state.post.post
       },
+      total () {
+        return this.$store.state.post.total
+      },
       masterId () {
         return this.post.user_id
+      },
+      onlyMaster () {
+        return !!parseInt(this.$route.query.only, 10)
+      },
+      isMaster () {
+        return this.masterId - this.$store.state.user.id === 0
       }
     },
     data () {
@@ -116,7 +132,26 @@
         this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
       },
       getData (page) {
-        window.location = `${window.location.href.split('?').shift()}?page=${page}`
+        const only = this.$route.query.only || 0
+        window.location = this.$alias.post(this.post.id, { page, only })
+      },
+      switchOnlyMaster () {
+        window.location = this.$alias.post(this.post.id, {
+          page: 1,
+          only: this.onlyMaster ? 0 : 1
+        })
+      },
+      deletePost (id) {
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('post/deletePost', {
+            ctx: this,
+            id
+          })
+        }).catch(() => {})
       }
     },
     mounted () {
