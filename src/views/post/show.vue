@@ -12,6 +12,25 @@
         float: left;
       }
     }
+
+    .col-aside {
+      padding: 20px;
+
+      .bangumi {
+        .avatar {
+          width: 80px;
+          height: 80px;
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 5px;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
   }
 </style>
 
@@ -21,10 +40,6 @@
     <div class="container">
       <section class="col-main">
         <header>
-          <a :href="$alias.bangumi(bangumi.id)" target="_blank">
-            <v-img :src="bangumi.avatar" :width="48" :height="48"></v-img>
-          </a>
-          <a :href="$alias.bangumi(bangumi.id)" target="_blank">《{{ bangumi.name }}》</a>
           <div class="title-wrap">
             <h1 v-text="post.title"></h1>
             <button @click="switchOnlyMaster">{{ onlyMaster ? '取消只看楼主' : '只看楼主' }}</button>
@@ -59,7 +74,14 @@
           </div>
         </footer>
       </section>
-      <aside class="col-aside"></aside>
+      <aside class="col-aside">
+        <div class="bangumi">
+          <a class="avatar" :href="$alias.bangumi(bangumi.id)" target="_blank">
+            <v-img :src="bangumi.avatar" width="80" height="80"></v-img>
+          </a>
+          <a :href="$alias.bangumi(bangumi.id)" target="_blank">《{{ bangumi.name }}》</a>
+        </div>
+      </aside>
     </div>
   </div>
 </template>

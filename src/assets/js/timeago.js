@@ -25,5 +25,8 @@ export default {
   },
   mounted () {
     instance.render(this.$el, 'zh_CN')
+  },
+  beforeDestroy () {
+    timeago.cancel(this.$el)
   }
 }

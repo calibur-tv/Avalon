@@ -11,6 +11,7 @@ import NoSSR from '~/assets/js/nossr'
 import Modal from '~/components/Modal'
 import Banner from '~/components/layouts/Banner'
 import Time from '~/assets/js/timeago'
+import BangumiPanel from '~/components/panels/Bangumi'
 
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
@@ -18,6 +19,7 @@ Vue.component(Modal.name, Modal)
 Vue.component(NoSSR.name, NoSSR)
 Vue.component(Banner.name, Banner)
 Vue.component(Time.name, Time)
+Vue.component(BangumiPanel.name, BangumiPanel)
 
 export function createApp () {
   const router = createRouter()
