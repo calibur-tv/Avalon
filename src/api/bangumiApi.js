@@ -1,12 +1,16 @@
 import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
-  getShow (id) {
+  show (id) {
     return this.http.get(`bangumi/${id}/show`)
   }
 
   follow (id) {
     return this.http.post(`bangumi/${id}/follow`)
+  }
+
+  videos (id) {
+    return this.http.get(`bangumi/${id}/videos`)
   }
 
   posts ({ id, seenIds, take, type }) {

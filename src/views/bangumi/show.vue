@@ -325,51 +325,6 @@
     <div class="container">
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
-          <el-tab-pane label="视频">
-            <section id="videos" v-if="videoPackage.videos.length">
-              <div v-if="info.season">
-                <template v-for="season in videoPackage.videos">
-                  <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
-                  <ul :key="season.name">
-                    <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
-                      <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
-                         :rel="info.others_site_video ? 'nofollow' : ''"
-                         target="_blank">
-                        <figure>
-                          <v-img class="bg"
-                                 :alt="video.name"
-                                 :src="$resize(video.poster, { width: 192, height: 120 })">
-                          </v-img>
-                          <figcaption class="abs">
-                            <p class="oneline">第{{ videoPackage.repeat ? index + 1 : video.part }}话</p>
-                            <span class="twoline" v-text="video.name"></span>
-                          </figcaption>
-                        </figure>
-                      </a>
-                    </li>
-                  </ul>
-                </template>
-              </div>
-              <ul v-else>
-                <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
-                  <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
-                     :rel="info.others_site_video ? 'nofollow' : ''"
-                     target="_blank">
-                    <figure>
-                      <v-img class="bg"
-                             :alt="video.name"
-                             :src="$resize(video.poster, { width: 192, height: 120 })">
-                      </v-img>
-                      <figcaption class="abs">
-                        <p class="oneline">第{{ video.part }}话</p>
-                        <span class="twoline" v-text="video.name"></span>
-                      </figcaption>
-                    </figure>
-                  </a>
-                </li>
-              </ul>
-            </section>
-          </el-tab-pane>
           <el-tab-pane label="帖子">
             <ul id="posts">
               <li v-for="item in posts" :key="item.id">
@@ -405,10 +360,55 @@
             </ul>
             <el-button :loading="postState.loading"
                        v-if="!postState.noMore"
-                       @click="getPosts(false)"
+                       @click="getPosts"
                        type="info"
                        plain
             >加载更多</el-button>
+          </el-tab-pane>
+          <el-tab-pane label="视频">
+            <section id="videos" v-if="videos.data.length">
+              <div v-if="info.season">
+                <template v-for="season in videos.data">
+                  <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
+                  <ul :key="season.name">
+                    <li v-for="(video, index) in season.data" :key="video.id">
+                      <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
+                         :rel="info.others_site_video ? 'nofollow' : ''"
+                         target="_blank">
+                        <figure>
+                          <v-img class="bg"
+                                 :alt="video.name"
+                                 :src="$resize(video.poster, { width: 192, height: 120 })">
+                          </v-img>
+                          <figcaption class="abs">
+                            <p class="oneline">第{{ videos.repeat ? index + 1 : video.part }}话</p>
+                            <span class="twoline" v-text="video.name"></span>
+                          </figcaption>
+                        </figure>
+                      </a>
+                    </li>
+                  </ul>
+                </template>
+              </div>
+              <ul v-else>
+                <li v-for="video in videos.data" :key="video.id">
+                  <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
+                     :rel="info.others_site_video ? 'nofollow' : ''"
+                     target="_blank">
+                    <figure>
+                      <v-img class="bg"
+                             :alt="video.name"
+                             :src="$resize(video.poster, { width: 192, height: 120 })">
+                      </v-img>
+                      <figcaption class="abs">
+                        <p class="oneline">第{{ video.part }}话</p>
+                        <span class="twoline" v-text="video.name"></span>
+                      </figcaption>
+                    </figure>
+                  </a>
+                </li>
+              </ul>
+            </section>
           </el-tab-pane>
           <!--<el-tab-pane label="图片"></el-tab-pane>-->
           <!--<el-tab-pane label="管理"></el-tab-pane>-->
@@ -423,10 +423,10 @@
             </li>
           </ul>
         </div>
-        <div id="followers" v-if="info.followers.length">
+        <div id="followers" v-if="followers.length">
           <h2 class="subtitle">关注的人</h2>
           <ul>
-            <li v-for="user in info.followers" :key="user.zone">
+            <li v-for="user in followers" :key="user.zone">
               <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
                 <a :href="$alias.user(user.zone)" target="_blank">
                   <v-img :src="$resize(user.avatar, { width: 64, height: 64 })"
@@ -443,13 +443,26 @@
 </template>
 
 <script>
+  const defaultParams = {
+    post: {
+      take: 10,
+      type: 'new'
+    }
+  }
+
   export default {
     name: 'bangumi-show',
     async asyncData ({ route, store, ctx }) {
-      await store.dispatch('bangumi/getShow', {
-        ctx,
-        id: route.params.id
-      })
+      const id = route.params.id
+      await Promise.all([
+        store.dispatch('bangumi/getBangumi', { ctx, id }),
+        store.dispatch('bangumi/getPosts', {
+          ctx,
+          id,
+          take: defaultParams.post.take,
+          type: defaultParams.post.type
+        })
+      ])
     },
     head () {
       if (!this.id) {
@@ -472,13 +485,16 @@
         return this.$route.params.id
       },
       info () {
-        return this.$store.state.bangumi.list[this.id]
+        return this.$store.state.bangumi.info
       },
       tags () {
         return this.info.tags
       },
-      videoPackage () {
-        return this.info.videoPackage
+      followers () {
+        return this.info.followers
+      },
+      videos () {
+        return this.$store.state.bangumi.videos
       },
       posts () {
         return this.$store.state.bangumi.posts
@@ -487,17 +503,19 @@
     data () {
       return {
         postState: {
-          take: 10,
-          type: 'new',
+          take: defaultParams.post.take,
+          type: defaultParams.post.type,
           loading: false,
-          noMore: false
+          noMore: false,
+          init: true
+        },
+        videoState: {
+          loading: false,
+          init: false
         }
       }
     },
     methods: {
-      sortVideos (videos) {
-        return this.$orderBy(videos, 'part')
-      },
       follow () {
         if (this.$store.state.login) {
           this.$store.dispatch('bangumi/follow', {
@@ -509,8 +527,15 @@
         }
       },
       handleTabClick (tab) {
-        if (tab.label === '帖子') {
-          this.getPosts(true)
+        const label = tab.label
+        if (label === '帖子') {
+          if (!this.postState.init) {
+            this.getPosts()
+          }
+        } else if (label === '视频') {
+          if (!this.videoState.init) {
+            this.getVideos()
+          }
         }
       },
       previewImages (images, index) {
@@ -518,8 +543,23 @@
           images, index
         })
       },
-      async getPosts (init) {
-        if ((init && this.posts.length) || this.postState.loading || this.postState.noMore) {
+      async getVideos () {
+        if (this.videoState.loading) {
+          return
+        }
+        this.videoState.loading = true
+        this.videoState.init = true
+
+        try {
+          await this.$store.dispatch('bangumi/getVideos', this.id)
+        } catch (e) {
+          console.log(e)
+        }
+
+        this.videoState.loading = false
+      },
+      async getPosts () {
+        if (this.postState.loading || this.postState.noMore) {
           return
         }
         this.postState.loading = true
@@ -535,6 +575,7 @@
         } catch (e) {
           console.log(e)
         }
+
         this.postState.loading = false
       }
     }

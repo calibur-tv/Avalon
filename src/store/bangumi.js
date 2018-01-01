@@ -2,13 +2,18 @@ import BangumiApi from '~/api/bangumiApi'
 import UserApi from '~/api/userApi'
 
 const state = () => ({
-  tags: [],
   list: Object.create(null),
   follows: Object.create(null),
   released: [],
   timeline: {},
   category: {},
-  posts: []
+  tags: [],
+  info: null,
+  posts: [],
+  videos: {
+    data: [],
+    repeat: false
+  }
 })
 
 const mutations = {
@@ -72,6 +77,15 @@ const mutations = {
     data.forEach(item => {
       state.posts.push(item)
     })
+  },
+  setBangumi (state, data) {
+    state.info = data
+  },
+  setVideos (state, data) {
+    state.videos = {
+      data: data.videos,
+      repeat: data.repeat
+    }
   }
 }
 
@@ -84,13 +98,18 @@ const actions = {
     const tags = await api.tags()
     commit('setTags', { tags, id })
   },
-  async getShow ({ state, commit }, { ctx, id }) {
+  async getBangumi ({ state, commit }, { ctx, id }) {
     if (state.list[id]) {
       return
     }
     const api = new BangumiApi(ctx)
-    const data = await api.getShow(id)
-    commit('pushList', data)
+    const data = await api.show(id)
+    commit('setBangumi', data)
+  },
+  async getVideos ({ commit }, id) {
+    const api = new BangumiApi()
+    const data = await api.videos(id)
+    commit('setVideos', data)
   },
   follow ({ commit, rootState }, { ctx, id }) {
     const api = new BangumiApi(ctx)
