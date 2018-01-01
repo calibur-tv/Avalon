@@ -163,7 +163,7 @@
     #posts {
       li {
         float: none;
-        padding: 10px 10px 10px 70px;
+        padding: 10px 10px 10px 65px;
         position: relative;
 
         &:not(:last-child) {
@@ -257,7 +257,7 @@
 
         .counter {
           position: absolute;
-          left: 8px;
+          left: 0;
           top: 12px;
           width: 50px;
           height: 30px;
@@ -270,6 +270,11 @@
           border-radius: 3px;
         }
       }
+    }
+
+    #load-post-btn {
+      margin-top: 20px;
+      width: 100%;
     }
 
     .col-aside {
@@ -325,9 +330,9 @@
     <div class="container">
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
-          <el-tab-pane label="帖子">
+          <el-tab-pane :label="posts.total ? `帖子（${ posts.total }）` : '帖子'">
             <ul id="posts">
-              <li v-for="item in posts" :key="item.id">
+              <li v-for="item in posts.data" :key="item.id">
                 <div class="header clearfix">
                   <el-tooltip effect="dark" :content="item.user.nickname" placement="top">
                     <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
@@ -359,13 +364,14 @@
               </li>
             </ul>
             <el-button :loading="postState.loading"
-                       v-if="!postState.noMore"
+                       v-if="!posts.noMore"
+                       id="load-post-btn"
                        @click="getPosts"
                        type="info"
                        plain
-            >加载更多</el-button>
+            >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
           </el-tab-pane>
-          <el-tab-pane label="视频">
+          <el-tab-pane :label="videos.total ? `视频（${ videos.total }）` : '视频'">
             <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
                 <template v-for="season in videos.data">
@@ -506,7 +512,6 @@
           take: defaultParams.post.take,
           type: defaultParams.post.type,
           loading: false,
-          noMore: false,
           init: true
         },
         videoState: {
@@ -527,12 +532,12 @@
         }
       },
       handleTabClick (tab) {
-        const label = tab.label
-        if (label === '帖子') {
+        const index = parseInt(tab.index, 10)
+        if (index === 0) {
           if (!this.postState.init) {
             this.getPosts()
           }
-        } else if (label === '视频') {
+        } else if (index === 1) {
           if (!this.videoState.init) {
             this.getVideos()
           }
@@ -559,19 +564,18 @@
         this.videoState.loading = false
       },
       async getPosts () {
-        if (this.postState.loading || this.postState.noMore) {
+        if (this.postState.loading || this.posts.noMore) {
           return
         }
         this.postState.loading = true
 
         try {
-          const count = await this.$store.dispatch('bangumi/getPosts', {
+          await this.$store.dispatch('bangumi/getPosts', {
             ctx: this,
             id: this.id,
             take: this.postState.take,
             type: this.postState.type
           })
-          this.postState.noMore = count < this.postState.take
         } catch (e) {
           console.log(e)
         }

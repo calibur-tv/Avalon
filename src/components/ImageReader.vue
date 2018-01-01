@@ -1,8 +1,8 @@
 <style lang="scss">
   .image-reader-modal {
     .v-modal {
-      max-width: none;
-      max-height: none;
+      max-width: 90%;
+      max-height: 90%;
       min-width: 80%;
       height: 700px;
       background-color: transparent;

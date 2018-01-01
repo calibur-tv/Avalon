@@ -26,9 +26,7 @@ export default class extends BaseApi {
   }
 
   comments ({ postId, seenIds }) {
-    return this.http.get(`post/${postId}/comments`, {
-      params: { seenIds }
-    })
+    return this.http.post(`post/${postId}/comments`, { seenIds })
   }
 
   delete (id) {

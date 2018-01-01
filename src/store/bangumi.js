@@ -9,10 +9,15 @@ const state = () => ({
   category: {},
   tags: [],
   info: null,
-  posts: [],
+  posts: {
+    data: [],
+    total: 0,
+    noMore: false
+  },
   videos: {
     data: [],
-    repeat: false
+    repeat: false,
+    total: 0
   }
 })
 
@@ -73,10 +78,13 @@ const mutations = {
     }
     state.category.noMore = data.length < take
   },
-  setPosts (state, data) {
-    data.forEach(item => {
-      state.posts.push(item)
-    })
+  setPosts (state, { data, total }) {
+    const posts = state.posts.data.concat(data)
+    state.posts = {
+      data: posts,
+      total: total,
+      noMore: posts.length >= total
+    }
   },
   setBangumi (state, data) {
     state.info = data
@@ -84,7 +92,8 @@ const mutations = {
   setVideos (state, data) {
     state.videos = {
       data: data.videos,
-      repeat: data.repeat
+      repeat: data.repeat,
+      total: data.total
     }
   }
 }
@@ -158,13 +167,15 @@ const actions = {
     commit('setCategory', { data, page, take })
   },
   async getPosts ({ state, commit }, { id, take, type, ctx }) {
-    const seenIds = state.posts.length
-      ? state.posts.map(item => item.id).join(',')
+    const seenIds = state.posts.data.length
+      ? state.posts.data.map(item => item.id).join(',')
       : null
     const api = new BangumiApi(ctx)
     const data = await api.posts({ id, take, type, seenIds })
-    commit('setPosts', data)
-    return data.length
+    commit('setPosts', {
+      data: data.data,
+      total: data.total
+    })
   }
 }
 
