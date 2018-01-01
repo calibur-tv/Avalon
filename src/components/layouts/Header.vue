@@ -246,8 +246,7 @@
         padding: 0 25px;
         font-size: 15px;
         height: $header-height;
-        display: block;
-        float: left;
+        display: inline-block;
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.24);
@@ -301,27 +300,26 @@
     <div class="text">
       <nav class="container header-left">
         <a class="nav-link" :href="$alias.index">主站</a>
-        <a class="nav-link" :href="$alias.bangumiNews()">番剧</a>
-        <!--
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" to="/bangumi/news">番剧</router-link>
+          <a class="nav-link el-dropdown-link" :href="$alias.bangumiNews">番剧</a>
           <el-dropdown-menu slot="dropdown">
+            <!--
             <el-dropdown-item>
               <router-link class="nav-link" to="/bangumi/rank">排行榜</router-link>
             </el-dropdown-item>
+            -->
             <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/timeline">时间轴</router-link>
+              <a class="nav-link" :href="$alias.bangumiTimeline">时间轴</a>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/news">新番放送</router-link>
+              <a class="nav-link" :href="$alias.bangumiNews">新番放送</a>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/tags">分类索引</router-link>
+              <a class="nav-link" :href="$alias.bangumiTag()">分类索引</a>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        -->
-        <a class="nav-link" :href="$alias.bangumiTag()">分类</a>
+        <a class="nav-link" :href="$alias.postNews">帖子</a>
       </nav>
       <nav class="header-right">
         <v-search placeholder="搜索" :history="true"></v-search>

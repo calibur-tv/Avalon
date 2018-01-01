@@ -56,9 +56,13 @@ export function createRouter () {
             component: () => import('~/views/user/show')
           },
           {
-            path: 'post/:id',
+            path: 'post/:id(\\d+)',
             name: 'post-show',
             component: () => import('~/views/post/show')
+          },
+          {
+            path: 'post/news',
+            component: () => import('~/views/post/news')
           }
         ]
       }

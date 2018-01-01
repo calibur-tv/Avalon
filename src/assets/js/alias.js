@@ -36,7 +36,9 @@ export default {
     return id ? `/bangumi/tags?id=${id}` : '/bangumi/tags'
   },
 
-  bangumiNews () {
-    return '/bangumi/news'
-  }
+  bangumiNews: '/bangumi/news',
+
+  bangumiTimeline: '/bangumi/timeline',
+
+  postNews: '/post/news'
 }
