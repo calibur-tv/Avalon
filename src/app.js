@@ -11,7 +11,7 @@ import NoSSR from '~/assets/js/nossr'
 import Modal from '~/components/Modal'
 import Banner from '~/components/layouts/Banner'
 import Time from '~/assets/js/timeago'
-import BangumiPanel from '~/components/panels/Bangumi'
+import BangumiPanel from '~/components/panels/bangumi'
 
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
