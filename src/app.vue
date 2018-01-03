@@ -31,8 +31,7 @@
       script: [
         { src: '//cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js' },
         { innerHTML: script.baiduStat, type: 'text/javascript' },
-        { innerHTML: script.baiduPush, type: 'text/javascript' },
-        { innerHTML: script.google, type: 'text/javascript' }
+        { innerHTML: script.baiduPush, type: 'text/javascript' }
       ],
       __dangerouslyDisableSanitizers: 'script'
     }

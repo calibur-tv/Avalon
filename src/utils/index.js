@@ -77,7 +77,7 @@ Vue.use({
     Vue.prototype.$alias = Alias
 
     Vue.prototype.$resize = (url, options = {}) => {
-      if (url === '') {
+      if (!url) {
         return ''
       }
       const link = url.match(/^http/) === null ? `${env.cdn.image}${url}` : url
