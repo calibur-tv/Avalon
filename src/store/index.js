@@ -49,7 +49,6 @@ export function createStore () {
           if (token) {
             const api = new UserApi(token)
             const user = await api.getLoginUser()
-            console.log(user)
             if (user) {
               commit('SET_TOKEN', token)
               commit('SET_USER', user)

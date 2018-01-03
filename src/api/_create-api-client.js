@@ -4,7 +4,7 @@ import { env, host, timeout } from 'env'
 export default (ctx) => {
   const http = axios.create({
     baseURL: host[env],
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/x.api.latest+json' },
     timeout: timeout.client
   })
 
