@@ -301,7 +301,7 @@
       <nav class="container header-left">
         <a class="nav-link" :href="$alias.index">主站</a>
         <el-dropdown>
-          <a class="nav-link el-dropdown-link" :href="$alias.bangumiNews">番剧</a>
+          <a class="nav-link el-dropdown-link" :href="$alias.bangumiTimeline">番剧</a>
           <el-dropdown-menu slot="dropdown">
             <!--
             <el-dropdown-item>

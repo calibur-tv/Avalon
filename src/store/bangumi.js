@@ -127,6 +127,7 @@ const actions = {
         followed,
         id,
         self: {
+          id: rootState.user.id,
           zone: rootState.user.zone,
           avatar: rootState.user.avatar,
           nickname: rootState.user.nickname

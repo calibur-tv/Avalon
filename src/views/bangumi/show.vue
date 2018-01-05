@@ -430,7 +430,7 @@
           </ul>
         </div>
         <div id="followers" v-if="followers.length">
-          <h2 class="subtitle">关注的人</h2>
+          <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
           <ul>
             <li v-for="user in followers" :key="user.zone">
               <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
@@ -474,7 +474,7 @@
       if (!this.id) {
         return
       }
-      let keywords = this.info.alias ? this.info.alias.search : ''
+      let keywords = this.info.alias
       this.tags.forEach(tag => {
         keywords += `,${tag.name}`
       })
