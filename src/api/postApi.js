@@ -32,4 +32,8 @@ export default class extends BaseApi {
   delete (id) {
     return this.http.post(`post/${id}/delete`)
   }
+
+  trending ({ sort, seenIds, take }) {
+    return this.http.post(`trending/post/${sort}`, { seenIds, take })
+  }
 }

@@ -6,7 +6,18 @@ const state = () => ({
   bangumi: null,
   user: null,
   noMore: false,
-  total: 0
+  total: 0,
+  trending: {
+    take: 10,
+    new: {
+      data: [],
+      noMore: false
+    },
+    hot: {
+      data: [],
+      noMore: false
+    }
+  }
 })
 
 const mutations = {
@@ -51,6 +62,12 @@ const mutations = {
       }
     })
     state.total--
+  },
+  setTrending (state, { data, sort }) {
+    state.trending[sort] = {
+      data: state.trending[sort].data.concat(data),
+      noMore: data.length < state.trending.take
+    }
   }
 }
 
@@ -93,6 +110,18 @@ const actions = {
     const api = new Api(ctx)
     await api.delete(id)
     commit('delPost', id)
+  },
+  async getTrending ({ state, commit }, { sort }) {
+    if (state.trending[sort].noMore) {
+      return
+    }
+    const api = new Api()
+    const data = await api.trending({
+      sort,
+      take: state.trending.take,
+      seenIds: state.trending[sort].data.length ? state.trending[sort].data.map(item => item.id).join(',') : null
+    })
+    commit('setTrending', { sort, data })
   }
 }
 

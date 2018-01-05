@@ -319,7 +319,17 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <a class="nav-link" :href="$alias.postNews">帖子</a>
+        <el-dropdown>
+          <a class="nav-link el-dropdown-link" :href="$alias.postNews">帖子</a>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <a class="nav-link" :href="$alias.postTrending('new')">最新</a>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <a class="nav-link" :href="$alias.postTrending('hot')">最热</a>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </nav>
       <nav class="header-right">
         <v-search placeholder="搜索" :history="true"></v-search>

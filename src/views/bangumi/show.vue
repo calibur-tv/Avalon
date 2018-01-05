@@ -349,9 +349,7 @@
                     发表于: <v-time v-model="item.updated_at"></v-time>
                   </span>
                 </div>
-                <div class="content">
-                  <p class="twoline" v-text="item.desc"></p>
-                </div>
+                <p class="content twoline" v-text="item.desc"></p>
                 <div class="images clearfix" v-if="item.images.length">
                   <div class="image-box"
                        :key="image"
@@ -542,11 +540,6 @@
             this.getVideos()
           }
         }
-      },
-      previewImages (images, index) {
-        this.$channel.$emit('open-image-reader', {
-          images, index
-        })
       },
       async getVideos () {
         if (this.videoState.loading) {

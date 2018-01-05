@@ -61,8 +61,8 @@ export function createRouter () {
             component: () => import('~/views/post/show')
           },
           {
-            path: 'post/news',
-            component: () => import('~/views/post/news')
+            path: 'post/trending',
+            component: () => import('~/views/post/trending')
           }
         ]
       }
