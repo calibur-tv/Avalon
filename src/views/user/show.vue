@@ -251,6 +251,123 @@
           }
         }
       }
+
+      #posts {
+        margin-top: 10px;
+
+        li {
+          float: none;
+          padding: 10px;
+          position: relative;
+
+          &:not(:last-child) {
+            border-bottom: 1px dotted #e4e6eb;
+          }
+
+          .header {
+            position: relative;
+            height: 32px;
+
+            .avatar {
+              display: block;
+              float: right;
+              margin-top: 4px;
+              position: relative;
+              z-index: 1;
+
+              img {
+                display: block;
+                width: 24px;
+                height: 24px;
+              }
+            }
+
+            .title {
+              font-size: 14px;
+              line-height: 32px;
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              padding-right: 240px;
+              z-index: 0;
+            }
+
+            .time {
+              float: right;
+              display: block;
+              line-height: 32px;
+              color: #999;
+              font-size: 12px;
+              position: relative;
+              z-index: 1;
+              margin-right: 12px;
+            }
+          }
+
+          .content {
+            margin-top: 3px;
+            color: #666;
+            font-size: 12px;
+            line-height: 22px;
+          }
+
+          .images {
+            height: 90px;
+            overflow: hidden;
+            margin-top: 10px;
+            margin-bottom: 15px;
+
+            .image-box {
+              margin-right: 10px;
+              height: 100%;
+              position: relative;
+              float: left;
+              cursor: zoom-in;
+
+              &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                opacity: 0;
+              }
+
+              &:hover {
+                &:after {
+                  opacity: 0.1;
+                }
+              }
+
+              img {
+                height: 100%;
+                width: auto;
+              }
+            }
+          }
+
+          .footer {
+            margin: 8px 0;
+
+            span {
+              line-height: 12px;
+              color: #919499;
+              font-size: 12px;
+              margin-right: 10px;
+              float: right;
+            }
+          }
+        }
+      }
+
+      #load-post-btn {
+        margin-top: 20px;
+        width: 100%;
+      }
     }
   }
 </style>
@@ -316,7 +433,48 @@
             </li>
           </ul>
         </el-tab-pane>
-        <el-tab-pane label="帖子">帖子</el-tab-pane>
+        <el-tab-pane label="帖子">
+          <el-radio-group v-model="postTab" @change="handlePostTabClick">
+            <el-radio-button label="我的帖子"></el-radio-button>
+            <el-radio-button label="我回复的"></el-radio-button>
+          </el-radio-group>
+          <ul id="posts" class="posts-or-mine" v-if="postListType === 'mine'">
+            <li v-for="item in posts.data" :key="item.id">
+              <div class="header clearfix">
+                <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
+                  <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                    <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                  </a>
+                </el-tooltip>
+                <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+                <span class="time">
+                    发表于: <v-time v-model="item.created_at"></v-time>
+                </span>
+              </div>
+              <p class="content twoline" v-text="item.desc"></p>
+              <div class="images clearfix" v-if="item.images.length">
+                <div class="image-box"
+                     :key="image"
+                     v-for="(image, index) in item.images"
+                     @click="previewImages(item.images, index)">
+                  <v-img :src="image" height="90" mode="2"></v-img>
+                </div>
+              </div>
+              <div class="footer clearfix">
+                <span>查看: {{ item.view_count }}</span>
+                <span>喜欢: {{ item.like_count }}</span>
+                <span>回复: {{ item.comment_count }}</span>
+              </div>
+            </li>
+          </ul>
+          <el-button :loading="posts.loading"
+                     v-if="!posts.noMore"
+                     id="load-post-btn"
+                     @click="getUserPosts(false)"
+                     type="info"
+                     plain
+          >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+        </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
@@ -422,6 +580,12 @@
         return this.bannerSelector.showBar
           ? `url(${this.bannerSelector.image})`
           : `url(${this.$resize(this.user.banner, { width: 1920, mode: 0 })})`
+      },
+      postListType () {
+        return this.postTab === '我回复的' ? 'reply' : 'mine'
+      },
+      posts () {
+        return this.$store.state.users.posts[this.postListType]
       }
     },
     data () {
@@ -464,7 +628,8 @@
           image: '',
           showBar: false,
           loading: false
-        }
+        },
+        postTab: '我的帖子'
       }
     },
     methods: {
@@ -477,7 +642,21 @@
             sexSecret: this.self.sex > 2,
             birthday: this.self.birthday ? this.self.birthday * 1000 : ''
           }
+        } else if (tab.label === '帖子') {
+          this.getUserPosts(true)
         }
+      },
+      handlePostTabClick () {
+        this.getUserPosts(true)
+      },
+      getUserPosts (isFirstRequest) {
+        if (isFirstRequest && this.$store.state.users.posts[this.postListType].data.length) {
+          return
+        }
+        this.$store.dispatch('users/getFollowPosts', {
+          type: this.postListType,
+          zone: this.user.zone
+        })
       },
       saveSetting () {
         this.$refs.settingForm.validate((valid) => {

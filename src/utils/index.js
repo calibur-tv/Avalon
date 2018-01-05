@@ -24,6 +24,7 @@ import {
   Col,
   Radio,
   RadioGroup,
+  RadioButton,
   Tooltip,
   Select,
   Option,
@@ -52,6 +53,7 @@ Vue.use(Col)
 Vue.use(Row)
 Vue.use(Radio)
 Vue.use(RadioGroup)
+Vue.use(RadioButton)
 Vue.use(Tooltip)
 Vue.use(Select)
 Vue.use(Option)

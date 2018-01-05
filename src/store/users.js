@@ -4,6 +4,19 @@ const state = () => ({
   list: Object.create(null),
   self: {
     bangumis: []
+  },
+  posts: {
+    take: 10,
+    mine: {
+      data: [],
+      noMore: false,
+      loading: false
+    },
+    reply: {
+      data: [],
+      noMore: false,
+      loading: false
+    }
   }
 })
 
@@ -18,6 +31,16 @@ const mutations = {
   },
   pushFollowBangumis (state, data) {
     state.self.bangumis = data
+  },
+  setFollowPosts (state, { data, type }) {
+    state.posts[type] = {
+      data: state.posts[type].data.concat(data),
+      noMore: data.length < state.posts.take,
+      loading: false
+    }
+  },
+  setFollowPostsState (state, { type }) {
+    state.posts[type].loading = true
   }
 }
 
@@ -34,6 +57,20 @@ const actions = {
     const api = new Api()
     const data = await api.followBangumis(zone)
     commit('pushFollowBangumis', data)
+  },
+  async getFollowPosts ({ state, commit }, { type, zone }) {
+    if (state.posts[type].noMore || state.posts[type].loading) {
+      return
+    }
+    commit('setFollowPostsState', { type })
+    const api = new Api()
+    const data = await api.followPosts({
+      type,
+      take: state.posts.take,
+      zone,
+      seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
+    })
+    commit('setFollowPosts', { type, data })
   }
 }
 
