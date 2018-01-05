@@ -119,14 +119,14 @@
                     <span>
                       更新至
                       <a v-if="item.released_video_id"
-                         :class="[computePartStyle(item.published_at) ? 'new' : 'old']"
+                         :class="[computePartStyle(item.update) ? 'new' : 'old']"
                          :href="$alias.video(item.released_video_id)"
                          target="_blank"
                          class="part oneline">
                         {{ `${item.released_part}话` }}
                       </a>
                       <strong class="part oneline"
-                              :class="[computePartStyle(item.published_at) ? 'new' : 'old']"
+                              :class="[computePartStyle(item.update) ? 'new' : 'old']"
                               v-else>
                         {{ `${item.released_part}话` }}
                       </strong>
