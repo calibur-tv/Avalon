@@ -4,6 +4,7 @@ const state = () => ({
   post: null,
   list: [],
   bangumi: null,
+  user: null,
   noMore: false,
   total: 0
 })
@@ -23,6 +24,7 @@ const mutations = {
     })
     state.post = data.post
     state.bangumi = data.bangumi
+    state.user = data.user
     state.noMore = data.list.length < take
     state.total = data.total
   },

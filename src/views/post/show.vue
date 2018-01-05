@@ -67,7 +67,7 @@
         <footer>
           <div id="post-reply-form">
             <v-post :post-id="id"
-                    :bangumi-id="post.bangumi_id"
+                    :bangumi-id="bangumi.id"
                     :master-id="masterId"
                     id="test"
             ></v-post>
@@ -135,8 +135,11 @@
       total () {
         return this.$store.state.post.total
       },
+      master () {
+        return this.$store.state.post.user
+      },
       masterId () {
-        return this.post.user_id
+        return this.master.id
       },
       onlyMaster () {
         return !!parseInt(this.$route.query.only, 10)

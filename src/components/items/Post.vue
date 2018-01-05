@@ -104,8 +104,8 @@
                 {{ comment.content }}
                 <div>
                   <v-time v-model="comment.created_at"></v-time>
-                  <button @click="toggleCommentForm(index, false, comment.user_id)"
-                          v-if="comment.user_id !== currentUserId"
+                  <button @click="toggleCommentForm(index, false, comment.from_user_id)"
+                          v-if="comment.from_user_id !== currentUserId"
                   >回复</button>
                 </div>
               </li>
