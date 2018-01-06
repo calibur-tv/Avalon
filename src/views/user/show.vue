@@ -570,13 +570,13 @@
               <li v-for="item in posts.data" :key="item.id">
                 <div class="header clearfix">
                   回复来自番剧
-                  <a class="href-fade-blue" :href="$alias.bangumi(item.bangumi.id)" v-text="item.bangumi.name"></a>
+                  <a class="href-fade-blue" target="_blank" :href="$alias.bangumi(item.bangumi.id)" v-text="item.bangumi.name"></a>
                   的帖子
                   <a class="href-fade-blue" target="_blank" :href="$alias.post(item.post.id)">《{{ item.post.title }}》</a>
                   <v-time class="time" v-model="item.created_at"></v-time>
                 </div>
                 <div class="origin">
-                  <a class="href-fade-blue" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>：
+                  <a class="href-fade-blue" target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>：
                   <div class="content" v-html="item.parent.content"></div>
                   <div class="images clearfix" v-if="item.parent.images.length">
                     <div class="image-box"
