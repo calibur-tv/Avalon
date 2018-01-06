@@ -491,6 +491,13 @@
              :src="$resize(user.avatar, { width: 200, height: 200 })"
              alt="avatar"
              v-else>
+        <el-button type="primary"
+                   :disabled="daySigned"
+                   :loading="signDayLoading"
+                   size="small"
+                   v-if="isMe"
+                   @click="handleDaySign"
+        >{{ daySigned ? '已签到' : '签到' }}</el-button>
         <span class="nickname" v-text="user.nickname"></span>
         <v-modal class="avatar-cropper-modal"
                  v-model="avatarCropper.showModal"
@@ -720,6 +727,9 @@
       },
       posts () {
         return this.$store.state.users.posts[this.postListType]
+      },
+      daySigned () {
+        return this.self.daySign
       }
     },
     data () {
@@ -763,7 +773,8 @@
           showBar: false,
           loading: false
         },
-        postTab: '我的帖子'
+        postTab: '我的帖子',
+        signDayLoading: false
       }
     },
     methods: {
@@ -912,6 +923,20 @@
         }
         this.bannerSelector.loading = false
         this.cancelBannerChange()
+      },
+      async handleDaySign () {
+        if (this.signDayLoading) {
+          return
+        }
+        this.signDayLoading = true
+
+        await this.$store.dispatch('users/daySign', {
+          ctx: this
+        })
+        this.$store.commit('SET_USER_INFO', {
+          daySign: true
+        })
+        this.signDayLoading = false
       }
     }
   }

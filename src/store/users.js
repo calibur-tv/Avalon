@@ -71,6 +71,13 @@ const actions = {
       seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
     })
     commit('setFollowPosts', { type, data })
+  },
+  async daySign ({ rootState }, { ctx }) {
+    if (rootState.user.signed) {
+      return
+    }
+    const api = new Api(ctx)
+    await api.daySign()
   }
 }
 
