@@ -84,10 +84,19 @@
         <button v-if="canDelete" @click="deletePost">删除</button>
         <span>{{ floor }}楼</span>
         <v-time v-model="item.created_at"></v-time>
+        <!-- 如果已经有评论了，那么点击这个按钮只是展开和收起评论 -->
         <button @click="toggleCommentForm(index)"
                 v-if="item.comments.length"
         >{{ item.state.collapsed ? `回复(${item.comment_count})` : '收起回复' }}</button>
-        <button @click="toggleCommentForm(index, false, 0)" v-else>{{ item.state.openComment ? '收起回复' : '回复' }}</button>
+        <!-- 如果没有评论，那么这个按钮就是发起评论，允许自己给自己评论 -->
+        <template v-else>
+          <button @click="toggleCommentForm(index, false, 0)"
+                  v-if="item.user.id === currentUserId"
+          >{{ item.state.openComment ? '收起回复' : '回复' }}</button>
+          <button @click="toggleCommentForm(index, false, item.user.id)"
+                  v-else
+          >{{ item.state.openComment ? '收起回复' : '回复' }}</button>
+        </template>
         <div class="comments-wrap">
           <el-collapse-transition>
             <ul v-show="item.comments.length && !item.state.collapsed" class="comments">
@@ -112,7 +121,13 @@
             </ul>
           </el-collapse-transition>
           <template v-if="item.comments.length && !item.state.collapsed">
-            <button @click="toggleCommentForm(index, false, 0)">我也说一句</button>
+            <!-- 如果有评论了，再显示这里的加载更多和评论按钮，允许给自己评论 -->
+            <button @click="toggleCommentForm(index, false, 0)"
+                    v-if="item.user.id === currentUserId"
+            >我也说一句</button>
+            <button @click="toggleCommentForm(index, false, item.user.id)"
+                    v-else
+            >我也说一句</button>
             <el-button v-if="!item.state.noMoreComment"
                        type="primary"
                        @click="getComments"

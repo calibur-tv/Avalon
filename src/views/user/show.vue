@@ -252,119 +252,208 @@
         }
       }
 
-      #posts {
+      .posts {
         margin-top: 10px;
 
-        li {
-          float: none;
-          padding: 10px;
-          position: relative;
-
-          &:not(:last-child) {
-            border-bottom: 1px dotted #e4e6eb;
-          }
-
-          .header {
+        &.posts-of-mine {
+          li {
+            float: none;
+            padding: 10px;
             position: relative;
-            height: 32px;
 
-            .avatar {
-              display: block;
-              float: right;
-              margin-top: 4px;
+            &:not(:last-child) {
+              border-bottom: 1px dotted #e4e6eb;
+            }
+
+            .header {
               position: relative;
-              z-index: 1;
+              height: 32px;
 
-              img {
+              .avatar {
                 display: block;
-                width: 24px;
-                height: 24px;
+                float: right;
+                margin-top: 4px;
+                position: relative;
+                z-index: 1;
+
+                img {
+                  display: block;
+                  width: 24px;
+                  height: 24px;
+                }
               }
-            }
 
-            .title {
-              font-size: 14px;
-              line-height: 32px;
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: 100%;
-              padding-right: 240px;
-              z-index: 0;
-            }
-
-            .time {
-              float: right;
-              display: block;
-              line-height: 32px;
-              color: #999;
-              font-size: 12px;
-              position: relative;
-              z-index: 1;
-              margin-right: 12px;
-            }
-          }
-
-          .content {
-            margin-top: 3px;
-            color: #666;
-            font-size: 12px;
-            line-height: 22px;
-          }
-
-          .images {
-            height: 90px;
-            overflow: hidden;
-            margin-top: 10px;
-            margin-bottom: 15px;
-
-            .image-box {
-              margin-right: 10px;
-              height: 100%;
-              position: relative;
-              float: left;
-              cursor: zoom-in;
-
-              &:after {
-                content: '';
+              .title {
+                font-size: 14px;
+                line-height: 32px;
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
                 height: 100%;
-                background-color: #fff;
-                opacity: 0;
+                padding-right: 240px;
+                z-index: 0;
               }
 
-              &:hover {
+              .time {
+                float: right;
+                display: block;
+                line-height: 32px;
+                color: #999;
+                font-size: 12px;
+                position: relative;
+                z-index: 1;
+                margin-right: 12px;
+              }
+            }
+
+            .content {
+              margin-top: 3px;
+              color: #666;
+              font-size: 12px;
+              line-height: 22px;
+            }
+
+            .images {
+              height: 90px;
+              overflow: hidden;
+              margin-top: 10px;
+              margin-bottom: 15px;
+
+              .image-box {
+                margin-right: 10px;
+                height: 100%;
+                position: relative;
+                float: left;
+                cursor: zoom-in;
+
                 &:after {
-                  opacity: 0.1;
+                  content: '';
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: #fff;
+                  opacity: 0;
+                }
+
+                &:hover {
+                  &:after {
+                    opacity: 0.1;
+                  }
+                }
+
+                img {
+                  height: 100%;
+                  width: auto;
                 }
               }
+            }
 
-              img {
-                height: 100%;
-                width: auto;
+            .footer {
+              margin: 8px 0;
+
+              span {
+                line-height: 12px;
+                color: #919499;
+                font-size: 12px;
+                margin-right: 10px;
+                float: right;
               }
             }
           }
+        }
 
-          .footer {
-            margin: 8px 0;
+        &.posts-of-reply {
+          li {
+            float: none;
+            padding: 10px;
+            position: relative;
 
-            span {
-              line-height: 12px;
-              color: #919499;
+            &:not(:last-child) {
+              border-bottom: 1px dotted #e4e6eb;
+            }
+
+            .header {
+              position: relative;
+              height: 32px;
+              line-height: 32px;
+
+              .time {
+                float: right;
+                display: block;
+                color: #999;
+                font-size: 12px;
+                position: relative;
+                z-index: 1;
+                margin-right: 12px;
+              }
+            }
+
+            .origin {
+              background-color: $color-gray-normal;
+              padding: 10px 20px;
+              margin: 10px 0;
+              border-radius: 5px;
+            }
+
+            .reply {
+              border-left: 5px solid $color-gray-normal;
+              padding: 0 20px;
+              margin: 10px 0;
+            }
+
+            .content {
+              margin-top: 3px;
+              color: #666;
               font-size: 12px;
-              margin-right: 10px;
-              float: right;
+              line-height: 22px;
+              max-height: 44px;
+              overflow: hidden;
+            }
+
+            .images {
+              height: 90px;
+              overflow: hidden;
+              margin-top: 10px;
+              margin-bottom: 15px;
+
+              .image-box {
+                margin-right: 10px;
+                height: 100%;
+                position: relative;
+                float: left;
+                cursor: zoom-in;
+
+                &:after {
+                  content: '';
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: #fff;
+                  opacity: 0;
+                }
+
+                &:hover {
+                  &:after {
+                    opacity: 0.1;
+                  }
+                }
+
+                img {
+                  height: 100%;
+                  width: auto;
+                }
+              }
             }
           }
         }
       }
 
-      #load-post-btn {
+      .load-post-btn {
         margin-top: 20px;
         width: 100%;
       }
@@ -438,42 +527,87 @@
             <el-radio-button label="我的帖子"></el-radio-button>
             <el-radio-button label="我回复的"></el-radio-button>
           </el-radio-group>
-          <ul id="posts" class="posts-or-mine" v-if="postListType === 'mine'">
-            <li v-for="item in posts.data" :key="item.id">
-              <div class="header clearfix">
-                <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
-                  <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-                    <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
-                  </a>
-                </el-tooltip>
-                <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
-                <span class="time">
+          <template v-if="postListType === 'mine'">
+            <ul class="posts posts-of-mine">
+              <li v-for="item in posts.data" :key="item.id">
+                <div class="header clearfix">
+                  <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
+                    <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                      <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                    </a>
+                  </el-tooltip>
+                  <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+                  <span class="time">
                     发表于: <v-time v-model="item.created_at"></v-time>
                 </span>
-              </div>
-              <p class="content twoline" v-text="item.desc"></p>
-              <div class="images clearfix" v-if="item.images.length">
-                <div class="image-box"
-                     :key="image"
-                     v-for="(image, index) in item.images"
-                     @click="previewImages(item.images, index)">
-                  <v-img :src="image" height="90" mode="2"></v-img>
                 </div>
-              </div>
-              <div class="footer clearfix">
-                <span>查看: {{ item.view_count }}</span>
-                <span>喜欢: {{ item.like_count }}</span>
-                <span>回复: {{ item.comment_count }}</span>
-              </div>
-            </li>
-          </ul>
-          <el-button :loading="posts.loading"
-                     v-if="!posts.noMore"
-                     id="load-post-btn"
-                     @click="getUserPosts(false)"
-                     type="info"
-                     plain
-          >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+                <p class="content twoline" v-text="item.desc"></p>
+                <div class="images clearfix" v-if="item.images.length">
+                  <div class="image-box"
+                       :key="image"
+                       v-for="(image, index) in item.images"
+                       @click="previewImages(item.images, index)">
+                    <v-img :src="image" height="90" mode="2"></v-img>
+                  </div>
+                </div>
+                <div class="footer clearfix">
+                  <span>查看: {{ item.view_count }}</span>
+                  <span>喜欢: {{ item.like_count }}</span>
+                  <span>回复: {{ item.comment_count }}</span>
+                </div>
+              </li>
+            </ul>
+            <el-button :loading="posts.loading"
+                       v-if="!posts.noMore"
+                       class="load-post-btn"
+                       @click="getUserPosts(false)"
+                       type="info"
+                       plain
+            >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+          </template>
+          <template v-else>
+            <ul class="posts posts-of-reply">
+              <li v-for="item in posts.data" :key="item.id">
+                <div class="header clearfix">
+                  回复来自番剧
+                  <a class="href-fade-blue" :href="$alias.bangumi(item.bangumi.id)" v-text="item.bangumi.name"></a>
+                  的帖子
+                  <a class="href-fade-blue" target="_blank" :href="$alias.post(item.post.id)">《{{ item.post.title }}》</a>
+                  <v-time class="time" v-model="item.created_at"></v-time>
+                </div>
+                <div class="origin">
+                  <a class="href-fade-blue" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>：
+                  <div class="content" v-html="item.parent.content"></div>
+                  <div class="images clearfix" v-if="item.parent.images.length">
+                    <div class="image-box"
+                         :key="image"
+                         v-for="(image, index) in item.parent.images"
+                         @click="previewImages(item.parent.images, index)">
+                      <v-img :src="image" height="90" mode="2"></v-img>
+                    </div>
+                  </div>
+                </div>
+                <div class="reply">
+                  <div class="content" v-html="item.content"></div>
+                  <div class="images clearfix" v-if="item.images.length">
+                    <div class="image-box"
+                         :key="image"
+                         v-for="(image, index) in item.images"
+                         @click="previewImages(item.images, index)">
+                      <v-img :src="image" height="90" mode="2"></v-img>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <el-button :loading="posts.loading"
+                       v-if="!posts.noMore"
+                       class="load-post-btn"
+                       @click="getUserPosts(false)"
+                       type="info"
+                       plain
+            >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+          </template>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
