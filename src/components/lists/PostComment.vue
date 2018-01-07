@@ -33,7 +33,12 @@
     </button>
     <el-collapse-transition>
       <ul v-show="comments.length && !collapsed" class="comments">
-        <post-comment-item v-for="comment in comments" :key="comment.id" :comment="comment"></post-comment-item>
+        <post-comment-item v-for="comment in comments"
+                           :key="comment.id"
+                           :comment="comment"
+                           :post-id="postId"
+                           :index="index"
+        ></post-comment-item>
       </ul>
     </el-collapse-transition>
     <template v-if="comments.length && !collapsed">
@@ -50,7 +55,7 @@
     <div class="comment-reply" v-if="openComment">
       <input type="text"
              placeholder="请缩减至50字以内"
-             v-model="content"
+             v-model.trim="content"
              autofocus
              maxlength="50">
       <el-button size="mini"
@@ -87,6 +92,18 @@
       },
       comments () {
         return this.item.comments
+      },
+      postId () {
+        return this.item.id
+      },
+      noMore () {
+        return this.comments.length >= this.item.comment_count
+      },
+      isMe () {
+        if (!this.$store.state.login) {
+          return false
+        }
+        return this.$store.state.user.id === this.item.user.id
       }
     },
     data () {
@@ -95,16 +112,33 @@
         openComment: false,
         content: '',
         loadingSubmit: false,
-        loadingMore: false,
-        noMore: false
+        loadingMore: false
       }
     },
     methods: {
-      getComments () {
-
+      async getComments () {
+        this.loadingMore = true
+        await this.$store.dispatch('post/getComments', {
+          index: this.index,
+          postId: this.postId
+        })
+        this.loadingMore = false
       },
-      submit () {
-
+      async submit () {
+        if (!this.content) {
+          return
+        }
+        this.loadingSubmit = true
+        await this.$store.dispatch('post/setComment', {
+          ctx: this,
+          index: this.index,
+          postId: this.postId,
+          targetUserId: this.isMe ? 0 : this.item.user.id,
+          content: this.content
+        })
+        this.openComment = false
+        this.content = ''
+        this.loadingSubmit = false
       }
     }
   }

@@ -44,18 +44,12 @@ const mutations = {
       total: data.total
     }
   },
-  setState (state, { index, key, value }) {
-    state.list[index].state[key] = value
-  },
   setComment (state, { index, data }) {
-    state.list[index].comments.push(data)
-    state.list[index].comment_count++
+    state.show.data.list[index].comments.push(data)
+    state.show.data.list[index].comment_count++
   },
   setComments (state, { index, data }) {
-    data.forEach(item => {
-      state.list[index].comments.push(item)
-    })
-    state.list[index].state.noMoreComment = state.list[index].comments.length >= state.list[index].comment_count
+    state.show.data.list[index].comments = state.show.data.list[index].comments.concat(data)
   },
   delPost (state, id) {
     if (id === state.post.id) {
@@ -88,12 +82,9 @@ const actions = {
     commit('setPost', data)
   },
   async getComments ({ state, commit }, { index, postId }) {
-    if (state.list[index].state.noMoreComment) {
-      return
-    }
     const api = new Api()
-    const seenIds = state.list[index].comments.length
-      ? state.list[index].comments.map(item => item.id).join(',')
+    const seenIds = state.show.data.list[index].comments.length
+      ? state.show.data.list[index].comments.map(item => item.id).join(',')
       : null
     const data = await api.comments({
       postId, seenIds

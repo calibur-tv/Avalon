@@ -23,7 +23,7 @@
     <div class="input-field" v-if="openComment">
       <input type="text"
              placeholder="请缩减至50字以内"
-             v-model="content"
+             v-model.trim="content"
              autofocus
              maxlength="50">
       <el-button size="mini"
@@ -47,6 +47,14 @@
       comment: {
         type: Object,
         required: true
+      },
+      postId: {
+        type: Number,
+        required: true
+      },
+      index: {
+        type: Number,
+        required: true
       }
     },
     computed: {
@@ -62,8 +70,21 @@
       }
     },
     methods: {
-      submit () {
-
+      async submit () {
+        if (!this.content) {
+          return
+        }
+        this.loading = true
+        await this.$store.dispatch('post/setComment', {
+          ctx: this,
+          index: this.index,
+          postId: this.postId,
+          targetUserId: this.comment.from_user_id,
+          content: this.content
+        })
+        this.openComment = false
+        this.content = ''
+        this.loading = false
       },
       async getComments () {
         try {

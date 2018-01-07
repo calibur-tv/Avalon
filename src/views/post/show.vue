@@ -13,6 +13,52 @@
       }
     }
 
+    .post-item {
+      background-color: RGB(251, 251, 253);
+      border-left: 1px solid #E5E5E5;
+      border-right: 1px solid #E5E5E5;
+      border-bottom: 1px solid #E1E4E6;
+
+      .user {
+        .avatar {
+          display: block;
+          margin: 20px auto;
+          @include avatar(80px)
+        }
+
+        .nickname {
+          display: block;
+          background: #fff;
+          border: solid 1px #e6e6e6;
+          width: 98px;
+          height: 28px;
+          line-height: 24px;
+          margin: 0 auto;
+          text-align: center;
+        }
+      }
+
+      .content {
+        background: #fff;
+        min-height: 170px;
+        padding: 20px 20px 8px 20px;
+
+        .image {
+          width: 100%;
+          height: auto;
+          margin-bottom: 12px;
+          cursor: zoom-in;
+        }
+
+        p {
+          line-height: 24px;
+          font-size: 14px;
+          word-wrap: break-word;
+          overflow: hidden;
+        }
+      }
+    }
+
     .load-post-btn {
       margin-top: 20px;
       margin-bottom: 20px;
@@ -51,6 +97,7 @@
             <button @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</button>
             <button @click="scrollToReplyForm">回复</button>
             <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
+            <span>共{{ total }}条</span>
           </div>
         </header>
         <main>
@@ -139,6 +186,9 @@
       list () {
         return this.resource.data.list
       },
+      total () {
+        return this.resource.data.total
+      },
       noMore () {
         return this.resource.data.noMore
       },
@@ -176,7 +226,6 @@
       },
       switchOnlyMaster () {
         window.location = this.$alias.post(this.post.id, {
-          page: 1,
           only: this.onlySeeMaster ? 0 : 1
         })
       },
