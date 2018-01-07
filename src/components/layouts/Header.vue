@@ -320,7 +320,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown>
-          <a class="nav-link el-dropdown-link" :href="$alias.postNews">帖子</a>
+          <a class="nav-link el-dropdown-link" :href="$alias.postTrending('new')">帖子</a>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
               <a class="nav-link" :href="$alias.postTrending('new')">最新</a>
