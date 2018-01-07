@@ -13,52 +13,6 @@
       }
     }
 
-    .post-item {
-      background-color: RGB(251, 251, 253);
-      border-left: 1px solid #E5E5E5;
-      border-right: 1px solid #E5E5E5;
-      border-bottom: 1px solid #E1E4E6;
-
-      .user {
-        .avatar {
-          display: block;
-          margin: 20px auto;
-          @include avatar(80px)
-        }
-
-        .nickname {
-          display: block;
-          background: #fff;
-          border: solid 1px #e6e6e6;
-          width: 98px;
-          height: 28px;
-          line-height: 24px;
-          margin: 0 auto;
-          text-align: center;
-        }
-      }
-
-      .content {
-        background: #fff;
-        min-height: 170px;
-        padding: 20px 20px 8px 20px;
-
-        .image {
-          width: 100%;
-          height: auto;
-          margin-bottom: 12px;
-          cursor: zoom-in;
-        }
-
-        p {
-          line-height: 24px;
-          font-size: 14px;
-          word-wrap: break-word;
-          overflow: hidden;
-        }
-      }
-    }
-
     .load-post-btn {
       margin-top: 20px;
       margin-bottom: 20px;
@@ -109,14 +63,20 @@
               <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
             </el-col>
             <el-col class="content" :span="19">
-              <div v-for="(img, idx) in post.images" @click="handleImagePreview(post.images, idx)">
-                <v-img class="image" :src="img" width="500" mode="2"></v-img>
-              </div>
-              <div v-html="post.content"></div>
+              <v-img v-for="(img, idx) in post.images"
+                     class="image"
+                     :src="img"
+                     width="500"
+                     mode="2"
+                     @click="handleImagePreview(post.images, idx)"
+              ></v-img>
+              <div class="text-area" v-html="post.content"></div>
               <div class="footer">
-                <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
-                <span>1楼</span>
-                <v-time v-model="post.created_at"></v-time>
+                <div class="info-bar">
+                  <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
+                  <span>1楼</span>
+                  <v-time v-model="post.created_at"></v-time>
+                </div>
               </div>
             </el-col>
           </el-row>
