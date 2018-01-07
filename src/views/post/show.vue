@@ -13,6 +13,12 @@
       }
     }
 
+    .load-post-btn {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
     .col-aside {
       padding: 20px;
 
@@ -42,35 +48,52 @@
         <header>
           <div class="title-wrap">
             <h1 v-text="post.title"></h1>
-            <button @click="switchOnlyMaster">{{ onlyMaster ? '取消只看楼主' : '只看楼主' }}</button>
+            <button @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</button>
             <button @click="scrollToReplyForm">回复</button>
             <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
           </div>
         </header>
         <main>
-          <v-item v-for="(item, index) in list"
-                  :key="item.id"
-                  :item="item"
-                  :index="index"
-                  :floor="computeFloor(index)"
-                  :master-id="masterId"
-                  @delete="deletePost"
-          ></v-item>
+          <el-row class="post-item">
+            <el-col class="user" :span="5">
+              <a :href="$alias.user(master.zone)" target="_blank">
+                <v-img class="avatar" :src="master.avatar" :width="80" :height="80"></v-img>
+              </a>
+              <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
+            </el-col>
+            <el-col class="content" :span="19">
+              <div v-for="(img, idx) in post.images" @click="handleImagePreview(post.images, idx)">
+                <v-img class="image" :src="img" width="500" mode="2"></v-img>
+              </div>
+              <div v-html="post.content"></div>
+              <div class="footer">
+                <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
+                <span>1楼</span>
+                <v-time v-model="post.created_at"></v-time>
+              </div>
+            </el-col>
+          </el-row>
+          <post-item v-for="(item, index) in list"
+                     :key="item.id"
+                     :index="index"
+                     :post="item"
+                     @delete="deletePost(item.id)"
+          ></post-item>
         </main>
-        <el-pagination background
-                       layout="total, prev, pager, next, jumper"
-                       :total="total"
-                       :current-page="page"
-                       v-if="total > take"
-                       @current-change="getData"
-        ></el-pagination>
+        <el-button :loading="loading"
+                   v-if="!noMore"
+                   class="load-post-btn"
+                   @click="getPosts"
+                   type="info"
+                   plain
+        >{{ loading ? '加载中' : '加载更多' }}</el-button>
         <footer>
           <div id="post-reply-form">
-            <v-post :post-id="id"
+            <post-create-form :post-id="post.id"
                     :bangumi-id="bangumi.id"
                     :master-id="masterId"
                     id="test"
-            ></v-post>
+            ></post-create-form>
           </div>
         </footer>
       </section>
@@ -87,13 +110,8 @@
 </template>
 
 <script>
-  import vPost from '~/components/creates/Post'
-  import vItem from '~/components/items/Post'
-
-  const defaultParams = {
-    take: 10,
-    page: 1
-  }
+  import PostCreateForm from '~/components/creates/Post'
+  import PostItem from '~/components/items/Post'
 
   export default {
     name: 'post-show',
@@ -101,15 +119,13 @@
       await store.dispatch('post/getPost', {
         id: route.params.id,
         ctx,
-        take: defaultParams.take,
-        page: route.query.page || defaultParams.page,
         only: route.query.only
           ? parseInt(route.query.only, 10) ? 1 : 0
           : 0
       })
     },
     components: {
-      vPost, vItem
+      PostCreateForm, PostItem
     },
     head () {
       return {
@@ -117,58 +133,51 @@
       }
     },
     computed: {
-      id () {
-        return this.$route.params.id
+      resource () {
+        return this.$store.state.post.show
       },
       list () {
-        return this.$store.state.post.list
-      },
-      bangumi () {
-        return this.$store.state.post.bangumi
+        return this.resource.data.list
       },
       noMore () {
-        return this.$store.state.post.noMore
+        return this.resource.data.noMore
+      },
+      bangumi () {
+        return this.resource.info.bangumi
       },
       post () {
-        return this.$store.state.post.post
-      },
-      total () {
-        return this.$store.state.post.total
+        return this.resource.info.post
       },
       master () {
-        return this.$store.state.post.user
+        return this.resource.info.user
       },
       masterId () {
         return this.master.id
       },
-      onlyMaster () {
+      onlySeeMaster () {
         return !!parseInt(this.$route.query.only, 10)
       },
       isMaster () {
-        return this.masterId - this.$store.state.user.id === 0
+        if (!this.$store.state.login) {
+          return false
+        }
+        const currentUserId = this.$store.state.user.id
+        return currentUserId === this.masterId
       }
     },
     data () {
       return {
-        take: defaultParams.take,
-        page: parseInt(this.$route.query.page, 10) || defaultParams.page
+        loading: false
       }
     },
     methods: {
-      computeFloor (index) {
-        return this.take * (this.page - 1) + index + 1
-      },
       scrollToReplyForm () {
         this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
-      },
-      getData (page) {
-        const only = this.$route.query.only || 0
-        window.location = this.$alias.post(this.post.id, { page, only })
       },
       switchOnlyMaster () {
         window.location = this.$alias.post(this.post.id, {
           page: 1,
-          only: this.onlyMaster ? 0 : 1
+          only: this.onlySeeMaster ? 0 : 1
         })
       },
       deletePost (id) {
@@ -185,6 +194,15 @@
             window.location = this.$alias.bangumi(this.bangumi.id)
           }
         }).catch(() => {})
+      },
+      async getPosts () {
+        this.loading = true
+        await this.$store.dispatch('post/getPost', {
+          id: this.post.id,
+          ctx: this,
+          only: this.onlySeeMaster
+        })
+        this.loading = false
       }
     },
     mounted () {

@@ -1,12 +1,6 @@
 import Api from '~/api/postApi'
 
 const state = () => ({
-  post: null,
-  list: [],
-  bangumi: null,
-  user: null,
-  noMore: false,
-  total: 0,
   trending: {
     take: 10,
     new: {
@@ -17,27 +11,38 @@ const state = () => ({
       data: [],
       noMore: false
     }
+  },
+  show: {
+    init: true,
+    take: 10,
+    info: {
+      bangumi: null,
+      user: null,
+      post: null
+    },
+    data: {
+      total: 0,
+      list: [],
+      noMore: false
+    }
   }
 })
 
 const mutations = {
-  setPost (state, { data, take }) {
-    data.list.forEach(item => {
-      item.state = {
-        openComment: false,
-        loading: false,
-        comment: '',
-        replying: false,
-        noMoreComment: item.comments.length >= item.comment_count,
-        collapsed: false
+  setPost (state, data) {
+    if (state.show.init) {
+      state.show.info = {
+        bangumi: data.bangumi,
+        user: data.user,
+        post: data.post
       }
-      state.list.push(item)
-    })
-    state.post = data.post
-    state.bangumi = data.bangumi
-    state.user = data.user
-    state.noMore = data.list.length < take
-    state.total = data.total
+      state.show.init = false
+    }
+    state.show.data = {
+      list: state.show.data.list.concat(data.list),
+      noMore: data.list.length < state.show.take,
+      total: data.total
+    }
   },
   setState (state, { index, key, value }) {
     state.list[index].state[key] = value
@@ -72,10 +77,15 @@ const mutations = {
 }
 
 const actions = {
-  async getPost ({ commit }, { id, ctx, take, page, only }) {
+  async getPost ({ state, commit }, { id, ctx, only }) {
     const api = new Api(ctx)
-    const data = await api.show({ id, take, page, only })
-    commit('setPost', { data, take, page })
+    const data = await api.show({
+      id,
+      only,
+      seenIds: state.show.data.list.length ? state.show.data.list.map(item => item.id).join(',') : null,
+      take: state.show.take
+    })
+    commit('setPost', data)
   },
   async getComments ({ state, commit }, { index, postId }) {
     if (state.list[index].state.noMoreComment) {

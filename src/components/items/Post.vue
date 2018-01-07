@@ -42,27 +42,6 @@
         word-wrap: break-word;
         overflow: hidden;
       }
-
-      .comments-wrap {
-        background-color: #f7f8fa;
-
-        .comments {
-          padding: 4px 15px 14px;
-
-          li {
-            display: block;
-            width: 100%;
-          }
-
-          .avatar {
-            @include avatar(32px)
-          }
-        }
-
-        .comment-reply {
-          padding: 4px 15px 14px;
-        }
-      }
     }
   }
 </style>
@@ -70,108 +49,41 @@
 <template>
   <el-row class="post-item">
     <el-col class="user" :span="5">
-      <a :href="$alias.user(item.user.zone)" target="_blank">
-        <v-img class="avatar" :src="item.user.avatar" :width="80" :height="80"></v-img>
+      <a :href="$alias.user(post.user.zone)" target="_blank">
+        <v-img class="avatar" :src="post.user.avatar" :width="80" :height="80"></v-img>
       </a>
-      <a class="nickname oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
+      <a class="nickname oneline" :href="$alias.user(post.user.zone)" target="_blank" v-text="post.user.nickname"></a>
     </el-col>
     <el-col class="content" :span="19">
-      <div v-for="(img, index) in item.images" @click="handleImagePreview(item.images, index)">
+      <div v-for="(img, idx) in post.images" @click="handleImagePreview(post.images, idx)">
         <v-img class="image" :src="img" width="500" mode="2"></v-img>
       </div>
-      <div v-html="item.content"></div>
+      <div v-html="post.content"></div>
       <div class="footer">
         <button v-if="canDelete" @click="deletePost">删除</button>
-        <span>{{ floor }}楼</span>
-        <v-time v-model="item.created_at"></v-time>
-        <!-- 如果已经有评论了，那么点击这个按钮只是展开和收起评论 -->
-        <button @click="toggleCommentForm(index)"
-                v-if="item.comments.length"
-        >{{ item.state.collapsed ? `回复(${item.comment_count})` : '收起回复' }}</button>
-        <!-- 如果没有评论，那么这个按钮就是发起评论，允许自己给自己评论 -->
-        <template v-else>
-          <button @click="toggleCommentForm(index, false, 0)"
-                  v-if="item.user.id === currentUserId"
-          >{{ item.state.openComment ? '收起回复' : '回复' }}</button>
-          <button @click="toggleCommentForm(index, false, item.user.id)"
-                  v-else
-          >{{ item.state.openComment ? '收起回复' : '回复' }}</button>
-        </template>
-        <div class="comments-wrap">
-          <el-collapse-transition>
-            <ul v-show="item.comments.length && !item.state.collapsed" class="comments">
-              <li v-for="comment in item.comments" :key="comment.id">
-                <a :href="$alias.user(comment.from_user_zone)" target="_blank">
-                  <v-img class="avatar" :src="comment.from_user_avatar" width="32" height="32"></v-img>
-                </a>
-                <a :href="$alias.user(comment.from_user_zone)" target="_blank" v-text="comment.from_user_name"></a>
-                <template v-if="comment.to_user_zone">
-                  回复
-                  <a :href="$alias.user(comment.to_user_zone)" target="_blank" v-text="comment.to_user_name"></a>
-                </template>
-                :
-                {{ comment.content }}
-                <div>
-                  <v-time v-model="comment.created_at"></v-time>
-                  <button @click="toggleCommentForm(index, false, comment.from_user_id)"
-                          v-if="comment.from_user_id !== currentUserId"
-                  >回复</button>
-                </div>
-              </li>
-            </ul>
-          </el-collapse-transition>
-          <template v-if="item.comments.length && !item.state.collapsed">
-            <!-- 如果有评论了，再显示这里的加载更多和评论按钮，允许给自己评论 -->
-            <button @click="toggleCommentForm(index, false, 0)"
-                    v-if="item.user.id === currentUserId"
-            >我也说一句</button>
-            <button @click="toggleCommentForm(index, false, item.user.id)"
-                    v-else
-            >我也说一句</button>
-            <el-button v-if="!item.state.noMoreComment"
-                       type="primary"
-                       @click="getComments"
-                       size="mini"
-            >点击加载更多</el-button>
-            <span>共 {{ item.comment_count }} 条</span>
-          </template>
-          <div class="comment-reply" v-if="item.state.openComment">
-            <input type="text"
-                   placeholder="请缩减至50字以内"
-                   :value="item.state.comment"
-                   @input="updateCommit($event, index)"
-                   autofocus
-                   maxlength="50">
-            <el-button type="primary"
-                       @click="submitCommit(item, index)"
-                       :loading="item.state.replying"
-                       size="mini"
-            >发表</el-button>
-          </div>
-        </div>
+        <span>{{ index + 2 }}楼</span>
+        <v-time v-model="post.created_at"></v-time>
+        <post-comment-list :index="index"></post-comment-list>
       </div>
     </el-col>
   </el-row>
 </template>
 
 <script>
+  import PostCommentList from '~/components/lists/PostComment'
+
   export default {
     name: 'post-item',
+    components: {
+      PostCommentList
+    },
     props: {
       index: {
         type: Number,
         required: true
       },
-      floor: {
-        type: Number,
-        required: true
-      },
-      item: {
+      post: {
         type: Object,
-        required: true
-      },
-      masterId: {
-        type: [Number, String],
         required: true
       }
     },
@@ -181,85 +93,17 @@
       }
     },
     computed: {
-      list () {
-        return this.$store.state.post.list
-      },
-      post () {
-        return this.$store.state.post.post
-      },
-      currentUserId () {
-        return this.$store.state.login ? this.$store.state.user.id : 0
-      },
       canDelete () {
-        const userId = this.$store.state.user.id
-        return this.masterId - userId === 0 || this.item['user_id'] - userId === 0
+        if (!this.$store.state.login) {
+          return false
+        }
+        const currentUserId = this.$store.state.user.id
+        return currentUserId === this.post['user_id'] || currentUserId === this.$store.state.post.show.info.post['user_id']
       }
     },
     methods: {
-      toggleCommentForm (index, isCollapse = true, targetUserId) {
-        if (index) {
-          if (isCollapse) {
-            this.changeState(index, 'collapsed', !this.list[index].state.collapsed)
-          } else {
-            this.targetUserId = targetUserId
-            this.changeState(index, 'openComment', !this.list[index].state.openComment)
-          }
-        } else {
-          this.$channel.$emit('side-bar-click-post')
-        }
-      },
-      updateCommit (e, index) {
-        this.changeState(index, 'comment', e.target.value)
-      },
-      handleImagePreview (images, index) {
-        this.$channel.$emit('open-image-reader', {
-          images, index
-        })
-      },
-      async submitCommit (post, index) {
-        const content = this.list[index].state.comment
-        if (!content) {
-          return
-        }
-        this.changeState(index, 'replying', true)
-
-        try {
-          await this.$store.dispatch('post/setComment', {
-            index: this.index,
-            postId: this.item.id,
-            targetUserId: this.targetUserId,
-            content,
-            ctx: this
-          })
-          this.changeState(index, 'comment', '')
-          this.changeState(index, 'openComment', false)
-          this.$toast.success('回复成功')
-        } catch (e) {
-          console.log(e)
-        }
-        this.changeState(index, 'replying', false)
-      },
-      async getComments () {
-        try {
-          await this.$store.dispatch('post/getComments', {
-            index: this.index,
-            postId: this.item.id
-          })
-        } catch (e) {
-          console.log(e)
-          this.$toast.error('网络错误，请稍后再试！')
-        }
-      },
-      changeState (index, key, value) {
-        this.$store.commit('post/setState', {
-          id: this.post.id,
-          index,
-          key,
-          value
-        })
-      },
       deletePost () {
-        this.$emit('delete', this.item.id)
+        this.$emit('delete')
       }
     }
   }

@@ -59,15 +59,15 @@
     name: 'create-post-form',
     props: {
       bangumiId: {
-        type: [String, Number],
-        default: ''
+        type: Number,
+        default: 0
       },
       postId: {
-        type: String,
-        default: ''
+        type: Number,
+        default: 0
       },
       masterId: {
-        type: [Number, String],
+        type: Number,
         default: 0
       }
     },

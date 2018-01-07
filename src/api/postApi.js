@@ -7,10 +7,8 @@ export default class extends BaseApi {
     })
   }
 
-  show ({ id, page, take, only }) {
-    return this.http.get(`post/${id}/show`, {
-      params: { page, take, only }
-    })
+  show ({ id, seenIds, take, only }) {
+    return this.http.post(`post/${id}/show`, { seenIds, take, only })
   }
 
   reply ({ targetUserId, bangumiId, postId, images, content, geetest }) {
