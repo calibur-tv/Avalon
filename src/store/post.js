@@ -39,12 +39,13 @@ const mutations = {
       state.show.init = false
     }
     const list = state.show.data.list
-    Object.keys(data.list).forEach(id => {
+    const keys = Object.keys(data.list)
+    keys.forEach(id => {
       list[id] = data.list[id]
     })
     state.show.data = {
       list: list,
-      noMore: data.list.length < state.show.take,
+      noMore: keys.length < state.show.take,
       total: data.total
     }
   },
