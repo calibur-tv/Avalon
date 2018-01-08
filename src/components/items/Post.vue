@@ -50,7 +50,7 @@
           return false
         }
         const currentUserId = this.$store.state.user.id
-        return currentUserId === this.post.user.id || currentUserId === this.$store.state.post.show.info.post.user.id
+        return currentUserId === this.post.user.id || currentUserId === this.$store.state.post.show.info.user.id
       }
     },
     methods: {

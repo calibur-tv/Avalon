@@ -57,6 +57,11 @@
           word-wrap: break-word;
         }
 
+        .likes-wrap {
+          text-align: center;
+          margin: 15px 0 50px 0;
+        }
+
         .footer {
           color: #99a2aa;
           line-height: 26px;
@@ -128,6 +133,12 @@
                 <v-img class="image" :src="img" width="500" mode="2"></v-img>
               </div>
               <div class="text-area" v-html="post.content"></div>
+              <div class="likes-wrap">
+                <el-button type="danger" round>
+                  <i class="iconfont icon-guanzhu"></i>
+                  喜欢
+                </el-button>
+              </div>
               <div class="footer">
                 <div class="info-bar">
                   <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
