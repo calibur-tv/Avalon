@@ -22,7 +22,7 @@ const state = () => ({
     },
     data: {
       total: 0,
-      list: [],
+      list: {},
       noMore: false
     }
   }
@@ -38,29 +38,36 @@ const mutations = {
       }
       state.show.init = false
     }
+    const list = state.show.data.list
+    Object.keys(data.list).forEach(id => {
+      list[id] = data.list[id]
+    })
     state.show.data = {
-      list: state.show.data.list.concat(data.list),
+      list: list,
       noMore: data.list.length < state.show.take,
       total: data.total
     }
   },
-  setComment (state, { index, data }) {
-    state.show.data.list[index].comments.push(data)
-    state.show.data.list[index].comment_count++
+  setComment (state, { postId, data }) {
+    state.show.data.list[postId].comments.push(data)
+    state.show.data.list[postId].comment_count++
   },
-  setComments (state, { index, data }) {
-    state.show.data.list[index].comments = state.show.data.list[index].comments.concat(data)
+  setComments (state, { postId, data }) {
+    state.show.data.list[postId].comments = state.show.data.list[postId].comments.concat(data)
   },
   delPost (state, id) {
-    if (id === state.post.id) {
+    if (id === state.show.info.post.id) {
       return
     }
-    state.list.forEach((item, index) => {
-      if (item.id === id) {
-        state.list.splice(index, 1)
+    delete state.show.data.list[id]
+    state.show.data.total--
+  },
+  delComment (state, { postId, commentId }) {
+    state.show.data.list[postId].comments.forEach((item, index) => {
+      if (item.id === commentId) {
+        state.show.data.list[postId].comments.splice(index, 1)
       }
     })
-    state.total--
   },
   setTrending (state, { data, sort }) {
     state.trending[sort] = {
@@ -81,20 +88,20 @@ const actions = {
     })
     commit('setPost', data)
   },
-  async getComments ({ state, commit }, { index, postId }) {
+  async getComments ({ state, commit }, { postId }) {
     const api = new Api()
-    const seenIds = state.show.data.list[index].comments.length
-      ? state.show.data.list[index].comments.map(item => item.id).join(',')
+    const seenIds = state.show.data.list[postId].comments.length
+      ? state.show.data.list[postId].comments.map(item => item.id).join(',')
       : null
     const data = await api.comments({
       postId, seenIds
     })
-    commit('setComments', { index, data })
+    commit('setComments', { postId, data })
   },
-  async setComment ({ commit }, { index, postId, targetUserId, content, ctx }) {
+  async setComment ({ commit }, { postId, targetUserId, content, ctx }) {
     const api = new Api(ctx)
     const data = await api.comment({ postId, targetUserId, content })
-    commit('setComment', { data, index })
+    commit('setComment', { data, postId })
   },
   // eslint-disable-next-line no-empty-pattern
   async create ({}, params) {
@@ -109,8 +116,15 @@ const actions = {
   },
   async deletePost ({ commit }, { ctx, id }) {
     const api = new Api(ctx)
-    await api.delete(id)
+    await api.deletePost(id)
     commit('delPost', id)
+  },
+  async deleteComment ({ commit }, { ctx, postId, commentId }) {
+    const api = new Api(ctx)
+    await api.deleteComment({
+      postId, commentId
+    })
+    commit('delComment', { postId, commentId })
   },
   async getTrending ({ state, commit }, { sort }) {
     if (state.trending[sort].noMore) {

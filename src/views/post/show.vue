@@ -13,6 +13,67 @@
       }
     }
 
+    .post-item {
+      .user {
+        .avatar {
+          display: block;
+          margin: 20px auto 5px auto;
+          @include avatar(80px)
+        }
+
+        .nickname {
+          display: block;
+          background: #fff;
+          width: 98px;
+          height: 28px;
+          line-height: 24px;
+          margin: 0 auto;
+          text-align: center;
+        }
+      }
+
+      .content {
+        background: #fff;
+        min-height: 170px;
+        padding: 22px 0 14px;
+        border-top: 1px solid #e5e9ef;
+
+        .main {
+          min-height: 80px;
+        }
+
+        .image {
+          width: 100%;
+          height: auto;
+          margin-bottom: 12px;
+          cursor: zoom-in;
+        }
+
+        .text-area {
+          line-height: 24px;
+          padding: 2px 0;
+          font-size: 14px;
+          overflow: hidden;
+          word-wrap: break-word;
+        }
+
+        .footer {
+          color: #99a2aa;
+          line-height: 26px;
+          font-size: 12px;
+
+          .info-bar {
+            height: 30px;
+            line-height: 30px;
+
+            button, span {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+    }
+
     .load-post-btn {
       margin-top: 20px;
       margin-bottom: 20px;
@@ -63,13 +124,9 @@
               <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
             </el-col>
             <el-col class="content" :span="19">
-              <v-img v-for="(img, idx) in post.images"
-                     class="image"
-                     :src="img"
-                     width="500"
-                     mode="2"
-                     @click="handleImagePreview(post.images, idx)"
-              ></v-img>
+              <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="previewImages(post.images, idx)">
+                <v-img class="image" :src="img" width="500" mode="2"></v-img>
+              </div>
               <div class="text-area" v-html="post.content"></div>
               <div class="footer">
                 <div class="info-bar">
@@ -82,27 +139,26 @@
           </el-row>
           <post-item v-for="(item, index) in list"
                      :key="item.id"
-                     :index="index"
                      :post="item"
                      @delete="deletePost(item.id)"
           ></post-item>
         </main>
-        <el-button :loading="loading"
-                   v-if="!noMore"
-                   class="load-post-btn"
-                   @click="getPosts"
-                   type="info"
-                   plain
-        >{{ loading ? '加载中' : '加载更多' }}</el-button>
-        <footer>
+        <el-col :span="19" :offset="5">
+          <el-button :loading="loading"
+                     v-if="!noMore"
+                     class="load-post-btn"
+                     @click="getPosts"
+                     type="info"
+                     plain
+          >{{ loading ? '加载中' : '加载更多' }}</el-button>
           <div id="post-reply-form">
             <post-create-form :post-id="post.id"
-                    :bangumi-id="bangumi.id"
-                    :master-id="masterId"
-                    id="test"
+                              :bangumi-id="bangumi.id"
+                              :master-id="masterId"
+                              id="test"
             ></post-create-form>
           </div>
-        </footer>
+        </el-col>
       </section>
       <aside class="col-aside">
         <div class="bangumi">

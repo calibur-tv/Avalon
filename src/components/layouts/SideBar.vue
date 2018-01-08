@@ -102,6 +102,10 @@
         this.showToTop = window.scrollY > window.innerHeight
       },
       handlePostClick () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
         this.inPostShow
           ? this.$channel.$emit('side-bar-click-post')
           : this.showPostModal = true

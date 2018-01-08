@@ -39,6 +39,7 @@
     <span class="comment-content">{{ comment.content }}</span>
     <div class="reply-area">
       <v-time v-model="comment.created_at"></v-time>
+      <button v-if="canDelete" @click="deleteComment">删除</button>
       <button @click="openComment = !openComment" v-if="(comment.from_user_id !== currentUserId)">
         {{ openComment ? '收起' : '回复' }}
       </button>
@@ -74,15 +75,14 @@
       postId: {
         type: Number,
         required: true
-      },
-      index: {
-        type: Number,
-        required: true
       }
     },
     computed: {
       currentUserId () {
         return this.$store.state.login ? this.$store.state.user.id : 0
+      },
+      canDelete () {
+        return this.currentUserId === this.comment.from_user_id
       }
     },
     data () {
@@ -94,13 +94,16 @@
     },
     methods: {
       async submit () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
         if (!this.content) {
           return
         }
         this.loading = true
         await this.$store.dispatch('post/setComment', {
           ctx: this,
-          index: this.index,
           postId: this.postId,
           targetUserId: this.comment.from_user_id,
           content: this.content
@@ -109,16 +112,18 @@
         this.content = ''
         this.loading = false
       },
-      async getComments () {
-        try {
-          await this.$store.dispatch('post/getComments', {
-            index: this.index,
-            postId: this.item.id
+      deleteComment () {
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('post/deleteComment', {
+            ctx: this,
+            postId: this.postId,
+            commentId: this.comment.id
           })
-        } catch (e) {
-          console.log(e)
-          this.$toast.error('网络错误，请稍后再试！')
-        }
+        }).catch(() => {})
       }
     }
   }

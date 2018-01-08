@@ -27,8 +27,14 @@ export default class extends BaseApi {
     return this.http.post(`post/${postId}/comments`, { seenIds })
   }
 
-  delete (id) {
-    return this.http.post(`post/${id}/delete`)
+  deletePost (id) {
+    return this.http.post(`post/${id}/deletePost`)
+  }
+
+  deleteComment ({ postId, commentId }) {
+    return this.http.post(`post/${postId}/deletePost`, {
+      id: commentId
+    })
   }
 
   trending ({ sort, seenIds, take }) {

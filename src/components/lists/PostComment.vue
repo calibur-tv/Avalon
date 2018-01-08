@@ -58,7 +58,6 @@
                            :key="comment.id"
                            :comment="comment"
                            :post-id="postId"
-                           :index="index"
         ></post-comment-item>
       </ul>
     </el-collapse-transition>
@@ -102,20 +101,17 @@
       PostCommentItem
     },
     props: {
-      index: {
+      postId: {
         required: true,
         type: Number
       }
     },
     computed: {
       item () {
-        return this.$store.state.post.show.data.list[this.index]
+        return this.$store.state.post.show.data.list[this.postId]
       },
       comments () {
         return this.item.comments
-      },
-      postId () {
-        return this.item.id
       },
       noMore () {
         return this.comments.length >= this.item.comment_count
@@ -140,19 +136,21 @@
       async getComments () {
         this.loadingMore = true
         await this.$store.dispatch('post/getComments', {
-          index: this.index,
           postId: this.postId
         })
         this.loadingMore = false
       },
       async submit () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
         if (!this.content) {
           return
         }
         this.loadingSubmit = true
         await this.$store.dispatch('post/setComment', {
           ctx: this,
-          index: this.index,
           postId: this.postId,
           targetUserId: this.isMe ? 0 : this.item.user.id,
           content: this.content

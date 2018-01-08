@@ -122,6 +122,10 @@
     },
     methods: {
       submit () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
         this.$refs.forms.validate((valid) => {
           if (valid) {
             this.$captcha(async ({ data }) => {
@@ -233,7 +237,9 @@
       if (!this.postId) {
         this.getUserFollowedBangumis()
       }
-      this.getUpToken()
+      if (this.$store.state.login) {
+        this.getUpToken()
+      }
     }
   }
 </script>
