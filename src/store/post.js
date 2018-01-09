@@ -22,7 +22,7 @@ const state = () => ({
     },
     data: {
       total: 0,
-      list: {},
+      list: [],
       noMore: false
     }
   }
@@ -38,35 +38,47 @@ const mutations = {
       }
       state.show.init = false
     }
-    const list = state.show.data.list
-    const keys = Object.keys(data.list)
-    keys.forEach(id => {
-      list[id] = data.list[id]
-    })
     state.show.data = {
-      list: list,
-      noMore: keys.length < state.show.take,
+      list: state.show.data.list.concat(data.list),
+      noMore: data.list.length < state.show.take,
       total: data.total
     }
   },
   setComment (state, { postId, data }) {
-    state.show.data.list[postId].comments.push(data)
-    state.show.data.list[postId].comment_count++
+    state.show.data.list.forEach((item, index) => {
+      if (item.id === postId) {
+        state.show.data.list[index].comments.push(data)
+        state.show.data.list[index].comment_count++
+      }
+    })
   },
   setComments (state, { postId, data }) {
-    state.show.data.list[postId].comments = state.show.data.list[postId].comments.concat(data)
+    state.show.data.list.forEach((item, index) => {
+      if (item.id === postId) {
+        state.show.data.list[index].comments = state.show.data.list[postId].comments.concat(data)
+      }
+    })
   },
-  delPost (state, id) {
-    if (id === state.show.info.post.id) {
+  delPost (state, postId) {
+    if (postId === state.show.info.post.id) {
       return
     }
-    delete state.show.data.list[id]
-    state.show.data.total--
+    state.show.data.list.forEach((item, index) => {
+      if (item.id === postId) {
+        state.show.data.list.splice(index, 1)
+        state.show.data.total--
+      }
+    })
   },
   delComment (state, { postId, commentId }) {
-    state.show.data.list[postId].comments.forEach((item, index) => {
-      if (item.id === commentId) {
-        state.show.data.list[postId].comments.splice(index, 1)
+    state.show.data.list.forEach((post, index) => {
+      if (post.id === postId) {
+        state.show.data.list[index].comments.forEach((comment, subIndex) => {
+          if (comment.id === commentId) {
+            state.show.data.list[index].comments.splice(subIndex, 1)
+            state.show.data.list[index].comment_count--
+          }
+        })
       }
     })
   },
@@ -87,6 +99,9 @@ const mutations = {
       state.show.data.list[id].liked = !oldState
       oldState ? state.show.data.list[id].like_count-- : state.show.data.list[id].like_count++
     }
+  },
+  REPLY_POST (state, data) {
+    state.show.data.list.push(data)
   }
 }
 
@@ -122,10 +137,10 @@ const actions = {
     const id = await api.create(params)
     return id
   },
-  // eslint-disable-next-line no-empty-pattern
-  async reply ({}, params) {
+  async reply ({ commit }, params) {
     const api = new Api(params.ctx)
-    await api.reply(params)
+    const data = await api.reply(params)
+    commit('REPLY_POST', data)
   },
   async deletePost ({ commit }, { ctx, id }) {
     const api = new Api(ctx)

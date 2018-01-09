@@ -71,7 +71,9 @@
             height: 30px;
             line-height: 30px;
 
-            button, span {
+            .delete-btn,
+            .floor-count,
+            .like-btn {
               margin-right: 20px;
             }
           }
@@ -214,7 +216,7 @@
         return this.$store.state.post.show
       },
       list () {
-        return this.resource.data.list
+        return this.$orderBy(this.resource.data.list, 'id', 'asc')
       },
       total () {
         return this.resource.data.total

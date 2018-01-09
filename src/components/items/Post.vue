@@ -15,14 +15,12 @@
       </div>
       <div class="footer">
         <div class="info-bar">
-          <button @click="toggleLike">
-            {{ post.liked ? '取消赞' : '赞' }}
-            <span v-if="post.like_count">
-              （{{ post.like_count }}）
-            </span>
+          <button class="like-btn" @click="toggleLike">
+            {{ post.liked ? '已赞' : '赞' }}
+            <span v-if="post.like_count">({{ post.like_count }})</span>
           </button>
-          <button v-if="canDelete" @click="deletePost">删除</button>
-          <span>{{ post.floor_count }}楼</span>
+          <button class="delete-btn" v-if="canDelete" @click="deletePost">删除</button>
+          <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time v-model="post.created_at"></v-time>
         </div>
         <post-comment-list :post-id="post.id"></post-comment-list>

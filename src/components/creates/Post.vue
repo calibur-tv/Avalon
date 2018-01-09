@@ -142,10 +142,9 @@
                   })
                   this.images = []
                   this.$refs.forms.resetFields()
+                  this.$refs.uploader.clearFiles()
                   this.$toast.success('回复成功！')
-                  window.location.reload()
                 } catch (err) {
-                  console.log(err)
                   err.message.forEach(tip => {
                     this.$toast.error(tip)
                   })
@@ -170,7 +169,6 @@
                     params: { id: id.toString() }
                   })
                 } catch (err) {
-                  console.log(err)
                   err.message.forEach(tip => {
                     this.$toast.error(tip)
                   })

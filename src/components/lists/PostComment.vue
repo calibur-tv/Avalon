@@ -108,10 +108,14 @@
     },
     computed: {
       item () {
-        return this.$store.state.post.show.data.list[this.postId]
+        this.$store.state.post.show.data.list.forEach(post => {
+          if (post.id === this.postId) {
+            return post
+          }
+        })
       },
       comments () {
-        return this.item.comments
+        return this.item ? this.item.comments : []
       },
       noMore () {
         return this.comments.length >= this.item.comment_count
