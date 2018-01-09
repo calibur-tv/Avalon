@@ -134,9 +134,12 @@
               </div>
               <div class="text-area" v-html="post.content"></div>
               <div class="likes-wrap">
-                <el-button type="danger" round>
+                <el-button type="danger"
+                           @click="toggleLike"
+                           :loading="loadingToggleLike"
+                           round>
                   <i class="iconfont icon-guanzhu"></i>
-                  喜欢
+                  {{ post.liked ? '取消喜欢' : '喜欢' }}
                 </el-button>
               </div>
               <div class="footer">
@@ -155,13 +158,13 @@
           ></post-item>
         </main>
         <el-col :span="19" :offset="5">
-          <el-button :loading="loading"
+          <el-button :loading="loadingLoadMore"
                      v-if="!noMore"
                      class="load-post-btn"
                      @click="getPosts"
                      type="info"
                      plain
-          >{{ loading ? '加载中' : '加载更多' }}</el-button>
+          >{{ loadingLoadMore ? '加载中' : '加载更多' }}</el-button>
           <div id="post-reply-form">
             <post-create-form :post-id="post.id"
                               :bangumi-id="bangumi.id"
@@ -244,7 +247,8 @@
     },
     data () {
       return {
-        loading: false
+        loadingLoadMore: false,
+        loadingToggleLike: false
       }
     },
     methods: {
@@ -272,13 +276,38 @@
         }).catch(() => {})
       },
       async getPosts () {
-        this.loading = true
+        this.loadingLoadMore = true
         await this.$store.dispatch('post/getPost', {
           id: this.post.id,
           ctx: this,
           only: this.onlySeeMaster
         })
-        this.loading = false
+        this.loadingLoadMore = false
+      },
+      async toggleLike () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        if (this.isMaster) {
+          this.$toast.info('不能给自己点赞')
+          return
+        }
+        if (this.loadingToggleLike) {
+          return
+        }
+        this.loadingToggleLike = true
+        try {
+          await this.$store.dispatch('post/toggleLike', {
+            ctx: this,
+            id: this.post.id
+          })
+        } catch (err) {
+          err.message.forEach(tip => {
+            this.$toast.error(tip)
+          })
+        }
+        this.loadingToggleLike = false
       }
     },
     mounted () {

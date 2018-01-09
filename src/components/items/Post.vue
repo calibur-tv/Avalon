@@ -15,6 +15,12 @@
       </div>
       <div class="footer">
         <div class="info-bar">
+          <button @click="toggleLike">
+            {{ post.liked ? '取消赞' : '赞' }}
+            <span v-if="post.like_count">
+              （{{ post.like_count }}）
+            </span>
+          </button>
           <button v-if="canDelete" @click="deletePost">删除</button>
           <span>{{ post.floor_count }}楼</span>
           <v-time v-model="post.created_at"></v-time>
@@ -41,21 +47,51 @@
     },
     data () {
       return {
-        targetUserId: 0
+        loadingToggleLike: false
       }
     },
     computed: {
       canDelete () {
-        if (!this.$store.state.login) {
-          return false
-        }
-        const currentUserId = this.$store.state.user.id
-        return currentUserId === this.post.user.id || currentUserId === this.$store.state.post.show.info.user.id
+        return this.isMine || this.isMaster
+      },
+      currentUserId () {
+        return this.$store.state.login ? this.$store.state.user.id : 0
+      },
+      isMine () {
+        return this.currentUserId === this.post.user.id
+      },
+      isMaster () {
+        return this.currentUserId === this.$store.state.post.show.info.user.id
       }
     },
     methods: {
       deletePost () {
         this.$emit('delete')
+      },
+      async toggleLike () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        if (this.isMine) {
+          this.$toast.info('不能给自己点赞')
+          return
+        }
+        if (this.loadingToggleLike) {
+          return
+        }
+        this.loadingToggleLike = true
+        try {
+          await this.$store.dispatch('post/toggleLike', {
+            ctx: this,
+            id: this.post.id
+          })
+        } catch (err) {
+          err.message.forEach(tip => {
+            this.$toast.error(tip)
+          })
+        }
+        this.loadingToggleLike = false
       }
     }
   }
