@@ -2,11 +2,11 @@ import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
   getBanners () {
-    return this.http.get('cartoon/banner')
+    return this.http.get('image/banner')
   }
 
   getCaptcha () {
-    return this.http.post('door/captcha')
+    return this.http.post('image/captcha')
   }
 
   getUpToken () {

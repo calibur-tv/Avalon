@@ -141,7 +141,7 @@
                            :loading="loadingToggleLike"
                            round>
                   <i class="iconfont icon-guanzhu"></i>
-                  {{ post.liked ? '取消喜欢' : '喜欢' }}
+                  {{ post.liked ? '已喜欢' : '喜欢' }}({{ post.like_count }})
                 </el-button>
               </div>
               <div class="footer">

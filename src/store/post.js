@@ -88,16 +88,17 @@ const mutations = {
       noMore: data.length < state.trending.take
     }
   },
-  TOGGLE_LIKE (state, id) {
-    let oldState
+  TOGGLE_LIKE (state, { id, result }) {
     if (id === state.show.info.post.id) {
-      oldState = state.show.info.post.liked
-      state.show.info.post.liked = !oldState
-      oldState ? state.show.info.post.like_count-- : state.show.info.post.like_count++
+      state.show.info.post.liked = result
+      result ? state.show.info.post.like_count++ : state.show.info.post.like_count--
     } else {
-      oldState = state.show.data.list[id].liked
-      state.show.data.list[id].liked = !oldState
-      oldState ? state.show.data.list[id].like_count-- : state.show.data.list[id].like_count++
+      state.show.data.list.forEach((item, index) => {
+        if (item.id === id) {
+          state.show.data.list[index].liked = result
+          result ? state.show.data.list[index].like_count++ : state.show.data.list[index].like_count--
+        }
+      })
     }
   },
   REPLY_POST (state, data) {
@@ -168,8 +169,8 @@ const actions = {
   },
   async toggleLike ({ commit }, { ctx, id }) {
     const api = new Api(ctx)
-    await api.toggleLike(id)
-    commit('TOGGLE_LIKE', id)
+    const result = await api.toggleLike(id)
+    commit('TOGGLE_LIKE', { id, result })
   }
 }
 
