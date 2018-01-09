@@ -23,7 +23,7 @@
           <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time v-model="post.created_at"></v-time>
         </div>
-        <post-comment-list :post-id="post.id"></post-comment-list>
+        <post-comment-list :post="post"></post-comment-list>
       </div>
     </el-col>
   </el-row>

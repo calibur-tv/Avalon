@@ -46,7 +46,7 @@
   <div class="post-comments-wrap">
     <!-- 如果已经有评论了，那么点击这个按钮只是展开和收起评论 -->
     <button class="comments-collapsed-btn" @click="collapsed = !collapsed" v-if="comments.length">
-      {{ collapsed ? `回复(${item.comment_count})` : '收起回复' }}
+      {{ collapsed ? `回复(${post.comment_count})` : '收起回复' }}
     </button>
     <!-- 如果没有评论，那么这个按钮就是发起评论，允许自己给自己评论 -->
     <button class="comments-collapsed-btn" @click="openComment = !openComment" v-else>
@@ -56,8 +56,8 @@
       <ul v-show="comments.length && !collapsed" class="comments">
         <post-comment-item v-for="comment in comments"
                            :key="comment.id"
+                           :post-id="post.id"
                            :comment="comment"
-                           :post-id="postId"
         ></post-comment-item>
       </ul>
     </el-collapse-transition>
@@ -70,7 +70,7 @@
                  :loading="loadingMore"
                  size="mini"
       >点击加载更多</el-button>
-      <span>共 {{ item.comment_count }} 条</span>
+      <span>共 {{ post.comment_count }} 条</span>
     </div>
     <div class="comment-reply" v-if="openComment">
       <input type="text"
@@ -101,30 +101,23 @@
       PostCommentItem
     },
     props: {
-      postId: {
+      post: {
         required: true,
-        type: Number
+        type: Object
       }
     },
     computed: {
-      item () {
-        this.$store.state.post.show.data.list.forEach(post => {
-          if (post.id === this.postId) {
-            return post
-          }
-        })
-      },
       comments () {
-        return this.item ? this.item.comments : []
+        return this.post.comments
       },
       noMore () {
-        return this.comments.length >= this.item.comment_count
+        return this.comments.length >= this.post.comment_count
       },
       isMe () {
         if (!this.$store.state.login) {
           return false
         }
-        return this.$store.state.user.id === this.item.user.id
+        return this.$store.state.user.id === this.post.user.id
       }
     },
     data () {
@@ -140,7 +133,7 @@
       async getComments () {
         this.loadingMore = true
         await this.$store.dispatch('post/getComments', {
-          postId: this.postId
+          postId: this.post.id
         })
         this.loadingMore = false
       },
@@ -155,8 +148,8 @@
         this.loadingSubmit = true
         await this.$store.dispatch('post/setComment', {
           ctx: this,
-          postId: this.postId,
-          targetUserId: this.isMe ? 0 : this.item.user.id,
+          postId: this.post.id,
+          targetUserId: this.isMe ? 0 : this.post.user.id,
           content: this.content
         })
         this.openComment = false
