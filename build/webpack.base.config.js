@@ -125,10 +125,7 @@ module.exports = {
 
     if (isProd) {
       pluginArr = pluginArr.concat([
-        new UglifyJsPlugin({
-          sourceMap: false,
-          warnings: false
-        }),
+        new UglifyJsPlugin(),
         new QiniuPlugin({
           ACCESS_KEY: qiniu.access,
           SECRET_KEY: qiniu.secret,
