@@ -160,6 +160,123 @@
       }
     }
 
+    #posts {
+      li {
+        float: none;
+        padding: 10px 10px 10px 65px;
+        position: relative;
+
+        &:not(:last-child) {
+          border-bottom: 1px dotted #e4e6eb;
+        }
+
+        .header {
+          position: relative;
+          height: 32px;
+
+          .avatar {
+            display: block;
+            float: left;
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+
+            img {
+              display: block;
+              @include avatar(32px);
+            }
+          }
+
+          .title {
+            font-size: 14px;
+            line-height: 32px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            padding-left: 42px;
+            padding-right: 200px;
+            z-index: 0;
+          }
+
+          .time {
+            float: right;
+            display: block;
+            line-height: 32px;
+            color: #999;
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+          }
+        }
+
+        .content {
+          margin-top: 3px;
+          color: #666;
+          font-size: 12px;
+          line-height: 22px;
+        }
+
+        .images {
+          height: 90px;
+          overflow: hidden;
+          margin-top: 10px;
+          margin-bottom: 15px;
+
+          .image-box {
+            margin-right: 10px;
+            height: 100%;
+            position: relative;
+            float: left;
+            cursor: zoom-in;
+
+            &:after {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              background-color: #fff;
+              opacity: 0;
+            }
+
+            &:hover {
+              &:after {
+                opacity: 0.1;
+              }
+            }
+
+            img {
+              height: 100%;
+              width: auto;
+            }
+          }
+        }
+
+        .counter {
+          position: absolute;
+          left: 0;
+          top: 12px;
+          width: 50px;
+          height: 30px;
+          line-height: 26px;
+          font-size: 12px;
+          text-align: center;
+          background-color: RGB(247, 247, 247);
+          display: block;
+          border: 1px solid #e4e6eb;
+          border-radius: 3px;
+        }
+      }
+    }
+
+    #load-post-btn {
+      margin-top: 20px;
+      width: 100%;
+    }
+
     .col-aside {
       ul {
         margin-bottom: 20px;
@@ -213,14 +330,53 @@
     <div class="container">
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
-          <el-tab-pane label="视频">
-            <section id="videos" v-if="videoPackage.videos.length">
+          <el-tab-pane :label="posts.total ? `帖子（${ posts.total }）` : '帖子'">
+            <ul id="posts">
+              <li v-for="item in posts.data" :key="item.id">
+                <div class="header clearfix">
+                  <el-tooltip effect="dark" :content="item.user.nickname" placement="top">
+                    <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
+                      <v-img :src="item.user.avatar" width="32" height="32"></v-img>
+                    </a>
+                  </el-tooltip>
+                  <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+                  <el-tooltip effect="dark" :content="`发表于：${item.created_at}`" placement="top" v-if="item.updated_at !== item.created_at">
+                    <span class="time">
+                      最后回复于: <v-time v-model="item.updated_at"></v-time>
+                    </span>
+                  </el-tooltip>
+                  <span class="time" v-else>
+                    发表于: <v-time v-model="item.updated_at"></v-time>
+                  </span>
+                </div>
+                <p class="content twoline" v-text="item.desc"></p>
+                <div class="images clearfix" v-if="item.images.length">
+                  <div class="image-box"
+                       :key="image"
+                       v-for="(image, index) in item.images"
+                       @click="previewImages(item.images, index)">
+                    <v-img :src="image" height="90" mode="2"></v-img>
+                  </div>
+                </div>
+                <span class="counter" v-text="item.comment_count"></span>
+              </li>
+            </ul>
+            <el-button :loading="postState.loading"
+                       v-if="!posts.noMore"
+                       id="load-post-btn"
+                       @click="getPosts"
+                       type="info"
+                       plain
+            >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
+          </el-tab-pane>
+          <el-tab-pane :label="videos.total ? `视频（${ videos.total }）` : '视频'">
+            <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
-                <template v-for="season in videoPackage.videos">
+                <template v-for="season in videos.data">
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
-                    <li v-for="(video, index) in sortVideos(season.data)" :key="video.id">
-                      <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                    <li v-for="(video, index) in season.data" :key="video.id">
+                      <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
                          :rel="info.others_site_video ? 'nofollow' : ''"
                          target="_blank">
                         <figure>
@@ -229,7 +385,7 @@
                                  :src="$resize(video.poster, { width: 192, height: 120 })">
                           </v-img>
                           <figcaption class="abs">
-                            <p class="oneline">第{{ videoPackage.repeat ? index + 1 : video.part }}话</p>
+                            <p class="oneline">第{{ videos.repeat ? index + 1 : video.part }}话</p>
                             <span class="twoline" v-text="video.name"></span>
                           </figcaption>
                         </figure>
@@ -239,8 +395,8 @@
                 </template>
               </div>
               <ul v-else>
-                <li v-for="video in sortVideos(videoPackage.videos)" :key="video.id">
-                  <a :href="info.others_site_video ? video.url : `/video/${video.id}`"
+                <li v-for="video in videos.data" :key="video.id">
+                  <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
                      :rel="info.others_site_video ? 'nofollow' : ''"
                      target="_blank">
                     <figure>
@@ -258,9 +414,8 @@
               </ul>
             </section>
           </el-tab-pane>
-          <el-tab-pane label="帖子"></el-tab-pane>
-          <el-tab-pane label="图片"></el-tab-pane>
-          <el-tab-pane label="管理"></el-tab-pane>
+          <!--<el-tab-pane label="图片"></el-tab-pane>-->
+          <!--<el-tab-pane label="管理"></el-tab-pane>-->
         </el-tabs>
       </div>
       <aside class="col-aside">
@@ -268,16 +423,16 @@
           <h2 class="subtitle">标签</h2>
           <ul>
             <li class="tag" v-for="tag in tags" :key="tag.id">
-              <router-link class="el-tag" :to="`/bangumi/tags/${tag.id}`" v-text="tag.name"></router-link>
+              <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
             </li>
           </ul>
         </div>
-        <div id="followers" v-if="info.followers.length">
-          <h2 class="subtitle">关注的人</h2>
+        <div id="followers" v-if="followers.length">
+          <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
           <ul>
-            <li v-for="user in info.followers" :key="user.zone">
+            <li v-for="user in followers" :key="user.zone">
               <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
-                <a :href="`/user/${user.zone}`" target="_blank">
+                <a :href="$alias.user(user.zone)" target="_blank">
                   <v-img :src="$resize(user.avatar, { width: 64, height: 64 })"
                          :alt="user.zone"
                   ></v-img>
@@ -292,24 +447,37 @@
 </template>
 
 <script>
+  const defaultParams = {
+    post: {
+      take: 10,
+      type: 'new'
+    }
+  }
+
   export default {
     name: 'bangumi-show',
     async asyncData ({ route, store, ctx }) {
-      await store.dispatch('bangumi/getShow', {
-        ctx,
-        id: route.params.id
-      })
+      const id = route.params.id
+      await Promise.all([
+        store.dispatch('bangumi/getBangumi', { ctx, id }),
+        store.dispatch('bangumi/getPosts', {
+          ctx,
+          id,
+          take: defaultParams.post.take,
+          type: defaultParams.post.type
+        })
+      ])
     },
     head () {
       if (!this.id) {
         return
       }
-      let keywords = this.info.alias ? this.info.alias.search : ''
+      let keywords = this.info.alias
       this.tags.forEach(tag => {
         keywords += `,${tag.name}`
       })
       return {
-        title: `${this.info.name}`,
+        title: `${this.info.name} - 番剧`,
         meta: [
           { hid: 'description', name: 'description', content: this.info.summary },
           { hid: 'keywords', name: 'keywords', content: keywords }
@@ -321,19 +489,36 @@
         return this.$route.params.id
       },
       info () {
-        return this.$store.state.bangumi.list[this.id]
+        return this.$store.state.bangumi.info
       },
       tags () {
         return this.info.tags
       },
-      videoPackage () {
-        return this.info.videoPackage
+      followers () {
+        return this.info.followers
+      },
+      videos () {
+        return this.$store.state.bangumi.videos
+      },
+      posts () {
+        return this.$store.state.bangumi.posts
+      }
+    },
+    data () {
+      return {
+        postState: {
+          take: defaultParams.post.take,
+          type: defaultParams.post.type,
+          loading: false,
+          init: true
+        },
+        videoState: {
+          loading: false,
+          init: false
+        }
       }
     },
     methods: {
-      sortVideos (videos) {
-        return this.$orderBy(videos, 'part')
-      },
       follow () {
         if (this.$store.state.login) {
           this.$store.dispatch('bangumi/follow', {
@@ -345,7 +530,50 @@
         }
       },
       handleTabClick (tab) {
-        console.log(tab.label)
+        const index = parseInt(tab.index, 10)
+        if (index === 0) {
+          if (!this.postState.init) {
+            this.getPosts()
+          }
+        } else if (index === 1) {
+          if (!this.videoState.init) {
+            this.getVideos()
+          }
+        }
+      },
+      async getVideos () {
+        if (this.videoState.loading) {
+          return
+        }
+        this.videoState.loading = true
+        this.videoState.init = true
+
+        try {
+          await this.$store.dispatch('bangumi/getVideos', this.id)
+        } catch (e) {
+          console.log(e)
+        }
+
+        this.videoState.loading = false
+      },
+      async getPosts () {
+        if (this.postState.loading || this.posts.noMore) {
+          return
+        }
+        this.postState.loading = true
+
+        try {
+          await this.$store.dispatch('bangumi/getPosts', {
+            ctx: this,
+            id: this.id,
+            take: this.postState.take,
+            type: this.postState.type
+          })
+        } catch (e) {
+          console.log(e)
+        }
+
+        this.postState.loading = false
       }
     }
   }

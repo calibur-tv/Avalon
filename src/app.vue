@@ -5,13 +5,13 @@
 </template>
 
 <script>
-  import { qiniu, script } from '../.env'
+  import { qiniu, script } from 'env'
 
   export default {
     name: 'Entry',
     head: {
-      title: 'calibur',
-      titleTemplate: '%s - 天下漫友是一家',
+      title: '天下漫友是一家',
+      titleTemplate: '%s - calibur',
       htmlAttrs: {
         lang: 'zh-CN'
       },
@@ -31,8 +31,7 @@
       script: [
         { src: '//cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js' },
         { innerHTML: script.baiduStat, type: 'text/javascript' },
-        { innerHTML: script.baiduPush, type: 'text/javascript' },
-        { innerHTML: script.google, type: 'text/javascript' }
+        { innerHTML: script.baiduPush, type: 'text/javascript' }
       ],
       __dangerouslyDisableSanitizers: 'script'
     }

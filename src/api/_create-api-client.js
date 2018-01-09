@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { env, host, timeout } from '../../.env'
+import { env, host, timeout } from 'env'
 
 export default (ctx) => {
   const http = axios.create({
     baseURL: host[env],
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/x.api.latest+json' },
     timeout: timeout.client
   })
 
@@ -21,6 +21,9 @@ export default (ctx) => {
   http.interceptors.response.use(res => res && res.data && res.data.data, err => {
     if (err.response.status === 429) {
       return Promise.reject({message: ['请勿重复操作']}) // eslint-disable-line prefer-promise-reject-errors
+    }
+    if (err.response.status === 422) {
+      return Promise.reject({message: ['请求参数错误']}) // eslint-disable-line prefer-promise-reject-errors
     }
     if (err.message === `timeout of ${timeout.client}ms exceeded`) {
       return Promise.reject({message: ['网路请求超时']}) // eslint-disable-line prefer-promise-reject-errors

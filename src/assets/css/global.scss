@@ -19,10 +19,18 @@
 @import "theme/switch";
 @import "theme/alert";
 @import "theme/col";
+@import "theme/row";
 @import "theme/radio";
+@import "theme/radio-group";
+@import "theme/radio-button";
 @import "theme/tooltip";
 @import "theme/select";
 @import "theme/notification";
+@import "theme/upload";
+@import "theme/pagination";
+@import "theme/carousel";
+@import "theme/carousel-item";
+@import "theme/message-box";
 
 a {
   color: $color-link;

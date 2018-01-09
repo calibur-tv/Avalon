@@ -73,8 +73,8 @@
     <div class="container">
       <nav>
         <h1 class="breadcrumb" v-if="bangumi && info">
-          <router-link to="/">主站</router-link>
-          <router-link :to="`/bangumi/${bangumi.id}`" v-text="bangumi.name"></router-link>
+          <a :href="$alias.index" target="_blank">主站</a>
+          <a :href="$alias.bangumi(bangumi.id)" target="_blank" v-text="bangumi.name"></a>
           第{{ info.part }}话&nbsp;{{ info.name }}
         </h1>
       </nav>
@@ -84,7 +84,7 @@
             <a class="meta"
                :class="{ 'router-link-active' : $route.params.id == meta.id }"
                :style="{ width: `${maxWidth}px` }"
-               :href="`/video/${meta.id}`">
+               :href="$alias.video(meta.id)">
               <span>{{ meta.part }}</span>{{ meta.name }}
             </a>
           </li>
@@ -106,9 +106,8 @@
 </template>
 
 <script>
-  import vBanner from 'component/layouts/Banner.vue'
-  import vVideo from 'component/Video.vue'
-  import VideoApi from 'api/videoApi'
+  import vVideo from '~/components/Video'
+  import VideoApi from '~/api/videoApi'
 
   const metaMarginRgt = 8
 
@@ -116,7 +115,7 @@
     name: 'video-show',
     head () {
       return {
-        title: `${this.bangumi.name} : 第${this.info.part}话 ${this.info.name}`,
+        title: `${this.bangumi.name} : 第${this.info.part}话 ${this.info.name} - 视频`,
         meta: [
           { hid: 'description', name: 'description', content: this.bangumi.summary },
           { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，第${this.info.part}话，${this.info.name}` }
@@ -124,7 +123,7 @@
       }
     },
     components: {
-      vBanner, vVideo
+      vVideo
     },
     async asyncData ({ route, store }) {
       await store.dispatch('video/getShow', route.params.id)

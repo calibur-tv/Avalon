@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { env, host, timeout } from '../../.env'
+import { env, host, timeout } from 'env'
 
 const getAuthToken = (ctx) => {
   if (!ctx) {
@@ -36,7 +36,7 @@ export default (ctx) => {
           params,
           timeout: timeout.server,
           headers: {
-            Accept: 'application/json',
+            Accept: 'application/x.api.latest+json',
             Authorization: `Bearer ${token}`
           }
         })
@@ -56,7 +56,7 @@ export default (ctx) => {
           params,
           timeout: timeout.server,
           headers: {
-            Accept: 'application/json',
+            Accept: 'application/x.api.latest+json',
             Authorization: `Bearer ${token}`
           }
         })

@@ -1,7 +1,70 @@
+import Vue from 'vue'
 import lodash from './lodash'
-import env from '../../.env'
+import Alias from '~/assets/js/alias'
+import env from 'env'
+import {
+  InfiniteScroll
+} from 'mint-ui'
 
-export default {
+import {
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  Tabs,
+  TabPane,
+  Tag,
+  Form,
+  FormItem,
+  Input,
+  Button,
+  DatePicker,
+  Switch,
+  Alert,
+  Row,
+  Col,
+  Radio,
+  RadioGroup,
+  RadioButton,
+  Tooltip,
+  Select,
+  Option,
+  Upload,
+  Pagination,
+  Carousel,
+  CarouselItem
+} from 'element-ui'
+
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
+
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Tag)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
+Vue.use(Button)
+Vue.use(DatePicker)
+Vue.use(Switch)
+Vue.use(Alert)
+Vue.use(Col)
+Vue.use(Row)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
+Vue.use(Tooltip)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(InfiniteScroll)
+Vue.use(Upload)
+Vue.use(Pagination)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
+Vue.component(CollapseTransition.name, CollapseTransition)
+
+Vue.use({
   install (Vue, options) {
     Vue.prototype.$throttle = lodash.throttle
 
@@ -13,8 +76,10 @@ export default {
 
     Vue.prototype.$channel = new Vue()
 
+    Vue.prototype.$alias = Alias
+
     Vue.prototype.$resize = (url, options = {}) => {
-      if (url === '') {
+      if (!url) {
         return ''
       }
       const link = url.match(/^http/) === null ? `${env.cdn.image}${url}` : url
@@ -38,15 +103,24 @@ export default {
       }
 
       const format = canUseWebP() ? '/format/webp' : ''
+      const mode = options.mode || 1
 
-      if (options.width && options.width > 0) {
-        const width = `/w/${options.width}`
-        const mode = options.mode === undefined ? 1 : options.mode
-        const height = options.height ? `/h/${options.height}` : mode === 1 ? `/h/${options.width}` : ''
-
-        return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
+      if ((mode === 1 && !options.width) || (!options.width && !options.height)) {
+        return `${link}?imageMogr2/auto-orient/strip${format}`
       }
-      return `${link}?imageMogr2/auto-orient/strip${format}`
+
+      let width
+      let height
+
+      if (mode === 1) {
+        width = `/w/${options.width}`
+        height = options.height ? `/h/${options.height}` : `/h/${options.width}`
+      } else {
+        width = options.width ? `/w/${options.width}` : ''
+        height = options.height ? `/h/${options.height}` : ''
+      }
+
+      return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
     }
   }
-}
+})

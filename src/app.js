@@ -1,21 +1,25 @@
 import Vue from 'vue'
 import App from './app.vue'
-import 'assets/css/global.scss'
+import '~/assets/css/global'
 import { sync } from 'vuex-router-sync'
-import { createStore } from './store'
-import { createRouter } from './router'
-import './utils/elementUI'
-import utils from './utils'
-import ImageLazy from 'assets/js/imagelazy'
-import Share from 'assets/js/Share'
-import Modal from 'component/Modal.vue'
-import NoSSR from 'assets/js/nossr'
+import { createStore } from '~/store'
+import { createRouter } from '~/router'
+import '~/utils'
+import ImageLazy from '~/assets/js/imagelazy'
+import Share from '~/assets/js/Share'
+import NoSSR from '~/assets/js/nossr'
+import Modal from '~/components/Modal'
+import Banner from '~/components/layouts/Banner'
+import Time from '~/assets/js/timeago'
+import BangumiPanel from '~/components/panels/bangumi'
 
-Vue.use(utils)
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
 Vue.component(Modal.name, Modal)
 Vue.component(NoSSR.name, NoSSR)
+Vue.component(Banner.name, Banner)
+Vue.component(Time.name, Time)
+Vue.component(BangumiPanel.name, BangumiPanel)
 
 export function createApp () {
   const router = createRouter()

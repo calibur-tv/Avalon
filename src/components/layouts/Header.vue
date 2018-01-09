@@ -27,6 +27,7 @@
       }
 
       .header-right {
+        height: $header-height;
         float: right;
         position: relative;
 
@@ -228,12 +229,12 @@
 
         .shim {
           width: 100%;
-          height: 99px;
+          height: 100px;
           position: absolute;
           left: 0;
           top: 0;
           z-index: -1;
-          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAABkCAYAAABOx/oaAAAAAXNSR0IArs4c6QAAAX5JREFUSA2llAtuwzAMQ5NtN9r9r9bUZP0I2VW7ATWQ2KZISv4k53Ecv+NZ2tcym5MOvDrwBLyKjZkCzvEQOH8mIGICkosBy0E8xTIwXpfkam+ZJiCvzAPQHrzIztxyEnkyI+0yW8/s0pJdngKybvlS0sLsQK99l3s/ZYPcPYkUoKUkAPd17ZJa3mbfwTA9QKq+y+5lVqbHbHINHDuoOnOXxIRt5m0A3BCNW7nByKYinlIp2MqdUCU5KupsuQwA6r12SiJhmABhLsBAfZoVbJkCn1b0IegruR+cKulPc2d+mF2JvEvOaLPHa8nOxmSX6neU6805mU2di69uMixy3WAKWBJVYPFEakKVC/CVBKROy/fvyDYwPeElJqXQP13vlyUtXxyW3k9N4qdJTaS52mvmI14s/pQnGUwBbEp+gM46zXOakSrwPR7JIhUoT7WF2YEXUuTq7QU7Nkr01CorQYE1s8c2HgF6sdtA/gxhaEBDTm98mcCsvQn/Y1XZ+/EdtDiR1Lr0wCcAAAAASUVORK5CYII=);
+          background-image: linear-gradient(to top,rgba(0, 0, 0, 0),rgba(0, 0, 0, .3));
         }
       }
     }
@@ -245,8 +246,7 @@
         padding: 0 25px;
         font-size: 15px;
         height: $header-height;
-        display: block;
-        float: left;
+        display: inline-block;
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.24);
@@ -299,36 +299,45 @@
   <header id="header" :class="[theme, 'white', scrollFlag ? 'scroll-show' : 'scroll-hide']">
     <div class="text">
       <nav class="container header-left">
-        <router-link class="nav-link" to="/">主站</router-link>
-        <router-link class="nav-link" to="/bangumi/news">番剧</router-link>
-        <!--
+        <a class="nav-link" :href="$alias.index">主站</a>
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" to="/bangumi/news">番剧</router-link>
+          <a class="nav-link el-dropdown-link" :href="$alias.bangumiTimeline">番剧</a>
           <el-dropdown-menu slot="dropdown">
+            <!--
             <el-dropdown-item>
               <router-link class="nav-link" to="/bangumi/rank">排行榜</router-link>
             </el-dropdown-item>
+            -->
             <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/timeline">时间轴</router-link>
+              <a class="nav-link" :href="$alias.bangumiTimeline">时间轴</a>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/news">新番放送</router-link>
+              <a class="nav-link" :href="$alias.bangumiNews">新番放送</a>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/tags">分类索引</router-link>
+              <a class="nav-link" :href="$alias.bangumiTag()">分类索引</a>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        -->
-        <router-link class="nav-link" to="/bangumi/tags">分类</router-link>
+        <el-dropdown>
+          <a class="nav-link el-dropdown-link" :href="$alias.postTrending('new')">帖子</a>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <a class="nav-link" :href="$alias.postTrending('new')">最新</a>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <a class="nav-link" :href="$alias.postTrending('hot')">最热</a>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </nav>
       <nav class="header-right">
-        <v-search :placeholder="'搜索'" :history="true"></v-search>
+        <v-search placeholder="搜索" :history="true"></v-search>
         <template v-if="isLogin">
-          <el-dropdown class="user-section" :placement="'bottom'">
-            <router-link class="el-dropdown-link" :to="`/user/${user.zone}`">
+          <el-dropdown class="user-section" placement="bottom">
+            <a class="el-dropdown-link" :href="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
-            </router-link>
+            </a>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>消息</el-dropdown-item>
               <el-dropdown-item>动态</el-dropdown-item>
@@ -351,8 +360,8 @@
 </template>
 
 <script>
-  import UserApi from 'api/userApi'
-  import vSearch from 'component/layouts/Search.vue'
+  import UserApi from '~/api/userApi'
+  import vSearch from '~/components/layouts/Search'
 
   export default {
     name: 'v-header',

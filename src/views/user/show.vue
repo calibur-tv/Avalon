@@ -251,6 +251,212 @@
           }
         }
       }
+
+      .posts {
+        margin-top: 10px;
+
+        &.posts-of-mine {
+          li {
+            float: none;
+            padding: 10px;
+            position: relative;
+
+            &:not(:last-child) {
+              border-bottom: 1px dotted #e4e6eb;
+            }
+
+            .header {
+              position: relative;
+              height: 32px;
+
+              .avatar {
+                display: block;
+                float: right;
+                margin-top: 4px;
+                position: relative;
+                z-index: 1;
+
+                img {
+                  display: block;
+                  width: 24px;
+                  height: 24px;
+                }
+              }
+
+              .title {
+                font-size: 14px;
+                line-height: 32px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                padding-right: 240px;
+                z-index: 0;
+              }
+
+              .time {
+                float: right;
+                display: block;
+                line-height: 32px;
+                color: #999;
+                font-size: 12px;
+                position: relative;
+                z-index: 1;
+                margin-right: 12px;
+              }
+            }
+
+            .content {
+              margin-top: 3px;
+              color: #666;
+              font-size: 12px;
+              line-height: 22px;
+            }
+
+            .images {
+              height: 90px;
+              overflow: hidden;
+              margin-top: 10px;
+              margin-bottom: 15px;
+
+              .image-box {
+                margin-right: 10px;
+                height: 100%;
+                position: relative;
+                float: left;
+                cursor: zoom-in;
+
+                &:after {
+                  content: '';
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: #fff;
+                  opacity: 0;
+                }
+
+                &:hover {
+                  &:after {
+                    opacity: 0.1;
+                  }
+                }
+
+                img {
+                  height: 100%;
+                  width: auto;
+                }
+              }
+            }
+
+            .footer {
+              margin: 8px 0;
+
+              span {
+                line-height: 12px;
+                color: #919499;
+                font-size: 12px;
+                margin-right: 10px;
+                float: right;
+              }
+            }
+          }
+        }
+
+        &.posts-of-reply {
+          li {
+            float: none;
+            padding: 10px;
+            position: relative;
+
+            &:not(:last-child) {
+              border-bottom: 1px dotted #e4e6eb;
+            }
+
+            .header {
+              position: relative;
+              height: 32px;
+              line-height: 32px;
+
+              .time {
+                float: right;
+                display: block;
+                color: #999;
+                font-size: 12px;
+                position: relative;
+                z-index: 1;
+                margin-right: 12px;
+              }
+            }
+
+            .origin {
+              background-color: $color-gray-normal;
+              padding: 10px 20px;
+              margin: 10px 0;
+              border-radius: 5px;
+            }
+
+            .reply {
+              border-left: 5px solid $color-gray-normal;
+              padding: 0 20px;
+              margin: 10px 0;
+            }
+
+            .content {
+              margin-top: 3px;
+              color: #666;
+              font-size: 12px;
+              line-height: 22px;
+              max-height: 44px;
+              overflow: hidden;
+            }
+
+            .images {
+              height: 90px;
+              overflow: hidden;
+              margin-top: 10px;
+              margin-bottom: 15px;
+
+              .image-box {
+                margin-right: 10px;
+                height: 100%;
+                position: relative;
+                float: left;
+                cursor: zoom-in;
+
+                &:after {
+                  content: '';
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: #fff;
+                  opacity: 0;
+                }
+
+                &:hover {
+                  &:after {
+                    opacity: 0.1;
+                  }
+                }
+
+                img {
+                  height: 100%;
+                  width: auto;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .load-post-btn {
+        margin-top: 20px;
+        width: 100%;
+      }
     }
   }
 </style>
@@ -285,6 +491,13 @@
              :src="$resize(user.avatar, { width: 200, height: 200 })"
              alt="avatar"
              v-else>
+        <el-button type="primary"
+                   :disabled="daySigned"
+                   :loading="signDayLoading"
+                   size="small"
+                   v-if="isMe"
+                   @click="handleDaySign"
+        >{{ daySigned ? '已签到' : '签到' }}</el-button>
         <span class="nickname" v-text="user.nickname"></span>
         <v-modal class="avatar-cropper-modal"
                  v-model="avatarCropper.showModal"
@@ -302,7 +515,7 @@
         <el-tab-pane label="番剧">
           <ul class="bangumis">
             <li v-for="item in bangumis" :key="item.id">
-              <a :href="`/bangumi/${item.id}`" target="_blank">
+              <a :href="$alias.bangumi(item.id)" target="_blank">
                 <figure>
                   <v-img class="bg"
                          :alt="item.name"
@@ -316,7 +529,93 @@
             </li>
           </ul>
         </el-tab-pane>
-        <el-tab-pane label="帖子">帖子</el-tab-pane>
+        <el-tab-pane label="帖子">
+          <el-radio-group v-model="postTab" @change="handlePostTabClick">
+            <el-radio-button label="我的帖子"></el-radio-button>
+            <el-radio-button label="我回复的"></el-radio-button>
+          </el-radio-group>
+          <template v-if="postListType === 'mine'">
+            <ul class="posts posts-of-mine">
+              <li v-for="item in posts.data" :key="item.id">
+                <div class="header clearfix">
+                  <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
+                    <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                      <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                    </a>
+                  </el-tooltip>
+                  <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+                  <span class="time">
+                    发表于: <v-time v-model="item.created_at"></v-time>
+                </span>
+                </div>
+                <p class="content twoline" v-text="item.desc"></p>
+                <div class="images clearfix" v-if="item.images.length">
+                  <div class="image-box"
+                       :key="image"
+                       v-for="(image, index) in item.images"
+                       @click="previewImages(item.images, index)">
+                    <v-img :src="image" height="90" mode="2"></v-img>
+                  </div>
+                </div>
+                <div class="footer clearfix">
+                  <span>查看: {{ item.view_count }}</span>
+                  <span>喜欢: {{ item.like_count }}</span>
+                  <span>回复: {{ item.comment_count }}</span>
+                </div>
+              </li>
+            </ul>
+            <el-button :loading="posts.loading"
+                       v-if="!posts.noMore"
+                       class="load-post-btn"
+                       @click="getUserPosts(false)"
+                       type="info"
+                       plain
+            >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+          </template>
+          <template v-else>
+            <ul class="posts posts-of-reply">
+              <li v-for="item in posts.data" :key="item.id">
+                <div class="header clearfix">
+                  回复来自番剧
+                  <a class="href-fade-blue" target="_blank" :href="$alias.bangumi(item.bangumi.id)" v-text="item.bangumi.name"></a>
+                  的帖子
+                  <a class="href-fade-blue" target="_blank" :href="$alias.post(item.post.id)">《{{ item.post.title }}》</a>
+                  <v-time class="time" v-model="item.created_at"></v-time>
+                </div>
+                <div class="origin">
+                  <a class="href-fade-blue" target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>：
+                  <div class="content" v-html="item.parent.content"></div>
+                  <div class="images clearfix" v-if="item.parent.images.length">
+                    <div class="image-box"
+                         :key="image"
+                         v-for="(image, index) in item.parent.images"
+                         @click="previewImages(item.parent.images, index)">
+                      <v-img :src="image" height="90" mode="2"></v-img>
+                    </div>
+                  </div>
+                </div>
+                <div class="reply">
+                  <div class="content" v-html="item.content"></div>
+                  <div class="images clearfix" v-if="item.images.length">
+                    <div class="image-box"
+                         :key="image"
+                         v-for="(image, index) in item.images"
+                         @click="previewImages(item.images, index)">
+                      <v-img :src="image" height="90" mode="2"></v-img>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <el-button :loading="posts.loading"
+                       v-if="!posts.noMore"
+                       class="load-post-btn"
+                       @click="getUserPosts(false)"
+                       type="info"
+                       plain
+            >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+          </template>
+        </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
@@ -327,11 +626,12 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item label="生日">
-                  <el-date-picker
-                    v-model="settingForm.birthday"
-                    type="date"
-                    placeholder="选择日期">
-                  </el-date-picker>
+                  <el-date-picker v-model="settingForm.birthday"
+                                  type="date"
+                                  :editable="false"
+                                  :clearable="false"
+                                  placeholder="选择日期"
+                  ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="性别">
                   <el-col>
@@ -342,8 +642,8 @@
                   </el-col>
                   <el-col v-if="settingForm.sex">
                     <el-switch v-model="settingForm.sexSecret"
-                               active-text="公开"
-                               inactive-text="私密"
+                               active-text="私密"
+                               inactive-text="公开"
                     ></el-switch>
                   </el-col>
                 </el-form-item>
@@ -365,9 +665,9 @@
 </template>
 
 <script>
-  import vCropper from 'component/base/cropper'
-  import UserApi from 'api/userApi'
-  import ImageApi from 'api/imageApi'
+  import vCropper from '~/components/base/Cropper'
+  import UserApi from '~/api/userApi'
+  import ImageApi from '~/api/imageApi'
 
   export default {
     async asyncData ({ route, store, ctx }) {
@@ -387,7 +687,7 @@
         return
       }
       return {
-        title: this.user.nickname,
+        title: `${this.user.nickname} - 用户`,
         meta: [
           { hid: 'description', name: 'description', content: this.user.signature },
           { hid: 'keywords', name: 'keywords', content: `calibur,用户,天下漫友是一家,${this.user.zone},${this.user.nickname}` }
@@ -421,6 +721,15 @@
         return this.bannerSelector.showBar
           ? `url(${this.bannerSelector.image})`
           : `url(${this.$resize(this.user.banner, { width: 1920, mode: 0 })})`
+      },
+      postListType () {
+        return this.postTab === '我回复的' ? 'reply' : 'mine'
+      },
+      posts () {
+        return this.$store.state.users.posts[this.postListType]
+      },
+      daySigned () {
+        return this.self.daySign
       }
     },
     data () {
@@ -463,7 +772,9 @@
           image: '',
           showBar: false,
           loading: false
-        }
+        },
+        postTab: '我的帖子',
+        signDayLoading: false
       }
     },
     methods: {
@@ -476,21 +787,40 @@
             sexSecret: this.self.sex > 2,
             birthday: this.self.birthday ? this.self.birthday * 1000 : ''
           }
+        } else if (tab.label === '帖子') {
+          this.getUserPosts(true)
         }
+      },
+      handlePostTabClick () {
+        this.getUserPosts(true)
+      },
+      getUserPosts (isFirstRequest) {
+        if (isFirstRequest && this.$store.state.users.posts[this.postListType].data.length) {
+          return
+        }
+        this.$store.dispatch('users/getFollowPosts', {
+          type: this.postListType,
+          zone: this.user.zone
+        })
       },
       saveSetting () {
         this.$refs.settingForm.validate((valid) => {
           if (valid) {
+            const birthday = this.settingForm.birthday ? new Date(this.settingForm.birthday).getTime() / 1000 : 0
+            if (birthday && (Date.now() / 1000 - birthday < 315360000)) {
+              this.$toast.warning('小于10岁？不应该...')
+              return
+            }
             const api = new UserApi(this)
             const data = {
               nickname: this.settingForm.nickname,
               signature: this.settingForm.signature,
               sex: parseInt(this.settingForm.sex, 10) + (this.settingForm.sexSecret ? 2 : 0),
-              birthday: new Date(this.settingForm.birthday).getTime() / 1000
+              birthday: birthday
             }
             api.settingProfile(data).then(() => {
               this.$toast.success('设置成功')
-              this.$store.commit('SET_USER', Object.assign(this.self, data))
+              this.$store.commit('SET_USER_INFO', Object.assign({}, this.self, data))
               this.$store.commit('users/removeUser', this.slug)
             }).catch((err) => {
               err.message.forEach(tip => {
@@ -524,24 +854,20 @@
       },
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
-        await this.$store.dispatch('image/getUpToken', {
-          modal: 'user',
-          type: 'avatar',
-          id: this.user.id
-        })
-        const upToken = this.$store.state.image.upToken
-        formData.append('token', upToken.token)
-        formData.append('key', upToken.key)
+        await this.$store.dispatch('getUpToken')
+        const key = `user/avatar/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        formData.append('token', this.user.uptoken.data)
+        formData.append('key', key)
         const imageApi = new ImageApi()
         try {
           await imageApi.uploadToQiniu(formData)
           const userApi = new UserApi(this)
           await userApi.settingImage({
             type: 'avatar',
-            url: upToken.key
+            url: key
           })
           this.$store.commit('SET_USER_INFO', {
-            avatar: `${this.$cdn.image}${upToken.key}`
+            avatar: `${this.$cdn.image}${key}`
           })
           this.$toast.success('头像更新成功')
         } catch (e) {
@@ -573,26 +899,22 @@
       },
       async submitBannerChange () {
         this.bannerSelector.loading = true
-        await this.$store.dispatch('image/getUpToken', {
-          modal: 'user',
-          type: 'banner',
-          id: this.user.id
-        })
+        await this.$store.dispatch('getUpToken')
+        const key = `user/banner/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         const formData = new FormData()
-        const upToken = this.$store.state.image.upToken
         formData.append('file', this.bannerSelector.file)
-        formData.append('token', upToken.token)
-        formData.append('key', upToken.key)
+        formData.append('token', this.user.uptoken.data)
+        formData.append('key', key)
         const imageApi = new ImageApi()
         try {
           await imageApi.uploadToQiniu(formData)
           const userApi = new UserApi(this)
           await userApi.settingImage({
             type: 'banner',
-            url: upToken.key
+            url: key
           })
           this.$store.commit('SET_USER_INFO', {
-            banner: `${this.$cdn.image}${upToken.key}`
+            banner: `${this.$cdn.image}${key}`
           })
           this.$toast.success('背景更新成功')
         } catch (e) {
@@ -601,6 +923,20 @@
         }
         this.bannerSelector.loading = false
         this.cancelBannerChange()
+      },
+      async handleDaySign () {
+        if (this.signDayLoading) {
+          return
+        }
+        this.signDayLoading = true
+
+        await this.$store.dispatch('users/daySign', {
+          ctx: this
+        })
+        this.$store.commit('SET_USER_INFO', {
+          daySign: true
+        })
+        this.signDayLoading = false
       }
     }
   }

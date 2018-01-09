@@ -97,21 +97,23 @@
                 :key="tag.id"
                 @click="$store.commit('bangumi/selectTag', index)">
               <a @click.prevent
-                 :href="`/bangumi/tags/${tag.id}`" class="el-tag"
+                 :href="$alias.bangumiTag(tag.id)" class="el-tag"
                  :class="{ 'selected': tag.selected }"
               >{{ tag.name }}</a>
             </li>
             <li>
-              <button class="btn" @click="getList">点击查找</button>
+              <button class="btn" @click="refresh">点击查找</button>
             </li>
           </ul>
         </div>
-        <div class="bangumis" v-if="bangumis.length">
+        <div class="bangumis" v-if="bangumis && bangumis.length">
           <h2 class="subtitle">番剧列表</h2>
-          <ul>
+          <ul v-infinite-scroll="loadMore"
+              infinite-scroll-disabled="loading"
+              infinite-scroll-distance="200">
             <li class="bangumi" v-for="item in bangumis" :key="item.id">
               <figure>
-                <a :href="`/bangumi/${item.id}`" target="_blank">
+                <a :href="$alias.bangumi(item.id)" target="_blank">
                   <v-img
                     class="face"
                     :title="item.name"
@@ -121,7 +123,7 @@
                 </a>
                 <figcaption class="content">
                   <p class="head">
-                    <a target="_blank" :href="`/bangumi/${item.id}`" class="name" v-text="item.name"></a>
+                    <a target="_blank" :href="$alias.bangumi(item.id)" class="name" v-text="item.name"></a>
                     <!--<span v-text="item.count_score"></span>-->
                   </p>
                   <p class="body twoline" v-text="item.summary"></p>
@@ -140,43 +142,51 @@
 </template>
 
 <script>
-  import vBanner from 'component/layouts/Banner.vue'
+  const defaultParams = {
+    page: 1,
+    take: 15
+  }
 
   export default {
     name: 'bangumi-tags',
     head: {
-      title: '番剧列表'
-    },
-    components: {
-      vBanner
-    },
-    beforeRouteEnter (to, from, next) {
-      const id = to.params.id
-      if (id === undefined || /^\d+$/.test(id) ||
-         (id.indexOf('-') !== -1 && id.split('-').every(item => /^\d+$/.test(item)))
-      ) {
-        next()
-      }
-      next(false)
-    },
-    watch: {
-      '$route' (val) {
-        this.$store.dispatch('bangumi/getTags', val.params.id)
-      }
+      title: '分类索引 - 番剧'
     },
     async asyncData ({ route, store }) {
-      await store.dispatch('bangumi/getTags', route.params.id)
+      const id = route.query.id
+      const arr = [store.dispatch('bangumi/getTags', { id })]
+      if (id && (
+        /^\d+$/.test(id) ||
+        (id.indexOf('-') !== -1 && id.split('-').every(item => /^\d+$/.test(item)))
+      )) {
+        arr.push(store.dispatch('bangumi/getCategory', {
+          id,
+          page: defaultParams.page,
+          take: defaultParams.take
+        }))
+      }
+      await Promise.all(arr)
     },
     computed: {
       bangumis () {
-        return this.$store.state.bangumi.rank
+        return this.$store.state.bangumi.category.data
       },
       tags () {
         return this.$store.state.bangumi.tags
+      },
+      noMore () {
+        return this.$store.state.bangumi.category.noMore
+      }
+    },
+    data () {
+      return {
+        page: defaultParams.page,
+        take: defaultParams.take,
+        loading: false
       }
     },
     methods: {
-      getList () {
+      refresh () {
         const selected = []
         this.tags.forEach((tag) => {
           if (tag.selected) {
@@ -184,13 +194,25 @@
           }
         })
         if (selected.length) {
-          this.$router.push({
-            name: 'bangumi-tags',
-            params: {
-              id: selected.join('-')
-            }
-          })
+          window.location = this.$alias.bangumiTag(selected.join('-'))
         }
+      },
+      async loadMore () {
+        if (this.loading || this.noMore) {
+          return
+        }
+        this.loading = true
+
+        try {
+          await this.$store.dispatch('bangumi/getCategory', {
+            id: this.$route.query.id,
+            page: ++this.page,
+            take: this.take
+          })
+        } catch (e) {
+          this.page--
+        }
+        this.loading = false
       }
     }
   }

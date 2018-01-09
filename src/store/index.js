@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UserApi from 'api/userApi'
+import UserApi from '~/api/userApi'
 import homepage from './homepage'
 import bangumi from './bangumi'
 import video from './video'
 import users from './users'
 import image from './image'
+import post from './post'
+
+import ImageApi from '~/api/imageApi'
 
 Vue.use(Vuex)
 
@@ -52,6 +55,15 @@ export function createStore () {
             }
           }
         }
+      },
+      async getUpToken ({ state, commit }) {
+        if (state.user.uptoken.time <= parseInt(Date.now() / 1000, 10)) {
+          const api = new ImageApi()
+          const data = await api.getUpToken()
+          commit('SET_USER_INFO', {
+            uptoken: data
+          })
+        }
       }
     },
     getters: {},
@@ -60,7 +72,8 @@ export function createStore () {
       bangumi,
       video,
       users,
-      image
+      image,
+      post
     }
   })
 }

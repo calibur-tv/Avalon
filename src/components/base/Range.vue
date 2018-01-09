@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import draggable from 'assets/js/draggable.js'
+  import draggable from '~/assets/js/draggable.js'
 
   export default {
     name: 'v-range',

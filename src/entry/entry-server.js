@@ -1,4 +1,4 @@
-import { createApp } from '../app'
+import { createApp } from '~/app.js'
 
 export default ssrContext => {
   const { app, router, store } = createApp()

@@ -14,23 +14,23 @@
   <div id="layout-default">
     <v-header></v-header>
     <router-view class="main-view"></router-view>
-    <v-music></v-music>
     <v-footer></v-footer>
     <v-side-bar></v-side-bar>
     <v-sign></v-sign>
+    <image-reader></image-reader>
   </div>
 </template>
 
 <script>
-  import vHeader from 'component/layouts/Header.vue'
-  import vMusic from 'component/layouts/Music.vue'
-  import vFooter from 'component/layouts/Footer.vue'
-  import vSideBar from 'component/layouts/SideBar.vue'
-  import vSign from 'component/layouts/Sign.vue'
+  import vHeader from '~/components/layouts/Header'
+  import vFooter from '~/components/layouts/Footer'
+  import vSideBar from '~/components/layouts/SideBar'
+  import vSign from '~/components/layouts/Sign'
+  import ImageReader from '~/components/ImageReader'
 
   export default {
     components: {
-      vHeader, vMusic, vFooter, vSideBar, vSign
+      vHeader, vFooter, vSideBar, vSign, ImageReader
     }
   }
 </script>

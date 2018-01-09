@@ -1,4 +1,4 @@
-<style lang="scss" scoped="">
+<style lang="scss" scoped>
   #banner {
     width: 100%;
     height: $banner-hgt;

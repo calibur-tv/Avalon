@@ -1,10 +1,14 @@
 import Vue from 'vue'
-import scrollToY from 'assets/js/scrollToY'
-import Backdrop from 'assets/js/Backdrop'
+import scrollToY from '~/assets/js/scrollToY'
+import Backdrop from '~/assets/js/Backdrop'
 import Cookies from 'js-cookie'
-import { Notification } from 'element-ui'
+import {
+  Notification,
+  MessageBox
+} from 'element-ui'
+import captcha from '~/assets/js/captcha.js'
 
-const utils = {
+Vue.use({
   install (Vue, options) {
     Vue.prototype.$cookie = Cookies
 
@@ -15,6 +19,14 @@ const utils = {
     Vue.prototype.$backdrop = new Backdrop()
 
     Vue.prototype.$toast = Notification
+
+    Vue.prototype.$captcha = captcha
+
+    Vue.prototype.$confirm = MessageBox.confirm
+
+    Vue.prototype.$alert = MessageBox.alert
+
+    Vue.prototype.$prompt = MessageBox.prompt
 
     Vue.prototype.$eventManager = (function () {
       class Manager {
@@ -58,6 +70,14 @@ const utils = {
       return (rect.top < window.innerHeight * scale && rect.bottom > 0) && (rect.left < window.innerWidth * scale && rect.right > 0)
     }
   }
-}
+})
 
-Vue.use(utils)
+Vue.mixin({
+  methods: {
+    previewImages (images, index) {
+      this.$channel.$emit('open-image-reader', {
+        images, index
+      })
+    }
+  }
+})

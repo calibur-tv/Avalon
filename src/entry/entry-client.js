@@ -1,10 +1,10 @@
 import 'es6-promise/auto'
 import Vue from 'vue'
-import { createApp } from '../app'
-import ProgressBar from '../components/layouts/ProgressBar.vue'
-import '../utils/geetest'
-import '../utils/validate'
-import '../utils/client'
+import { createApp } from '~/app.js'
+import ProgressBar from '~/components/layouts/ProgressBar'
+import '~/utils/geetest'
+import '~/utils/validate'
+import '~/utils/client'
 
 const dev = process.env.NODE_ENV === 'development'
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
@@ -15,6 +15,8 @@ const { app, router, store } = createApp()
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
+
+window.M = Object.create(null)
 
 router.afterEach((to) => {
   const ele = document.getElementById('share')
@@ -34,8 +36,6 @@ router.afterEach((to) => {
   }
   if (!dev) {
     _hmt.push(['_trackPageview', to.fullPath]) // eslint-disable-line no-undef
-    ga('set', 'page', to.fullPath)             // eslint-disable-line no-undef
-    ga('send', 'pageview')                     // eslint-disable-line no-undef
   }
 })
 

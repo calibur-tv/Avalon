@@ -41,11 +41,19 @@ export default class extends BaseApi {
     return this.http.get(`user/${zone}/followed/bangumi`)
   }
 
+  followPosts ({ type, zone, seenIds, take }) {
+    return this.http.post(`user/${zone}/posts/${type}`, { seenIds, take })
+  }
+
   settingImage ({ type, url }) {
     return this.http.post('user/setting/image', { type, url })
   }
 
   feedback ({ type, desc }) {
     return this.http.post('user/feedback', { type, desc })
+  }
+
+  daySign () {
+    return this.http.post('user/daySign')
   }
 }

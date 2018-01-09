@@ -200,7 +200,7 @@
                     rules: 'required|email',
                     scope: 'sign-in'
                  }"
-                 v-model="signIn.access"
+                 v-model.trim="signIn.access"
                  @input="showSignInCaptcha"
                  placeholder="邮箱">
         </div>
@@ -211,7 +211,7 @@
                    rules: 'required|min:6|max:16',
                    scope: 'sign-in'
                  }"
-                 v-model="signIn.secret"
+                 v-model.trim="signIn.secret"
                  @input="showSignInCaptcha"
                  placeholder="密码">
         </div>
@@ -239,7 +239,7 @@
                      rules: 'required|nickname:1-7',
                      scope: 'sign-up'
                    }"
-                   v-model="signUp.nickname"
+                   v-model.trim="signUp.nickname"
                    @input="showSignUpCaptcha"
                    placeholder="昵称（2-14个字符组成，1个汉字占2个字符）">
           </div>
@@ -250,7 +250,7 @@
                      rules: 'required|email',
                      scope: 'sign-up'
                    }"
-                   v-model="signUp.access"
+                   v-model.trim="signUp.access"
                    @input="showSignUpCaptcha"
                    placeholder="邮箱（填写常用邮箱，用于登录）">
           </div>
@@ -261,7 +261,7 @@
                      rules: 'required|len:6',
                      scope: 'sign-up'
                    }"
-                   v-model="signUp.authCode"
+                   v-model.trim="signUp.authCode"
                    placeholder="验证码">
             <button class="checkAndSend"
                     @click="checkAndSend"
@@ -276,7 +276,7 @@
                      rules: 'required|min:6|max:16',
                      scope: 'sign-up'
                    }"
-                   v-model="signUp.secret"
+                   v-model.trim="signUp.secret"
                    @input="showSignUpCaptcha"
                    placeholder="密码（6-16个字符组成，区分大小写）">
             <input type="password"
@@ -285,11 +285,11 @@
                      rules: 'required|min:6|max:16',
                      scope: 'sign-up'
                    }"
-                   v-model="signUp.secret"
+                   v-model.trim="signUp.secret"
                    @input="showSignUpCaptcha"
                    placeholder="密码（6-16个字符组成，区分大小写）"
                    v-else>
-            <button class="watch iconfont icon-eye"
+            <button class="watch iconfont icon-ai-eye"
                     :class="[ signUp.watch ? 'watch-on' : 'watch-off' ]"
                     @click="signUp.watch = !signUp.watch"
             ></button>
@@ -301,7 +301,7 @@
                      rules: 'len:6',
                      scope: 'sign-up'
                    }"
-                   v-model="signUp.inviteCode"
+                   v-model.trim="signUp.inviteCode"
                    name="invite-code"
                    placeholder="邀请码（可为空）">
           </div>
@@ -317,8 +317,7 @@
 </template>
 
 <script>
-  import ImageApi from 'api/imageApi'
-  import UserApi from 'api/userApi'
+  import UserApi from '~/api/userApi'
 
   export default {
     name: 'v-sign',
@@ -411,32 +410,16 @@
         this.showSignIn = false
         this.showSignUp = false
       },
-      getCaptcha (product = 'float') {
-        const api = new ImageApi()
-        return new Promise((resolve, reject) => {
-          api.getCaptcha().then((data) => {
-            this.geetest = data
-            window.initGeetest({
-              gt: data.id,
-              challenge: data.secret,
-              product: product,
-              width: '100%',
-              offline: true,
-              new_captcha: 1
-            }, (captchaObj) => {
-              resolve(captchaObj)
-            })
-          }).catch(reject)
-        })
-      },
       showSignInCaptcha () {
         if (!this.signIn.captcha) {
           this.$validator.validateAll('sign-in').then((result) => {
             if (result) {
               this.signIn.captcha = true
-              this.getCaptcha().then((captcha) => {
-                captcha.appendTo(this.$refs.signInCaptcha)
-                captcha.onSuccess(() => {
+              this.$captcha({
+                type: 'float',
+                elem: this.$refs.signInCaptcha,
+                success: ({ data, captcha }) => {
+                  this.geetest = data
                   this.login().then((token) => {
                     this.$cookie.set('JWT-TOKEN', token, { expires: this.signIn.remember ? 365 : 1 })
                     window.location.reload()
@@ -448,9 +431,10 @@
                       captcha.reset()
                     }, 500)
                   })
-                })
-              }).catch(() => {
-                this.signIn.captcha = false
+                },
+                error: () => {
+                  this.signIn.captcha = false
+                }
               })
             }
           })
@@ -461,9 +445,11 @@
           this.$validator.validateAll('sign-up').then((result) => {
             if (result) {
               this.signUp.captcha = true
-              this.getCaptcha().then((captcha) => {
-                captcha.appendTo(this.$refs.signUpCaptcha)
-                captcha.onSuccess(() => {
+              this.$captcha({
+                type: 'float',
+                elem: this.$refs.signUpCaptcha,
+                success: ({ data, captcha }) => {
+                  this.geetest = data
                   this.register().then((res) => {
                     this.$cookie.set('JWT-TOKEN', res)
                     window.location.reload()
@@ -475,9 +461,10 @@
                       captcha.reset()
                     }, 500)
                   })
-                })
-              }).catch(() => {
-                this.signUp.captcha = false
+                },
+                error: () => {
+                  this.signUp.captcha = false
+                }
               })
             }
           })
@@ -522,11 +509,7 @@
             if (this.signUp.access !== this.signUp.tempAccess) {
               if (this.signUpStep === 0) {
                 this.signUpStep = 1
-                const captcha = await this.getCaptcha('bind')
-                captcha.onReady(() => {
-                  captcha.verify()
-                })
-                captcha.onSuccess(() => {
+                this.$captcha(() => {
                   this.signUpStep = 2
                   this.getAuthCode()
                 })
