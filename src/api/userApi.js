@@ -21,9 +21,9 @@ export default class extends BaseApi {
     return this.http.post('door/logout')
   }
 
-  sendSignAuthCode ({ method, access, nickname, mustNotRegister, mustRegistered }) {
+  sendSignAuthCode ({ method, access, nickname, mustNew, mustOld }) {
     return this.http.post('door/send', {
-      method, access, nickname, mustNotRegister, mustRegistered
+      method, access, nickname, mustNew, mustOld
     })
   }
 

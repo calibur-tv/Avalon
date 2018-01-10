@@ -533,7 +533,7 @@
           method: this.signUp.method,
           access: this.signUp.access,
           nickname: this.signUp.nickname,
-          mustNotRegister: true
+          mustNew: true
         }).then(() => {
           this.signUp.tempAccess = ''
           this.signUpStep = 3

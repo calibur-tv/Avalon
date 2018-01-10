@@ -53,11 +53,11 @@ const mutations = {
   },
   setTimeline (state, data) {
     if (state.timeline.data) {
-      data.data.forEach(item => {
+      data.list.forEach(item => {
         state.timeline.data.push(item)
       })
     } else {
-      state.timeline.data = data.data
+      state.timeline.data = data.list
     }
     state.timeline.min = data.min
   },
@@ -174,7 +174,7 @@ const actions = {
     const api = new BangumiApi(ctx)
     const data = await api.posts({ id, take, type, seenIds })
     commit('setPosts', {
-      data: data.data,
+      data: data.list,
       total: data.total
     })
   }
