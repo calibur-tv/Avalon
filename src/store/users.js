@@ -74,11 +74,7 @@ const actions = {
   }
 }
 
-const getters = {
-  bangumis: state => {
-    return state.self.bangumis
-  }
-}
+const getters = {}
 
 export default {
   namespaced: true,

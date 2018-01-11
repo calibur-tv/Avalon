@@ -21,7 +21,7 @@
       </el-form-item>
       <el-form-item label="番剧" prop="bangumiId">
         <el-select v-model="forms.bangumiId" placeholder="请选择活动区域">
-          <el-option v-for="item in $store.getters['users/bangumis']"
+          <el-option v-for="item in bangumis"
                      :label="item.name"
                      :key="item.id"
                      :value="item.id"
@@ -114,6 +114,9 @@
       },
       formatImages () {
         return this.images.map(item => item.url)
+      },
+      bangumis () {
+        return this.$store.state.users.list[this.$store.state.user.zone].bangumis
       }
     },
     methods: {

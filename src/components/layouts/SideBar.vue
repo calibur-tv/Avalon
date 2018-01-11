@@ -119,10 +119,10 @@
         return this.$route.name === 'bangumi-show'
       },
       postId () {
-        return this.inPostShow ? this.$route.params.id : ''
+        return this.inPostShow ? this.$route.params.id : 0
       },
       bangumiId () {
-        return this.inBangumiShow ? this.$route.params.id : ''
+        return this.inBangumiShow ? this.$route.params.id : 0
       }
     },
     mounted () {

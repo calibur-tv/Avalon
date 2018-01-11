@@ -1,7 +1,7 @@
 import Api from '~/api/imageApi'
 
 export default (params) => {
-  const { type, elem, success, error } = typeof params === 'object' ? params : {}
+  const { type, elem, success, error, ready, async } = typeof params === 'object' ? params : {}
   const api = new Api()
   const product = type || 'bind'
   api.getCaptcha().then((data) => {
@@ -13,14 +13,26 @@ export default (params) => {
       offline: true,
       new_captcha: 1
     }, (captcha) => {
+      captcha.onReady(() => {
+        ready && ready()
+      })
       if (product === 'float') {
         captcha.appendTo(elem)
       } else if (product === 'bind') {
-        captcha.onReady(() => captcha.verify())
+        if (!async) {
+          captcha.onReady(() => captcha.verify())
+        } else {
+          elem.onclick = () => {
+            captcha.verify()
+          }
+        }
       }
       captcha.onSuccess(() => typeof params === 'object'
         ? success && success({ data, captcha })
         : params({ data, captcha }))
+      captcha.onError(() => {
+        error && error()
+      })
     })
   }).catch(() => {
     error && error()
