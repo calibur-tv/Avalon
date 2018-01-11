@@ -305,9 +305,7 @@
             id: this.post.id
           })
         } catch (err) {
-          err.message.forEach(tip => {
-            this.$toast.error(tip)
-          })
+          this.$toast.error(err)
         }
         this.loadingToggleLike = false
       }

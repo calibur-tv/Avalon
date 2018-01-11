@@ -65,10 +65,6 @@
       postId: {
         type: Number,
         default: 0
-      },
-      masterId: {
-        type: Number,
-        default: 0
       }
     },
     data () {
@@ -135,8 +131,6 @@
                     postId: this.postId - 0,
                     content: this.formatContent,
                     images: this.formatImages,
-                    targetUserId: this.masterId,
-                    bangumiId: this.bangumiId,
                     geetest: data,
                     ctx: this
                   })
@@ -145,9 +139,7 @@
                   this.$refs.uploader.clearFiles()
                   this.$toast.success('回复成功！')
                 } catch (err) {
-                  err.message.forEach(tip => {
-                    this.$toast.error(tip)
-                  })
+                  this.$toast.error(err)
                 }
               } else {
                 try {
@@ -169,9 +161,7 @@
                     params: { id: id.toString() }
                   })
                 } catch (err) {
-                  err.message.forEach(tip => {
-                    this.$toast.error(tip)
-                  })
+                  this.$toast.error(err)
                 }
               }
             })
@@ -228,7 +218,7 @@
       },
       async getUpToken () {
         await this.$store.dispatch('getUpToken')
-        this.uploadHeaders.token = this.$store.state.user.uptoken.data
+        this.uploadHeaders.token = this.$store.state.user.uptoken.uptoken
       }
     },
     mounted () {

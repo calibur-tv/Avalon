@@ -11,14 +11,14 @@ export default class extends BaseApi {
     return this.http.post(`post/${id}/show`, { seenIds, take, only })
   }
 
-  reply ({ targetUserId, bangumiId, postId, images, content, geetest }) {
+  reply ({ postId, images, content, geetest }) {
     return this.http.post(`post/${postId}/reply`, {
-      targetUserId, bangumiId, images, content, geetest
+      images, content, geetest
     })
   }
 
   comment ({ postId, content, targetUserId }) {
-    return this.http.post(`post/${postId}/commit`, {
+    return this.http.post(`post/${postId}/comment`, {
       content, targetUserId
     })
   }

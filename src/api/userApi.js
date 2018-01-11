@@ -28,9 +28,7 @@ export default class extends BaseApi {
   }
 
   getUserInfo ({ zone }) {
-    return this.http.get('user/show', {
-      params: { zone }
-    })
+    return this.http.get(`user/${zone}/show`)
   }
 
   settingProfile (params) {

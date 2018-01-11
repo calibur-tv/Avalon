@@ -519,12 +519,16 @@
       }
     },
     methods: {
-      follow () {
+      async follow () {
         if (this.$store.state.login) {
-          this.$store.dispatch('bangumi/follow', {
-            ctx: this,
-            id: this.id
-          })
+          try {
+            await this.$store.dispatch('bangumi/follow', {
+              ctx: this,
+              id: this.id
+            })
+          } catch (e) {
+            this.$toast.error(e)
+          }
         } else {
           this.$channel.$emit('sign-in')
         }

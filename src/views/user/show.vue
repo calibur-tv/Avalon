@@ -676,7 +676,7 @@
         store.dispatch('users/getUser', {
           ctx, zone
         }),
-        store.dispatch('bangumi/getFollowBangumis', {
+        store.dispatch('users/getFollowBangumis', {
           zone
         })
       ]
@@ -715,7 +715,7 @@
           : this.$store.state.users.list[this.slug]
       },
       bangumis () {
-        return this.$store.state.bangumi.follows[this.slug]
+        return this.$store.state.users.list[this.slug].bangumis
       },
       banner () {
         return this.bannerSelector.showBar
@@ -823,9 +823,7 @@
               this.$store.commit('SET_USER_INFO', Object.assign({}, this.self, data))
               this.$store.commit('users/removeUser', this.slug)
             }).catch((err) => {
-              err.message.forEach(tip => {
-                this.$toast.error(tip)
-              })
+              this.$toast.error(err)
             })
           } else {
             return false
@@ -856,7 +854,7 @@
         this.avatarCropper.loading = true
         await this.$store.dispatch('getUpToken')
         const key = `user/avatar/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
-        formData.append('token', this.user.uptoken.data)
+        formData.append('token', this.user.uptoken.uptoken)
         formData.append('key', key)
         const imageApi = new ImageApi()
         try {
@@ -903,7 +901,7 @@
         const key = `user/banner/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         const formData = new FormData()
         formData.append('file', this.bannerSelector.file)
-        formData.append('token', this.user.uptoken.data)
+        formData.append('token', this.user.uptoken.uptoken)
         formData.append('key', key)
         const imageApi = new ImageApi()
         try {

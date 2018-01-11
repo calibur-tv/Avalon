@@ -57,7 +57,7 @@ export function createStore () {
         }
       },
       async getUpToken ({ state, commit }) {
-        if (state.user.uptoken.time <= parseInt(Date.now() / 1000, 10)) {
+        if (state.user.uptoken.expiredAt <= parseInt(Date.now() / 1000, 10)) {
           const api = new ImageApi()
           const data = await api.getUpToken()
           commit('SET_USER_INFO', {

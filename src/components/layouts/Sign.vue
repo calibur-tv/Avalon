@@ -424,9 +424,7 @@
                     this.$cookie.set('JWT-TOKEN', token, { expires: this.signIn.remember ? 365 : 1 })
                     window.location.reload()
                   }).catch((err) => {
-                    err.message.forEach(tip => {
-                      this.$toast.error(tip)
-                    })
+                    this.$toast.error(err)
                     setTimeout(() => {
                       captcha.reset()
                     }, 500)
@@ -454,9 +452,7 @@
                     this.$cookie.set('JWT-TOKEN', res)
                     window.location.reload()
                   }).catch((err) => {
-                    err.message.forEach(tip => {
-                      this.$toast.error(tip)
-                    })
+                    this.$toast.error(err)
                     setTimeout(() => {
                       captcha.reset()
                     }, 500)
@@ -538,10 +534,8 @@
           this.signUp.tempAccess = ''
           this.signUpStep = 3
           this.$toast.warning(`${this.signUp.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
-        }).catch(err => {
-          err.message.forEach(tip => {
-            this.$toast.error(tip)
-          })
+        }).catch((err) => {
+          this.$toast.error(err)
         })
       }
     }

@@ -1,8 +1,6 @@
-import BangumiApi from '~/api/bangumiApi'
-import UserApi from '~/api/userApi'
+import Api from '~/api/bangumiApi'
 
 const state = () => ({
-  list: Object.create(null),
   follows: Object.create(null),
   released: [],
   timeline: {},
@@ -22,36 +20,27 @@ const state = () => ({
 })
 
 const mutations = {
-  pushList (state, data) {
-    state.list[data.id] = data
-  },
   selectTag (state, index) {
     const tag = state.tags[index]
     tag.selected = !tag.selected
     state.tags[index] = tag
   },
-  followBangumi (state, { followed, id, self }) {
-    const bangumi = state.list[id]
-    if (bangumi) {
-      state.list[id].followed = followed
-      if (followed) {
-        state.list[id].followers.push(self)
-      } else {
-        bangumi.followers.forEach((user, index) => {
-          if (user.zone === self.zone) {
-            state.list[id].followers.splice(index, 1)
-          }
-        })
-      }
+  SET_FOLLOW (state, { followed, self }) {
+    state.info.followed = followed
+    if (followed) {
+      state.info.followers.push(self)
+    } else {
+      state.info.followers.forEach((user, index) => {
+        if (user.zone === self.zone) {
+          state.info.followers.splice(index, 1)
+        }
+      })
     }
   },
-  pushFollowBangumis (state, { data, zone }) {
-    state.follows[zone] = data
-  },
-  setReleased (state, data) {
+  SET_RELEASED (state, data) {
     state.released = data
   },
-  setTimeline (state, data) {
+  SET_TIMELINE (state, data) {
     if (state.timeline.data) {
       data.list.forEach(item => {
         state.timeline.data.push(item)
@@ -61,14 +50,14 @@ const mutations = {
     }
     state.timeline.min = data.min
   },
-  setTags (state, { tags, id }) {
+  SET_TAGS (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined
     tags.forEach((tag, index) => {
       tags[index].selected = ids ? ids.indexOf(tag.id.toString()) !== -1 : false
     })
     state.tags = tags
   },
-  setCategory (state, { data, page, take }) {
+  SET_CATEGORY (state, { data, page, take }) {
     if (page === 1) {
       state.category = { data }
     } else {
@@ -78,7 +67,7 @@ const mutations = {
     }
     state.category.noMore = data.length < take
   },
-  setPosts (state, { data, total }) {
+  SET_POSTS (state, { data, total }) {
     const posts = state.posts.data.concat(data)
     state.posts = {
       data: posts,
@@ -86,10 +75,10 @@ const mutations = {
       noMore: posts.length >= total
     }
   },
-  setBangumi (state, data) {
+  SET_BANGUMI (state, data) {
     state.info = data
   },
-  setVideos (state, data) {
+  SET_VIDEOS (state, data) {
     state.videos = {
       data: data.videos,
       repeat: data.repeat,
@@ -103,77 +92,60 @@ const actions = {
     if (state.tags.length) {
       return
     }
-    const api = new BangumiApi()
+    const api = new Api()
     const tags = await api.tags()
-    commit('setTags', { tags, id })
+    commit('SET_TAGS', { tags, id })
   },
-  async getBangumi ({ state, commit }, { ctx, id }) {
-    if (state.list[id]) {
-      return
-    }
-    const api = new BangumiApi(ctx)
+  async getBangumi ({ commit }, { ctx, id }) {
+    const api = new Api(ctx)
     const data = await api.show(id)
-    commit('setBangumi', data)
+    commit('SET_BANGUMI', data)
   },
   async getVideos ({ commit }, id) {
-    const api = new BangumiApi()
+    const api = new Api()
     const data = await api.videos(id)
-    commit('setVideos', data)
+    commit('SET_VIDEOS', data)
   },
-  follow ({ commit, rootState }, { ctx, id }) {
-    const api = new BangumiApi(ctx)
-    api.follow(id).then((followed) => {
-      commit('followBangumi', {
-        followed,
-        id,
-        self: {
-          id: rootState.user.id,
-          zone: rootState.user.zone,
-          avatar: rootState.user.avatar,
-          nickname: rootState.user.nickname
-        }
-      })
-    }).catch((err) => {
-      err.message.forEach(tip => {
-        ctx.$toast.error(tip)
-      })
+  async follow ({ commit, rootState }, { ctx, id }) {
+    const api = new Api(ctx)
+    const followed = await api.follow(id)
+    commit('SET_FOLLOW', {
+      followed,
+      self: {
+        id: rootState.user.id,
+        zone: rootState.user.zone,
+        avatar: rootState.user.avatar,
+        nickname: rootState.user.nickname
+      }
     })
-  },
-  async getFollowBangumis ({ state, commit }, { zone }) {
-    if (state.follows[zone]) {
-      return
-    }
-    const api = new UserApi()
-    const data = await api.followBangumis(zone)
-    commit('pushFollowBangumis', { data, zone })
   },
   async getReleased ({ state, commit }) {
     if (state.released.length) {
       return
     }
-    const api = new BangumiApi()
+    const api = new Api()
     const data = await api.released()
-    commit('setReleased', data)
+    commit('SET_RELEASED', data)
   },
   async getTimeline ({ commit }, { year, take }) {
-    const api = new BangumiApi()
+    const api = new Api()
     const data = await api.timeline({ year, take })
-    if (data.data.length) {
-      commit('setTimeline', data)
+    if (data.list.length) {
+      commit('SET_TIMELINE', data)
     }
   },
   async getCategory ({ commit }, { id, page, take }) {
-    const api = new BangumiApi()
+    const api = new Api()
     const data = await api.category({ id, page, take })
-    commit('setCategory', { data, page, take })
+    commit('SET_CATEGORY', { data, page, take })
   },
   async getPosts ({ state, commit }, { id, take, type, ctx }) {
     const seenIds = state.posts.data.length
       ? state.posts.data.map(item => item.id).join(',')
       : null
-    const api = new BangumiApi(ctx)
+    const api = new Api(ctx)
     const data = await api.posts({ id, take, type, seenIds })
-    commit('setPosts', {
+    commit('SET_POSTS', {
       data: data.list,
       total: data.total
     })
