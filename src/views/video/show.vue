@@ -72,10 +72,10 @@
     <v-banner></v-banner>
     <div class="container">
       <nav>
-        <h1 class="breadcrumb" v-if="bangumi && info">
+        <h1 class="breadcrumb" v-if="bangumi && video">
           <a :href="$alias.index" target="_blank">主站</a>
           <a :href="$alias.bangumi(bangumi.id)" target="_blank" v-text="bangumi.name"></a>
-          第{{ info.part }}话&nbsp;{{ info.name }}
+          第{{ video.part }}话&nbsp;{{ video.name }}
         </h1>
       </nav>
       <div id="metas">
@@ -89,13 +89,13 @@
             </a>
           </li>
         </ul>
-        <div class="more" v-if="take < videos.length" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
+        <div class="more" v-if="take < list.length" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
-      <v-video v-if="info"
-               :source="info.url ? info.url : info.resource"
-               :sourceissrc="!!info.url"
-               :info="`${bangumi.name} 第 ${info.part} 话 ${info.name}`"
-               :poster="$resize(info.poster)"
+      <v-video v-if="video"
+               :source="video.url ? video.url : video.resource"
+               :sourceissrc="!!video.url"
+               :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+               :poster="$resize(video.poster)"
                @playing="handlePlaying">
       </v-video>
       <div class="social">
@@ -115,10 +115,10 @@
     name: 'video-show',
     head () {
       return {
-        title: `${this.bangumi.name} : 第${this.info.part}话 ${this.info.name} - 视频`,
+        title: `${this.bangumi.name} : 第${this.video.part}话 ${this.video.name} - 视频`,
         meta: [
           { hid: 'description', name: 'description', content: this.bangumi.summary },
-          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，第${this.info.part}话，${this.info.name}` }
+          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，第${this.video.part}话，${this.video.name}` }
         ]
       }
     },
@@ -132,21 +132,18 @@
       id () {
         return parseInt(this.$route.params.id, 10)
       },
-      base () {
-        return this.$store.state.video.list[this.id]
+      video () {
+        return this.$store.state.video.info
       },
-      info () {
-        return this.base.info
-      },
-      videos () {
-        return this.base.videos
+      list () {
+        return this.$store.state.video.list.videos
       },
       bangumi () {
-        return this.base.bangumi
+        return this.$store.state.video.bangumi
       },
       sortVideos () {
         const begin = (this.page - 1) * this.take
-        const metas = this.$orderBy(this.videos, 'part')
+        const metas = this.$orderBy(this.list, 'part')
         return this.showAll ? metas : metas.slice(begin, begin + this.take)
       }
     },
@@ -163,7 +160,7 @@
     methods: {
       computeMaxWidth () {
         let maxlength = 0
-        this.videos.forEach((meta) => {
+        this.list.forEach((meta) => {
           const templength = meta.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
           if (maxlength < templength) {
             maxlength = templength
@@ -173,7 +170,7 @@
       },
       computePage () {
         this.take = Math.floor(document.getElementById('metas').offsetWidth / (this.maxWidth + metaMarginRgt)) * 2
-        this.videos.forEach((meta) => {
+        this.list.forEach((meta) => {
           if (meta.id === this.id) {
             this.part = meta.part
           }

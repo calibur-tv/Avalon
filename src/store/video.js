@@ -1,26 +1,26 @@
 import Api from '~/api/videoApi'
 
 const state = () => ({
-  list: Object.create(null)
+  bangumi: null,
+  info: null,
+  list: null,
+  season: null
 })
 
 const mutations = {
-  pushList (state, data) {
-    const id = data.id
-    delete data.id
-    state.list[id] = data
+  SET_DATA (state, data) {
+    state.list = data.list
+    state.info = data.info
+    state.bangumi = data.bangumi
+    state.season = data.season
   }
 }
 
 const actions = {
-  async getShow ({ state, commit }, id) {
-    if (state.list[id]) {
-      return
-    }
+  async getShow ({ commit }, id) {
     const api = new Api()
     const data = await api.getShow(id)
-    data.id = id
-    commit('pushList', data)
+    commit('SET_DATA', data)
   }
 }
 
