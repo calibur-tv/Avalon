@@ -854,7 +854,7 @@
         this.avatarCropper.loading = true
         await this.$store.dispatch('getUpToken')
         const key = `user/avatar/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
-        formData.append('token', this.user.uptoken.uptoken)
+        formData.append('token', this.user.uptoken.upToken)
         formData.append('key', key)
         const imageApi = new ImageApi()
         try {
@@ -901,7 +901,7 @@
         const key = `user/banner/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         const formData = new FormData()
         formData.append('file', this.bannerSelector.file)
-        formData.append('token', this.user.uptoken.uptoken)
+        formData.append('token', this.user.uptoken.upToken)
         formData.append('key', key)
         const imageApi = new ImageApi()
         try {

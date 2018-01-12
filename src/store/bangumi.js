@@ -28,7 +28,7 @@ const mutations = {
   SET_FOLLOW (state, { followed, self }) {
     state.info.followed = followed
     if (followed) {
-      state.info.followers.push(self)
+      state.info.followers.unshift(self)
     } else {
       state.info.followers.forEach((user, index) => {
         if (user.zone === self.zone) {

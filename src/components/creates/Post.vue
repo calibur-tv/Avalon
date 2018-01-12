@@ -116,7 +116,11 @@
         return this.images.map(item => item.url)
       },
       bangumis () {
-        return this.$store.state.users.list[this.$store.state.user.zone].bangumis
+        const zone = this.$store.state.user.zone
+        const list = this.$store.state.users.list
+        return list[zone]
+          ? this.$store.state.users.list[this.$store.state.user.zone].bangumis
+          : []
       }
     },
     methods: {
@@ -221,7 +225,7 @@
       },
       async getUpToken () {
         await this.$store.dispatch('getUpToken')
-        this.uploadHeaders.token = this.$store.state.user.uptoken.uptoken
+        this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
       }
     },
     mounted () {

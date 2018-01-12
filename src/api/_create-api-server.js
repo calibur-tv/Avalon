@@ -40,7 +40,11 @@ export default (ctx) => {
             Authorization: `Bearer ${token}`
           }
         })
-        return res && res.data && res.data.data
+        if (res.data.data) {
+          return res.data.data
+        } else {
+          return res.data
+        }
       } catch (e) {
         e.code = e.response.status
         throw e
@@ -60,7 +64,11 @@ export default (ctx) => {
             Authorization: `Bearer ${token}`
           }
         })
-        return res && res.data && res.data.data
+        if (res.data.data) {
+          return res.data.data
+        } else {
+          return res.data
+        }
       } catch (e) {
         e.code = e.response.status
         throw e
