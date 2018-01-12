@@ -113,7 +113,7 @@
         return res.join('')
       },
       formatImages () {
-        return this.images.map(item => item.url)
+        return this.images.map(item => item.img)
       },
       bangumis () {
         const zone = this.$store.state.user.zone
@@ -199,7 +199,7 @@
       handleSuccess (res, file) {
         this.images.push({
           id: file.uid,
-          url: res.key
+          img: res.data
         })
       },
       handleExceed () {
