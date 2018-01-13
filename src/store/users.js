@@ -1,10 +1,7 @@
 import Api from '~/api/userApi'
 
 const state = () => ({
-  list: Object.create(null),
-  self: {
-    bangumis: []
-  },
+  list: {},
   posts: {
     take: 10,
     mine: {
@@ -21,16 +18,10 @@ const state = () => ({
 })
 
 const mutations = {
-  pushList (state, data) {
-    state.list[data.zone] = data
-  },
-  removeUser (state, zone) {
-    if (state.list[zone]) {
-      delete state.list[zone]
-    }
-  },
-  pushFollowBangumis (state, data) {
-    state.self.bangumis = data
+  SET_USER_INFO (state, { data, zone }) {
+    state.list[zone] = state.list[zone]
+      ? Object.assign(state.list[zone], data)
+      : data
   },
   setFollowPosts (state, { data, type }) {
     state.posts[type] = {
@@ -45,18 +36,20 @@ const mutations = {
 }
 
 const actions = {
-  async getUser ({ state, commit }, { ctx, zone }) {
-    if (state.list[zone]) {
-      return
-    }
+  async getUser ({ commit }, { ctx, zone }) {
     const api = new Api(ctx)
     const data = await api.getUserInfo({ zone })
-    commit('pushList', data)
+    commit('SET_USER_INFO', { data, zone })
   },
   async getFollowBangumis ({ commit }, { zone }) {
     const api = new Api()
     const data = await api.followBangumis(zone)
-    commit('pushFollowBangumis', data)
+    commit('SET_USER_INFO', {
+      data: {
+        bangumis: data
+      },
+      zone
+    })
   },
   async getFollowPosts ({ state, commit }, { type, zone }) {
     if (state.posts[type].noMore || state.posts[type].loading) {
@@ -81,11 +74,7 @@ const actions = {
   }
 }
 
-const getters = {
-  bangumis: state => {
-    return state.self.bangumis
-  }
-}
+const getters = {}
 
 export default {
   namespaced: true,

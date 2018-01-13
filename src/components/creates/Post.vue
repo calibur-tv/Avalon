@@ -21,7 +21,7 @@
       </el-form-item>
       <el-form-item label="番剧" prop="bangumiId">
         <el-select v-model="forms.bangumiId" placeholder="请选择活动区域">
-          <el-option v-for="item in $store.getters['users/bangumis']"
+          <el-option v-for="item in bangumis"
                      :label="item.name"
                      :key="item.id"
                      :value="item.id"
@@ -63,10 +63,6 @@
         default: 0
       },
       postId: {
-        type: Number,
-        default: 0
-      },
-      masterId: {
         type: Number,
         default: 0
       }
@@ -117,7 +113,14 @@
         return res.join('')
       },
       formatImages () {
-        return this.images.map(item => item.url)
+        return this.images.map(item => item.img)
+      },
+      bangumis () {
+        const zone = this.$store.state.user.zone
+        const list = this.$store.state.users.list
+        return list[zone]
+          ? this.$store.state.users.list[this.$store.state.user.zone].bangumis
+          : []
       }
     },
     methods: {
@@ -135,8 +138,6 @@
                     postId: this.postId - 0,
                     content: this.formatContent,
                     images: this.formatImages,
-                    targetUserId: this.masterId,
-                    bangumiId: this.bangumiId,
                     geetest: data,
                     ctx: this
                   })
@@ -145,9 +146,7 @@
                   this.$refs.uploader.clearFiles()
                   this.$toast.success('回复成功！')
                 } catch (err) {
-                  err.message.forEach(tip => {
-                    this.$toast.error(tip)
-                  })
+                  this.$toast.error(err)
                 }
               } else {
                 try {
@@ -169,9 +168,7 @@
                     params: { id: id.toString() }
                   })
                 } catch (err) {
-                  err.message.forEach(tip => {
-                    this.$toast.error(tip)
-                  })
+                  this.$toast.error(err)
                 }
               }
             })
@@ -202,7 +199,7 @@
       handleSuccess (res, file) {
         this.images.push({
           id: file.uid,
-          url: res.key
+          img: res.data
         })
       },
       handleExceed () {
@@ -228,7 +225,7 @@
       },
       async getUpToken () {
         await this.$store.dispatch('getUpToken')
-        this.uploadHeaders.token = this.$store.state.user.uptoken.data
+        this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
       }
     },
     mounted () {

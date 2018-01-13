@@ -78,25 +78,25 @@
           text-align: left;
           font-weight: 700;
         }
+      }
 
-        .close {
-          position: absolute;
-          right: 10px;
-          top: 10px;
-          display: block;
-          width: 20px;
-          height: 20px;
-          line-height: 20px;
-          border-radius: 50%;
-          background-color: $color-white;
-          color: $color-blue-light;
-          font-size: 18px;
-          font-family: 'Hiragino Sans GB',Helvetica,Arial,sans-serif;
-          text-align: center;
+      .close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        display: block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        border-radius: 50%;
+        background-color: $color-white;
+        color: $color-blue-light;
+        font-size: 18px;
+        font-family: 'Hiragino Sans GB',Helvetica,Arial,sans-serif;
+        text-align: center;
 
-          &:hover {
-            color: $color-blue-normal;
-          }
+        &:hover {
+          color: $color-blue-normal;
         }
       }
 
@@ -150,16 +150,19 @@
   <no-ssr>
     <transition name="modal">
       <section class="v-modal-wrap" v-if="toggle">
-        <div class="v-modal-mask" @click.stop.prevent="handleClose"></div>
-        <div class="v-modal" @click>
+        <div class="v-modal-mask" @click.stop.prevent="handleCancel"></div>
+        <div class="v-modal">
           <header v-if="header">
             <slot name="header">
               <h4 v-text="headerText"></h4>
-              <a v-if="close" class="close" @click="handleClose">&times;</a>
             </slot>
           </header>
-          <main>
-            <slot></slot>
+          <a v-if="close" class="close" @click="handleCancel">&times;</a>
+          <main @scroll="handleScroll">
+            <ul v-if="scroll" ref="ul">
+              <slot></slot>
+            </ul>
+            <slot v-else></slot>
           </main>
           <footer v-if="footer">
             <slot name="footer">
@@ -204,6 +207,10 @@
       headerText: {
         type: String,
         default: '标题'
+      },
+      scroll: {
+        type: Function,
+        default: null
       }
     },
     watch: {
@@ -221,15 +228,21 @@
       }
     },
     methods: {
-      handleClose () {
-        this.toggle = false
-      },
       handleSubmit () {
         this.$emit('submit')
       },
       handleCancel () {
         this.$emit('cancel')
-        this.handleClose()
+        this.toggle = false
+      },
+      handleScroll (evt) {
+        if (!this.scroll) {
+          return
+        }
+        const main = evt.currentTarget
+        if (this.$refs.ul.clientHeight - main.clientHeight - main.scrollTop < 30) {
+          this.scroll()
+        }
       }
     }
   }

@@ -18,17 +18,15 @@ export default (ctx) => {
     return config
   })
 
-  http.interceptors.response.use(res => res && res.data && res.data.data, err => {
-    if (err.response.status === 429) {
-      return Promise.reject({message: ['请勿重复操作']}) // eslint-disable-line prefer-promise-reject-errors
-    }
-    if (err.response.status === 422) {
-      return Promise.reject({message: ['请求参数错误']}) // eslint-disable-line prefer-promise-reject-errors
-    }
+  http.interceptors.response.use(res => res.data.data, err => {
     if (err.message === `timeout of ${timeout.client}ms exceeded`) {
-      return Promise.reject({message: ['网路请求超时']}) // eslint-disable-line prefer-promise-reject-errors
+      return Promise.reject('网路请求超时') // eslint-disable-line prefer-promise-reject-errors
     }
-    return Promise.reject(err && err.response && err.response.data)
+    try {
+      return Promise.reject(err.response.data)
+    } catch (e) {
+      console.error(e)
+    }
   })
 
   return http

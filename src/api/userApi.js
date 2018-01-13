@@ -21,16 +21,14 @@ export default class extends BaseApi {
     return this.http.post('door/logout')
   }
 
-  sendSignAuthCode ({ method, access, nickname, mustNotRegister, mustRegistered }) {
+  sendSignAuthCode ({ method, access, nickname, mustNew, mustOld }) {
     return this.http.post('door/send', {
-      method, access, nickname, mustNotRegister, mustRegistered
+      method, access, nickname, mustNew, mustOld
     })
   }
 
   getUserInfo ({ zone }) {
-    return this.http.get('user/show', {
-      params: { zone }
-    })
+    return this.http.get(`user/${zone}/show`)
   }
 
   settingProfile (params) {
