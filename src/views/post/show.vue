@@ -105,6 +105,14 @@
         }
       }
     }
+
+    .create-post-form {
+      margin-left: -50px;
+
+      button {
+        width: 100%;
+      }
+    }
   }
 </style>
 

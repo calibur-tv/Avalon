@@ -30,6 +30,11 @@ const state = () => ({
 
 const mutations = {
   setPost (state, data) {
+    state.show.data = {
+      list: state.show.data.list.concat(data.list),
+      noMore: state.show.init ? (data.list.length < state.show.take - 1) : (data.list.length < state.show.take),
+      total: data.total
+    }
     if (state.show.init) {
       state.show.info = {
         bangumi: data.bangumi,
@@ -37,11 +42,6 @@ const mutations = {
         post: data.post
       }
       state.show.init = false
-    }
-    state.show.data = {
-      list: state.show.data.list.concat(data.list),
-      noMore: data.list.length < state.show.take,
-      total: data.total
     }
   },
   setComment (state, { postId, data }) {
