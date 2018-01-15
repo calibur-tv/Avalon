@@ -64,6 +64,13 @@ export function createStore () {
             uptoken: data
           })
         }
+      },
+      async getNotification ({ commit }, ctx) {
+        const api = new UserApi(ctx)
+        const data = await api.getNotificationCount()
+        commit('SET_USER_INFO', {
+          notification: data
+        })
       }
     },
     getters: {},

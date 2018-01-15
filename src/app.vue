@@ -34,6 +34,13 @@
         { innerHTML: script.baiduPush, type: 'text/javascript' }
       ],
       __dangerouslyDisableSanitizers: 'script'
+    },
+    mounted () {
+      if (this.$store.state.login) {
+        setInterval(() => {
+          this.$store.dispatch('getNotification', this)
+        }, 60000)
+      }
     }
   }
 </script>
