@@ -59,7 +59,13 @@ export default class extends BaseApi {
     return this.http.get('user/notification/count')
   }
 
-  getNotifications () {
-    return this.http.get('user/notification/list')
+  getNotifications ({ minId }) {
+    return this.http.get('user/notification/list', {
+      params: { minId }
+    })
+  }
+
+  readMessage (id) {
+    return this.http.post('user/notification/read', { id })
   }
 }

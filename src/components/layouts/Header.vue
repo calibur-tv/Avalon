@@ -299,14 +299,13 @@
         <template v-if="isLogin">
           <el-popover
             ref="popover"
-            placement="bottom"
-            title="标题"
-            width="200"
-            trigger="click"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            width="320"
+            placement="bottom-end"
+            trigger="click">
+            <v-notifications></v-notifications>
           </el-popover>
-          <el-badge :value="user.notification" :max="99" class="item">
-            <a class="nav-link" v-popover:popover>消息</a>
+          <el-badge :value="notificationsCount" :max="99" class="item">
+            <a class="nav-link" @click="getNotifications" v-popover:popover>消息</a>
           </el-badge>
           <el-dropdown class="user-section" placement="bottom">
             <a class="el-dropdown-link" :href="$alias.user(user.zone)">
@@ -334,11 +333,12 @@
 <script>
   import UserApi from '~/api/userApi'
   import vSearch from '~/components/layouts/Search'
+  import vNotifications from '~/components/layouts/Notifications'
 
   export default {
     name: 'v-header',
     components: {
-      vSearch
+      vSearch, vNotifications
     },
     data () {
       return {
@@ -361,6 +361,9 @@
       },
       user () {
         return this.$store.state.user
+      },
+      notificationsCount () {
+        return this.user.notification - this.$store.state.users.notifications.checked
       }
     },
     methods: {
@@ -375,6 +378,14 @@
         const api = new UserApi(this)
         api.logout()
         window.location.reload()
+      },
+      getNotifications () {
+        if (this.$store.state.user.notification) {
+          this.$store.dispatch('users/getNotifications', {
+            ctx: this,
+            init: true
+          })
+        }
       }
     },
     mounted () {

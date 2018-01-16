@@ -53,9 +53,9 @@ const mutations = {
     })
   },
   setComments (state, { postId, data }) {
-    state.show.data.list.forEach((item, index) => {
-      if (item.id === postId) {
-        state.show.data.list[index].comments = state.show.data.list[postId].comments.concat(data)
+    state.show.data.list.forEach((post, index) => {
+      if (post.id === postId) {
+        state.show.data.list[index].comments = state.show.data.list[index].comments.concat(data)
       }
     })
   },
@@ -118,14 +118,16 @@ const actions = {
     commit('setPost', data)
   },
   async getComments ({ state, commit }, { postId }) {
-    const api = new Api()
-    const seenIds = state.show.data.list[postId].comments.length
-      ? state.show.data.list[postId].comments.map(item => item.id).join(',')
-      : null
-    const data = await api.comments({
-      postId, seenIds
+    state.show.data.list.forEach(async (post, index) => {
+      if (post.id === postId) {
+        const api = new Api()
+        const seenIds = state.show.data.list[index].comments.length
+          ? state.show.data.list[index].comments.map(item => item.id).join(',')
+          : null
+        const data = await api.comments({ postId, seenIds })
+        commit('setComments', { postId, data })
+      }
     })
-    commit('setComments', { postId, data })
   },
   async setComment ({ commit }, { postId, targetUserId, content, ctx }) {
     const api = new Api(ctx)
