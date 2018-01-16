@@ -11,12 +11,106 @@
     height: $header-height;
     z-index: 10;
 
+    &.mask {
+      background-color: transparent;
+
+      .nav-link {
+        padding: 5px 20px;
+        border-radius: 10px;
+        margin: 0 5px;
+        font-size: 15px;
+        transition: .4s background-color, .4s color;
+        color: $color-white;
+        height: 26px;
+        line-height: 16px;
+        margin-top: 10px;
+
+        &:hover {
+          background-color: $color-white;
+          color: $color-blue-normal;
+          transition-duration: 0s;
+        }
+      }
+
+      .background {
+        .shim {
+          width: 100%;
+          height: 100px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: -1;
+          background-image: linear-gradient(to top,rgba(0, 0, 0, 0),rgba(0, 0, 0, .3));
+        }
+      }
+    }
+
+    &.blur {
+      background-color: $color-white;
+
+      &.black {
+        box-shadow: rgba(0,0,0,0.1) 0 1px 2px;
+        .text {
+          background-color: rgba(0, 0, 0, 0.2);
+
+          .nav-link {
+            color: $color-white;
+          }
+        }
+      }
+
+      &.white {
+        box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px;
+        .text {
+          background-color: rgba(255, 255, 255, 0.4);
+
+          .nav-link {
+            color: $color-link;
+          }
+        }
+      }
+
+      .nav-link {
+        padding: 0 25px;
+        font-size: 15px;
+        height: $header-height;
+        line-height: $header-height;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.24);
+        }
+      }
+
+      .background {
+        overflow: hidden;
+
+        .shim {
+          position: absolute;
+          width: 125%;
+          height: $banner-hgt * 1.25;
+          top: -$banner-hgt * 0.125;
+          left: -12.5%;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 80%;
+          z-index: -1;
+          @include filter-blur();
+        }
+      }
+    }
+
     .text {
       width: 100%;
       height: $header-height;
-      line-height: $header-height;
       padding-left: 20px;
       padding-right: 20px;
+
+      .header-left,
+      .header-right {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+      }
 
       .header-left {
         height: $header-height;
@@ -107,6 +201,13 @@
           }
         }
 
+        .el-badge {
+          .el-badge__content {
+            right: 25px;
+            top: 10px;
+          }
+        }
+
         .sign-btn {
           border-radius: 2px;
           width: 52px;
@@ -140,8 +241,9 @@
 
         .user-section {
           height: $header-height;
-          margin-left: 6px;
+          margin-left: 25px;
           margin-right: 25px;
+          vertical-align: middle;
 
           .avatar {
             margin-top: ($header-height - $avatar-height) / 2;
@@ -149,148 +251,14 @@
           }
         }
       }
-    }
-
-    .wrap {
-      z-index: -1;
-    }
-
-    &.mask {
-      background-color: transparent;
-
-      &.scroll-show,
-      &.scroll-hide {
-        .nav-link {
-          padding: 5px 20px;
-          border-radius: 10px;
-          margin: 0 5px;
-          font-size: 15px;
-          transition: .4s background-color, .4s color;
-
-          &:hover {
-            background-color: $color-white;
-            color: $color-blue-normal;
-            transition-duration: 0s;
-          }
-        }
-      }
-
-      &.scroll-show {
-        background-color: $color-white;
-        box-shadow: rgba(0,0,0,0.1) 0 1px 2px;
-
-        .nav-link {
-          color: $color-link;
-        }
-
-        .header-right {
-
-          .search-ctx:focus {
-            border: 1px solid #D9D9D9;
-            border-right: 0;
-
-            &+.search-btn {
-              border: 1px solid #D9D9D9;
-              border-left: 0;
-            }
-          }
-
-          .sign-in {
-            color: $color-link;
-            border: 1px solid #D9D9D9;
-            background: linear-gradient(#FAFAFA, #F2F2F2);
-            text-shadow: 0 1px 0 rgba(255,255,255,.5);
-
-            &:hover {
-              background: linear-gradient(#FFF, #F7F7F7);
-              box-shadow: inset 0 1px 0 white, 0 1px 0 rgba(255,255,255,.05);
-              border: 1px solid #CCC;
-            }
-          }
-
-          .sign-up {
-            background: linear-gradient($color-blue-light, $color-blue-normal);
-            border: 1px solid $color-blue-deep;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 rgba(255,255,255,.3);
-
-            &:hover {
-              background: linear-gradient(#00bfef, #00a7de);
-              box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 rgba(255,255,255,.1);
-            }
-          }
-        }
-      }
-
-      &.scroll-hide {
-        .nav-link {
-          color: $color-white;
-        }
-
-        .shim {
-          width: 100%;
-          height: 100px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          z-index: -1;
-          background-image: linear-gradient(to top,rgba(0, 0, 0, 0),rgba(0, 0, 0, .3));
-        }
-      }
-    }
-
-    &.blur {
-      background-color: $color-white;
 
       .nav-link {
-        padding: 0 25px;
-        font-size: 15px;
-        height: $header-height;
-        display: inline-block;
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.24);
-        }
+        display: block;
       }
+    }
 
-      &.black {
-        box-shadow: rgba(0,0,0,0.1) 0 1px 2px;
-        .text {
-          background-color: rgba(0, 0, 0, 0.2);
-
-          .nav-link {
-            color: $color-white;
-          }
-        }
-      }
-
-      &.white {
-        box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px;
-        .text {
-          background-color: rgba(255, 255, 255, 0.4);
-
-          .nav-link {
-            color: $color-link;
-          }
-        }
-      }
-
-      .wrap {
-        overflow: hidden;
-
-        .shim {
-          position: absolute;
-          width: 125%;
-          height: $banner-hgt * 1.25;
-          top: -$banner-hgt * 0.125;
-          left: -12.5%;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: 80%;
-          z-index: -1;
-          @include filter-blur();
-        }
-      }
+    .background {
+      z-index: -1;
     }
   }
 </style>
@@ -303,11 +271,6 @@
         <el-dropdown>
           <a class="nav-link el-dropdown-link" :href="$alias.bangumiTimeline">番剧</a>
           <el-dropdown-menu slot="dropdown">
-            <!--
-            <el-dropdown-item>
-              <router-link class="nav-link" to="/bangumi/rank">排行榜</router-link>
-            </el-dropdown-item>
-            -->
             <el-dropdown-item>
               <a class="nav-link" :href="$alias.bangumiTimeline">时间轴</a>
             </el-dropdown-item>
@@ -334,13 +297,22 @@
       <nav class="header-right">
         <v-search placeholder="搜索" :history="true"></v-search>
         <template v-if="isLogin">
+          <el-popover
+            ref="popover"
+            placement="bottom"
+            title="标题"
+            width="200"
+            trigger="click"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <el-badge :value="user.notification" :max="99" class="item">
+            <a class="nav-link" v-popover:popover>消息</a>
+          </el-badge>
           <el-dropdown class="user-section" placement="bottom">
             <a class="el-dropdown-link" :href="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
             </a>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>消息</el-dropdown-item>
-              <el-dropdown-item>动态</el-dropdown-item>
               <el-dropdown-item>
                 <button @click="signOut">退出</button>
               </el-dropdown-item>
@@ -353,7 +325,7 @@
         </template>
       </nav>
     </div>
-    <div class="wrap abs">
+    <div class="background abs">
       <div class="shim" :style="computedBg"></div>
     </div>
   </header>
