@@ -16,6 +16,10 @@
       padding: 5px 20px;
       background-color: $color-gray-light;
       border-top: 1px solid #eee;
+
+      &.checked {
+        background-color: transparent;
+      }
     }
 
     a {
