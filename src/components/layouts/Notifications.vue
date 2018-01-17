@@ -2,10 +2,11 @@
   #header-notification-box {
     width: 100%;
     height: 370px;
+    overflow-y: auto;
 
-    .header {
-      height: 34px;
-      padding: 0 10px;
+    .header, .footer {
+      height: 20px;
+      background-color: transparent;
     }
 
     li {
@@ -13,7 +14,7 @@
       width: 100%;
       max-height: 50px;
       line-height: 20px;
-      padding: 5px 20px;
+      padding: 15px 20px;
       background-color: $color-gray-light;
       border-top: 1px solid #eee;
 
@@ -32,7 +33,9 @@
 <template>
   <div id="header-notification-box">
     <div class="header"></div>
-    <ul>
+    <ul v-infinite-scroll="loadMore"
+        :infinite-scroll-disabled="loading"
+        infinite-scroll-distance="10">
       <li v-for="item in list" :key="item.id" :class="{ 'checked': item.checked }" @click="readMsg(item.id)">
         <!-- 我的主题帖被回复了 -->
         <template v-if="item.type === 1">
@@ -72,12 +75,29 @@
         return this.$store.state.users.notifications.data
       }
     },
+    data () {
+      return {
+        loading: false
+      }
+    },
     methods: {
       readMsg (id) {
         this.$store.dispatch('users/readMessage', {
           id,
           ctx: this
         })
+      },
+      async loadMore () {
+        if (this.loading) {
+          return
+        }
+        this.loading = true
+
+        await this.$store.dispatch('users/getNotifications', {
+          ctx: this,
+          init: false
+        })
+        this.loading = false
       }
     }
   }
