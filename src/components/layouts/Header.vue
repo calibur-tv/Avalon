@@ -380,12 +380,10 @@
         window.location.reload()
       },
       getNotifications () {
-        if (this.$store.state.user.notification) {
-          this.$store.dispatch('users/getNotifications', {
-            ctx: this,
-            init: true
-          })
-        }
+        this.$store.dispatch('users/getNotifications', {
+          ctx: this,
+          init: true
+        })
       }
     },
     mounted () {

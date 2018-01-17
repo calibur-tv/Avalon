@@ -95,10 +95,6 @@
     },
     computed: {
       formatContent () {
-        if (this.postId) {
-          return this.forms.content
-        }
-
         let content = this.forms.content
         while (content.match('\n\n') !== null) {
           content = content.replace('\n\n', '\n')

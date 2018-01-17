@@ -22,6 +22,19 @@
         margin-left: 5px;
       }
     }
+
+    .input-field {
+      display: flex;
+      flex-direction: row;
+      margin-top: 14px;
+
+      input {
+        height: 28px;
+        margin-right: 10px;
+        flex-grow: 1;
+        padding-left: 5px;
+      }
+    }
   }
 </style>
 

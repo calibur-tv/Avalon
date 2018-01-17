@@ -47,6 +47,17 @@
           <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
           下的内容
         </template>
+        <template v-else-if="item.type === 3">
+          <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+          喜欢了你的帖子
+          <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
+        </template>
+        <template v-else-if="item.type === 4">
+          <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+          赞了你在帖子
+          <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
+          下的回复
+        </template>
       </li>
     </ul>
     <div class="footer"></div>
