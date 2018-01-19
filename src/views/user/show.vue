@@ -2,39 +2,6 @@
   #user-show {
     $banner-height: 400px;
 
-    .file-input {
-      overflow: hidden;
-      position: relative;
-
-      &:hover:before {
-        opacity: 1;
-        transition-duration: .4s;
-      }
-
-      input {
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        display: block;
-        cursor: pointer;
-      }
-
-      &:before {
-        content: '\e603';
-        opacity: 0;
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        background-color: rgba(0, 0, 0, .5);
-        @include iconfont(30px);
-        text-align: center;
-        line-height: 100px;
-        color: $color-white;
-      }
-    }
-
     .avatar-cropper-modal {
       .v-modal {
         width: 400px;
@@ -80,16 +47,6 @@
       justify-content: center;
       align-items: center;
 
-      .signature {
-        color: $color-white;
-        word-break: break-all;
-        word-wrap: break-word;
-        font-size: 13px;
-        line-height: 20px;
-        margin: 40px 0 20px 0;
-        text-shadow: 0 1px 10px gray;
-      }
-
       .img {
         width: 110%;
         height: $banner-height;
@@ -105,11 +62,28 @@
       }
 
       .file-input {
+        &:before {
+          content: '\e603';
+          opacity: 0;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          background-color: rgba(0, 0, 0, .5);
+          @include iconfont(30px);
+          text-align: center;
+          line-height: 100px;
+          color: $color-white;
+        }
+      }
+
+      .banner-file-input {
         display: none;
       }
 
       &.my-banner {
-        .file-input {
+        .banner-file-input {
           display: block;
           position: absolute;
           right: -65px;
@@ -132,7 +106,7 @@
           }
         }
 
-        &:hover .file-input {
+        &:hover .banner-file-input {
           background-color: rgba(0, 0, 0, .5);
           overflow: visible;
 
@@ -175,33 +149,40 @@
       }
     }
 
-    $user-panel-height: 160px;
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid hsla(0,0%,100%,.4);
+      margin-bottom: 10px;
+    }
+
+    .signature, .nickname {
+      color: $color-white;
+      word-break: break-all;
+      word-wrap: break-word;
+      font-size: 13px;
+      line-height: 20px;
+      text-shadow: 0 1px 10px gray;
+    }
+
+    .signature {
+      margin: 30px 0 20px 0;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      text-align: center;
+    }
+
     .container {
       .el-tabs__active-bar:after {
         display: none;
       }
 
       .el-tabs__header {
-        margin-top: $user-panel-height;
         width: 100px;
         margin-right: 100px;
-      }
-
-      #user-panel {
-        height: $user-panel-height;
-        position: absolute;
-        left: 60px;
-        top: 0;
-
-        .avatar {
-          @include avatar(100px)
-        }
-
-        .nickname {
-          margin-top: 20px;
-          display: block;
-          text-align: center;
-        }
       }
 
       $video-item-width: 220px;
@@ -465,11 +446,40 @@
   <div id="user-show">
     <section class="banner" :class="{ 'my-banner': isMe && !bannerSelector.loading }">
       <div class="img bg" :style="{ backgroundImage: banner }"></div>
-      <div class="file-input bg">
+      <div class="banner-file-input file-input bg">
         <input type="file" ref="bannerInput" @change="selectBanner">
       </div>
+      <div class="avatar bg file-input"
+           :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
+           v-if="isMe">
+        <input type="file" ref="avatarInput" @change="openAvatarModal">
+      </div>
+      <img class="avatar"
+           :src="$resize(user.avatar, { width: 200, height: 200 })"
+           alt="avatar"
+           v-else>
+      <span class="nickname" v-text="user.nickname"></span>
+      <div class="buttons">
+        <el-button type="primary"
+                   :disabled="daySigned"
+                   :loading="signDayLoading"
+                   size="small"
+                   v-if="isMe"
+                   @click="handleDaySign"
+        >{{ daySigned ? '已签到' : '签到' }}</el-button>
+      </div>
+      <v-modal class="avatar-cropper-modal"
+               v-model="avatarCropper.showModal"
+               header-text="头像裁剪"
+               :footer="false">
+        <v-cropper :src="avatarCropper.src"
+                   :file-type="avatarCropper.type"
+                   :uploading="avatarCropper.loading"
+                   @cancel="handleAvatarCropperCancel"
+                   @submit="handleAvatarCropperSubmit">
+        </v-cropper>
+      </v-modal>
       <p class="signature" v-text="user.signature"></p>
-      <v-share></v-share>
       <no-ssr>
         <transition name="el-zoom-in-bottom">
           <div class="banner-select-bar" v-if="bannerSelector.showBar">
@@ -481,36 +491,6 @@
       </no-ssr>
     </section>
     <div class="container">
-      <div id="user-panel">
-        <div class="avatar bg file-input"
-             :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
-             v-if="isMe">
-          <input type="file" ref="avatarInput" @change="openAvatarModal">
-        </div>
-        <img class="avatar"
-             :src="$resize(user.avatar, { width: 200, height: 200 })"
-             alt="avatar"
-             v-else>
-        <el-button type="primary"
-                   :disabled="daySigned"
-                   :loading="signDayLoading"
-                   size="small"
-                   v-if="isMe"
-                   @click="handleDaySign"
-        >{{ daySigned ? '已签到' : '签到' }}</el-button>
-        <span class="nickname" v-text="user.nickname"></span>
-        <v-modal class="avatar-cropper-modal"
-                 v-model="avatarCropper.showModal"
-                 header-text="头像裁剪"
-                 :footer="false">
-          <v-cropper :src="avatarCropper.src"
-                     :file-type="avatarCropper.type"
-                     :uploading="avatarCropper.loading"
-                     @cancel="handleAvatarCropperCancel"
-                     @submit="handleAvatarCropperSubmit">
-          </v-cropper>
-        </v-modal>
-      </div>
       <el-tabs tab-position="left" @tab-click="handleTabClick">
         <el-tab-pane label="番剧">
           <ul class="bangumis">
