@@ -37,7 +37,16 @@
     }
 
     .comment-reply {
-      padding: 4px 15px 14px;
+      padding: 14px 15px;
+      display: flex;
+      flex-direction: row;
+
+      input {
+        height: 28px;
+        margin-right: 10px;
+        flex-grow: 1;
+        padding-left: 5px;
+      }
     }
   }
 </style>

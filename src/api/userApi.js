@@ -54,4 +54,18 @@ export default class extends BaseApi {
   daySign () {
     return this.http.post('user/daySign')
   }
+
+  getNotificationCount () {
+    return this.http.get('user/notification/count')
+  }
+
+  getNotifications ({ minId }) {
+    return this.http.get('user/notification/list', {
+      params: { minId }
+    })
+  }
+
+  readMessage (id) {
+    return this.http.post('user/notification/read', { id })
+  }
 }

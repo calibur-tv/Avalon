@@ -14,6 +14,12 @@ const state = () => ({
       noMore: false,
       loading: false
     }
+  },
+  notifications: {
+    checked: 0,
+    take: 10,
+    noMore: false,
+    data: []
   }
 })
 
@@ -23,15 +29,32 @@ const mutations = {
       ? Object.assign(state.list[zone], data)
       : data
   },
-  setFollowPosts (state, { data, type }) {
+  SET_FOLLOW_POST_DATA (state, { data, type }) {
     state.posts[type] = {
       data: state.posts[type].data.concat(data),
       noMore: data.length < state.posts.take,
       loading: false
     }
   },
-  setFollowPostsState (state, { type }) {
+  SET_FOLLOW_POST_STATE (state, { type }) {
     state.posts[type].loading = true
+  },
+  SET_NOTIFICATIONS (state, data) {
+    const temp = state.notifications
+    state.notifications = {
+      checked: temp.checked,
+      take: temp.count,
+      noMore: temp.count > data.length,
+      data: temp.data.concat(data)
+    }
+  },
+  READ_NOTIFICATION (state, id) {
+    state.notifications.data.forEach((message, index) => {
+      if (message.id === id && !message.checked) {
+        state.notifications.data[index].checked = true
+        state.notifications.checked++
+      }
+    })
   }
 }
 
@@ -55,7 +78,7 @@ const actions = {
     if (state.posts[type].noMore || state.posts[type].loading) {
       return
     }
-    commit('setFollowPostsState', { type })
+    commit('SET_FOLLOW_POST_STATE', { type })
     const api = new Api()
     const data = await api.followPosts({
       type,
@@ -63,7 +86,7 @@ const actions = {
       zone,
       seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
     })
-    commit('setFollowPosts', { type, data })
+    commit('SET_FOLLOW_POST_DATA', { type, data })
   },
   async daySign ({ rootState }, { ctx }) {
     if (rootState.user.signed) {
@@ -71,6 +94,26 @@ const actions = {
     }
     const api = new Api(ctx)
     await api.daySign()
+  },
+  async getNotifications ({ state, commit }, { ctx, init }) {
+    const length = state.notifications.data.length
+    if ((init && length) || state.notifications.noMore) {
+      return
+    }
+    const api = new Api(ctx)
+    const data = await api.getNotifications({
+      minId: length ? state.notifications.data[length - 1].id : null
+    })
+    commit('SET_NOTIFICATIONS', data)
+  },
+  async readMessage ({ state, commit }, { ctx, id }) {
+    state.notifications.data.forEach(async message => {
+      if (message.id === id && !message.checked) {
+        const api = new Api(ctx)
+        await api.readMessage(id)
+        commit('READ_NOTIFICATION', id)
+      }
+    })
   }
 }
 

@@ -3,6 +3,10 @@
     .title-wrap {
       height: 56px;
       border-bottom: 1px solid #BBBDBF;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
 
       h1 {
         font-weight: 400;
@@ -10,6 +14,17 @@
         margin-left: 20px;
         line-height: 55px;
         float: left;
+      }
+
+      .control {
+        width: 400px;
+        text-align: right;
+
+        .floor {
+          font-size: 12px;
+          color: #5a5e66;
+          margin-left: 10px;
+        }
       }
     }
 
@@ -34,7 +49,6 @@
 
       .content {
         background: #fff;
-        min-height: 170px;
         padding: 22px 0 14px;
         border-top: 1px solid #e5e9ef;
 
@@ -59,7 +73,7 @@
 
         .likes-wrap {
           text-align: center;
-          margin: 15px 0 50px 0;
+          margin: 50px 0;
         }
 
         .footer {
@@ -91,18 +105,27 @@
       padding: 20px;
 
       .bangumi {
+        text-align: center;
+
         .avatar {
           width: 80px;
           height: 80px;
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 5px;
+          display: block;
+          margin: 0 auto 10px auto;
 
           img {
             width: 100%;
             height: auto;
           }
         }
+      }
+    }
+
+    .create-post-form {
+      margin-left: -50px;
+
+      button {
+        width: 100%;
       }
     }
   }
@@ -115,11 +138,13 @@
       <section class="col-main">
         <header>
           <div class="title-wrap">
-            <h1 v-text="post.title"></h1>
-            <button @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</button>
-            <button @click="scrollToReplyForm">回复</button>
-            <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
-            <span>共{{ total }}条</span>
+            <h1 class="oneline" v-text="post.title"></h1>
+            <div class="control">
+              <el-button size="mini" plain @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
+              <el-button size="mini" plain @click="scrollToReplyForm">回复</el-button>
+              <el-button size="mini" plain v-if="isMaster" @click="deletePost(post.id)">删除</el-button>
+              <span class="floor">共{{ total }}条</span>
+            </div>
           </div>
         </header>
         <main>
@@ -141,13 +166,13 @@
                            :loading="loadingToggleLike"
                            round>
                   <i class="iconfont icon-guanzhu"></i>
-                  {{ post.liked ? '已喜欢' : '喜欢' }}({{ post.like_count }})
+                  {{ post.liked ? '已喜欢' : '喜欢' }}{{ post.like_count ? `(${post.like_count})` : '' }}
                 </el-button>
               </div>
               <div class="footer">
                 <div class="info-bar">
-                  <button v-if="isMaster" @click="deletePost(post.id)">删除</button>
-                  <span>1楼</span>
+                  <button class="delete-btn" v-if="isMaster" @click="deletePost(post.id)">删除</button>
+                  <span class="floor-count">1楼</span>
                   <v-time v-model="post.created_at"></v-time>
                 </div>
               </div>

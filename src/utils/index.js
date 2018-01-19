@@ -31,7 +31,9 @@ import {
   Upload,
   Pagination,
   Carousel,
-  CarouselItem
+  CarouselItem,
+  Badge,
+  Popover
 } from 'element-ui'
 
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
@@ -63,6 +65,8 @@ Vue.use(Pagination)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.component(CollapseTransition.name, CollapseTransition)
+Vue.use(Badge)
+Vue.use(Popover)
 
 Vue.use({
   install (Vue, options) {
