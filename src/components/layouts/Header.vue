@@ -216,6 +216,7 @@
           color: $color-white;
           text-align: center;
           font-size: 14px;
+          margin-top: 6px;
         }
 
         .sign-in {
