@@ -147,32 +147,32 @@
           color: $color-white;
         }
       }
-    }
 
-    .avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 2px solid hsla(0,0%,100%,.4);
-      margin-bottom: 10px;
-    }
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 2px solid hsla(0,0%,100%,.4);
+        margin-bottom: 10px;
+      }
 
-    .signature, .nickname {
-      color: $color-white;
-      word-break: break-all;
-      word-wrap: break-word;
-      font-size: 13px;
-      line-height: 20px;
-      text-shadow: 0 1px 10px gray;
-    }
+      .signature, .nickname {
+        color: $color-white;
+        word-break: break-all;
+        word-wrap: break-word;
+        font-size: 13px;
+        line-height: 20px;
+        text-shadow: 0 1px 10px gray;
+      }
 
-    .signature {
-      margin: 30px 0 20px 0;
-    }
+      .signature {
+        margin: 30px 0 20px 0;
+      }
 
-    .buttons {
-      margin-top: 10px;
-      text-align: center;
+      .buttons {
+        margin-top: 10px;
+        text-align: center;
+      }
     }
 
     .container {
