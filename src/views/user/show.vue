@@ -466,7 +466,7 @@
                    size="small"
                    v-if="isMe"
                    @click="handleDaySign"
-        >{{ daySigned ? '已签到' : '签到' }}</el-button>
+        >{{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}</el-button>
       </div>
       <v-modal class="avatar-cropper-modal"
                v-model="avatarCropper.showModal"
@@ -710,6 +710,9 @@
       },
       daySigned () {
         return this.self.daySign
+      },
+      coinCount () {
+        return this.self.coin
       }
     },
     data () {
