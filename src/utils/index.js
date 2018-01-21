@@ -107,7 +107,7 @@ Vue.use({
       }
 
       const format = canUseWebP() ? '/format/webp' : ''
-      const mode = options.mode || 1
+      const mode = options.mode === undefined ? 1 : options.mode
 
       if ((mode === 1 && !options.width) || (!options.width && !options.height)) {
         return `${link}?imageMogr2/auto-orient/strip${format}`

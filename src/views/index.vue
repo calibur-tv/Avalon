@@ -86,8 +86,8 @@
 
 <template>
   <div id="homepage">
-    <div class="banner bg" :class="{'show' : toggle}" :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, { width: 1920, mode: 0 })})` : '' }"></div>
-    <div class="banner bg" :class="{'show' : !toggle}" :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, { width: 1920, mode: 0 })})` : '' }"></div>
+    <div class="banner bg" :class="{'show' : toggle}" :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : '' }"></div>
+    <div class="banner bg" :class="{'show' : !toggle}" :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"></div>
     <div class="index-panel">
       <div class="slogan bg" :class="{ 'invert' : imageGrayLevel > 165 }"></div>
       <v-search :placeholder="'搜索二次元的一切'" :auto="true" :suggess="true"></v-search>
@@ -125,7 +125,12 @@
         banner2: null,
         timer: null,
         toggle: true,
-        index: 0
+        index: 0,
+        options: {
+          width: 1920,
+          height: 0,
+          mode: 0
+        }
       }
     },
     created () {
@@ -133,6 +138,7 @@
     },
     mounted () {
       this.loopBanner()
+      this.computeSize()
     },
     methods: {
       loopBanner () {
@@ -146,6 +152,13 @@
             this.toggle = !this.toggle
           }, 7500)
         }, 15000)
+      },
+      computeSize () {
+        this.options = {
+          width: document.body.offsetWidth * 2,
+          height: document.body.offsetHeight * 2,
+          mode: 1
+        }
       }
     },
     beforeDestroy () {
