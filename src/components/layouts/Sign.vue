@@ -236,7 +236,7 @@
             <input type="text"
                    name="nickname"
                    v-validate="{
-                     rules: 'required|nickname:1-7',
+                     rules: 'required|nickname:2-14',
                      scope: 'sign-up'
                    }"
                    v-model.trim="signUp.nickname"
