@@ -138,7 +138,6 @@
     },
     mounted () {
       this.loopBanner()
-      this.computeSize()
     },
     methods: {
       loopBanner () {
@@ -152,13 +151,6 @@
             this.toggle = !this.toggle
           }, 7500)
         }, 15000)
-      },
-      computeSize () {
-        this.options = {
-          width: document.body.offsetWidth * 2,
-          height: document.body.offsetHeight * 2,
-          mode: 1
-        }
       }
     },
     beforeDestroy () {
