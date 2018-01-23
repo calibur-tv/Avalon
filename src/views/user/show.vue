@@ -915,7 +915,8 @@
           ctx: this
         })
         this.$store.commit('SET_USER_INFO', {
-          daySign: true
+          daySign: true,
+          coin: this.coinCount + 1
         })
         this.signDayLoading = false
       }
