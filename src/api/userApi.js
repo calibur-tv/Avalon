@@ -68,4 +68,16 @@ export default class extends BaseApi {
   readMessage (id) {
     return this.http.post('user/notification/read', { id })
   }
+
+  forgotPassword ({ method, access, geetest }) {
+    return this.http.post('door/forgot', {
+      method, access, geetest
+    })
+  }
+
+  resetPassword ({ method, access, geetest, authCode, secret }) {
+    return this.http.post('door/reset', {
+      method, access, geetest, authCode, secret
+    })
+  }
 }
