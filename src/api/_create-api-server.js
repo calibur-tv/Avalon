@@ -65,6 +65,12 @@ export default (ctx) => {
           }
         })
         if (res.data.data) {
+          const token = res.headers.authorization
+          if (token) {
+            return Object.assign(res.data.data, {
+              token: token.split('Bearer ').pop()
+            })
+          }
           return res.data.data
         } else {
           return res.data
