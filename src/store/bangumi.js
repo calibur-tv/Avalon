@@ -3,7 +3,10 @@ import Api from '~/api/bangumiApi'
 const state = () => ({
   follows: Object.create(null),
   released: [],
-  timeline: {},
+  timeline: {
+    data: [],
+    min: 0
+  },
   category: {},
   tags: [],
   info: null,
@@ -41,14 +44,10 @@ const mutations = {
     state.released = data
   },
   SET_TIMELINE (state, data) {
-    if (state.timeline.data) {
-      data.list.forEach(item => {
-        state.timeline.data.push(item)
-      })
-    } else {
-      state.timeline.data = data.list
+    state.timeline = {
+      data: state.timeline.data.concat(data.list),
+      min: data.min
     }
-    state.timeline.min = data.min
   },
   SET_TAGS (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined

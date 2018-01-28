@@ -268,29 +268,29 @@
   <header id="header" :class="[theme, 'white', scrollFlag ? 'scroll-show' : 'scroll-hide']">
     <div class="text">
       <nav class="container header-left">
-        <a class="nav-link" :href="$alias.index">主站</a>
+        <router-link class="nav-link" :to="$alias.index">主站</router-link>
         <el-dropdown>
-          <a class="nav-link el-dropdown-link" :href="$alias.bangumiTimeline">番剧</a>
+          <router-link class="nav-link el-dropdown-link" :to="$alias.bangumiTimeline">番剧</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <a class="nav-link" :href="$alias.bangumiTimeline">时间轴</a>
+              <router-link class="nav-link" :to="$alias.bangumiTimeline">时间轴</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <a class="nav-link" :href="$alias.bangumiNews">新番放送</a>
+              <router-link class="nav-link" :to="$alias.bangumiNews">新番放送</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <a class="nav-link" :href="$alias.bangumiTag()">分类索引</a>
+              <router-link class="nav-link" :to="$alias.bangumiTag()">分类索引</router-link>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown>
-          <a class="nav-link el-dropdown-link" :href="$alias.postTrending('new')">帖子</a>
+          <router-link class="nav-link el-dropdown-link" :to="$alias.postTrending('new')">帖子</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <a class="nav-link" :href="$alias.postTrending('new')">最新</a>
+              <router-link class="nav-link" :to="$alias.postTrending('new')">最新</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <a class="nav-link" :href="$alias.postTrending('hot')">最热</a>
+              <router-link class="nav-link" :to="$alias.postTrending('hot')">最热</router-link>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
