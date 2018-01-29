@@ -836,7 +836,7 @@
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
         await this.$store.dispatch('getUpToken')
-        const key = `user/avatar/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        const key = `user/${this.user.id}/avatar/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         formData.append('token', this.user.uptoken.upToken)
         formData.append('key', key)
         const imageApi = new ImageApi()
@@ -881,7 +881,7 @@
       async submitBannerChange () {
         this.bannerSelector.loading = true
         await this.$store.dispatch('getUpToken')
-        const key = `user/banner/${this.user.id}/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        const key = `user/${this.user.id}/banner/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         const formData = new FormData()
         formData.append('file', this.bannerSelector.file)
         formData.append('token', this.user.uptoken.upToken)
