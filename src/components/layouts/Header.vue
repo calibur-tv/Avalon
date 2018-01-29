@@ -309,9 +309,9 @@
             <a class="nav-link" @click="getNotifications" v-popover:popover>消息</a>
           </el-badge>
           <el-dropdown class="user-section" placement="bottom">
-            <a class="el-dropdown-link" :href="$alias.user(user.zone)">
+            <router-link class="el-dropdown-link" :to="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
-            </a>
+            </router-link>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <button @click="signOut">退出</button>
