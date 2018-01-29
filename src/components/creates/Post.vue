@@ -20,7 +20,7 @@
         <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
       </el-form-item>
       <el-form-item label="番剧" prop="bangumiId">
-        <el-select v-model="forms.bangumiId" placeholder="请选择活动区域">
+        <el-select v-model="forms.bangumiId" placeholder="请选择番剧">
           <el-option v-for="item in bangumis"
                      :label="item.name"
                      :key="item.id"
@@ -112,11 +112,7 @@
         return this.images.map(item => item.img)
       },
       bangumis () {
-        const zone = this.$store.state.user.zone
-        const list = this.$store.state.users.list
-        return list[zone]
-          ? this.$store.state.users.list[this.$store.state.user.zone].bangumis
-          : []
+        return this.$store.state.users.self.followBangumi
       }
     },
     methods: {
@@ -175,7 +171,8 @@
       },
       getUserFollowedBangumis () {
         this.$store.dispatch('users/getFollowBangumis', {
-          zone: this.$store.state.user.zone
+          zone: this.$store.state.user.zone,
+          self: true
         })
       },
       handlePreview (file) {
