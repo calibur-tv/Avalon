@@ -44,9 +44,13 @@ export function createStore () {
           })
           if (token) {
             const api = new UserApi(token)
-            const user = await api.getLoginUser()
-            if (user) {
-              commit('SET_USER', user)
+            try {
+              const user = await api.getLoginUser()
+              if (user) {
+                commit('SET_USER', user)
+              }
+            } catch (e) {
+              // TODO
             }
           }
         }
