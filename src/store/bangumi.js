@@ -5,7 +5,10 @@ const state = () => ({
   released: [],
   timeline: {
     data: [],
-    min: 0
+    year: new Date().getFullYear() + 1,
+    take: 5,
+    min: 0,
+    noMore: false
   },
   category: {},
   tags: [],
@@ -44,9 +47,14 @@ const mutations = {
     state.released = data
   },
   SET_TIMELINE (state, data) {
+    const temp = state.timeline
+    const nowYear = temp.year - temp.take
     state.timeline = {
-      data: state.timeline.data.concat(data.list),
-      min: data.min
+      data: temp.data.concat(data.list),
+      min: data.min,
+      take: temp.take,
+      year: nowYear,
+      noMore: nowYear <= data.min
     }
   },
   SET_TAGS (state, { tags, id }) {
@@ -126,12 +134,16 @@ const actions = {
     const data = await api.released()
     commit('SET_RELEASED', data)
   },
-  async getTimeline ({ commit }, { year, take }) {
-    const api = new Api()
-    const data = await api.timeline({ year, take })
-    if (data.list.length) {
-      commit('SET_TIMELINE', data)
+  async getTimeline ({ state, commit }) {
+    if (state.timeline.noMore) {
+      return
     }
+    const api = new Api()
+    const data = await api.timeline({
+      year: state.timeline.year,
+      take: state.timeline.take
+    })
+    commit('SET_TIMELINE', data)
   },
   async getCategory ({ commit }, { id, page, take }) {
     const api = new Api()

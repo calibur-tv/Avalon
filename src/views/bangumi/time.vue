@@ -142,7 +142,7 @@
         <ul class="collections"
             v-infinite-scroll="loadMore"
             infinite-scroll-disabled="loading"
-            infinite-scroll-distance="200">
+            infinite-scroll-distance="50">
           <ul v-for="col in timeline" :key="col.date" class="collection">
             <h3 class="time" v-text="col.date"></h3>
             <li class="bangumi" v-for="item in col.list" :key="item.id">
@@ -181,50 +181,31 @@
 </template>
 
 <script>
-  const defaultParams = {
-    year: new Date().getFullYear() + 1,
-    take: 5
-  }
-
   export default {
     name: 'BangumiTimeline',
     async asyncData ({ store }) {
-      await store.dispatch('bangumi/getTimeline', {
-        year: defaultParams.year,
-        take: defaultParams.take
-      })
+      await store.dispatch('bangumi/getTimeline')
     },
     computed: {
       timeline () {
         return this.$store.state.bangumi.timeline.data
       },
-      minYear () {
-        return this.$store.state.bangumi.timeline.min
+      noMore () {
+        return this.$store.state.bangumi.timeline.noMore
       }
     },
     data () {
       return {
-        loading: false,
-        year: defaultParams.year,
-        take: defaultParams.take
+        loading: false
       }
     },
     methods: {
       async loadMore () {
-        if (this.loading || this.year <= this.minYear) {
+        if (this.loading || this.noMore) {
           return
         }
         this.loading = true
-
-        try {
-          await this.$store.dispatch('bangumi/getTimeline', {
-            year: this.year - this.take,
-            take: this.take
-          })
-          this.year -= this.take
-        } catch (e) {
-          console.log(e)
-        }
+        await this.$store.dispatch('bangumi/getTimeline')
         this.loading = false
       }
     }
