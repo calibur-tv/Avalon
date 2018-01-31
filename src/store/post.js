@@ -101,6 +101,10 @@ const mutations = {
       })
     }
   },
+  TOGGLE_MARK (state, result) {
+    state.show.info.post.marked = result
+    result ? state.show.info.post.mark_count++ : state.show.info.post.mark_count--
+  },
   REPLY_POST (state, data) {
     state.show.data.list.push(data)
   }
@@ -173,6 +177,11 @@ const actions = {
     const api = new Api(ctx)
     const result = await api.toggleLike(id)
     commit('TOGGLE_LIKE', { id, result })
+  },
+  async toggleMark ({ commit }, { ctx, id }) {
+    const api = new Api(ctx)
+    const result = await api.toggleMark(id)
+    commit('TOGGLE_MARK', result)
   }
 }
 
