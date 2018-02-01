@@ -13,6 +13,16 @@ const state = () => ({
       data: [],
       noMore: false,
       loading: false
+    },
+    like: {
+      data: [],
+      noMore: false,
+      loading: false
+    },
+    mark: {
+      data: [],
+      noMore: false,
+      loading: false
     }
   },
   notifications: {

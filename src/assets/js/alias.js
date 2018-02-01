@@ -41,6 +41,6 @@ export default {
   bangumiTimeline: '/bangumi/timeline',
 
   postTrending (sort) {
-    return `/post/trending?sort=${sort}`
+    return `/post/trending/${sort}`
   }
 }

@@ -269,6 +269,22 @@
           border: 1px solid #e4e6eb;
           border-radius: 3px;
         }
+
+        .footer {
+          text-align: right;
+          color: $color-text-light;
+
+          span {
+            margin-left: 5px;
+            line-height: 20px;
+            font-size: 13px;
+          }
+
+          i {
+            line-height: 20px;
+            font-size: 13px;
+          }
+        }
       }
     }
 
@@ -359,6 +375,20 @@
                   </div>
                 </div>
                 <span class="counter" v-text="item.comment_count"></span>
+                <div class="footer">
+                  <span v-if="item.view_count">
+                    <i class="iconfont icon-ai-eye"></i>
+                    {{ item.view_count }}
+                  </span>
+                      <span v-if="item.mark_count">
+                    <i class="iconfont icon-buoumaotubiao44"></i>
+                    {{ item.mark_count }}
+                  </span>
+                      <span v-if="item.like_count">
+                    <i class="iconfont icon-guanzhu"></i>
+                    {{ item.like_count }}
+                  </span>
+                </div>
               </li>
             </ul>
             <el-button :loading="postState.loading"

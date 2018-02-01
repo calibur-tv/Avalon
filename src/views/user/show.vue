@@ -432,6 +432,42 @@
             }
           }
         }
+
+        &.posts-of-like {
+          li {
+            float: none;
+            position: relative;
+
+            &:not(:last-child) {
+              border-bottom: 1px dotted #e4e6eb;
+            }
+
+            .title {
+              font-size: 14px;
+              line-height: 32px;
+              display: block;
+              padding: 10px;
+            }
+          }
+        }
+
+        &.posts-of-mark {
+          li {
+            float: none;
+            position: relative;
+
+            &:not(:last-child) {
+              border-bottom: 1px dotted #e4e6eb;
+            }
+
+            .title {
+              font-size: 14px;
+              line-height: 32px;
+              display: block;
+              padding: 10px;
+            }
+          }
+        }
       }
 
       .load-post-btn {
@@ -511,8 +547,10 @@
         </el-tab-pane>
         <el-tab-pane label="帖子">
           <el-radio-group v-model="postTab" @change="handlePostTabClick">
-            <el-radio-button label="我的帖子"></el-radio-button>
-            <el-radio-button label="我回复的"></el-radio-button>
+            <el-radio-button label="发表"></el-radio-button>
+            <el-radio-button label="回复"></el-radio-button>
+            <el-radio-button label="喜欢"></el-radio-button>
+            <el-radio-button label="收藏"></el-radio-button>
           </el-radio-group>
           <template v-if="postListType === 'mine'">
             <ul class="posts posts-of-mine">
@@ -552,7 +590,7 @@
                        plain
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
           </template>
-          <template v-else>
+          <template v-else-if="postListType === 'reply'">
             <ul class="posts posts-of-reply">
               <li v-for="item in posts.data" :key="item.id">
                 <div class="header clearfix">
@@ -594,6 +632,20 @@
                        type="info"
                        plain
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+          </template>
+          <template v-else-if="postListType === 'like'">
+            <ul class="posts posts-of-like">
+              <li v-for="item in posts.data" :key="item.id">
+                <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+              </li>
+            </ul>
+          </template>
+          <template v-else-if="postListType === 'mark'">
+            <ul class="posts posts-of-mark">
+              <li v-for="item in posts.data" :key="item.id">
+                <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+              </li>
+            </ul>
           </template>
         </el-tab-pane>
         <template v-if="isMe">
@@ -703,7 +755,17 @@
           : `url(${this.$resize(this.user.banner, { width: 1920, mode: 0 })})`
       },
       postListType () {
-        return this.postTab === '我回复的' ? 'reply' : 'mine'
+        const type = this.postTab
+        if (type === '发表') {
+          return 'mine'
+        } else if (type === '回复') {
+          return 'reply'
+        } else if (type === '喜欢') {
+          return 'like'
+        } else if (type === '收藏') {
+          return 'mark'
+        }
+        return 'mine'
       },
       posts () {
         return this.$store.state.users.posts[this.postListType]
@@ -756,7 +818,7 @@
           showBar: false,
           loading: false
         },
-        postTab: '我的帖子',
+        postTab: '发表',
         signDayLoading: false
       }
     },

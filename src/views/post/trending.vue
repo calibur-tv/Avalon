@@ -118,6 +118,23 @@
           border: 1px solid #e4e6eb;
           border-radius: 3px;
         }
+
+        .footer {
+          text-align: right;
+          font-size: 13px;
+          color: $color-text-light;
+
+          span {
+            margin-left: 5px;
+            line-height: 20px;
+            font-size: 13px;
+          }
+
+          i {
+            line-height: 20px;
+            font-size: 13px;
+          }
+        }
       }
     }
 
@@ -133,6 +150,10 @@
     <v-banner></v-banner>
     <div class="container">
       <div class="col-main">
+        <div class="breadcrumb-links">
+          <router-link :to="$alias.postTrending('new')">最新</router-link>
+          <router-link :to="$alias.postTrending('hot')">最热</router-link>
+        </div>
         <ul id="posts">
           <li v-for="item in list" :key="item.id">
             <div class="header clearfix">
@@ -165,6 +186,20 @@
               </div>
             </div>
             <span class="counter" v-text="item.comment_count"></span>
+            <div class="footer">
+              <span v-if="item.view_count">
+                <i class="iconfont icon-ai-eye"></i>
+                {{ item.view_count }}
+              </span>
+              <span v-if="item.mark_count">
+                <i class="iconfont icon-buoumaotubiao44"></i>
+                {{ item.mark_count }}
+              </span>
+              <span v-if="item.like_count">
+                <i class="iconfont icon-guanzhu"></i>
+                {{ item.like_count }}
+              </span>
+            </div>
           </li>
         </ul>
         <el-button :loading="loading"
@@ -183,17 +218,13 @@
   export default {
     name: 'PostNews',
     async asyncData ({ store, route }) {
-      let sort = route.query.sort
-      sort = ~['new', 'hot'].indexOf(sort) ? sort : 'new'
       await store.dispatch('post/getTrending', {
-        sort
+        sort: route.params.sort
       })
     },
     computed: {
       sort () {
-        let sort = this.$route.query.sort
-        sort = ~['new', 'hot'].indexOf(sort) ? sort : 'new'
-        return sort
+        return this.$route.params.sort
       },
       list () {
         return this.$store.state.post.trending[this.sort].data
@@ -205,6 +236,11 @@
     data () {
       return {
         loading: false
+      }
+    },
+    watch: {
+      '$route' () {
+        this.loadMore()
       }
     },
     methods: {
