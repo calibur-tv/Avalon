@@ -21,9 +21,9 @@ export default class extends BaseApi {
     return this.http.post('door/logout')
   }
 
-  sendSignAuthCode ({ method, access, nickname, mustNew, mustOld }) {
+  sendSignAuthCode ({ method, access, nickname, mustNew, mustOld, geetest }) {
     return this.http.post('door/send', {
-      method, access, nickname, mustNew, mustOld
+      method, access, nickname, mustNew, mustOld, geetest
     })
   }
 
@@ -67,5 +67,17 @@ export default class extends BaseApi {
 
   readMessage (id) {
     return this.http.post('user/notification/read', { id })
+  }
+
+  forgotPassword ({ method, access, geetest }) {
+    return this.http.post('door/forgot', {
+      method, access, geetest
+    })
+  }
+
+  resetPassword ({ method, access, geetest, authCode, secret }) {
+    return this.http.post('door/reset', {
+      method, access, geetest, authCode, secret
+    })
   }
 }

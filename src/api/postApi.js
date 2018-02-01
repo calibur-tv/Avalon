@@ -41,6 +41,10 @@ export default class extends BaseApi {
     return this.http.post(`post/${id}/toggleLike`)
   }
 
+  toggleMark (id) {
+    return this.http.post(`post/${id}/toggleMark`)
+  }
+
   trending ({ sort, seenIds, take }) {
     return this.http.post(`trending/post/${sort}`, { seenIds, take })
   }

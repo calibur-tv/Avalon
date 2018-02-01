@@ -3,7 +3,13 @@ import Api from '~/api/bangumiApi'
 const state = () => ({
   follows: Object.create(null),
   released: [],
-  timeline: {},
+  timeline: {
+    data: [],
+    year: new Date().getFullYear() + 1,
+    take: 5,
+    min: 0,
+    noMore: false
+  },
   category: {},
   tags: [],
   info: null,
@@ -41,14 +47,15 @@ const mutations = {
     state.released = data
   },
   SET_TIMELINE (state, data) {
-    if (state.timeline.data) {
-      data.list.forEach(item => {
-        state.timeline.data.push(item)
-      })
-    } else {
-      state.timeline.data = data.list
+    const temp = state.timeline
+    const nowYear = temp.year - temp.take
+    state.timeline = {
+      data: temp.data.concat(data.list),
+      min: data.min,
+      take: temp.take,
+      year: nowYear,
+      noMore: nowYear <= data.min
     }
-    state.timeline.min = data.min
   },
   SET_TAGS (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined
@@ -127,12 +134,16 @@ const actions = {
     const data = await api.released()
     commit('SET_RELEASED', data)
   },
-  async getTimeline ({ commit }, { year, take }) {
-    const api = new Api()
-    const data = await api.timeline({ year, take })
-    if (data.list.length) {
-      commit('SET_TIMELINE', data)
+  async getTimeline ({ state, commit }) {
+    if (state.timeline.noMore) {
+      return
     }
+    const api = new Api()
+    const data = await api.timeline({
+      year: state.timeline.year,
+      take: state.timeline.take
+    })
+    commit('SET_TIMELINE', data)
   },
   async getCategory ({ commit }, { id, page, take }) {
     const api = new Api()

@@ -40,6 +40,7 @@
         setInterval(() => {
           this.$store.dispatch('getNotification', this)
         }, 60000)
+        this.$cookie.set('JWT-TOKEN', this.$store.state.user.token)
       }
     }
   }

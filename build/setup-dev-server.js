@@ -53,7 +53,14 @@ module.exports = (app, templatePath, callback) => {
     }
   })
   app.use(devMiddleware)
-  clientCompiler.plugin('done', () => {
+  clientCompiler.plugin('done', stats => {
+    stats = stats.toJson()
+    if (stats.errors.length) {
+      stats.errors.forEach(error => {
+        console.log(error);
+      })
+      return
+    }
     const mfs = devMiddleware.fileSystem
     const filePath = path.join(clientConfig.output.path, '200.template.html')
     if (mfs.existsSync(filePath)) {
@@ -73,7 +80,12 @@ module.exports = (app, templatePath, callback) => {
   serverCompiler.watch({}, (err, stats) => {
     if (err) throw err
     stats = stats.toJson()
-    if (stats.errors.length) return
+    if (stats.errors.length) {
+      stats.errors.forEach(error => {
+        console.log(error);
+      })
+      return
+    }
 
     const bundlePath = path.join(serverConfig.output.path, 'vue-ssr-server-bundle.json')
     bundle = JSON.parse(mfs.readFileSync(bundlePath, 'utf-8'))

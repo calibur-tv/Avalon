@@ -17,7 +17,6 @@ export function createStore () {
     strict: process.env.NODE_ENV !== 'production',
     state: () => ({
       user: null,
-      token: '',
       login: false,
       banner: 'banner/1.jpg'
     }),
@@ -25,9 +24,6 @@ export function createStore () {
       SET_USER (state, user) {
         state.user = user
         state.login = true
-      },
-      SET_TOKEN (state, data) {
-        state.token = data
       },
       SET_USER_INFO (state, data) {
         Object.keys(data).forEach(key => {
@@ -48,10 +44,13 @@ export function createStore () {
           })
           if (token) {
             const api = new UserApi(token)
-            const user = await api.getLoginUser()
-            if (user) {
-              commit('SET_TOKEN', token)
-              commit('SET_USER', user)
+            try {
+              const user = await api.getLoginUser()
+              if (user) {
+                commit('SET_USER', user)
+              }
+            } catch (e) {
+              // TODO
             }
           }
         }

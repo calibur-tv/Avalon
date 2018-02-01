@@ -168,6 +168,15 @@
                   <i class="iconfont icon-guanzhu"></i>
                   {{ post.liked ? '已喜欢' : '喜欢' }}{{ post.like_count ? `(${post.like_count})` : '' }}
                 </el-button>
+                <el-button
+                  type="warning"
+                  @click="toggleMark"
+                  :loading="loadingToggleMark"
+                  round
+                >
+                  <i class="iconfont icon-buoumaotubiao44"></i>
+                  {{ post.marked ? '已收藏' : '收藏' }}{{ post.mark_count ? `(${post.mark_count})` : '' }}
+                </el-button>
               </div>
               <div class="footer">
                 <div class="info-bar">
@@ -275,7 +284,8 @@
     data () {
       return {
         loadingLoadMore: false,
-        loadingToggleLike: false
+        loadingToggleLike: false,
+        loadingToggleMark: false
       }
     },
     methods: {
@@ -333,6 +343,29 @@
           this.$toast.error(err)
         }
         this.loadingToggleLike = false
+      },
+      async toggleMark () {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        if (this.isMaster) {
+          this.$toast.info('不能收藏自己的帖子')
+          return
+        }
+        if (this.loadingToggleMark) {
+          return
+        }
+        this.loadingToggleMark = true
+        try {
+          await this.$store.dispatch('post/toggleMark', {
+            ctx: this,
+            id: this.post.id
+          })
+        } catch (err) {
+          this.$toast.error(err)
+        }
+        this.loadingToggleMark = false
       }
     },
     mounted () {

@@ -169,3 +169,24 @@
     cursor: pointer;
   }
 }
+
+.breadcrumb-links {
+
+  a {
+    padding: 8px;
+    font-size: 16px;
+    transition: .2s;
+    margin: 0 7px 30px;
+    display: inline-block;
+
+    &:hover {
+      border-radius: 5px;
+      background-color: $color-blue-light;
+      color: #ffffff;
+    }
+
+    &.router-link-active {
+      border-bottom: 1px solid $color-blue-light;
+    }
+  }
+}

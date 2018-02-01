@@ -98,6 +98,11 @@
     <v-banner></v-banner>
     <div class="container">
       <div class="col-main">
+        <div class="breadcrumb-links">
+          <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
+          <router-link :to="$alias.bangumiNews">新番放松</router-link>
+          <router-link :to="$alias.bangumiTag()">分类索引</router-link>
+        </div>
         <h2 class="subtitle">新番放送表</h2>
         <el-tabs v-model="thisWeek">
           <el-tab-pane v-for="(tab, index) in showtime"

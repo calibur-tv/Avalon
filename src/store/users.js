@@ -13,6 +13,16 @@ const state = () => ({
       data: [],
       noMore: false,
       loading: false
+    },
+    like: {
+      data: [],
+      noMore: false,
+      loading: false
+    },
+    mark: {
+      data: [],
+      noMore: false,
+      loading: false
     }
   },
   notifications: {
@@ -20,6 +30,9 @@ const state = () => ({
     take: 10,
     noMore: false,
     data: []
+  },
+  self: {
+    followBangumi: []
   }
 })
 
@@ -28,6 +41,15 @@ const mutations = {
     state.list[zone] = state.list[zone]
       ? Object.assign(state.list[zone], data)
       : data
+  },
+  SET_SELF_INFO (state, { key, value }) {
+    if (Array.isArray(state.self[key])) {
+      state.self[key] = state.self[key].concat(value)
+    } else if (typeof state.self[key] === 'object') {
+      state.self[key] = Object.assign(state.self[key], value)
+    } else {
+      state.self[key] = value
+    }
   },
   SET_FOLLOW_POST_DATA (state, { data, type }) {
     state.posts[type] = {
@@ -64,15 +86,22 @@ const actions = {
     const data = await api.getUserInfo({ zone })
     commit('SET_USER_INFO', { data, zone })
   },
-  async getFollowBangumis ({ commit }, { zone }) {
+  async getFollowBangumis ({ commit }, { zone, self }) {
     const api = new Api()
     const data = await api.followBangumis(zone)
-    commit('SET_USER_INFO', {
-      data: {
-        bangumis: data
-      },
-      zone
-    })
+    if (self) {
+      commit('SET_SELF_INFO', {
+        key: 'followBangumi',
+        value: data
+      })
+    } else {
+      commit('SET_USER_INFO', {
+        data: {
+          bangumis: data
+        },
+        zone
+      })
+    }
   },
   async getFollowPosts ({ state, commit }, { type, zone }) {
     if (state.posts[type].noMore || state.posts[type].loading) {
