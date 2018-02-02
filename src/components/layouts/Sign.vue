@@ -214,6 +214,7 @@
                    placeholder="验证码">
             <button class="checkAndSend"
                     @click="handleResetAuthCode"
+                    type="button"
             >{{ getResetBtnText }}</button>
           </div>
           <div>
@@ -289,6 +290,7 @@
                      placeholder="验证码">
               <button class="checkAndSend"
                       @click="handleRegisterAuthCode"
+                      type="button"
               >{{ getAuthCodeBtnText }}</button>
             </div>
             <div>
@@ -309,6 +311,7 @@
               <button class="watch iconfont icon-ai-eye"
                       :class="[ signUp.watch ? 'watch-on' : 'watch-off' ]"
                       @click="signUp.watch = !signUp.watch"
+                      type="button"
               ></button>
             </div>
             <div>
