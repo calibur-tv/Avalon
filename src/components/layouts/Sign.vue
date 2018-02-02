@@ -214,6 +214,7 @@
                    placeholder="验证码">
             <button class="checkAndSend"
                     @click="handleResetAuthCode"
+                    type="button"
             >{{ getResetBtnText }}</button>
           </div>
           <div>
@@ -289,6 +290,7 @@
                      placeholder="验证码">
               <button class="checkAndSend"
                       @click="handleRegisterAuthCode"
+                      type="button"
               >{{ getAuthCodeBtnText }}</button>
             </div>
             <div>
@@ -309,14 +311,13 @@
               <button class="watch iconfont icon-ai-eye"
                       :class="[ signUp.watch ? 'watch-on' : 'watch-off' ]"
                       @click="signUp.watch = !signUp.watch"
+                      type="button"
               ></button>
             </div>
             <div>
               <input class="last-input"
                      type="text"
-                     v-validate="'sign-up'"
                      v-model.trim="signUp.inviteCode"
-                     name="invite-code"
                      placeholder="邀请码（可为空）">
             </div>
           </form>
