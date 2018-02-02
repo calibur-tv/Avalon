@@ -314,9 +314,7 @@
             <div>
               <input class="last-input"
                      type="text"
-                     v-validate="'sign-up'"
                      v-model.trim="signUp.inviteCode"
-                     name="invite-code"
                      placeholder="邀请码（可为空）">
             </div>
           </form>
