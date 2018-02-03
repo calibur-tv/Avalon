@@ -347,6 +347,7 @@
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
           <el-tab-pane :label="posts.total ? `帖子（${ posts.total }）` : '帖子'">
+            <no-content v-if="posts.noMore && !posts.total"></no-content>
             <ul id="posts">
               <li v-for="item in posts.data" :key="item.id">
                 <div class="header clearfix">
@@ -443,6 +444,7 @@
                 </li>
               </ul>
             </section>
+            <no-content v-else-if="videos.fetched"></no-content>
           </el-tab-pane>
           <!--<el-tab-pane label="图片"></el-tab-pane>-->
           <!--<el-tab-pane label="管理"></el-tab-pane>-->

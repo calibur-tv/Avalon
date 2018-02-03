@@ -21,7 +21,8 @@ const state = () => ({
   videos: {
     data: [],
     repeat: false,
-    total: 0
+    total: 0,
+    fetched: false
   }
 })
 
@@ -89,7 +90,8 @@ const mutations = {
     state.videos = {
       data: data.videos,
       repeat: data.repeat,
-      total: data.total
+      total: data.total,
+      fetched: true
     }
   }
 }
