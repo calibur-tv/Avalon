@@ -462,9 +462,11 @@
           this.$validator.validateAll('sign-in').then((result) => {
             if (result) {
               this.signIn.captcha = true
+              const ele = this.$refs.signInCaptcha
+              ele.innerHTML = ''
               this.$captcha({
                 type: 'float',
-                elem: this.$refs.signInCaptcha,
+                elem: ele,
                 success: ({ data, captcha }) => {
                   this.login(data).then((token) => {
                     this.$cookie.set('JWT-TOKEN', token, { expires: this.signIn.remember ? 365 : 1 })
