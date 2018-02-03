@@ -21,7 +21,7 @@ const cacheHTML = (status) => {
   const code = [200, 404, 500, 503].indexOf(status) !== -1 ? status : 500
   const hit = microCache.get(`render-html-${code}`)
   let html
-  if (hit) {
+  if (hit && !isDev) {
     html = hit
   } else {
     html = fs.readFileSync(resolve(`./src/templates/${code}.template.html`), 'utf-8')
