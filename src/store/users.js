@@ -6,25 +6,21 @@ const state = () => ({
     take: 10,
     mine: {
       data: [],
-      fetched: false,
       noMore: false,
       loading: false
     },
     reply: {
       data: [],
-      fetched: false,
       noMore: false,
       loading: false
     },
     like: {
       data: [],
-      fetched: false,
       noMore: false,
       loading: false
     },
     mark: {
       data: [],
-      fetched: false,
       noMore: false,
       loading: false
     }
@@ -59,8 +55,7 @@ const mutations = {
     state.posts[type] = {
       data: state.posts[type].data.concat(data),
       noMore: data.length < state.posts.take,
-      loading: false,
-      fetched: true
+      loading: false
     }
   },
   SET_FOLLOW_POST_STATE (state, { type }) {

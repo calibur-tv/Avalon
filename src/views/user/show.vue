@@ -647,7 +647,7 @@
               </li>
             </ul>
           </template>
-          <no-content v-if="posts.fetched && !posts.data.length"></no-content>
+          <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
