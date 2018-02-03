@@ -40,9 +40,13 @@ export default (ctx) => {
             Authorization: `Bearer ${token}`
           }
         })
-        return res.data && res.data.data
+        return res.data.data
       } catch (e) {
-        e.code = e.response.status
+        const code = e.response.status
+        if (code === 401) {
+          return null
+        }
+        e.code = code
         throw e
       }
     },
@@ -66,9 +70,13 @@ export default (ctx) => {
             token: newToken.split('Bearer ').pop()
           })
         }
-        return res.data && res.data.data
+        return res.data.data
       } catch (e) {
-        e.code = e.response.status
+        const code = e.response.status
+        if (code === 401) {
+          return null
+        }
+        e.code = code
         throw e
       }
     }
