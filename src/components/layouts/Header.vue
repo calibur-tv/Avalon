@@ -303,10 +303,11 @@
             width="320"
             placement="bottom-end"
             trigger="click">
-            <v-notifications></v-notifications>
+            <v-notifications v-if="showNotification"></v-notifications>
+            <span v-else></span>
           </el-popover>
           <el-badge :value="notificationsCount" :max="99" class="item">
-            <a class="nav-link" @click="getNotifications" v-popover:popover>消息</a>
+            <a class="nav-link" @click="showNotification = true" v-popover:popover>消息</a>
           </el-badge>
           <el-dropdown class="user-section" placement="bottom">
             <router-link class="el-dropdown-link" :to="$alias.user(user.zone)">
@@ -343,7 +344,8 @@
     },
     data () {
       return {
-        scrollFlag: false
+        scrollFlag: false,
+        showNotification: false
       }
     },
     computed: {
@@ -379,12 +381,6 @@
         const api = new UserApi(this)
         api.logout()
         window.location.reload()
-      },
-      getNotifications () {
-        this.$store.dispatch('users/getNotifications', {
-          ctx: this,
-          init: true
-        })
       }
     },
     mounted () {
