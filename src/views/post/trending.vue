@@ -155,7 +155,7 @@
           <router-link :to="$alias.postTrending('hot')">最热</router-link>
         </div>
         <ul id="posts">
-          <li v-for="item in post.list" :key="item.id">
+          <li v-for="item in post.data" :key="item.id">
             <div class="header clearfix">
               <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
                 <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
@@ -209,7 +209,7 @@
                    type="info"
                    plain
         >{{ loading ? '加载中' : '加载更多' }}</el-button>
-        <no-content v-if="post.noMore && !post.list.length"></no-content>
+        <no-content v-if="post.noMore && !post.data.length"></no-content>
       </div>
     </div>
   </div>
