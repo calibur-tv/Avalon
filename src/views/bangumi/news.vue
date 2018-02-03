@@ -25,13 +25,6 @@
       }
     }
 
-    .nothing {
-      font-size: 13px;
-      line-height: 100px;
-      color: $color-text-light;
-      text-align: center;
-    }
-
     .bangumi {
       width: 170px;
       margin: 0 10px 10px 0;
@@ -140,9 +133,7 @@
                 </figure>
               </li>
             </ul>
-            <div class="nothing" v-else>
-              还什么都没有
-            </div>
+            <no-content v-else></no-content>
           </el-tab-pane>
         </el-tabs>
       </div>

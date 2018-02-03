@@ -140,6 +140,7 @@
             </li>
           </ul>
         </div>
+        <no-content v-else-if="id"></no-content>
       </section>
       <aside class="col-aside"></aside>
     </div>
@@ -173,6 +174,9 @@
       await Promise.all(arr)
     },
     computed: {
+      id () {
+        return this.$route.query.id
+      },
       bangumis () {
         return this.$store.state.bangumi.category.data
       },
