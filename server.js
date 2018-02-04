@@ -18,7 +18,7 @@ const microCache = LRU({
   maxAge: isDev ? 0 : 1000 * 60 * 15
 })
 const cacheHTML = (status) => {
-  const code = [200, 404, 500, 503].indexOf(status) !== -1 ? status : 500
+  const code = [200, 404, 429, 500, 503].indexOf(status) !== -1 ? status : 500
   const hit = microCache.get(`render-html-${code}`)
   let html
   if (hit && !isDev) {
