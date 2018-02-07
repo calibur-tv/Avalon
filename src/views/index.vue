@@ -106,8 +106,8 @@
     components: {
       vSearch
     },
-    async asyncData ({ store }) {
-      await store.dispatch('homepage/getBanners')
+    async asyncData ({ store, ctx }) {
+      await store.dispatch('homepage/getBanners', ctx)
     },
     computed: {
       banners () {

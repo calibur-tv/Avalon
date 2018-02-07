@@ -17,8 +17,8 @@ const mutations = {
 }
 
 const actions = {
-  async getShow ({ commit }, id) {
-    const api = new Api()
+  async getShow ({ commit }, { id, ctx }) {
+    const api = new Api(ctx)
     const data = await api.getShow(id)
     commit('SET_DATA', data)
   }

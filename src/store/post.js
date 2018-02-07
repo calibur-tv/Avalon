@@ -161,11 +161,11 @@ const actions = {
     })
     commit('delComment', { postId, commentId })
   },
-  async getTrending ({ state, commit }, { sort }) {
+  async getTrending ({ state, commit }, { sort, ctx }) {
     if (state.trending[sort].noMore) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.trending({
       sort,
       take: state.trending.take,

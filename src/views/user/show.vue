@@ -710,7 +710,7 @@
           ctx, zone
         }),
         store.dispatch('users/getFollowBangumis', {
-          zone
+          ctx, zone
         })
       ]
       await Promise.all(arr)

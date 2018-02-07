@@ -158,15 +158,16 @@
     head: {
       title: '分类索引 - 番剧'
     },
-    async asyncData ({ route, store }) {
+    async asyncData ({ route, store, ctx }) {
       const id = route.query.id
-      const arr = [store.dispatch('bangumi/getTags', { id })]
+      const arr = [store.dispatch('bangumi/getTags', { id, ctx })]
       if (id && (
         /^\d+$/.test(id) ||
         (id.indexOf('-') !== -1 && id.split('-').every(item => /^\d+$/.test(item)))
       )) {
         arr.push(store.dispatch('bangumi/getCategory', {
           id,
+          ctx,
           page: defaultParams.page,
           take: defaultParams.take
         }))

@@ -218,9 +218,10 @@
 <script>
   export default {
     name: 'PostNews',
-    async asyncData ({ store, route }) {
+    async asyncData ({ store, route, ctx }) {
       await store.dispatch('post/getTrending', {
-        sort: route.params.sort
+        sort: route.params.sort,
+        ctx
       })
     },
     computed: {
