@@ -32,7 +32,7 @@ export default (ctx) => {
       try {
         const res = await axios({
           method: 'GET',
-          url: (env === 'development' ? host[env] : 'http://localhost/') + url,
+          url: `${host[env]}${url}`,
           params,
           timeout: timeout.server,
           headers: Object.assign(ctx.header, {
