@@ -51,6 +51,7 @@ export function createStore () {
               }
             } catch (e) {
               // TODO
+              console.log(e)
             }
           }
         }

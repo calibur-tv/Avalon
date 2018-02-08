@@ -480,7 +480,7 @@
                 elem: ele,
                 success: ({ data, captcha }) => {
                   this.login(data).then((token) => {
-                    this.$cookie.set('JWT-TOKEN', token, { expires: this.signIn.remember ? 365 : 1 })
+                    this.$cookie.set('JWT-TOKEN', token)
                     window.location.reload()
                   }).catch((err) => {
                     this.signIn.captcha = false
