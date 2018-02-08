@@ -50,8 +50,7 @@ export function createStore () {
                 commit('SET_USER', user)
               }
             } catch (e) {
-              // TODO
-              console.log(e)
+              // do nothing
             }
           }
         }
