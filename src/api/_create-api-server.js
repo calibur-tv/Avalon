@@ -35,10 +35,10 @@ export default (ctx) => {
           url: (env === 'development' ? host[env] : 'http://localhost/') + url,
           params,
           timeout: timeout.server,
-          headers: Object.assign(ctx.header, {
+          headers: {
             Accept: 'application/x.api.latest+json',
             Authorization: `Bearer ${token}`
-          })
+          }
         })
         return res.data.data
       } catch (e) {
@@ -59,10 +59,10 @@ export default (ctx) => {
           url: (env === 'development' ? host[env] : 'http://localhost/') + url,
           params,
           timeout: timeout.server,
-          headers: Object.assign(ctx.header, {
+          headers: {
             Accept: 'application/x.api.latest+json',
             Authorization: `Bearer ${token}`
-          })
+          }
         })
         const newToken = res.headers.authorization
         if (newToken) {
