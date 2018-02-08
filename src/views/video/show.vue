@@ -125,8 +125,11 @@
     components: {
       vVideo
     },
-    async asyncData ({ route, store }) {
-      await store.dispatch('video/getShow', route.params.id)
+    async asyncData ({ route, store, ctx }) {
+      await store.dispatch('video/getShow', {
+        id: route.params.id,
+        ctx
+      })
     },
     computed: {
       id () {

@@ -43,7 +43,7 @@ export function createStore () {
             }
           })
           if (token) {
-            const api = new UserApi(token)
+            const api = new UserApi(ctx)
             try {
               const user = await api.getLoginUser()
               if (user) {

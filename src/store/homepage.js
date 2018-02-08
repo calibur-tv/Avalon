@@ -11,11 +11,11 @@ const mutations = {
 }
 
 const actions = {
-  async getBanners ({ state, commit }) {
+  async getBanners ({ state, commit }, ctx) {
     if (state.banners.length) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.getBanners()
     commit('pushBanners', data)
   }

@@ -201,10 +201,10 @@
           <div>
             <input name="access"
                    type="text"
-                   v-validate="'required|email'"
+                   v-validate="'required|numeric|len:11'"
                    v-model.trim="resetPassword.access"
                    @input="showResetCaptcha"
-                   placeholder="邮箱">
+                   placeholder="手机号">
           </div>
           <div>
             <input type="text"
@@ -236,10 +236,10 @@
           <div>
             <input name="access"
                    type="text"
-                   v-validate="'required|email'"
+                   v-validate="'required|numeric|len:11'"
                    v-model.trim="signIn.access"
                    @input="showSignInCaptcha"
-                   placeholder="邮箱">
+                   placeholder="手机号">
           </div>
           <div>
             <input name="secret"
@@ -281,11 +281,11 @@
             <div>
               <input type="email"
                      name="access"
-                     v-validate="'required|email'"
+                     v-validate="'required|numeric|len:11'"
                      v-model.trim="signUp.access"
                      @input="showSignUpCaptcha"
                      autocomplete="off"
-                     placeholder="邮箱（填写常用邮箱，用于登录）">
+                     placeholder="手机（填写常用手机号，用于登录）">
             </div>
             <div>
               <input type="text"
@@ -358,12 +358,12 @@
           remember: true,
           access: '',
           secret: '',
-          method: 'email'
+          method: 'phone'
         },
         signUp: {
           watch: false,
           captcha: false,
-          method: 'email',
+          method: 'phone',
           access: '',
           secret: '',
           nickname: '',
@@ -377,7 +377,7 @@
           access: '',
           secret: '',
           authCode: '',
-          method: 'email',
+          method: 'phone',
           tempAccess: '',
           timeout: 0
         },
@@ -454,11 +454,13 @@
         this.showModal = true
         this.showSignIn = true
         this.showSignUp = false
+        this.showSignInCaptcha()
       },
       showRegister () {
         this.showModal = true
         this.showSignUp = true
         this.showSignIn = false
+        this.showSignUpCaptcha()
       },
       hiddenSign () {
         this.showModal = false
@@ -467,7 +469,7 @@
         this.showReset = false
       },
       showSignInCaptcha () {
-        if (!this.signIn.captcha) {
+        if (!this.signIn.captcha && this.showModal) {
           this.$validator.validateAll('sign-in').then((result) => {
             if (result) {
               this.signIn.captcha = true
@@ -497,7 +499,7 @@
         }
       },
       showSignUpCaptcha () {
-        if (!this.signUp.captcha) {
+        if (!this.signUp.captcha && this.showModal) {
           this.$validator.validateAll('sign-up').then((result) => {
             if (result) {
               this.signUp.captcha = true
@@ -518,6 +520,41 @@
                 },
                 error: () => {
                   this.signUp.captcha = false
+                }
+              })
+            }
+          })
+        }
+      },
+      showResetCaptcha () {
+        if (!this.resetPassword.captcha) {
+          this.$validator.validateAll('reset').then((result) => {
+            if (result) {
+              this.resetPassword.captcha = true
+              this.$captcha({
+                type: 'float',
+                elem: this.$refs.resetCaptcha,
+                success: ({ data, captcha }) => {
+                  const api = new UserApi()
+                  api.resetPassword({
+                    method: this.resetPassword.method,
+                    access: this.resetPassword.access,
+                    authCode: this.resetPassword.authCode,
+                    secret: this.resetPassword.secret,
+                    geetest: data
+                  }).then((res) => {
+                    this.$toast.success(res)
+                    this.showReset = false
+                  }).catch((err) => {
+                    this.resetPassword.captcha = false
+                    this.$toast.error(err)
+                    setTimeout(() => {
+                      captcha.reset()
+                    }, 500)
+                  })
+                },
+                error: () => {
+                  this.resetPassword.captcha = false
                 }
               })
             }
@@ -587,7 +624,7 @@
         }).then(() => {
           this.signUp.tempAccess = ''
           this.signUpStep = 3
-          this.$toast.warning(`${this.signUp.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
+          this.$toast.success(`${this.signUp.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
         }).catch((err) => {
           this.$toast.error(err)
           this.signUpStep = 5
@@ -628,41 +665,6 @@
           this.resetStep = 5
           this.$toast.error(err)
         })
-      },
-      showResetCaptcha () {
-        if (!this.resetPassword.captcha) {
-          this.$validator.validateAll('reset').then((result) => {
-            if (result) {
-              this.resetPassword.captcha = true
-              this.$captcha({
-                type: 'float',
-                elem: this.$refs.resetCaptcha,
-                success: ({ data, captcha }) => {
-                  const api = new UserApi()
-                  api.resetPassword({
-                    method: this.resetPassword.method,
-                    access: this.resetPassword.access,
-                    authCode: this.resetPassword.authCode,
-                    secret: this.resetPassword.secret,
-                    geetest: data
-                  }).then((res) => {
-                    this.$toast.success(res)
-                    this.showReset = false
-                  }).catch((err) => {
-                    this.resetPassword.captcha = false
-                    this.$toast.error(err)
-                    setTimeout(() => {
-                      captcha.reset()
-                    }, 500)
-                  })
-                },
-                error: () => {
-                  this.resetPassword.captcha = false
-                }
-              })
-            }
-          })
-        }
       }
     }
   }

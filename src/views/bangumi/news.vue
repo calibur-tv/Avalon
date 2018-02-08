@@ -151,8 +151,8 @@
     head: {
       title: '时间轴 - 番剧'
     },
-    async asyncData ({ store }) {
-      await store.dispatch('bangumi/getReleased')
+    async asyncData ({ store, ctx }) {
+      await store.dispatch('bangumi/getReleased', ctx)
     },
     computed: {
       released () {

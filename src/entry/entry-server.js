@@ -12,14 +12,9 @@ export default ssrContext => {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject({ code: 404 })
       }
-      if (store._actions && store._actions.init) {
-        try {
-          await store.dispatch('init', { app, ctx: ssrContext.ctx })
-        } catch (e) {
-          reject(e)
-        }
-      }
+
       try {
+        await store.dispatch('init', { app, ctx: ssrContext.ctx })
         await Promise.all(matchedComponents.map(({ asyncData }) => asyncData && asyncData({
           ctx: ssrContext.ctx,
           store,

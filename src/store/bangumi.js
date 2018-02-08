@@ -97,11 +97,11 @@ const mutations = {
 }
 
 const actions = {
-  async getTags ({ state, commit }, { id }) {
+  async getTags ({ state, commit }, { id, ctx }) {
     if (state.tags.length) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const tags = await api.tags()
     commit('SET_TAGS', { tags, id })
   },
@@ -128,27 +128,27 @@ const actions = {
       }
     })
   },
-  async getReleased ({ state, commit }) {
+  async getReleased ({ state, commit }, ctx) {
     if (state.released.length) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.released()
     commit('SET_RELEASED', data)
   },
-  async getTimeline ({ state, commit }) {
+  async getTimeline ({ state, commit }, ctx) {
     if (state.timeline.noMore) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.timeline({
       year: state.timeline.year,
       take: state.timeline.take
     })
     commit('SET_TIMELINE', data)
   },
-  async getCategory ({ commit }, { id, page, take }) {
-    const api = new Api()
+  async getCategory ({ commit }, { id, page, take, ctx }) {
+    const api = new Api(ctx)
     const data = await api.category({ id, page, take })
     commit('SET_CATEGORY', { data, page, take })
   },

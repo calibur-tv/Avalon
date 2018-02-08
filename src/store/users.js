@@ -86,8 +86,8 @@ const actions = {
     const data = await api.getUserInfo({ zone })
     commit('SET_USER_INFO', { data, zone })
   },
-  async getFollowBangumis ({ commit }, { zone, self }) {
-    const api = new Api()
+  async getFollowBangumis ({ commit }, { ctx, zone, self }) {
+    const api = new Api(ctx)
     const data = await api.followBangumis(zone)
     if (self) {
       commit('SET_SELF_INFO', {

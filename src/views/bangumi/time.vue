@@ -188,8 +188,8 @@
 <script>
   export default {
     name: 'BangumiTimeline',
-    async asyncData ({ store }) {
-      await store.dispatch('bangumi/getTimeline')
+    async asyncData ({ store, ctx }) {
+      await store.dispatch('bangumi/getTimeline', ctx)
     },
     computed: {
       timeline () {
