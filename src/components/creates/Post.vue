@@ -199,6 +199,10 @@
         this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
       },
       beforeUpload (file) {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
         const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
         const isLt2M = file.size / 1024 / 1024 < 2
 
