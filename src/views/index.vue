@@ -90,7 +90,7 @@
     <div class="banner bg" :class="{'show' : !toggle}" :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"></div>
     <div class="index-panel">
       <div class="slogan bg" :class="{ 'invert' : imageGrayLevel > 165 }"></div>
-      <v-search :placeholder="'搜索二次元的一切'" :auto="true" :suggess="true"></v-search>
+      <v-search :placeholder="'搜索二次元的一切'" :auto="true" :suggest="true"></v-search>
     </div>
   </div>
 </template>

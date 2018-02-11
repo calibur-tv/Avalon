@@ -102,11 +102,13 @@
         </li>
       </ul>
     </div>
-    <div class="search-suggess" v-if="suggess"></div>
+    <div class="search-suggest" v-if="suggest"></div>
   </div>
 </template>
 
 <script>
+  import SearchApi from '~/api/searchApi'
+
   export default {
     name: 'v-search',
     props: {
@@ -121,7 +123,7 @@
         type: Boolean,
         default: false
       },
-      suggess: {
+      suggest: {
         type: Boolean,
         default: false
       }
@@ -144,8 +146,18 @@
           return
         }
         this.set(q)
-        // todo request
-        window.open(`${window.location.protocol}//${window.location.host}/bangumi/news`)
+        const api = new SearchApi()
+        api.index({
+          q
+        }).then((res) => {
+          if (res) {
+            window.open(res)
+          } else {
+            window.open(`${window.location.protocol}//${window.location.host}/bangumi/news`)
+          }
+        }).catch(() => {
+          window.open(`${window.location.protocol}//${window.location.host}/bangumi/news`)
+        })
       },
       set (q) {
         setTimeout(() => {
