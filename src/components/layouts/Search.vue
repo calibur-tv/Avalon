@@ -145,18 +145,19 @@
         if (!q.length) {
           return
         }
-        this.set(q)
         const api = new SearchApi()
+        const searchWindow = window.open()
         api.index({
           q
         }).then((res) => {
           if (res) {
-            window.open(res)
+            this.set(q)
+            searchWindow.location = res
           } else {
-            window.open(`${window.location.protocol}//${window.location.host}/bangumi/news`)
+            searchWindow.location = '/bangumi/news'
           }
         }).catch(() => {
-          window.open(`${window.location.protocol}//${window.location.host}/bangumi/news`)
+          searchWindow.location = '/bangumi/news'
         })
       },
       set (q) {
