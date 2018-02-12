@@ -1,20 +1,18 @@
 import Vue from 'vue'
 import scrollToY from '~/assets/js/scrollToY'
 import Backdrop from '~/assets/js/Backdrop'
+import captcha from '~/assets/js/captcha'
 import Cookies from 'js-cookie'
 import {
   Notification,
   MessageBox
 } from 'element-ui'
-import captcha from '~/assets/js/captcha.js'
 
 Vue.use({
   install (Vue, options) {
     Vue.prototype.$cookie = Cookies
 
     Vue.prototype.$scrollToY = scrollToY
-
-    Vue.prototype.$channel = new Vue()
 
     Vue.prototype.$backdrop = new Backdrop()
 
