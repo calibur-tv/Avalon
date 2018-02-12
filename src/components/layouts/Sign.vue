@@ -45,7 +45,7 @@
           user-select: none;
         }
 
-        input[type="text"], input[type="password"], input[type="email"] {
+        input[type="text"], input[type="password"], input[type="number"] {
           width: 100%;
           height: $input-height;
           font-size: 12px;
@@ -135,7 +135,7 @@
             position: relative;
           }
 
-          input[type="text"], input[type="password"], input[type="email"] {
+          input[type="text"], input[type="password"], input[type="number"] {
             border-radius: 4px;
             border: 1px solid $color-gray-deep;
           }
@@ -200,7 +200,7 @@
         <form class="form-container" autocomplete="off" v-show="showReset" data-vv-scope="reset">
           <div>
             <input name="access"
-                   type="text"
+                   type="number"
                    v-validate="'required|numeric|len:11'"
                    v-model.trim="resetPassword.access"
                    @input="showResetCaptcha"
@@ -235,7 +235,7 @@
         <form class="form-container" autocomplete="off" v-show="!showReset" data-vv-scope="sign-in">
           <div>
             <input name="access"
-                   type="text"
+                   type="number"
                    v-validate="'required|numeric|len:11'"
                    v-model.trim="signIn.access"
                    @input="showSignInCaptcha"
@@ -279,7 +279,7 @@
                      placeholder="昵称（2-14个字符组成，1个汉字占2个字符）">
             </div>
             <div>
-              <input type="email"
+              <input type="number"
                      name="access"
                      v-validate="'required|numeric|len:11'"
                      v-model.trim="signUp.access"
@@ -609,7 +609,7 @@
             this.$toast.warning(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
           }
         } else {
-          this.$toast.warning('请先填写一个昵称')
+          this.$toast.warning('请先填写昵称')
         }
       },
       getRegisterAuthCode (geetest) {
