@@ -34,6 +34,7 @@ const mutations = {
   },
   SET_FOLLOW (state, { followed, self }) {
     state.info.followed = followed
+    followed ? state.info.count_like++ : state.info.count_like--
     if (followed) {
       state.info.followers.unshift(self)
     } else {

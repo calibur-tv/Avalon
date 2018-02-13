@@ -1,9 +1,9 @@
 <style lang="scss">
   #no-content {
     img {
-      width: 260px;
-      height: 260px;
-      margin-right: 50px;
+      width: 200px;
+      height: 200px;
+      margin-right: 30px;
       vertical-align: middle;
     }
 
@@ -31,7 +31,7 @@
 
 <template>
   <div id="no-content">
-    <img src="https://image.calibur.tv/owner/no_content.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/500/h/500" alt="no-content">
+    <img :src="$resize(`${$cdn.image}owner/no-content`, { width: 400 })" alt="no-content">
     <div>
       <h3>暂无内容</h3>
       <p>抱歉，该页面暂无内容，请看看其他页面</p>
@@ -41,14 +41,6 @@
 
 <script>
   export default {
-    name: 'NoContent',
-    props: {
-
-    },
-    data () {
-      return {
-
-      }
-    }
+    name: 'NoContent'
   }
 </script>
