@@ -1,7 +1,7 @@
 <template>
   <el-form :model="forms" :rules="rules" ref="forms" label-width="100px">
     <el-form-item label="类型" prop="type">
-      <el-select v-model="forms.type" placeholder="请选择活动区域">
+      <el-select v-model="forms.type" placeholder="反馈类型">
         <el-option label="功能建议" :value="1"></el-option>
         <el-option label="遇到错误" :value="2"></el-option>
         <el-option label="其它问题" :value="3"></el-option>
