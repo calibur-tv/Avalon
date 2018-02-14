@@ -156,7 +156,7 @@
               <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
             </el-col>
             <el-col class="content" :span="19">
-              <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="previewImages(post.images, idx)">
+              <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="$previewImages(post.images, idx)">
                 <v-img class="image" :src="img" width="500" mode="2"></v-img>
               </div>
               <div class="text-area" v-html="post.content"></div>
@@ -187,7 +187,7 @@
               </div>
             </el-col>
           </el-row>
-          <post-item v-for="(item, index) in list"
+          <post-item v-for="item in list"
                      :key="item.id"
                      :post="item"
                      @delete="deletePost(item.id)"

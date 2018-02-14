@@ -33,7 +33,8 @@ export default {
       default: function () {
         return ['scroll', 'resize']
       }
-    }
+    },
+    id: {}
   },
   render: function (createElement) {
     return createElement(this.tag, {
@@ -47,8 +48,7 @@ export default {
   data () {
     return {
       listeners: {},
-      resource: this.src,
-      id: 0
+      resource: this.src
     }
   },
   mounted () {
@@ -63,6 +63,13 @@ export default {
             this.$eventManager.del(id)
           }
         }, 500))
+        if (this.id) {
+          this.$channel.$on(`image-load-${this.id}`, () => {
+            this.loadResource(image)
+            this.$eventManager.del(id)
+            this.$channel.$off(`image-load-${this.id}`)
+          })
+        }
       }
     })
   },
@@ -88,6 +95,7 @@ export default {
       } else {
         src = this.resource
       }
+      src = src.split('|http').length > 1 ? `http${src.split('|http').pop()}` : src
       this.tag.toLowerCase() === 'img'
         ? image.setAttribute('src', src)
         : image.style.backgroundImage = `url(${src})`
