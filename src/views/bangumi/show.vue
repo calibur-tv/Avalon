@@ -371,7 +371,7 @@
                   <div class="image-box"
                        :key="image"
                        v-for="(image, index) in item.images"
-                       @click="previewImages(item.images, index)">
+                       @click="$previewImages(item.images, index)">
                     <v-img :src="image" height="90" mode="2"></v-img>
                   </div>
                 </div>

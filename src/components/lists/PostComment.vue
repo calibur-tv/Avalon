@@ -34,6 +34,10 @@
         font-size: 13px;
         margin-top: 10px;
       }
+
+      .total {
+        margin-left: 10px;
+      }
     }
 
     .comment-reply {
@@ -79,7 +83,7 @@
                  :loading="loadingMore"
                  size="mini"
       >点击加载更多</el-button>
-      <span>共 {{ post.comment_count }} 条</span>
+      <span class="total">共 {{ post.comment_count }} 条</span>
     </div>
     <div class="comment-reply" v-if="openComment">
       <input type="text"
