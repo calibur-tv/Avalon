@@ -327,7 +327,7 @@
           return
         }
         if (this.isMaster) {
-          this.$toast.info('不能给自己点赞')
+          this.$toast.info('不能赞赏自己的帖子')
           return
         }
         if (this.loadingToggleLike) {
