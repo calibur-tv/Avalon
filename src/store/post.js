@@ -107,6 +107,8 @@ const mutations = {
   },
   REPLY_POST (state, data) {
     state.show.data.list.push(data)
+    state.show.info.post.comment_count++
+    state.show.data.total++
   }
 }
 

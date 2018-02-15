@@ -126,7 +126,7 @@
       noMore () {
         return this.comments.length >= this.post.comment_count
       },
-      isMe () {
+      isMine () {
         if (!this.$store.state.login) {
           return false
         }
@@ -162,7 +162,7 @@
         await this.$store.dispatch('post/setComment', {
           ctx: this,
           postId: this.post.id,
-          targetUserId: this.isMe ? 0 : this.post.user.id,
+          targetUserId: this.isMine ? 0 : this.post.user.id,
           content: this.content
         })
         this.openComment = false
