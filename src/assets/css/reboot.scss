@@ -60,6 +60,10 @@ a {
   cursor: pointer;
 }
 
+input, textarea, div[contenteditable=true] {
+  line-height: normal;
+}
+
 input {
   vertical-align: middle;
 

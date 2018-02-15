@@ -35,7 +35,6 @@
                  list-type="picture-card"
                  ref="uploader"
                  :data="uploadHeaders"
-                 :on-preview="handlePreview"
                  :on-error="handleError"
                  :on-remove="handleRemove"
                  :on-success="handleSuccess"
@@ -46,7 +45,7 @@
       </el-upload>
     </el-form-item>
     <el-form-item label="内容" prop="content">
-      <el-input type="textarea" resize="none" :rows="10" v-model.trim="forms.content"></el-input>
+      <el-input type="textarea" placeholder="500字以内" resize="none" :rows="10" v-model.trim="forms.content"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">确认</el-button>
@@ -83,7 +82,7 @@
             { type: 'number', required: true, message: '请选择活动区域', trigger: 'change' }
           ],
           content: [
-            { required: true, max: 1000, message: '内容不能为空，且不超过1000字', trigger: 'blur' }
+            { required: true, max: 500, message: '内容不能为空，且不超过500字', trigger: 'blur' }
           ]
         },
         uploadHeaders: {
@@ -174,9 +173,6 @@
           zone: this.$store.state.user.zone,
           self: true
         })
-      },
-      handlePreview (file) {
-        window.open(`${this.$cdn.image}${file.response.key}`)
       },
       handleError (err, file) {
         console.log(err)

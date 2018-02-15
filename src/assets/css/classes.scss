@@ -190,3 +190,12 @@
     }
   }
 }
+
+.image-lazy-mask {
+  background-image: url("https://image.calibur.tv/default/user-avatar?imageMogr2/auto-orient/strip");
+  background-repeat: no-repeat;
+  background-size: 80px;
+  background-position: center;
+  background-color: #E7E7E7;
+  height: 0 !important;
+}
