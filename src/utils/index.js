@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import lodash from './lodash'
 import Alias from '~/assets/js/alias'
+import Utils from '~/assets/js/utils'
 import env from 'env'
 import {
   InfiniteScroll
@@ -76,6 +77,8 @@ Vue.use({
 
     Vue.prototype.$groupBy = lodash.groupBy
 
+    Vue.prototype.$utils = Utils
+
     Vue.prototype.$cdn = env.cdn
 
     Vue.prototype.$channel = new Vue()
@@ -125,6 +128,26 @@ Vue.use({
       }
 
       return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`
+    }
+  }
+})
+
+Vue.mixin({
+  methods: {
+    $computeImageAspect (image) {
+      if (image.split('|http').length === 1) {
+        return 0
+      }
+
+      const attr = image.split('|http').shift().split('-')
+      const width = attr[0]
+      const height = attr[1]
+
+      if (!width || !height) {
+        return 0
+      }
+
+      return height / width
     }
   }
 })

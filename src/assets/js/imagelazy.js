@@ -34,7 +34,11 @@ export default {
         return ['scroll', 'resize']
       }
     },
-    id: {}
+    id: {},
+    aspect: {
+      type: Number,
+      default: 0
+    }
   },
   render: function (createElement) {
     return createElement(this.tag, {
@@ -42,7 +46,13 @@ export default {
         src: this.tag.toLowerCase() === 'img'
           ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA'
           : null
-      }
+      },
+      'class': {
+        'image-lazy-mask': this.aspect
+      },
+      style: this.aspect ? {
+        paddingBottom: `${this.aspect * 100}%`
+      } : {}
     })
   },
   data () {
@@ -96,6 +106,18 @@ export default {
         src = this.resource
       }
       src = src.split('|http').length > 1 ? `http${src.split('|http').pop()}` : src
+      if (this.tag.toLowerCase() === 'img') {
+        image.setAttribute('src', src)
+        if (this.aspect) {
+          const id = this.$eventManager.add(this.$el, 'load', () => {
+            this.$utils.setStyle(this.$el, 'padding-bottom', 0)
+            this.$el.classList.remove('image-lazy-mask')
+            this.$eventManager.del(id)
+          })
+        }
+      } else {
+        image.style.backgroundImage = `url(${src})`
+      }
       this.tag.toLowerCase() === 'img'
         ? image.setAttribute('src', src)
         : image.style.backgroundImage = `url(${src})`
