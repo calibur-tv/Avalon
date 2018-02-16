@@ -3,6 +3,7 @@ import Api from '~/api/userApi'
 const state = () => ({
   list: {},
   posts: {
+    zone: '',
     take: 10,
     mine: {
       data: [],
@@ -51,7 +52,8 @@ const mutations = {
       state.self[key] = value
     }
   },
-  SET_FOLLOW_POST_DATA (state, { data, type }) {
+  SET_FOLLOW_POST_DATA (state, { data, type, zone }) {
+    state.posts.zone = zone
     state.posts[type] = {
       data: state.posts[type].data.concat(data),
       noMore: data.length < state.posts.take,
@@ -65,8 +67,8 @@ const mutations = {
     const temp = state.notifications
     state.notifications = {
       checked: temp.checked,
-      take: temp.count,
-      noMore: temp.count > data.length,
+      take: temp.take,
+      noMore: temp.take > data.length,
       data: temp.data.concat(data)
     }
   },
@@ -77,6 +79,32 @@ const mutations = {
         state.notifications.checked++
       }
     })
+  },
+  CLEAR_FOLLOW_POST (state) {
+    state.posts = {
+      zone: '',
+      take: 10,
+      mine: {
+        data: [],
+        noMore: false,
+        loading: false
+      },
+      reply: {
+        data: [],
+        noMore: false,
+        loading: false
+      },
+      like: {
+        data: [],
+        noMore: false,
+        loading: false
+      },
+      mark: {
+        data: [],
+        noMore: false,
+        loading: false
+      }
+    }
   }
 }
 
@@ -102,8 +130,12 @@ const actions = {
         zone
       })
     }
+    return data
   },
   async getFollowPosts ({ state, commit }, { type, zone }) {
+    if (state.posts.zone !== zone) {
+      commit('CLEAR_FOLLOW_POST')
+    }
     if (state.posts[type].noMore || state.posts[type].loading) {
       return
     }
@@ -115,7 +147,7 @@ const actions = {
       zone,
       seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
     })
-    commit('SET_FOLLOW_POST_DATA', { type, data })
+    commit('SET_FOLLOW_POST_DATA', { type, data, zone })
   },
   async daySign ({ rootState }, { ctx }) {
     if (rootState.user.signed) {
@@ -131,7 +163,8 @@ const actions = {
     }
     const api = new Api(ctx)
     const data = await api.getNotifications({
-      minId: length ? state.notifications.data[length - 1].id : null
+      minId: length ? state.notifications.data[length - 1].id : null,
+      take: state.notifications.take
     })
     commit('SET_NOTIFICATIONS', data)
   },
