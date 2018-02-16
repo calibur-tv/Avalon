@@ -33,9 +33,11 @@
 <template>
   <div id="header-notification-box">
     <div class="header"></div>
-    <ul v-infinite-scroll="loadMore"
-        :infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10">
+    <ul
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="notFetch"
+      infinite-scroll-distance="10"
+    >
       <li v-for="item in list" :key="item.id" :class="{ 'checked': item.checked }" @click="readMsg(item.id)">
         <!-- 我的主题帖被回复了 -->
         <template v-if="item.type === 1">
@@ -73,6 +75,9 @@
     computed: {
       list () {
         return this.$store.state.users.notifications.data
+      },
+      notFetch () {
+        return this.loading || this.$store.state.users.notifications.noMore
       }
     },
     data () {
