@@ -160,7 +160,7 @@
                 <v-img
                   class="image"
                   :src="img"
-                  width="500"
+                  width="350"
                   mode="2"
                   :aspect="$computeImageAspect(img)"
                 ></v-img>
