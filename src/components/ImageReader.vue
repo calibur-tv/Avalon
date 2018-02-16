@@ -34,6 +34,7 @@
 
     .el-carousel {
       height: 700px;
+      background-color: #000;
 
       .el-carousel__container {
         height: 100%;
@@ -59,11 +60,16 @@
       arrow="always"
       :initial-index="index"
       height="700"
+      @change="handleCarouselChange"
     >
-      <el-carousel-item v-for="item in images" :key="item">
+      <el-carousel-item
+        v-for="item in images"
+        :key="item"
+      >
         <v-img
           :class="[ computeImageType(item) === 3 ? 'is-height' : 'is-width' ]"
           :src="computeImageSize(item)"
+          :id="`image-reader-${index}`"
         ></v-img>
       </el-carousel-item>
     </el-carousel>
@@ -93,6 +99,23 @@
         this.images = Array.isArray(images) ? images : [images]
         this.index = index || 0
         this.open = true
+        setTimeout(() => {
+          const length = images.length
+          // 如果图片大于一张，要 hack 懒加载
+          if (length > 1) {
+            if (length - 1 === index) {
+              // 预览的是最后一张，加载上一张
+              this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+            } else if (index === 0) {
+              // 预览的是第一张，加载下一张
+              this.$channel.$emit(`image-load-image-reader-1`)
+            } else {
+              // 预览的是中间的图，加载上一张和下一张
+              this.$channel.$emit(`image-load-image-reader-${index + 1}`)
+              this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+            }
+          }
+        }, 500)
       })
     },
     methods: {
@@ -142,6 +165,10 @@
           return this.$resize(item, { width: this.maxWidth, mode: 2 })
         }
         return this.$resize(item, { height: this.maxHeight, mode: 2 })
+      },
+      handleCarouselChange (index) {
+        this.$channel.$emit(`image-load-image-reader-${index + 1}`)
+        this.$channel.$emit(`image-load-image-reader-${index - 1}`)
       }
     }
   }
