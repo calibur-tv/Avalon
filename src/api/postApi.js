@@ -32,7 +32,7 @@ export default class extends BaseApi {
   }
 
   deleteComment ({ postId, commentId }) {
-    return this.http.post(`post/${postId}/deletePost`, {
+    return this.http.post(`post/${postId}/deleteComment`, {
       id: commentId
     })
   }

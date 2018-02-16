@@ -186,7 +186,6 @@
               </div>
               <div class="footer">
                 <div class="info-bar">
-                  <button class="delete-btn" v-if="isMaster" @click="deletePost(post.id)">删除</button>
                   <span class="floor-count">1楼</span>
                   <v-time v-model="post.created_at"></v-time>
                 </div>
