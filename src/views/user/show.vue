@@ -46,6 +46,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      color: $color-white;
+      text-shadow: 0 1px 10px gray;
 
       .img {
         width: 110%;
@@ -58,7 +60,6 @@
         background-repeat: no-repeat;
         background-size: cover;
         z-index: -1;
-        @include filter-blur();
       }
 
       .file-input {
@@ -157,12 +158,10 @@
       }
 
       .signature, .nickname {
-        color: $color-white;
         word-break: break-all;
         word-wrap: break-word;
         font-size: 13px;
         line-height: 20px;
-        text-shadow: 0 1px 10px gray;
       }
 
       .signature {
@@ -496,24 +495,37 @@
            v-else>
       <span class="nickname" v-text="user.nickname"></span>
       <div class="buttons">
-        <el-button type="primary"
-                   :disabled="daySigned"
-                   :loading="signDayLoading"
-                   size="small"
-                   v-if="isMe"
-                   @click="handleDaySign"
-        >{{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}</el-button>
+        <template v-if="isMe">
+          <el-button
+            type="primary"
+            :disabled="daySigned"
+            :loading="signDayLoading"
+            size="small"
+            @click="handleDaySign"
+          >
+            {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
+          </el-button>
+          <el-button
+            type="warning"
+            size="small"
+          >
+            邀请码：{{ user.id }}
+          </el-button>
+        </template>
       </div>
-      <v-modal class="avatar-cropper-modal"
-               v-model="avatarCropper.showModal"
-               header-text="头像裁剪"
-               :footer="false">
-        <v-cropper :src="avatarCropper.src"
-                   :file-type="avatarCropper.type"
-                   :uploading="avatarCropper.loading"
-                   @cancel="handleAvatarCropperCancel"
-                   @submit="handleAvatarCropperSubmit">
-        </v-cropper>
+      <v-modal
+        class="avatar-cropper-modal"
+        v-model="avatarCropper.showModal"
+        header-text="头像裁剪"
+        :footer="false"
+      >
+        <v-cropper
+          :src="avatarCropper.src"
+          :file-type="avatarCropper.type"
+          :uploading="avatarCropper.loading"
+          @cancel="handleAvatarCropperCancel"
+          @submit="handleAvatarCropperSubmit"
+        ></v-cropper>
       </v-modal>
       <p class="signature" v-text="user.signature"></p>
       <no-ssr>

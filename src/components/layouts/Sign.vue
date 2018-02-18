@@ -509,7 +509,7 @@
                 success: ({ data, captcha }) => {
                   this.register(data).then((res) => {
                     this.$cookie.set('JWT-TOKEN', res)
-                    window.location.reload()
+                    window.location = '/about/hello'
                   }).catch((err) => {
                     this.signUp.captcha = false
                     this.$toast.error(err)
