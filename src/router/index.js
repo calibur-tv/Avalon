@@ -63,6 +63,11 @@ export function createRouter () {
           {
             path: 'post/trending/:sort',
             component: () => import('~/views/post/trending')
+          },
+          {
+            path: 'about/hello',
+            name: 'hello',
+            component: () => import('~/views/about/hello')
           }
         ]
       }
