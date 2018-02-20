@@ -1,17 +1,29 @@
 <style lang="scss">
   #footer {
     width: 100%;
-    z-index: -1;
+    z-index: 0;
+    margin: 30px 0;
+    text-align: center;
 
-    .slogan {
-      @include hr(14px, 30px, 50px, 30px);
+    .hr {
+      margin: 0 50px;
+      font-size: 14px;
+    }
+
+    .links {
+      margin-top: 10px;
+      color: #7f9eb2;
+      font-size: 13px;
     }
   }
 </style>
 
 <template>
   <footer id="footer" v-if="show">
-    <p class="slogan" data-text="calibur - 天下漫友是一家"></p>
+    <v-hr text="calibur - 天下漫友是一家"></v-hr>
+    <div class="links">
+      <router-link to="/about/hello">欢迎</router-link>
+    </div>
   </footer>
 </template>
 
