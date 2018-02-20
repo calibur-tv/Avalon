@@ -8,6 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   color: $color-text-deep;
+  font-size: $font-size;
 
   *, *:before, *:after
   {
@@ -58,6 +59,8 @@ button {
 a {
   text-decoration: none;
   cursor: pointer;
+  font-size: inherit;
+  color: inherit;
 }
 
 input, textarea, div[contenteditable=true] {

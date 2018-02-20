@@ -45,6 +45,7 @@
         font-size: 14px;
         color: #666;
         line-height: 25px;
+        float: none;
       }
     }
   }

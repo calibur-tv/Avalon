@@ -41,7 +41,7 @@
       }
 
       .hr {
-        @include hr(11px, 10px, 9px, 5px);
+        margin: 0 20px;
       }
 
       ul {
@@ -94,7 +94,7 @@
            :autofocus="auto">
     <button class="search-btn" @click="query()"></button>
     <div class="search-history" v-if="history && list.length">
-      <h5 class="hr" data-text="历史搜索"></h5>
+      <v-hr text="历史搜索"></v-hr>
       <ul>
         <li v-for="item in list">
           <a class="oneline" v-text="item" @click="query(item)"></a>
