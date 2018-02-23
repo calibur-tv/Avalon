@@ -92,8 +92,8 @@
         <div class="more" v-if="take < list.length" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
       <v-video v-if="video"
-               :source="video.url ? video.url : video.resource"
-               :sourceissrc="!!video.url"
+               :source="computeVideoSrc(video)"
+               :other-src="bangumi.others_site_video"
                :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
                :poster="$resize(video.poster)"
                @playing="handlePlaying">
@@ -161,6 +161,11 @@
       }
     },
     methods: {
+      computeVideoSrc (video) {
+        return this.bangumi.others_site_video
+          ? video.resource.video[720].src
+          : video.url || video.resource.video[720].src
+      },
       computeMaxWidth () {
         let maxlength = 0
         this.list.forEach((meta) => {
