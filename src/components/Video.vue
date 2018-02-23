@@ -10,6 +10,7 @@
     height: 100%;
     border-bottom: 1px solid $color-gray-normal;
     position: relative;
+    min-height: 600px;
 
     &.vue-pwa-video-flex {
       display: flex;
@@ -179,6 +180,30 @@
       z-index: 2147483650;
       width: 100%;
     }
+
+    .other-site-video {
+      width: 100%;
+      height: 100%;
+      color: #ffffff;
+      z-index: 999;
+      text-align: center;
+
+      p {
+        width: 100%;
+      }
+
+      a {
+        margin-top: 20px;
+        display: inline-block;
+        border-radius: 5px;
+        border: 1px solid #fff;
+        padding: 10px 15px;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, .3);
+        }
+      }
+    }
   }
 
   .fade-enter-active, .fade-leave-active {
@@ -276,10 +301,15 @@
          @click.stop="screenclick ? handlePlay() : ''"
          @dblclick="screenclick ? screen() : ''"
          @mousemove="tool">
-      <video :preload="auto ? 'auto' : 'metadata'"
+      <div v-if="otherSrc" class="other-site-video">
+        <p>应版权方要求，该视频暂不提供站内播放</p>
+        <a :href="source" target="_blank">播放链接</a>
+      </div>
+      <video v-else
+             :preload="auto ? 'auto' : 'metadata'"
              :autoplay="auto"
-             ref="video">
-      </video>
+             ref="video"
+      ></video>
       <div class="vue-pwa-video-init"
            v-if="state.init">
       </div>
@@ -308,6 +338,7 @@
           <v-range v-model="value.playing"
                    :loading="value.loading"
                    :max="value.duration"
+                   :disabled="otherSrc"
                    @rangeChangeEvent="handleSeek"
           ></v-range>
         </div>
@@ -342,19 +373,13 @@
       vRange
     },
     props: {
-      lang: {
-        default: 'zh'
-      },
-      p: {
-        default: '720'
-      },
       source: {
         default: '',
         required: true
       },
-      sourceissrc: {
+      otherSrc: {
         type: Boolean,
-        default: false
+        required: true
       },
       info: {
         type: String
@@ -424,48 +449,12 @@
         this.state.playing = true
         this.state.firstPlay = false
       }
-      this.computedProgressive()
     },
     methods: {
-      initVideo () {
-        this.video.innerHTML = ''
-        this.video.load()
-        this.state = {
-          playing: false,
-          isMuted: false,
-          isFull: false,
-          showTool: true,
-          waiting: true,
-          firstPlay: true,
-          init: true,
-          ended: false,
-          seeking: false,
-          error: false,
-          progressive: []
-        }
-        this.value = {
-          duration: 0,
-          loading: 0,
-          playing: 0,
-          curTime: '00:00',
-          allTime: '00:00',
-          voiceTemp: 0,
-          voice: 60,
-          timer: null
-        }
-        this.computedProgressive()
-        this.loadResource()
-      },
-      computedProgressive () {
-        if (!this.sourceissrc) {
-          for (const p in this.source.video) {
-            this.state.progressive.push(p)
-          }
-          this.p = this.state.progressive[0]
-        }
-      },
       handlePlay () {
-        if (this.state.waiting) return
+        if (this.state.waiting || this.otherSrc) {
+          return
+        }
         if (this.video.paused) {
           this.video.play()
           this.state.playing = true
@@ -481,6 +470,9 @@
         this.video.volume = val / 100
       },
       handleMuted () {
+        if (this.otherSrc) {
+          return
+        }
         if (this.state.isMuted) {
           this.video.muted = false
           this.value.voice = this.value.voiceTemp
@@ -510,6 +502,9 @@
         }
       },
       screen () {
+        if (this.otherSrc) {
+          return
+        }
         if (this.checkIsFullScreen()) {
           this.exitFullScreen()
         } else {
@@ -613,11 +608,14 @@
       loadResource () {
         this.video.src = ''
         this.video.load()
-        this.video.src = this.sourceissrc ? this.source : this.source.video[this.p].src
+        this.video.src = this.source
         this.video.load()
       }
     },
     mounted () {
+      if (this.otherSrc) {
+        return
+      }
       this.video = this.$refs.video
       const self = this
       const video = self.$refs.video
