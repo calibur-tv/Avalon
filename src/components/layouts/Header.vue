@@ -366,7 +366,8 @@
         return this.$store.state.user
       },
       notificationsCount () {
-        return this.user.notification - this.$store.state.users.notifications.checked
+        const result = this.user.notification - this.$store.state.users.notifications.checked
+        return result < 0 ? 0 : result
       }
     },
     methods: {
