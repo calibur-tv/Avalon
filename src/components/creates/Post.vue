@@ -212,8 +212,8 @@
         }
 
         this.uploadHeaders.key = this.postId
-          ? `user/${this.$store.state.user.id}/post/${this.postId}/${new Date().getTime()}-${file.name}`
-          : `user/${this.$store.state.user.id}/post/0/${new Date().getTime()}-${file.name}`
+          ? `user/${this.$store.state.user.id}/post/${this.postId}/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+          : `user/${this.$store.state.user.id}/post/0/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
         return true
       },
       async getUpToken () {
