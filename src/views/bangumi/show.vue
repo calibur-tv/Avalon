@@ -407,8 +407,7 @@
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
                     <li v-for="(video, index) in season.data" :key="video.id">
-                      <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
-                         :rel="info.others_site_video ? 'nofollow' : ''"
+                      <a :href="$alias.video(video.id)"
                          target="_blank">
                         <figure>
                           <v-img class="bg"
@@ -427,9 +426,7 @@
               </div>
               <ul v-else>
                 <li v-for="video in videos.data" :key="video.id">
-                  <a :href="info.others_site_video ? video.url : $alias.video(video.id)"
-                     :rel="info.others_site_video ? 'nofollow' : ''"
-                     target="_blank">
+                  <a :href="$alias.video(video.id)" target="_blank">
                     <figure>
                       <v-img class="bg"
                              :alt="video.name"
