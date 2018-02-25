@@ -163,8 +163,10 @@
     methods: {
       computeVideoSrc (video) {
         return this.bangumi.others_site_video
-          ? video.resource.video[720].src
-          : video.url || video.resource.video[720].src
+          ? video.url
+          : video.resource
+            ? video.resource.video[720].src || video.url
+            : video.url
       },
       computeMaxWidth () {
         let maxlength = 0
