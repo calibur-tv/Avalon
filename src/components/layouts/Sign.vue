@@ -211,6 +211,7 @@
                    name="auth-code"
                    v-validate="'required|len:6'"
                    v-model.trim="resetPassword.authCode"
+                   @input="showResetCaptcha"
                    autocomplete="off"
                    placeholder="验证码">
             <button class="checkAndSend"
@@ -225,7 +226,7 @@
                    v-model.trim="resetPassword.secret"
                    autocomplete="off"
                    @input="showResetCaptcha"
-                   placeholder="密码">
+                   placeholder="新密码">
           </div>
           <div class="captcha" data-text="提交" ref="resetCaptcha"></div>
           <span>
@@ -293,6 +294,7 @@
                      v-validate="'required|len:6'"
                      autocomplete="off"
                      v-model.trim="signUp.authCode"
+                     @input="showSignUpCaptcha"
                      placeholder="验证码">
               <button class="checkAndSend"
                       @click="handleRegisterAuthCode"
@@ -326,6 +328,7 @@
               <input class="last-input"
                      type="text"
                      autocomplete="off"
+                     @input="showSignUpCaptcha"
                      v-model.trim="signUp.inviteCode"
                      placeholder="邀请码（可为空）">
             </div>
