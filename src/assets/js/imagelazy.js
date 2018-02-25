@@ -118,9 +118,6 @@ export default {
       } else {
         image.style.backgroundImage = `url(${src})`
       }
-      this.tag.toLowerCase() === 'img'
-        ? image.setAttribute('src', src)
-        : image.style.backgroundImage = `url(${src})`
     }
   }
 }
