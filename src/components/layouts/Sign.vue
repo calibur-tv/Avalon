@@ -226,7 +226,7 @@
                    v-model.trim="resetPassword.secret"
                    autocomplete="off"
                    @input="showResetCaptcha"
-                   placeholder="密码">
+                   placeholder="新密码">
           </div>
           <div class="captcha" data-text="提交" ref="resetCaptcha"></div>
           <span>
