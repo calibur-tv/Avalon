@@ -70,7 +70,7 @@
       return {
         forms: {
           title: '',
-          bangumiId: this.bangumiId ? parseInt(this.bangumiId, 10) : '',
+          bangumiId: '',
           content: ''
         },
         rules: {
@@ -168,10 +168,15 @@
           }
         })
       },
-      getUserFollowedBangumis () {
-        this.$store.dispatch('users/getFollowBangumis', {
+      async getUserFollowedBangumis () {
+        const data = await this.$store.dispatch('users/getFollowBangumis', {
           zone: this.$store.state.user.zone,
           self: true
+        })
+        data.forEach(item => {
+          if (item.id === this.bangumiId) {
+            this.forms.bangumiId = this.bangumiId
+          }
         })
       },
       handleError (err, file) {
