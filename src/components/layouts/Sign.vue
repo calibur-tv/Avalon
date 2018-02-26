@@ -291,7 +291,7 @@
             <div>
               <input type="text"
                      name="auth-code"
-                     v-validate="'required|len:6'"
+                     v-validate="'required|numeric|len:6'"
                      autocomplete="off"
                      v-model.trim="signUp.authCode"
                      @input="showSignUpCaptcha"
