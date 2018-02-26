@@ -7,6 +7,7 @@ import {
   Notification,
   MessageBox
 } from 'element-ui'
+import './validate'
 
 Vue.use({
   install (Vue, options) {

@@ -2,8 +2,6 @@ import 'es6-promise/auto'
 import Vue from 'vue'
 import { createApp } from '~/app.js'
 import ProgressBar from '~/components/layouts/ProgressBar'
-import '~/utils/geetest'
-import '~/utils/validate'
 import '~/utils/client'
 
 const dev = process.env.NODE_ENV === 'development'

@@ -127,10 +127,10 @@
     },
     mounted () {
       this.computeShow()
-      document.addEventListener('scroll', this.$throttle(() => {
+      document.addEventListener('scroll', this.$utils.throttle(() => {
         this.computeShow()
       }, 500))
-      window.addEventListener('resize', this.$throttle(() => {
+      window.addEventListener('resize', this.$utils.throttle(() => {
         this.computeShow()
       }, 500))
       this.$channel.$on('show-create-post-modal', () => {

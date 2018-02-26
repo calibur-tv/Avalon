@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import lodash from './lodash'
 import Alias from '~/assets/js/alias'
 import Utils from '~/assets/js/utils'
 import env from 'env'
@@ -71,12 +70,6 @@ Vue.use(Popover)
 
 Vue.use({
   install (Vue, options) {
-    Vue.prototype.$throttle = lodash.throttle
-
-    Vue.prototype.$orderBy = lodash.orderBy
-
-    Vue.prototype.$groupBy = lodash.groupBy
-
     Vue.prototype.$utils = Utils
 
     Vue.prototype.$cdn = env.cdn
