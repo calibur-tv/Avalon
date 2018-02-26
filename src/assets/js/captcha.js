@@ -1,4 +1,5 @@
 import Api from '~/api/imageApi'
+import './geetest'
 
 export default (params) => {
   const { type, elem, success, error, ready, async } = typeof params === 'object' ? params : {}

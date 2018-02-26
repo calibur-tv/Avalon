@@ -146,7 +146,7 @@
       },
       sortVideos () {
         const begin = (this.page - 1) * this.take
-        const metas = this.$orderBy(this.list, 'part')
+        const metas = this.$utils.orderBy(this.list, 'part')
         return this.showAll ? metas : metas.slice(begin, begin + this.take)
       }
     },

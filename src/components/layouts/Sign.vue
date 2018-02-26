@@ -228,7 +228,12 @@
                    @input="showResetCaptcha"
                    placeholder="新密码">
           </div>
-          <div class="captcha" data-text="提交" ref="resetCaptcha"></div>
+          <div
+            class="captcha"
+            data-text="提交"
+            ref="resetCaptcha"
+            @click="showResetCaptcha"
+          ></div>
           <span>
             <a @click="showReset = false">返回登录></a>
           </span>
@@ -254,7 +259,12 @@
           <span>
             <label>记住我<input type="checkbox" :checked="signIn.remember" v-model="signIn.remember"></label>
           </span>
-          <div class="captcha" data-text="登录" ref="signInCaptcha"></div>
+          <div
+            class="captcha"
+            data-text="登录"
+            ref="signInCaptcha"
+            @click="showSignInCaptcha"
+          ></div>
           <span>
             <a @click="showReset = true">忘记密码?></a>
             <a @click="showRegister">点击注册»</a>
@@ -333,7 +343,12 @@
                      placeholder="邀请码（可为空）">
             </div>
           </form>
-          <div class="captcha" data-text="注册" ref="signUpCaptcha"></div>
+          <div
+            class="captcha"
+            data-text="注册"
+            ref="signUpCaptcha"
+            @click="showSignUpCaptcha"
+          ></div>
           <span>
           <a @click="showOAuth">社交账号登录</a>
           <a @click="showLogin">已有账号»</a>

@@ -255,7 +255,7 @@
         return this.$store.state.post.show
       },
       list () {
-        return this.$orderBy(this.resource.data.list, 'id', 'asc')
+        return this.$utils.orderBy(this.resource.data.list, 'id', 'asc')
       },
       total () {
         return this.resource.data.total
