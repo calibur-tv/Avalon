@@ -8,6 +8,7 @@ import {
   MessageBox
 } from 'element-ui'
 import './validate'
+import flvjs from 'flv.js'
 
 Vue.use({
   install (Vue, options) {
@@ -20,6 +21,8 @@ Vue.use({
     Vue.prototype.$toast = Notification
 
     Vue.prototype.$captcha = captcha
+
+    Vue.prototype.$flvjs = flvjs
 
     Vue.prototype.$confirm = MessageBox.confirm
 
