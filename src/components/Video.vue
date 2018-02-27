@@ -177,7 +177,7 @@
       bottom: 0;
       left: 0;
       border: none;
-      z-index: 2147483650;
+      z-index: 2147483647;
       width: 100%;
     }
 
@@ -293,71 +293,89 @@
 </style>
 
 <template>
-  <div class="vue-pwa-video"
-       :class="[ cover ? 'vue-pwa-video-cover' : 'vue-pwa-video-flex' ]"
-       ref="box">
-    <div class="vue-pwa-video-box"
-         ref="mask"
-         @click.stop="screenclick ? handlePlay() : ''"
-         @dblclick="screenclick ? screen() : ''"
-         @mousemove="tool">
+  <div
+    class="vue-pwa-video"
+    :class="[ cover ? 'vue-pwa-video-cover' : 'vue-pwa-video-flex' ]"
+    ref="box"
+  >
+    <div
+      class="vue-pwa-video-box"
+      ref="mask"
+      @click.stop="screenclick ? handlePlay() : ''"
+      @dblclick="screenclick ? screen() : ''"
+      @mousemove="tool"
+    >
       <div v-if="otherSrc" class="other-site-video">
         <p>应版权方要求，该视频暂不提供站内播放</p>
         <a :href="source" target="_blank">播放链接</a>
       </div>
-      <video v-else
-             :preload="auto ? 'auto' : 'metadata'"
-             :autoplay="auto"
-             ref="video"
+      <video
+        v-else
+        :preload="auto ? 'auto' : 'metadata'"
+        :autoplay="auto"
+        ref="video"
       ></video>
-      <div class="vue-pwa-video-init"
-           v-if="state.init">
-      </div>
-      <div class="vue-pwa-video-waiting"
-           v-show="state.waiting">
-      </div>
-      <div class="vue-pwa-video-error"
-           v-show="state.error">
-      </div>
+      <div
+        class="vue-pwa-video-init"
+        v-if="state.init"
+      ></div>
+      <div
+        class="vue-pwa-video-waiting"
+        v-show="state.waiting"
+      ></div>
+      <div
+        class="vue-pwa-video-error"
+        v-show="state.error"
+      ></div>
       <div class="vue-pwa-video-debug"
            v-if="debug">
         <p v-for="txt in logs" v-text="txt"></p>
       </div>
     </div>
     <transition name="fade">
-      <div v-show="state.showTool"
-           class="vue-pwa-video-tool"
-           :class="{ 'v-tool-full' : state.isFull }">
-        <button :class="[ state.playing ? 'vue-pwa-video-btn-playing' : 'vue-pwa-video-btn-paused' ]"
-                @click="handlePlay()">
+      <div
+        v-show="state.showTool"
+        class="vue-pwa-video-tool"
+        :class="{ 'v-tool-full' : state.isFull }"
+      >
+        <button
+          :class="[ state.playing ? 'vue-pwa-video-btn-playing' : 'vue-pwa-video-btn-paused' ]"
+          @click="handlePlay()"
+        >
         </button>
         <div class="vue-pwa-video-time">
           <span v-text="value.curTime"></span>
         </div>
         <div class="vue-pwa-video-progress-bar">
-          <v-range v-model="value.playing"
-                   :loading="value.loading"
-                   :max="value.duration"
-                   :disabled="otherSrc"
-                   @rangeChangeEvent="handleSeek"
+          <v-range
+            v-model="value.playing"
+            :loading="value.loading"
+            :max="value.duration"
+            :disabled="otherSrc"
+            @rangeChangeEvent="handleSeek"
           ></v-range>
         </div>
         <div class="vue-pwa-video-time">
           <span v-text="value.allTime"></span>
         </div>
-        <button class="vue-pwa-video-btn-voice"
-                :class="[ value.voice ? 'vue-pwa-video-btn-volume' : 'vue-pwa-video-btn-silent' ]"
-                @click="handleMuted"
-                v-if="showvioce">
+        <button
+          class="vue-pwa-video-btn-voice"
+          :class="[ value.voice ? 'vue-pwa-video-btn-volume' : 'vue-pwa-video-btn-silent' ]"
+          @click="handleMuted"
+          v-if="showvioce"
+        >
           <div class="vue-pwa-video-voice-bar">
-            <v-range v-model="value.voice"
-                     @rangeChangeEvent="volume"
-                     :vertical="true"
+            <v-range
+              v-model="value.voice"
+              @rangeChangeEvent="volume"
+              :vertical="true"
             ></v-range>
           </div>
         </button>
-        <button :class="[ state.isFull ? 'vue-pwa-video-btn-full' : 'vue-pwa-video-btn-screen' ]"
-                @click="screen">
+        <button
+          :class="[ state.isFull ? 'vue-pwa-video-btn-full' : 'vue-pwa-video-btn-screen' ]"
+          @click="screen"
+        >
         </button>
       </div>
     </transition>
@@ -441,7 +459,8 @@
           voice: 60,
           timer: null
         },
-        logs: []
+        logs: [],
+        isFlv: false
       }
     },
     beforeMount () {
@@ -455,13 +474,13 @@
         if (this.state.waiting || this.otherSrc) {
           return
         }
-        if (this.video.paused) {
+        if (this.state.playing) {
+          this.video.pause()
+          this.state.playing = false
+        } else {
           this.video.play()
           this.state.playing = true
           this.$emit('playing')
-        } else {
-          this.video.pause()
-          this.state.playing = false
         }
       },
       volume (val) {
@@ -606,10 +625,23 @@
         }
       },
       loadResource () {
-        this.video.src = ''
-        this.video.load()
-        this.video.src = this.source
-        this.video.load()
+        if (this.source.split('.').pop().toLowerCase() === 'flv') {
+          this.isFlv = true
+          if (this.$flvjs.isSupported()) {
+            const flvPlayer = this.$flvjs.createPlayer({
+              type: 'flv',
+              url: this.source
+            })
+            flvPlayer.attachMediaElement(this.$refs.video)
+            this.video = flvPlayer
+            this.video.load()
+          }
+        } else {
+          this.video.src = ''
+          this.video.load()
+          this.video.src = this.source
+          this.video.load()
+        }
       }
     },
     mounted () {
