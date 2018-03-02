@@ -32,7 +32,7 @@ export function createStore () {
       }
     },
     actions: {
-      async init ({ commit }, { ctx }) {
+      async init ({ commit }, ctx) {
         const cookie = ctx.header.cookie
         if (cookie) {
           let token = ''

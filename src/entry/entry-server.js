@@ -12,14 +12,14 @@ export default ssrContext => {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject({ code: 404 })
       }
-
       try {
-        await store.dispatch('init', { app, ctx: ssrContext.ctx })
-        await Promise.all(matchedComponents.map(({ asyncData }) => asyncData && asyncData({
+        const matched = matchedComponents.map(({asyncData}) => asyncData && asyncData({
           ctx: ssrContext.ctx,
           store,
           route: router.currentRoute
-        })))
+        }))
+        matched.unshift(store.dispatch('init', ssrContext.ctx))
+        await Promise.all(matched)
       } catch (e) {
         reject(e)
       }
