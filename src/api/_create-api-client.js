@@ -23,7 +23,11 @@ export default (ctx) => {
       return Promise.reject('网路请求超时') // eslint-disable-line prefer-promise-reject-errors
     }
     try {
-      return Promise.reject(err.response.data.message)
+      let message = err.response.data.message
+      if (typeof message === 'string') {
+        return Promise.reject(message)
+      }
+      return Promise.reject(message[Object.keys(message)[0]][0])
     } catch (e) {
       console.error(e)
     }
