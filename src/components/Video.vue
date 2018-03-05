@@ -5,7 +5,6 @@
   .vue-pwa-video {
     box-sizing: border-box;
     overflow: hidden;
-    background-color: #000;
     width: 100%;
     height: 100%;
     border-bottom: 1px solid $color-gray-normal;
@@ -271,7 +270,7 @@
 
   .vue-pwa-video-time {
     background-color: $color-white;
-    width: $tool-btn-width;
+    width: $tool-btn-width + 10;
     height: 100%;
     color: $color-text-light;
     display: flex;
@@ -527,7 +526,7 @@
         if (this.checkIsFullScreen()) {
           this.exitFullScreen()
         } else {
-          this.launchFullScreen(this.$refs.mask)
+          this.launchFullScreen(this.$refs.box)
         }
       },
       screenToggle () {
@@ -689,7 +688,9 @@
         let duration = this.duration
         let timeArr = self.formatSeconds(duration)
         self.value.duration = duration
-        self.value.allTime = timeArr[1] + ':' + timeArr[2]
+        self.value.allTime = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
       })
 
       video.addEventListener('loadstart', function () {
@@ -770,7 +771,9 @@
         let duration = this.duration
         let timeArr = self.formatSeconds(duration)
         self.value.duration = duration
-        self.value.allTime = timeArr[1] + ':' + timeArr[2]
+        self.value.allTime = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
       })
 
       video.addEventListener('waiting', function () {
