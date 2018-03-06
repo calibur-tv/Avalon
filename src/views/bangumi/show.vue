@@ -605,7 +605,9 @@
                     </router-link>
                   </span>
                     ·
-                    <span class="load-list" @click="showRoleDetail(item)">查看详情</span>
+                    <span class="load-list" @click="showRoleDetail(item, 'new')">最新应援</span>
+                    ·
+                    <span class="load-list" @click="showRoleDetail(item, 'hot')">最多应援</span>
                   </div>
                 </li>
               </ul>
@@ -828,10 +830,10 @@
 
         this.postState.loading = false
       },
-      showRoleDetail (role) {
+      showRoleDetail (role, sort) {
         this.currentRole = role
         this.openRolesModal = true
-        this.focusRoleSort = 'new'
+        this.focusRoleSort = sort
         this.fetchCurrentRoleFans(true)
       },
       switchFocusRoleTab (label) {
