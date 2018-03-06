@@ -322,6 +322,128 @@
         }
       }
     }
+
+    #roles {
+      .role {
+        float: none;
+        display: block;
+        position: relative;
+        padding-bottom: 15px;
+        margin-top: 15px;
+        margin-right: 30px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid #F0F0F0;
+        }
+
+        .avatar {
+          width: 100px;
+          height: 100px;
+          display: block;
+          float: left;
+          overflow: hidden;
+          border-radius: 5px;
+          margin-right: 10px;
+          border: 1px solid $color-gray-normal;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .summary {
+          overflow: hidden;
+
+          .info {
+            display: block;
+            font-size: 14px;
+            line-height: 20px;
+            height: 60px;
+            overflow: hidden;
+
+            .name {
+              font-weight: bold;
+            }
+
+            .intro {
+              color: #000;
+            }
+          }
+
+          .star {
+            float: right;
+            margin-top: 14px;
+            border-radius: 14px;
+          }
+        }
+
+        .footer {
+          margin-top: 10px;
+          height: 30px;
+          line-height: 30px;
+          vertical-align: middle;
+          color: $color-text-normal;
+          text-align: right;
+
+          img {
+            width: 20px;
+            height: 20px;
+            border-radius: 15px;
+            vertical-align: middle;
+            border: 1px solid $color-gray-normal;
+            margin-left: 2px;
+            margin-top: -3px;
+          }
+
+          a {
+            font-size: 12px;
+            color: $color-text-normal;
+          }
+
+          span {
+            font-size: 12px;
+          }
+          
+          .load-list {
+            cursor: pointer;
+          }
+        }
+      }
+
+      .role-fans-modal {
+        .v-modal {
+          min-height: 600px;
+
+          li {
+            float: none;
+
+            .lover-user {
+              padding: 10px 0;
+              position: relative;
+              border-bottom: 1px solid #f0f0f0;
+              display: block;
+
+              img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 1px solid $color-gray-normal;
+                margin-right: 10px;
+                vertical-align: middle;
+              }
+
+              .score {
+                float: right;
+                font-size: 13px;
+                color: $color-text-light;
+                margin-top: 13px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 </style>
 
@@ -346,7 +468,7 @@
     <div class="container">
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
-          <el-tab-pane :label="posts.total ? `帖子（${ posts.total }）` : '帖子'">
+          <el-tab-pane label="帖子">
             <no-content v-if="posts.noMore && !posts.total"></no-content>
             <ul id="posts">
               <li v-for="item in posts.data" :key="item.id">
@@ -400,7 +522,7 @@
                        plain
             >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
           </el-tab-pane>
-          <el-tab-pane :label="videos.total ? `视频（${ videos.total }）` : '视频'">
+          <el-tab-pane label="视频">
             <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
                 <template v-for="season in videos.data">
@@ -443,8 +565,73 @@
             </section>
             <no-content v-else-if="videos.fetched"></no-content>
           </el-tab-pane>
-          <!--<el-tab-pane label="图片"></el-tab-pane>-->
-          <!--<el-tab-pane label="管理"></el-tab-pane>-->
+          <el-tab-pane label="偶像">
+            <div id="roles">
+              <ul>
+                <li class="role" v-for="item in roles.data">
+                  <div class="clearfix">
+                    <div class="avatar">
+                      <v-img :src="item.avatar" width="90" height="90"></v-img>
+                    </div>
+                    <div class="summary">
+                      <div class="info">
+                        <span class="name" v-text="item.name"></span>
+                        <span class="intro">：{{ item.intro }}</span>
+                      </div>
+                      <el-button
+                        @click="handleStarRole(item)"
+                        type="warning"
+                        class="star"
+                        size="mini"
+                        plain>为TA应援</el-button>
+                    </div>
+                  </div>
+                  <div class="footer" v-if="item.fans_count">
+                  <span>
+                    粉丝:
+                    {{ $utils.shortenNumber(item.fans_count) }}
+                  </span>
+                    ·
+                    <span>
+                    金币:
+                    {{ $utils.shortenNumber(item.star_count) }}
+                  </span>
+                    ·
+                    <span v-if="item.lover">
+                    守护者:
+                    <router-link :to="$alias.user(item.lover.zone)">
+                      {{ item.lover.nickname }}
+                      <v-img :src="item.lover.avatar" width="20" height="20"></v-img>
+                    </router-link>
+                  </span>
+                    ·
+                    <span class="load-list" @click="showRoleDetail(item, 'new')">最新应援</span>
+                    ·
+                    <span class="load-list" @click="showRoleDetail(item, 'hot')">最多应援</span>
+                  </div>
+                </li>
+              </ul>
+              <v-modal
+                class="role-fans-modal"
+                v-model="openRolesModal"
+                :header-text="`${currentRole.name} · 应援团`"
+                :footer="false"
+                :scroll="fetchCurrentRoleFans"
+              >
+                <li
+                  v-for="item in currentRoleFans.data"
+                  :key="item.id"
+                >
+                  <router-link class="lover-user" :to="$alias.user(item.zone)">
+                    <img :src="$resize(item.avatar, { width: 80 })">
+                    <span v-text="item.nickname"></span>
+                    <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
+                    <span class="score" v-else>{{ item.score }}个金币</span>
+                  </router-link>
+                </li>
+              </v-modal>
+            </div>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <aside class="col-aside">
@@ -531,6 +718,12 @@
       },
       posts () {
         return this.$store.state.bangumi.posts
+      },
+      roles () {
+        return this.$store.state.bangumi.roles
+      },
+      currentRoleFans () {
+        return this.$store.state.cartoonRole.fans[this.focusRoleSort]
       }
     },
     data () {
@@ -544,22 +737,29 @@
         videoState: {
           loading: false,
           init: false
-        }
+        },
+        rolesState: {
+          loading: false,
+          init: false
+        },
+        openRolesModal: false,
+        loadingRoleFans: false,
+        focusRoleSort: 'new',
+        currentRole: {}
       }
     },
     methods: {
       async follow () {
-        if (this.$store.state.login) {
-          try {
-            await this.$store.dispatch('bangumi/follow', {
-              ctx: this,
-              id: this.id
-            })
-          } catch (e) {
-            this.$toast.error(e)
-          }
-        } else {
+        if (!this.$store.state.login) {
           this.$channel.$emit('sign-in')
+        }
+        try {
+          await this.$store.dispatch('bangumi/follow', {
+            ctx: this,
+            id: this.id
+          })
+        } catch (e) {
+          this.$toast.error(e)
         }
       },
       handleTabClick (tab) {
@@ -572,7 +772,29 @@
           if (!this.videoState.init) {
             this.getVideos()
           }
+        } else if (index === 2) {
+          if (!this.rolesState.init) {
+            this.getRoles()
+          }
         }
+      },
+      async getRoles () {
+        if (this.rolesState.loading) {
+          return
+        }
+        this.rolesState.loading = true
+        this.rolesState.init = true
+
+        try {
+          await this.$store.dispatch('bangumi/getRoles', {
+            ctx: this,
+            bangumiId: this.id
+          })
+        } catch (e) {
+          console.log(e)
+        }
+
+        this.rolesState.loading = false
       },
       async getVideos () {
         if (this.videoState.loading) {
@@ -607,6 +829,57 @@
         }
 
         this.postState.loading = false
+      },
+      showRoleDetail (role, sort) {
+        this.currentRole = role
+        this.openRolesModal = true
+        this.focusRoleSort = sort
+        this.fetchCurrentRoleFans(true)
+      },
+      switchFocusRoleTab (label) {
+        if (this.$store.state.cartoonRole.fans[label].length) {
+          return
+        }
+        this.fetchCurrentRoleFans()
+      },
+      async fetchCurrentRoleFans (reset = false) {
+        if (this.loadingRoleFans) {
+          return
+        }
+        this.loadingRoleFans = true
+        try {
+          await this.$store.dispatch('cartoonRole/getFansList', {
+            ctx: this,
+            bangumiId: this.id,
+            roleId: this.currentRole.id,
+            sort: this.focusRoleSort,
+            reset
+          })
+        } catch (e) {
+          console.log(e)
+        } finally {
+          this.loadingRoleFans = false
+        }
+      },
+      async handleStarRole (role) {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        if (!this.$store.state.user.coin) {
+          this.$toast.warning('金币不足')
+          return
+        }
+        try {
+          await this.$store.dispatch('bangumi/starRole', {
+            bangumiId: this.id,
+            roleId: role.id,
+            ctx: this,
+            hasStar: role.has_star
+          })
+          this.$store.commit('USE_COIN')
+          this.$toast.success(`+${role.has_star}s`)
+        } catch (e) {}
       }
     }
   }

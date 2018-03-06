@@ -7,6 +7,7 @@ import video from './video'
 import users from './users'
 import image from './image'
 import post from './post'
+import cartoonRole from './cartoonRole'
 
 import ImageApi from '~/api/imageApi'
 
@@ -29,6 +30,9 @@ export function createStore () {
         Object.keys(data).forEach(key => {
           state.user[key] = data[key]
         })
+      },
+      USE_COIN (state) {
+        state.user.coin && state.user.coin--
       }
     },
     actions: {
@@ -79,7 +83,8 @@ export function createStore () {
       video,
       users,
       image,
-      post
+      post,
+      cartoonRole
     }
   })
 }

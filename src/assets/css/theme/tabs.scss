@@ -114,6 +114,11 @@
       outline: none;
     }
 
+    &:last-child {
+      padding-right: 0;
+      margin-right: 20px;
+    }
+
     & .el-icon-close {
       border-radius: 50%;
       text-align: center;
