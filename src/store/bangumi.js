@@ -1,4 +1,5 @@
 import Api from '~/api/bangumiApi'
+import CartoonRoleApi from '~/api/cartoonRoleApi'
 
 const state = () => ({
   follows: Object.create(null),
@@ -23,14 +24,36 @@ const state = () => ({
     repeat: false,
     total: 0,
     fetched: false
+  },
+  roles: {
+    data: [],
+    take: 15,
+    noMore: false
   }
 })
 
 const mutations = {
+  SET_ROLES (state, data) {
+    state.roles.data = state.roles.data.concat(data)
+    state.roles.noMore = data.length < state.roles.take
+  },
   selectTag (state, index) {
     const tag = state.tags[index]
     tag.selected = !tag.selected
     state.tags[index] = tag
+  },
+  ADD_ROLE_STATE (state, { roleId, hasStar }) {
+    state.roles.data.forEach((item, index) => {
+      if (item.id === roleId) {
+        if (hasStar) {
+          state.roles.data[index].has_star++
+        } else {
+          state.roles.data[index].has_star = 1
+          state.roles.data[index].fans_count++
+        }
+        state.roles.data[index].star_count++
+      }
+    })
   },
   SET_FOLLOW (state, { followed, self }) {
     state.info.followed = followed
@@ -163,6 +186,23 @@ const actions = {
       data: data.list,
       total: data.total
     })
+  },
+  async getRoles ({ state, commit }, { bangumiId, ctx }) {
+    const api = new Api(ctx)
+    const data = await api.roles({
+      bangumiId,
+      seenIds: state.roles.data.length
+        ? state.roles.data.map(item => item.id).join(',')
+        : null
+    })
+    commit('SET_ROLES', data)
+  },
+  async starRole ({ commit }, { bangumiId, roleId, ctx, hasStar }) {
+    const api = new CartoonRoleApi(ctx)
+    try {
+      await api.star({ bangumiId, roleId })
+      commit('ADD_ROLE_STATE', { roleId, hasStar })
+    } catch (e) {}
   }
 }
 
