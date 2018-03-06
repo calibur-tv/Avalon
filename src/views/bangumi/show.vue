@@ -611,6 +611,7 @@
                   </div>
                 </li>
               </ul>
+              <no-content v-if="roles.noMore && !roles.data.length"></no-content>
               <v-modal
                 class="role-fans-modal"
                 v-model="openRolesModal"
