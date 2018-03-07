@@ -29,6 +29,7 @@
     "koa": "^2.3.0",
     "koa-logger": "^3.1.0",
     "koa-router": "^7.2.1",
+    "koa-static": "^4.0.2",
     "lodash": "^4.17.4",
     "lru-cache": "^4.1.1",
     "mint-ui": "^2.2.13",

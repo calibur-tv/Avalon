@@ -138,7 +138,7 @@ module.exports = {
     if (!isDev) {
       pluginArr = pluginArr.concat([
         new CopyWebpackPlugin([
-          {from: resolve('../src/static')}
+          { from: resolve('../static') }
         ]),
         new ExtractTextPlugin({
           filename: 'common.[chunkhash].css'
