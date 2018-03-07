@@ -42,6 +42,10 @@ if (isDev) {
     renderer = createRenderer(bundle, options)
   })
 } else {
+  app.use(require('koa-static')('./dist', {
+    maxage: 2592000
+  }))
+
   const bundle = require('./dist/vue-ssr-server-bundle.json')
   const clientManifest = require('./dist/vue-ssr-client-manifest.json')
 
