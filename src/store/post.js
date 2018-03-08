@@ -109,6 +109,10 @@ const mutations = {
     state.show.data.list.push(data)
     state.show.info.post.comment_count++
     state.show.data.total++
+    const images = data.images
+    if (images.length) {
+      state.show.info.post.previewImages = state.show.info.post.previewImages.concat(images)
+    }
   }
 }
 
