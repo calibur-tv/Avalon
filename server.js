@@ -10,6 +10,7 @@ const resolve = file => path.resolve(__dirname, file)
 const Koa = require('koa')
 const LRU = require('lru-cache')
 const Route = require('koa-router')
+const compress = require('koa-compress')
 
 const app = new Koa()
 const router = new Route()
@@ -35,6 +36,15 @@ const templatePath = resolve('./src/templates/200.template.html')
 const template = cacheHTML(200)
 
 let renderer
+
+app.use(compress({
+  // eslint-disable-next-line
+  filter: function (content_type) {
+    return /text/i.test(content_type)
+  },
+  threshold: 2048,
+  flush: require('zlib').Z_SYNC_FLUSH
+}))
 
 if (isDev) {
   app.use(require('koa-logger')())
