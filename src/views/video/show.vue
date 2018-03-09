@@ -8,10 +8,20 @@
       padding-right: 55px;
       overflow: hidden;
       position: relative;
+      min-height: 30px;
+
+      ul {
+        margin-bottom: 5px;
+      }
 
       li {
         float: left;
         margin: 0 8px $meta-margin-bottom 0;
+      }
+
+      .season-title {
+        padding-bottom: 10px;
+        margin-left: 10px;
       }
 
       .meta, .more {
@@ -79,7 +89,22 @@
         </h1>
       </nav>
       <div id="metas">
-        <ul>
+        <template v-if="season && showAll">
+          <template v-for="(metas, idx) in list">
+            <h6 class="season-title" v-text="season.name[idx]"></h6>
+            <ul>
+              <li v-for="(meta, index) in metas.data" :key="meta.id">
+                <a class="meta"
+                   :class="{ 'router-link-active' : $route.params.id == meta.id }"
+                   :style="{ width: `${maxWidth}px` }"
+                   :href="$alias.video(meta.id)">
+                  <span>{{ videoPackage.list.repeat ? index + 1 : meta.part }}</span>{{ meta.name }}
+                </a>
+              </li>
+            </ul>
+          </template>
+        </template>
+        <ul v-else>
           <li v-for="meta in sortVideos" :key="meta.id">
             <a class="meta"
                :class="{ 'router-link-active' : $route.params.id == meta.id }"
@@ -89,15 +114,17 @@
             </a>
           </li>
         </ul>
-        <div class="more" v-if="take < list.length" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
+        <div class="more" v-if="showMoreBtn" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
-      <v-video v-if="video"
-               :source="computeVideoSrc(video)"
-               :other-src="bangumi.others_site_video"
-               :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-               :poster="$resize(video.poster)"
-               @playing="handlePlaying">
-      </v-video>
+      <no-ssr>
+        <v-video
+          :source="computeVideoSrc(video)"
+          :other-src="bangumi.others_site_video"
+          :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+          :poster="$resize(video.poster)"
+          @playing="handlePlaying"
+        ></v-video>
+      </no-ssr>
       <div class="social">
         <v-share></v-share>
       </div>
@@ -108,8 +135,6 @@
 <script>
   import vVideo from '~/components/Video'
   import VideoApi from '~/api/videoApi'
-
-  const metaMarginRgt = 8
 
   export default {
     name: 'video-show',
@@ -135,19 +160,37 @@
       id () {
         return parseInt(this.$route.params.id, 10)
       },
+      videoPackage () {
+        return this.$store.state.video
+      },
       video () {
-        return this.$store.state.video.info
+        return this.videoPackage.info
       },
       list () {
-        return this.$store.state.video.list.videos
+        return this.videoPackage.list.videos
+      },
+      videos () {
+        if (!this.season) {
+          return this.list
+        }
+        let result = []
+        this.list.forEach(videos => {
+          result = result.concat(videos.data)
+        })
+        return result
       },
       bangumi () {
-        return this.$store.state.video.bangumi
+        return this.videoPackage.bangumi
       },
       sortVideos () {
         const begin = (this.page - 1) * this.take
-        const metas = this.$utils.orderBy(this.list, 'part')
-        return this.showAll ? metas : metas.slice(begin, begin + this.take)
+        return this.showAll ? this.videos : this.videos.slice(begin, begin + this.take)
+      },
+      season () {
+        return this.$store.state.video.season
+      },
+      showMoreBtn () {
+        return this.take < this.videos.length
       }
     },
     data () {
@@ -170,8 +213,8 @@
       },
       computeMaxWidth () {
         let maxlength = 0
-        this.list.forEach((meta) => {
-          const templength = meta.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
+        this.videos.forEach(video => {
+          const templength = video.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
           if (maxlength < templength) {
             maxlength = templength
           }
@@ -179,8 +222,8 @@
         this.maxWidth = 46 + maxlength * 8
       },
       computePage () {
-        this.take = Math.floor(document.getElementById('metas').offsetWidth / (this.maxWidth + metaMarginRgt)) * 2
-        this.list.forEach((meta) => {
+        this.take = Math.floor(document.getElementById('metas').offsetWidth / (this.maxWidth + 8)) * 2
+        this.videos.forEach((meta) => {
           if (meta.id === this.id) {
             this.part = meta.part
           }

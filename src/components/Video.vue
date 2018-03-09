@@ -7,9 +7,9 @@
     overflow: hidden;
     width: 100%;
     height: 100%;
-    border-bottom: 1px solid $color-gray-normal;
     position: relative;
     min-height: 600px;
+    box-shadow: 0 1px 3px rgba(26,26,26,.1);
 
     &.vue-pwa-video-flex {
       display: flex;
@@ -131,8 +131,6 @@
     .vue-pwa-video-tool {
       height: $tool-height;
       background-color: $color-white;
-      border-left: 1px solid $color-gray-normal;
-      border-right: 1px solid $color-gray-normal;
       font-size: 13px;
       display: flex;
       z-index: 3;
