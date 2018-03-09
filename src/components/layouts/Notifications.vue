@@ -12,7 +12,7 @@
     li {
       font-size: 13px;
       width: 100%;
-      max-height: 50px;
+      min-height: 50px;
       line-height: 20px;
       padding: 15px 20px;
       background-color: $color-gray-light;
