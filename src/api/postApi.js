@@ -7,8 +7,8 @@ export default class extends BaseApi {
     })
   }
 
-  show ({ id, seenIds, take, only }) {
-    return this.http.post(`post/${id}/show`, { seenIds, take, only })
+  show ({ id, seenIds, take, only, replyId }) {
+    return this.http.post(`post/${id}/show`, { seenIds, take, only, replyId })
   }
 
   reply ({ postId, images, content, geetest }) {
