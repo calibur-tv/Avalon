@@ -117,13 +117,15 @@ const mutations = {
 }
 
 const actions = {
-  async getPost ({ state, commit }, { id, ctx, only }) {
+  async getPost ({ state, commit }, { id, ctx, only, reply }) {
     const api = new Api(ctx)
+    const length = state.show.data.list.length
     const data = await api.show({
       id,
       only,
-      seenIds: state.show.data.list.length ? state.show.data.list.map(item => item.id).join(',') : null,
-      take: state.show.take
+      seenIds: length ? state.show.data.list.map(item => item.id).join(',') : null,
+      take: state.show.take,
+      replyId: length ? null : reply
     })
     commit('setPost', data)
   },

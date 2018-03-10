@@ -239,7 +239,8 @@
         ctx,
         only: route.query.only
           ? parseInt(route.query.only, 10) ? 1 : 0
-          : 0
+          : 0,
+        reply: route.query.reply
       })
     },
     components: {
@@ -255,7 +256,7 @@
         return this.$store.state.post.show
       },
       list () {
-        return this.$utils.orderBy(this.resource.data.list, 'id', 'asc')
+        return this.$utils.orderBy(this.resource.data.list, 'floor_count')
       },
       total () {
         return this.resource.data.total
@@ -371,10 +372,24 @@
           this.$toast.error(err)
         }
         this.loadingToggleMark = false
+      },
+      scrollToReply () {
+        const replyId = this.$route.query.reply
+        if (!replyId) {
+          return
+        }
+        const reply = document.getElementById(`post-reply-${replyId}`)
+        if (!reply) {
+          return
+        }
+        this.$nextTick(() => {
+          this.$scrollToY(reply.offsetTop, 400)
+        })
       }
     },
     mounted () {
       this.$channel.$on('side-bar-click-post', this.scrollToReplyForm)
+      this.scrollToReply()
     }
   }
 </script>

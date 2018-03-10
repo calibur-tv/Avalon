@@ -1,5 +1,5 @@
 <template>
-  <el-row class="post-item">
+  <el-row class="post-item" :id="`post-reply-${post.id}`">
     <el-col class="user" :span="5">
       <a :href="$alias.user(post.user.zone)" target="_blank">
         <v-img class="avatar" :src="post.user.avatar" :width="80" :height="80"></v-img>
