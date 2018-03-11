@@ -9,6 +9,8 @@ import {
 } from 'element-ui'
 import './validate'
 import flvjs from 'flv.js'
+import QRCode from '~/assets/js/qrcode'
+import Clipboard from '~/assets/js/clipboard'
 
 Vue.use({
   install (Vue, options) {
@@ -19,6 +21,16 @@ Vue.use({
     Vue.prototype.$backdrop = new Backdrop()
 
     Vue.prototype.$toast = Notification
+
+    Vue.prototype.$copy = Clipboard
+
+    Vue.prototype.$QRCode = (el, text, options = { width: 170, height: 170 }) => {
+      return new QRCode(el, {
+        text,
+        width: options.width,
+        height: options.height
+      })
+    }
 
     Vue.prototype.$captcha = captcha
 

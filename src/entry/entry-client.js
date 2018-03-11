@@ -17,21 +17,6 @@ if (window.__INITIAL_STATE__) {
 window.M = Object.create(null)
 
 router.afterEach((to) => {
-  const ele = document.getElementById('share')
-  if (ele && ele.getAttribute('data-new') === null) {
-    setTimeout(() => {
-      ele.innerHTML = ''
-      ele.initialized = false
-      // eslint-disable-next-line
-      new socialShare(ele, {
-        url: window.location.href.split('?')[0],
-        title: document.title,
-        source: 'calibur 天下漫友是一家',
-        description: document.getElementsByTagName('meta')['description'].content,
-        disabled: ['google', 'twitter', 'facebook', 'linkedin', 'diandian']
-      })
-    }, 0)
-  }
   if (!dev) {
     _hmt.push(['_trackPageview', to.fullPath]) // eslint-disable-line no-undef
   }

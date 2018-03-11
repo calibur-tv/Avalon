@@ -91,7 +91,7 @@
         }
       }
 
-      #share {
+      .v-share {
         position: absolute;
         right: 40px;
         bottom: 10px;
@@ -463,7 +463,7 @@
           </button>
         </div>
       </div>
-      <v-share></v-share>
+      <v-share type="panel"></v-share>
     </section>
     <div class="container">
       <div class="col-main">

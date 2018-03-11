@@ -69,7 +69,7 @@
     .social {
       margin-top: 20px;
 
-      #share {
+      .v-share {
         height: 40px;
         float: right;
       }
@@ -126,7 +126,7 @@
         ></v-video>
       </no-ssr>
       <div class="social">
-        <v-share></v-share>
+        <v-share type="panel"></v-share>
       </div>
     </div>
   </div>
