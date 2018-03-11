@@ -22,7 +22,7 @@
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge,chrome=1' },
         { name: 'force-rendering', content: 'webkit' },
         { hid: 'description', name: 'description', content: '一个兴趣使然的二次元综合网站' },
-        { hid: 'keywords', name: 'keywords', content: 'calibur，咖喱棒, 动漫，ACG，二次元，视频，番剧，动画，新番，神作, 排行榜, 贴吧, 盖楼, 应援, 帖子' }
+        { hid: 'keywords', name: 'keywords', content: 'calibur，咖喱棒, 动漫，ACG，二次元，视频，番剧，动画，新番，神作, 排行榜, 贴吧, 盖楼, 应援, 帖子, 在线' }
       ],
       link: [
         { rel: 'shortcut icon', type: 'image/x-icon', href: `${qiniu.host}/favicon.ico` }

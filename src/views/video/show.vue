@@ -143,7 +143,7 @@
         title: `${this.bangumi.name} : 第${this.video.part}话 ${this.video.name} - 视频`,
         meta: [
           { hid: 'description', name: 'description', content: this.bangumi.summary },
-          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，第${this.video.part}话，${this.video.name}` }
+          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，第${this.video.part}话，${this.video.name}，在线观看 动画片大全 动漫在线播放 日本动漫 好看的动漫 二次元网站` }
         ]
       }
     },
