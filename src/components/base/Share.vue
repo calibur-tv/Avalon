@@ -149,7 +149,18 @@
     }
 
     &.v-share-button {
+      button {
+        display: block;
+        width: 100%;
+        padding: 0 20px;
+        height: 40px;
+        font-size: 14px;
+        text-align: left;
 
+        &:hover {
+          background: #f6f6f6;
+        }
+      }
     }
 
     &.v-share-panel {
@@ -206,9 +217,38 @@
 </style>
 
 <template>
-  <div class="v-share v-share-button" v-if="type === 'button'">
+  <div class="v-share" v-if="type === 'button'">
+    <el-popover
+      ref="popover2"
+      placement="top"
+      width="120"
+      trigger="click"
+      popper-class="v-share v-share-button"
+    >
+      <button v-if="canRender" :data-clipboard-text="shareUrl" ref="copy">
+        <i class="iconfont ic-link"></i>
+        复制链接
+      </button>
+      <button @click="makeUrl('weibo')">
+        <i class="iconfont ic-weibo"></i>
+        微博
+      </button>
+      <button @click="makeUrl('qq')">
+        <i class="iconfont ic-qq"></i>
+        QQ
+      </button>
+      <button @click="makeUrl('douban')">
+        <i class="iconfont ic-douban"></i>
+        豆瓣
+      </button>
+      <button @click="makeUrl('qzone')">
+        <i class="iconfont ic-qzone"></i>
+        QQ空间
+      </button>
+    </el-popover>
     <slot>
-      <button>
+      <button class="share-btn" v-popover:popover2>
+        <i class="iconfont icon-emizhifeiji"></i>
         分享
       </button>
     </slot>
@@ -270,7 +310,7 @@
     computed: {
       shareUrl () {
         return this.url
-          ? this.url
+          ? `${window.location.origin}${this.url}`
           : `${window.location.origin}${this.$route.fullPath}`
       }
     },
@@ -307,6 +347,9 @@
         window.open(result)
       },
       makeWechatQrCode () {
+        if (this.type === 'button') {
+          return
+        }
         this.$nextTick(() => {
           this.$QRCode(this.$refs.qr, this.shareUrl, { width: 105, height: 105 })
         })
