@@ -82,13 +82,17 @@
           font-size: 12px;
 
           .info-bar {
-            height: 30px;
-            line-height: 30px;
+            height: 40px;
+            line-height: 40px;
 
             .delete-btn,
             .floor-count,
             .like-btn {
               margin-right: 20px;
+            }
+
+            .v-share {
+              float: right;
             }
           }
         }
@@ -188,6 +192,10 @@
                 <div class="info-bar">
                   <span class="floor-count">1楼</span>
                   <v-time v-model="post.created_at"></v-time>
+                  <v-share
+                    type="panel"
+                    :desc="post.desc"
+                  ></v-share>
                 </div>
               </div>
             </el-col>
