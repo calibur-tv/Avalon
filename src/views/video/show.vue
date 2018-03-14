@@ -205,6 +205,7 @@
     },
     methods: {
       computeVideoSrc (video) {
+        // return 'https://video.calibur.tv/bangumi/fullmetal-alchemist/video/720/81.Flv'
         return this.bangumi.others_site_video
           ? video.url
           : video.resource

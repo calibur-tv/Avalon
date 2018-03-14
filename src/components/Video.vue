@@ -503,7 +503,7 @@
       },
       handleSeek (val) {
         this.video.currentTime = val
-        if (this.video.paused) {
+        if (!this.state.playing) {
           this.handlePlay()
         }
       },
