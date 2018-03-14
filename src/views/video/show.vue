@@ -205,11 +205,15 @@
     },
     methods: {
       computeVideoSrc (video) {
-        // return 'https://video.calibur.tv/bangumi/fullmetal-alchemist/video/720/81.Flv'
+//        return 'https://video.calibur.tv/bangumi/fullmetal-alchemist/video/720/81.Flv'
         return this.bangumi.others_site_video
           ? video.url
           : video.resource
-            ? video.resource.video[720].src || video.url
+            ? (
+              video.resource.video[720] && video.resource.video[720].src
+            ) || (
+              video.resource.video[1080] && video.resource.video[1080].src
+            ) || video.url
             : video.url
       },
       computeMaxWidth () {
