@@ -47,7 +47,12 @@ module.exports = {
               loaders: {
                 scss: [
                   'vue-style-loader',
-                  'css-loader',
+                  {
+                    loader: 'css-loader',
+                    options: isDev ? {} : {
+                      minimize: true
+                    }
+                  },
                   'sass-loader',
                   {
                     loader: 'sass-resources-loader',
@@ -60,6 +65,10 @@ module.exports = {
                   }
                 ],
                 i18n: '@kazupon/vue-i18n-loader'
+              },
+              cssModules: {
+                localIdentName: isDev ? '[path][name]---[local]---[hash:base64:5]' : '[local]-[hash:base64:5]',
+                camelCase: true
               }
             }
           }
@@ -89,10 +98,17 @@ module.exports = {
       {
         test: /\.(scss|css)$/,
         use: isDev
-          ? ['vue-style-loader', 'css-loader', 'sass-loader']
+          ? ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
           : ExtractTextPlugin.extract({
             fallback: 'vue-style-loader',
-            use: ['css-loader?minimize', 'postcss-loader', 'sass-loader']
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  minimize: true,
+                  importLoaders: 2
+                }
+              }, 'postcss-loader', 'sass-loader']
           })
       },
       {
