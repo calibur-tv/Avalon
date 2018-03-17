@@ -599,6 +599,7 @@
       async follow () {
         if (!this.$store.state.login) {
           this.$channel.$emit('sign-in')
+          return
         }
         try {
           await this.$store.dispatch('bangumi/follow', {
