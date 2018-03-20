@@ -22,7 +22,7 @@ module.exports = {
       '~': resolve('../src'),
       'env': resolve('../.env.js'),
       'img': resolve('../src/assets/img'),
-      'static': resolve('../src/static')
+      'static': resolve('../static')
     },
     extensions: ['.js', '.vue', '.scss', '.css']
   },
