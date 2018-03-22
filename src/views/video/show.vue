@@ -66,12 +66,15 @@
       }
     }
 
+    .vue-pwa-video {
+      margin-bottom: 30px;
+    }
+
     .bangumi-panel {
       margin-left: 30px;
     }
 
     .v-share {
-      margin-top: 20px;
       height: 40px;
       float: right;
     }
