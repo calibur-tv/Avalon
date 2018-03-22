@@ -10,7 +10,7 @@
 
     .avatar {
       margin: 0 auto 8px;
-      padding-top: 26px;
+      padding-top: 20px;
       overflow: hidden;
       width: 90px;
       height: 90px;
@@ -36,7 +36,7 @@
     }
 
     button {
-      margin-top: 15px;
+      margin-top: 5px;
     }
   }
 </style>
