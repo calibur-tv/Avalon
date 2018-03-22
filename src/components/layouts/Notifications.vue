@@ -98,11 +98,14 @@
         }
         this.loading = true
 
-        await this.$store.dispatch('users/getNotifications', {
-          ctx: this,
-          init: false
-        })
-        this.loading = false
+        try {
+          await this.$store.dispatch('users/getNotifications', {
+            ctx: this,
+            init: false
+          })
+        } finally {
+          this.loading = false
+        }
       }
     }
   }

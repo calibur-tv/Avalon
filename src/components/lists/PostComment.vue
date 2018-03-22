@@ -144,30 +144,45 @@
     },
     methods: {
       async getComments () {
+        if (this.loadingMore) {
+          return
+        }
         this.loadingMore = true
-        await this.$store.dispatch('post/getComments', {
-          postId: this.post.id
-        })
-        this.loadingMore = false
+
+        try {
+          await this.$store.dispatch('post/getComments', {
+            ctx: this,
+            postId: this.post.id
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loadingMore = false
+        }
       },
       async submit () {
         if (!this.$store.state.login) {
           this.$channel.$emit('sign-in')
           return
         }
-        if (!this.content) {
+        if (!this.content || this.loadingSubmit) {
           return
         }
         this.loadingSubmit = true
-        await this.$store.dispatch('post/setComment', {
-          ctx: this,
-          postId: this.post.id,
-          targetUserId: this.isMine ? 0 : this.post.user.id,
-          content: this.content
-        })
-        this.openComment = false
-        this.content = ''
-        this.loadingSubmit = false
+        try {
+          await this.$store.dispatch('post/setComment', {
+            ctx: this,
+            postId: this.post.id,
+            targetUserId: this.isMine ? 0 : this.post.user.id,
+            content: this.content
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.openComment = false
+          this.content = ''
+          this.loadingSubmit = false
+        }
       }
     }
   }

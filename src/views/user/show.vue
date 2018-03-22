@@ -910,7 +910,7 @@
       },
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
-        await this.$store.dispatch('getUpToken')
+        await this.$store.dispatch('getUpToken', this)
         const key = `user/${this.user.id}/avatar/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         formData.append('token', this.user.uptoken.upToken)
         formData.append('key', key)
@@ -955,7 +955,7 @@
       },
       async submitBannerChange () {
         this.bannerSelector.loading = true
-        await this.$store.dispatch('getUpToken')
+        await this.$store.dispatch('getUpToken', this)
         const key = `user/${this.user.id}/banner/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
         const formData = new FormData()
         formData.append('file', this.bannerSelector.file)
@@ -986,14 +986,17 @@
         }
         this.signDayLoading = true
 
-        await this.$store.dispatch('users/daySign', {
-          ctx: this
-        })
-        this.$store.commit('SET_USER_INFO', {
-          daySign: true,
-          coin: this.coinCount + 1
-        })
-        this.signDayLoading = false
+        try {
+          await this.$store.dispatch('users/daySign', {
+            ctx: this
+          })
+          this.$store.commit('SET_USER_INFO', {
+            daySign: true,
+            coin: this.coinCount + 1
+          })
+        } finally {
+          this.signDayLoading = false
+        }
       }
     }
   }

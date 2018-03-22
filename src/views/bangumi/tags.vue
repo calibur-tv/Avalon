@@ -221,8 +221,9 @@
           })
         } catch (e) {
           this.page--
+        } finally {
+          this.loading = false
         }
-        this.loading = false
       }
     }
   }
