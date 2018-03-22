@@ -33,7 +33,8 @@
         .avatar {
           display: block;
           margin: 20px auto 5px auto;
-          @include avatar(80px)
+          border: 1px solid $color-gray-normal;
+          @include avatar(80px);
         }
 
         .nickname {
@@ -108,20 +109,9 @@
     .col-aside {
       padding: 20px;
 
-      .bangumi {
-        text-align: center;
-
-        .avatar {
-          width: 80px;
-          height: 80px;
-          display: block;
-          margin: 0 auto 10px auto;
-
-          img {
-            width: 100%;
-            height: auto;
-          }
-        }
+      .bangumi-panel {
+        margin-top: 30px;
+        margin-left: 30px;
       }
     }
 
@@ -139,7 +129,7 @@
   <div id="post-show">
     <v-banner></v-banner>
     <div class="container">
-      <section class="col-main">
+      <section class="col-main clearfix">
         <header>
           <div class="title-wrap">
             <h1 class="oneline" v-text="post.title"></h1>
@@ -171,10 +161,12 @@
               </div>
               <div class="text-area" v-html="post.content"></div>
               <div class="likes-wrap">
-                <el-button type="danger"
-                           @click="toggleLike"
-                           :loading="loadingToggleLike"
-                           round>
+                <el-button
+                  type="danger"
+                  @click="toggleLike"
+                  :loading="loadingToggleLike"
+                  round
+                >
                   <i class="iconfont icon-guanzhu"></i>
                   {{ post.liked ? '已喜欢' : '喜欢' }}{{ post.like_count ? `(${post.like_count})` : '' }}
                 </el-button>
@@ -200,36 +192,39 @@
               </div>
             </el-col>
           </el-row>
-          <post-item v-for="item in list"
-                     :key="item.id"
-                     :post="item"
-                     @delete="deletePost(item.id)"
+          <post-item
+            v-for="item in list"
+            :key="item.id"
+            :post="item"
+            @delete="deletePost(item.id)"
           ></post-item>
         </main>
         <el-col :span="19" :offset="5">
-          <el-button :loading="loadingLoadMore"
-                     v-if="!noMore"
-                     class="load-post-btn"
-                     @click="getPosts"
-                     type="info"
-                     plain
-          >{{ loadingLoadMore ? '加载中' : '加载更多' }}</el-button>
+          <el-button
+            :loading="loadingLoadMore"
+            v-if="!noMore"
+            class="load-post-btn"
+            @click="getPosts"
+            type="info"
+            plain
+          >
+            {{ loadingLoadMore ? '加载中' : '加载更多' }}
+          </el-button>
           <div id="post-reply-form">
-            <post-create-form :post-id="post.id"
-                              :bangumi-id="bangumi.id"
-                              :master-id="masterId"
-                              id="test"
-            ></post-create-form>
+            <post-create-form :is-reply="true"></post-create-form>
           </div>
         </el-col>
       </section>
       <aside class="col-aside">
-        <div class="bangumi">
-          <a class="avatar" :href="$alias.bangumi(bangumi.id)" target="_blank">
-            <v-img :src="bangumi.avatar" width="80" height="80"></v-img>
-          </a>
-          <a :href="$alias.bangumi(bangumi.id)" target="_blank">《{{ bangumi.name }}》</a>
-        </div>
+        <v-bangumi-panel
+          class="bangumi-panel"
+          :id="bangumi.id"
+          :avatar="bangumi.avatar"
+          :name="bangumi.name"
+          :followed="bangumi.followed"
+          :summary="bangumi.summary"
+          @follow="handleBangumiFollow"
+        ></v-bangumi-panel>
       </aside>
     </div>
   </div>
@@ -393,11 +388,20 @@
         this.$nextTick(() => {
           this.$scrollToY(reply.offsetTop, 400)
         })
+      },
+      handleBangumiFollow (result) {
+        this.$store.commit('post/followBangumi', result)
       }
     },
     mounted () {
-      this.$channel.$on('side-bar-click-post', this.scrollToReplyForm)
       this.scrollToReply()
+      this.$nextTick(() => {
+        this.$channel.$emit('load-create-post-bangumi', {
+          id: this.bangumi.id,
+          name: this.bangumi.name,
+          avatar: this.bangumi.avatar
+        })
+      })
     }
   }
 </script>

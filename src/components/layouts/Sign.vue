@@ -510,6 +510,9 @@
                 },
                 error: () => {
                   this.signIn.captcha = false
+                },
+                close: () => {
+                  this.signIn.captcha = false
                 }
               })
             }
@@ -537,6 +540,9 @@
                   })
                 },
                 error: () => {
+                  this.signUp.captcha = false
+                },
+                close: () => {
                   this.signUp.captcha = false
                 }
               })
@@ -572,6 +578,9 @@
                   })
                 },
                 error: () => {
+                  this.resetPassword.captcha = false
+                },
+                close: () => {
                   this.resetPassword.captcha = false
                 }
               })
