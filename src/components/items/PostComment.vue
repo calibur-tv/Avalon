@@ -111,19 +111,24 @@
           this.$channel.$emit('sign-in')
           return
         }
-        if (!this.content) {
+        if (!this.content || this.loading) {
           return
         }
         this.loading = true
-        await this.$store.dispatch('post/setComment', {
-          ctx: this,
-          postId: this.postId,
-          targetUserId: this.comment.from_user_id,
-          content: this.content
-        })
-        this.openComment = false
-        this.content = ''
-        this.loading = false
+        try {
+          await this.$store.dispatch('post/setComment', {
+            ctx: this,
+            postId: this.postId,
+            targetUserId: this.comment.from_user_id,
+            content: this.content
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.openComment = false
+          this.content = ''
+          this.loading = false
+        }
       },
       deleteComment () {
         this.$confirm('删除后无法找回, 是否继续?', '提示', {

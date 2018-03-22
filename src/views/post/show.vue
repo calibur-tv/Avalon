@@ -322,13 +322,19 @@
         }).catch(() => {})
       },
       async getPosts () {
+        if (this.loadingLoadMore) {
+          return
+        }
         this.loadingLoadMore = true
-        await this.$store.dispatch('post/getPost', {
-          id: this.post.id,
-          ctx: this,
-          only: this.onlySeeMaster
-        })
-        this.loadingLoadMore = false
+        try {
+          await this.$store.dispatch('post/getPost', {
+            id: this.post.id,
+            ctx: this,
+            only: this.onlySeeMaster
+          })
+        } finally {
+          this.loadingLoadMore = false
+        }
       },
       async toggleLike () {
         if (!this.$store.state.login) {
@@ -350,8 +356,9 @@
           })
         } catch (err) {
           this.$toast.error(err)
+        } finally {
+          this.loadingToggleLike = false
         }
-        this.loadingToggleLike = false
       },
       async toggleMark () {
         if (!this.$store.state.login) {
@@ -373,8 +380,9 @@
           })
         } catch (err) {
           this.$toast.error(err)
+        } finally {
+          this.loadingToggleMark = false
         }
-        this.loadingToggleMark = false
       },
       scrollToReply () {
         const replyId = this.$route.query.reply
@@ -395,13 +403,6 @@
     },
     mounted () {
       this.scrollToReply()
-      this.$nextTick(() => {
-        this.$channel.$emit('load-create-post-bangumi', {
-          id: this.bangumi.id,
-          name: this.bangumi.name,
-          avatar: this.bangumi.avatar
-        })
-      })
     }
   }
 </script>

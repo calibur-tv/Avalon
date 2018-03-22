@@ -649,9 +649,9 @@
           })
         } catch (e) {
           console.log(e)
+        } finally {
+          this.rolesState.loading = false
         }
-
-        this.rolesState.loading = false
       },
       async getVideos () {
         if (this.videoState.loading) {
@@ -664,9 +664,9 @@
           await this.$store.dispatch('bangumi/getVideos', this.id)
         } catch (e) {
           console.log(e)
+        } finally {
+          this.videoState.loading = false
         }
-
-        this.videoState.loading = false
       },
       async getPosts () {
         if (this.postState.loading || this.posts.noMore) {
@@ -683,9 +683,9 @@
           })
         } catch (e) {
           console.log(e)
+        } finally {
+          this.postState.loading = false
         }
-
-        this.postState.loading = false
       },
       showRoleDetail (role, sort) {
         this.currentRole = role

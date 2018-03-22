@@ -210,8 +210,11 @@
           return
         }
         this.loading = true
-        await this.$store.dispatch('bangumi/getTimeline')
-        this.loading = false
+        try {
+          await this.$store.dispatch('bangumi/getTimeline')
+        } finally {
+          this.loading = false
+        }
       }
     }
   }

@@ -100,8 +100,7 @@
           token: ''
         },
         images: [],
-        exceed: 6,
-        loadBangumi: null
+        exceed: 6
       }
     },
     computed: {
@@ -189,10 +188,6 @@
           zone: this.$store.state.user.zone,
           self: true
         })
-        console.log(this.loadBangumi)
-        if (this.loadBangumi && bangumis.every(_ => _.id !== this.appendBangumi.id)) {
-          bangumis.unshift(this.appendBangumi)
-        }
         bangumis.forEach(item => {
           if (item.id === this.bangumiId) {
             this.forms.bangumiId = this.bangumiId
@@ -242,7 +237,7 @@
         return true
       },
       async getUpToken () {
-        await this.$store.dispatch('getUpToken')
+        await this.$store.dispatch('getUpToken', this)
         this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
       }
     },
@@ -253,9 +248,6 @@
       if (this.$store.state.login) {
         this.getUpToken()
       }
-      this.$channel.$on('load-create-post-bangumi', (data) => {
-        this.loadBangumi = data
-      })
     }
   }
 </script>

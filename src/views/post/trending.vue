@@ -77,10 +77,14 @@
         }
         this.loading = true
 
-        await this.$store.dispatch('post/getTrending', {
-          sort: this.sort
-        })
-        this.loading = false
+        try {
+          await this.$store.dispatch('post/getTrending', {
+            ctx: this,
+            sort: this.sort
+          })
+        } finally {
+          this.loading = false
+        }
       }
     }
   }
