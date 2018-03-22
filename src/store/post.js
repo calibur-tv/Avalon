@@ -113,6 +113,9 @@ const mutations = {
     if (images.length) {
       state.show.info.post.previewImages = state.show.info.post.previewImages.concat(images)
     }
+  },
+  followBangumi (state, result) {
+    state.show.info.bangumi.followed = result
   }
 }
 

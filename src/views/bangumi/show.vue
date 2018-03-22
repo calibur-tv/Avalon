@@ -330,9 +330,11 @@
         <h1 class="title" v-text="info.name"></h1>
         <p class="summary" v-text="info.summary"></p>
         <div class="console">
-          <button class="follow"
-                  @click="follow"
-                  :class="[ info.followed ? 'is-followed' : 'not-follow' ]">
+          <button
+            class="follow"
+            @click="follow"
+            :class="[ info.followed ? 'is-followed' : 'not-follow' ]"
+          >
             <i class="iconfont icon-guanzhu"></i>
             {{ info.followed ? '已关注' : '关注' }}
           </button>
@@ -592,7 +594,8 @@
         openRolesModal: false,
         loadingRoleFans: false,
         focusRoleSort: 'new',
-        currentRole: {}
+        currentRole: {},
+        loadingFollow: false
       }
     },
     methods: {
@@ -601,6 +604,10 @@
           this.$channel.$emit('sign-in')
           return
         }
+        if (this.loadingFollow) {
+          return
+        }
+        this.loadingFollow = true
         try {
           await this.$store.dispatch('bangumi/follow', {
             ctx: this,
@@ -608,6 +615,8 @@
           })
         } catch (e) {
           this.$toast.error(e)
+        } finally {
+          this.loadingFollow = false
         }
       },
       handleTabClick (tab) {

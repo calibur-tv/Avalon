@@ -57,7 +57,7 @@
 <template>
   <div id="side-bar-container" class="container">
     <div id="side-bar" v-show="$route.name !== 'homepage'">
-      <el-tooltip placement="left" effect="dark" :content="inPostShow ? '回复' : '发帖'">
+      <el-tooltip placement="left" effect="dark" content="发帖">
         <div class="item icon-fatie1" @click="handlePostClick"></div>
       </el-tooltip>
       <el-tooltip placement="left" effect="dark" content="反馈">
@@ -69,11 +69,13 @@
         </transition>
       </el-tooltip>
     </div>
-    <v-modal class="create-post-modal"
-             v-model="showPostModal"
-             :footer="false"
-             :header-text="inPostShow ? '回复' : '发帖'">
-      <v-post :post-id="postId" :bangumi-id="bangumiId" @submit="showPostModal = false"></v-post>
+    <v-modal
+      v-model="showPostModal"
+      class="create-post-modal"
+      header-text="发帖"
+      :footer="false"
+    >
+      <v-post @submit="showPostModal = false"></v-post>
     </v-modal>
     <v-modal v-model="showFeedModal" :footer="false" header-text="用户反馈">
       <v-feedback @submit="showFeedModal = false"></v-feedback>
@@ -103,26 +105,11 @@
       },
       handlePostClick () {
         if (!this.$store.state.login) {
+          this.$toast.info('继续操作前请先登录')
           this.$channel.$emit('sign-in')
           return
         }
-        this.inPostShow
-          ? this.$channel.$emit('side-bar-click-post')
-          : this.showPostModal = true
-      }
-    },
-    computed: {
-      inPostShow () {
-        return this.$route.name === 'post-show'
-      },
-      inBangumiShow () {
-        return this.$route.name === 'bangumi-show'
-      },
-      postId () {
-        return this.inPostShow ? parseInt(this.$route.params.id, 10) : 0
-      },
-      bangumiId () {
-        return this.inBangumiShow ? parseInt(this.$route.params.id, 10) : 0
+        this.showPostModal = true
       }
     },
     mounted () {

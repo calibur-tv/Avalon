@@ -14,38 +14,53 @@
 </style>
 
 <template>
-  <el-form class="create-post-form" :model="forms" :rules="rules" ref="forms" label-width="80px">
-    <template v-if="!postId">
+  <el-form
+    class="create-post-form"
+    :model="forms"
+    :rules="rules"
+    ref="forms"
+    label-width="80px"
+  >
+    <template v-if="!postId || !isReply">
       <el-form-item label="标题" prop="title">
         <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
       </el-form-item>
       <el-form-item label="番剧" prop="bangumiId">
         <el-select v-model="forms.bangumiId" placeholder="请选择番剧">
-          <el-option v-for="item in bangumis"
-                     :label="item.name"
-                     :key="item.id"
-                     :value="item.id"
+          <el-option
+            v-for="item in bangumis"
+            :label="item.name"
+            :key="item.id"
+            :value="item.id"
           ></el-option>
         </el-select>
       </el-form-item>
     </template>
     <el-form-item label="图片">
-      <el-upload action="https://upload.qiniup.com"
-                 multiple
-                 list-type="picture-card"
-                 ref="uploader"
-                 :data="uploadHeaders"
-                 :on-error="handleError"
-                 :on-remove="handleRemove"
-                 :on-success="handleSuccess"
-                 :on-exceed="handleExceed"
-                 :limit="exceed"
-                 :before-upload="beforeUpload">
+      <el-upload
+        action="https://upload.qiniup.com"
+        multiple
+        list-type="picture-card"
+        ref="uploader"
+        :data="uploadHeaders"
+        :on-error="handleError"
+        :on-remove="handleRemove"
+        :on-success="handleSuccess"
+        :on-exceed="handleExceed"
+        :limit="exceed"
+        :before-upload="beforeUpload"
+      >
         <i class="el-icon-plus"></i>
       </el-upload>
     </el-form-item>
     <el-form-item label="内容" prop="content">
-      <el-input type="textarea" placeholder="500字以内" resize="none" :rows="10" v-model.trim="forms.content"></el-input>
+      <el-input
+        type="textarea"
+        placeholder="500字以内"
+        resize="none"
+        :rows="10"
+        v-model.trim="forms.content"
+      ></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">确认</el-button>
@@ -57,13 +72,9 @@
   export default {
     name: 'create-post-form',
     props: {
-      bangumiId: {
-        type: Number,
-        default: 0
-      },
-      postId: {
-        type: Number,
-        default: 0
+      isReply: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -89,10 +100,17 @@
           token: ''
         },
         images: [],
-        exceed: 6
+        exceed: 6,
+        loadBangumi: null
       }
     },
     computed: {
+      postId () {
+        return this.$route.name === 'post-show' ? parseInt(this.$route.params.id, 10) : 0
+      },
+      bangumiId () {
+        return this.$route.name === 'bangumi-show' ? parseInt(this.$route.params.id, 10) : 0
+      },
       formatContent () {
         let content = this.forms.content
         while (content.match('\n\n') !== null) {
@@ -117,13 +135,14 @@
     methods: {
       submit () {
         if (!this.$store.state.login) {
+          this.$toast.info('继续操作前请先登录')
           this.$channel.$emit('sign-in')
           return
         }
         this.$refs.forms.validate((valid) => {
           if (valid) {
             this.$captcha(async ({ data }) => {
-              if (this.postId) {
+              if (this.postId && this.isReply) {
                 try {
                   await this.$store.dispatch('post/reply', {
                     postId: this.postId - 0,
@@ -154,10 +173,7 @@
                   this.$refs.forms.resetFields()
                   this.$emit('submit')
                   this.$toast.success('发布成功！')
-                  this.$router.push({
-                    name: 'post-show',
-                    params: { id: id.toString() }
-                  })
+                  window.location = this.$alias.post(id)
                 } catch (err) {
                   this.$toast.error(err)
                 }
@@ -169,11 +185,15 @@
         })
       },
       async getUserFollowedBangumis () {
-        const data = await this.$store.dispatch('users/getFollowBangumis', {
+        const bangumis = await this.$store.dispatch('users/getFollowBangumis', {
           zone: this.$store.state.user.zone,
           self: true
         })
-        data.forEach(item => {
+        console.log(this.loadBangumi)
+        if (this.loadBangumi && bangumis.every(_ => _.id !== this.appendBangumi.id)) {
+          bangumis.unshift(this.appendBangumi)
+        }
+        bangumis.forEach(item => {
           if (item.id === this.bangumiId) {
             this.forms.bangumiId = this.bangumiId
           }
@@ -227,12 +247,15 @@
       }
     },
     mounted () {
-      if (!this.postId) {
+      if (!this.postId || !this.isReply) {
         this.getUserFollowedBangumis()
       }
       if (this.$store.state.login) {
         this.getUpToken()
       }
+      this.$channel.$on('load-create-post-bangumi', (data) => {
+        this.loadBangumi = data
+      })
     }
   }
 </script>

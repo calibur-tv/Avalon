@@ -66,13 +66,14 @@
       }
     }
 
-    .social {
-      margin-top: 20px;
+    .bangumi-panel {
+      margin-left: 30px;
+    }
 
-      .v-share {
-        height: 40px;
-        float: right;
-      }
+    .v-share {
+      margin-top: 20px;
+      height: 40px;
+      float: right;
     }
   }
 </style>
@@ -116,17 +117,29 @@
         </ul>
         <div class="more" v-if="showMoreBtn" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
-      <no-ssr>
-        <v-video
-          :source="computeVideoSrc(video)"
-          :other-src="bangumi.others_site_video"
-          :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-          :poster="$resize(video.poster)"
-          @playing="handlePlaying"
-        ></v-video>
-      </no-ssr>
-      <div class="social">
-        <v-share type="panel"></v-share>
+      <div class="clearfix">
+        <div class="col-main">
+          <no-ssr>
+            <v-video
+              :source="computeVideoSrc(video)"
+              :other-src="bangumi.others_site_video"
+              :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+              :poster="$resize(video.poster)"
+              @playing="handlePlaying"
+            ></v-video>
+          </no-ssr>
+          <v-share type="panel"></v-share>
+        </div>
+        <div class="col-aside">
+          <v-bangumi-panel
+            class="bangumi-panel"
+            :id="bangumi.id"
+            :name="bangumi.name"
+            :avatar="bangumi.avatar"
+            :summary="bangumi.summary"
+            :followed="bangumi.followed"
+          ></v-bangumi-panel>
+        </div>
       </div>
     </div>
   </div>
@@ -205,7 +218,6 @@
     },
     methods: {
       computeVideoSrc (video) {
-//        return 'https://video.calibur.tv/bangumi/fullmetal-alchemist/video/720/81.Flv'
         return this.bangumi.others_site_video
           ? video.url
           : video.resource

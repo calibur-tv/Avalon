@@ -2,7 +2,7 @@ import Api from '~/api/imageApi'
 import './geetest'
 
 export default (params) => {
-  const { type, elem, success, error, ready, async } = typeof params === 'object' ? params : {}
+  const { type, elem, success, error, ready, async, close } = typeof params === 'object' ? params : {}
   const api = new Api()
   const product = type || 'bind'
   api.getCaptcha().then((data) => {
@@ -31,11 +31,14 @@ export default (params) => {
       captcha.onSuccess(() => typeof params === 'object'
         ? success && success({ data, captcha })
         : params({ data, captcha }))
-      captcha.onError(() => {
-        error && error()
+      captcha.onError((err) => {
+        error && error(err)
+      })
+      captcha.onClose(() => {
+        close && close()
       })
     })
-  }).catch(() => {
-    error && error()
+  }).catch((err) => {
+    error && error(err)
   })
 }
