@@ -8,7 +8,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    min-height: 600px;
+    min-height: 500px;
     box-shadow: 0 1px 3px rgba(26,26,26,.1);
 
     &.vue-pwa-video-flex {
@@ -36,6 +36,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: #000;
 
       video {
         background-color: #000;
