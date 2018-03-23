@@ -43,10 +43,19 @@
 
 <template>
   <div :class="$style.bangumiPanel">
-    <router-link :class="$style.avatar" :to="$alias.bangumi(id)">
+    <a
+      :class="$style.avatar"
+      :href="$alias.bangumi(id)"
+      target="_blank"
+    >
       <v-img :src="$resize(avatar, { width: 180 })"></v-img>
-    </router-link>
-    <router-link class="twoline" :class="$style.name" :to="$alias.bangumi(id)" v-text="name"></router-link>
+    </a>
+    <a class="twoline"
+       :class="$style.name"
+       target="_blank"
+       :href="$alias.bangumi(id)"
+       v-text="name"
+    ></a>
     <p class="twoline" :class="$style.summary" v-text="summary"></p>
     <el-button
       type="danger"

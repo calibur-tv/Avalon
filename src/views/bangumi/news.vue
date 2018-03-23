@@ -98,34 +98,44 @@
         </div>
         <h2 class="subtitle">新番放送表</h2>
         <el-tabs v-model="thisWeek">
-          <el-tab-pane v-for="(tab, index) in showtime"
-                       :label="tab"
-                       :key="index"
-                       :name="tab">
+          <el-tab-pane
+            v-for="(tab, index) in showtime"
+            :key="index"
+            :name="tab"
+            :label="tab"
+          >
             <ul v-if="released[index] && released[index].length">
-              <li class="bangumi" :key="item.id" v-for="item in released[index]">
+              <li
+                v-for="item in released[index]"
+                class="bangumi"
+                :key="item.id"
+              >
                 <figure class="clearfix">
                   <a target="_blank" :href="$alias.bangumi(item.id)">
                     <img class="face" :src="$resize(item.avatar, { width: 180 })" :alt="item.name">
                   </a>
                   <figcaption class="abs">
-                    <a :href="$alias.bangumi(item.id)"
-                       class="href-fade-blue twoline"
-                       target="_blank"
-                       v-text="item.name"
+                    <a
+                      :href="$alias.bangumi(item.id)"
+                      class="href-fade-blue twoline"
+                      target="_blank"
+                      v-text="item.name"
                     ></a>
                     <span>
                       更新至
-                      <a v-if="item.released_video_id"
-                         :class="[computePartStyle(item.update) ? 'new' : 'old']"
-                         :href="$alias.video(item.released_video_id)"
-                         target="_blank"
-                         class="part oneline">
+                      <a
+                        v-if="item.released_video_id"
+                        :class="[item.update ? 'new' : 'old']"
+                        :href="$alias.video(item.released_video_id)"
+                        target="_blank"
+                        class="part oneline">
                         {{ `${item.released_part}话` }}
                       </a>
-                      <strong class="part oneline"
-                              :class="[computePartStyle(item.update) ? 'new' : 'old']"
-                              v-else>
+                      <strong
+                        class="part oneline"
+                        :class="[item.update ? 'new' : 'old']"
+                        v-else
+                      >
                         {{ `${item.released_part}话` }}
                       </strong>
                     </span>
@@ -143,7 +153,6 @@
 </template>
 
 <script>
-  const nowTime = new Date()
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
 
   export default {
@@ -162,12 +171,7 @@
     data () {
       return {
         showtime: weeklys,
-        thisWeek: weeklys[nowTime.getDay() ? nowTime.getDay() : 7]
-      }
-    },
-    methods: {
-      computePartStyle (timestamp) {
-        return parseInt(nowTime.getTime() / 1000, 10) - timestamp < 604800
+        thisWeek: weeklys[new Date().getDay() ? new Date().getDay() : 7]
       }
     }
   }

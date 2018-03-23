@@ -4,12 +4,19 @@
   $avatar-height: 36px;
 
   #header {
-    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: $header-height;
     z-index: 10;
+
+    &.scroll-show {
+      position: fixed;
+    }
+
+    &.scroll-hide {
+      position: absolute;
+    }
 
     &.mask {
       background-color: transparent;
@@ -43,32 +50,18 @@
           background-image: linear-gradient(to top,rgba(0, 0, 0, 0),rgba(0, 0, 0, .3));
         }
       }
+
+      &.white.scroll-show {
+        background-color: rgba(#000, .8);
+
+        .shim {
+          display: none;
+        }
+      }
     }
 
     &.blur {
       background-color: $color-white;
-
-      &.black {
-        box-shadow: rgba(0,0,0,0.1) 0 1px 2px;
-        .text {
-          background-color: rgba(0, 0, 0, 0.2);
-
-          .nav-link {
-            color: $color-white;
-          }
-        }
-      }
-
-      &.white {
-        box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px;
-        .text {
-          background-color: rgba(255, 255, 255, 0.4);
-
-          .nav-link {
-            color: $color-link;
-          }
-        }
-      }
 
       .nav-link {
         padding: 0 25px;
@@ -95,6 +88,34 @@
           background-size: 80%;
           z-index: -1;
           @include filter-blur();
+        }
+      }
+
+      &.black {
+        box-shadow: rgba(0,0,0,0.1) 0 1px 2px;
+        .text {
+          background-color: rgba(0, 0, 0, 0.2);
+
+          .nav-link {
+            color: $color-white;
+          }
+        }
+      }
+
+      &.white {
+        box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px;
+        .text {
+          background-color: rgba(255, 255, 255, 0.4);
+
+          .nav-link {
+            color: $color-link;
+          }
+        }
+      }
+
+      &.white.scroll-show {
+        .shim {
+          opacity: 0.2;
         }
       }
     }
