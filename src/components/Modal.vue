@@ -66,31 +66,30 @@
       }
 
       >header {
-        background-color: $color-blue-light;
+        background-color: #F4F4F4;
 
         h4 {
           font-size: 16px;
-          height: 40px;
-          line-height: 40px;
+          height: 45px;
+          line-height: 45px;
           margin: 0;
           padding-left: 20px;
-          color: $color-white;
+          color: #333;
           text-align: left;
-          font-weight: 700;
+          font-weight: normal;
         }
       }
 
       .close {
         position: absolute;
-        right: 10px;
-        top: 10px;
+        right: 16px;
+        top: 16px;
         display: block;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
         border-radius: 50%;
-        background-color: $color-white;
-        color: $color-blue-light;
+        color: #C4C6CF;
         font-size: 18px;
         font-family: 'Hiragino Sans GB',Helvetica,Arial,sans-serif;
         text-align: center;
