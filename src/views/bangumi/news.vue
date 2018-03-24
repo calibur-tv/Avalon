@@ -171,7 +171,7 @@
     data () {
       return {
         showtime: weeklys,
-        thisWeek: weeklys[new Date().getDay() ? new Date().getDay() : 7]
+        thisWeek: weeklys[new Date().getDay() || 7]
       }
     }
   }
