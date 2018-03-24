@@ -52,7 +52,7 @@
       }
 
       &.white.scroll-show {
-        background-color: rgba(#000, .8);
+        background-color: rgba(#000, .4);
 
         .shim {
           display: none;
@@ -61,7 +61,6 @@
     }
 
     &.blur {
-      background-color: $color-white;
 
       .nav-link {
         padding: 0 25px;
@@ -111,11 +110,17 @@
             color: $color-link;
           }
         }
-      }
 
-      &.white.scroll-show {
-        .shim {
-          opacity: 0.2;
+        &.scroll-hide {
+          background-color: $color-white;
+        }
+
+        &.scroll-show {
+          background-color: rgba(#fff, .6);
+
+          .shim {
+            opacity: 0.2;
+          }
         }
       }
     }
