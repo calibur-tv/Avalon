@@ -296,13 +296,13 @@
       <nav class="container header-left">
         <router-link class="nav-link" :to="$alias.index">主站</router-link>
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" :to="$alias.bangumiTimeline">番剧</router-link>
+          <router-link class="nav-link el-dropdown-link" :to="$alias.bangumiNews">番剧</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.bangumiTimeline">时间轴</router-link>
+              <router-link class="nav-link" :to="$alias.bangumiNews">新番放送</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.bangumiNews">新番放送</router-link>
+              <router-link class="nav-link" :to="$alias.bangumiTimeline">时间轴</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <router-link class="nav-link" :to="$alias.bangumiTag()">分类索引</router-link>
