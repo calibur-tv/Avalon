@@ -118,6 +118,12 @@
         &.scroll-show {
           background-color: rgba(#fff, .6);
 
+          .sign-in {
+            background-color: rgba(#fff, .6);
+            color: #333;
+            border: 1px solid #ccc;
+          }
+
           .shim {
             opacity: 0.2;
           }
