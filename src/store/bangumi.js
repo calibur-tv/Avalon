@@ -11,7 +11,12 @@ const state = () => ({
     min: 0,
     noMore: false
   },
-  category: {},
+  category: {
+    data: [],
+    noMore: false,
+    page: 1,
+    take: 15
+  },
   tags: [],
   info: null,
   posts: {
@@ -89,15 +94,10 @@ const mutations = {
     })
     state.tags = tags
   },
-  SET_CATEGORY (state, { data, page, take }) {
-    if (page === 1) {
-      state.category = { data }
-    } else {
-      data.forEach(item => {
-        state.category.data.push(item)
-      })
-    }
-    state.category.noMore = data.length < take
+  SET_CATEGORY (state, data) {
+    state.category.data = state.category.data.concat(data)
+    state.category.noMore = data.length < state.category.take
+    state.category.page++
   },
   SET_POSTS (state, { data, total }) {
     const posts = state.posts.data.concat(data)
@@ -171,10 +171,14 @@ const actions = {
     })
     commit('SET_TIMELINE', data)
   },
-  async getCategory ({ commit }, { id, page, take, ctx }) {
+  async getCategory ({ state, commit }, { id, ctx }) {
     const api = new Api(ctx)
-    const data = await api.category({ id, page, take })
-    commit('SET_CATEGORY', { data, page, take })
+    const data = await api.category({
+      id,
+      page: state.category.page,
+      take: state.category.take
+    })
+    commit('SET_CATEGORY', data)
   },
   async getPosts ({ state, commit }, { id, take, type, ctx }) {
     const seenIds = state.posts.data.length

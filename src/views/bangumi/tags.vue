@@ -113,9 +113,11 @@
         </div>
         <div class="bangumis" v-if="bangumis && bangumis.length">
           <h2 class="subtitle">番剧列表</h2>
-          <ul v-infinite-scroll="loadMore"
-              infinite-scroll-disabled="loading"
-              infinite-scroll-distance="200">
+          <ul
+            v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="notFetch"
+            infinite-scroll-distance="200"
+          >
             <li class="bangumi" v-for="item in bangumis" :key="item.id">
               <figure>
                 <a :href="$alias.bangumi(item.id)" target="_blank">
@@ -148,11 +150,6 @@
 </template>
 
 <script>
-  const defaultParams = {
-    page: 1,
-    take: 15
-  }
-
   export default {
     name: 'bangumi-tags',
     head: {
@@ -167,9 +164,7 @@
       )) {
         arr.push(store.dispatch('bangumi/getCategory', {
           id,
-          ctx,
-          page: defaultParams.page,
-          take: defaultParams.take
+          ctx
         }))
       }
       await Promise.all(arr)
@@ -184,14 +179,12 @@
       tags () {
         return this.$store.state.bangumi.tags
       },
-      noMore () {
-        return this.$store.state.bangumi.category.noMore
+      notFetch () {
+        return this.loading || this.$store.state.bangumi.category.noMore
       }
     },
     data () {
       return {
-        page: defaultParams.page,
-        take: defaultParams.take,
         loading: false
       }
     },
@@ -208,7 +201,7 @@
         }
       },
       async loadMore () {
-        if (this.loading || this.noMore) {
+        if (this.notFetch) {
           return
         }
         this.loading = true
@@ -216,11 +209,9 @@
         try {
           await this.$store.dispatch('bangumi/getCategory', {
             id: this.$route.query.id,
-            page: ++this.page,
-            take: this.take
+            ctx: this
           })
         } catch (e) {
-          this.page--
         } finally {
           this.loading = false
         }
