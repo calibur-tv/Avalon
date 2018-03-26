@@ -2,9 +2,12 @@
   <el-form :model="forms" :rules="rules" ref="forms" label-width="100px">
     <el-form-item label="类型" prop="type">
       <el-select v-model="forms.type" placeholder="反馈类型">
-        <el-option label="功能建议" :value="1"></el-option>
-        <el-option label="遇到错误" :value="2"></el-option>
-        <el-option label="其它问题" :value="3"></el-option>
+        <el-option 
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="详情" prop="desc">
@@ -23,6 +26,24 @@
     name: 'create-feedback',
     data () {
       return {
+        options: [
+          {
+            label: '功能建议',
+            value: 1
+          },
+          {
+            label: '遇到错误',
+            value: 2
+          },
+          {
+            label: '资源问题',
+            value: 4
+          },
+          {
+            label: '其它问题',
+            value: 3
+          }
+        ],
         forms: {
           type: '',
           desc: ''
