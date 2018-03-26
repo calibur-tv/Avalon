@@ -252,7 +252,6 @@
                    type="password"
                    v-validate="'required|min:6|max:16'"
                    v-model.trim="signIn.secret"
-                   autocomplete="off"
                    @input="showSignInCaptcha"
                    placeholder="密码">
           </div>
