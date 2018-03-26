@@ -19,16 +19,8 @@
         top: 50%;
         transform: translate(-50%, -50%);
         display: block;
-
-        &.is-width {
-          width: 98%;
-          height: auto;
-        }
-
-        &.is-height {
-          height: 100%;
-          width: auto;
-        }
+        max-width: 100%;
+        max-height: 100%;
       }
     }
 
@@ -38,10 +30,6 @@
 
       .el-carousel__container {
         height: 100%;
-      }
-
-      .el-carousel__item {
-        overflow: scroll;
       }
     }
   }
@@ -67,7 +55,6 @@
         :key="item"
       >
         <v-img
-          :class="[ computeImageType(item) === 3 ? 'is-height' : 'is-width' ]"
           :src="computeImageSize(item)"
           :id="`image-reader-${index}`"
         ></v-img>

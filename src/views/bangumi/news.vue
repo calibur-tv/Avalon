@@ -18,16 +18,11 @@
           flex: 1;
         }
       }
-      .el-tabs__content {
-        height: 300px;
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
     }
 
     .bangumi {
       width: 170px;
-      margin: 0 10px 10px 0;
+      margin: 0 10px 15px 0;
 
       figure {
         position: relative;
