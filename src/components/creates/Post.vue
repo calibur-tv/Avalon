@@ -28,7 +28,7 @@
       <el-form-item label="番剧" prop="bangumiId">
         <el-select v-model="forms.bangumiId" placeholder="请选择番剧">
           <el-option
-            v-for="item in bangumis"
+            v-for="item in optionBangumis"
             :label="item.name"
             :key="item.id"
             :value="item.id"
@@ -129,6 +129,17 @@
       },
       bangumis () {
         return this.$store.state.users.self.followBangumi
+      },
+      optionBangumis () {
+        if (!this.bangumiId) {
+          return
+        }
+        const bangumi = this.$store.state.bangumi.info
+        return [{
+          id: bangumi.id,
+          name: bangumi.name,
+          avatar: bangumi.avatar
+        }].concat(this.bangumis)
       }
     },
     methods: {
@@ -184,14 +195,15 @@
         })
       },
       async getUserFollowedBangumis () {
-        const bangumis = await this.$store.dispatch('users/getFollowBangumis', {
+        if (this.bangumiId) {
+          this.forms.bangumiId = this.bangumiId
+        }
+        if (this.bangumis.length) {
+          return
+        }
+        await this.$store.dispatch('users/getFollowBangumis', {
           zone: this.$store.state.user.zone,
           self: true
-        })
-        bangumis.forEach(item => {
-          if (item.id === this.bangumiId) {
-            this.forms.bangumiId = this.bangumiId
-          }
         })
       },
       handleError (err, file) {
