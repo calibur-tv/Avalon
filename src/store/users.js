@@ -80,6 +80,12 @@ const mutations = {
       }
     })
   },
+  READ_ALL_NOTIFICATION (state) {
+    state.notifications.data.forEach((message, index) => {
+      state.notifications.data[index].checked = true
+    })
+    state.notifications.checked = state.notifications.data.length
+  },
   CLEAR_FOLLOW_POST (state) {
     state.posts = {
       zone: '',
@@ -169,13 +175,22 @@ const actions = {
     commit('SET_NOTIFICATIONS', data)
   },
   async readMessage ({ state, commit }, { ctx, id }) {
-    state.notifications.data.forEach(async message => {
+    let msg = null
+    state.notifications.data.forEach(message => {
       if (message.id === id && !message.checked) {
-        const api = new Api(ctx)
-        await api.readMessage(id)
-        commit('READ_NOTIFICATION', id)
+        msg = message
       }
     })
+    if (msg) {
+      const api = new Api(ctx)
+      await api.readMessage(id)
+      commit('READ_NOTIFICATION', id)
+    }
+  },
+  async readAllMessage ({ commit }, ctx) {
+    const api = new Api(ctx)
+    await api.readAllMessage()
+    commit('READ_ALL_NOTIFICATION')
   }
 }
 
