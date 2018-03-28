@@ -165,19 +165,43 @@
                   type="danger"
                   @click="toggleLike"
                   :loading="loadingToggleLike"
+                  v-if="post.liked"
                   round
+                  plain
                 >
                   <i class="iconfont icon-guanzhu"></i>
-                  {{ post.liked ? '已喜欢' : '喜欢' }}{{ post.like_count ? `(${post.like_count})` : '' }}
+                  已喜欢({{ post.like_count }})
+                </el-button>
+                <el-button
+                  type="danger"
+                  @click="toggleLike"
+                  :loading="loadingToggleLike"
+                  round
+                  v-else
+                >
+                  <i class="iconfont icon-guanzhu"></i>
+                  喜欢{{ post.like_count ? `(${post.like_count})` : '' }}
+                </el-button>
+                <el-button
+                  type="warning"
+                  @click="toggleMark"
+                  :loading="loadingToggleMark"
+                  v-if="post.marked"
+                  round
+                  plain
+                >
+                  <i class="iconfont icon-buoumaotubiao44"></i>
+                  已收藏({{ post.mark_count }})
                 </el-button>
                 <el-button
                   type="warning"
                   @click="toggleMark"
                   :loading="loadingToggleMark"
                   round
+                  v-else
                 >
                   <i class="iconfont icon-buoumaotubiao44"></i>
-                  {{ post.marked ? '已收藏' : '收藏' }}{{ post.mark_count ? `(${post.mark_count})` : '' }}
+                  收藏{{ post.mark_count ? `(${post.mark_count})` : '' }}
                 </el-button>
               </div>
               <div class="footer">
