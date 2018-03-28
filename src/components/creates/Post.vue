@@ -131,8 +131,8 @@
         return this.$store.state.users.self.followBangumi
       },
       optionBangumis () {
-        if (!this.bangumiId) {
-          return
+        if (!this.bangumiId || this.bangumis.some(_ => _.id === this.bangumiId)) {
+          return this.bangumis
         }
         const bangumi = this.$store.state.bangumi.info
         return [{
