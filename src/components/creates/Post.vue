@@ -100,7 +100,8 @@
           token: ''
         },
         images: [],
-        exceed: 6
+        exceed: 6,
+        appendBangumi: []
       }
     },
     computed: {
@@ -131,15 +132,7 @@
         return this.$store.state.users.self.followBangumi
       },
       optionBangumis () {
-        if (!this.bangumiId || this.bangumis.some(_ => _.id === this.bangumiId)) {
-          return this.bangumis
-        }
-        const bangumi = this.$store.state.bangumi.info
-        return [{
-          id: bangumi.id,
-          name: bangumi.name,
-          avatar: bangumi.avatar
-        }].concat(this.bangumis)
+        return this.appendBangumi.concat(this.bangumis)
       }
     },
     methods: {
@@ -256,10 +249,20 @@
     mounted () {
       if (!this.postId || !this.isReply) {
         this.getUserFollowedBangumis()
+        this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
+          if (this.optionBangumis.some(_ => _.id === data.id)) {
+            return
+          }
+          this.appendBangumi.push(data)
+          this.forms.bangumiId = data.id
+        })
       }
       if (this.$store.state.login) {
         this.getUpToken()
       }
+    },
+    beforeDestroy () {
+      this.$channel.$off('set-page-bangumi-for-post-create')
     }
   }
 </script>

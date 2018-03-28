@@ -265,6 +265,13 @@
         this.computeMaxWidth()
         this.computePage()
       })
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.bangumi.id,
+          name: this.bangumi.name,
+          avatar: this.bangumi.avatar
+        })
+      })
     }
   }
 </script>
