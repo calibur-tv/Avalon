@@ -738,6 +738,15 @@
           this.$toast.success(`+${role.has_star}s`)
         } catch (e) {}
       }
+    },
+    mounted () {
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.info.id,
+          name: this.info.name,
+          avatar: this.info.avatar
+        })
+      })
     }
   }
 </script>

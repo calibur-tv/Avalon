@@ -99,6 +99,15 @@
         showFeedModal: false
       }
     },
+    watch: {
+      showPostModal (val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.$channel.$emit('get-page-bangumi-for-post-create')
+          })
+        }
+      }
+    },
     methods: {
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight
