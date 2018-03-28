@@ -101,7 +101,8 @@
         },
         images: [],
         exceed: 6,
-        appendBangumi: []
+        appendBangumi: [],
+        loadingFetchBangumi: false
       }
     },
     computed: {
@@ -192,12 +193,24 @@
           this.forms.bangumiId = this.bangumiId
         }
         if (this.bangumis.length) {
+          this.$nextTick(() => {
+            this.$channel.$emit('get-page-bangumi-for-post-create')
+          })
           return
         }
-        await this.$store.dispatch('users/getFollowBangumis', {
-          zone: this.$store.state.user.zone,
-          self: true
-        })
+        if (this.loadingFetchBangumi) {
+          return
+        }
+        this.loadingFetchBangumi = true
+        try {
+          await this.$store.dispatch('users/getFollowBangumis', {
+            zone: this.$store.state.user.zone,
+            self: true
+          })
+        } finally {
+          this.loadingFetchBangumi = false
+          this.$channel.$emit('get-page-bangumi-for-post-create')
+        }
       },
       handleError (err, file) {
         console.log(err)
@@ -244,17 +257,20 @@
       async getUpToken () {
         await this.$store.dispatch('getUpToken', this)
         this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
+      },
+      saveBangumiAndSelected (data) {
+        this.forms.bangumiId = data.id
+        if (this.optionBangumis.some(_ => _.id === data.id)) {
+          return
+        }
+        this.appendBangumi.push(data)
       }
     },
     mounted () {
       if (!this.postId || !this.isReply) {
         this.getUserFollowedBangumis()
         this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
-          if (this.optionBangumis.some(_ => _.id === data.id)) {
-            return
-          }
-          this.appendBangumi.push(data)
-          this.forms.bangumiId = data.id
+          this.saveBangumiAndSelected(data)
         })
       }
       if (this.$store.state.login) {
