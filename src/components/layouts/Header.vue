@@ -326,6 +326,7 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+        <router-link class="nav-link" to="/about/hello">简介</router-link>
       </nav>
       <nav class="header-right">
         <v-search placeholder="搜索" :history="true"></v-search>

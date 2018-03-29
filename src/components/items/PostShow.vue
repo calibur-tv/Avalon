@@ -190,9 +190,13 @@
         :key="image"
         v-for="(image, index) in item.images"
         @click="$previewImages(item.images, index)"
-        :aspect="$computeImageAspect(image)"
       >
-        <v-img :src="image" height="90" mode="2"></v-img>
+        <v-img
+          :src="image"
+          height="90"
+          mode="2"
+          :aspect="$computeImageAspect(image)"
+        ></v-img>
       </div>
     </div>
     <span class="counter" v-text="item.comment_count"></span>
