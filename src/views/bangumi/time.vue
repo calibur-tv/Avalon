@@ -93,7 +93,7 @@
             text-indent: 2em;
             color: $color-text-light;
             font-size: 13px;
-            line-height: 18px;
+            @include twoline(18px);
           }
 
           .foot {
@@ -165,7 +165,7 @@
                     <a target="_blank" :href="$alias.bangumi(item.id)" class="name" v-text="item.name"></a>
                     <!--<span v-text="item.count_score"></span>-->
                   </p>
-                  <p class="body twoline" v-text="item.summary"></p>
+                  <p class="body" v-text="item.summary"></p>
                   <div class="foot">
                     <ul class="icon-item icon-item-tag oneline" v-if="item.tags.length">
                       <li v-for="tag in item.tags">

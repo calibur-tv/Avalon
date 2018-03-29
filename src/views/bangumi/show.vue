@@ -142,7 +142,7 @@
           padding-left: 122px;
           padding-right: 12px;
 
-          p {
+          .part {
             display: block;
             color: $color-text-deep;
             font-size: 12px;
@@ -151,10 +151,10 @@
             margin-bottom: 5px;
           }
 
-          span {
+          .name {
             font-size: 12px;
-            line-height: 14px;
             color: $color-text-normal;
+            @include twoline(14px);
           }
         }
       }
@@ -373,13 +373,14 @@
                       <a :href="$alias.video(video.id)"
                          target="_blank">
                         <figure>
-                          <v-img class="bg"
-                                 :alt="video.name"
-                                 :src="$resize(video.poster, { width: 192, height: 120 })">
-                          </v-img>
+                          <v-img
+                            class="bg"
+                            :alt="video.name"
+                            :src="$resize(video.poster, { width: 192, height: 120 })"
+                          ></v-img>
                           <figcaption class="abs">
-                            <p class="oneline">第{{ videos.repeat ? index + 1 : video.part }}话</p>
-                            <span class="twoline" v-text="video.name"></span>
+                            <p class="part oneline">第{{ videos.repeat ? index + 1 : video.part }}话</p>
+                            <span class="name" v-text="video.name"></span>
                           </figcaption>
                         </figure>
                       </a>
@@ -391,13 +392,14 @@
                 <li v-for="video in videos.data" :key="video.id">
                   <a :href="$alias.video(video.id)" target="_blank">
                     <figure>
-                      <v-img class="bg"
-                             :alt="video.name"
-                             :src="$resize(video.poster, { width: 192, height: 120 })">
-                      </v-img>
+                      <v-img
+                        class="bg"
+                        :alt="video.name"
+                        :src="$resize(video.poster, { width: 192, height: 120 })"
+                      ></v-img>
                       <figcaption class="abs">
-                        <p class="oneline">第{{ video.part }}话</p>
-                        <span class="twoline" v-text="video.name"></span>
+                        <p class="part oneline">第{{ video.part }}话</p>
+                        <span class="name" v-text="video.name"></span>
                       </figcaption>
                     </figure>
                   </a>

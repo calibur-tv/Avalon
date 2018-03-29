@@ -23,14 +23,6 @@
   white-space: nowrap;
 }
 
-.twoline {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
 .subtitle {
   font-size: 24px;
   color: $color-text-normal;

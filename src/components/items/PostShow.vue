@@ -57,7 +57,7 @@
       margin-top: 3px;
       color: #666;
       font-size: 12px;
-      line-height: 22px;
+      @include twoline(22px);
 
       &.min-height {
         min-height: 44px;
@@ -178,8 +178,8 @@
       </span>
       <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
     </div>
-    <p class="content twoline" :class="{ 'min-height': !item.images.length }" v-text="item.desc" v-if="bangumiPage"></p>
-    <p class="content twoline" :class="{ 'min-height': !item.images.length }" v-else>
+    <p class="content" :class="{ 'min-height': !item.images.length }" v-text="item.desc" v-if="bangumiPage"></p>
+    <p class="content" :class="{ 'min-height': !item.images.length }" v-else>
       <a :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>
       :
       {{ item.desc }}

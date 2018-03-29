@@ -224,9 +224,9 @@
               display: block;
               color: $color-text-deep;
               font-size: 12px;
-              line-height: 14px;
               margin-top: 6px;
               margin-bottom: 5px;
+              @include twoline(14px)
             }
           }
         }
@@ -291,7 +291,7 @@
               margin-top: 3px;
               color: #666;
               font-size: 12px;
-              line-height: 22px;
+              @include twoline(22px)
             }
 
             .images {
@@ -545,12 +545,13 @@
             <li v-for="item in bangumis" :key="item.id">
               <a :href="$alias.bangumi(item.id)" target="_blank">
                 <figure>
-                  <v-img class="bg"
-                         :alt="item.name"
-                         :src="$resize(item.avatar, { width: 160, height: 160 })"
+                  <v-img
+                    class="bg"
+                    :alt="item.name"
+                    :src="$resize(item.avatar, { width: 160, height: 160 })"
                   ></v-img>
                   <figcaption class="abs">
-                    <p class="twoline" v-text="item.name"></p>
+                    <p class="name" v-text="item.name"></p>
                   </figcaption>
                 </figure>
               </a>
@@ -578,7 +579,7 @@
                     发表于: <v-time v-model="item.created_at"></v-time>
                 </span>
                 </div>
-                <p class="content twoline" v-text="item.desc"></p>
+                <p class="content" v-text="item.desc"></p>
                 <div class="images clearfix" v-if="item.images.length">
                   <div class="image-box"
                        :key="image"

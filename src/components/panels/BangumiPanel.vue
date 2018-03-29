@@ -28,11 +28,13 @@
       color: #333;
       font-size: 16px;
       font-weight: 600;
+      @include twoline(18px);
     }
 
     .summary {
       margin: 0 auto 10px;
       max-width: 180px;
+      @include twoline(16px);
     }
 
     button {
@@ -50,13 +52,12 @@
     >
       <v-img :src="$resize(avatar, { width: 180 })"></v-img>
     </a>
-    <a class="twoline"
-       :class="$style.name"
+    <a :class="$style.name"
        target="_blank"
        :href="$alias.bangumi(id)"
        v-text="name"
     ></a>
-    <p class="twoline" :class="$style.summary" v-text="summary"></p>
+    <p :class="$style.summary" v-text="summary"></p>
     <el-button
       type="danger"
       size="mini"
