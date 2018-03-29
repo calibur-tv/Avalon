@@ -66,6 +66,10 @@
       }
     }
 
+    .video-placeholder {
+      min-height: 600px;
+    }
+
     .vue-pwa-video {
       margin-bottom: 30px;
     }
@@ -120,12 +124,13 @@
         </ul>
         <div class="more" v-if="showMoreBtn" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
-      <no-ssr>
+      <no-ssr class="video-placeholder">
         <v-video
           :source="computeVideoSrc(video)"
           :other-src="bangumi.others_site_video"
           :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
           :poster="$resize(video.poster)"
+          :next="nextPartVideo"
           @playing="handlePlaying"
         ></v-video>
       </no-ssr>
@@ -203,6 +208,38 @@
       },
       showMoreBtn () {
         return this.take < this.videos.length
+      },
+      nextPartVideo () {
+        let lastId = 0
+        if (this.season) {
+          const data = this.list[this.list.length - 1].data
+          lastId = data[data.length - 1].id
+        } else {
+          lastId = this.list[this.list.length - 1].id
+        }
+        if (lastId === this.id) {
+          return ''
+        }
+        let nextId = 0
+        if (this.season) {
+          this.list.forEach(season => {
+            season.data.forEach(part => {
+              if (part.id === this.id + 1) {
+                nextId = part.id
+              }
+            })
+          })
+        } else {
+          this.list.forEach(part => {
+            if (part.id === this.id + 1) {
+              nextId = part.id
+            }
+          })
+        }
+        if (!nextId) {
+          return ''
+        }
+        return `/video/${nextId}`
       }
     },
     data () {

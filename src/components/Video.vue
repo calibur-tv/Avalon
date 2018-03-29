@@ -8,7 +8,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    min-height: 550px;
+    min-height: 600px;
     box-shadow: 0 1px 3px rgba(26,26,26,.1);
 
     &.vue-pwa-video-flex {
@@ -136,7 +136,7 @@
       display: flex;
       z-index: 3;
 
-      button {
+      button, .btn {
         width: $tool-btn-width;
         height: 100%;
         background-size: 20px;
@@ -219,6 +219,10 @@
 
   .vue-pwa-video-btn-paused:before {
     content: "\e653";
+  }
+
+  .vue-pwa-video-btn-next:before {
+    content: "\e698";
   }
 
   .vue-pwa-video-btn-volume:before {
@@ -341,6 +345,7 @@
           @click="handlePlay()"
         >
         </button>
+        <a v-if="next" class="btn vue-pwa-video-btn-next" :href="next"></a>
         <div class="vue-pwa-video-time">
           <span v-text="value.curTime"></span>
         </div>
