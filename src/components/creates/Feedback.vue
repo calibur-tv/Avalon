@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="forms" :rules="rules" ref="forms" label-width="100px">
+  <el-form :model="forms" :rules="rules" ref="forms" label-width="50px">
     <el-form-item label="类型" prop="type">
       <el-select v-model="forms.type" placeholder="反馈类型">
         <el-option 
@@ -11,7 +11,12 @@
       </el-select>
     </el-form-item>
     <el-form-item label="详情" prop="desc">
-      <el-input type="textarea" :rows="6" v-model.trim="forms.desc"></el-input>
+      <el-input
+        type="textarea"
+        :rows="6"
+        v-model.trim="forms.desc"
+        placeholder="非常感谢您的反馈，请填写详细信息方便我们解决"
+      ></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">提交</el-button>
