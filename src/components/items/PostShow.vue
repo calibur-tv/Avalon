@@ -190,6 +190,7 @@
         :key="image"
         v-for="(image, index) in item.images"
         @click="$previewImages(item.images, index)"
+        :aspect="$computeImageAspect(image)"
       >
         <v-img :src="image" height="90" mode="2"></v-img>
       </div>
