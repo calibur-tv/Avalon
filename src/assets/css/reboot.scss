@@ -48,6 +48,14 @@ img {
   color: transparent;
   background-color: transparent;
   border: 0;
+  transition: all .15s linear;
+  filter: blur(0);
+  opacity: 1;
+}
+
+img.image-lazy-mask {
+  filter: blur(4px);
+  opacity: 0.3;
 }
 
 button {
