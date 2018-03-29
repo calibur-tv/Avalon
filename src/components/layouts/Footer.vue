@@ -22,7 +22,7 @@
   <footer id="footer" v-if="show">
     <v-hr text="calibur - 天下漫友是一家"></v-hr>
     <div class="links">
-      <router-link to="/about/hello">欢迎</router-link>
+      <a href="/about/hello" target="_blank">欢迎</a>
     </div>
   </footer>
 </template>

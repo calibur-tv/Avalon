@@ -8,7 +8,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    min-height: 500px;
+    min-height: 550px;
     box-shadow: 0 1px 3px rgba(26,26,26,.1);
 
     &.vue-pwa-video-flex {
@@ -425,6 +425,10 @@
       showvioce: {
         type: Boolean,
         default: true
+      },
+      next: {
+        type: String,
+        default: ''
       },
       debug: {
         type: Boolean,
