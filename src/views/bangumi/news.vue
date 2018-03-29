@@ -50,6 +50,10 @@
           flex-direction: column;
           justify-content: space-between;
 
+          .name {
+            @include twoline(13px);
+          }
+
           span {
             color: $color-text-light;
             line-height: 18px;
@@ -112,7 +116,7 @@
                   <figcaption class="abs">
                     <a
                       :href="$alias.bangumi(item.id)"
-                      class="href-fade-blue twoline"
+                      class="name href-fade-blue"
                       target="_blank"
                       v-text="item.name"
                     ></a>
