@@ -650,7 +650,7 @@
             bangumiId: this.id
           })
         } catch (e) {
-          console.log(e)
+          this.$toast.error(e)
         } finally {
           this.rolesState.loading = false
         }
@@ -665,7 +665,7 @@
         try {
           await this.$store.dispatch('bangumi/getVideos', this.id)
         } catch (e) {
-          console.log(e)
+          this.$toast.error(e)
         } finally {
           this.videoState.loading = false
         }
@@ -684,7 +684,7 @@
             type: this.postState.type
           })
         } catch (e) {
-          console.log(e)
+          this.$toast.error(e)
         } finally {
           this.postState.loading = false
         }
@@ -715,7 +715,7 @@
             reset
           })
         } catch (e) {
-          console.log(e)
+          this.$toast.error(e)
         } finally {
           this.loadingRoleFans = false
         }
@@ -738,7 +738,9 @@
           })
           this.$store.commit('USE_COIN')
           this.$toast.success(`+${role.has_star}s`)
-        } catch (e) {}
+        } catch (e) {
+          this.$toast.error(e)
+        }
       }
     },
     mounted () {

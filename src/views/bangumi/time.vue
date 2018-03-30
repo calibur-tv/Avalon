@@ -230,6 +230,8 @@
         this.loading = true
         try {
           await this.$store.dispatch('bangumi/getTimeline')
+        } catch (e) {
+          this.$toast.error(e)
         } finally {
           this.loading = false
         }

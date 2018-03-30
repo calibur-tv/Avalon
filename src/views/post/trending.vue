@@ -82,6 +82,8 @@
             ctx: this,
             sort: this.sort
           })
+        } catch (e) {
+          this.$toast.error(e)
         } finally {
           this.loading = false
         }

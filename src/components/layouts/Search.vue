@@ -147,12 +147,10 @@
         }
         const api = new SearchApi()
         const searchWindow = window.open()
-        api.index({
-          q
-        }).then((res) => {
-          if (res) {
+        api.index({ q }).then((data) => {
+          if (data) {
             this.set(q)
-            searchWindow.location = res
+            searchWindow.location = data
           } else {
             searchWindow.location = '/bangumi/news'
           }
