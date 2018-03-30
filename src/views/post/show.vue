@@ -343,7 +343,9 @@
           if (id === this.post.id) {
             window.location = this.$alias.bangumi(this.bangumi.id)
           }
-        }).catch(() => {})
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
       },
       async getPosts () {
         if (this.loadingLoadMore) {
@@ -356,6 +358,8 @@
             ctx: this,
             only: this.onlySeeMaster
           })
+        } catch (e) {
+          this.$toast.error(e)
         } finally {
           this.loadingLoadMore = false
         }

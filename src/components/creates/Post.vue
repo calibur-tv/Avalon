@@ -207,6 +207,8 @@
             zone: this.$store.state.user.zone,
             self: true
           })
+        } catch (e) {
+          this.$toast.error(e)
         } finally {
           this.loadingFetchBangumi = false
           this.$channel.$emit('get-page-bangumi-for-post-create')

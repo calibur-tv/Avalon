@@ -221,6 +221,7 @@
             ctx: this
           })
         } catch (e) {
+          this.$toast.error(e)
         } finally {
           this.loading = false
         }

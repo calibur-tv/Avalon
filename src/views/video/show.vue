@@ -68,6 +68,7 @@
 
     .video-placeholder {
       min-height: 600px;
+      background-color: #000;
     }
 
     .vue-pwa-video {

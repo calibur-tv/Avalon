@@ -141,7 +141,9 @@
             postId: this.postId,
             commentId: this.comment.id
           })
-        }).catch(() => {})
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
       }
     }
   }

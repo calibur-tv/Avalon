@@ -928,11 +928,13 @@
           })
           this.$toast.success('头像更新成功')
         } catch (e) {
-          console.log(e)
-          this.$toast.error('头像更新失败，请联系管理员查看')
+          typeof e === 'string'
+            ? this.$toast.error(e)
+            : this.$toast.error('头像更新失败，请刷新页面重试')
+        } finally {
+          this.avatarCropper.loading = false
+          this.handleAvatarCropperCancel()
         }
-        this.avatarCropper.loading = false
-        this.handleAvatarCropperCancel()
       },
       selectBanner (e) {
         const file = e.target.files[0]
@@ -975,11 +977,13 @@
           })
           this.$toast.success('背景更新成功')
         } catch (e) {
-          console.log(e)
-          this.$toast.error('背景更新失败，请联系管理员查看')
+          typeof e === 'string'
+            ? this.$toast.error(e)
+            : this.$toast.error('头像更新失败，请刷新页面重试')
+        } finally {
+          this.bannerSelector.loading = false
+          this.cancelBannerChange()
         }
-        this.bannerSelector.loading = false
-        this.cancelBannerChange()
       },
       async handleDaySign () {
         if (this.signDayLoading) {
@@ -995,6 +999,8 @@
             daySign: true,
             coin: this.coinCount + 1
           })
+        } catch (e) {
+          this.$toast.error(e)
         } finally {
           this.signDayLoading = false
         }
