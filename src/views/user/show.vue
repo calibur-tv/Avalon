@@ -482,12 +482,12 @@
     <section class="banner" :class="{ 'my-banner': isMe && !bannerSelector.loading }">
       <div class="img bg" :style="{ backgroundImage: banner }"></div>
       <div class="banner-file-input file-input bg">
-        <input type="file" ref="bannerInput" @change="selectBanner">
+        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png" ref="bannerInput" @change="selectBanner">
       </div>
       <div class="avatar bg file-input"
            :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
            v-if="isMe">
-        <input type="file" ref="avatarInput" @change="openAvatarModal">
+        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png" ref="avatarInput" @change="openAvatarModal">
       </div>
       <img class="avatar"
            :src="$resize(user.avatar, { width: 200, height: 200 })"
