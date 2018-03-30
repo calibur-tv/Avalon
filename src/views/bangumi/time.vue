@@ -5,6 +5,10 @@
       margin-left: $time-size / 2;
     }
 
+    .col-main {
+      margin-left: 15px;
+    }
+
     .collections {
       position: relative;
 
@@ -16,7 +20,7 @@
         top: 0;
         bottom: 0;
         width: 1px;
-        background-color: $color-dark-light;
+        background-color: $color-blue-light;
       }
 
       .collection {
@@ -31,6 +35,7 @@
           font-weight: 400;
           color: $color-text-light;
           font-size: 16px;
+          margin-top: 20px;
 
           &:before {
             content: '';
@@ -42,6 +47,17 @@
             border-radius: 50%;
             border: 1px solid $color-blue-light;
             background-color: $color-white;
+          }
+
+          &:after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 7px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: $color-blue-light;
           }
         }
       }
@@ -89,14 +105,15 @@
           }
 
           .body {
-            margin: 8.5px 0;
-            text-indent: 2em;
+            margin: 10px 0 12px 0;
             color: $color-text-light;
             font-size: 13px;
             @include twoline(18px);
           }
 
           .foot {
+            height: 16px;
+
             .icon-item {
 
               li {
@@ -105,6 +122,7 @@
 
                 a {
                   color: $color-text-light;
+                  display: inline-block;
                 }
 
                 &:after {

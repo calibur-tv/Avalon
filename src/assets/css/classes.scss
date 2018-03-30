@@ -168,7 +168,7 @@
     padding: 8px;
     font-size: 16px;
     transition: .2s;
-    margin: 0 7px 30px;
+    margin: 0 7px 50px;
     display: inline-block;
 
     &:hover {
@@ -178,6 +178,7 @@
     }
 
     &.router-link-active {
+      color: $color-blue-normal;
       border-bottom: 1px solid $color-blue-light;
     }
   }

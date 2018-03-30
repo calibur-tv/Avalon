@@ -5,6 +5,10 @@
       margin-left: $time-size / 2;
     }
 
+    .col-main {
+      margin-left: 15px;
+    }
+
     .el-tabs {
       padding-left: $time-size / 2;
 

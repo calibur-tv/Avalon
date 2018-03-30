@@ -1,5 +1,13 @@
 <style lang="scss">
   #bangumi-tags {
+    .col-main {
+      margin-left: 15px;
+    }
+
+    .bangumis {
+      margin-left: 15px;
+    }
+
     .bangumi {
       width: 100%;
       border-bottom: 1px solid $color-gray-normal;
@@ -63,6 +71,7 @@
 
     .tags {
       margin-bottom: 25px;
+      margin-left: 15px;
 
       li {
         margin-right: 10px;
