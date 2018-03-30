@@ -9,7 +9,7 @@
       box-shadow: inset 0 0 15px 0 rgba(0,0,0,.5);
       z-index: 1;
       height: $banner-height;
-      margin-bottom: 40px;
+      margin-bottom: 25px;
       display: flex;
       flex-direction: row;
       justify-content: center;
