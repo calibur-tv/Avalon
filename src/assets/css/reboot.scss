@@ -48,7 +48,7 @@ img {
   color: transparent;
   background-color: transparent;
   border: 0;
-  transition: all .15s linear;
+  transition: filter, opacity .15s linear;
   filter: blur(0);
   opacity: 1;
 }
