@@ -180,6 +180,10 @@
     &.router-link-active {
       color: $color-blue-normal;
       border-bottom: 1px solid $color-blue-light;
+
+      &:hover {
+        color: #fff;
+      }
     }
   }
 }
