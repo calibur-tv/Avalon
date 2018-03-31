@@ -257,8 +257,12 @@
         return true
       },
       async getUpToken () {
-        await this.$store.dispatch('getUpToken', this)
-        this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
+        try {
+          await this.$store.dispatch('getUpToken', this)
+          this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
+        } catch (e) {
+          this.$toast.error(e)
+        }
       },
       saveBangumiAndSelected (data) {
         this.forms.bangumiId = data.id
