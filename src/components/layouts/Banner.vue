@@ -2,7 +2,7 @@
   #banner {
     width: 100%;
     height: $banner-hgt;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
   }
 </style>
 
