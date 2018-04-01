@@ -129,9 +129,9 @@
       <img class="avatar" :src="$resize('https://image.calibur.tv/default/user-avatar', { width: 80 })" v-else>
       <div class="content">
         <p class="oneline">
-          画师：
+          作者：
           <router-link :to="$alias.user(curUser.zone)" v-if="curUser" v-text="curUser.nickname"></router-link>
-          <span v-else>未知</span>
+          <span v-else>{{ curBangumi ? '原画' : '未知' }}</span>
         </p>
         <p class="oneline">
           番剧：
