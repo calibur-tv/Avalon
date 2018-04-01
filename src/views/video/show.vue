@@ -213,8 +213,11 @@
       nextPartVideo () {
         let lastId = 0
         if (this.season) {
-          const data = this.list[this.list.length - 1].data
-          lastId = data[data.length - 1].id
+          let videos = []
+          this.list.forEach(season => {
+            videos = videos.concat(season.data)
+          })
+          lastId = videos[videos.length - 1].id
         } else {
           lastId = this.list[this.list.length - 1].id
         }
