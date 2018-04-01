@@ -123,19 +123,19 @@
       <v-search :placeholder="'搜索二次元的一切'" :auto="true" :suggest="true"></v-search>
     </div>
     <div class="banner-card">
-      <router-link :to="$alias.user(curUser.zone)" v-if="curUser">
-        <img class="avatar" :src="$resize(curUser.avatar, { width: 80 })">
+      <router-link :to="$alias.user(curBanner.user_zone)" v-if="curBanner.user_id">
+        <img class="avatar" :src="$resize(curBanner.user_avatar, { width: 80 })">
       </router-link>
       <img class="avatar" :src="$resize('https://image.calibur.tv/default/user-avatar', { width: 80 })" v-else>
       <div class="content">
         <p class="oneline">
           作者：
-          <router-link :to="$alias.user(curUser.zone)" v-if="curUser" v-text="curUser.nickname"></router-link>
-          <span v-else>{{ curBangumi ? '原画' : '未知' }}</span>
+          <router-link :to="$alias.user(curBanner.user_zone)" v-if="curBanner.user_id" v-text="curBanner.user_nickname"></router-link>
+          <span v-else>{{ curBanner.bangumi_id ? '原画' : '未知' }}</span>
         </p>
         <p class="oneline">
           番剧：
-          <router-link :to="$alias.bangumi(curBangumi.id)" v-if="curBangumi" v-text="curBangumi.name"></router-link>
+          <router-link :to="$alias.bangumi(curBanner.bangumi_id)" v-if="curBanner.bangumi_id" v-text="curBanner.bangumi_name"></router-link>
           <span v-else>未知</span>
         </p>
       </div>
@@ -165,12 +165,6 @@
         return this.toggle
           ? this.banner1
           : this.banner2
-      },
-      curUser () {
-        return this.curBanner.user
-      },
-      curBangumi () {
-        return this.curBanner.bangumi
       }
     },
     data () {
