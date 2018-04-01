@@ -68,6 +68,10 @@ export function createRouter () {
             path: 'about/hello',
             name: 'hello',
             component: () => import('~/views/about/hello')
+          },
+          {
+            path: 'trending/role',
+            component: () => import('~/views/role/trending')
           }
         ]
       }
