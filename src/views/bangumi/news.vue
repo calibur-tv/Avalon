@@ -146,7 +146,9 @@
                 </figure>
               </li>
             </ul>
-            <no-content v-else></no-content>
+            <no-content v-else>
+              <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
+            </no-content>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -175,6 +177,14 @@
       return {
         showtime: weeklys,
         thisWeek: weeklys[new Date().getDay() || 7]
+      }
+    },
+    methods: {
+      openFeedbackForResource () {
+        this.$channel.$emit('open-feedback', {
+          type: 5,
+          desc: '我想看新番：'
+        })
       }
     }
   }

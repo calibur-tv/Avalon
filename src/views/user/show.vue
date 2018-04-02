@@ -595,12 +595,13 @@
                 </div>
               </li>
             </ul>
-            <el-button :loading="posts.loading"
-                       v-if="!posts.noMore"
-                       class="load-post-btn"
-                       @click="getUserPosts(false)"
-                       type="info"
-                       plain
+            <el-button
+              :loading="posts.loading"
+              v-if="!posts.noMore"
+              class="load-post-btn"
+              @click="getUserPosts(false)"
+              type="info"
+              plain
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
           </template>
           <template v-else-if="postListType === 'reply'">
@@ -638,12 +639,13 @@
                 </div>
               </li>
             </ul>
-            <el-button :loading="posts.loading"
-                       v-if="!posts.noMore"
-                       class="load-post-btn"
-                       @click="getUserPosts(false)"
-                       type="info"
-                       plain
+            <el-button
+              :loading="posts.loading"
+              v-if="!posts.noMore"
+              class="load-post-btn"
+              @click="getUserPosts(false)"
+              type="info"
+              plain
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
           </template>
           <template v-else-if="postListType === 'like'">
@@ -662,6 +664,7 @@
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
+        <!--<el-tab-pane label="图片"></el-tab-pane>-->
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
@@ -833,7 +836,8 @@
           loading: false
         },
         postTab: '发表',
-        signDayLoading: false
+        signDayLoading: false,
+        loadingUserImageFetch: false
       }
     },
     methods: {
@@ -848,6 +852,8 @@
           }
         } else if (tab.label === '帖子') {
           this.getUserPosts(true)
+        } else if (tab.label === '图片') {
+          this.getUserImages(true)
         }
       },
       handlePostTabClick () {
@@ -861,6 +867,24 @@
           type: this.postListType,
           zone: this.user.zone
         })
+      },
+      async getUserImages (isFirstRequest) {
+        if (isFirstRequest && this.$store.state.users.images.data.length) {
+          return
+        }
+        if (this.loadingUserImageFetch) {
+          return
+        }
+        this.loadingUserImageFetch = true
+        try {
+          await this.$store.dispatch('users/getUserImages', {
+            zone: this.user.zone
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loadingUserImageFetch = true
+        }
       },
       saveSetting () {
         this.$refs.settingForm.validate((valid) => {

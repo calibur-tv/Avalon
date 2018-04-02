@@ -77,9 +77,7 @@
     >
       <v-post @submit="showPostModal = false"></v-post>
     </v-modal>
-    <v-modal v-model="showFeedModal" :footer="false" header-text="用户反馈">
-      <v-feedback @submit="showFeedModal = false"></v-feedback>
-    </v-modal>
+    <v-feedback v-model="showFeedModal"></v-feedback>
   </div>
 </template>
 

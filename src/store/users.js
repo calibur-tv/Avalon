@@ -34,6 +34,11 @@ const state = () => ({
   },
   self: {
     followBangumi: []
+  },
+  images: {
+    take: 12,
+    data: [],
+    noMore: false
   }
 })
 
@@ -111,6 +116,10 @@ const mutations = {
         loading: false
       }
     }
+  },
+  SET_USER_IMAGES (data) {
+    state.images.data = state.images.data.concat(data)
+    state.images.noMore = data.length < state.images.take
   }
 }
 
@@ -154,6 +163,18 @@ const actions = {
       seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
     })
     commit('SET_FOLLOW_POST_DATA', { type, data, zone })
+  },
+  async getUserImages ({ state, commit }, { zone }) {
+    if (state.images.noMore) {
+      return
+    }
+    const api = new Api()
+    const data = await api.images({
+      zone,
+      seenIds: state.images.data.length ? state.images.data.map(item => item.id).join(',') : null,
+      take: state.images.take
+    })
+    commit('SET_USER_IMAGES', data)
   },
   async daySign ({ rootState }, { ctx }) {
     if (rootState.user.signed) {
