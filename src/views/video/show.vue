@@ -246,7 +246,18 @@
         return `/video/${nextId}`
       },
       useOtherSiteSource () {
-        return !!(this.bangumi.others_site_video || !this.video.resource)
+        if (this.bangumi.others_site_video) {
+          return true
+        }
+        const resource = this.video.resource
+        if (!resource) {
+          return true
+        }
+        return !((
+            resource.video[720] && resource.video[720].src
+          ) || (
+            resource.video[1080] && resource.video[1080].src
+        ))
       },
       computeVideoSrc () {
         const video = this.video
