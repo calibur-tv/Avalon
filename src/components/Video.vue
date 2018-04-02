@@ -662,6 +662,11 @@
       video.controls = false
       self.loadResource()
 
+      video.addEventListener('contextmenu', e => {
+        e.preventDefault()
+        return false
+      })
+
       video.addEventListener('abort', function () {
         self.debugLog('abort : 音频/视频的加载已放弃时 | 在退出时运行')
       })
