@@ -127,8 +127,8 @@
       </div>
       <no-ssr class="video-placeholder">
         <v-video
-          :source="computeVideoSrc(video)"
-          :other-src="bangumi.others_site_video"
+          :source="computeVideoSrc"
+          :other-src="useOtherSiteSource"
           :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
           :poster="$resize(video.poster)"
           :next="nextPartVideo"
@@ -244,6 +244,21 @@
           return ''
         }
         return `/video/${nextId}`
+      },
+      useOtherSiteSource () {
+        return !!(this.bangumi.others_site_video || !this.video.resource)
+      },
+      computeVideoSrc () {
+        const video = this.video
+        return this.useOtherSiteSource
+          ? video.url
+          : video.resource
+            ? (
+              video.resource.video[720] && video.resource.video[720].src
+            ) || (
+              video.resource.video[1080] && video.resource.video[1080].src
+            ) || video.url
+            : video.url
       }
     },
     data () {
@@ -257,17 +272,6 @@
       }
     },
     methods: {
-      computeVideoSrc (video) {
-        return this.bangumi.others_site_video
-          ? video.url
-          : video.resource
-            ? (
-              video.resource.video[720] && video.resource.video[720].src
-            ) || (
-              video.resource.video[1080] && video.resource.video[1080].src
-            ) || video.url
-            : video.url
-      },
       computeMaxWidth () {
         let maxlength = 0
         this.videos.forEach(video => {
