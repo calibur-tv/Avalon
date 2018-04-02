@@ -65,6 +65,7 @@
 
         .summary {
           overflow: hidden;
+          height: 100px;
 
           .role {
             display: block;
@@ -83,12 +84,12 @@
           }
 
           .lover {
-            height: 40px;
-            padding: 10px 0;
+            height: 20px;
             line-height: 20px;
             vertical-align: middle;
             font-size: 13px;
             color: $color-text-normal;
+            margin-top: 20px;
 
             img {
               width: 20px;
