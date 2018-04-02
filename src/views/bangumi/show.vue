@@ -346,7 +346,6 @@
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
           <el-tab-pane label="帖子">
-            <no-content v-if="posts.noMore && !posts.total"></no-content>
             <ul id="posts">
               <post-show-item
                 v-for="item in posts.data"
@@ -362,6 +361,9 @@
               type="info"
               plain
             >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
+            <no-content v-if="posts.noMore && !posts.total">
+              <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
+            </no-content>
           </el-tab-pane>
           <el-tab-pane label="视频">
             <section id="videos" v-if="videos.data.length">
@@ -406,7 +408,9 @@
                 </li>
               </ul>
             </section>
-            <no-content v-else-if="videos.fetched"></no-content>
+            <no-content v-else-if="videos.fetched">
+              <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
+            </no-content>
           </el-tab-pane>
           <el-tab-pane label="偶像">
             <div id="roles">
@@ -454,7 +458,9 @@
                   </div>
                 </li>
               </ul>
-              <no-content v-if="roles.noMore && !roles.data.length"></no-content>
+              <no-content v-if="roles.noMore && !roles.data.length">
+                <el-button @click="openFeedbackForRole" type="primary" round>求偶像</el-button>
+              </no-content>
               <v-modal
                 class="role-fans-modal"
                 v-model="openRolesModal"
@@ -695,12 +701,6 @@
         this.focusRoleSort = sort
         this.fetchCurrentRoleFans(true)
       },
-      switchFocusRoleTab (label) {
-        if (this.$store.state.cartoonRole.fans[label].length) {
-          return
-        }
-        this.fetchCurrentRoleFans()
-      },
       async fetchCurrentRoleFans (reset = false) {
         if (this.loadingRoleFans) {
           return
@@ -741,6 +741,21 @@
         } catch (e) {
           this.$toast.error(e)
         }
+      },
+      openCreatePostModal () {
+        this.$channel.$emit('show-create-post-modal')
+      },
+      openFeedbackForResource () {
+        this.$channel.$emit('open-feedback', {
+          type: 5,
+          desc: `我想看《${this.info.name}》第 ? 集`
+        })
+      },
+      openFeedbackForRole () {
+        this.$channel.$emit('open-feedback', {
+          type: 6,
+          desc: `我想要为《${this.info.name}》的 ? 应援`
+        })
       }
     },
     mounted () {

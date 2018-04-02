@@ -26,6 +26,10 @@
       font-size: 14px;
       line-height: 20px;
     }
+
+    button {
+      margin-top: 15px;
+    }
   }
 </style>
 
@@ -35,6 +39,7 @@
     <div>
       <h3>暂无内容</h3>
       <p>抱歉，该页面暂无内容，请看看其他页面</p>
+      <slot></slot>
     </div>
   </div>
 </template>

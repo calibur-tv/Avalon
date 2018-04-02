@@ -84,4 +84,8 @@ export default class extends BaseApi {
       method, access, geetest, authCode, secret
     })
   }
+
+  images ({ zone, take, seenIds }) {
+    return this.http.post('user/images', { zone, take, seenIds })
+  }
 }
