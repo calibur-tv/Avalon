@@ -2,7 +2,9 @@ import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
   trending ({ seenIds }) {
-    return this.http.get('/trending/cartoon_role', { seenIds })
+    return this.http.get('/trending/cartoon_role', {
+      params: { seenIds }
+    })
   }
 
   star ({ bangumiId, roleId }) {
