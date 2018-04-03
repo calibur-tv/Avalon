@@ -664,7 +664,11 @@
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
-        <!--<el-tab-pane label="图片"></el-tab-pane>-->
+        <!--<el-tab-pane label="图片">-->
+          <!--<no-content v-if="images.noMore && !images.data.length">-->
+            <!--<el-button @click="openUploadModal" type="primary" round>上传图片</el-button>-->
+          <!--</no-content>-->
+        <!--</el-tab-pane>-->
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
@@ -787,6 +791,9 @@
       posts () {
         return this.$store.state.users.posts[this.postListType]
       },
+      images () {
+        return this.$store.state.users.images
+      },
       daySigned () {
         return this.self.daySign
       },
@@ -878,7 +885,8 @@
         this.loadingUserImageFetch = true
         try {
           await this.$store.dispatch('users/getUserImages', {
-            zone: this.user.zone
+            zone: this.user.zone,
+            ctx: this
           })
         } catch (e) {
           this.$toast.error(e)
@@ -1028,6 +1036,9 @@
         } finally {
           this.signDayLoading = false
         }
+      },
+      openUploadModal () {
+        console.log(123)
       }
     }
   }

@@ -85,7 +85,7 @@ export default class extends BaseApi {
     })
   }
 
-  images ({ zone, take, seenIds }) {
-    return this.http.post('user/images', { zone, take, seenIds })
+  images ({ zone, take, page }) {
+    return this.http.post(`user/${zone}/images/list`, { take, page })
   }
 }
