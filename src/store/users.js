@@ -37,6 +37,7 @@ const state = () => ({
   },
   images: {
     take: 12,
+    page: 0,
     data: [],
     noMore: false
   }
@@ -117,9 +118,10 @@ const mutations = {
       }
     }
   },
-  SET_USER_IMAGES (data) {
+  SET_USER_IMAGES (state, data) {
     state.images.data = state.images.data.concat(data)
     state.images.noMore = data.length < state.images.take
+    state.images.page++
   }
 }
 
@@ -164,14 +166,14 @@ const actions = {
     })
     commit('SET_FOLLOW_POST_DATA', { type, data, zone })
   },
-  async getUserImages ({ state, commit }, { zone }) {
+  async getUserImages ({ state, commit }, { zone, ctx }) {
     if (state.images.noMore) {
       return
     }
-    const api = new Api()
+    const api = new Api(ctx)
     const data = await api.images({
       zone,
-      seenIds: state.images.data.length ? state.images.data.map(item => item.id).join(',') : null,
+      page: state.images.page,
       take: state.images.take
     })
     commit('SET_USER_IMAGES', data)

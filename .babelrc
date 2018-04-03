@@ -3,6 +3,7 @@
     ["env"]
   ],
   "plugins": [
+    "lodash",
     "syntax-dynamic-import",
     "transform-runtime",
     ["component", [
