@@ -11,7 +11,9 @@
     name: 'Entry',
     head: {
       title: '天下漫友是一家',
-      titleTemplate: '%s - calibur',
+      titleTemplate: (titleChunk) => {
+        return titleChunk ? `${titleChunk} - calibur` : '天下漫友是一家 - calibur'
+      },
       htmlAttrs: {
         lang: 'zh-CN'
       },
