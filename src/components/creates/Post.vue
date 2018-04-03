@@ -19,7 +19,7 @@
     :model="forms"
     :rules="rules"
     ref="forms"
-    label-width="80px"
+    label-width="50px"
   >
     <template v-if="!postId || !isReply">
       <el-form-item label="标题" prop="title">
