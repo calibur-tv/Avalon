@@ -15,7 +15,6 @@ const config = merge(base, {
       'vue-router',
       'vue-meta',
       'axios',
-      'vue-i18n',
       'lodash'
     ]
   },
