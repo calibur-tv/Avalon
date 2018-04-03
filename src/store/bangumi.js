@@ -97,7 +97,7 @@ const mutations = {
   SET_CATEGORY (state, data) {
     const list = state.category.data.concat(data.list)
     state.category.data = list
-    state.category.noMore = list.length >= data.total
+    state.category.noMore = list.length >= data.total || !data.list.length
     state.category.page++
   },
   SET_POSTS (state, { data, total }) {
