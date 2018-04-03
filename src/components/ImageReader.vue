@@ -1,12 +1,12 @@
 <style lang="scss">
-  .image-reader-modal {
+  #image-reader-modal {
     .v-modal {
       max-width: 90%;
       max-height: 90%;
       min-width: 80%;
       height: 700px;
-      background-color: transparent;
       box-shadow: none;
+      background-color: #000;
 
       > main {
         overflow: hidden;
@@ -38,7 +38,7 @@
 <template>
   <v-modal
     v-model="open"
-    class="image-reader-modal"
+    id="image-reader-modal"
     :header="false"
     :footer="false"
     :close="false"
