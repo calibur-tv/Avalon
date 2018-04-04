@@ -151,7 +151,7 @@
         this.$refs.forms.validate((valid) => {
           if (valid) {
             this.$captcha({
-              success: () => async ({ data }) => {
+              success: async ({ data }) => {
                 if (this.postId && this.isReply) {
                   try {
                     await this.$store.dispatch('post/reply', {
