@@ -186,6 +186,11 @@
           desc: '我想看新番：'
         })
       }
+    },
+    mounted () {
+      if (this.$route.query.from === 'search') {
+        this.$toast.info('您搜索的资源未被收录')
+      }
     }
   }
 </script>

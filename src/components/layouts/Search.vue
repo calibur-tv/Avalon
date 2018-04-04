@@ -152,10 +152,10 @@
             this.set(q)
             searchWindow.location = data
           } else {
-            searchWindow.location = '/bangumi/news'
+            searchWindow.location = '/bangumi/news?from=search'
           }
         }).catch(() => {
-          searchWindow.location = '/bangumi/news'
+          searchWindow.location = '/bangumi/news?from=search'
         })
       },
       set (q) {
