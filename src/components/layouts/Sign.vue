@@ -524,9 +524,11 @@
           this.$validator.validateAll('sign-up').then((result) => {
             if (result) {
               this.signUp.captcha = true
+              const ele = this.$refs.signUpCaptcha
+              ele.innerHTML = ''
               this.$captcha({
                 type: 'float',
-                elem: this.$refs.signUpCaptcha,
+                elem: ele,
                 success: ({ data, captcha }) => {
                   this.register(data).then((res) => {
                     this.$cookie.set('JWT-TOKEN', res)
@@ -556,9 +558,11 @@
           this.$validator.validateAll('reset').then((result) => {
             if (result) {
               this.resetPassword.captcha = true
+              const ele = this.$refs.resetCaptcha
+              ele.innerHTML = ''
               this.$captcha({
                 type: 'float',
-                elem: this.$refs.resetCaptcha,
+                elem: ele,
                 success: ({ data, captcha }) => {
                   const api = new UserApi()
                   api.resetPassword({
