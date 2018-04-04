@@ -83,6 +83,12 @@
       height: 40px;
       float: right;
     }
+
+    .video-report {
+      float: right;
+      margin-right: 15px;
+      margin-top: 2px;
+    }
   }
 </style>
 
@@ -145,6 +151,13 @@
           :followed="bangumi.followed"
         ></v-bangumi-panel>
         <v-share type="panel"></v-share>
+        <el-button
+          type="warning"
+          size="medium"
+          class="video-report"
+          round
+          @click="handleVideoReportClick"
+        >资源报错</el-button>
       </div>
     </div>
   </div>
@@ -308,6 +321,12 @@
           const api = new VideoApi(this)
           api.playing(this.id)
         }
+      },
+      handleVideoReportClick () {
+        this.$channel.$emit('open-feedback', {
+          type: 4,
+          desc: `【PC】-《${this.bangumi.name}》第${this.part}话 视频有错误，错误详情为：`
+        })
       }
     },
     mounted () {

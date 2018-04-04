@@ -102,7 +102,8 @@
         images: [],
         exceed: 6,
         appendBangumi: [],
-        loadingFetchBangumi: false
+        loadingFetchBangumi: false,
+        submitting: false
       }
     },
     computed: {
@@ -143,47 +144,62 @@
           this.$channel.$emit('sign-in')
           return
         }
+        if (this.submitting) {
+          return
+        }
+        this.submitting = true
         this.$refs.forms.validate((valid) => {
           if (valid) {
-            this.$captcha(async ({ data }) => {
-              if (this.postId && this.isReply) {
-                try {
-                  await this.$store.dispatch('post/reply', {
-                    postId: this.postId - 0,
-                    content: this.formatContent,
-                    images: this.formatImages,
-                    geetest: data,
-                    ctx: this
-                  })
-                  this.images = []
-                  this.$refs.forms.resetFields()
-                  this.$refs.uploader.clearFiles()
-                  this.$toast.success('回复成功！')
-                } catch (err) {
-                  this.$toast.error(err)
+            this.$captcha({
+              success: () => async ({ data }) => {
+                if (this.postId && this.isReply) {
+                  try {
+                    await this.$store.dispatch('post/reply', {
+                      postId: this.postId - 0,
+                      content: this.formatContent,
+                      images: this.formatImages,
+                      geetest: data,
+                      ctx: this
+                    })
+                    this.images = []
+                    this.$refs.forms.resetFields()
+                    this.$refs.uploader.clearFiles()
+                    this.$toast.success('回复成功！')
+                    this.submitting = false
+                  } catch (err) {
+                    this.$toast.error(err)
+                    this.submitting = false
+                  }
+                } else {
+                  try {
+                    const id = await this.$store.dispatch('post/create', {
+                      title: this.forms.title,
+                      bangumiId: this.forms.bangumiId,
+                      desc: this.forms.content.substring(0, 120),
+                      content: this.formatContent,
+                      images: this.formatImages,
+                      geetest: data,
+                      ctx: this
+                    })
+                    this.images = []
+                    this.$refs.forms.resetFields()
+                    this.$emit('submit')
+                    this.$toast.success('发布成功！')
+                    window.location = this.$alias.post(id)
+                    this.submitting = false
+                  } catch (err) {
+                    this.$toast.error(err)
+                    this.submitting = false
+                  }
                 }
-              } else {
-                try {
-                  const id = await this.$store.dispatch('post/create', {
-                    title: this.forms.title,
-                    bangumiId: this.forms.bangumiId,
-                    desc: this.forms.content.substring(0, 120),
-                    content: this.formatContent,
-                    images: this.formatImages,
-                    geetest: data,
-                    ctx: this
-                  })
-                  this.images = []
-                  this.$refs.forms.resetFields()
-                  this.$emit('submit')
-                  this.$toast.success('发布成功！')
-                  window.location = this.$alias.post(id)
-                } catch (err) {
-                  this.$toast.error(err)
-                }
+              },
+              error: (e) => {
+                this.submitting = false
+                this.$toast.error(e)
               }
             })
           } else {
+            this.submitting = false
             return false
           }
         })
