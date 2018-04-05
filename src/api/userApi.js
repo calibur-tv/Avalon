@@ -47,8 +47,8 @@ export default class extends BaseApi {
     return this.http.post('user/setting/image', { type, url })
   }
 
-  feedback ({ type, desc }) {
-    return this.http.post('user/feedback', { type, desc })
+  feedback ({ type, desc, ua }) {
+    return this.http.post('user/feedback', { type, desc, ua })
   }
 
   daySign () {

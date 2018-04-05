@@ -91,7 +91,8 @@
             const api = new Api(this)
             await api.feedback({
               type: this.forms.type,
-              desc: this.forms.desc
+              desc: this.forms.desc,
+              ua: window.navigator.userAgent
             })
             this.show = false
             this.$refs.forms.resetFields()
