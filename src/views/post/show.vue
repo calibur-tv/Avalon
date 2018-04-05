@@ -3,22 +3,19 @@
     .title-wrap {
       height: 56px;
       border-bottom: 1px solid #BBBDBF;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
 
       h1 {
         font-weight: 400;
         font-size: 16px;
         margin-left: 20px;
         line-height: 55px;
-        float: left;
+        overflow: hidden;
       }
 
       .control {
-        width: 400px;
-        text-align: right;
+        float: right;
+        line-height: 55px;
+        margin-left: 15px;
 
         .floor {
           font-size: 12px;
@@ -132,13 +129,13 @@
       <section class="col-main clearfix">
         <header>
           <div class="title-wrap">
-            <h1 class="oneline" v-text="post.title"></h1>
             <div class="control">
               <el-button size="mini" plain @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
               <el-button size="mini" plain @click="scrollToReplyForm">回复</el-button>
               <el-button size="mini" plain v-if="isMaster" @click="deletePost(post.id)">删除</el-button>
               <span class="floor">共{{ total }}条</span>
             </div>
+            <h1 class="oneline" v-text="post.title"></h1>
           </div>
         </header>
         <main>
