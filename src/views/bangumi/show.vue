@@ -181,19 +181,62 @@
       }
 
       #followers {
-        a {
-          overflow: hidden;
-          border-radius: 50%;
+        .follower {
           margin-right: -10px;
-          display: inline-block;
-          border: 3px solid #fff;
+
+          a {
+            overflow: hidden;
+            border-radius: 50%;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: 3px solid #fff;
+            border-radius: 50%;
+          }
         }
 
-        img {
-          width: 32px;
-          height: 32px;
-          overflow: hidden;
-          display: block;
+        .followers-more-btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: $color-gray-normal;
+          color: #fff;
+          border: 3px solid #fff;
+
+          &:hover {
+            background-color: $color-gray-deep;
+          }
+        }
+
+        .bangumi-followers-modal {
+          li {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+
+            img {
+              margin-right: 5px;
+              width: 32px;
+              height: 32px;
+              vertical-align: middle;
+              border: 1px solid #ddd;
+              border-radius: 50%;
+            }
+
+            span {
+              font-size: 15px;
+              color: #333;
+              vertical-align: middle;
+              display: inline-block;
+            }
+          }
         }
       }
     }
@@ -496,16 +539,36 @@
         <div id="followers" v-if="followers.length">
           <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
           <ul>
-            <li v-for="user in followers" :key="user.zone">
+            <li class="follower" v-for="user in displayFollowers" :key="user.zone">
               <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
                 <a :href="$alias.user(user.zone)" target="_blank">
-                  <v-img :src="$resize(user.avatar, { width: 64, height: 64 })"
-                         :alt="user.zone"
+                  <v-img
+                    :src="$resize(user.avatar, { width: 64, height: 64 })"
+                    :alt="user.zone"
                   ></v-img>
                 </a>
               </el-tooltip>
             </li>
+            <button
+              v-if="followers.length > 7"
+              @click="openFollowersModal = true"
+              class="followers-more-btn el-icon-more"
+            ></button>
           </ul>
+          <v-modal
+            v-model="openFollowersModal"
+            :header-text="`《${info.name}》的关注者们`"
+            :footer="false"
+            :scroll="fetchMoreFollowers"
+            class="bangumi-followers-modal"
+          >
+            <li v-for="user in followers" :key="user.id">
+              <a :href="$alias.user(user.zone)" target="_blank">
+                <img :src="$resize(user.avatar, { width: 120 })">
+                <span v-text="user.nickname"></span>
+              </a>
+            </li>
+          </v-modal>
         </div>
       </aside>
     </div>
@@ -581,6 +644,9 @@
       },
       currentRoleFans () {
         return this.$store.state.cartoonRole.fans[this.focusRoleSort]
+      },
+      displayFollowers () {
+        return this.followers.slice(0, 7)
       }
     },
     data () {
@@ -603,7 +669,11 @@
         loadingRoleFans: false,
         focusRoleSort: 'new',
         currentRole: {},
-        loadingFollow: false
+        loadingFollow: false,
+        openFollowersModal: false,
+        loadingFollowers: false,
+        noMoreFollowers: false,
+        fetchFollowersCount: 10
       }
     },
     methods: {
@@ -756,6 +826,24 @@
           type: 6,
           desc: `我想要为《${this.info.name}》的 ? 应援`
         })
+      },
+      async fetchMoreFollowers () {
+        if (this.loadingFollowers || this.noMoreFollowers) {
+          return
+        }
+        this.loadingFollowers = true
+        try {
+          const data = this.$store.dispatch('bangumi/getFollowers', {
+            ctx: this,
+            bangumiId: this.id,
+            take: this.fetchFollowersCount
+          })
+          this.noMoreFollowers = data.length < this.fetchFollowersCount
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loadingFollowers = false
+        }
       }
     },
     mounted () {
@@ -766,6 +854,7 @@
           avatar: this.info.avatar
         })
       })
+      this.noMoreFollowers = this.followers.length < this.fetchFollowersCount
     }
   }
 </script>
