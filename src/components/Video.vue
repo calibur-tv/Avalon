@@ -437,7 +437,7 @@
       },
       debug: {
         type: Boolean,
-        default: false
+        default: true
       }
     },
     data () {
@@ -627,7 +627,6 @@
       debugLog (log) {
         if (this.debug) {
           console.log(log)        // eslint-disable-line
-          console.log(this.state) // eslint-disable-line
           this.logs.push(log + JSON.stringify(this.state))
         }
       },
@@ -733,6 +732,7 @@
         self.debugLog('playing : 在媒体开始播放时触发')
         self.state.firstPlay = false
         self.state.playing = true
+        self.state.waiting = false
       })
 
       video.addEventListener('ratechange', function () {
