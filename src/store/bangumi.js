@@ -117,6 +117,9 @@ const mutations = {
       total: data.total,
       fetched: true
     }
+  },
+  SET_BANGUMI_FOLLOWERS (state, data) {
+    state.info.followers = state.info.followers.concat(data)
   }
 }
 
@@ -207,6 +210,16 @@ const actions = {
       await api.star({ bangumiId, roleId })
       commit('ADD_ROLE_STATE', { roleId, hasStar })
     } catch (e) {}
+  },
+  async getFollowers ({ state, commit }, { ctx, bangumiId, take }) {
+    const api = new Api(ctx)
+    const data = await api.followers({
+      take,
+      bangumiId,
+      seenIds: state.info.followers.length ? state.info.followers.map(_ => _.id).join(',') : null
+    })
+    commit('SET_BANGUMI_FOLLOWERS', data)
+    return data
   }
 }
 
