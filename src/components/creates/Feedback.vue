@@ -89,10 +89,14 @@
         this.$refs.forms.validate(async (valid) => {
           if (valid) {
             const api = new Api(this)
+            const userAgent = navigator.userAgent || ''
+            const appVersion = navigator.appVersion || ''
+            const vendor = navigator.vendor || ''
+            const ua = userAgent + ' ' + appVersion + ' ' + vendor
             await api.feedback({
               type: this.forms.type,
               desc: this.forms.desc,
-              ua: window.navigator.userAgent
+              ua: ua
             })
             this.show = false
             this.$refs.forms.resetFields()
