@@ -518,6 +518,7 @@
         v-model="avatarCropper.showModal"
         header-text="头像裁剪"
         :footer="false"
+        @cancel="handleAvatarCropperCancel"
       >
         <v-cropper
           :src="avatarCropper.src"
