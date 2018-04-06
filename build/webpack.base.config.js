@@ -15,7 +15,7 @@ const now = new Date().getTime()
 
 module.exports = {
   cache: true,
-  devtool: isProd ? false : 'sourcemap',
+  devtool: isDev ? false : 'sourcemap',
   output: {
     path: resolve('../dist'),
     publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
@@ -96,7 +96,7 @@ module.exports = {
         loader: 'file-loader',
         query: {
           limit: 1024,
-          name: '[path][name].[ext]?[hash:8]'
+          name: '[name].[ext]?[hash:8]'
         }
       },
       {
@@ -175,7 +175,7 @@ module.exports = {
     if (!isDev) {
       pluginArr = pluginArr.concat([
         new UglifyJsPlugin({
-          // sourceMap: true
+          sourceMap: true
         }),
         new CopyWebpackPlugin([
           { from: resolve('../static') }
