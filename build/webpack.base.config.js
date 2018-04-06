@@ -9,9 +9,13 @@ const resolve = file => path.resolve(__dirname, file)
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
 const qiniu = require('../.env').qiniu
+const SentryPlugin = require('./webpack.sentry.plugin.js')
+const SentryConfig = require('./sentry.config.js')
+const now = new Date().getTime()
 
 module.exports = {
-  devtool: isProd ? false : 'sourcemap',
+  cache: true,
+  devtool: isDev ? false : 'sourcemap',
   output: {
     path: resolve('../dist'),
     publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
@@ -83,16 +87,16 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          name: '[name].[hash:8].[ext]'
+          limit: 1024,
+          name: '[path][name].[ext]?[hash:8]'
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'file-loader',
         query: {
-          limit: 10000,
-          name: '[name].[hash:8].[ext]'
+          limit: 1024,
+          name: '[path][name].[ext]?[hash:8]'
         }
       },
       {
@@ -108,19 +112,27 @@ module.exports = {
                   minimize: true,
                   importLoaders: 2
                 }
-              }, 'postcss-loader', 'sass-loader']
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  config: {
+                    path: './postcss.config.js'
+                  }
+                }
+              }, 'sass-loader']
           })
       },
       {
         test: /\.(js|vue)$/,
-        exclude: /node_modules/,
         use: {
           loader: 'eslint-loader',
           options: {
             enforce: 'pre',
             cacheDirectory: true
           }
-        }
+        },
+        exclude: /node_modules/
       }
     ]
   },
@@ -131,17 +143,26 @@ module.exports = {
   plugins: (function () {
     let pluginArr = [
       new webpack.ProvidePlugin({
-
       }),
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          RELEASE: JSON.stringify(now || 'dev')
         }
       })
     ]
 
     if (isProd) {
       pluginArr = pluginArr.concat([
+        // new SentryPlugin({
+        //   baseSentryURL: SentryConfig.url,
+        //   include: SentryConfig.include,
+        //   organisation: SentryConfig.org,
+        //   project: SentryConfig.project,
+        //   token: SentryConfig.token,
+        //   release: now,
+        //   deleteAfterCompile: true
+        // }),
         new QiniuPlugin({
           ACCESS_KEY: qiniu.access,
           SECRET_KEY: qiniu.secret,
@@ -153,12 +174,15 @@ module.exports = {
 
     if (!isDev) {
       pluginArr = pluginArr.concat([
-        new UglifyJsPlugin(),
+        new UglifyJsPlugin({
+          sourceMap: true
+        }),
         new CopyWebpackPlugin([
           { from: resolve('../static') }
         ]),
         new ExtractTextPlugin({
-          filename: 'common.[contenthash].css'
+          filename: 'common.[contenthash].css',
+          allChunks: true
         }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new CompressionPlugin({
