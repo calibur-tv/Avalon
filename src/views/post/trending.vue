@@ -65,11 +65,6 @@
         loading: false
       }
     },
-    watch: {
-      '$route' () {
-        this.loadMore()
-      }
-    },
     methods: {
       async loadMore () {
         if (this.loading) {
