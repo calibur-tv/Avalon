@@ -9,8 +9,8 @@ const resolve = file => path.resolve(__dirname, file)
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
 const qiniu = require('../.env').qiniu
-const SentryPlugin = require('./webpack.sentry.plugin.js')
-const SentryConfig = require('./sentry.config.js')
+// const SentryPlugin = require('./webpack.sentry.plugin.js')
+// const SentryConfig = require('./sentry.config.js')
 const now = new Date().getTime()
 
 module.exports = {
@@ -177,15 +177,15 @@ module.exports = {
 
     if (isProd) {
       pluginArr = pluginArr.concat([
-        new SentryPlugin({
-          baseSentryURL: SentryConfig.url,
-          include: SentryConfig.include,
-          organisation: SentryConfig.org,
-          project: SentryConfig.project,
-          token: SentryConfig.token,
-          release: now,
-          deleteAfterCompile: true
-        }),
+        // new SentryPlugin({
+        //   baseSentryURL: 'https://sentry.io/api/0/projects',
+        //   include: /\.js(\.map)?$/,
+        //   organisation: 'falstack',
+        //   project: 'Avalon',
+        //   token: SentryConfig.token,
+        //   release: now,
+        //   deleteAfterCompile: true
+        // }),
         new QiniuPlugin({
           ACCESS_KEY: qiniu.access,
           SECRET_KEY: qiniu.secret,
