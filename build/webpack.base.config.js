@@ -19,7 +19,8 @@ module.exports = {
   output: {
     path: resolve('../dist'),
     publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
-    filename: isDev ? '[name].js' : '[name].[chunkhash].js'
+    filename: isDev ? '[name].js' : '[name].[chunkhash].js',
+    sourceMapFilename: 'https://www.calibur.tv/[name].[chunkhash].js.map'
   },
   resolve: {
     alias: {
@@ -154,15 +155,6 @@ module.exports = {
 
     if (!isDev) {
       pluginArr = pluginArr.concat([
-        new SentryPlugin({
-          baseSentryURL: SentryConfig.url,
-          include: SentryConfig.include,
-          organisation: SentryConfig.org,
-          project: SentryConfig.project,
-          token: SentryConfig.token,
-          release: now,
-          deleteAfterCompile: true
-        }),
         new UglifyJsPlugin({
           sourceMap: true
         }),
@@ -186,6 +178,15 @@ module.exports = {
 
     if (isProd) {
       pluginArr = pluginArr.concat([
+        new SentryPlugin({
+          baseSentryURL: SentryConfig.url,
+          include: SentryConfig.include,
+          organisation: SentryConfig.org,
+          project: SentryConfig.project,
+          token: SentryConfig.token,
+          release: now,
+          deleteAfterCompile: true
+        }),
         new QiniuPlugin({
           ACCESS_KEY: qiniu.access,
           SECRET_KEY: qiniu.secret,
