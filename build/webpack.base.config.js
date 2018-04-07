@@ -152,6 +152,26 @@ module.exports = {
       })
     ]
 
+    if (isProd) {
+      pluginArr = pluginArr.concat([
+        // new SentryPlugin({
+        //   baseSentryURL: SentryConfig.url,
+        //   include: SentryConfig.include,
+        //   organisation: SentryConfig.org,
+        //   project: SentryConfig.project,
+        //   token: SentryConfig.token,
+        //   release: now,
+        //   deleteAfterCompile: true
+        // }),
+        new QiniuPlugin({
+          ACCESS_KEY: qiniu.access,
+          SECRET_KEY: qiniu.secret,
+          bucket: qiniu.bucket,
+          path: qiniu.prefix
+        })
+      ])
+    }
+
     if (!isDev) {
       pluginArr = pluginArr.concat([
         new UglifyJsPlugin({
@@ -171,26 +191,6 @@ module.exports = {
           test: /\.js$|\.css$/,
           threshold: 10240,
           minRatio: 0.8
-        })
-      ])
-    }
-
-    if (isProd) {
-      pluginArr = pluginArr.concat([
-        // new SentryPlugin({
-        //   baseSentryURL: 'https://sentry.io/api/0/projects',
-        //   include: /\.js(\.map)?$/,
-        //   organisation: 'falstack',
-        //   project: 'Avalon',
-        //   token: SentryConfig.token,
-        //   release: now,
-        //   deleteAfterCompile: true
-        // }),
-        new QiniuPlugin({
-          ACCESS_KEY: qiniu.access,
-          SECRET_KEY: qiniu.secret,
-          bucket: qiniu.bucket,
-          path: qiniu.prefix
         })
       ])
     }
