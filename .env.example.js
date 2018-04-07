@@ -1,15 +1,18 @@
+const dev = process.env.NODE_ENV === 'development'
+
 const host = {
-  development: 'https://t-api.calibur.tv/',
+  development: 'http://localhost:3099/',
   staging: 'https://t-api.calibur.tv/',
-  production: 'https://api.calibur.tv'
+  production: 'https://api.calibur.tv/'
 }
 
 const cdn = {
-  host: 'https://cdn.calibur.tv/'
+  image: 'https://image.calibur.tv/',
+  video: 'https://video.calibur.tv/'
 }
 
 const qiniu = {
-  host: '',
+  host: 'https://static.calibur.tv/',
   access: '',
   secret: '',
   bucket: '',
@@ -17,19 +20,23 @@ const qiniu = {
 }
 
 const timeout = {
-  server: 60000,
+  server: 10000,
   client: 30000
 }
 
 const script = {
-  baiduStat: '',
-  baiduPush: '',
-  google: ''
+  baiduStat: dev ? '' : ``,
+  baiduPush: dev ? '' : ``
 }
 
 const env = process.env.NODE_ENV
 
 const listCacheLimit = 5
+const listFetchCount = 15
+const sentry = {
+  token: '',
+  url: ''
+}
 
 module.exports = {
   host,
@@ -37,6 +44,8 @@ module.exports = {
   env,
   script,
   listCacheLimit,
+  listFetchCount,
   cdn,
-  qiniu
+  qiniu,
+  sentry
 }
