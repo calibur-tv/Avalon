@@ -2,20 +2,19 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const QiniuPlugin = require('qiniu-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const resolve = file => path.resolve(__dirname, file)
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
 const qiniu = require('../.env').qiniu
+const now = new Date().getTime()
 // const SentryPlugin = require('./webpack.sentry.plugin.js')
 // const SentryConfig = require('./sentry.config.js')
-const now = new Date().getTime()
 
 module.exports = {
   cache: true,
-  devtool: isDev ? false : 'sourcemap',
+  devtool: isProd ? false : 'sourcemap',
   output: {
     path: resolve('../dist'),
     publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
@@ -153,30 +152,11 @@ module.exports = {
     ]
 
     if (isProd) {
-      pluginArr = pluginArr.concat([
-        // new SentryPlugin({
-        //   baseSentryURL: SentryConfig.url,
-        //   include: SentryConfig.include,
-        //   organisation: SentryConfig.org,
-        //   project: SentryConfig.project,
-        //   token: SentryConfig.token,
-        //   release: now,
-        //   deleteAfterCompile: true
-        // }),
-        new QiniuPlugin({
-          ACCESS_KEY: qiniu.access,
-          SECRET_KEY: qiniu.secret,
-          bucket: qiniu.bucket,
-          path: qiniu.prefix
-        })
-      ])
     }
 
     if (!isDev) {
       pluginArr = pluginArr.concat([
-        new UglifyJsPlugin({
-          sourceMap: true
-        }),
+        new UglifyJsPlugin(),
         new CopyWebpackPlugin([
           { from: resolve('../static') }
         ]),
