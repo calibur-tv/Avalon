@@ -19,8 +19,7 @@ module.exports = {
   output: {
     path: resolve('../dist'),
     publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
-    filename: isDev ? '[name].js' : '[name].[chunkhash].js',
-    sourceMapFilename: 'https://www.calibur.tv/[name].[chunkhash].js.map'
+    filename: isDev ? '[name].js' : '[name].[chunkhash].js'
   },
   resolve: {
     alias: {
