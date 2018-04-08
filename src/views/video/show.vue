@@ -71,8 +71,8 @@
       background-color: #000;
     }
 
-    .vue-pwa-video {
-      margin-bottom: 30px;
+    .video-info {
+      margin-top: 30px;
     }
 
     .bangumi-panel {
@@ -141,7 +141,7 @@
           @playing="handlePlaying"
         ></v-video>
       </no-ssr>
-      <div class="clearfix">
+      <div class="clearfix video-info">
         <v-bangumi-panel
           class="bangumi-panel"
           :id="bangumi.id"

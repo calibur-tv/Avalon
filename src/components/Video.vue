@@ -517,8 +517,8 @@
           this.handlePlay()
         }
       },
-      tool () {
-        if (this.state.isFull && !this.state.showTool) {
+      tool (e) {
+        if (this.state.isFull && !this.state.showTool && document.body.offsetHeight - e.screenY < 40) {
           this.state.showTool = true
           this.value.timer = setTimeout(() => {
             if (this.state.isFull) {
