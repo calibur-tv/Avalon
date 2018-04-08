@@ -26,7 +26,7 @@
         <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
       </el-form-item>
       <el-form-item label="番剧" prop="bangumiId">
-        <el-select v-model="forms.bangumiId" placeholder="请选择番剧">
+        <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
           <el-option
             v-for="item in optionBangumis"
             :label="item.name"
@@ -90,7 +90,7 @@
             { max: 40, message: '请缩减至40字以内！', trigger: 'blur' }
           ],
           bangumiId: [
-            { type: 'number', required: true, message: '请选择活动区域', trigger: 'change' }
+            { type: 'number', required: true, message: '请选择相应番剧', trigger: 'change' }
           ],
           content: [
             { required: true, max: 500, message: '内容不能为空，且不超过500字', trigger: 'blur' }

@@ -38,6 +38,7 @@ import {
   Tooltip,
   Select,
   Option,
+  OptionGroup,
   Upload,
   Pagination,
   Carousel,
@@ -69,6 +70,7 @@ Vue.use(RadioButton)
 Vue.use(Tooltip)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(OptionGroup)
 Vue.use(InfiniteScroll)
 Vue.use(Upload)
 Vue.use(Pagination)

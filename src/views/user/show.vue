@@ -665,11 +665,6 @@
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
-        <!--<el-tab-pane label="图片">-->
-          <!--<no-content v-if="images.noMore && !images.data.length">-->
-            <!--<el-button @click="openUploadModal" type="primary" round>上传图片</el-button>-->
-          <!--</no-content>-->
-        <!--</el-tab-pane>-->
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
@@ -845,7 +840,48 @@
         },
         postTab: '发表',
         signDayLoading: false,
-        loadingUserImageFetch: false
+        loadingUserImageFetch: false,
+        loadingUserBangumiFetch: false,
+        uploadImage: {
+          show: false,
+          name: '',
+          bangumiId: '',
+          tags: '',
+          tagOptions: [
+            {
+              value: 0,
+              label: 'cosplay'
+            },
+            {
+              value: 1,
+              label: '手绘'
+            },
+            {
+              value: 2,
+              label: '原画'
+            }
+          ],
+          size: '',
+          sizeOptions: [
+            {
+              value: 0,
+              label: '手机壁纸'
+            },
+            {
+              value: 1,
+              label: '电脑壁纸'
+            },
+            {
+              value: 2,
+              label: '头像'
+            }
+          ]
+        },
+        uploadImageRules: {
+          bangumiId: [
+            { type: 'number', required: true, message: '请选择相应番剧', trigger: 'change' }
+          ]
+        }
       }
     },
     methods: {
@@ -867,6 +903,23 @@
       handlePostTabClick () {
         this.getUserPosts(true)
       },
+      async getUserBangumis () {
+        if (this.$store.state.users.list[this.slug].bangumis.length) {
+          return
+        }
+        if (this.loadingUserBangumiFetch) {
+          return
+        }
+        this.loadingUserBangumiFetch = true
+        try {
+          this.$store.dispatch('users/getFollowBangumis', {
+            ctx: this,
+            zone: this.slug
+          })
+        } finally {
+          this.loadingUserBangumiFetch = false
+        }
+      },
       getUserPosts (isFirstRequest) {
         if (isFirstRequest && this.$store.state.users.posts[this.postListType].data.length) {
           return
@@ -876,7 +929,7 @@
           zone: this.user.zone
         })
       },
-      async getUserImages (isFirstRequest) {
+      getUserImages (isFirstRequest) {
         if (isFirstRequest && this.$store.state.users.images.data.length) {
           return
         }
@@ -885,7 +938,7 @@
         }
         this.loadingUserImageFetch = true
         try {
-          await this.$store.dispatch('users/getUserImages', {
+          this.$store.dispatch('users/getUserImages', {
             zone: this.user.zone,
             ctx: this
           })
@@ -1039,7 +1092,8 @@
         }
       },
       openUploadModal () {
-        console.log(123)
+        this.getUserBangumis()
+        this.uploadImage.show = true
       }
     }
   }

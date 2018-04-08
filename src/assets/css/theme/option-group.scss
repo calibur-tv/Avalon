@@ -13,6 +13,10 @@
     margin: 0;
     padding: 0;
 
+    li {
+      float: none;
+    }
+
     &:not(:last-of-type) {
       padding-bottom: 24px;
 
