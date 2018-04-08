@@ -126,21 +126,24 @@
                     ></a>
                     <span>
                       更新至
-                      <a
-                        v-if="item.released_video_id"
-                        :class="[item.update ? 'new' : 'old']"
-                        :href="$alias.video(item.released_video_id)"
-                        target="_blank"
-                        class="part oneline">
-                        {{ `${item.released_part}话` }}
-                      </a>
-                      <strong
-                        class="part oneline"
-                        :class="[item.update ? 'new' : 'old']"
-                        v-else
-                      >
-                        {{ `${item.released_part}话` }}
-                      </strong>
+                      <strong class="part oneline old" v-if="item.end">已完结</strong>
+                      <template v-else>
+                        <a
+                          v-if="item.released_video_id"
+                          :class="[item.update ? 'new' : 'old']"
+                          :href="$alias.video(item.released_video_id)"
+                          target="_blank"
+                          class="part oneline">
+                          {{ `${item.released_part}话` }}
+                        </a>
+                        <strong
+                          class="part oneline"
+                          :class="[item.update ? 'new' : 'old']"
+                          v-else
+                        >
+                          {{ `${item.released_part}话` }}
+                        </strong>
+                      </template>
                     </span>
                   </figcaption>
                 </figure>
