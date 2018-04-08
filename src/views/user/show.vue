@@ -665,6 +665,7 @@
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
+        <!--
         <el-tab-pane label="图片">
           <no-content v-if="images.noMore && !images.data.length">
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
@@ -721,6 +722,7 @@
             </el-form>
           </v-modal>
         </el-tab-pane>
+        -->
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
