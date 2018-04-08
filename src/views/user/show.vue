@@ -665,6 +665,62 @@
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
+        <el-tab-pane label="图片">
+          <no-content v-if="images.noMore && !images.data.length">
+            <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
+          </no-content>
+          <v-modal
+            v-if="isMe"
+            v-model="uploadImage.show"
+            header-text="上传图片"
+          >
+            <el-form
+              :model="uploadImage"
+              ref="uploadImageForm"
+              label-width="60px"
+            >
+              <el-form-item label="名字">
+                <el-input placeholder="给图片起个名字" v-model.trim="uploadImage.title"></el-input>
+              </el-form-item>
+              <el-form-item label="番剧">
+                <el-select v-model="uploadImage.bangumiId" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in bangumis"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="尺寸">
+                <el-select
+                  v-model="uploadImage.size"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in uploadImage.sizeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="类型">
+                <el-select
+                  v-model="uploadImage.tags"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in uploadImage.tagOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </v-modal>
+        </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
