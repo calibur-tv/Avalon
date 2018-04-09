@@ -40,10 +40,6 @@ ul {
   }
 }
 
-li {
-  float: left;
-}
-
 img {
   color: transparent;
   background-color: transparent;
@@ -51,6 +47,7 @@ img {
   transition: filter, opacity .15s linear;
   filter: blur(0);
   opacity: 1;
+  width: 100%;
 }
 
 img.image-lazy-mask {

@@ -42,6 +42,9 @@
       <el-tooltip placement="top" effect="dark" content="反馈">
         <button class="creator-btn iconfont icon-fankui" @click="showFeedModal = true"></button>
       </el-tooltip>
+      <el-tooltip placement="top" effect="dark" content="图片">
+        <button class="creator-btn iconfont icon-tupian" @click="handleImageClick"></button>
+      </el-tooltip>
       <el-tooltip placement="top" effect="dark" content="发帖">
         <button class="creator-btn iconfont icon-fatie1" @click="handlePostClick"></button>
       </el-tooltip>
@@ -62,6 +65,7 @@
       <v-post @submit="showPostModal = false"></v-post>
     </v-modal>
     <v-feedback v-model="showFeedModal"></v-feedback>
+    <v-image></v-image>
   </div>
 </template>
 
@@ -69,11 +73,12 @@
   import vCreator from './Creator.vue'
   import vFeedback from '~/components/creates/Feedback'
   import vPost from '~/components/creates/Post'
+  import vImage from '~/components/creates/Image'
 
   export default {
     name: 'SideTools',
     components: {
-      vCreator, vPost, vFeedback
+      vCreator, vPost, vFeedback, vImage
     },
     data () {
       return {
@@ -90,6 +95,14 @@
           return
         }
         this.showPostModal = true
+      },
+      handleImageClick () {
+        if (!this.$store.state.login) {
+          this.$toast.info('继续操作前请先登录')
+          this.$channel.$emit('sign-in')
+          return
+        }
+        this.$channel.$emit('open-upload-image-modal')
       },
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight

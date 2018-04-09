@@ -112,6 +112,7 @@
     #videos {
       li {
         margin: 0 $video-item-margin 15px 0;
+        float: left;
       }
 
       a {
@@ -177,12 +178,14 @@
         li {
           margin-right: 10px;
           margin-bottom: 10px;
+          float: left;
         }
       }
 
       #followers {
         .follower {
           margin-right: -10px;
+          float: left;
 
           a {
             overflow: hidden;
@@ -361,6 +364,11 @@
           }
         }
       }
+
+      .load-more-roles {
+        margin-top: 30px;
+        text-align: center;
+      }
     }
   }
 </style>
@@ -501,9 +509,22 @@
                   </div>
                 </li>
               </ul>
-              <no-content v-if="roles.noMore && !roles.data.length">
-                <el-button @click="openFeedbackForRole" type="primary" round>求偶像</el-button>
-              </no-content>
+              <el-button
+                :loading="rolesState.loading"
+                v-if="!roles.noMore"
+                id="load-post-btn"
+                @click="getRoles"
+                type="info"
+                plain
+              >{{ rolesState.loading ? '加载中' : '加载更多' }}</el-button>
+              <template v-if="roles.noMore">
+                <div v-if="roles.data.length" class="load-more-roles">
+                  <el-button @click="openFeedbackForRole" type="primary" round>没有你喜欢的角色？</el-button>
+                </div>
+                <no-content v-else>
+                  <el-button @click="openFeedbackForRole" type="primary" round>求偶像</el-button>
+                </no-content>
+              </template>
               <v-modal
                 class="role-fans-modal"
                 v-model="openRolesModal"
