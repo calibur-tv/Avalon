@@ -10,12 +10,20 @@ export default class extends BaseApi {
   }
 
   getUpToken () {
-    return this.http.post('image/token')
+    return this.http.post('image/uptoken')
   }
 
   uploadToQiniu (formData) {
     return this.http.post('https://up.qbox.me', formData, {
       'Content-Type': 'multipart/form-data'
     })
+  }
+
+  getUploadType () {
+    return this.http.get('image/uploadType')
+  }
+
+  uploadImage ({ url, width, height, bangumiId, roleId, name, tags, size, creator }) {
+    return this.http.post('image/upload', { url, width, height, bangumiId, roleId, name, tags, size, creator })
   }
 }

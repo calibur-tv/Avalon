@@ -501,9 +501,18 @@
                   </div>
                 </li>
               </ul>
+              <el-button
+                :loading="roleState.loading"
+                v-if="!roles.noMore"
+                id="load-post-btn"
+                @click="getRoles"
+                type="info"
+                plain
+              >{{ roleState.loading ? '加载中' : '加载更多' }}</el-button>
               <no-content v-if="roles.noMore && !roles.data.length">
                 <el-button @click="openFeedbackForRole" type="primary" round>求偶像</el-button>
               </no-content>
+              <el-button @click="openFeedbackForRole" type="primary" round v-else>求偶像</el-button>
               <v-modal
                 class="role-fans-modal"
                 v-model="openRolesModal"

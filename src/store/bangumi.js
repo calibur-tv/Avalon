@@ -194,15 +194,20 @@ const actions = {
       total: data.total
     })
   },
-  async getRoles ({ state, commit }, { bangumiId, ctx }) {
+  async getRoles ({ state, commit }, { bangumiId, ctx, all }) {
     const api = new Api(ctx)
     const data = await api.roles({
       bangumiId,
       seenIds: state.roles.data.length
         ? state.roles.data.map(item => item.id).join(',')
-        : null
+        : null,
+      all: all || false
     })
-    commit('SET_ROLES', data)
+    if (all) {
+      return data
+    } else {
+      commit('SET_ROLES', data)
+    }
   },
   async starRole ({ commit }, { bangumiId, roleId, ctx, hasStar }) {
     const api = new CartoonRoleApi(ctx)
