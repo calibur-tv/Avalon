@@ -181,7 +181,7 @@
 
       .el-tabs__header {
         width: 100px;
-        margin-right: 100px;
+        margin-right: 50px;
       }
 
       $video-item-width: 220px;
@@ -190,6 +190,7 @@
       .bangumis {
         li {
           margin: 0 $video-item-margin 15px 0;
+          float: left;
         }
 
         a {
@@ -473,6 +474,19 @@
         margin-top: 20px;
         width: 100%;
       }
+
+      .image-wrap {
+        width: 217px;
+        padding-right: 17px;
+        padding-bottom: 17px;
+        margin-left: 3px;
+
+        .image {
+          width: 100%;
+          height: 100%;
+          box-shadow: 0 1px 3px rgba(0,0,0,.2);
+        }
+      }
     }
   }
 </style>
@@ -666,6 +680,16 @@
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
         <el-tab-pane label="图片">
+          <div
+            v-for="(item, index) in images.data"
+            v-waterfall="{ col: 4, index: index, id: 'images-waterfall' }"
+            class="image-wrap"
+            :style="computeImageHeight(item)"
+          >
+            <div class="image">
+              <img :src="$resize(item.url, { width: 200, mode: 2 })" alt="">
+            </div>
+          </div>
           <no-content v-if="images.noMore && !images.data.length">
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
           </no-content>
@@ -850,6 +874,11 @@
       }
     },
     methods: {
+      computeImageHeight (image) {
+        return {
+          height: `${(image.height / image.width * 200) + 127}px`
+        }
+      },
       handleTabClick (tab) {
         if (tab.label === '设置') {
           this.settingForm = {
