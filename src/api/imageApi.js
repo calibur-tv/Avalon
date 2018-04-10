@@ -23,7 +23,7 @@ export default class extends BaseApi {
     return this.http.get('image/uploadType')
   }
 
-  uploadImage ({ url, width, height, bangumiId, roleId, name, tags, size, creator }) {
-    return this.http.post('image/upload', { url, width, height, bangumiId, roleId, name, tags, size, creator })
+  uploadImage ({ url, width, height, bangumiId, roleId, tags, size, creator }) {
+    return this.http.post('image/upload', { url, width, height, bangumiId, roleId, tags, size, creator })
   }
 }

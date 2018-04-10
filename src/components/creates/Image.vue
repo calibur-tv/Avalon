@@ -4,10 +4,10 @@
     header-text="上传图片"
     @submit="handleFormSubmit"
   >
-    <el-form ref="form" label-width="60px">
-      <el-form-item label="名字">
-        <el-input placeholder="给图片起个名字，不超过20字，可为空" v-model.trim="form.name"></el-input>
-      </el-form-item>
+    <el-form
+      ref="form"
+      label-width="60px"
+    >
       <el-row>
         <el-col :span="10">
           <el-form-item label="番剧">
@@ -113,7 +113,6 @@
         show: false,
         submitting: false,
         form: {
-          name: '',
           bangumiId: '',
           size: '',
           tags: '',
@@ -211,51 +210,54 @@
         this.roles = data
       },
       async handleFormSubmit () {
-        this.$toast.warning('功能尚未开放！')
-//        if (!this.form.bangumiId) {
-//          this.$toast.error('请先选择番剧')
-//          return
-//        }
-//        if (!this.form.size) {
-//          this.$toast.error('请先选择尺寸')
-//          return
-//        }
-//        if (!this.form.tags) {
-//          this.$toast.error('请先选择类型')
-//          return
-//        }
-//        if (!this.form.images.length) {
-//          this.$toast.error('请先上传图片')
-//          return
-//        }
-//        if (this.form.name.length > 20) {
-//          this.$toast.error('名称请缩减至 20 字以内')
-//          return
-//        }
-//        if (this.submitting) {
-//          return
-//        }
-//        this.submitting = true
-//        try {
-//          const api = new ImageApi(this)
-//          const image = this.form.images[0]['img']
-//          await api.uploadImage({
-//            bangumiId: this.form.bangumiId,
-//            roleId: this.form.roleId || 0,
-//            tags: this.form.tags,
-//            size: this.form.size,
-//            name: this.form.name,
-//            url: image.key,
-//            width: image.width,
-//            height: image.height,
-//            creator: this.form.creator
-//          })
-//          this.$toast.success('图片上传成功！')
-//        } catch (e) {
-//          this.$toast.error(e)
-//        } finally {
-//          this.submitting = false
-//        }
+        if (!this.form.bangumiId) {
+          this.$toast.error('请先选择番剧')
+          return
+        }
+        if (!this.form.size) {
+          this.$toast.error('请先选择尺寸')
+          return
+        }
+        if (!this.form.tags) {
+          this.$toast.error('请先选择类型')
+          return
+        }
+        if (!this.form.images.length) {
+          this.$toast.error('请先上传图片')
+          return
+        }
+        if (this.submitting) {
+          return
+        }
+        this.submitting = true
+        try {
+          const api = new ImageApi(this)
+          const image = this.form.images[0]['img']
+          await api.uploadImage({
+            bangumiId: this.form.bangumiId,
+            roleId: this.form.roleId || 0,
+            tags: this.form.tags,
+            size: this.form.size,
+            url: image.key,
+            width: image.width,
+            height: image.height,
+            creator: this.form.creator
+          })
+          this.$toast.success('图片上传成功！')
+          this.form = {
+            bangumiId: '',
+            size: '',
+            tags: '',
+            roleId: '',
+            creator: false,
+            images: []
+          }
+          this.$refs.uploader.clearFiles()
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.submitting = false
+        }
       }
     },
     mounted () {
