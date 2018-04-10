@@ -21,6 +21,7 @@
         display: block;
         max-width: 100%;
         max-height: 100%;
+        width: auto;
       }
     }
 
