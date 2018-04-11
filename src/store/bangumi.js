@@ -22,6 +22,8 @@ const state = () => ({
   posts: {
     data: [],
     total: 0,
+    take: 10,
+    type: 'new',
     noMore: false
   },
   videos: {
@@ -33,6 +35,13 @@ const state = () => ({
   roles: {
     data: [],
     take: 15,
+    noMore: false
+  },
+  images: {
+    data: [],
+    total: 0,
+    take: 12,
+    type: 0,
     noMore: false
   }
 })
@@ -101,11 +110,15 @@ const mutations = {
   },
   SET_POSTS (state, { data, total }) {
     const posts = state.posts.data.concat(data)
-    state.posts = {
-      data: posts,
-      total: total,
-      noMore: posts.length >= total
-    }
+    state.posts.data = posts
+    state.posts.total = total
+    state.posts.noMore = posts.length >= total || data.length < state.posts.take
+  },
+  SET_IMAGES (state, { data, total }) {
+    const images = state.images.data.concat(data)
+    state.images.data = images
+    state.images.total = total
+    state.images.noMore = images.length >= total || data.length < state.images.take
   },
   SET_BANGUMI (state, data) {
     state.info = data
@@ -183,12 +196,14 @@ const actions = {
     })
     commit('SET_CATEGORY', data)
   },
-  async getPosts ({ state, commit }, { id, take, type, ctx }) {
-    const seenIds = state.posts.data.length
-      ? state.posts.data.map(item => item.id).join(',')
-      : null
+  async getPosts ({ state, commit }, { id, ctx }) {
     const api = new Api(ctx)
-    const data = await api.posts({ id, take, type, seenIds })
+    const data = await api.posts({
+      id,
+      take: state.posts.take,
+      type: state.posts.type,
+      seenIds: state.posts.data.length ? state.posts.data.map(item => item.id).join(',') : null
+    })
     commit('SET_POSTS', {
       data: data.list,
       total: data.total
@@ -208,6 +223,19 @@ const actions = {
     } else {
       commit('SET_ROLES', data)
     }
+  },
+  async getImages ({ state, commit }, { id, ctx }) {
+    const api = new Api(ctx)
+    const data = await api.images({
+      id,
+      take: state.images.take,
+      type: state.images.type,
+      seenIds: state.images.data.length ? state.images.data.map(item => item.id).join(',') : null
+    })
+    commit('SET_IMAGES', {
+      data: data.list,
+      total: data.total
+    })
   },
   async starRole ({ commit }, { bangumiId, roleId, ctx, hasStar }) {
     const api = new CartoonRoleApi(ctx)

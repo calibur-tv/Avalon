@@ -546,6 +546,15 @@
               </v-modal>
             </div>
           </el-tab-pane>
+          <el-tab-pane label="图片">
+            <image-waterfall
+              :loading="imagesState.loading"
+              :no-more="images.noMore"
+              :list="images.data"
+              :col="3"
+              @fetch="getImages"
+            ></image-waterfall>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <aside class="col-aside">
@@ -598,13 +607,7 @@
 
 <script>
   import PostShowItem from '~/components/items/PostShow'
-
-  const defaultParams = {
-    post: {
-      take: 10,
-      type: 'new'
-    }
-  }
+  import ImageWaterfall from '~/components/lists/ImageWaterfall'
 
   export default {
     name: 'bangumi-show',
@@ -612,16 +615,12 @@
       const id = route.params.id
       await Promise.all([
         store.dispatch('bangumi/getBangumi', { ctx, id }),
-        store.dispatch('bangumi/getPosts', {
-          ctx,
-          id,
-          take: defaultParams.post.take,
-          type: defaultParams.post.type
-        })
+        store.dispatch('bangumi/getPosts', { ctx, id })
       ])
     },
     components: {
-      PostShowItem
+      PostShowItem,
+      ImageWaterfall
     },
     head () {
       if (!this.id) {
@@ -663,6 +662,9 @@
       roles () {
         return this.$store.state.bangumi.roles
       },
+      images () {
+        return this.$store.state.bangumi.images
+      },
       currentRoleFans () {
         return this.$store.state.cartoonRole.fans[this.focusRoleSort]
       },
@@ -673,8 +675,6 @@
     data () {
       return {
         postState: {
-          take: defaultParams.post.take,
-          type: defaultParams.post.type,
           loading: false,
           init: true
         },
@@ -685,6 +685,12 @@
         rolesState: {
           loading: false,
           init: false
+        },
+        imagesState: {
+          loading: false,
+          init: false,
+          take: 12,
+          type: 'all'
         },
         openRolesModal: false,
         loadingRoleFans: false,
@@ -732,6 +738,10 @@
           if (!this.rolesState.init) {
             this.getRoles()
           }
+        } else if (index === 3) {
+          if (!this.imagesState.init) {
+            this.getImages()
+          }
         }
       },
       async getRoles () {
@@ -776,14 +786,30 @@
         try {
           await this.$store.dispatch('bangumi/getPosts', {
             ctx: this,
-            id: this.id,
-            take: this.postState.take,
-            type: this.postState.type
+            id: this.id
           })
         } catch (e) {
           this.$toast.error(e)
         } finally {
           this.postState.loading = false
+        }
+      },
+      async getImages () {
+        if (this.imagesState.loading || this.images.noMore) {
+          return
+        }
+        this.imagesState.loading = true
+
+        try {
+          await this.$store.dispatch('bangumi/getImages', {
+            ctx: this,
+            id: this.id,
+            type: this.imagesState.type
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.imagesState.loading = false
         }
       },
       showRoleDetail (role, sort) {
