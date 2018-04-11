@@ -34,7 +34,6 @@ const state = () => ({
   },
   roles: {
     data: [],
-    take: 15,
     noMore: false
   },
   images: {
@@ -49,7 +48,7 @@ const state = () => ({
 const mutations = {
   SET_ROLES (state, data) {
     state.roles.data = state.roles.data.concat(data)
-    state.roles.noMore = data.length < state.roles.take
+    state.roles.noMore = true
   },
   selectTag (state, index) {
     const tag = state.tags[index]
@@ -210,19 +209,15 @@ const actions = {
     })
   },
   async getRoles ({ state, commit }, { bangumiId, ctx, all }) {
+    if (state.roles.noMore) {
+      return
+    }
     const api = new Api(ctx)
-    const data = await api.roles({
-      bangumiId,
-      seenIds: state.roles.data.length
-        ? state.roles.data.map(item => item.id).join(',')
-        : null,
-      all: all || false
-    })
+    const data = await api.roles({ bangumiId })
     if (all) {
       return data
-    } else {
-      commit('SET_ROLES', data)
     }
+    commit('SET_ROLES', data)
   },
   async getImages ({ state, commit }, { id, ctx }) {
     const api = new Api(ctx)

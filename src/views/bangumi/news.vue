@@ -25,8 +25,8 @@
     }
 
     .bangumi {
-      width: 170px;
-      margin: 0 10px 15px 0;
+      width: 195px;
+      margin: 0 10px 20px 0;
       float: left;
 
       figure {
