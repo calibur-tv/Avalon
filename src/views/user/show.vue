@@ -474,100 +474,6 @@
         margin-top: 20px;
         width: 100%;
       }
-
-      .image-item {
-        width: 217px;
-        padding-right: 17px;
-        padding-bottom: 17px;
-        margin-left: 3px;
-
-        .image-wrap {
-          font-size: 0;
-          position: relative;
-          cursor: zoom-in;
-
-          &:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #fff;
-            opacity: 0;
-          }
-
-          &:hover {
-            &:after {
-              opacity: 0.1;
-            }
-          }
-        }
-
-        .image {
-          width: 100%;
-          height: 100%;
-          box-shadow: 0 1px 3px rgba(0,0,0,.2);
-          overflow: hidden;
-
-          .desc {
-            padding: 0 16px;
-            margin: 10px 0;
-            height: 32px;
-
-            .tags {
-              float: left;
-
-              .el-tag {
-                margin-top: 4px;
-                margin-right: 7px;
-                max-width: 60px;
-              }
-            }
-
-            .meta {
-              font-size: 11px;
-              color: $color-gray-deep;
-              overflow: hidden;
-              text-align: right;
-              margin-top: 1px;
-
-              .like {
-                margin-right: 1px;
-                cursor: pointer;
-              }
-
-              time {
-                margin-top: 3px;
-                display: block;
-              }
-            }
-          }
-
-          .bangumi {
-            padding: 10px 16px;
-            border-top: 1px solid #F2F2F2;
-            background-color: #fafafa;
-            font-size: 12px;
-            color: #999;
-
-            .avatar {
-              float: left;
-              margin-right: 10px;
-
-              img {
-                width: 34px;
-                height: 34px;
-              }
-            }
-
-            .info {
-              overflow: hidden;
-              line-height: 17px;
-            }
-          }
-        }
-      }
     }
   }
 </style>
@@ -761,49 +667,12 @@
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
         <el-tab-pane label="图片">
-          <div>
-            <div
-              v-for="(item, index) in images.data"
-              v-waterfall="{ col: 4, index: index, id: 'images-waterfall' }"
-              class="image-item"
-              :style="computeImageHeight(item)"
-            >
-              <div class="image">
-                <div class="image-wrap" @click="$previewImages(`${item.width}-${item.height}|${item.url}`)">
-                  <img :src="$resize(item.url, { width: 200, mode: 2 })">
-                </div>
-                <div class="desc">
-                  <div class="tags">
-                    <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
-                  </div>
-                  <div class="meta">
-                    <span class="like">
-                      <i class="iconfont icon-guanzhu"></i>
-                      {{ item.like_count }}
-                    </span>
-                    <v-time class="oneline" v-model="item.created_at"></v-time>
-                  </div>
-                </div>
-                <div class="bangumi clearfix">
-                  <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-                    <img :src="$resize(item.bangumi.avatar, { width: 72 })">
-                  </a>
-                  <div class="info">
-                    <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-                    <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <el-button
+          <image-waterfall
             :loading="loadingUserImageFetch"
-            v-if="!images.noMore"
-            class="load-post-btn"
-            @click="getUserImages(false)"
-            type="info"
-            plain
-          >{{ loadingUserImageFetch ? '加载中' : '加载更多' }}</el-button>
+            :no-more="images.noMore"
+            :list="images.data"
+            @fetch="getUserImages(false)"
+          ></image-waterfall>
           <no-content v-if="images.noMore && !images.data.length">
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
           </no-content>
@@ -860,6 +729,7 @@
   import vCropper from '~/components/base/Cropper'
   import UserApi from '~/api/userApi'
   import ImageApi from '~/api/imageApi'
+  import ImageWaterfall from '~/components/lists/ImageWaterfall'
 
   export default {
     async asyncData ({ route, store, ctx }) {
@@ -887,7 +757,8 @@
       }
     },
     components: {
-      vCropper
+      vCropper,
+      ImageWaterfall
     },
     computed: {
       slug () {
@@ -988,11 +859,6 @@
       }
     },
     methods: {
-      computeImageHeight (image) {
-        return {
-          height: `${(image.height / image.width * 200) + 127}px`
-        }
-      },
       handleTabClick (tab) {
         if (tab.label === '设置') {
           this.settingForm = {
