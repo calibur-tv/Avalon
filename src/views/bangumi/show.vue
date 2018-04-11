@@ -394,6 +394,50 @@
       <v-share type="panel"></v-share>
     </section>
     <div class="container">
+      <aside class="col-aside">
+        <div id="tags" v-if="tags.length">
+          <h2 class="subtitle">标签</h2>
+          <ul>
+            <li class="tag" v-for="tag in tags" :key="tag.id">
+              <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
+            </li>
+          </ul>
+        </div>
+        <div id="followers" v-if="followers.length">
+          <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
+          <ul>
+            <li class="follower" v-for="user in displayFollowers" :key="user.zone">
+              <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
+                <a :href="$alias.user(user.zone)" target="_blank">
+                  <v-img
+                    :src="$resize(user.avatar, { width: 64, height: 64 })"
+                    :alt="user.zone"
+                  ></v-img>
+                </a>
+              </el-tooltip>
+            </li>
+            <button
+              v-if="followers.length > 7"
+              @click="openFollowersModal = true"
+              class="followers-more-btn el-icon-more"
+            ></button>
+          </ul>
+          <v-modal
+            v-model="openFollowersModal"
+            :header-text="`《${info.name}》的关注者们`"
+            :footer="false"
+            :scroll="fetchMoreFollowers"
+            class="bangumi-followers-modal"
+          >
+            <li v-for="user in followers" :key="user.id">
+              <a :href="$alias.user(user.zone)" target="_blank">
+                <img :src="$resize(user.avatar, { width: 120 })">
+                <span v-text="user.nickname"></span>
+              </a>
+            </li>
+          </v-modal>
+        </div>
+      </aside>
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
           <el-tab-pane label="帖子">
@@ -551,56 +595,12 @@
               :loading="imagesState.loading"
               :no-more="images.noMore"
               :list="images.data"
-              :col="3"
+              :col="4"
               @fetch="getImages"
             ></image-waterfall>
           </el-tab-pane>
         </el-tabs>
       </div>
-      <aside class="col-aside">
-        <div id="tags" v-if="tags.length">
-          <h2 class="subtitle">标签</h2>
-          <ul>
-            <li class="tag" v-for="tag in tags" :key="tag.id">
-              <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
-            </li>
-          </ul>
-        </div>
-        <div id="followers" v-if="followers.length">
-          <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
-          <ul>
-            <li class="follower" v-for="user in displayFollowers" :key="user.zone">
-              <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
-                <a :href="$alias.user(user.zone)" target="_blank">
-                  <v-img
-                    :src="$resize(user.avatar, { width: 64, height: 64 })"
-                    :alt="user.zone"
-                  ></v-img>
-                </a>
-              </el-tooltip>
-            </li>
-            <button
-              v-if="followers.length > 7"
-              @click="openFollowersModal = true"
-              class="followers-more-btn el-icon-more"
-            ></button>
-          </ul>
-          <v-modal
-            v-model="openFollowersModal"
-            :header-text="`《${info.name}》的关注者们`"
-            :footer="false"
-            :scroll="fetchMoreFollowers"
-            class="bangumi-followers-modal"
-          >
-            <li v-for="user in followers" :key="user.id">
-              <a :href="$alias.user(user.zone)" target="_blank">
-                <img :src="$resize(user.avatar, { width: 120 })">
-                <span v-text="user.nickname"></span>
-              </a>
-            </li>
-          </v-modal>
-        </div>
-      </aside>
     </div>
   </div>
 </template>
