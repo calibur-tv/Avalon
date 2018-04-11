@@ -126,6 +126,17 @@
   <div id="post-show">
     <v-banner></v-banner>
     <div class="container">
+      <aside class="col-aside">
+        <v-bangumi-panel
+          class="bangumi-panel"
+          :id="bangumi.id"
+          :avatar="bangumi.avatar"
+          :name="bangumi.name"
+          :followed="bangumi.followed"
+          :summary="bangumi.summary"
+          @follow="handleBangumiFollow"
+        ></v-bangumi-panel>
+      </aside>
       <section class="col-main clearfix">
         <header>
           <div class="title-wrap">
@@ -236,17 +247,6 @@
           </div>
         </el-col>
       </section>
-      <aside class="col-aside">
-        <v-bangumi-panel
-          class="bangumi-panel"
-          :id="bangumi.id"
-          :avatar="bangumi.avatar"
-          :name="bangumi.name"
-          :followed="bangumi.followed"
-          :summary="bangumi.summary"
-          @follow="handleBangumiFollow"
-        ></v-bangumi-panel>
-      </aside>
     </div>
   </div>
 </template>

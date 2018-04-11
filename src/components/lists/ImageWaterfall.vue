@@ -1,9 +1,9 @@
 <style lang="scss">
   #image-waterfall {
     .image-item {
-      width: 217px;
-      padding-right: 17px;
-      padding-bottom: 17px;
+      width: 215px;
+      padding-right: 15px;
+      padding-bottom: 15px;
       margin-left: 3px;
 
       .image-wrap {

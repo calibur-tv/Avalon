@@ -155,6 +155,7 @@
   <div id="bangumi-timeline">
     <v-banner></v-banner>
     <div class="container">
+      <aside class="col-aside"></aside>
       <div class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
@@ -200,7 +201,6 @@
           </ul>
         </ul>
       </div>
-      <aside class="col-aside"></aside>
     </div>
   </div>
 </template>

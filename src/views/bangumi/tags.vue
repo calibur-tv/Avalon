@@ -99,6 +99,7 @@
   <div id="bangumi-tags" class="main">
     <v-banner></v-banner>
     <div class="container">
+      <aside class="col-aside"></aside>
       <section class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
@@ -154,7 +155,6 @@
         </div>
         <no-content v-else-if="id"></no-content>
       </section>
-      <aside class="col-aside"></aside>
     </div>
   </div>
 </template>
