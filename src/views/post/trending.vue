@@ -12,6 +12,7 @@
   <div id="post-trending">
     <v-banner></v-banner>
     <div class="container">
+      <div class="col-aside"></div>
       <div class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.postTrending('new')">最新</router-link>
