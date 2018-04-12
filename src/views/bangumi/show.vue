@@ -596,6 +596,7 @@
               :no-more="images.noMore"
               :list="images.data"
               :col="4"
+              @delete="handleImageDelete"
               @fetch="getImages"
             ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
@@ -892,6 +893,10 @@
         } finally {
           this.loadingFollowers = false
         }
+      },
+      handleImageDelete ({ id }) {
+        this.$store.commit('bangumi/deleteImages', { id })
+        this.$toast.success('操作成功')
       }
     },
     mounted () {

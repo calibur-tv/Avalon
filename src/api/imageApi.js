@@ -26,4 +26,12 @@ export default class extends BaseApi {
   uploadImage ({ url, width, height, bangumiId, roleId, tags, size, creator }) {
     return this.http.post('image/upload', { url, width, height, bangumiId, roleId, tags, size, creator })
   }
+
+  deleteImage ({ id }) {
+    return this.http.post('image/delete', { id })
+  }
+
+  trialReport ({ id }) {
+    return this.http.post('image/report', { id })
+  }
 }

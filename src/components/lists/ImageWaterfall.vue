@@ -12,15 +12,6 @@
         position: relative;
         cursor: zoom-in;
 
-        .creator {
-          font-size: 20px;
-          position: absolute;
-          left: 5px;
-          top: 2px;
-          z-index: 1;
-          color: #ffcf00;
-        }
-
         &:after {
           content: '';
           position: absolute;
@@ -35,6 +26,55 @@
         &:hover {
           &:after {
             opacity: 0.1;
+          }
+        }
+
+        .creator {
+          font-size: 20px;
+          position: absolute;
+          left: 5px;
+          top: 2px;
+          z-index: 1;
+          color: #ffcf00;
+        }
+
+        .v-select-wrap {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 58px;
+          line-height: 16px;
+          font-size: 12px;
+          color: #fff;
+          z-index: 1;
+          margin-top: 7px;
+          margin-right: 6px;
+
+          .iconfont {
+            text-shadow: 0 1px 10px grey;
+          }
+
+          .v-select-options-wrap {
+            background-color: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            top: 18px;
+          }
+
+          .v-select-options-item {
+            height: 36px;
+            line-height: 35px;
+            color: #535353;
+            font-size: 12px;
+            padding-left: 15px;
+
+            &:not(:last-child) {
+              border-bottom: 1px solid #f0f0f0;
+            }
+
+            &:hover {
+              background-color: $color-gray-normal;
+            }
           }
         }
       }
@@ -144,6 +184,16 @@
         <div class="image">
           <div class="image-wrap" @click="$previewImages(`${item.width}-${item.height}|${item.url}`)">
             <i v-if="item.creator" class="creator iconfont icon-huangguan"></i>
+            <div class="menu" @click.stop.prevent>
+              <v-select
+                placeholder=""
+                :options="computeOptions(item)"
+                :abort="true"
+                @submit="handleMenuSelected($event, item)"
+              >
+                <i class="iconfont icon-101" slot="tail"></i>
+              </v-select>
+            </div>
             <img :src="$resize(item.url, { width: 200, mode: 2 })">
           </div>
           <div class="desc">
@@ -193,6 +243,8 @@
 </template>
 
 <script>
+  import Api from '~/api/imageApi'
+
   export default {
     name: 'ImageWaterfall',
     props: {
@@ -224,6 +276,20 @@
       isMine (userId) {
         return this.curUserId === userId
       },
+      computeOptions (image) {
+        let result = []
+        if (this.isMine(image.user_id)) {
+          result = result.concat([
+            '删除'
+//            '编辑'
+          ])
+        } else {
+          result = result.concat([
+            '举报'
+          ])
+        }
+        return result
+      },
       computeImageHeight (image) {
         return {
           height: `${(image.height / image.width * 200) + 122}px`
@@ -231,6 +297,38 @@
       },
       handleLoadMoreClick () {
         this.$emit('fetch')
+      },
+      deleteImage (image) {
+        if (image.user_id !== this.curUserId) {
+          return
+        }
+        const id = image.id
+        const api = new Api(this)
+        api.deleteImage({ id }).then(() => {
+          this.$emit('delete', { id })
+        }).catch((err) => {
+          this.$toast.error(err)
+        })
+      },
+      handleMenuSelected (option, image) {
+        if (option === '举报') {
+          this.$prompt('请输入举报原因', '提示', {
+            confirmButtonText: '提交',
+            cancelButtonText: '取消'
+          }).then(({ value }) => {
+            if (value) {
+              const api = new Api(this)
+              api.trialReport({ id: image.id }).then(() => {
+                this.$toast.success('提交成功！')
+              })
+            }
+          }).catch(() => {})
+        } else if (option === '删除') {
+          // delete
+          this.deleteImage(image)
+        } else if (option === '编辑') {
+          // edit
+        }
       },
       handleLikeBtnClick (e, image) {
 //        if (!this.$store.state.login) {

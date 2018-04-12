@@ -90,7 +90,7 @@
   <div class="v-select-wrap">
     <div
       class="v-select-submit-wrap"
-      @click="handleSubmitClick"
+      @click.stop="handleSubmitClick"
       :class="{ 'open': show }"
     >
       <slot name="tail">
@@ -148,7 +148,7 @@
       </div>
     </div>
     <transition name="zoom-in-top">
-      <ul class="v-select-options-wrap" v-show="show">
+      <ul class="v-select-options-wrap" ref="ul" v-show="show">
         <slot name="options">
           <li
             v-for="item in list"
@@ -183,6 +183,7 @@
   const createRandomStr = () => Math.random().toString(36).substring(3, 6)
   const encodeOptions = (options, selectedLabel, disabledLabel, setter) => {
     const result = []
+
     options.forEach((item, index) => {
       if (item.__uuid__) {
         // 如果 option 已经格式化过了
@@ -263,6 +264,10 @@
         default: true
       },
       disabled: {
+        type: Boolean,
+        default: false
+      },
+      abort: {
         type: Boolean,
         default: false
       }
@@ -414,6 +419,11 @@
         if (item[this.disabledLabel]) {
           return
         }
+        if (this.abort) {
+          this.show = false
+          this.$emit('submit', item[this.showLabel])
+          return
+        }
         const label = [this.selectedLabel]
         if (!this.multi) {
           this.show = false
@@ -448,7 +458,10 @@
     },
     mounted () {
       document.body.addEventListener('click', (e) => {
-        if (!this.$el.contains(e.target)) {
+        if (!this.show) {
+          return
+        }
+        if (!this.$refs.ul.contains(e.target)) {
           this.show = false
         }
       })

@@ -132,6 +132,13 @@ const mutations = {
   },
   SET_BANGUMI_FOLLOWERS (state, data) {
     state.info.followers = state.info.followers.concat(data)
+  },
+  deleteImages (state, { id }) {
+    state.images.data.forEach((image, index) => {
+      if (image.id === id) {
+        state.images.data.splice(index, 1)
+      }
+    })
   }
 }
 
