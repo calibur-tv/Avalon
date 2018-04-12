@@ -5,6 +5,7 @@
       padding-right: 15px;
       padding-bottom: 15px;
       margin-left: 3px;
+      margin-top: 3px;
 
       .image-wrap {
         font-size: 0;
@@ -68,8 +69,11 @@
 
             .like {
               margin-right: 1px;
-              cursor: pointer;
               display: block;
+              text-align: right;
+              width: 100%;
+              color: $color-gray-deep;
+              font-size: 11px;
             }
 
             time {
@@ -108,6 +112,8 @@
           .avatar {
             float: left;
             margin-right: 10px;
+            overflow: hidden;
+            border: 1px solid #F0F0F0;
             @include avatar(34px);
           }
 
@@ -145,11 +151,11 @@
               <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
             </div>
             <div class="meta">
-              <span class="like">
+              <button class="like" @click="handleLikeBtnClick($event, item)">
                 <i class="iconfont icon-guanzhu"></i>
                 {{ item.like_count }}
-              </span>
-              <el-tooltip effect="dark" :content="item.created_at" placement="top">
+              </button>
+              <el-tooltip effect="dark" :content="item.created_at" placement="bottom">
                 <v-time class="oneline" v-model="item.created_at"></v-time>
               </el-tooltip>
             </div>
@@ -207,14 +213,37 @@
         default: 4
       }
     },
+    computed: {
+      curUserId () {
+        return this.$store.state.login
+          ? this.$store.state.user.id
+          : -1
+      }
+    },
     methods: {
+      isMine (userId) {
+        return this.curUserId === userId
+      },
       computeImageHeight (image) {
         return {
-          height: `${(image.height / image.width * 200) + 124}px`
+          height: `${(image.height / image.width * 200) + 122}px`
         }
       },
       handleLoadMoreClick () {
         this.$emit('fetch')
+      },
+      handleLikeBtnClick (e, image) {
+//        if (!this.$store.state.login) {
+//          this.$channel.$emit('sign-in')
+//          return
+//        }
+//        if (this.isMine(image.user_id)) {
+//          // open like modal
+//          return
+//        }
+//        const btn = e.currentTarget
+//        btn.setAttribute('disabled', 'disabled')
+        // do like
       }
     }
   }
