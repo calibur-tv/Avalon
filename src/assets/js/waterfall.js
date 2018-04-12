@@ -33,8 +33,7 @@ Vue.use({
         setTimeout(() => {
           const id = `${binding.value.id}-${binding.value.col}`
           const column = binding.value.index % Manager[id].colCount
-          const manager = Manager[id]
-          if (!manager.data[`col-${column}`]) {
+          if (!Manager[id].data[`col-${column}`]) {
             Manager[id].data[`col-${column}`] = {
               top: 0
             }
@@ -54,8 +53,25 @@ Vue.use({
           }
         }, 0)
       },
-      update () {
-        // TODO:支持重排序
+      update (el, binding) {
+        const id = `${binding.value.id}-${binding.value.col}`
+        const index = binding.value.index
+        const column = index % Manager[id].colCount
+        if (index < Manager[id].colCount) {
+          Manager[id].data[`col-${column}`] = {
+            top: 0
+          }
+        }
+        const columnData = Manager[id].data[`col-${column}`]
+        const width = el.offsetWidth
+        const height = el.offsetHeight
+        const maxHeight = columnData.top + height
+        el.style.left = `${width * column}px`
+        el.style.top = `${columnData.top}px`
+        Manager[id].data[`col-${column}`].top = maxHeight
+        if (Manager[id].container.offsetHeight < maxHeight) {
+          Manager[id].container.style.height = `${maxHeight}px`
+        }
       }
     })
   }
