@@ -11,6 +11,7 @@ import BangumiPanel from '~/components/panels/BangumiPanel'
 import NoContent from '~/components/NoContent'
 import Hr from '~/components/base/Hr'
 import Share from '~/components/base/Share'
+import vSelect from '~/components/base/Select'
 import '~/assets/js/waterfall'
 
 import {
@@ -90,6 +91,7 @@ Vue.component(BangumiPanel.name, BangumiPanel)
 Vue.component(NoContent.name, NoContent)
 Vue.component(Hr.name, Hr)
 Vue.component(Share.name, Share)
+Vue.component(vSelect.name, vSelect)
 
 Vue.use({
   install (Vue, options) {
