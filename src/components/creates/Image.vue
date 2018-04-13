@@ -10,10 +10,13 @@
     >
       <el-row>
         <el-col :span="10">
-          <el-form-item label="番剧">
-            <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
+          <el-form-item label="类型">
+            <el-select
+              v-model="form.tags"
+              placeholder="请选择类型"
+            >
               <el-option
-                v-for="item in bangumis"
+                v-for="item in options.tag"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id">
@@ -39,13 +42,10 @@
       </el-row>
       <el-row>
         <el-col :span="10">
-          <el-form-item label="类型">
-            <el-select
-              v-model="form.tags"
-              placeholder="请选择类型"
-            >
+          <el-form-item label="番剧">
+            <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
               <el-option
-                v-for="item in options.tag"
+                v-for="item in bangumis"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id">

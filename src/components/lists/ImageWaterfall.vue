@@ -179,7 +179,6 @@
         v-for="(item, index) in list"
         v-waterfall="{ col, index, id: 'images-waterfall' }"
         class="image-item"
-        :style="computeImageHeight(item)"
       >
         <div class="image">
           <div class="image-wrap" @click="$previewImages(`${item.width}-${item.height}|${item.url}`)">
@@ -194,7 +193,7 @@
                 <i class="iconfont icon-101" slot="tail"></i>
               </v-select>
             </div>
-            <img :src="$resize(item.url, { width: 200, mode: 2 })">
+            <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 200, mode: 2 })">
           </div>
           <div class="desc">
             <div class="tags">
@@ -216,7 +215,7 @@
             </a>
             <div class="info">
               <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-              <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
+              <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
             </div>
           </div>
           <div class="detail user clearfix" v-if="item.user">
@@ -225,12 +224,84 @@
             </a>
             <div class="info">
               <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-              <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
+              <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <v-modal
+      v-model="openEditModal"
+      header-text="编辑图片"
+      @submit="handleFormSubmit"
+    >
+      <el-form
+        ref="form"
+        label-width="60px"
+      >
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="类型">
+              <el-select
+                v-model="form.tags"
+                placeholder="请选择类型"
+              >
+                <el-option
+                  v-for="item in options.tag"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="尺寸">
+              <el-select
+                v-model="form.size"
+                placeholder="请选择尺寸"
+              >
+                <el-option
+                  v-for="item in options.size"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="番剧">
+              <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
+                <el-option
+                  v-for="item in bangumis"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="角色">
+              <el-select
+                v-model="form.roleId"
+                placeholder="请选择角色"
+              >
+                <el-option
+                  v-for="item in computeRoles"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </v-modal>
     <el-button
       :loading="loading"
       v-if="!noMore"
@@ -270,6 +341,40 @@
         return this.$store.state.login
           ? this.$store.state.user.id
           : -1
+      },
+      slug () {
+        return this.$store.state.user.zone
+      },
+      computeRoles () {
+        return [{
+          id: 0,
+          name: '无'
+        }].concat(this.roles)
+      }
+    },
+    data () {
+      return {
+        openEditModal: false,
+        bangumiRoles: {},
+        bangumis: [],
+        options: [],
+        roles: [],
+        loadingUserBangumiFetch: false,
+        loadingUploadTypeFetch: false,
+        submitting: false,
+        form: {
+          id: '',
+          bangumiId: '',
+          size: '',
+          tags: '',
+          roleId: ''
+        },
+        origin: {
+          bangumiId: '',
+          roleId: '',
+          size: '',
+          tags: ''
+        }
       }
     },
     methods: {
@@ -280,8 +385,8 @@
         let result = []
         if (this.isMine(image.user_id)) {
           result = result.concat([
-            '删除'
-//            '编辑'
+            '删除',
+            '编辑'
           ])
         } else {
           result = result.concat([
@@ -291,18 +396,34 @@
         return result
       },
       computeImageHeight (image) {
-        return {
-          height: `${(image.height / image.width * 200) + 122}px`
-        }
+        return image.height / image.width * 200
+      },
+      computeImageType (image) {
+        const tags = image.tags
+        this.options.size.forEach(size => {
+          tags.forEach(tag => {
+            if (size.id === tag.id) {
+              this.form.size = size.id
+              this.origin.size = size.id
+            }
+          })
+        })
+        this.options.tag.forEach(tag => {
+          tags.forEach(selected => {
+            if (tag.id === selected.id) {
+              this.form.tags = tag.id
+              this.origin.tags = tag.id
+            }
+          })
+        })
       },
       handleLoadMoreClick () {
         this.$emit('fetch')
       },
-      deleteImage (image) {
-        if (image.user_id !== this.curUserId) {
+      deleteImage ({ userId, id }) {
+        if (userId !== this.curUserId) {
           return
         }
-        const id = image.id
         const api = new Api(this)
         api.deleteImage({ id }).then(() => {
           this.$emit('delete', { id })
@@ -310,24 +431,46 @@
           this.$toast.error(err)
         })
       },
+      editImage (image) {
+        this.form.id = image.id
+        this.getUserBangumis()
+        this.origin.bangumiId = image.bangumi_id
+        this.form.bangumiId = image.bangumi_id
+        if (image.role_id) {
+          this.origin.roleId = image.role_id
+          this.form.roleId = image.role_id
+          this.getBangumiRoles()
+        }
+        if (this.options.length) {
+          this.computeImageType(image)
+        } else {
+          this.getUploadType(image)
+        }
+        this.openEditModal = true
+      },
+      reportImage (image) {
+        this.$prompt('请输入举报原因', '提示', {
+          confirmButtonText: '提交',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          if (value) {
+            const api = new Api(this)
+            api.trialReport({ id: image.id }).then(() => {
+              this.$toast.success('提交成功！')
+            })
+          }
+        }).catch(() => {})
+      },
       handleMenuSelected (option, image) {
         if (option === '举报') {
-          this.$prompt('请输入举报原因', '提示', {
-            confirmButtonText: '提交',
-            cancelButtonText: '取消'
-          }).then(({ value }) => {
-            if (value) {
-              const api = new Api(this)
-              api.trialReport({ id: image.id }).then(() => {
-                this.$toast.success('提交成功！')
-              })
-            }
-          }).catch(() => {})
+          this.reportImage(image)
         } else if (option === '删除') {
-          // delete
-          this.deleteImage(image)
+          this.deleteImage({
+            userId: image.user_id,
+            id: image.id
+          })
         } else if (option === '编辑') {
-          // edit
+          this.editImage(image)
         }
       },
       handleLikeBtnClick (e, image) {
@@ -342,6 +485,131 @@
 //        const btn = e.currentTarget
 //        btn.setAttribute('disabled', 'disabled')
         // do like
+      },
+      async getUserBangumis () {
+        if (this.bangumis.length) {
+          return
+        }
+        if (this.loadingUserBangumiFetch) {
+          return
+        }
+        this.loadingUserBangumiFetch = true
+        try {
+          this.bangumis = await this.$store.dispatch('users/getFollowBangumis', {
+            ctx: this,
+            zone: this.slug
+          })
+        } finally {
+          this.loadingUserBangumiFetch = false
+        }
+      },
+      async getUploadType (image) {
+        if (this.loadingUploadTypeFetch || this.options.length) {
+          return
+        }
+        this.loadingUploadTypeFetch = true
+        const api = new Api(this)
+        try {
+          this.options = await api.getUploadType()
+          this.computeImageType(image)
+        } finally {
+          this.loadingUploadTypeFetch = false
+        }
+      },
+      async getBangumiRoles (bangumiId) {
+        if (this.bangumiRoles[bangumiId]) {
+          this.roles = this.bangumiRoles[bangumiId]
+          return
+        }
+        const data = await this.$store.dispatch('bangumi/getRoles', {
+          ctx: this,
+          bangumiId: this.form.bangumiId,
+          all: true
+        })
+        this.bangumiRoles[bangumiId] = data
+        this.roles = data
+      },
+      async handleFormSubmit () {
+        if (!this.form.bangumiId) {
+          this.$toast.error('请先选择番剧')
+          return
+        }
+        if (!this.form.size) {
+          this.$toast.error('请先选择尺寸')
+          return
+        }
+        if (!this.form.tags) {
+          this.$toast.error('请先选择类型')
+          return
+        }
+        if (this.submitting) {
+          return
+        }
+        this.submitting = true
+        try {
+          const api = new Api(this)
+          await api.editImage({
+            id: this.form.id,
+            bangumiId: this.form.bangumiId,
+            roleId: this.form.roleId,
+            tags: this.form.tags,
+            size: this.form.size
+          })
+          this.$toast.success('图片编辑成功！')
+          if (this.form.bangumiId !== this.origin.bangumiId) {
+            this.deleteImage({
+              userId: this.curUserId,
+              id: this.form.id
+            })
+          } else {
+            const tags = []
+            let role = null
+            this.options.size.forEach(size => {
+              if (size.id === this.form.size) {
+                tags.push({
+                  id: size.id,
+                  name: size.name
+                })
+              }
+            })
+            this.options.tag.forEach(tag => {
+              if (tag.id === this.form.tags) {
+                tags.push({
+                  id: tag.id,
+                  name: tag.name
+                })
+              }
+            })
+            if (this.form.roleId) {
+              this.bangumiRoles[this.form.bangumiId].forEach(item => {
+                if (item.id === this.form.roleId) {
+                  role = {
+                    id: item.id,
+                    name: item.name,
+                    avatar: item.avatar
+                  }
+                }
+              })
+            }
+            this.$emit('edit', {
+              tags,
+              role_id: this.form.roleId,
+              role
+            })
+          }
+          this.openEditModal = false
+          this.form = {
+            id: '',
+            bangumiId: '',
+            size: '',
+            tags: '',
+            roleId: ''
+          }
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.submitting = false
+        }
       }
     }
   }
