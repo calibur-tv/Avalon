@@ -214,8 +214,8 @@
               <img :src="$resize(item.bangumi.avatar, { width: 72 })">
             </a>
             <div class="info">
-              <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-              <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
+              <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
+              <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
             </div>
           </div>
           <div class="detail user clearfix" v-if="item.user">

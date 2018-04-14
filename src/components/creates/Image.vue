@@ -210,10 +210,6 @@
         this.roles = data
       },
       async handleFormSubmit () {
-        if (!this.form.bangumiId) {
-          this.$toast.error('请先选择番剧')
-          return
-        }
         if (!this.form.size) {
           this.$toast.error('请先选择尺寸')
           return
@@ -234,7 +230,7 @@
           const api = new ImageApi(this)
           const image = this.form.images[0]['img']
           await api.uploadImage({
-            bangumiId: this.form.bangumiId,
+            bangumiId: this.form.bangumiId || 0,
             roleId: this.form.roleId || 0,
             tags: this.form.tags,
             size: this.form.size,
