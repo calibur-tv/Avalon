@@ -119,6 +119,7 @@
               li {
                 position: relative;
                 margin-right: 10px;
+                float: left;
 
                 a {
                   color: $color-text-light;
