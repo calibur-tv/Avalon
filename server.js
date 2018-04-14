@@ -1,8 +1,9 @@
 const env = process.env.NODE_ENV
+const port = process.env.PORT || 3000
 const isDev = env === 'development'
 const isProd = env === 'production'
 const host = isProd ? '0.0.0.0' : '127.0.0.1'
-const port = process.env.PORT || 3000
+
 const fs = require('fs')
 const path = require('path')
 const resolve = file => path.resolve(__dirname, file)
@@ -14,6 +15,7 @@ const compress = require('koa-compress')
 
 const app = new Koa()
 const router = new Route()
+
 const microCache = LRU({
   max: 100,
   maxAge: isDev ? 0 : 1000 * 60 * 15
@@ -86,6 +88,12 @@ router.get('*', async ctx => {
     url: req.url,
     ctx: ctx.request
   }
+
+  ctx.set('X-XSS-Protection', '1; mode=block')
+  ctx.set('Transfer-Encoding', 'chunked')
+  ctx.set('X-Content-Type-Options', 'nosniff')
+  ctx.set('X-Frame-Options', 'DENY')
+  ctx.set('Cache-Control', 'max-age=0, private, must-revalidate')
 
   try {
     ctx.body = await renderer.renderToString(context)
