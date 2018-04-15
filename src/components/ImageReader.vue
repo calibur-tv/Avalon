@@ -82,6 +82,9 @@
     },
     mounted () {
       this.computeMaxSize()
+      window.addEventListener('resize', () => {
+        this.computeMaxSize()
+      })
       this.$channel.$on('open-image-reader', ({ images, index }) => {
         if (!images) {
           return
