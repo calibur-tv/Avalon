@@ -113,7 +113,8 @@
               text-align: right;
               width: 100%;
               color: $color-gray-deep;
-              font-size: 11px;
+              font-size: 13px;
+              line-height: 32px;
             }
 
             time {
@@ -202,11 +203,8 @@
             <div class="meta">
               <button class="like" @click="handleLikeBtnClick($event, item)">
                 <i class="iconfont icon-guanzhu"></i>
-                {{ item.like_count }}
+                {{ item.like_count || ''  }}
               </button>
-              <el-tooltip effect="dark" :content="item.created_at" placement="bottom">
-                <v-time class="oneline" v-model="item.created_at"></v-time>
-              </el-tooltip>
             </div>
           </div>
           <div class="detail bangumi clearfix" v-if="item.bangumi">
