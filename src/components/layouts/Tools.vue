@@ -8,8 +8,11 @@
     pointer-events: none;
     z-index: 12;
 
-    .to-top-container {
+    .creator-button-box {
       height: 100%;
+      max-width: 1400px;
+      position: relative;
+      margin: 0 auto;
       pointer-events: none;
     }
 
@@ -26,7 +29,7 @@
       transition: opacity .5s;
       pointer-events: auto;
       position: absolute;
-      left: 100%;
+      right: 60px;
       bottom: 70px;
 
       &:hover {
@@ -49,7 +52,7 @@
         <button class="creator-btn iconfont icon-fatie1" @click="handlePostClick"></button>
       </el-tooltip>
     </v-creator>
-    <div class="container to-top-container">
+    <div class="creator-button-box">
       <el-tooltip placement="right" effect="dark" content="返回顶部">
         <transition name="el-fade-in">
           <button v-show="showToTop" id="to-top-btn" class="iconfont icon-fanhuidingbu" @click="$scrollToY(0)"></button>

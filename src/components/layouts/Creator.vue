@@ -8,10 +8,6 @@
     pointer-events: none;
     z-index: 12;
 
-    .container {
-      height: 100%;
-    }
-
     .mint-palette-button {
       display: inline-block;
       border-radius: 50%;
@@ -23,7 +19,7 @@
       color: #FFF;
       position: absolute;
       bottom: 140px;
-      left: 100%;
+      right: 60px;
       pointer-events: auto;
     }
 
@@ -81,7 +77,7 @@
 
 <template>
   <div id="creator-button-wrap" v-show="$route.name !== 'homepage'">
-    <div class="container">
+    <div class="creator-button-box">
       <div
         class="mint-palette-button"
         :class="{ expand: expanded, 'mint-palette-button-active': transforming }"
