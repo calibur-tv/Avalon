@@ -231,7 +231,7 @@
     <v-modal
       v-model="openEditModal"
       header-text="编辑图片"
-      @submit="handleFormSubmit"
+      @submit="handleImageEditDone"
     >
       <el-form
         ref="form"
@@ -272,7 +272,13 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="番剧">
-              <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
+              <el-select
+                v-model="form.bangumiId"
+                filterable
+                clearable
+                placeholder="请选择番剧"
+                @change="getBangumiRoles"
+              >
                 <el-option
                   v-for="item in bangumis"
                   :key="item.id"
@@ -287,9 +293,11 @@
               <el-select
                 v-model="form.roleId"
                 placeholder="请选择角色"
+                filterable
+                clearable
               >
                 <el-option
-                  v-for="item in computeRoles"
+                  v-for="item in roles"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id">
@@ -342,12 +350,6 @@
       },
       slug () {
         return this.$store.state.user.zone
-      },
-      computeRoles () {
-        return [{
-          id: 0,
-          name: '无'
-        }].concat(this.roles)
       }
     },
     data () {
@@ -431,13 +433,17 @@
       },
       editImage (image) {
         this.form.id = image.id
-        this.getUserBangumis()
-        this.origin.bangumiId = image.bangumi_id
-        this.form.bangumiId = image.bangumi_id
-        if (image.role_id) {
-          this.origin.roleId = image.role_id
-          this.form.roleId = image.role_id
-          this.getBangumiRoles()
+        const bangumiId = image.bangumi_id
+        const roleId = image.role_id
+        if (bangumiId) {
+          this.getUserBangumis()
+          this.origin.bangumiId = bangumiId
+          this.form.bangumiId = bangumiId
+        }
+        if (roleId) {
+          this.origin.roleId = roleId
+          this.form.roleId = roleId
+          this.getBangumiRoles(bangumiId)
         }
         if (this.options.length) {
           this.computeImageType(image)
@@ -463,10 +469,16 @@
         if (option === '举报') {
           this.reportImage(image)
         } else if (option === '删除') {
-          this.deleteImage({
-            userId: image.user_id,
-            id: image.id
-          })
+          this.$confirm('删除后不可恢复, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.deleteImage({
+              userId: image.user_id,
+              id: image.id
+            })
+          }).catch(() => {})
         } else if (option === '编辑') {
           this.editImage(image)
         }
@@ -515,23 +527,21 @@
         }
       },
       async getBangumiRoles (bangumiId) {
+        if (!bangumiId) {
+          return
+        }
         if (this.bangumiRoles[bangumiId]) {
           this.roles = this.bangumiRoles[bangumiId]
           return
         }
         const data = await this.$store.dispatch('bangumi/getRoles', {
           ctx: this,
-          bangumiId: this.form.bangumiId,
-          all: true
+          bangumiId: this.form.bangumiId
         })
         this.bangumiRoles[bangumiId] = data
         this.roles = data
       },
-      async handleFormSubmit () {
-        if (!this.form.bangumiId) {
-          this.$toast.error('请先选择番剧')
-          return
-        }
+      async handleImageEditDone () {
         if (!this.form.size) {
           this.$toast.error('请先选择尺寸')
           return
@@ -546,19 +556,17 @@
         this.submitting = true
         try {
           const api = new Api(this)
+          const id = this.form.id
           await api.editImage({
-            id: this.form.id,
-            bangumiId: this.form.bangumiId,
-            roleId: this.form.roleId,
+            id,
+            bangumiId: this.form.bangumiId || 0,
+            roleId: this.form.roleId || 0,
             tags: this.form.tags,
             size: this.form.size
           })
           this.$toast.success('图片编辑成功！')
           if (this.form.bangumiId !== this.origin.bangumiId) {
-            this.deleteImage({
-              userId: this.curUserId,
-              id: this.form.id
-            })
+            this.deleteImage({ userId: this.curUserId, id })
           } else {
             const tags = []
             let role = null
@@ -590,6 +598,7 @@
               })
             }
             this.$emit('edit', {
+              id,
               tags,
               role_id: this.form.roleId,
               role

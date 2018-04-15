@@ -595,9 +595,9 @@
               :loading="imagesState.loading"
               :no-more="images.noMore"
               :list="images.data"
-              :col="4"
-              @delete="handleImageDelete"
               @fetch="getImages"
+              @delete="handleImageDelete"
+              @edit="handleImageEdit"
             ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>
@@ -644,7 +644,7 @@
     },
     computed: {
       id () {
-        return this.$route.params.id
+        return parseInt(this.$route.params.id, 10)
       },
       info () {
         return this.$store.state.bangumi.info
@@ -665,7 +665,7 @@
         return this.$store.state.bangumi.roles
       },
       images () {
-        return this.$store.state.bangumi.images
+        return this.$store.state.image.waterfall
       },
       currentRoleFans () {
         return this.$store.state.cartoonRole.fans[this.focusRoleSort]
@@ -803,7 +803,7 @@
         this.imagesState.loading = true
 
         try {
-          await this.$store.dispatch('bangumi/getImages', {
+          await this.$store.dispatch('image/getBangumiImages', {
             ctx: this,
             id: this.id,
             type: this.imagesState.type
@@ -895,8 +895,10 @@
         }
       },
       handleImageDelete ({ id }) {
-        this.$store.commit('bangumi/deleteImages', { id })
-        this.$toast.success('操作成功')
+        this.$store.commit('image/DELETE_WATERFALL', { id })
+      },
+      handleImageEdit (data) {
+        this.$store.commit('image/EDIT_WATERFALL', data)
       }
     },
     mounted () {

@@ -203,8 +203,7 @@
         }
         const data = await this.$store.dispatch('bangumi/getRoles', {
           ctx: this,
-          bangumiId: bangumiId,
-          all: true
+          bangumiId: bangumiId
         })
         this.bangumiRoles[bangumiId] = data
         this.roles = data
