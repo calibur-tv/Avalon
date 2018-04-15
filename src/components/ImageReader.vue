@@ -26,7 +26,6 @@
     }
 
     .el-carousel {
-      height: 700px;
       background-color: #000;
 
       .el-carousel__container {
@@ -45,10 +44,12 @@
     :close="false"
   >
     <el-carousel
+      v-if="maxHeight"
       :autoplay="false"
-      arrow="always"
+      :arrow="length > 1 ? 'always' : 'never'"
       :initial-index="index"
-      height="700"
+      :height="`${maxHeight}`"
+      :style="{ height: `${maxHeight}px` }"
       @change="handleCarouselChange"
     >
       <el-carousel-item
@@ -75,7 +76,8 @@
         maxWidth: 0,
         maxHeight: 0,
         maxWidthHeightRate: 0,
-        maxHeightWidthRate: 0
+        maxHeightWidthRate: 0,
+        length: 0
       }
     },
     mounted () {
@@ -86,6 +88,7 @@
         }
         this.images = Array.isArray(images) ? images : [images]
         this.index = index || 0
+        this.length = this.images.length
         this.open = true
         setTimeout(() => {
           const length = images.length
@@ -109,7 +112,7 @@
     methods: {
       computeMaxSize () {
         this.maxWidth = parseInt(document.body.offsetWidth * 0.9, 10)
-        this.maxHeight = 700
+        this.maxHeight = parseInt(document.body.offsetHeight * 0.9, 10)
         this.maxWidthHeightRate = this.maxWidth / this.maxHeight
         this.maxHeightWidthRate = this.maxHeight / this.maxWidth
       },
