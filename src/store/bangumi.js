@@ -33,22 +33,17 @@ const state = () => ({
     fetched: false
   },
   roles: {
+    id: 0,
     data: [],
-    noMore: false
-  },
-  images: {
-    data: [],
-    total: 0,
-    take: 12,
-    type: 0,
     noMore: false
   }
 })
 
 const mutations = {
-  SET_ROLES (state, data) {
+  SET_ROLES (state, { data, bangumiId }) {
     state.roles.data = state.roles.data.concat(data)
     state.roles.noMore = true
+    state.roles.id = bangumiId
   },
   selectTag (state, index) {
     const tag = state.tags[index]
@@ -132,13 +127,6 @@ const mutations = {
   },
   SET_BANGUMI_FOLLOWERS (state, data) {
     state.info.followers = state.info.followers.concat(data)
-  },
-  deleteImages (state, { id }) {
-    state.images.data.forEach((image, index) => {
-      if (image.id === id) {
-        state.images.data.splice(index, 1)
-      }
-    })
   }
 }
 
@@ -215,29 +203,14 @@ const actions = {
       total: data.total
     })
   },
-  async getRoles ({ state, commit }, { bangumiId, ctx, all }) {
-    if (state.roles.noMore) {
+  async getRoles ({ state, commit }, { bangumiId, ctx }) {
+    if (state.roles.id === bangumiId) {
       return
     }
     const api = new Api(ctx)
     const data = await api.roles({ bangumiId })
-    if (all) {
-      return data
-    }
-    commit('SET_ROLES', data)
-  },
-  async getImages ({ state, commit }, { id, ctx }) {
-    const api = new Api(ctx)
-    const data = await api.images({
-      id,
-      take: state.images.take,
-      type: state.images.type,
-      seenIds: state.images.data.length ? state.images.data.map(item => item.id).join(',') : null
-    })
-    commit('SET_IMAGES', {
-      data: data.list,
-      total: data.total
-    })
+    commit('SET_ROLES', { data, bangumiId })
+    return data
   },
   async starRole ({ commit }, { bangumiId, roleId, ctx, hasStar }) {
     const api = new CartoonRoleApi(ctx)

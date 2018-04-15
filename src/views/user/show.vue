@@ -672,6 +672,8 @@
             :no-more="images.noMore"
             :list="images.data"
             @fetch="getUserImages(false)"
+            @delete="handleImageDelete"
+            @edit="handleImageEdit"
           ></image-waterfall>
           <no-content v-if="images.noMore && !images.data.length">
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
@@ -687,11 +689,12 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item label="生日">
-                  <el-date-picker v-model="settingForm.birthday"
-                                  type="date"
-                                  :editable="false"
-                                  :clearable="false"
-                                  placeholder="选择日期"
+                  <el-date-picker
+                    v-model="settingForm.birthday"
+                    type="date"
+                    :editable="false"
+                    :clearable="false"
+                    placeholder="选择日期"
                   ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="性别">
@@ -702,9 +705,10 @@
                     </el-radio-group>
                   </el-col>
                   <el-col v-if="settingForm.sex">
-                    <el-switch v-model="settingForm.sexSecret"
-                               active-text="私密"
-                               inactive-text="公开"
+                    <el-switch
+                      v-model="settingForm.sexSecret"
+                      active-text="私密"
+                      inactive-text="公开"
                     ></el-switch>
                   </el-col>
                 </el-form-item>
@@ -802,7 +806,7 @@
         return this.$store.state.users.posts[this.postListType]
       },
       images () {
-        return this.$store.state.users.images
+        return this.$store.state.image.waterfall
       },
       daySigned () {
         return this.self.daySign
@@ -912,7 +916,7 @@
         }
         this.loadingUserImageFetch = true
         try {
-          this.$store.dispatch('users/getUserImages', {
+          this.$store.dispatch('image/getUserImages', {
             zone: this.user.zone,
             ctx: this
           })
@@ -1067,6 +1071,12 @@
       },
       openUploadModal () {
         this.$channel.$emit('open-upload-image-modal')
+      },
+      handleImageDelete ({ id }) {
+        this.$store.commit('image/DELETE_WATERFALL', { id })
+      },
+      handleImageEdit (data) {
+        this.$store.commit('image/EDIT_WATERFALL', data)
       }
     }
   }

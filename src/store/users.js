@@ -117,11 +117,6 @@ const mutations = {
         loading: false
       }
     }
-  },
-  SET_USER_IMAGES (state, data) {
-    state.images.data = state.images.data.concat(data)
-    state.images.noMore = data.length < state.images.take
-    state.images.page++
   }
 }
 
@@ -165,18 +160,6 @@ const actions = {
       seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
     })
     commit('SET_FOLLOW_POST_DATA', { type, data, zone })
-  },
-  async getUserImages ({ state, commit }, { zone, ctx }) {
-    if (state.images.noMore) {
-      return
-    }
-    const api = new Api(ctx)
-    const data = await api.images({
-      zone,
-      page: state.images.page,
-      take: state.images.take
-    })
-    commit('SET_USER_IMAGES', data)
   },
   async daySign ({ rootState }, { ctx }) {
     if (rootState.user.signed) {
