@@ -341,7 +341,6 @@
 
 <script>
   import Cropper from 'cropperjs'
-  import '~/assets/js/polyfill/blob'
 
   export default {
     name: 'Cropper',
