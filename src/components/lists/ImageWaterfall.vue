@@ -426,7 +426,7 @@
         }
         const api = new Api(this)
         api.deleteImage({ id }).then(() => {
-          this.$emit('delete', { id })
+          this.$store.commit('image/DELETE_WATERFALL', { id })
         }).catch((err) => {
           this.$toast.error(err)
         })
@@ -597,7 +597,7 @@
                 }
               })
             }
-            this.$emit('edit', {
+            this.$store.commit('image/EDIT_WATERFALL', {
               id,
               tags,
               role_id: this.form.roleId,

@@ -5,6 +5,7 @@ import ProgressBar from '~/components/layouts/ProgressBar'
 import '~/utils/client'
 import Sentry from '~/assets/js/sentry'
 import { sentry, env } from 'env'
+import '~/assets/js/polyfill/blob'
 
 const dev = env === 'development'
 const bar = new Vue(ProgressBar).$mount()

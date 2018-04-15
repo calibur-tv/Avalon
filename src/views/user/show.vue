@@ -1071,12 +1071,6 @@
       },
       openUploadModal () {
         this.$channel.$emit('open-upload-image-modal')
-      },
-      handleImageDelete ({ id }) {
-        this.$store.commit('image/DELETE_WATERFALL', { id })
-      },
-      handleImageEdit (data) {
-        this.$store.commit('image/EDIT_WATERFALL', data)
       }
     }
   }
