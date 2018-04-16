@@ -672,8 +672,6 @@
             :no-more="images.noMore"
             :list="images.data"
             @fetch="getUserImages(false)"
-            @delete="handleImageDelete"
-            @edit="handleImageEdit"
           ></image-waterfall>
           <no-content v-if="images.noMore && !images.data.length">
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>

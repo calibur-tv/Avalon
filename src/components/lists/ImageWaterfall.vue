@@ -115,6 +115,10 @@
               color: $color-gray-deep;
               font-size: 13px;
               line-height: 32px;
+
+              &.liked {
+                color: $color-pink-normal;
+              }
             }
 
             time {
@@ -201,7 +205,7 @@
               <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
             </div>
             <div class="meta">
-              <button class="like" @click="handleLikeBtnClick($event, item)">
+              <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeBtnClick($event, item)">
                 <i class="iconfont icon-guanzhu"></i>
                 {{ item.like_count || ''  }}
               </button>
@@ -498,7 +502,17 @@
         // do like
         const api = new Api(this)
         try {
-          await api.toggleLike({ id: image.id })
+          const result = await api.toggleLike({ id: image.id })
+          if (image.creator && result) {
+            this.$store.commit('USE_COIN')
+          }
+          this.$toast.success('操作成功')
+          this.$store.commit('image/LIKE_WATERFALL', {
+            id: image.id,
+            result
+          })
+        } catch (e) {
+          this.$toast.error(e)
         } finally {
           btn.removeAttribute('disabled')
         }
