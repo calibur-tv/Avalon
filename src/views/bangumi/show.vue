@@ -596,8 +596,6 @@
               :no-more="images.noMore"
               :list="images.data"
               @fetch="getImages"
-              @delete="handleImageDelete"
-              @edit="handleImageEdit"
             ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>

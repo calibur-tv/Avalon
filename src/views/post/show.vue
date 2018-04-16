@@ -375,10 +375,13 @@
         }
         this.loadingToggleLike = true
         try {
-          await this.$store.dispatch('post/toggleLike', {
+          const result = await this.$store.dispatch('post/toggleLike', {
             ctx: this,
             id: this.post.id
           })
+          if (result) {
+            this.$store.commit('USE_COIN')
+          }
         } catch (err) {
           this.$toast.error(err)
         } finally {

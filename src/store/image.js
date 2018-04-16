@@ -31,6 +31,14 @@ export default {
           state.waterfall.data[index].role = data.role
         }
       })
+    },
+    LIKE_WATERFALL (state, { id, result }) {
+      state.waterfall.data.forEach((image, index) => {
+        if (image.id === id) {
+          state.waterfall.data[index].like_count += result ? 1 : -1
+          state.waterfall.data[index].liked = result
+        }
+      })
     }
   },
   actions: {
