@@ -38,4 +38,8 @@ export default class extends BaseApi {
   editImage ({ id, bangumiId, roleId, size, tags }) {
     return this.http.post('image/edit', { id, bangumiId, roleId, tags, size })
   }
+
+  toggleLike ({ id }) {
+    return this.http.post('image/toggleLike', { id })
+  }
 }

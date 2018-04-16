@@ -483,18 +483,25 @@
           this.editImage(image)
         }
       },
-      handleLikeBtnClick (e, image) {
-//        if (!this.$store.state.login) {
-//          this.$channel.$emit('sign-in')
-//          return
-//        }
-//        if (this.isMine(image.user_id)) {
-//          // open like modal
-//          return
-//        }
-//        const btn = e.currentTarget
-//        btn.setAttribute('disabled', 'disabled')
+      async handleLikeBtnClick (e, image) {
+        if (!this.$store.state.login) {
+          this.$toast.info('继续操作前请先登录')
+          this.$channel.$emit('sign-in')
+          return
+        }
+        if (this.isMine(image.user_id)) {
+          this.$toast.info('不能为自己的图片点赞')
+          return
+        }
+        const btn = e.currentTarget
+        btn.setAttribute('disabled', 'disabled')
         // do like
+        const api = new Api(this)
+        try {
+          await api.toggleLike({ id: image.id })
+        } finally {
+          btn.removeAttribute('disabled')
+        }
       },
       async getUserBangumis () {
         if (this.bangumis.length) {
