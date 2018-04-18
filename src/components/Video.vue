@@ -10,6 +10,7 @@
     position: relative;
     min-height: 600px;
     box-shadow: 0 1px 3px rgba(26,26,26,.1);
+    z-index: 0;
 
     &.vue-pwa-video-flex {
       display: flex;
