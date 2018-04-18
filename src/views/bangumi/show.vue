@@ -880,7 +880,7 @@
         }
         this.loadingFollowers = true
         try {
-          const data = this.$store.dispatch('bangumi/getFollowers', {
+          const data = await this.$store.dispatch('bangumi/getFollowers', {
             ctx: this,
             bangumiId: this.id,
             take: this.fetchFollowersCount

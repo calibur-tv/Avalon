@@ -27,6 +27,12 @@
         "libraryName": "mint-ui",
         "style": true
       }
+    ]],
+    ["import", [
+      {
+        "libraryName": "vue-antd-ui",
+        "style": true
+      }
     ]]
   ]
 }
