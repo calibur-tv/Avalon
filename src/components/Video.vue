@@ -179,12 +179,14 @@
       width: 100%;
     }
 
-    .other-site-video {
+    .not-play-screen {
       width: 100%;
       height: 100%;
       color: #ffffff;
       z-index: 999;
       text-align: center;
+      top: -50%;
+      transform: translateY(50%);
 
       p {
         width: 100%;
@@ -307,9 +309,13 @@
       @dblclick="screenclick ? screen() : ''"
       @mousemove="tool"
     >
-      <div v-if="otherSrc" class="other-site-video">
-        <p>应版权方要求，该视频暂不提供站内播放</p>
+      <div v-if="otherSrc" class="not-play-screen">
+        <p>应版权方要求 (⇀‸↼‶)，该视频暂不提供站内播放</p>
         <a :href="source" target="_blank">播放链接</a>
+      </div>
+      <div v-else-if="isGuest" class="not-play-screen">
+        <p>流量压力太大了 (ಥ_ಥ)，需要登录才能看视频</p>
+        <a @click="$channel.$emit('sign-in')">立即登录</a>
       </div>
       <video
         v-else
@@ -438,6 +444,11 @@
       debug: {
         type: Boolean,
         default: false
+      }
+    },
+    computed: {
+      isGuest () {
+        return !this.$store.state.login
       }
     },
     data () {
@@ -651,7 +662,7 @@
       }
     },
     mounted () {
-      if (this.otherSrc) {
+      if (this.otherSrc || this.isGuest) {
         return
       }
       this.video = this.$refs.video
