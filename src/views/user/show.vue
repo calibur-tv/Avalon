@@ -888,7 +888,7 @@
         }
         this.loadingUserBangumiFetch = true
         try {
-          this.$store.dispatch('users/getFollowBangumis', {
+          await this.$store.dispatch('users/getFollowBangumis', {
             ctx: this,
             zone: this.slug
           })
@@ -905,7 +905,7 @@
           zone: this.user.zone
         })
       },
-      getUserImages (isFirstRequest) {
+      async getUserImages (isFirstRequest) {
         if (isFirstRequest && this.$store.state.users.images.data.length) {
           return
         }
@@ -914,7 +914,7 @@
         }
         this.loadingUserImageFetch = true
         try {
-          this.$store.dispatch('image/getUserImages', {
+          await this.$store.dispatch('image/getUserImages', {
             zone: this.user.zone,
             ctx: this
           })
