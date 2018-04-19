@@ -196,7 +196,6 @@
 
 <template>
   <div id="image-waterfall">
-    <!--
     <div class="header">
       <span class="select-title">图片筛选</span>
       <el-select
@@ -228,7 +227,6 @@
         </el-option>
       </el-select>
     </div>
-    -->
     <div class="image-container">
       <div
         v-for="(item, idx) in list"
@@ -252,6 +250,7 @@
           </div>
           <div class="desc">
             <div class="tags">
+              <button class="el-tag oneline" v-text="item.size.name"></button>
               <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
             </div>
             <div class="meta">
@@ -366,7 +365,7 @@
       :loading="loading"
       v-if="!noMore"
       class="load-more-btn"
-      @click="handleLoadMoreClick"
+      @click="handleLoadMoreClick(false)"
       type="info"
       plain
     >{{ loading ? '加载中' : '加载更多' }}</el-button>
@@ -476,28 +475,19 @@
       },
       computeImageType (image) {
         const tags = image.tags
-        this.options.size.forEach(size => {
-          tags.forEach(tag => {
-            if (size.id === tag.id) {
-              this.form.size = size.id
-              this.origin.size = size.id
-            }
-          })
-        })
-        this.options.tags.forEach(tag => {
-          tags.forEach(selected => {
-            if (tag.id === selected.id) {
-              this.form.tags = tag.id
-              this.origin.tags = tag.id
-            }
-          })
-        })
+        this.form.size = image.size.id
+        this.origin.size = image.size.id
+        this.form.tags = tags.length ? tags[0].id : ''
+        this.origin.tags = tags.length ? tags[0].id : ''
       },
-      handleLoadMoreClick () {
-        this.$emit('fetch', {
-          tagsId: this.selectedTagsId,
-          sizeId: this.selectedSizeId
-        })
+      handleLoadMoreClick (reset = true) {
+        if (reset) {
+          this.$store.commit('image/SET_WATERFALL_META', {
+            size: this.selectedSizeId,
+            tags: this.selectedTagsId
+          })
+        }
+        this.$emit('fetch')
       },
       deleteImage ({ userId, id }) {
         if (userId !== this.curUserId) {
@@ -632,6 +622,22 @@
         if (this.submitting) {
           return
         }
+        if (
+          this.form.bangumiId === this.origin.bangumiId &&
+          this.form.roleId === this.origin.roleId &&
+          this.form.size === this.origin.size &&
+          this.form.tags === this.origin.tags
+        ) {
+          this.openEditModal = false
+          this.form = {
+            id: '',
+            bangumiId: '',
+            size: '',
+            tags: '',
+            roleId: ''
+          }
+          return
+        }
         this.submitting = true
         try {
           const api = new Api(this)
@@ -648,20 +654,21 @@
             this.deleteImage({ userId: this.curUserId, id })
           } else {
             const tags = []
+            let size = {}
             let role = null
-            this.options.size.forEach(size => {
-              if (size.id === this.form.size) {
-                tags.push({
-                  id: size.id,
-                  name: size.name
-                })
+            this.options.size.forEach(item => {
+              if (item.id === this.form.size) {
+                size = {
+                  id: item.id,
+                  name: item.name
+                }
               }
             })
-            this.options.tags.forEach(tag => {
-              if (tag.id === this.form.tags) {
+            this.options.tags.forEach(item => {
+              if (item.id === this.form.tags) {
                 tags.push({
-                  id: tag.id,
-                  name: tag.name
+                  id: item.id,
+                  name: item.name
                 })
               }
             })
@@ -679,6 +686,7 @@
             this.$store.commit('image/EDIT_WATERFALL', {
               id,
               tags,
+              size,
               role_id: this.form.roleId,
               role
             })
