@@ -18,9 +18,9 @@
     }
 
     .image-item {
-      width: 215px;
-      padding-right: 15px;
-      padding-bottom: 15px;
+      width: 212px;
+      padding-right: 12px;
+      padding-bottom: 12px;
       margin-left: 3px;
       margin-top: 3px;
 
@@ -203,7 +203,7 @@
         size="mini"
         placeholder="尺寸筛选"
         :disabled="loading"
-        @change="handleLoadMoreClick"
+        @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in selectionSize"
@@ -217,7 +217,7 @@
         size="mini"
         placeholder="标签筛选"
         :disabled="loading"
-        @change="handleLoadMoreClick"
+        @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in selectionTags"
@@ -227,10 +227,13 @@
         </el-option>
       </el-select>
     </div>
-    <div class="image-container">
-      <div
-        v-for="(item, idx) in list"
-        v-waterfall="{ col: colCount, index: idx, id: 'images-waterfall' }"
+    <waterfall class="image-container" :line-gap="212">
+      <waterfall-slot
+        v-for="(item, index) in list"
+        width="200"
+        :height="computeBoxHeight(item)"
+        :order="index"
+        :key="item.id"
         class="image-item"
       >
         <div class="image">
@@ -279,8 +282,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </waterfall-slot>
+    </waterfall>
     <v-modal
       v-model="openEditModal"
       header-text="编辑图片"
@@ -375,36 +378,35 @@
 <script>
   import Api from '~/api/imageApi'
   import vSelect from '~/components/base/Select'
+  import Waterfall from 'vue-waterfall/lib/waterfall'
+  import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 
   export default {
     name: 'ImageWaterfall',
     components: {
-      vSelect
+      vSelect,
+      Waterfall,
+      WaterfallSlot
     },
     props: {
-      list: {
-        type: Array,
-        required: true
-      },
-      options: {
-        type: Object,
-        required: true,
-        default: null
-      },
       loading: {
         type: Boolean,
         required: true
-      },
-      noMore: {
-        type: Boolean,
-        required: true
-      },
-      colCount: {
-        type: Number,
-        default: 4
       }
     },
     computed: {
+      waterfall () {
+        return this.$store.state.image.waterfall
+      },
+      list () {
+        return this.waterfall.data
+      },
+      noMore () {
+        return this.waterfall.noMore
+      },
+      options () {
+        return this.waterfall.options
+      },
       curUserId () {
         return this.$store.state.login
           ? this.$store.state.user.id
@@ -470,6 +472,9 @@
         }
         return result
       },
+      computeBoxHeight (image) {
+        return (image.height / image.width * 200) + 100
+      },
       computeImageHeight (image) {
         return image.height / image.width * 200
       },
@@ -480,7 +485,7 @@
         this.form.tags = tags.length ? tags[0].id : ''
         this.origin.tags = tags.length ? tags[0].id : ''
       },
-      handleLoadMoreClick (reset = true) {
+      handleLoadMoreClick (reset) {
         if (reset) {
           this.$store.commit('image/SET_WATERFALL_META', {
             size: this.selectedSizeId,

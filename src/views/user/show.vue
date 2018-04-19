@@ -669,9 +669,6 @@
         <el-tab-pane label="图片">
           <image-waterfall
             :loading="loadingUserImageFetch"
-            :no-more="images.noMore"
-            :list="images.data"
-            :options="images.options"
             @fetch="getUserImages(false)"
           ></image-waterfall>
           <no-content v-if="images.noMore && !images.data.length">

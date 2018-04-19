@@ -6,7 +6,7 @@ export default {
   state: () => ({
     waterfall: {
       data: [],
-      take: 2,
+      take: 12,
       options: {},
       noMore: false,
       size: 0,
