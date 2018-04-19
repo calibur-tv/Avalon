@@ -16,7 +16,7 @@
               placeholder="请选择类型"
             >
               <el-option
-                v-for="item in options.tag"
+                v-for="item in options.tags"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id">
