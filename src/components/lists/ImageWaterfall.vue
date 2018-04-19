@@ -380,15 +380,11 @@
 <script>
   import Api from '~/api/imageApi'
   import vSelect from '~/components/base/Select'
-  import Waterfall from 'vue-waterfall/lib/waterfall'
-  import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 
   export default {
     name: 'ImageWaterfall',
     components: {
-      vSelect,
-      Waterfall,
-      WaterfallSlot
+      vSelect
     },
     props: {
       loading: {
