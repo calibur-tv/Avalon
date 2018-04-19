@@ -18,9 +18,9 @@
     }
 
     .image-item {
-      width: 215px;
-      padding-right: 15px;
-      padding-bottom: 15px;
+      width: 212px;
+      padding-right: 12px;
+      padding-bottom: 12px;
       margin-left: 3px;
       margin-top: 3px;
 
@@ -196,7 +196,6 @@
 
 <template>
   <div id="image-waterfall">
-    <!--
     <div class="header">
       <span class="select-title">图片筛选</span>
       <el-select
@@ -204,7 +203,7 @@
         size="mini"
         placeholder="尺寸筛选"
         :disabled="loading"
-        @change="handleLoadMoreClick"
+        @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in selectionSize"
@@ -218,7 +217,7 @@
         size="mini"
         placeholder="标签筛选"
         :disabled="loading"
-        @change="handleLoadMoreClick"
+        @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in selectionTags"
@@ -228,11 +227,13 @@
         </el-option>
       </el-select>
     </div>
-    -->
-    <div class="image-container">
-      <div
-        v-for="(item, idx) in list"
-        v-waterfall="{ col: colCount, index: idx, id: 'images-waterfall' }"
+    <waterfall class="image-container" :line-gap="212">
+      <waterfall-slot
+        v-for="(item, index) in list"
+        width="200"
+        :height="computeBoxHeight(item)"
+        :order="index"
+        :key="item.id"
         class="image-item"
       >
         <div class="image">
@@ -252,6 +253,7 @@
           </div>
           <div class="desc">
             <div class="tags">
+              <button class="el-tag oneline" v-text="item.size.name"></button>
               <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
             </div>
             <div class="meta">
@@ -280,8 +282,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </waterfall-slot>
+    </waterfall>
     <v-modal
       v-model="openEditModal"
       header-text="编辑图片"
@@ -366,7 +368,7 @@
       :loading="loading"
       v-if="!noMore"
       class="load-more-btn"
-      @click="handleLoadMoreClick"
+      @click="handleLoadMoreClick(false)"
       type="info"
       plain
     >{{ loading ? '加载中' : '加载更多' }}</el-button>
@@ -376,36 +378,35 @@
 <script>
   import Api from '~/api/imageApi'
   import vSelect from '~/components/base/Select'
+  import Waterfall from 'vue-waterfall/lib/waterfall'
+  import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 
   export default {
     name: 'ImageWaterfall',
     components: {
-      vSelect
+      vSelect,
+      Waterfall,
+      WaterfallSlot
     },
     props: {
-      list: {
-        type: Array,
-        required: true
-      },
-      options: {
-        type: Object,
-        required: true,
-        default: null
-      },
       loading: {
         type: Boolean,
         required: true
-      },
-      noMore: {
-        type: Boolean,
-        required: true
-      },
-      colCount: {
-        type: Number,
-        default: 4
       }
     },
     computed: {
+      waterfall () {
+        return this.$store.state.image.waterfall
+      },
+      list () {
+        return this.waterfall.data
+      },
+      noMore () {
+        return this.waterfall.noMore
+      },
+      options () {
+        return this.waterfall.options
+      },
       curUserId () {
         return this.$store.state.login
           ? this.$store.state.user.id
@@ -471,33 +472,27 @@
         }
         return result
       },
+      computeBoxHeight (image) {
+        return (image.height / image.width * 200) + 100
+      },
       computeImageHeight (image) {
         return image.height / image.width * 200
       },
       computeImageType (image) {
         const tags = image.tags
-        this.options.size.forEach(size => {
-          tags.forEach(tag => {
-            if (size.id === tag.id) {
-              this.form.size = size.id
-              this.origin.size = size.id
-            }
-          })
-        })
-        this.options.tags.forEach(tag => {
-          tags.forEach(selected => {
-            if (tag.id === selected.id) {
-              this.form.tags = tag.id
-              this.origin.tags = tag.id
-            }
-          })
-        })
+        this.form.size = image.size.id
+        this.origin.size = image.size.id
+        this.form.tags = tags.length ? tags[0].id : ''
+        this.origin.tags = tags.length ? tags[0].id : ''
       },
-      handleLoadMoreClick () {
-        this.$emit('fetch', {
-          tagsId: this.selectedTagsId,
-          sizeId: this.selectedSizeId
-        })
+      handleLoadMoreClick (reset) {
+        if (reset) {
+          this.$store.commit('image/SET_WATERFALL_META', {
+            size: this.selectedSizeId,
+            tags: this.selectedTagsId
+          })
+        }
+        this.$emit('fetch')
       },
       deleteImage ({ userId, id }) {
         if (userId !== this.curUserId) {
@@ -632,6 +627,22 @@
         if (this.submitting) {
           return
         }
+        if (
+          this.form.bangumiId === this.origin.bangumiId &&
+          this.form.roleId === this.origin.roleId &&
+          this.form.size === this.origin.size &&
+          this.form.tags === this.origin.tags
+        ) {
+          this.openEditModal = false
+          this.form = {
+            id: '',
+            bangumiId: '',
+            size: '',
+            tags: '',
+            roleId: ''
+          }
+          return
+        }
         this.submitting = true
         try {
           const api = new Api(this)
@@ -648,20 +659,21 @@
             this.deleteImage({ userId: this.curUserId, id })
           } else {
             const tags = []
+            let size = {}
             let role = null
-            this.options.size.forEach(size => {
-              if (size.id === this.form.size) {
-                tags.push({
-                  id: size.id,
-                  name: size.name
-                })
+            this.options.size.forEach(item => {
+              if (item.id === this.form.size) {
+                size = {
+                  id: item.id,
+                  name: item.name
+                }
               }
             })
-            this.options.tags.forEach(tag => {
-              if (tag.id === this.form.tags) {
+            this.options.tags.forEach(item => {
+              if (item.id === this.form.tags) {
                 tags.push({
-                  id: tag.id,
-                  name: tag.name
+                  id: item.id,
+                  name: item.name
                 })
               }
             })
@@ -679,6 +691,7 @@
             this.$store.commit('image/EDIT_WATERFALL', {
               id,
               tags,
+              size,
               role_id: this.form.roleId,
               role
             })

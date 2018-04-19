@@ -8,8 +8,10 @@ export default {
       data: [],
       take: 12,
       options: {},
-      type: 0,
-      noMore: false
+      noMore: false,
+      size: 0,
+      tags: 0,
+      page: 1
     }
   }),
   mutations: {
@@ -17,6 +19,14 @@ export default {
       state.waterfall.data = state.waterfall.data.concat(data.list)
       state.waterfall.options = data.type
       state.waterfall.noMore = data.list.length < state.waterfall.take
+      state.waterfall.page++
+    },
+    SET_WATERFALL_META (state, { size, tags }) {
+      state.waterfall.size = size
+      state.waterfall.tags = tags
+      state.waterfall.noMore = false
+      state.waterfall.data = []
+      state.waterfall.page = 1
     },
     DELETE_WATERFALL (state, { id }) {
       state.waterfall.data.forEach((image, index) => {
@@ -29,6 +39,7 @@ export default {
       state.waterfall.data.forEach((image, index) => {
         if (image.id === data.id) {
           state.waterfall.data[index].role_id = data.role_id
+          state.waterfall.data[index].size = data.size
           state.waterfall.data[index].tags = data.tags
           state.waterfall.data[index].role = data.role
         }
@@ -45,24 +56,32 @@ export default {
   },
   actions: {
     async getBangumiImages ({ state, commit }, { id, ctx }) {
+      const waterfall = state.waterfall
+      if (waterfall.noMore) {
+        return
+      }
       const api = new BangumiApi(ctx)
       const data = await api.images({
         id,
         take: state.waterfall.take,
-        type: state.waterfall.type,
-        seenIds: state.waterfall.data.length ? state.waterfall.data.map(item => item.id).join(',') : null
+        seenIds: state.waterfall.data.length ? state.waterfall.data.map(item => item.id).join(',') : null,
+        size: waterfall.size,
+        tags: waterfall.tags
       })
       commit('SET_WATERFALL', data)
     },
     async getUserImages ({ state, commit }, { zone, ctx }) {
-      if (state.waterfall.noMore) {
+      const waterfall = state.waterfall
+      if (waterfall.noMore) {
         return
       }
       const api = new UserApi(ctx)
       const data = await api.images({
         zone,
-        page: state.waterfall.page,
-        take: state.waterfall.take
+        page: waterfall.page,
+        take: waterfall.take,
+        size: waterfall.size,
+        tags: waterfall.tags
       })
       commit('SET_WATERFALL', data)
     }

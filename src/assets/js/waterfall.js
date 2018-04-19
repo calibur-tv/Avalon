@@ -68,6 +68,7 @@ Vue.use({
             top: 0
           }
         }
+
         const columnData = Manager[id].data[`col-${column}`]
         const width = el.offsetWidth
         const height = el.offsetHeight

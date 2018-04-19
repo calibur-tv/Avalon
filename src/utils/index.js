@@ -11,7 +11,6 @@ import BangumiPanel from '~/components/panels/BangumiPanel'
 import NoContent from '~/components/NoContent'
 import Hr from '~/components/base/Hr'
 import Share from '~/components/base/Share'
-import '~/assets/js/waterfall'
 
 import {
   InfiniteScroll
