@@ -667,12 +667,10 @@
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
         <el-tab-pane label="图片">
-          <no-ssr>
-            <image-waterfall
-              :loading="loadingUserImageFetch"
-              @fetch="getUserImages(false)"
-            ></image-waterfall>
-          </no-ssr>
+          <image-waterfall
+            :loading="loadingUserImageFetch"
+            @fetch="getUserImages(false)"
+          ></image-waterfall>
           <no-content v-if="images.noMore && !images.data.length">
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
           </no-content>

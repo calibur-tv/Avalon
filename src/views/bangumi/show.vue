@@ -591,12 +591,10 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="图片">
-            <no-ssr>
-              <image-waterfall
-                :loading="imagesState.loading"
-                @fetch="getImages"
-              ></image-waterfall>
-            </no-ssr>
+            <image-waterfall
+              :loading="imagesState.loading"
+              @fetch="getImages"
+            ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>
         </el-tabs>
@@ -688,9 +686,7 @@
         },
         imagesState: {
           loading: false,
-          init: false,
-          take: 12,
-          type: 'all'
+          init: false
         },
         openRolesModal: false,
         loadingRoleFans: false,
@@ -803,8 +799,7 @@
         try {
           await this.$store.dispatch('image/getBangumiImages', {
             ctx: this,
-            id: this.id,
-            type: this.imagesState.type
+            id: this.id
           })
         } catch (e) {
           this.$toast.error(e)
