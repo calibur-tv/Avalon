@@ -669,6 +669,7 @@
         <el-tab-pane label="图片">
           <image-waterfall
             :loading="loadingUserImageFetch"
+            :bangumi="bangumis"
             @fetch="getUserImages(false)"
           ></image-waterfall>
           <no-content v-if="images.noMore && !images.data.length">

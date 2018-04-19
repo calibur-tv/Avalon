@@ -593,6 +593,7 @@
           <el-tab-pane label="图片">
             <image-waterfall
               :loading="imagesState.loading"
+              :role="roles.data"
               @fetch="getImages"
             ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
@@ -737,6 +738,9 @@
         } else if (index === 3) {
           if (!this.imagesState.init) {
             this.getImages()
+            if (!this.rolesState.init) {
+              this.getRoles()
+            }
           }
         }
       },
