@@ -591,10 +591,12 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="图片">
-            <image-waterfall
-              :loading="imagesState.loading"
-              @fetch="getImages"
-            ></image-waterfall>
+            <no-ssr>
+              <image-waterfall
+                :loading="imagesState.loading"
+                @fetch="getImages"
+              ></image-waterfall>
+            </no-ssr>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>
         </el-tabs>
