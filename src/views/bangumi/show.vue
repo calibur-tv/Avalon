@@ -595,6 +595,7 @@
               :loading="imagesState.loading"
               :no-more="images.noMore"
               :list="images.data"
+              :options="images.options"
               @fetch="getImages"
             ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>

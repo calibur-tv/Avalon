@@ -32,6 +32,9 @@ Vue.use({
         }
         setTimeout(() => {
           const id = `${binding.value.id}-${binding.value.col}`
+          if (!Manager[id]) {
+            return
+          }
           const column = binding.value.index % Manager[id].colCount
           if (!Manager[id].data[`col-${column}`]) {
             Manager[id].data[`col-${column}`] = {
@@ -56,6 +59,9 @@ Vue.use({
       update (el, binding) {
         const id = `${binding.value.id}-${binding.value.col}`
         const index = binding.value.index
+        if (!Manager[id]) {
+          return
+        }
         const column = index % Manager[id].colCount
         if (index < Manager[id].colCount) {
           Manager[id].data[`col-${column}`] = {

@@ -1,5 +1,22 @@
 <style lang="scss">
   #image-waterfall {
+    .header {
+      margin-bottom: 15px;
+
+      .select-title {
+        color: #5a5e66;
+        font-size: 12px;
+      }
+
+      .el-select {
+        margin-left: 15px;
+      }
+    }
+
+    .image-container {
+      position: relative;
+    }
+
     .image-item {
       width: 215px;
       padding-right: 15px;
@@ -179,10 +196,43 @@
 
 <template>
   <div id="image-waterfall">
-    <div>
+    <!--
+    <div class="header">
+      <span class="select-title">图片筛选</span>
+      <el-select
+        v-model="selectedSizeId"
+        size="mini"
+        placeholder="尺寸筛选"
+        :disabled="loading"
+        @change="handleLoadMoreClick"
+      >
+        <el-option
+          v-for="item in selectionSize"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-select
+        v-model="selectedTagsId"
+        size="mini"
+        placeholder="标签筛选"
+        :disabled="loading"
+        @change="handleLoadMoreClick"
+      >
+        <el-option
+          v-for="item in selectionTags"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+    </div>
+    -->
+    <div class="image-container">
       <div
-        v-for="(item, index) in list"
-        v-waterfall="{ col, index, id: 'images-waterfall' }"
+        v-for="(item, idx) in list"
+        v-waterfall="{ col: colCount, index: idx, id: 'images-waterfall' }"
         class="image-item"
       >
         <div class="image">
@@ -249,7 +299,7 @@
                 placeholder="请选择类型"
               >
                 <el-option
-                  v-for="item in options.tag"
+                  v-for="item in options.tags"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id">
@@ -325,13 +375,22 @@
 
 <script>
   import Api from '~/api/imageApi'
+  import vSelect from '~/components/base/Select'
 
   export default {
     name: 'ImageWaterfall',
+    components: {
+      vSelect
+    },
     props: {
       list: {
         type: Array,
         required: true
+      },
+      options: {
+        type: Object,
+        required: true,
+        default: null
       },
       loading: {
         type: Boolean,
@@ -341,7 +400,7 @@
         type: Boolean,
         required: true
       },
-      col: {
+      colCount: {
         type: Number,
         default: 4
       }
@@ -354,6 +413,18 @@
       },
       slug () {
         return this.$store.state.user.zone
+      },
+      selectionSize () {
+        return this.options.size ? [{
+          id: 0,
+          name: '全部尺寸'
+        }].concat(this.options.size) : []
+      },
+      selectionTags () {
+        return this.options.tags ? [{
+          id: 0,
+          name: '全部类型'
+        }].concat(this.options.tags) : []
       }
     },
     data () {
@@ -361,7 +432,6 @@
         openEditModal: false,
         bangumiRoles: {},
         bangumis: [],
-        options: [],
         roles: [],
         loadingUserBangumiFetch: false,
         loadingUploadTypeFetch: false,
@@ -378,7 +448,9 @@
           roleId: '',
           size: '',
           tags: ''
-        }
+        },
+        selectedTagsId: 0,
+        selectedSizeId: 0
       }
     },
     methods: {
@@ -412,7 +484,7 @@
             }
           })
         })
-        this.options.tag.forEach(tag => {
+        this.options.tags.forEach(tag => {
           tags.forEach(selected => {
             if (tag.id === selected.id) {
               this.form.tags = tag.id
@@ -422,7 +494,10 @@
         })
       },
       handleLoadMoreClick () {
-        this.$emit('fetch')
+        this.$emit('fetch', {
+          tagsId: this.selectedTagsId,
+          sizeId: this.selectedSizeId
+        })
       },
       deleteImage ({ userId, id }) {
         if (userId !== this.curUserId) {
@@ -449,11 +524,7 @@
           this.form.roleId = roleId
           this.getBangumiRoles(bangumiId)
         }
-        if (this.options.length) {
-          this.computeImageType(image)
-        } else {
-          this.getUploadType(image)
-        }
+        this.computeImageType(image)
         this.openEditModal = true
       },
       reportImage (image) {
@@ -534,19 +605,6 @@
           this.loadingUserBangumiFetch = false
         }
       },
-      async getUploadType (image) {
-        if (this.loadingUploadTypeFetch || this.options.length) {
-          return
-        }
-        this.loadingUploadTypeFetch = true
-        const api = new Api(this)
-        try {
-          this.options = await api.getUploadType()
-          this.computeImageType(image)
-        } finally {
-          this.loadingUploadTypeFetch = false
-        }
-      },
       async getBangumiRoles (bangumiId) {
         if (!bangumiId) {
           return
@@ -599,7 +657,7 @@
                 })
               }
             })
-            this.options.tag.forEach(tag => {
+            this.options.tags.forEach(tag => {
               if (tag.id === this.form.tags) {
                 tags.push({
                   id: tag.id,

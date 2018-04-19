@@ -7,14 +7,16 @@ export default {
     waterfall: {
       data: [],
       take: 12,
+      options: {},
       type: 0,
       noMore: false
     }
   }),
   mutations: {
     SET_WATERFALL (state, data) {
-      state.waterfall.data = state.waterfall.data.concat(data)
-      state.waterfall.noMore = data.length < state.waterfall.take
+      state.waterfall.data = state.waterfall.data.concat(data.list)
+      state.waterfall.options = data.type
+      state.waterfall.noMore = data.list.length < state.waterfall.take
     },
     DELETE_WATERFALL (state, { id }) {
       state.waterfall.data.forEach((image, index) => {
@@ -50,7 +52,7 @@ export default {
         type: state.waterfall.type,
         seenIds: state.waterfall.data.length ? state.waterfall.data.map(item => item.id).join(',') : null
       })
-      commit('SET_WATERFALL', data.list)
+      commit('SET_WATERFALL', data)
     },
     async getUserImages ({ state, commit }, { zone, ctx }) {
       if (state.waterfall.noMore) {
