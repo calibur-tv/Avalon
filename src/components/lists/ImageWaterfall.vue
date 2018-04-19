@@ -227,63 +227,65 @@
         </el-option>
       </el-select>
     </div>
-    <waterfall class="image-container" :line-gap="212">
-      <waterfall-slot
-        v-for="(item, index) in list"
-        width="200"
-        :height="computeBoxHeight(item)"
-        :order="index"
-        :key="item.id"
-        class="image-item"
-      >
-        <div class="image">
-          <div class="image-wrap" @click="$previewImages(`${item.width}-${item.height}|${item.url}`)">
-            <i v-if="item.creator" class="creator iconfont icon-huangguan"></i>
-            <div class="menu" @click.stop.prevent>
-              <v-select
-                placeholder=""
-                :options="computeOptions(item)"
-                :abort="true"
-                @submit="handleMenuSelected($event, item)"
-              >
-                <i class="iconfont icon-101" slot="tail"></i>
-              </v-select>
+    <no-ssr>
+      <waterfall class="image-container" :line-gap="212">
+        <waterfall-slot
+          v-for="(item, index) in list"
+          width="200"
+          :height="computeBoxHeight(item)"
+          :order="index"
+          :key="item.id"
+          class="image-item"
+        >
+          <div class="image">
+            <div class="image-wrap" @click="$previewImages(`${item.width}-${item.height}|${item.url}`)">
+              <i v-if="item.creator" class="creator iconfont icon-huangguan"></i>
+              <div class="menu" @click.stop.prevent>
+                <v-select
+                  placeholder=""
+                  :options="computeOptions(item)"
+                  :abort="true"
+                  @submit="handleMenuSelected($event, item)"
+                >
+                  <i class="iconfont icon-101" slot="tail"></i>
+                </v-select>
+              </div>
+              <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 200, mode: 2 })">
             </div>
-            <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 200, mode: 2 })">
+            <div class="desc">
+              <div class="tags">
+                <button class="el-tag oneline" v-text="item.size.name"></button>
+                <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
+              </div>
+              <div class="meta">
+                <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeBtnClick($event, item)">
+                  <i class="iconfont icon-guanzhu"></i>
+                  {{ item.like_count || ''  }}
+                </button>
+              </div>
+            </div>
+            <div class="detail bangumi clearfix" v-if="item.bangumi">
+              <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                <img :src="$resize(item.bangumi.avatar, { width: 72 })">
+              </a>
+              <div class="info">
+                <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
+                <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
+              </div>
+            </div>
+            <div class="detail user clearfix" v-if="item.user">
+              <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
+                <img :src="$resize(item.user.avatar, { width: 72 })">
+              </a>
+              <div class="info">
+                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
+                <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
+              </div>
+            </div>
           </div>
-          <div class="desc">
-            <div class="tags">
-              <button class="el-tag oneline" v-text="item.size.name"></button>
-              <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
-            </div>
-            <div class="meta">
-              <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeBtnClick($event, item)">
-                <i class="iconfont icon-guanzhu"></i>
-                {{ item.like_count || ''  }}
-              </button>
-            </div>
-          </div>
-          <div class="detail bangumi clearfix" v-if="item.bangumi">
-            <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-              <img :src="$resize(item.bangumi.avatar, { width: 72 })">
-            </a>
-            <div class="info">
-              <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-              <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
-            </div>
-          </div>
-          <div class="detail user clearfix" v-if="item.user">
-            <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
-              <img :src="$resize(item.user.avatar, { width: 72 })">
-            </a>
-            <div class="info">
-              <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-              <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
-            </div>
-          </div>
-        </div>
-      </waterfall-slot>
-    </waterfall>
+        </waterfall-slot>
+      </waterfall>
+    </no-ssr>
     <v-modal
       v-model="openEditModal"
       header-text="编辑图片"
@@ -378,15 +380,11 @@
 <script>
   import Api from '~/api/imageApi'
   import vSelect from '~/components/base/Select'
-  import Waterfall from 'vue-waterfall/lib/waterfall'
-  import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 
   export default {
     name: 'ImageWaterfall',
     components: {
-      vSelect,
-      Waterfall,
-      WaterfallSlot
+      vSelect
     },
     props: {
       loading: {
