@@ -15,10 +15,10 @@
 
     .image-container {
       position: relative;
+      width: 848px;
     }
 
     .image-item {
-      width: 212px;
       padding-right: 12px;
       padding-bottom: 12px;
       margin-left: 3px;
@@ -98,14 +98,12 @@
 
       .image {
         width: 100%;
-        height: 100%;
         box-shadow: 0 1px 3px rgba(0,0,0,.2);
         overflow: hidden;
 
         .desc {
-          padding: 0 16px;
-          margin: 10px 0;
-          height: 32px;
+          padding: 10px 16px;
+          height: 52px;
 
           .tags {
             float: left;
@@ -228,7 +226,7 @@
       </el-select>
     </div>
     <no-ssr>
-      <waterfall class="image-container" :line-gap="212">
+      <waterfall class="image-container" :line-gap="212" :auto-resize="false">
         <waterfall-slot
           v-for="(item, index) in list"
           width="200"
@@ -471,10 +469,10 @@
         return result
       },
       computeBoxHeight (image) {
-        return (image.height / image.width * 200) + 100
+        return this.computeImageHeight(image) + (image.bangumi_id ? 112 : 60)
       },
       computeImageHeight (image) {
-        return image.height / image.width * 200
+        return parseInt(image.height / image.width * 200, 10)
       },
       computeImageType (image) {
         const tags = image.tags
