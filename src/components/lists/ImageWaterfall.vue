@@ -224,6 +224,38 @@
           :value="item.id">
         </el-option>
       </el-select>
+      <el-select
+        v-model="selectedBangumiId"
+        size="mini"
+        placeholder="番剧筛选"
+        filterable
+        :disabled="loading"
+        @change="handleLoadMoreClick(true)"
+        v-if="selectionBangumis.length"
+      >
+        <el-option
+          v-for="item in selectionBangumis"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-select
+        v-model="selectedRoleId"
+        size="mini"
+        placeholder="角色筛选"
+        filterable
+        :disabled="loading"
+        @change="handleLoadMoreClick(true)"
+        v-if="selectionRoles.length"
+      >
+        <el-option
+          v-for="item in selectionRoles"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
     </div>
     <no-ssr>
       <waterfall class="image-container" :line-gap="212" :auto-resize="false">
@@ -388,6 +420,14 @@
       loading: {
         type: Boolean,
         required: true
+      },
+      bangumi: {
+        type: Array,
+        default: () => []
+      },
+      role: {
+        type: Array,
+        default: () => []
       }
     },
     computed: {
@@ -422,6 +462,24 @@
           id: 0,
           name: '全部类型'
         }].concat(this.options.tags) : []
+      },
+      selectionBangumis () {
+        return this.bangumi.length ? [{
+          id: -1,
+          name: '全部番剧'
+        }, {
+          id: 0,
+          name: '未指定'
+        }].concat(this.bangumi) : []
+      },
+      selectionRoles () {
+        return this.role.length ? [{
+          id: -1,
+          name: '全部角色'
+        }, {
+          id: 0,
+          name: '未指定'
+        }].concat(this.role) : []
       }
     },
     data () {
@@ -447,7 +505,9 @@
           tags: ''
         },
         selectedTagsId: 0,
-        selectedSizeId: 0
+        selectedSizeId: 0,
+        selectedBangumiId: -1,
+        selectedRoleId: -1
       }
     },
     methods: {
@@ -485,7 +545,9 @@
         if (reset) {
           this.$store.commit('image/SET_WATERFALL_META', {
             size: this.selectedSizeId,
-            tags: this.selectedTagsId
+            tags: this.selectedTagsId,
+            bangumiId: this.selectedBangumiId,
+            roleId: this.selectedRoleId
           })
         }
         this.$emit('fetch')

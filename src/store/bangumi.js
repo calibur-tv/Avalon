@@ -205,7 +205,7 @@ const actions = {
   },
   async getRoles ({ state, commit }, { bangumiId, ctx }) {
     if (state.roles.id === bangumiId) {
-      return
+      return state.roles.data
     }
     const api = new Api(ctx)
     const data = await api.roles({ bangumiId })
