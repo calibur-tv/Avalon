@@ -42,4 +42,8 @@ export default class extends BaseApi {
   toggleLike ({ id }) {
     return this.http.post('image/toggleLike', { id })
   }
+
+  trendingList ({ seenIds, take, sort, size, tags, bangumiId, creator }) {
+    return this.http.post('image/trendingList', { seenIds, take, sort, size, tags, bangumiId, creator })
+  }
 }

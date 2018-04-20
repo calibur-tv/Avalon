@@ -42,5 +42,9 @@ export default {
 
   postTrending (sort) {
     return `/post/trending/${sort}`
+  },
+
+  imageTrending (sort) {
+    return `/image/trending/${sort}`
   }
 }

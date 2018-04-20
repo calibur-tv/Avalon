@@ -182,6 +182,11 @@
             overflow: hidden;
             line-height: 17px;
           }
+
+          .extra {
+            line-height: 14px;
+            margin-top: 3px;
+          }
         }
       }
     }
@@ -309,7 +314,18 @@
                 </button>
               </div>
             </div>
-            <div class="detail bangumi clearfix" v-if="item.bangumi">
+            <div class="detail user clearfix" v-if="item.bangumi && item.user">
+              <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
+                <img :src="$resize(item.user.avatar, { width: 72 })">
+              </a>
+              <div class="info">
+                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
+                <p class="extra">
+                  <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
+                </p>
+              </div>
+            </div>
+            <div class="detail bangumi clearfix" v-else-if="item.bangumi">
               <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
                 <img :src="$resize(item.bangumi.avatar, { width: 72 })">
               </a>
@@ -318,7 +334,7 @@
                 <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
               </div>
             </div>
-            <div class="detail user clearfix" v-if="item.user">
+            <div class="detail user clearfix" v-else-if="item.user">
               <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
@@ -559,7 +575,7 @@
         return result
       },
       computeBoxHeight (image) {
-        return this.computeImageHeight(image) + (image.bangumi_id ? 112 : 60)
+        return this.computeImageHeight(image) + (image.bangumi || image.user ? 112 : 60)
       },
       computeImageHeight (image) {
         return parseInt(image.height / image.width * 200, 10)

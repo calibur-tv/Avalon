@@ -72,6 +72,10 @@ export function createRouter () {
           {
             path: 'trending/role',
             component: () => import('~/views/role/trending')
+          },
+          {
+            path: 'image/trending/:sort',
+            component: () => import('~/views/image/trending')
           }
         ]
       }
