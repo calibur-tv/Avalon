@@ -181,6 +181,14 @@
           .info {
             overflow: hidden;
             line-height: 17px;
+
+            a {
+              display: block;
+            }
+
+            .margin-top {
+              margin-top: 8px;
+            }
           }
 
           .extra {
@@ -320,9 +328,7 @@
               </a>
               <div class="info">
                 <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-                <p class="extra">
-                  <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-                </p>
+                <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
               </div>
             </div>
             <div class="detail bangumi clearfix" v-else-if="item.bangumi">
@@ -339,7 +345,7 @@
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
               <div class="info">
-                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
+                <a class="oneline" :class="{ 'margin-top': !item.role_id }" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
                 <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
               </div>
             </div>

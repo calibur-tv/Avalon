@@ -54,8 +54,6 @@
           this.loading = false
         }
       }
-    },
-    mounted () {
     }
   }
 </script>
