@@ -6,6 +6,7 @@
       .select-title {
         color: #5a5e66;
         font-size: 12px;
+        margin-left: 3px;
       }
 
       .el-select {
@@ -641,7 +642,7 @@
           this.editImage(image)
         }
       },
-      async handleLikeBtnClick (e, image) {
+      handleLikeBtnClick (e, image) {
         if (!this.$store.state.login) {
           this.$toast.info('继续操作前请先登录')
           this.$channel.$emit('sign-in')
@@ -652,6 +653,19 @@
           return
         }
         const btn = e.currentTarget
+        if (image.creator && !image.liked) {
+          this.$confirm('原创图片点赞需要金币, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.submitToggleLike(btn, image)
+          }).catch(() => {})
+          return
+        }
+        this.submitToggleLike(btn, image)
+      },
+      async submitToggleLike (btn, image) {
         btn.setAttribute('disabled', 'disabled')
         // do like
         const api = new Api(this)
