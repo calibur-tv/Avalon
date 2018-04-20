@@ -256,6 +256,20 @@
           :value="item.id">
         </el-option>
       </el-select>
+      <el-select
+        v-model="selectedCreatorId"
+        size="mini"
+        placeholder="原创分类"
+        :disabled="loading"
+        @change="handleLoadMoreClick(true)"
+      >
+        <el-option
+          v-for="item in creators"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
     </div>
     <no-ssr>
       <waterfall class="image-container" :line-gap="212" :auto-resize="false">
@@ -507,7 +521,22 @@
         selectedTagsId: 0,
         selectedSizeId: 0,
         selectedBangumiId: -1,
-        selectedRoleId: -1
+        selectedRoleId: -1,
+        selectedCreatorId: -1,
+        creators: [
+          {
+            id: -1,
+            name: '原创和搬运'
+          },
+          {
+            id: 1,
+            name: '仅原创'
+          },
+          {
+            id: 0,
+            name: '仅搬运'
+          }
+        ]
       }
     },
     methods: {
@@ -547,7 +576,8 @@
             size: this.selectedSizeId,
             tags: this.selectedTagsId,
             bangumiId: this.selectedBangumiId,
-            roleId: this.selectedRoleId
+            roleId: this.selectedRoleId,
+            creator: this.selectedCreatorId
           })
         }
         this.$emit('fetch')

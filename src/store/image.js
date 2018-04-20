@@ -13,7 +13,8 @@ export default {
       tags: 0,
       page: 1,
       bangumiId: -1,
-      roleId: -1
+      roleId: -1,
+      creator: -1
     }
   }),
   mutations: {
@@ -23,11 +24,12 @@ export default {
       state.waterfall.noMore = data.list.length < state.waterfall.take
       state.waterfall.page++
     },
-    SET_WATERFALL_META (state, { size, tags, bangumiId, roleId }) {
+    SET_WATERFALL_META (state, { size, tags, bangumiId, roleId, creator }) {
       state.waterfall.size = size
       state.waterfall.tags = tags
       state.waterfall.bangumiId = bangumiId
       state.waterfall.roleId = roleId
+      state.waterfall.creator = creator
       state.waterfall.noMore = false
       state.waterfall.data = []
       state.waterfall.page = 1
@@ -71,7 +73,8 @@ export default {
         seenIds: state.waterfall.data.length ? state.waterfall.data.map(item => item.id).join(',') : null,
         size: waterfall.size,
         tags: waterfall.tags,
-        roleId: waterfall.roleId
+        roleId: waterfall.roleId,
+        creator: waterfall.creator
       })
       commit('SET_WATERFALL', data)
     },
@@ -87,7 +90,8 @@ export default {
         take: waterfall.take,
         size: waterfall.size,
         tags: waterfall.tags,
-        bangumiId: waterfall.bangumiId
+        bangumiId: waterfall.bangumiId,
+        creator: waterfall.creator
       })
       commit('SET_WATERFALL', data)
     }
