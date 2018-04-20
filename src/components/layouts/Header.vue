@@ -327,6 +327,17 @@
           </el-dropdown-menu>
         </el-dropdown>
         <router-link class="nav-link" to="/trending/role">偶像</router-link>
+        <el-dropdown>
+          <router-link class="nav-link el-dropdown-link" :to="$alias.imageTrending('new')">图片</router-link>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <router-link class="nav-link" :to="$alias.imageTrending('new')">最新上传</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link class="nav-link" :to="$alias.imageTrending('hot')">最多喜欢</router-link>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <router-link class="nav-link" to="/about/hello">功能简介</router-link>
       </nav>
       <nav class="header-right">

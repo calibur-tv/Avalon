@@ -1,5 +1,6 @@
 import BangumiApi from '~/api/bangumiApi'
 import UserApi from '~/api/userApi'
+import ImageApi from '~/api/imageApi'
 
 export default {
   namespaced: true,
@@ -92,6 +93,23 @@ export default {
         tags: waterfall.tags,
         bangumiId: waterfall.bangumiId,
         creator: waterfall.creator
+      })
+      commit('SET_WATERFALL', data)
+    },
+    async getTrendingImages ({ state, commit }, { sort, ctx }) {
+      const waterfall = state.waterfall
+      if (waterfall.noMore) {
+        return
+      }
+      const api = new ImageApi(ctx)
+      const data = await api.trendingList({
+        seenIds: state.waterfall.data.length ? state.waterfall.data.map(item => item.id).join(',') : null,
+        take: waterfall.take,
+        size: waterfall.size,
+        tags: waterfall.tags,
+        bangumiId: waterfall.bangumiId,
+        creator: waterfall.creator,
+        sort
       })
       commit('SET_WATERFALL', data)
     }
