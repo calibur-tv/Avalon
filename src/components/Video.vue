@@ -643,7 +643,7 @@
         }
       },
       loadResource () {
-        if (this.source.split('.').pop().toLowerCase() === 'flv') {
+        if (this.source.split('?')[0].split('.').pop().toLowerCase() === 'flv') {
           this.isFlv = true
           if (flvjs.isSupported()) {
             const flvPlayer = flvjs.createPlayer({
@@ -666,6 +666,7 @@
       if (!window.flvjs) {
         import('flv.js').then(module => {
           window.flvjs = module.default
+          this.loadResource()
         })
       }
       if (this.otherSrc || this.isGuest) {
@@ -676,7 +677,6 @@
       const video = self.$refs.video
       video.volume = self.value.voice / 100
       video.controls = false
-      self.loadResource()
 
       video.addEventListener('contextmenu', e => {
         e.preventDefault()
