@@ -549,10 +549,10 @@
                     ·
                     <span v-if="item.lover">
                     守护者:
-                    <router-link :to="$alias.user(item.lover.zone)">
+                    <a target="_blank" :href="$alias.user(item.lover.zone)">
                       {{ item.lover.nickname }}
                       <v-img :src="item.lover.avatar" width="20" height="20"></v-img>
-                    </router-link>
+                    </a>
                   </span>
                     ·
                     <span class="load-list" @click="showRoleDetail(item, 'new')">最新应援</span>
@@ -588,12 +588,12 @@
                   v-for="item in currentRoleFans.data"
                   :key="item.id"
                 >
-                  <router-link class="lover-user" :to="$alias.user(item.zone)">
+                  <a class="lover-user" target="_blank" :href="$alias.user(item.zone)">
                     <img :src="$resize(item.avatar, { width: 80 })">
                     <span v-text="item.nickname"></span>
                     <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
                     <span class="score" v-else>{{ item.score }}个金币</span>
-                  </router-link>
+                  </a>
                 </li>
               </v-modal>
             </div>
