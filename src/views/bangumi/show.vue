@@ -239,6 +239,13 @@
               vertical-align: middle;
               display: inline-block;
             }
+
+            .score {
+              float: right;
+              font-size: 13px;
+              color: $color-text-light;
+              margin-top: 13px;
+            }
           }
         }
       }
@@ -433,6 +440,7 @@
               <a :href="$alias.user(user.zone)" target="_blank">
                 <img :src="$resize(user.avatar, { width: 120 })">
                 <span v-text="user.nickname"></span>
+                <v-time class="score" v-model="user.score"></v-time>
               </a>
             </li>
           </v-modal>
