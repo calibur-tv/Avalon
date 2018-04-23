@@ -645,8 +645,8 @@
       loadResource () {
         if (this.source.split('.').pop().toLowerCase() === 'flv') {
           this.isFlv = true
-          if (this.$flvjs.isSupported()) {
-            const flvPlayer = this.$flvjs.createPlayer({
+          if (flvjs.isSupported()) {
+            const flvPlayer = flvjs.createPlayer({
               type: 'flv',
               url: this.source
             })
@@ -663,6 +663,11 @@
       }
     },
     mounted () {
+      if (!window.flvjs) {
+        import('flv.js').then(module => {
+          window.flvjs = module.default
+        })
+      }
       if (this.otherSrc || this.isGuest) {
         return
       }

@@ -13,6 +13,7 @@ module.exports = {
   // add your custom rules here
   rules: {},
   globals: {
-    M: true
+    M: true,
+    flvjs: true
   }
 }
