@@ -8,7 +8,6 @@ import {
   MessageBox
 } from 'element-ui'
 import './validate'
-import flvjs from 'flv.js'
 import QRCode from '~/assets/js/qrcode'
 import Clipboard from '~/assets/js/clipboard'
 
@@ -33,8 +32,6 @@ Vue.use({
     }
 
     Vue.prototype.$captcha = captcha
-
-    Vue.prototype.$flvjs = flvjs
 
     Vue.prototype.$confirm = MessageBox.confirm
 
