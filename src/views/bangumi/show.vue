@@ -476,7 +476,7 @@
                             :src="$resize(video.poster, { width: 192, height: 120 })"
                           ></v-img>
                           <figcaption class="abs">
-                            <p class="part oneline">第{{ videos.repeat ? index + 1 : video.part }}话</p>
+                            <p class="part oneline">第{{ video.part - season.base }}话</p>
                             <span class="name" v-text="video.name"></span>
                           </figcaption>
                         </figure>

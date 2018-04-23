@@ -28,7 +28,6 @@ const state = () => ({
   },
   videos: {
     data: [],
-    repeat: false,
     total: 0,
     fetched: false
   },
@@ -120,7 +119,6 @@ const mutations = {
   SET_VIDEOS (state, data) {
     state.videos = {
       data: data.videos,
-      repeat: data.repeat,
       total: data.total,
       fetched: true
     }
