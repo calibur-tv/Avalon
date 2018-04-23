@@ -451,7 +451,21 @@
   export default {
     name: 'ImageWaterfall',
     components: {
-      vSelect
+      vSelect,
+      'waterfall': () => {
+        if (typeof window === 'undefined') {
+          // eslint-disable-next-line
+          return Promise.reject()
+        }
+        return import('vue-waterfall/lib/waterfall')
+      },
+      'waterfall-slot': () => {
+        if (typeof window === 'undefined') {
+          // eslint-disable-next-line
+          return Promise.reject()
+        }
+        return import('vue-waterfall/lib/waterfall-slot')
+      }
     },
     props: {
       loading: {
