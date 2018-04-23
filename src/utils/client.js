@@ -11,10 +11,6 @@ import './validate'
 import flvjs from 'flv.js'
 import QRCode from '~/assets/js/qrcode'
 import Clipboard from '~/assets/js/clipboard'
-import Waterfall from 'vue-waterfall'
-
-Vue.component('waterfall', Waterfall.waterfall)
-Vue.component('waterfall-slot', Waterfall.waterfallSlot)
 
 Vue.use({
   install (Vue, options) {
