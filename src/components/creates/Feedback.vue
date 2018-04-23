@@ -92,7 +92,7 @@
             await api.feedback({
               type: this.forms.type,
               desc: this.forms.desc,
-              ua: navigator.userAgent
+              ua: navigator.userAgent + navigator.appVersion + navigator.vendor
             })
             this.show = false
             this.$refs.forms.resetFields()
