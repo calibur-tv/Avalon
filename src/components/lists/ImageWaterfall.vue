@@ -149,6 +149,10 @@
           background-color: #fafafa;
           font-size: 12px;
           color: #999;
+
+          .margin-top {
+            margin-top: 8px;
+          }
         }
 
         .bangumi {
@@ -184,10 +188,6 @@
 
             a {
               display: block;
-            }
-
-            .margin-top {
-              margin-top: 8px;
             }
           }
 
@@ -335,7 +335,7 @@
               <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
                 <img :src="$resize(item.bangumi.avatar, { width: 72 })">
               </a>
-              <div class="info">
+              <div class="info" :class="{ 'margin-top': !item.role_id }">
                 <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
                 <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
               </div>
@@ -344,8 +344,8 @@
               <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
-              <div class="info">
-                <a class="oneline" :class="{ 'margin-top': !item.role_id }" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
+              <div class="info" :class="{ 'margin-top': !item.role_id }">
+                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
                 <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
               </div>
             </div>
