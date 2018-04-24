@@ -111,11 +111,10 @@
               position: relative;
               display: inline-block;
               width: 70px;
-              height: 3px;
+              height: 9px;
               vertical-align: middle;
-              background-color: $color-gray-light;
-              cursor: pointer;
               margin-left: 5px;
+              padding-right: 5px;
             }
 
             .M-cur-voice {
@@ -135,55 +134,21 @@
       }
     }
 
-    .M-curBar, .M-allBar {
+    .M-allBar {
       display: block;
       position: absolute;
       left: 0;
       bottom: 0;
-      height: 4px;
-    }
-
-    .M-curBar {
-      width: 0;
-      background-color: $color-blue;
-    }
-
-    .M-allBar {
+      height: 3px;
       width: 100%;
       z-index: 2;
-      cursor: pointer;
-    }
 
-    .M-tip {
-      position: absolute;
-      bottom: 12px;
-      width: 50px;
-      height: 17px;
-      line-height: 17px;
-      font-size: 10px;
-      text-align: center;
-      background-color: #fff;
-      border: solid 1px $color-gray-light;
-      border-radius: 3px;
-
-      em {
-        border-width: 8px;
-        border-color: transparent;
-        border-top-color: $color-gray-light;
-        border-style: dashed dashed solid;
-        position: absolute;
-        left: 17px;
-        top: 15px;
+      .vue-pwa-range-runway {
+        background-color: transparent;
       }
 
-      i {
-        border-width: 6px;
-        border-color: transparent;
-        border-top-color: #fff;
-        border-style: dashed dashed solid;
-        position: absolute;
-        left: -6px;
-        top: -8px;
+      .vue-pwa-range-progress {
+        transition: .4s;
       }
     }
 
@@ -317,31 +282,6 @@
             width: 120px;
             float: right;
           }
-
-          .item-select {
-            display: block;
-            width: 12px;
-            height: 12px;
-            border-radius: 4px;
-            border: 1px solid $color-gray;
-            float: left;
-            margin-top: 3px;
-            margin-right: 5px;
-          }
-
-          .item-selected {
-            &:before {
-              content: '';
-              position: absolute;
-              display: block;
-              left: 2px;
-              top: 2px;
-              width: 7px;
-              height: 7px;
-              border-radius: 3px;
-              background-color: $color-blue;
-            }
-          }
         }
       }
     }
@@ -392,7 +332,7 @@
     </button>
     <div class="M-main">
       <div class="M-warp">
-        <img class="M-face" ref="banner">
+        <img class="M-face" :src="now.img">
         <div class="M-control">
           <div class="header">
             <div class="left">
@@ -409,22 +349,24 @@
               <button class="sm-btn" @click="next(false)">
                 <i class="iconfont icon-svgprevious"></i>
               </button>
-              <button class="lg-btn" @click="handlePlayBtnClick" ref="paused">
+              <button class="lg-btn" @click="handlePlayBtnClick">
                 <i class="iconfont" :class="[ status.playing ? 'icon-icon-' : 'icon-bofang1' ]"></i>
               </button>
               <button class="sm-btn" @click="next(true)">
                 <i class="iconfont icon-iconfontsvgnext"></i>
               </button>
-              <button class="sm-btn" @click="changeModel">
-                <i class="iconfont" :class="`icon-${status.model}`"></i>
-              </button>
             </div>
             <div class="M-voice-control">
-              <button class="sm-btn" @click="handleMuteBtnClick" ref="muted">
+              <button class="sm-btn" @click="handleMuteBtnClick">
                 <i class="iconfont" :class="[ status.silent ? 'icon-jingyin' : 'icon-zengdayinliang' ]"></i>
               </button>
-              <span class="M-all-voice" ref="allvoice">
-                <span class="M-cur-voice" ref="curvoice"></span>
+              <span class="M-all-voice">
+                <v-range
+                  v-model="status.voice"
+                  @rangeChangeEvent="volume"
+                  :barsize="3"
+                  :tailsize="9"
+                ></v-range>
               </span>
             </div>
           </div>
@@ -433,10 +375,15 @@
           </div>
         </div>
       </div>
-      <span class="M-allBar" @mouseout="tipShow = false" ref="alltime">
-        <span class="M-curBar" ref="curtime"></span>
+      <span class="M-allBar">
+        <v-range
+          v-model="status.current"
+          :max="status.duration"
+          :barsize="3"
+          :tailsize="0"
+          :disabled="true"
+        ></v-range>
       </span>
-      <div class="M-tip" v-show="tipShow" ref="tip">{{ tipText }}<em><i></i></em></div>
     </div>
     <div class="M-menu" :class="{ 'menu-show': status.menuShow }">
       <div class="M-menu-wrap">
@@ -447,15 +394,11 @@
         <div class="body">
           <div class="title item">
             <div class="item-right">歌手</div>
-            <div class="item-left">
-              <a class="item-select" :class="{ 'item-selected': list.length === source.length }" @click="selectAll"></a>
-              歌曲
-            </div>
+            <div class="item-left">歌曲</div>
           </div>
-          <div class="item" v-for="item in source">
+          <div class="item" v-for="item in list">
             <div class="item-right oneline">{{ item.player }}</div>
             <div class="item-left">
-              <a class="item-select" :class="{ 'item-selected': item.selected }" @click="musicSelect(item)"></a>
               <div>
                 <span v-show="item.playing" :class="['icon', status.playing ? 'icon-play' : 'icon-pause']"></span>
                 <a @click="loadSource(item)">{{ item.name }}</a>
@@ -463,9 +406,6 @@
               <div class="hover">
                 <button title="点击播放" class="sm-btn play" @click="loadSource(item)">
                   <i class="iconfont icon-tongji"></i>
-                </button>
-                <button title="加入列表" class="sm-btn menu" @click="musicSelect(item)">
-                  <i class="iconfont icon-tubiaozhizuomoban"></i>
                 </button>
               </div>
             </div>
@@ -477,37 +417,47 @@
 </template>
 
 <script>
+  import vRange from '~/components/base/Range'
+
   export default {
+    components: {
+      vRange
+    },
     data () {
       return {
         source: [
           {
             id: 1,
-            src: 'http://ip.h5.ra03.sycdn.kuwo.cn/2581c16ff9a07997c0a4e9d26427ff7a/5800e0ce/resource/a2/48/55/72/3743317910.aac',
-            img: 'https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=1895382595,3961079290&fm=85&s=938543A65337079C1C4B73B20300F01A',
-            player: 'Origa',
-            name: 'Inner Universe'
+            src: 'https://image.calibur.tv/music/1.mp3',
+            img: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2570708825,3778744992&fm=58&bpow=932&bpoh=1067',
+            player: '高桥洋子',
+            name: '残酷天使的行动纲领'
           },
           {
             id: 2,
-            src: 'http://ip.h5.rf03.sycdn.kuwo.cn/a818f7290b61e4ca34cb8f1c19756ec3/580cb797/resource/a3/27/73/2660804116.aac',
-            img: 'http://p3.music.126.net/4hhcI_Elp8nknnvtvOekhQ==/7884597883392048.jpg?param=130y130',
-            player: 'Donna Burke',
-            name: 'Glassy sky'
+            src: 'https://image.calibur.tv/music/2.mp3',
+            img: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=974157411,1445364173&fm=21&gp=0.jpg',
+            player: '山本润子',
+            name: '翼をください'
+          },
+          {
+            id: 3,
+            src: 'https://image.calibur.tv/music/3.mp3',
+            img: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=4023072402,3220604678&fm=58&bpow=1280&bpoh=1254',
+            player: '平野绫',
+            name: 'God knows...'
           }
         ],
         open: false,
-        timeWidth: 541,
-        voiceWidth: 70,
-        tipShow: false,
-        tipWidth: 25,
         tipText: '',
         needInit: true,
         status: {
           playing: false,
           silent: false,
           menuShow: false,
-          model: 'list'
+          voice: 50,
+          current: 0,
+          duration: 0
         },
         time: {
           cur: '00:00',
@@ -518,58 +468,54 @@
         player: null
       }
     },
+    created () {
+      this.source.forEach(item => {
+        this.list.push(Object.assign(item, {
+          selected: true,
+          playing: false
+        }))
+      })
+    },
     methods: {
       musicToggle () {
         this.open = !this.open
         if (this.needInit) {
           this.needInit = false
-          this.loadSource(this.source[0], false)
+          this.loadSource(this.list[0], false)
         }
       },
-      musicSelect (item) {
-        if (item.id === this.now.id) return
-        if (item.selected) {
-          this.list.splice(this.list.indexOf(item.id), 1)
-        } else {
-          this.list.push(item.id)
+      next (isNext) {
+        const musicCount = this.list.length
+        if (!musicCount) {
+          return
         }
-        item.selected = !item.selected
-      },
-      next (bool) {
-        if (this.status.model === 'loop') return
-        let length = this.list.length
-        if (length === 0) return
-        let id = this.now.id
-        let i, j, now
-        if (this.status.model === 'list') {
-          for (i in this.list) {
-            if (this.list[i] === id) { break }
+        const id = this.now.id
+        let resultIndex = -1
+        this.list.forEach((item, index) => {
+          if (item.id === id) {
+            if (isNext) {
+              if (index === musicCount - 1) {
+                resultIndex = 0
+              } else {
+                resultIndex = index + 1
+              }
+            } else {
+              if (!index) {
+                resultIndex = musicCount - 1
+              } else {
+                resultIndex = index - 1
+              }
+            }
           }
-          now = this.list[bool ? i === length - 1 ? 0 : ++i : i === 0 ? --length : --i]
-        } else {
-          now = this.list[Math.floor(Math.random() * length + 1) - 1]
-        }
-        for (j in this.source) {
-          if (this.source[j].id === now) {
-            this.loadSource(this.source[j])
-            break
-          }
+        })
+        if (resultIndex !== -1) {
+          this.loadSource(this.list[resultIndex])
         }
       },
-      selectAll () {
-        let i
-        if (this.list.length === this.source.length) {
-          this.list = []
-          for (i in this.source) {
-            this.source[i].selected = false
-          }
-        } else {
-          this.list = []
-          for (i in this.source) {
-            this.source[i].selected = true
-            this.list.push(this.source[i].id)
-          }
-        }
+      volume (val) {
+        this.player.muted = !val
+        this.status.voice = val
+        this.player.volume = val / 100
       },
       loadSource (item, autoPlay = true) {
         if (this.now.playing !== undefined) {
@@ -580,30 +526,11 @@
         }
         item.playing = true
         this.now = item
-        this.$refs.audio.setAttribute('src', this.now.src)
-        this.$refs.banner.setAttribute('src', this.now.img)
+        this.player.setAttribute('src', this.now.src)
         if (autoPlay) {
-          this.$refs.audio.play()
+          this.player.play()
           this.status.playing = true
         }
-      },
-      changeModel () {
-        let ret = ''
-        switch (this.status.model) {
-          case 'list' :
-            ret = 'rand'
-            this.$refs.audio.loop = false
-            break
-          case 'rand' :
-            ret = 'loop'
-            this.$refs.audio.loop = true
-            break
-          case 'loop' :
-            ret = 'list'
-            this.$refs.audio.loop = false
-            break
-        }
-        this.status.model = ret
       },
       formatSeconds (second) {
         let [h, m, s] = [0, 0, 0]
@@ -631,18 +558,9 @@
       }
     },
     mounted () {
-      var vm = this
       const audio = this.$refs.audio
       this.player = audio
       audio.volume = 0.5
-
-      audio.addEventListener('canplay', () => {
-        console.log('oncanplay : 缓冲已足够开始时')
-      })
-
-      audio.addEventListener('canplaythrough', () => {
-        console.log('oncanplaythrough : 缓冲已完成')
-      })
 
       audio.addEventListener('ended', () => {
         this.status.playing = false
@@ -650,8 +568,19 @@
       })
 
       audio.addEventListener('durationchange', () => {
-        const timeArr = vm.formatSeconds(this.duration)
+        const duration = audio.duration
+        const timeArr = this.formatSeconds(duration)
+        this.status.duration = duration
         this.time.all = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
+      })
+
+      audio.addEventListener('timeupdate', () => {
+        const current = audio.currentTime
+        const timeArr = this.formatSeconds(current)
+        this.status.current = current
+        this.time.cur = timeArr[0]
           ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
           : `${timeArr[1]}:${timeArr[2]}`
       })
@@ -659,41 +588,6 @@
       audio.addEventListener('error', () => {
         this.next(true)
       })
-
-      audio.addEventListener('play', () => {
-        console.log('onplay : 播放开始')
-      })
-
-      audio.addEventListener('waiting', () => {
-        console.log('onwaiting : 播放过程中开始缓冲')
-      })
-
-      audio.addEventListener('timeupdate', () => {
-        const timeArr = this.formatSeconds(this.currentTime)
-        this.$refs.curtime.style.width = this.timeWidth * this.currentTime / this.duration + 'px'
-        this.time.cur = timeArr[0]
-          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
-          : `${timeArr[1]}:${timeArr[2]}`
-      })
-
-      audio.addEventListener('playing', () => {
-        console.log('onplaying : 播放中...')
-      })
-
-      this.$refs.allvoice.onclick = function (e) {
-        audio.volume = e.layerX / vm.voiceWidth
-        vm.$refs.curvoice.style.width = e.layerX + 'px'
-      }
-      this.$refs.alltime.onclick = function (e) {
-        vm.$refs.curtime.style.width = e.layerX + 'px'
-        audio.currentTime = e.layerX / vm.timeWidth * audio.duration
-      }
-      this.$refs.alltime.onmousemove = function (e) {
-        var time = vm.formatSeconds(audio.duration / vm.timeWidth * e.layerX)
-        vm.tipShow = true
-        vm.$refs.tip.style.left = e.layerX - vm.tipWidth + 'px'
-        vm.tipText = time[1] + ':' + time[2]
-      }
     }
   }
 </script>
