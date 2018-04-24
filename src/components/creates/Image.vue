@@ -1,49 +1,118 @@
+<style lang="scss">
+  .create-image-modal {
+    .el-radio-group {
+      margin-left: 20px;
+      margin-bottom: 30px;
+    }
+  }
+</style>
+
 <template>
   <v-modal
     v-model="show"
     header-text="上传图片"
     @submit="handleFormSubmit"
+    class="create-image-modal"
   >
+    <el-radio-group v-model="action" size="mini">
+      <el-radio-button label="上传图片"></el-radio-button>
+      <el-radio-button label="新建专辑"></el-radio-button>
+    </el-radio-group>
     <el-form
       ref="form"
       label-width="60px"
     >
-      <el-row>
-        <el-col :span="10">
-          <el-form-item label="类型">
-            <el-select
-              v-model="form.tags"
-              placeholder="请选择类型"
-            >
-              <el-option
-                v-for="item in options.tags"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item label="尺寸">
-            <el-select
-              v-model="form.size"
-              placeholder="请选择尺寸"
-            >
-              <el-option
-                v-for="item in options.size"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="10">
+      <template v-if="action === '上传图片'">
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="类型">
+              <el-select
+                v-model="form.tags"
+                placeholder="请选择类型"
+              >
+                <el-option
+                  v-for="item in options.tags"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="尺寸">
+              <el-select
+                v-model="form.size"
+                placeholder="请选择尺寸"
+              >
+                <el-option
+                  v-for="item in options.size"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="番剧">
+              <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
+                <el-option
+                  v-for="item in bangumis"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="角色">
+              <el-select
+                v-model="form.roleId"
+                placeholder="请选择角色"
+              >
+                <el-option
+                  v-for="item in roles"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="原创">
+          <el-switch v-model="form.creator"></el-switch>
+        </el-form-item>
+        <el-form-item label="图片">
+          <el-upload
+            action="https://upload.qiniup.com"
+            ref="uploader"
+            :data="uploadHeaders"
+            :on-error="handleError"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            :before-upload="beforeUpload"
+            :file-list="form.images"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+      </template>
+      <template v-else-if="action === '新建专辑'">
+        <el-row>
+          <el-col :span="16">
+            <el-form-item label="名称">
+              <el-input v-model="albumForm.name" placeholder="请填写专辑名称"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-form-item label="番剧">
-            <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
+            <el-select v-model="albumForm.bangumi_id" filterable placeholder="请选择番剧">
               <el-option
                 v-for="item in bangumis"
                 :key="item.id"
@@ -52,39 +121,25 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item label="角色">
-            <el-select
-              v-model="form.roleId"
-              placeholder="请选择角色"
-            >
-              <el-option
-                v-for="item in roles"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-form-item label="原创">
-        <el-switch v-model="form.creator"></el-switch>
-      </el-form-item>
-      <el-form-item label="图片">
-        <el-upload
-          action="https://upload.qiniup.com"
-          ref="uploader"
-          :data="uploadHeaders"
-          :on-error="handleError"
-          :on-remove="handleRemove"
-          :on-success="handleSuccess"
-          :before-upload="beforeUpload"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-        </el-upload>
-      </el-form-item>
+        </el-row>
+        <el-form-item label="漫画">
+          <el-switch v-model="albumForm.is_cartoon"></el-switch>
+        </el-form-item>
+        <el-form-item label="封面">
+          <el-upload
+            action="https://upload.qiniup.com"
+            ref="albumUploader"
+            :data="uploadHeaders"
+            :on-error="handleError"
+            :on-remove="handleAlbumPosterRemove"
+            :on-success="handleAlbumUploadSuccess"
+            :before-upload="beforeUpload"
+            :file-list="albumForm.poster"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+      </template>
     </el-form>
   </v-modal>
 </template>
@@ -119,7 +174,14 @@
           roleId: '',
           creator: false,
           images: []
-        }
+        },
+        albumForm: {
+          name: '',
+          bangumi_id: '',
+          poster: [],
+          is_cartoon: false
+        },
+        action: '上传图片'
       }
     },
     methods: {
@@ -165,9 +227,21 @@
       },
       handleSuccess (res, file) {
         this.form.images.push({
+          name: file.name,
           id: file.uid,
-          img: res.data
+          url: res.data
         })
+      },
+      handleAlbumPosterRemove () {
+        this.albumForm.poster = []
+      },
+      handleAlbumUploadSuccess (res, file) {
+        this.albumForm.poster = [
+          {
+            name: file.name,
+            url: res.data
+          }
+        ]
       },
       beforeUpload (file) {
         if (!this.$store.state.login) {
@@ -208,7 +282,14 @@
         this.bangumiRoles[bangumiId] = data
         this.roles = data
       },
-      async handleFormSubmit () {
+      handleFormSubmit () {
+        if (this.action === '上传图片') {
+          this.uploadImages()
+        } else if (this.action === '新建专辑') {
+          this.createAlbum()
+        }
+      },
+      async uploadImages () {
         if (!this.form.size) {
           this.$toast.error('请先选择尺寸')
           return
@@ -227,7 +308,7 @@
         this.submitting = true
         try {
           const api = new ImageApi(this)
-          const image = this.form.images[0]['img']
+          const image = this.form.images[0]['url']
           await api.uploadImage({
             bangumiId: this.form.bangumiId || 0,
             roleId: this.form.roleId || 0,
@@ -253,6 +334,8 @@
         } finally {
           this.submitting = false
         }
+      },
+      async createAlbum () {
       }
     },
     mounted () {

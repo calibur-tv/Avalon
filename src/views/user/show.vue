@@ -184,6 +184,10 @@
         margin-right: 50px;
       }
 
+      .el-radio-group {
+        margin-left: 10px;
+      }
+
       $video-item-width: 220px;
       $video-item-margin: 15px;
       $video-item-height: 70px;
@@ -561,7 +565,7 @@
           </ul>
         </el-tab-pane>
         <el-tab-pane label="帖子">
-          <el-radio-group v-model="postTab" @change="handlePostTabClick">
+          <el-radio-group v-model="postTab" @change="handlePostTabClick" size="mini">
             <el-radio-button label="发表"></el-radio-button>
             <el-radio-button label="回复"></el-radio-button>
             <el-radio-button label="喜欢"></el-radio-button>
