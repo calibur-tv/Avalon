@@ -84,6 +84,20 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="专辑">
+              <el-select v-model="form.albumId" filterable clearable placeholder="请选择专辑">
+                <el-option
+                  v-for="item in albums"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="原创">
           <el-switch v-model="form.creator"></el-switch>
         </el-form-item>
@@ -112,7 +126,7 @@
         </el-row>
         <el-row>
           <el-form-item label="番剧">
-            <el-select v-model="albumForm.bangumiId" filterable placeholder="请选择番剧">
+            <el-select v-model="albumForm.bangumiId" clearable filterable placeholder="请选择番剧">
               <el-option
                 v-for="item in bangumis"
                 :key="item.id"
@@ -152,6 +166,9 @@
     computed: {
       slug () {
         return this.$store.state.user.zone
+      },
+      albums () {
+        return this.$store.state.image.albums
       }
     },
     data () {
@@ -165,6 +182,7 @@
         roles: [],
         loadingUserBangumiFetch: false,
         loadingUploadTypeFetch: false,
+        loadingUserAlbumFetch: false,
         show: false,
         submitting: false,
         form: {
@@ -172,6 +190,7 @@
           size: '',
           tags: '',
           roleId: '',
+          albumId: '',
           creator: false,
           images: []
         },
@@ -212,6 +231,19 @@
           this.options = await api.getUploadType()
         } finally {
           this.loadingUploadTypeFetch = false
+        }
+      },
+      async getUserAlbum () {
+        if (this.loadingUserAlbumFetch) {
+          return
+        }
+        this.loadingUserAlbumFetch = true
+        try {
+          await this.$store.dispatch('image/userAlbum', {
+            ctx: this
+          })
+        } finally {
+          this.loadingUserAlbumFetch = false
         }
       },
       handleError (err, file) {
@@ -260,7 +292,14 @@
           return false
         }
 
-        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${this.bangumiId}/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+      },
+      handleFormSubmit () {
+        if (this.action === '上传图片') {
+          this.uploadImages()
+        } else if (this.action === '新建专辑') {
+          this.createAlbum()
+        }
       },
       async getUpToken () {
         try {
@@ -281,13 +320,6 @@
         })
         this.bangumiRoles[bangumiId] = data
         this.roles = data
-      },
-      handleFormSubmit () {
-        if (this.action === '上传图片') {
-          this.uploadImages()
-        } else if (this.action === '新建专辑') {
-          this.createAlbum()
-        }
       },
       async uploadImages () {
         if (!this.form.size) {
@@ -317,10 +349,12 @@
             url: image.key,
             width: image.width,
             height: image.height,
-            creator: this.form.creator
+            creator: this.form.creator,
+            albumId: this.form.albumId || 0
           })
           this.$toast.success('图片上传成功！')
           this.form = {
+            albumId: '',
             bangumiId: '',
             size: '',
             tags: '',
@@ -336,11 +370,19 @@
         }
       },
       async createAlbum () {
+        if (!this.albumForm.name) {
+          this.$toast.error('请填写专辑名称')
+          return
+        }
+        if (this.albumForm.name.length > 20) {
+          this.$toast.error('专题名称请缩减至20字以内')
+          return
+        }
         this.submitting = true
         const api = new ImageApi(this)
         const poster = this.albumForm.poster.length ? this.albumForm.poster[0].url : null
         try {
-          await api.createAlbum({
+          const data = await api.createAlbum({
             bangumiId: this.albumForm.bangumiId || 0,
             isCartoon: this.albumForm.isCartoon,
             name: this.albumForm.name,
@@ -348,6 +390,17 @@
             width: poster ? poster.width : 0,
             height: poster ? poster.height : 0
           })
+          this.$store.commit('image/CREATE_ALBUM', data)
+          this.$toast.success('专辑创建成功！')
+          this.action = '上传图片'
+          this.form.albumId = data.id
+          this.albumForm = {
+            name: '',
+            bangumiId: '',
+            poster: [],
+            isCartoon: false
+          }
+          this.$refs.albumUploader.clearFiles()
         } catch (e) {
           this.$toast.error(e)
         } finally {
@@ -359,6 +412,7 @@
       this.$channel.$on('open-upload-image-modal', () => {
         this.getUploadType()
         this.getUserBangumis()
+        this.getUserAlbum()
         this.getUpToken()
         this.show = true
       })
