@@ -112,7 +112,7 @@
         </el-row>
         <el-row>
           <el-form-item label="番剧">
-            <el-select v-model="albumForm.bangumi_id" filterable placeholder="请选择番剧">
+            <el-select v-model="albumForm.bangumiId" filterable placeholder="请选择番剧">
               <el-option
                 v-for="item in bangumis"
                 :key="item.id"
@@ -123,7 +123,7 @@
           </el-form-item>
         </el-row>
         <el-form-item label="漫画">
-          <el-switch v-model="albumForm.is_cartoon"></el-switch>
+          <el-switch v-model="albumForm.isCartoon"></el-switch>
         </el-form-item>
         <el-form-item label="封面">
           <el-upload
@@ -177,9 +177,9 @@
         },
         albumForm: {
           name: '',
-          bangumi_id: '',
+          bangumiId: '',
           poster: [],
-          is_cartoon: false
+          isCartoon: false
         },
         action: '上传图片'
       }
@@ -306,8 +306,8 @@
           return
         }
         this.submitting = true
+        const api = new ImageApi(this)
         try {
-          const api = new ImageApi(this)
           const image = this.form.images[0]['url']
           await api.uploadImage({
             bangumiId: this.form.bangumiId || 0,
@@ -336,6 +336,23 @@
         }
       },
       async createAlbum () {
+        this.submitting = true
+        const api = new ImageApi(this)
+        const poster = this.albumForm.poster.length ? this.albumForm.poster[0].url : null
+        try {
+          await api.createAlbum({
+            bangumiId: this.albumForm.bangumiId || 0,
+            isCartoon: this.albumForm.isCartoon,
+            name: this.albumForm.name,
+            url: poster ? poster.key : '',
+            width: poster ? poster.width : 0,
+            height: poster ? poster.height : 0
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.submitting = false
+        }
       }
     },
     mounted () {

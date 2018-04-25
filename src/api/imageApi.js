@@ -46,4 +46,8 @@ export default class extends BaseApi {
   trendingList ({ seenIds, take, sort, size, tags, bangumiId, creator }) {
     return this.http.post('image/trendingList', { seenIds, take, sort, size, tags, bangumiId, creator })
   }
+
+  createAlbum ({ bangumiId, isCartoon, name, url, width, height }) {
+    return this.http.post('image/createAlbum', { bangumiId, isCartoon, name, url, width, height })
+  }
 }
