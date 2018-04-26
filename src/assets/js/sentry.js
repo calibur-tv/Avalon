@@ -29,6 +29,7 @@ export default ({ url, version }) => {
         'value.hasOwnProperty is not a function',
         "Cannot read property 'currentURL' of null",
         'Unexpected end of JSON input',
+        "Cannot read property 'style' of undefined",
         "undefined is not an object (evaluating 'Window.prototype.setTimeout.call')",
         "null is not an object (evaluating 'conDoc.getElementsByTagName')",
         "null is not an object (evaluating 'v.src')",
