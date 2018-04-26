@@ -7,9 +7,7 @@ export default (params) => {
   const product = type || 'bind'
   api.getCaptcha().then((data) => {
     if (!window.initGeetest) {
-      const err = new Error()
-      err.message = '验证码加载失败，请刷新网页重试'
-      error && error(err)
+      error && error('验证码加载失败，请刷新网页重试')
       return
     }
     window.initGeetest({
