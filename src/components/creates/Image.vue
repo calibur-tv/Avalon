@@ -13,6 +13,7 @@
     header-text="上传图片"
     @submit="handleFormSubmit"
     class="create-image-modal"
+    :loading="submitting"
   >
     <el-radio-group v-model="action" size="mini">
       <el-radio-button label="上传图片"></el-radio-button>
@@ -338,6 +339,7 @@
           return
         }
         this.submitting = true
+        this.$toast.info('上传中...')
         const api = new ImageApi(this)
         try {
           const image = this.form.images[0]['url']
@@ -380,7 +382,7 @@
         }
         this.submitting = true
         const api = new ImageApi(this)
-        const poster = this.albumForm.poster.length ? this.albumForm.poster[0].url : null
+        const poster = this.albumForm.poster.length ? this.albumForm.poster[0]['url'] : null
         try {
           const data = await api.createAlbum({
             bangumiId: this.albumForm.bangumiId || 0,

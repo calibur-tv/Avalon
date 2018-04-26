@@ -63,6 +63,16 @@ export default {
     },
     CREATE_ALBUM (state, data) {
       state.albums.unshift(data)
+    },
+    EDIT_ALBUM (state, { id, data }) {
+      if (!state.albums.length) {
+        return
+      }
+      state.albums.forEach((item, index) => {
+        if (item.id === id) {
+          state.albums[index] = data
+        }
+      })
     }
   },
   actions: {

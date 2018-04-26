@@ -710,16 +710,10 @@
       computeOptions (image) {
         let result = []
         if (this.isMine(image.user_id)) {
-          if (image.image_count) {
-            result = [
-              '编辑'
-            ]
-          } else {
-            result = result.concat([
-              '删除',
-              '编辑'
-            ])
-          }
+          result = result.concat([
+            '删除',
+            '编辑'
+          ])
         } else {
           result = result.concat([
             '举报'
@@ -948,8 +942,9 @@
           return
         }
         this.submitting = true
+        this.$toast.info('修改中...')
+        const api = new Api(this)
         try {
-          const api = new Api(this)
           const id = this.form.id
           const data = await api.editImage({
             id,
@@ -1002,9 +997,10 @@
           return
         }
         this.submitting = false
+        this.$toast.info('修改中...')
         const api = new Api(this)
         const id = this.albumForm.id
-        const poster = this.albumForm.poster.length ? this.albumForm.poster : null
+        const poster = this.albumForm.poster.length ? this.albumForm.poster[0]['url'] : null
         try {
           const data = await api.editAlbum(Object.assign({
             id,
@@ -1016,6 +1012,7 @@
             height: poster.height
           } : {}))
           this.$store.commit('image/EDIT_ALBUM', { id, data })
+          this.$store.commit('image/EDIT_WATERFALL', { id, data })
           this.$toast.success('专辑编辑成功！')
           this.openEditAlbumModal = false
           this.$refs.uploader.clearFiles()
