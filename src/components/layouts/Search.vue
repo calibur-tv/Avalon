@@ -170,20 +170,30 @@
             list.pop()
           }
           this.list = list
-          localStorage.setItem(this.cacheKey, JSON.stringify(list))
+          try {
+            localStorage.setItem(this.cacheKey, JSON.stringify(list))
+          } catch (e) {}
         }, 0)
       },
       get () {
-        return JSON.parse(localStorage.getItem(this.cacheKey)) || []
+        try {
+          return JSON.parse(localStorage.getItem(this.cacheKey)) || []
+        } catch (e) {
+          return []
+        }
       },
       clear () {
-        localStorage.removeItem(this.cacheKey)
+        try {
+          localStorage.removeItem(this.cacheKey)
+        } catch (e) {}
       },
       del (q) {
         const list = this.get()
         const index = list.indexOf(q)
         list.splice(index, 1)
-        localStorage.setItem(this.cacheKey, JSON.stringify(list))
+        try {
+          localStorage.setItem(this.cacheKey, JSON.stringify(list))
+        } catch (e) {}
         this.list.splice(index, 1)
       }
     }
