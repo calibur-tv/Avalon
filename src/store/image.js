@@ -16,7 +16,8 @@ export default {
       bangumiId: -1,
       roleId: -1,
       creator: -1
-    }
+    },
+    albums: []
   }),
   mutations: {
     SET_WATERFALL (state, data) {
@@ -42,13 +43,10 @@ export default {
         }
       })
     },
-    EDIT_WATERFALL (state, data) {
+    EDIT_WATERFALL (state, { id, data }) {
       state.waterfall.data.forEach((image, index) => {
-        if (image.id === data.id) {
-          state.waterfall.data[index].role_id = data.role_id
-          state.waterfall.data[index].size = data.size
-          state.waterfall.data[index].tags = data.tags
-          state.waterfall.data[index].role = data.role
+        if (image.id === id) {
+          state.waterfall.data[index] = data
         }
       })
     },
@@ -57,6 +55,22 @@ export default {
         if (image.id === id) {
           state.waterfall.data[index].like_count += result ? 1 : -1
           state.waterfall.data[index].liked = result
+        }
+      })
+    },
+    SET_USER_IMAGE_ALBUMS (state, data) {
+      state.albums = data
+    },
+    CREATE_ALBUM (state, data) {
+      state.albums.unshift(data)
+    },
+    EDIT_ALBUM (state, { id, data }) {
+      if (!state.albums.length) {
+        return
+      }
+      state.albums.forEach((item, index) => {
+        if (item.id === id) {
+          state.albums[index] = data
         }
       })
     }
@@ -112,6 +126,11 @@ export default {
         sort
       })
       commit('SET_WATERFALL', data)
+    },
+    async userAlbum ({ commit }, { ctx }) {
+      const api = new UserApi(ctx)
+      const data = await api.getUserAlbums()
+      commit('SET_USER_IMAGE_ALBUMS', data)
     }
   },
   getters: {}

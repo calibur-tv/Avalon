@@ -114,30 +114,20 @@
 
         button {
           float: right;
-          font-size: 14px;
-          height: 30px;
-          padding: 0 15px;
           margin-left: 10px;
-          border-radius: 4px;
-          font-weight: 600;
         }
 
         .cancel {
           background-color: $color-white;
           color: $color-text-light;
+          height: 32px;
+          font-size: 12px;
+          border-radius: 3px;
+          padding: 0 15px;
 
           &:hover {
             background-color: $color-gray-normal;
             color: $color-text-normal;
-          }
-        }
-
-        .submit {
-          background-color: $color-blue-light;
-          color: $color-white;
-
-          &:hover {
-            background-color: $color-blue-normal;
           }
         }
       }
@@ -165,7 +155,7 @@
           </main>
           <footer v-if="footer">
             <slot name="footer">
-              <button class="submit" @click="handleSubmit" v-text="submitText"></button>
+              <el-button type="primary" size="small" :loading="loading" @click="handleSubmit" v-text="submitText"></el-button>
               <button class="cancel" @click="handleCancel" v-text="cancelText"></button>
             </slot>
           </footer>
@@ -194,6 +184,10 @@
       footer: {
         type: Boolean,
         default: true
+      },
+      loading: {
+        type: Boolean,
+        default: false
       },
       submitText: {
         type: String,

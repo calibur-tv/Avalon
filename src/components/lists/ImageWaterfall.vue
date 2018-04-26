@@ -25,25 +25,44 @@
       margin-left: 3px;
       margin-top: 3px;
 
-      .image-wrap {
+      .item-wrap {
         font-size: 0;
         position: relative;
-        cursor: zoom-in;
 
-        &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background-color: #fff;
-          opacity: 0;
+        &.album-wrap {
+          cursor: pointer;
+
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            opacity: .3;
+            background-color: transparent;
+            background-image: linear-gradient(transparent,rgba(0,0,0,.1) 20%,rgba(0,0,0,.2) 35%,rgba(0,0,0,.6) 65%,rgba(0,0,0,.9));
+          }
         }
 
-        &:hover {
+        &.image-wrap {
+          cursor: zoom-in;
+
           &:after {
-            opacity: 0.1;
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            opacity: 0;
+          }
+
+          &:hover {
+            &:after {
+              opacity: 0.1;
+            }
           }
         }
 
@@ -54,6 +73,26 @@
           top: 2px;
           z-index: 1;
           color: #ffcf00;
+        }
+
+        .album-info {
+          position: absolute;
+          left: 7px;
+          bottom: 4px;
+          z-index: 1;
+          color: #fff;
+          line-height: 20px;
+
+          i {
+            font-size: 20px;
+            vertical-align: middle;
+          }
+
+          .image-count {
+            margin-left: 5px;
+            font-size: 14px;
+            vertical-align: middle;
+          }
         }
 
         .v-select-wrap {
@@ -106,6 +145,13 @@
           padding: 10px 16px;
           height: 52px;
 
+          .name {
+            max-width: 140px;
+            margin-top: 8px;
+            display: block;
+            float: left;
+          }
+
           .tags {
             float: left;
 
@@ -149,6 +195,10 @@
           background-color: #fafafa;
           font-size: 12px;
           color: #999;
+
+          .margin-top {
+            margin-top: 8px;
+          }
         }
 
         .bangumi {
@@ -184,10 +234,6 @@
 
             a {
               display: block;
-            }
-
-            .margin-top {
-              margin-top: 8px;
             }
           }
 
@@ -296,9 +342,9 @@
           class="image-item"
         >
           <div class="image">
-            <div class="image-wrap" @click="$previewImages(`${item.width}-${item.height}|${item.url}`)">
+            <div class="item-wrap" :class="[ item.image_count ? 'album-wrap' : 'image-wrap' ]" @click="handleImageClick(item)">
               <i v-if="item.creator" class="creator iconfont icon-huangguan"></i>
-              <div class="menu" @click.stop.prevent>
+              <div v-if="computeOptions(item).length" class="menu" @click.stop.prevent>
                 <v-select
                   placeholder=""
                   :options="computeOptions(item)"
@@ -309,9 +355,20 @@
                 </v-select>
               </div>
               <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 200, mode: 2 })">
+              <div class="album-info" v-if="item.image_count">
+                <i class="el-icon-picture-outline"></i>
+                <span class="image-count" v-text="item.image_count"></span>
+              </div>
             </div>
             <div class="desc">
-              <div class="tags">
+              <a
+                class="name oneline"
+                href="javascript:;"
+                target="_blank"
+                v-text="item.name"
+                v-if="item.image_count"
+              ></a>
+              <div class="tags" v-else>
                 <button class="el-tag oneline" v-text="item.size.name"></button>
                 <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
               </div>
@@ -335,7 +392,7 @@
               <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
                 <img :src="$resize(item.bangumi.avatar, { width: 72 })">
               </a>
-              <div class="info">
+              <div class="info" :class="{ 'margin-top': !item.role_id }">
                 <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
                 <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
               </div>
@@ -344,8 +401,8 @@
               <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
-              <div class="info">
-                <a class="oneline" :class="{ 'margin-top': !item.role_id }" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
+              <div class="info" :class="{ 'margin-top': !item.role_id }">
+                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
                 <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
               </div>
             </div>
@@ -353,6 +410,15 @@
         </waterfall-slot>
       </waterfall>
     </no-ssr>
+    <el-button
+      :loading="loading"
+      v-if="!noMore"
+      class="load-more-btn"
+      @click="handleLoadMoreClick(false)"
+      type="info"
+      plain
+    >{{ loading ? '加载中' : '加载更多' }}</el-button>
+    <!--编辑图片弹窗-->
     <v-modal
       v-model="openEditModal"
       header-text="编辑图片"
@@ -433,14 +499,59 @@
         </el-row>
       </el-form>
     </v-modal>
-    <el-button
-      :loading="loading"
-      v-if="!noMore"
-      class="load-more-btn"
-      @click="handleLoadMoreClick(false)"
-      type="info"
-      plain
-    >{{ loading ? '加载中' : '加载更多' }}</el-button>
+    <!--编辑专辑弹窗-->
+    <v-modal
+      v-model="openEditAlbumModal"
+      header-text="编辑专辑"
+      @submit="handleAlbumEditDone"
+    >
+      <el-form
+        ref="form"
+        label-width="60px"
+      >
+        <el-row>
+          <el-col :span="16">
+            <el-form-item label="名称">
+              <el-input v-model="albumForm.name" placeholder="请填写专辑名称"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="番剧">
+              <el-select
+                v-model="albumForm.bangumiId"
+                filterable
+                clearable
+                placeholder="请选择番剧"
+              >
+                <el-option
+                  v-for="item in bangumis"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item label="封面">
+            <el-upload
+              action="https://upload.qiniup.com"
+              ref="uploader"
+              :data="uploadHeaders"
+              :on-error="handleError"
+              :before-upload="beforeUpload"
+              :on-remove="handleAlbumPosterRemove"
+              :on-success="handleAlbumUploadSuccess"
+            >
+              <el-button size="small" type="primary">点击更换</el-button>
+            </el-upload>
+          </el-form-item>
+        </el-row>
+      </el-form>
+    </v-modal>
   </div>
 </template>
 
@@ -455,14 +566,14 @@
       'waterfall': () => {
         if (typeof window === 'undefined') {
           // eslint-disable-next-line
-          return Promise.reject()
+          return null
         }
         return import('vue-waterfall/lib/waterfall')
       },
       'waterfall-slot': () => {
         if (typeof window === 'undefined') {
           // eslint-disable-next-line
-          return Promise.reject()
+          return null
         }
         return import('vue-waterfall/lib/waterfall-slot')
       }
@@ -535,7 +646,11 @@
     },
     data () {
       return {
+        uploadHeaders: {
+          token: ''
+        },
         openEditModal: false,
+        openEditAlbumModal: false,
         bangumiRoles: {},
         bangumis: [],
         roles: [],
@@ -573,7 +688,19 @@
             id: 0,
             name: '仅搬运'
           }
-        ]
+        ],
+        albumForm: {
+          id: 0,
+          name: '',
+          bangumiId: '',
+          url: '',
+          poster: []
+        },
+        originAlbumData: {
+          name: '',
+          bangumiId: '',
+          url: ''
+        }
       }
     },
     methods: {
@@ -634,18 +761,32 @@
         this.form.id = image.id
         const bangumiId = image.bangumi_id
         const roleId = image.role_id
+        this.getUserBangumis()
         if (bangumiId) {
-          this.getUserBangumis()
           this.origin.bangumiId = bangumiId
           this.form.bangumiId = bangumiId
+          this.getBangumiRoles(bangumiId)
         }
         if (roleId) {
           this.origin.roleId = roleId
           this.form.roleId = roleId
-          this.getBangumiRoles(bangumiId)
         }
         this.computeImageType(image)
         this.openEditModal = true
+      },
+      editAlbum (album) {
+        this.albumForm.id = album.id
+        this.albumForm.name = album.name
+        this.albumForm.url = album.url
+        this.originAlbumData.name = album.name
+        this.originAlbumData.url = album.url
+        if (album.bangumiId) {
+          this.albumForm.bangumiId = album.bangumiId
+          this.originAlbumData.bangumiId = album.bangumiId
+        }
+        this.getUpToken()
+        this.getUserBangumis()
+        this.openEditAlbumModal = true
       },
       reportImage (image) {
         this.$prompt('请输入举报原因', '提示', {
@@ -675,7 +816,11 @@
             })
           }).catch(() => {})
         } else if (option === '编辑') {
-          this.editImage(image)
+          if (image.image_count) {
+            this.editAlbum(image)
+          } else {
+            this.editImage(image)
+          }
         }
       },
       handleLikeBtnClick (e, image) {
@@ -700,6 +845,21 @@
           return
         }
         this.submitToggleLike(btn, image)
+      },
+      handleImageClick (image) {
+        if (image.image_count) {
+          this.$toast.info('暂未开放专辑')
+        } else {
+          this.$previewImages(`${image.width}-${image.height}|${image.url}`)
+        }
+      },
+      async getUpToken () {
+        try {
+          await this.$store.dispatch('getUpToken', this)
+          this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
+        } catch (e) {
+          this.$toast.error(e)
+        }
       },
       async submitToggleLike (btn, image) {
         btn.setAttribute('disabled', 'disabled')
@@ -782,10 +942,11 @@
           return
         }
         this.submitting = true
+        this.$toast.info('修改中...')
+        const api = new Api(this)
         try {
-          const api = new Api(this)
           const id = this.form.id
-          await api.editImage({
+          const data = await api.editImage({
             id,
             bangumiId: this.form.bangumiId || 0,
             roleId: this.form.roleId || 0,
@@ -793,47 +954,7 @@
             size: this.form.size
           })
           this.$toast.success('图片编辑成功！')
-          if (this.form.bangumiId !== this.origin.bangumiId) {
-            this.deleteImage({ userId: this.curUserId, id })
-          } else {
-            const tags = []
-            let size = {}
-            let role = null
-            this.options.size.forEach(item => {
-              if (item.id === this.form.size) {
-                size = {
-                  id: item.id,
-                  name: item.name
-                }
-              }
-            })
-            this.options.tags.forEach(item => {
-              if (item.id === this.form.tags) {
-                tags.push({
-                  id: item.id,
-                  name: item.name
-                })
-              }
-            })
-            if (this.form.roleId) {
-              this.bangumiRoles[this.form.bangumiId].forEach(item => {
-                if (item.id === this.form.roleId) {
-                  role = {
-                    id: item.id,
-                    name: item.name,
-                    avatar: item.avatar
-                  }
-                }
-              })
-            }
-            this.$store.commit('image/EDIT_WATERFALL', {
-              id,
-              tags,
-              size,
-              role_id: this.form.roleId,
-              role
-            })
-          }
+          this.$store.commit('image/EDIT_WATERFALL', { id, data })
           this.openEditModal = false
           this.form = {
             id: '',
@@ -847,6 +968,100 @@
         } finally {
           this.submitting = false
         }
+      },
+      async handleAlbumEditDone () {
+        if (!this.albumForm.name) {
+          this.$toast.error('请填写专辑名称')
+          return
+        }
+        if (this.albumForm.name.length > 20) {
+          this.$toast.error('专题名称请缩减至20字以内')
+          return
+        }
+        if (this.submitting) {
+          return
+        }
+        if (
+          this.albumForm.bangumiId === this.originAlbumData.bangumiId &&
+          this.albumForm.name === this.originAlbumData.name &&
+          this.albumForm.poster.length === 0
+        ) {
+          this.openEditAlbumModal = false
+          this.albumForm = {
+            id: 0,
+            name: '',
+            bangumiId: '',
+            url: '',
+            poster: []
+          }
+          return
+        }
+        this.submitting = false
+        this.$toast.info('修改中...')
+        const api = new Api(this)
+        const id = this.albumForm.id
+        const poster = this.albumForm.poster.length ? this.albumForm.poster[0]['url'] : null
+        try {
+          const data = await api.editAlbum(Object.assign({
+            id,
+            bangumiId: this.albumForm.bangumiId || 0,
+            name: this.albumForm.name
+          }, poster ? {
+            url: poster.key,
+            width: poster.width,
+            height: poster.height
+          } : {}))
+          this.$store.commit('image/EDIT_ALBUM', { id, data })
+          this.$store.commit('image/EDIT_WATERFALL', { id, data })
+          this.$toast.success('专辑编辑成功！')
+          this.openEditAlbumModal = false
+          this.$refs.uploader.clearFiles()
+          this.albumForm = {
+            id: 0,
+            name: '',
+            bangumiId: '',
+            url: '',
+            poster: []
+          }
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.submitting = false
+        }
+      },
+      handleError (err, file) {
+        console.log(err)
+        this.$toast.error(`图片：${file.name} 上传失败`)
+      },
+      beforeUpload (file) {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
+        const isLt5M = file.size / 1024 / 1024 < 5
+
+        if (!isFormat) {
+          this.$toast.error('图片只能是 JPG 或 PNG 格式!')
+          return false
+        }
+        if (!isLt5M) {
+          this.$toast.error('图片大小不能超过 5MB!')
+          return false
+        }
+
+        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+      },
+      handleAlbumPosterRemove () {
+        this.albumForm.poster = []
+      },
+      handleAlbumUploadSuccess (res, file) {
+        this.albumForm.poster = [
+          {
+            name: file.name,
+            url: res.data
+          }
+        ]
       }
     }
   }

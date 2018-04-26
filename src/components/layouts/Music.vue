@@ -449,7 +449,6 @@
           }
         ],
         open: false,
-        tipText: '',
         needInit: true,
         status: {
           playing: false,
