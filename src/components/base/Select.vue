@@ -315,10 +315,6 @@
         input: ''
       }
     },
-    created () {
-      this.setSelected(this.list, true)
-      this.hackOptionsEncode()
-    },
     methods: {
       decodeOption (option) {
         if (option.__isObj__) {
@@ -457,6 +453,8 @@
       }
     },
     mounted () {
+      this.setSelected(this.list, true)
+      this.hackOptionsEncode()
       document.body.addEventListener('click', (e) => {
         if (!this.show) {
           return
