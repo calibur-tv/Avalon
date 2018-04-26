@@ -503,7 +503,7 @@
                     this.signIn.captcha = false
                     this.$toast.error(err)
                     setTimeout(() => {
-                      captcha.reset()
+                      captcha && captcha.reset()
                     }, 500)
                   })
                 },
@@ -537,7 +537,7 @@
                     this.signUp.captcha = false
                     this.$toast.error(err)
                     setTimeout(() => {
-                      captcha.reset()
+                      captcha && captcha.reset()
                     }, 500)
                   })
                 },
@@ -578,7 +578,7 @@
                     this.resetPassword.captcha = false
                     this.$toast.error(err)
                     setTimeout(() => {
-                      captcha.reset()
+                      captcha && captcha.reset()
                     }, 500)
                   })
                 },
