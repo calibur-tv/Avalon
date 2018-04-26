@@ -663,6 +663,7 @@
       }
     },
     mounted () {
+      this.video = this.$refs.video
       if (!window.flvjs) {
         import('flv.js').then(module => {
           window.flvjs = module.default
@@ -672,7 +673,6 @@
       if (this.otherSrc || this.isGuest) {
         return
       }
-      this.video = this.$refs.video
       const self = this
       const video = self.$refs.video
       video.volume = self.value.voice / 100

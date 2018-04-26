@@ -2,10 +2,10 @@ import 'es6-promise/auto'
 import Vue from 'vue'
 import { createApp } from '~/app.js'
 import ProgressBar from '~/components/layouts/ProgressBar'
-import '~/utils/client'
 import Sentry from '~/assets/js/sentry'
 import { sentry, env } from 'env'
 import '~/assets/js/polyfill/blob'
+import '~/utils/client'
 
 const dev = env === 'development'
 const bar = new Vue(ProgressBar).$mount()
@@ -27,12 +27,6 @@ if (env === 'production') {
 
 window.M = window.M || Object.create(null)
 
-router.afterEach((to) => {
-  if (!dev) {
-    _hmt.push(['_trackPageview', to.fullPath]) // eslint-disable-line no-undef
-  }
-})
-
 router.onReady(() => {
   router.beforeResolve((to, from, next) => {
     const matched = router.getMatchedComponents(to)
@@ -49,6 +43,12 @@ router.onReady(() => {
       bar.finish()
       next()
     }).catch(next)
+  })
+
+  router.afterEach((to) => {
+    if (!dev) {
+      _hmt.push(['_trackPageview', to.fullPath]) // eslint-disable-line no-undef
+    }
   })
 
   app.$mount('#app')
