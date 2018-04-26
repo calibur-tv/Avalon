@@ -24,7 +24,9 @@ export default class {
       backdrop.classList.remove('show')
       document.body.style.overflowY = 'auto'
       setTimeout(() => {
-        backdrop.parentNode.removeChild(backdrop)
+        if (backdrop) {
+          backdrop.parentNode.removeChild(backdrop)
+        }
       }, 200)
     }
   }

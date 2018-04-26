@@ -331,7 +331,9 @@
     },
     mounted () {
       this.computeMaxWidth()
-      this.computePage()
+      this.$nextTick(() => {
+        this.computePage()
+      })
       window.addEventListener('resize', () => {
         this.computeMaxWidth()
         this.computePage()
