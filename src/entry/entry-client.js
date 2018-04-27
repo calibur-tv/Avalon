@@ -7,8 +7,10 @@ import { sentry, env } from 'env'
 import '~/assets/js/polyfill/blob'
 import '~/utils/client'
 
-const dev = env === 'development'
 const bar = new Vue(ProgressBar).$mount()
+
+const dev = env === 'development'
+const release = process.env.RELEASE || 'development'
 
 document.body.appendChild(bar.$el)
 
@@ -21,8 +23,13 @@ if (window.__INITIAL_STATE__) {
 if (env === 'production') {
   Sentry({
     url: sentry.url,
-    version: process.env.RELEASE
+    version: release
   })
+}
+
+if (!dev && typeof console !== 'undefined') {
+  console.log(`Release: ${release}`)
+  console.log(`Environment: ${env}`)
 }
 
 window.M = window.M || Object.create(null)

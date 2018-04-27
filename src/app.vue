@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { qiniu, script } from 'env'
+  import { qiniu, script, env } from 'env'
 
   export default {
     name: 'Entry',
@@ -30,9 +30,9 @@
         { rel: 'shortcut icon', type: 'image/x-icon', href: `${qiniu.host}/favicon.ico` }
       ],
       script: [
-        { innerHTML: script.baiduStat, type: 'text/javascript' },
-        { innerHTML: script.baiduPush, type: 'text/javascript' }
-      ],
+        env !== 'development' ? { innerHTML: script.baiduStat, type: 'text/javascript', async: true } : '',
+        env !== 'development' ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true } : '',
+      ].filter(_ => _),
       __dangerouslyDisableSanitizers: 'script'
     },
     mounted () {
