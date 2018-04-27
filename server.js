@@ -93,7 +93,7 @@ router.get('*', async ctx => {
   ctx.set('Transfer-Encoding', 'chunked')
   ctx.set('X-Content-Type-Options', 'nosniff')
   ctx.set('X-Frame-Options', 'DENY')
-  ctx.set('Cache-Control', 'max-age=0, private, must-revalidate')
+  ctx.set('Cache-Control', 'max-age=0, private')
 
   try {
     ctx.body = await renderer.renderToString(context)
