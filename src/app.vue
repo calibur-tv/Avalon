@@ -31,7 +31,7 @@
       ],
       script: [
         env !== 'development' ? { innerHTML: script.baiduStat, type: 'text/javascript', async: true } : '',
-        env !== 'development' ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true } : '',
+        env !== 'development' ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true } : ''
       ].filter(_ => _),
       __dangerouslyDisableSanitizers: 'script'
     },
