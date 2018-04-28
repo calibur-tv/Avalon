@@ -20,6 +20,20 @@ export default {
     albums: []
   }),
   mutations: {
+    RESET_WATERFALL (state) {
+      state.waterfall = {
+        data: [],
+        take: 12,
+        options: {},
+        noMore: false,
+        size: 0,
+        tags: 0,
+        page: 1,
+        bangumiId: -1,
+        roleId: -1,
+        creator: -1
+      }
+    },
     SET_WATERFALL (state, data) {
       state.waterfall.data = state.waterfall.data.concat(data.list)
       state.waterfall.options = data.type
@@ -76,10 +90,13 @@ export default {
     }
   },
   actions: {
-    async getBangumiImages ({ state, commit }, { id, ctx }) {
+    async getBangumiImages ({ state, commit }, { id, ctx, force }) {
       const waterfall = state.waterfall
-      if (waterfall.noMore) {
+      if (waterfall.noMore && !force) {
         return
+      }
+      if (force) {
+        commit('RESET_WATERFALL')
       }
       const api = new BangumiApi(ctx)
       const data = await api.images({
@@ -93,10 +110,13 @@ export default {
       })
       commit('SET_WATERFALL', data)
     },
-    async getUserImages ({ state, commit }, { zone, ctx }) {
+    async getUserImages ({ state, commit }, { zone, ctx, force }) {
       const waterfall = state.waterfall
-      if (waterfall.noMore) {
+      if (waterfall.noMore && !force) {
         return
+      }
+      if (force) {
+        commit('RESET_WATERFALL')
       }
       const api = new UserApi(ctx)
       const data = await api.images({
@@ -110,10 +130,13 @@ export default {
       })
       commit('SET_WATERFALL', data)
     },
-    async getTrendingImages ({ state, commit }, { sort, ctx }) {
+    async getTrendingImages ({ state, commit }, { sort, ctx, force }) {
       const waterfall = state.waterfall
-      if (waterfall.noMore) {
+      if (waterfall.noMore && !force) {
         return
+      }
+      if (force) {
+        commit('RESET_WATERFALL')
       }
       const api = new ImageApi(ctx)
       const data = await api.trendingList({
