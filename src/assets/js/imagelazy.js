@@ -20,7 +20,7 @@ export default {
     },
     scale: {
       type: [Number, String],
-      default: 2
+      default: 1.3
     },
     mode: {
       type: [Number, String],
@@ -60,19 +60,18 @@ export default {
   methods: {
     init () {
       this.$nextTick(() => {
-        const image = this.$el
-        if (this.$checkInView(image, (this.scale - 0))) {
-          this.loadResource(image)
+        if (this.$checkInView(this.$el, (this.scale - 0))) {
+          this.loadResource(this.$el)
         } else {
           const id = this.$eventManager.add(document, this.events, this.$utils.throttle(() => {
-            if (this.$checkInView(image, (this.scale - 0))) {
-              this.loadResource(image)
+            if (this.$checkInView(this.$el, (this.scale - 0))) {
+              this.loadResource(this.$el)
               this.$eventManager.del(id)
             }
-          }, 500))
+          }, 200))
           if (this.id) {
             this.$channel.$on(`image-load-${this.id}`, () => {
-              this.loadResource(image)
+              this.loadResource(this.$el)
               this.$eventManager.del(id)
               this.$channel.$off(`image-load-${this.id}`)
             })
