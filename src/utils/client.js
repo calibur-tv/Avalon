@@ -77,6 +77,9 @@ Vue.use({
     }())
 
     Vue.prototype.$checkInView = (dom, scale = 1) => {
+      if (Vue.prototype.$isServer || !(dom instanceof Element)) {
+        return false
+      }
       const rect = dom.getBoundingClientRect()
       return (rect.top < window.innerHeight * scale && rect.bottom > 0) && (rect.left < window.innerWidth * scale && rect.right > 0)
     }
