@@ -667,6 +667,9 @@
       }
     },
     mounted () {
+      if (this.otherSrc || this.isGuest) {
+        return
+      }
       if (window.flvjs) {
         this.loadResource()
       } else {
@@ -674,9 +677,6 @@
           window.flvjs = module.default
           this.loadResource()
         })
-      }
-      if (this.otherSrc || this.isGuest) {
-        return
       }
       const self = this
       const video = self.$refs.video
