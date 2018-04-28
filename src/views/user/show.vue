@@ -919,7 +919,8 @@
         try {
           await this.$store.dispatch('image/getUserImages', {
             zone: this.user.zone,
-            ctx: this
+            ctx: this,
+            force: isFirstRequest
           })
         } catch (e) {
           this.$toast.error(e)

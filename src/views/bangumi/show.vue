@@ -602,7 +602,7 @@
             <image-waterfall
               :loading="imagesState.loading"
               :role="roles.data"
-              @fetch="getImages"
+              @fetch="getImages(false)"
             ></image-waterfall>
             <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>
@@ -745,7 +745,7 @@
           }
         } else if (index === 3) {
           if (!this.imagesState.init) {
-            this.getImages()
+            this.getImages(true)
             if (!this.rolesState.init) {
               this.getRoles()
             }
@@ -802,7 +802,7 @@
           this.postState.loading = false
         }
       },
-      async getImages () {
+      async getImages (force) {
         if (this.imagesState.loading || this.images.noMore) {
           return
         }
@@ -811,7 +811,8 @@
         try {
           await this.$store.dispatch('image/getBangumiImages', {
             ctx: this,
-            id: this.id
+            id: this.id,
+            force
           })
         } catch (e) {
           this.$toast.error(e)

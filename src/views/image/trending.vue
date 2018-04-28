@@ -26,7 +26,8 @@
     async asyncData ({ store, route, ctx }) {
       await store.dispatch('image/getTrendingImages', {
         sort: route.params.sort,
-        ctx
+        ctx,
+        force: true
       })
     },
     components: {
