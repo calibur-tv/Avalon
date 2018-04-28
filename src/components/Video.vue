@@ -524,6 +524,9 @@
         }
       },
       handleSeek (val) {
+        if (!this.video) {
+          return
+        }
         this.video.currentTime = val
         if (!this.state.playing) {
           this.handlePlay()
@@ -643,6 +646,7 @@
         }
       },
       loadResource () {
+        this.video = this.$refs.video
         if (this.source.split('?')[0].split('.').pop().toLowerCase() === 'flv') {
           this.isFlv = true
           if (flvjs.isSupported()) {
@@ -663,8 +667,9 @@
       }
     },
     mounted () {
-      this.video = this.$refs.video
-      if (!window.flvjs) {
+      if (window.flvjs) {
+        this.loadResource()
+      } else {
         import('flv.js').then(module => {
           window.flvjs = module.default
           this.loadResource()

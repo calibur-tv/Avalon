@@ -3,7 +3,7 @@
     $meta-height: 30px;
     $meta-margin-bottom: 8px;
 
-    #metas {
+    #video-metas {
       margin-bottom: 20px;
       padding-right: 55px;
       overflow: hidden;
@@ -103,7 +103,7 @@
           第{{ video.part }}话&nbsp;{{ video.name }}
         </h1>
       </nav>
-      <div id="metas">
+      <div id="video-metas">
         <template v-if="season && showAll">
           <template v-for="(videos, idx) in list">
             <h6 class="season-title" v-text="season.name[idx]"></h6>
@@ -307,7 +307,7 @@
         this.maxWidth = 46 + maxlength * 8
       },
       computePage () {
-        this.take = Math.floor(document.getElementById('metas').offsetWidth / (this.maxWidth + 8)) * 2
+        this.take = Math.floor(document.getElementById('video-metas').offsetWidth / (this.maxWidth + 8)) * 2
         this.videos.forEach((meta) => {
           if (meta.id === this.id) {
             this.part = meta.part
