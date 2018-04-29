@@ -46,5 +46,9 @@ export default {
 
   imageTrending (sort) {
     return `/image/trending/${sort}`
+  },
+
+  imageAlbum (id) {
+    return `/image/album/${id}`
   }
 }

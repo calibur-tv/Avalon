@@ -54,4 +54,8 @@ export default class extends BaseApi {
   editAlbum (params) {
     return this.http.post('image/editAlbum', params)
   }
+
+  getAlbumData ({ id }) {
+    return this.http.get(`image/album/${id}/show`)
+  }
 }

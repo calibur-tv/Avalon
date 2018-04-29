@@ -76,6 +76,10 @@ export function createRouter () {
           {
             path: 'image/trending/:sort',
             component: () => import('~/views/image/trending')
+          },
+          {
+            path: 'image/album/:id(\\d+)',
+            component: () => import('~/views/image/album')
           }
         ]
       }
