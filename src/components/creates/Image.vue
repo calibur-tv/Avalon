@@ -107,11 +107,14 @@
             action="https://upload.qiniup.com"
             ref="uploader"
             :data="uploadHeaders"
-            :on-error="handleError"
+            :on-error="handleErrorImage"
             :on-remove="handleRemove"
             :on-success="handleSuccess"
-            :before-upload="beforeUpload"
+            :before-upload="beforeUploadImage"
             :file-list="form.images"
+            :on-exceed="handleExceed"
+            multiple
+            :limit="exceed"
           >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -139,6 +142,9 @@
         </el-row>
         <el-form-item label="漫画">
           <el-switch v-model="albumForm.isCartoon"></el-switch>
+        </el-form-item>
+        <el-form-item label="原创">
+          <el-switch v-model="albumForm.creator"></el-switch>
         </el-form-item>
         <el-form-item label="封面">
           <el-upload
@@ -199,9 +205,12 @@
           name: '',
           bangumiId: '',
           poster: [],
-          isCartoon: false
+          isCartoon: false,
+          creator: false
         },
-        action: '上传图片'
+        action: '上传图片',
+        exceed: 10,
+        pendingUpload: 0
       }
     },
     methods: {
@@ -247,9 +256,17 @@
           this.loadingUserAlbumFetch = false
         }
       },
+      handleErrorImage (err, file) {
+        console.log(err)
+        this.$toast.error(`图片：${file.name} 上传失败`)
+        this.pendingUpload--
+      },
       handleError (err, file) {
         console.log(err)
         this.$toast.error(`图片：${file.name} 上传失败`)
+      },
+      handleExceed () {
+        this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
       },
       handleRemove (file) {
         this.images.forEach((item, index) => {
@@ -259,11 +276,15 @@
         })
       },
       handleSuccess (res, file) {
-        this.form.images.push({
-          name: file.name,
-          id: file.uid,
-          url: res.data
+        this.form.images.forEach((item, index) => {
+          if (item.uid === file.uid) {
+            this.form.images[index] = Object.assign(item, {
+              id: file.uid,
+              url: res.data
+            })
+          }
         })
+        this.pendingUpload--
       },
       handleAlbumPosterRemove () {
         this.albumForm.poster = []
@@ -275,6 +296,27 @@
             url: res.data
           }
         ]
+      },
+      beforeUploadImage (file) {
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
+        const isLt5M = file.size / 1024 / 1024 < 5
+
+        if (!isFormat) {
+          this.$toast.error('图片只能是 JPG 或 PNG 格式!')
+          return false
+        }
+        if (!isLt5M) {
+          this.$toast.error('图片大小不能超过 5MB!')
+          return false
+        }
+        this.form.images.push(file)
+        this.pendingUpload++
+
+        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
       },
       beforeUpload (file) {
         if (!this.$store.state.login) {
@@ -335,6 +377,10 @@
           this.$toast.error('请先上传图片')
           return
         }
+        if (this.pendingUpload) {
+          this.$toast.error('等待图片上传完成')
+          return
+        }
         if (this.submitting) {
           return
         }
@@ -342,17 +388,14 @@
         this.$toast.info('上传中...')
         const api = new ImageApi(this)
         try {
-          const image = this.form.images[0]['url']
-          await api.uploadImage({
+          const data = await api.uploadImage({
             bangumiId: this.form.bangumiId || 0,
             roleId: this.form.roleId || 0,
             tags: this.form.tags,
             size: this.form.size,
-            url: image.key,
-            width: image.width,
-            height: image.height,
             creator: this.form.creator,
-            albumId: this.form.albumId || 0
+            albumId: this.form.albumId || 0,
+            images: this.form.images.map(_ => _.url)
           })
           this.$toast.success('图片上传成功！')
           this.form = {
@@ -365,6 +408,8 @@
             images: []
           }
           this.$refs.uploader.clearFiles()
+          this.$store.commit('image/CREATE_WATERFALL', data)
+          this.show = false
         } catch (e) {
           this.$toast.error(e)
         } finally {
@@ -390,7 +435,8 @@
             name: this.albumForm.name,
             url: poster ? poster.key : '',
             width: poster ? poster.width : 0,
-            height: poster ? poster.height : 0
+            height: poster ? poster.height : 0,
+            creator: this.albumForm.creator
           })
           this.$store.commit('image/CREATE_ALBUM', data)
           this.$toast.success('专辑创建成功！')
@@ -400,7 +446,8 @@
             name: '',
             bangumiId: '',
             poster: [],
-            isCartoon: false
+            isCartoon: false,
+            creator: false
           }
           this.$refs.albumUploader.clearFiles()
         } catch (e) {
