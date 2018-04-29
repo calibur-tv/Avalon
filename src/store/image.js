@@ -12,7 +12,6 @@ export default {
       noMore: false,
       size: 0,
       tags: 0,
-      page: 1,
       bangumiId: -1,
       roleId: -1,
       creator: -1
@@ -28,7 +27,6 @@ export default {
         noMore: false,
         size: 0,
         tags: 0,
-        page: 1,
         bangumiId: -1,
         roleId: -1,
         creator: -1
@@ -38,7 +36,12 @@ export default {
       state.waterfall.data = state.waterfall.data.concat(data.list)
       state.waterfall.options = data.type
       state.waterfall.noMore = data.list.length < state.waterfall.take
-      state.waterfall.page++
+    },
+    CREATE_WATERFALL (state, data) {
+      if (data[0]['album_id']) {
+        return
+      }
+      state.waterfall.data = data.concat(state.waterfall.data)
     },
     SET_WATERFALL_META (state, { size, tags, bangumiId, roleId, creator }) {
       state.waterfall.size = size
@@ -48,7 +51,6 @@ export default {
       state.waterfall.creator = creator
       state.waterfall.noMore = false
       state.waterfall.data = []
-      state.waterfall.page = 1
     },
     DELETE_WATERFALL (state, { id }) {
       state.waterfall.data.forEach((image, index) => {
@@ -121,7 +123,7 @@ export default {
       const api = new UserApi(ctx)
       const data = await api.images({
         zone,
-        page: waterfall.page,
+        seenIds: state.waterfall.data.length ? state.waterfall.data.map(item => item.id).join(',') : null,
         take: waterfall.take,
         size: waterfall.size,
         tags: waterfall.tags,

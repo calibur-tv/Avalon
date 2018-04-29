@@ -23,8 +23,8 @@ export default class extends BaseApi {
     return this.http.get('image/uploadType')
   }
 
-  uploadImage ({ url, width, height, bangumiId, roleId, tags, size, creator, albumId }) {
-    return this.http.post('image/upload', { url, width, height, bangumiId, roleId, tags, size, creator, albumId })
+  uploadImage ({ images, bangumiId, roleId, tags, size, creator, albumId }) {
+    return this.http.post('image/upload', { images, bangumiId, roleId, tags, size, creator, albumId })
   }
 
   deleteImage ({ id }) {
@@ -47,8 +47,8 @@ export default class extends BaseApi {
     return this.http.post('image/trendingList', { seenIds, take, sort, size, tags, bangumiId, creator })
   }
 
-  createAlbum ({ bangumiId, isCartoon, name, url, width, height }) {
-    return this.http.post('image/createAlbum', { bangumiId, isCartoon, name, url, width, height })
+  createAlbum ({ bangumiId, isCartoon, name, url, width, height, creator }) {
+    return this.http.post('image/createAlbum', { bangumiId, isCartoon, name, url, width, height, creator })
   }
 
   editAlbum (params) {
