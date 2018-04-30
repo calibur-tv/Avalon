@@ -180,7 +180,7 @@
     </div>
     <p class="content" :class="{ 'min-height': !item.images.length }" v-text="item.desc" v-if="bangumiPage"></p>
     <p class="content" :class="{ 'min-height': !item.images.length }" v-else>
-      <a :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>
+      <a target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>
       :
       {{ item.desc }}
     </p>
