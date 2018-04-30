@@ -79,6 +79,7 @@ export function createRouter () {
           },
           {
             path: 'image/album/:id(\\d+)',
+            name: 'image-album',
             component: () => import('~/views/image/album')
           }
         ]

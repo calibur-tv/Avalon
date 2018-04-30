@@ -395,7 +395,12 @@
     },
     computed: {
       theme () {
-        return ['homepage', 'bangumi-show', 'user-show'].indexOf(this.$route.name) !== -1
+        return [
+          'homepage',
+          'bangumi-show',
+          'user-show',
+          'image-album'
+        ].indexOf(this.$route.name) !== -1
           ? 'mask'
           : 'blur'
       },

@@ -53,7 +53,7 @@
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">
-      <el-tooltip placement="left" effect="dark" content="返回">
+      <el-tooltip placement="right" effect="dark" content="返回">
         <transition name="el-fade-in">
           <button v-show="showToTop" id="to-top-btn" class="iconfont icon-fanhuidingbu" @click="$scrollToY(0)"></button>
         </transition>
