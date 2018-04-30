@@ -11,6 +11,7 @@
       > main {
         overflow: auto;
         padding: 0;
+        height: 100%;
       }
 
       img {
@@ -27,6 +28,7 @@
 
     .el-carousel {
       background-color: #000;
+      max-height: 100%;
 
       .el-carousel__container {
         height: 100%;

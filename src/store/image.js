@@ -21,10 +21,18 @@ export default {
       user: {},
       bangumi: {},
       images: [],
-      liked: false
+      liked: false,
+      name: '',
+      poster: ''
     }
   }),
   mutations: {
+    FOLLOW_ALBUM_BANGUMI (state, { result }) {
+      if (!state.albumShow.bangumi) {
+        return
+      }
+      state.albumShow.bangumi.followed = result
+    },
     SET_ALBUM (state, data) {
       state.albumShow = data
     },

@@ -63,6 +63,9 @@ const mutations = {
     })
   },
   SET_FOLLOW (state, { followed, self }) {
+    if (!state.info) {
+      return
+    }
     state.info.followed = followed
     followed ? state.info.count_like++ : state.info.count_like--
     if (followed) {
@@ -159,6 +162,7 @@ const actions = {
         nickname: rootState.user.nickname
       }
     })
+    return followed
   },
   async getReleased ({ state, commit }, ctx) {
     if (state.released.length) {
