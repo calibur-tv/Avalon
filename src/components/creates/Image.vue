@@ -357,12 +357,17 @@
           this.roles = this.bangumiRoles[bangumiId]
           return
         }
-        const data = await this.$store.dispatch('bangumi/getRoles', {
-          ctx: this,
-          bangumiId: bangumiId
-        })
-        this.bangumiRoles[bangumiId] = data
-        this.roles = data
+        try {
+          const data = await this.$store.dispatch('bangumi/getRoles', {
+            ctx: this,
+            bangumiId: bangumiId
+          })
+          this.bangumiRoles[bangumiId] = data
+          this.roles = data
+          this.form.roleId = ''
+        } catch (e) {
+          this.$toast.error(e)
+        }
       },
       async uploadImages () {
         if (!this.form.size) {

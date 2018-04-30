@@ -16,9 +16,18 @@ export default {
       roleId: -1,
       creator: -1
     },
-    albums: []
+    albums: [],
+    albumShow: {
+      user: {},
+      bangumi: {},
+      images: [],
+      liked: false
+    }
   }),
   mutations: {
+    SET_ALBUM (state, data) {
+      state.albumShow = data
+    },
     RESET_WATERFALL (state) {
       state.waterfall = {
         data: [],

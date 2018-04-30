@@ -9,7 +9,7 @@
       background-color: #000;
 
       > main {
-        overflow: hidden;
+        overflow: auto;
         padding: 0;
       }
 
@@ -30,6 +30,10 @@
 
       .el-carousel__container {
         height: 100%;
+      }
+
+      .el-carousel__indicators {
+        display: none;
       }
     }
   }
@@ -53,12 +57,12 @@
       @change="handleCarouselChange"
     >
       <el-carousel-item
-        v-for="item in images"
-        :key="item"
+        v-for="(item, idx) in images"
+        :key="`${idx}-${item}`"
       >
         <v-img
           :src="computeImageSize(item)"
-          :id="`image-reader-${index}`"
+          :id="`image-reader-${idx}`"
         ></v-img>
       </el-carousel-item>
     </el-carousel>
@@ -161,8 +165,20 @@
         return this.$resize(item, { height: this.maxHeight, mode: 2 })
       },
       handleCarouselChange (index) {
-        this.$channel.$emit(`image-load-image-reader-${index + 1}`)
-        this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+        this.$nextTick(() => {
+          const maxIndex = this.images.length - 1
+          if (index === 0) {
+            this.$channel.$emit(`image-load-image-reader-1`)
+            this.$channel.$emit(`image-load-image-reader-${maxIndex}`)
+          } else if (index === maxIndex) {
+            this.$channel.$emit(`image-load-image-reader-0`)
+            this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+          } else {
+            this.$channel.$emit(`image-load-image-reader-${index + 1}`)
+            this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+          }
+          this.index = index
+        })
       }
     }
   }
