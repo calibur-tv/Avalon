@@ -29,10 +29,13 @@ export default {
     events: {
       type: Array,
       default: function () {
-        return ['scroll', 'resize']
+        return ['scroll']
       }
     },
-    id: {},
+    id: {
+      type: [Number, String],
+      default: 0
+    },
     aspect: {
       type: Number,
       default: 0

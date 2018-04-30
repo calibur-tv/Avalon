@@ -846,7 +846,7 @@
       },
       handleImageClick (image) {
         if (image.image_count) {
-          this.$toast.info('暂未开放专辑')
+          window.open(this.$alias.imageAlbum(image.id))
         } else {
           this.$previewImages(`${image.width}-${image.height}|${image.url}`)
         }
