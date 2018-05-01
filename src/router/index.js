@@ -75,6 +75,7 @@ export function createRouter () {
           },
           {
             path: 'image/trending/:sort',
+            name: 'image-trending',
             component: () => import('~/views/image/trending')
           },
           {

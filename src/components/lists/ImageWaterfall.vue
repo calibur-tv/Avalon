@@ -379,25 +379,27 @@
                 </button>
               </div>
             </div>
-            <div class="detail user clearfix" v-if="item.bangumi && item.user">
+            <div class="detail user clearfix" v-if="page === 'image-trending'">
               <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
               <div class="info">
-                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-                <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-              </div>
-            </div>
-            <div class="detail bangumi clearfix" v-else-if="item.bangumi">
-              <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-                <img :src="$resize(item.bangumi.avatar, { width: 72 })">
-              </a>
-              <div class="info" :class="{ 'margin-top': !item.role_id }">
+                <a class="oneline" :class="{ 'margin-top': !item.bangumi }" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
                 <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-                <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
               </div>
             </div>
-            <div class="detail user clearfix" v-else-if="item.user">
+            <template v-else-if="page === 'user-show'">
+              <div class="detail bangumi clearfix" v-if="item.bangumi_id">
+                <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                  <img :src="$resize(item.bangumi.avatar, { width: 72 })">
+                </a>
+                <div class="info" :class="{ 'margin-top': !item.role_id }">
+                  <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
+                  <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
+                </div>
+              </div>
+            </template>
+            <div class="detail user clearfix" v-else-if="page === 'bangumi-show'">
               <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
@@ -591,6 +593,9 @@
       }
     },
     computed: {
+      page () {
+        return this.$route.name
+      },
       waterfall () {
         return this.$store.state.image.waterfall
       },
@@ -720,7 +725,11 @@
         return result
       },
       computeBoxHeight (image) {
-        return this.computeImageHeight(image) + (image.bangumi || image.user ? 112 : 60)
+        return this.computeImageHeight(image) + (
+            this.page === 'user-show'
+              ? image.bangumi_id ? 112 : 52
+              : (image.bangumi || image.user ? 112 : 52)
+          )
       },
       computeImageHeight (image) {
         return parseInt(image.height / image.width * 200, 10)
