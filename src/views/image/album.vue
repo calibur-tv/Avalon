@@ -9,7 +9,6 @@
       overflow: hidden;
       z-index: 1;
       height: $banner-height;
-      box-shadow: inset 0 0 15px 0 rgba(0, 0, 0, 0.5);
 
       .img {
         position: absolute;
@@ -82,32 +81,46 @@
       padding: 30px 20px 0;
       margin-bottom: 20px;
     }
+
+    .images-wrap {
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      min-height: 260px;
+      position: relative;
+
+      .publish-time {
+        font-size: 14px;
+        color: #8590a6;
+      }
+
+      .like-panel {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 50px;
+      }
+
+      .bangumi-panel {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
   }
 </style>
 
 <template>
   <div id="image-album">
     <section id="banner">
-      <div class="img bg" :style="{ backgroundImage: `url(${$resize(album.poster, { width: 1920, mode: 0 })})` }"></div>
+      <div class="img bg" :style="{ backgroundImage: `url(${$resize(info.poster, { width: 1920, mode: 0 })})` }"></div>
       <div class="container">
         <div class="panel">
-          <h1 class="title">《{{ album.name }}》</h1>
+          <h1 class="title">《{{ info.name }}》</h1>
           <p class="author">
-            作者：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
+            UP：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
           </p>
         </div>
-        <!--
-        <el-button
-          type="danger"
-          round
-          plain
-          class="follow"
-          @click="toggleFollowBangumi"
-        >
-          <i class="iconfont icon-guanzhu"></i>
-          {{ bangumi.followed ? '已关注' : '关注' }}
-        </el-button>
-        -->
       </div>
       <v-share type="panel"></v-share>
     </section>
@@ -116,31 +129,75 @@
         <h1 class="breadcrumb">
           <a :href="$alias.index" target="_blank">主站</a>
           <a v-if="bangumi" :href="$alias.bangumi(bangumi.id)" target="_blank" v-text="bangumi.name"></a>
-          <a href="javascript:;">相簿</a>
-          {{ album.name }}
+          <a href="javascript:;">{{ info.is_cartoon ? '漫画' : '相簿' }}</a>
+          {{ info.name }}
         </h1>
       </nav>
       <div class="images-wrap">
-        <div
-          class="image-package"
+        <v-img
           v-for="(img, idx) in images"
           :key="img.id"
-          @click="$previewImages(previewImages, idx)"
-        >
-          <v-img
-            class="image"
-            :src="img.url"
-            width="500"
-            mode="2"
-            :aspect="$computeImageAspect(img.url)"
-          ></v-img>
+          class="image"
+          :src="img.url"
+          width="500"
+          mode="2"
+          :aspect="$computeImageAspect(img.url)"
+        ></v-img>
+      </div>
+      <div class="footer">
+        <div class="publish-time">
+          UP：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
+          &nbsp;·&nbsp;
+          <span v-if="info.updated_at === info.created_at">
+            发布于：<v-time v-model="info.created_at"></v-time>
+          </span>
+          <el-tooltip placement="top" effect="dark" :content="`发布于：${info.created_at}`" v-else>
+            <span>
+              编辑于：<v-time v-model="info.updated_at"></v-time>
+            </span>
+          </el-tooltip>
         </div>
+        <div class="like-panel">
+          <el-button
+            v-if="info.liked"
+            :type="info.is_creator ? 'warning' : 'danger'"
+            @click="handleAlbumLike"
+            round
+            plain
+            :loading="loadingFollowAlbum"
+          >
+            <i class="iconfont icon-guanzhu"></i>
+            {{ likeAlbumBtnText }}
+          </el-button>
+          <el-button
+            :type="info.is_creator ? 'warning' : 'danger'"
+            round
+            @click="handleAlbumLike"
+            :loading="loadingFollowAlbum"
+            v-else
+          >
+            <i class="iconfont icon-guanzhu"></i>
+            {{ likeAlbumBtnText }}
+          </el-button>
+        </div>
+        <v-bangumi-panel
+          class="bangumi-panel"
+          v-if="bangumi"
+          :id="bangumi.id"
+          :name="bangumi.name"
+          :avatar="bangumi.avatar"
+          :summary="bangumi.summary"
+          :followed="bangumi.followed"
+          @follow="handleFollowAction"
+        ></v-bangumi-panel>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import Api from '~/api/imageApi'
+
   export default {
     name: 'image-album',
     async asyncData ({ store, route, ctx }) {
@@ -150,8 +207,14 @@
       })
     },
     computed: {
+      id () {
+        return this.$route.params.id
+      },
       album () {
         return this.$store.state.image.albumShow
+      },
+      info () {
+        return this.album.info
       },
       images () {
         return this.album.images
@@ -164,44 +227,86 @@
       },
       bangumi () {
         return this.album.bangumi
+      },
+      likeAlbumBtnText () {
+        const text = this.info.is_creator
+          ? this.info.liked ? '已赞赏' : '赞赏'
+          : this.info.liked ? '已喜欢' : '喜欢'
+
+        return this.info.like_count ? `${text}(${this.info.like_count})` : text
+      },
+      isMine () {
+        return this.$store.state.login
+          ? this.user.id === this.$store.state.user.id
+          : false
       }
     },
     head () {
       return {
-        title: `${this.bangumi.name} - 相簿 - ${this.album.name}`,
+        title: `${this.bangumi.name} - 相簿 - ${this.info.name}`,
         meta: [
           { hid: 'description', name: 'description', content: this.bangumi.summary },
-          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，相簿，${this.album.name}，${this.user.nickname}` }
+          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，相簿，${this.info.name}，${this.user.nickname}` }
         ]
       }
     },
     data () {
       return {
-        loadingFollowBangumi: false
+        loadingFollowAlbum: false
       }
     },
     methods: {
-      async toggleFollowBangumi () {
+      handleFollowAction (result) {
+        this.$store.commit('image/FOLLOW_ALBUM_BANGUMI', { result })
+      },
+      async handleAlbumLike () {
         if (!this.$store.state.login) {
           this.$channel.$emit('sign-in')
           return
         }
-        if (this.loadingFollowBangumi) {
+        if (this.isMine) {
+          this.$toast.info('不能为自己的相簿点赞')
           return
         }
-        this.loadingFollowBangumi = true
+        if (this.loadingFollowAlbum) {
+          return
+        }
+        this.loadingFollowAlbum = true
+        if (this.info.is_creator && !this.info.liked) {
+          this.$confirm('原创相簿点赞需要金币, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.submitLikeRequest()
+          }).catch(() => {})
+          return
+        }
+        this.submitLikeRequest()
+      },
+      async submitLikeRequest () {
+        const api = new Api(this)
         try {
-          const result = await this.$store.dispatch('bangumi/follow', {
-            ctx: this,
-            id: this.bangumi.id
+          const result = await api.toggleLike({
+            id: this.id
           })
-          this.$store.commit('image/FOLLOW_ALBUM_BANGUMI', { result })
+          this.$store.commit('image/ALBUM_LIKE', { result })
+          this.$toast.success('操作成功')
         } catch (e) {
           this.$toast.error(e)
         } finally {
-          this.loadingFollowBangumi = false
+          this.loadingFollowAlbum = false
         }
       }
+    },
+    mounted () {
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.bangumi.id,
+          name: this.bangumi.name,
+          avatar: this.bangumi.avatar
+        })
+      })
     }
   }
 </script>

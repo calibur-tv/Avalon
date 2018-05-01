@@ -21,12 +21,14 @@ export default {
       user: {},
       bangumi: {},
       images: [],
-      liked: false,
-      name: '',
-      poster: ''
+      info: {}
     }
   }),
   mutations: {
+    ALBUM_LIKE (state, { result }) {
+      state.albumShow.info.liked = result
+      result ? state.albumShow.info.like_count++ : state.albumShow.info.like_count--
+    },
     FOLLOW_ALBUM_BANGUMI (state, { result }) {
       if (!state.albumShow.bangumi) {
         return

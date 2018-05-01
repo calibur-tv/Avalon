@@ -149,6 +149,7 @@
           :avatar="bangumi.avatar"
           :summary="bangumi.summary"
           :followed="bangumi.followed"
+          @follow="handleFollowAction"
         ></v-bangumi-panel>
         <v-share type="panel"></v-share>
         <el-button
@@ -327,6 +328,9 @@
           type: 4,
           desc: `【PC】-《${this.bangumi.name}》第${this.part}话 视频有错误，错误详情为：`
         })
+      },
+      handleFollowAction (result) {
+        this.$store.commit('video/FOLLOW_ALBUM_BANGUMI', { result })
       }
     },
     mounted () {
