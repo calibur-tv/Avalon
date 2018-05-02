@@ -130,7 +130,7 @@
         </el-row>
         <el-row>
           <el-form-item label="番剧">
-            <el-select v-model="albumForm.bangumiId" clearable filterable placeholder="请选择番剧">
+            <el-select v-model="albumForm.bangumiId" filterable placeholder="请选择番剧">
               <el-option
                 v-for="item in bangumis"
                 :key="item.id"
@@ -382,6 +382,10 @@
           this.$toast.error('请先上传图片')
           return
         }
+        if (!this.form.bangumiId) {
+          this.$toast.error('请选择要投稿的番剧')
+          return
+        }
         if (this.pendingUpload) {
           this.$toast.error('等待图片上传完成')
           return
@@ -428,6 +432,10 @@
         }
         if (this.albumForm.name.length > 20) {
           this.$toast.error('专题名称请缩减至20字以内')
+          return
+        }
+        if (!this.albumForm.bangumiId) {
+          this.$toast.error('请选择要投稿的番剧')
           return
         }
         this.submitting = true

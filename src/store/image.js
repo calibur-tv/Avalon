@@ -25,6 +25,18 @@ export default {
     }
   }),
   mutations: {
+    DELETE_ALBUM_IMAGE (state, { index }) {
+      let idsArr = state.albumShow.info.images.split(',')
+      idsArr.splice(index, 1)
+      state.albumShow.info.images = idsArr.join(',')
+      state.albumShow.images.splice(index, 1)
+    },
+    SORT_ALBUM_IMAGE (state, { prev, next, result }) {
+      const imagesArr = state.albumShow.images
+      imagesArr.splice(prev, 1, ...imagesArr.splice(next, 1, imagesArr[prev]))
+      state.albumShow.images = imagesArr
+      state.albumShow.info.images = result
+    },
     ALBUM_LIKE (state, { result }) {
       state.albumShow.info.liked = result
       result ? state.albumShow.info.like_count++ : state.albumShow.info.like_count--
@@ -180,6 +192,22 @@ export default {
       const api = new ImageApi(ctx)
       const data = await api.getAlbumData({ id })
       commit('SET_ALBUM', data)
+    },
+    async sortAlbumImage ({ state, commit }, { prev, next, ctx, id }) {
+      let idsArr = state.albumShow.info.images.split(',')
+      idsArr.splice(prev, 1, ...idsArr.splice(next, 1, idsArr[prev]))
+      idsArr = idsArr.join(',')
+      const api = new ImageApi(ctx)
+      await api.sortAlbum({ id, result: idsArr })
+      commit('SORT_ALBUM_IMAGE', { prev, next, result: idsArr })
+    },
+    async deleteAlbumImage ({ state, commit }, { index, ctx, id }) {
+      let idsArr = state.albumShow.info.images.split(',')
+      const imageId = idsArr.splice(index, 1)[0]
+      idsArr = idsArr.join(',')
+      const api = new ImageApi(ctx)
+      await api.deleteAlbumImage({ id, result: idsArr, imageId })
+      commit('DELETE_ALBUM_IMAGE', { index })
     }
   },
   getters: {}
