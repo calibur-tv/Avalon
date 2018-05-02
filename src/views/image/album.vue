@@ -162,6 +162,8 @@
           <h1 class="title">《{{ info.name }}》</h1>
           <p class="author">
             UP：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
+            &nbsp;·&nbsp;
+            共：{{ info.image_count }}张
           </p>
         </div>
       </div>
