@@ -598,7 +598,7 @@
               </v-modal>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="图片">
+          <el-tab-pane label="相册">
             <image-waterfall
               :loading="imagesState.loading"
               :role="roles.data"
