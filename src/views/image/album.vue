@@ -310,11 +310,12 @@
       }
     },
     head () {
+      const category = `${this.info.is_cartoon ? '漫画' : '相簿'}`
       return {
-        title: `${this.bangumi.name} - 相簿 - ${this.info.name}`,
+        title: `${this.info.name} - ${category}`,
         meta: [
           { hid: 'description', name: 'description', content: this.bangumi.summary },
-          { hid: 'keywords', name: 'keywords', content: `${this.bangumi.name}，相簿，${this.info.name}，${this.user.nickname}` }
+          { hid: 'keywords', name: 'keywords', content: `${this.info.name}，${this.bangumi.name}，${category}，${this.user.nickname}` }
         ]
       }
     },
