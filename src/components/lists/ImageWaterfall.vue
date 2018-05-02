@@ -253,7 +253,7 @@
 </style>
 
 <template>
-  <div id="image-waterfall">
+  <div id="image-waterfall" v-if="list.length">
     <div class="header">
       <span class="select-title">图片筛选</span>
       <el-select
@@ -468,7 +468,6 @@
               <el-select
                 v-model="form.bangumiId"
                 filterable
-                clearable
                 placeholder="请选择番剧"
                 @change="getBangumiRoles"
               >
@@ -524,7 +523,6 @@
               <el-select
                 v-model="albumForm.bangumiId"
                 filterable
-                clearable
                 placeholder="请选择番剧"
               >
                 <el-option
@@ -929,6 +927,10 @@
           this.$toast.error('请先选择类型')
           return
         }
+        if (!this.form.bangumiId) {
+          this.$toast.error('请选择要投稿的番剧')
+          return
+        }
         if (this.submitting) {
           return
         }
@@ -983,6 +985,10 @@
         }
         if (this.albumForm.name.length > 20) {
           this.$toast.error('专题名称请缩减至20字以内')
+          return
+        }
+        if (!this.albumForm.bangumiId) {
+          this.$toast.error('请选择要投稿的番剧')
           return
         }
         if (this.submitting) {

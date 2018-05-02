@@ -84,6 +84,49 @@
 
     .images-wrap {
       margin-bottom: 20px;
+
+      .image-package {
+        position: relative;
+
+        .sort-btn {
+          position: absolute;
+          right: 20px;
+          width: 50px;
+          height: 50px;
+          font-size: 30px;
+          text-align: center;
+          line-height: 50px;
+          background-color: rgba(0, 0, 0, .3);
+          color: #fff;
+          opacity: 0;
+          transition: .4s;
+          box-shadow: 0 0 1pc 1px rgba(255, 255, 255, 0.2);
+
+          &:hover {
+            background-color: rgba(0, 0, 0, .6);
+          }
+        }
+
+        .delete-btn {
+          left: 20px;
+          top: 20px;
+          right: auto;
+        }
+
+        .to-prev {
+          top: 20px;
+        }
+
+        .to-next {
+          bottom: 20px;
+        }
+
+        &:hover {
+          .sort-btn {
+            opacity: 1;
+          }
+        }
+      }
     }
 
     .footer {
@@ -134,15 +177,38 @@
         </h1>
       </nav>
       <div class="images-wrap">
-        <v-img
+        <div
+          class="image-package"
           v-for="(img, idx) in images"
           :key="img.id"
-          class="image"
-          :src="img.url"
-          width="500"
-          mode="2"
-          :aspect="$computeImageAspect(img.url)"
-        ></v-img>
+        >
+          <v-img
+            class="image"
+            width="500"
+            mode="2"
+            :src="img.url"
+            :aspect="$computeImageAspect(img.url)"
+          ></v-img>
+          <template v-if="isMine">
+            <el-tooltip placement="top" effect="dark" content="删除">
+              <button class="sort-btn delete-btn el-icon-close" @click="handleImageDelete(idx)"></button>
+            </el-tooltip>
+            <el-tooltip placement="right" effect="dark" content="上移">
+              <button
+                class="sort-btn to-prev el-icon-caret-top"
+                v-if="idx"
+                @click="handleSortBtnClick(idx, false)"
+              ></button>
+            </el-tooltip>
+            <el-tooltip placement="right" effect="dark" content="下移">
+              <button
+                class="sort-btn to-next el-icon-caret-bottom"
+                v-if="idx !== images.length - 1"
+                @click="handleSortBtnClick(idx, true)"
+              ></button>
+            </el-tooltip>
+          </template>
+        </div>
       </div>
       <div class="footer">
         <div class="publish-time">
@@ -252,7 +318,8 @@
     },
     data () {
       return {
-        loadingFollowAlbum: false
+        loadingFollowAlbum: false,
+        loadingEditImages: false
       }
     },
     methods: {
@@ -297,6 +364,50 @@
         } finally {
           this.loadingFollowAlbum = false
         }
+      },
+      async handleSortBtnClick (index, toNext) {
+        if (this.loadingEditImages) {
+          this.$toast.error('正在操作，请稍候...')
+          return
+        }
+        this.loadingEditImages = true
+        try {
+          await this.$store.dispatch('image/sortAlbumImage', {
+            prev: toNext ? index : index - 1,
+            next: toNext ? index + 1 : index,
+            ctx: this,
+            id: this.id
+          })
+          this.$toast.success('操作成功')
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loadingEditImages = false
+        }
+      },
+      handleImageDelete (index) {
+        if (this.loadingEditImages) {
+          this.$toast.error('正在操作，请稍候...')
+          return
+        }
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          this.loadingEditImages = true
+          try {
+            await this.$store.dispatch('image/deleteAlbumImage', {
+              index,
+              ctx: this,
+              id: this.id
+            })
+          } catch (e) {
+            this.$toast.error(e)
+          } finally {
+            this.loadingEditImages = false
+          }
+        }).catch((e) => {})
       }
     },
     mounted () {

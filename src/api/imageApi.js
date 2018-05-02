@@ -58,4 +58,12 @@ export default class extends BaseApi {
   getAlbumData ({ id }) {
     return this.http.get(`image/album/${id}/show`)
   }
+
+  sortAlbum ({ id, result }) {
+    return this.http.post(`image/album/${id}/sort`, { result })
+  }
+
+  deleteAlbumImage ({ id, result, imageId }) {
+    return this.http.post(`image/album/${id}/deleteImage`, { result, imageId })
+  }
 }

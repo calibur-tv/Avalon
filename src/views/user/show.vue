@@ -547,7 +547,7 @@
     <div class="container">
       <el-tabs tab-position="left" @tab-click="handleTabClick">
         <el-tab-pane label="番剧">
-          <ul class="bangumis">
+          <ul class="bangumis" v-if="bangumis.length">
             <li v-for="item in bangumis" :key="item.id">
               <a :href="$alias.bangumi(item.id)" target="_blank">
                 <figure>
@@ -563,6 +563,7 @@
               </a>
             </li>
           </ul>
+          <no-content v-else></no-content>
         </el-tab-pane>
         <el-tab-pane label="帖子">
           <el-radio-group v-model="postTab" @change="handlePostTabClick" size="mini">
