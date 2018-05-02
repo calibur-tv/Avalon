@@ -30,6 +30,7 @@ export default {
       idsArr.splice(index, 1)
       state.albumShow.info.images = idsArr.join(',')
       state.albumShow.images.splice(index, 1)
+      state.albumShow.info.image_count--
     },
     SORT_ALBUM_IMAGE (state, { prev, next, result }) {
       const imagesArr = state.albumShow.images
