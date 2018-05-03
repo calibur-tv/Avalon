@@ -50,5 +50,9 @@ export default {
 
   imageAlbum (id) {
     return `/image/album/${id}`
+  },
+
+  cartoonRole (id) {
+    return `/role/${id}`
   }
 }

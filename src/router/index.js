@@ -70,8 +70,12 @@ export function createRouter () {
             component: () => import('~/views/about/hello')
           },
           {
-            path: 'trending/role',
+            path: 'role/trending',
             component: () => import('~/views/role/trending')
+          },
+          {
+            path: 'role/:id(\\d+)',
+            component: () => import('~/views/role/show')
           },
           {
             path: 'image/trending/:sort',
