@@ -204,6 +204,10 @@
           }
         }
 
+        .no-one {
+          color: $color-text-normal;
+        }
+
         .followers-more-btn {
           width: 40px;
           height: 40px;
@@ -410,40 +414,43 @@
             </li>
           </ul>
         </div>
-        <div id="followers" v-if="followers.length">
-          <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
-          <ul>
-            <li class="follower" v-for="user in displayFollowers" :key="user.zone">
-              <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
+        <div id="followers">
+          <h2 class="subtitle">关注的人{{ info.count_like ? `（${info.count_like}）` : '' }}</h2>
+          <template v-if="info.count_like">
+            <ul>
+              <li class="follower" v-for="user in displayFollowers" :key="user.zone">
+                <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
+                  <a :href="$alias.user(user.zone)" target="_blank">
+                    <v-img
+                      :src="$resize(user.avatar, { width: 64, height: 64 })"
+                      :alt="user.zone"
+                    ></v-img>
+                  </a>
+                </el-tooltip>
+              </li>
+              <button
+                v-if="info.count_like > 7"
+                @click="openFollowersModal = true"
+                class="followers-more-btn el-icon-more"
+              ></button>
+            </ul>
+            <v-modal
+              v-model="openFollowersModal"
+              :header-text="`《${info.name}》的关注者们`"
+              :footer="false"
+              :scroll="fetchMoreFollowers"
+              class="bangumi-followers-modal"
+            >
+              <li v-for="user in followers" :key="user.id">
                 <a :href="$alias.user(user.zone)" target="_blank">
-                  <v-img
-                    :src="$resize(user.avatar, { width: 64, height: 64 })"
-                    :alt="user.zone"
-                  ></v-img>
+                  <img :src="$resize(user.avatar, { width: 120 })">
+                  <span v-text="user.nickname"></span>
+                  <v-time class="score" v-model="user.score"></v-time>
                 </a>
-              </el-tooltip>
-            </li>
-            <button
-              v-if="followers.length > 7"
-              @click="openFollowersModal = true"
-              class="followers-more-btn el-icon-more"
-            ></button>
-          </ul>
-          <v-modal
-            v-model="openFollowersModal"
-            :header-text="`《${info.name}》的关注者们`"
-            :footer="false"
-            :scroll="fetchMoreFollowers"
-            class="bangumi-followers-modal"
-          >
-            <li v-for="user in followers" :key="user.id">
-              <a :href="$alias.user(user.zone)" target="_blank">
-                <img :src="$resize(user.avatar, { width: 120 })">
-                <span v-text="user.nickname"></span>
-                <v-time class="score" v-model="user.score"></v-time>
-              </a>
-            </li>
-          </v-modal>
+              </li>
+            </v-modal>
+          </template>
+          <span class="no-one" v-else>还没有人关注</span>
         </div>
       </aside>
       <div class="col-main">
@@ -604,7 +611,6 @@
               :role="roles.data"
               @fetch="getImages(false)"
             ></image-waterfall>
-            <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -803,7 +809,10 @@
         }
       },
       async getImages (force) {
-        if (this.imagesState.loading || this.images.noMore) {
+        if (force && this.images.data.length) {
+          return
+        }
+        if (this.imagesState.loading) {
           return
         }
         this.imagesState.loading = true

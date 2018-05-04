@@ -34,12 +34,6 @@ const state = () => ({
   },
   self: {
     followBangumi: []
-  },
-  images: {
-    take: 12,
-    page: 0,
-    data: [],
-    noMore: false
   }
 })
 

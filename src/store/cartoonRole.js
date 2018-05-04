@@ -16,14 +16,19 @@ export default {
         data: [],
         noMore: false
       }
+    },
+    info: {
+      data: {},
+      bangumi: {},
+      fans: []
     }
   }),
   mutations: {
-    SET_DATA (state, data) {
-      state.list = data.list
-      state.info = data.info
-      state.bangumi = data.bangumi
-      state.season = data.season
+    FOLLOW_ROLE_BANGUMI (state, { result }) {
+      state.info.bangumi.followed = result
+    },
+    SET_ROLE_INFO (state, data) {
+      state.info = data
     },
     SET_TRENDING (state, data) {
       state.trending.data = state.trending.data.concat(data)
@@ -47,11 +52,6 @@ export default {
     }
   },
   actions: {
-    async getShow ({ commit }, { id, ctx }) {
-      const api = new Api(ctx)
-      const data = await api.getShow(id)
-      commit('SET_DATA', data)
-    },
     async getTrending ({ state, commit }) {
       if (state.trending.noMore) {
         return
@@ -78,6 +78,11 @@ export default {
         seenIds: reset ? null : length ? state.fans[sort].data.map(item => item.id).join(',') : null
       }))
       commit('SET_FANS_LIST', { data, reset, sort })
+    },
+    async getRoleInfo ({ commit }, { ctx, id }) {
+      const api = new Api(ctx)
+      const data = await api.show(id)
+      commit('SET_ROLE_INFO', data)
     }
   },
   getters: {}

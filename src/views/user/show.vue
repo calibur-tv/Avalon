@@ -676,10 +676,9 @@
             :loading="loadingUserImageFetch"
             :bangumi="bangumis"
             @fetch="getUserImages(false)"
-          ></image-waterfall>
-          <no-content v-if="images.noMore && !images.data.length">
+          >
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
-          </no-content>
+          </image-waterfall>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
@@ -910,7 +909,7 @@
         })
       },
       async getUserImages (isFirstRequest) {
-        if (isFirstRequest && this.$store.state.users.images.data.length) {
+        if (isFirstRequest && this.images.data.length) {
           return
         }
         if (this.loadingUserImageFetch) {

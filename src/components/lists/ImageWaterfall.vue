@@ -405,7 +405,9 @@
               </a>
               <div class="info" :class="{ 'margin-top': !item.role_id }">
                 <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-                <div v-if="item.role_id" class="oneline" v-text="item.role.name"></div>
+                <a v-if="item.role_id" :href="$alias.cartoonRole(item.role_id)" target="_blank">
+                  <div class="oneline" v-text="item.role.name"></div>
+                </a>
               </div>
             </div>
           </div>
@@ -553,6 +555,9 @@
       </el-form>
     </v-modal>
   </div>
+  <no-content v-else-if="noMore">
+    <slot></slot>
+  </no-content>
 </template>
 
 <script>

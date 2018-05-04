@@ -16,4 +16,14 @@ export default class extends BaseApi {
       params: { seenIds, minId, sort }
     })
   }
+
+  show (id) {
+    return this.http.get(`/cartoon_role/${id}/show`)
+  }
+
+  images ({ id, seenIds, take, size, tags, creator, sort }) {
+    return this.http.post(`/cartoon_role/${id}/images`, {
+      seenIds, take, size, tags, creator, sort
+    })
+  }
 }

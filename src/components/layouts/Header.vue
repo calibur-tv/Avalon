@@ -326,7 +326,7 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <router-link class="nav-link" to="/trending/role">偶像</router-link>
+        <router-link class="nav-link" to="/role/trending">偶像</router-link>
         <el-dropdown>
           <router-link class="nav-link el-dropdown-link" :to="$alias.imageTrending('new')">图片</router-link>
           <el-dropdown-menu slot="dropdown">

@@ -10,7 +10,6 @@
         </div>
         <image-waterfall
           :loading="loading"
-          :bangumi="[]"
           @fetch="getImages"
         ></image-waterfall>
       </div>
@@ -36,6 +35,11 @@
     data () {
       return {
         loading: false
+      }
+    },
+    computed: {
+      images () {
+        return this.$store.state.image.waterfall
       }
     },
     methods: {

@@ -147,11 +147,11 @@
             :key="item.id"
           >
             <div class="clearfix">
-              <a target="_blank" :href="$alias.bangumi(item.bangumi_id)" class="avatar">
+              <a target="_blank" :href="$alias.cartoonRole(item.id)" class="avatar">
                 <v-img :src="item.avatar" width="90" height="90"></v-img>
               </a>
               <div class="summary">
-                <a target="_blank" :href="$alias.bangumi(item.bangumi_id)" class="role">
+                <a target="_blank" :href="$alias.cartoonRole(item.id)" class="role">
                   <span class="name" v-text="item.name"></span>
                   <span class="intro">：{{ item.intro }}</span>
                 </a>
