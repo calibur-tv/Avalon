@@ -164,7 +164,7 @@
   export default {
     name: 'bangumi-news',
     head: {
-      title: '时间轴 - 番剧'
+      title: '新番放送 - 番剧'
     },
     async asyncData ({ store, ctx }) {
       await store.dispatch('bangumi/getReleased', ctx)

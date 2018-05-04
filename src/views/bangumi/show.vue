@@ -455,26 +455,6 @@
       </aside>
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
-          <el-tab-pane label="帖子">
-            <ul id="posts">
-              <post-show-item
-                v-for="item in posts.data"
-                :key="item.id"
-                :item="item"
-              ></post-show-item>
-            </ul>
-            <el-button
-              :loading="postState.loading"
-              v-if="!posts.noMore"
-              id="load-post-btn"
-              @click="getPosts"
-              type="info"
-              plain
-            >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
-            <no-content v-if="posts.noMore && !posts.total">
-              <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
-            </no-content>
-          </el-tab-pane>
           <el-tab-pane label="视频">
             <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
@@ -520,6 +500,26 @@
             </section>
             <no-content v-else-if="videos.fetched">
               <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
+            </no-content>
+          </el-tab-pane>
+          <el-tab-pane label="帖子">
+            <ul id="posts">
+              <post-show-item
+                v-for="item in posts.data"
+                :key="item.id"
+                :item="item"
+              ></post-show-item>
+            </ul>
+            <el-button
+              :loading="postState.loading"
+              v-if="!posts.noMore"
+              id="load-post-btn"
+              @click="getPosts"
+              type="info"
+              plain
+            >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
+            <no-content v-if="posts.noMore && !posts.total">
+              <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
             </no-content>
           </el-tab-pane>
           <el-tab-pane label="偶像">
@@ -628,7 +628,7 @@
       const id = route.params.id
       await Promise.all([
         store.dispatch('bangumi/getBangumi', { ctx, id }),
-        store.dispatch('bangumi/getPosts', { ctx, id })
+        store.dispatch('bangumi/getVideos', { ctx, id })
       ])
     },
     components: {
@@ -687,11 +687,11 @@
     },
     data () {
       return {
-        postState: {
+        videoState: {
           loading: false,
           init: true
         },
-        videoState: {
+        postState: {
           loading: false,
           init: false
         },
@@ -738,12 +738,12 @@
       handleTabClick (tab) {
         const index = parseInt(tab.index, 10)
         if (index === 0) {
-          if (!this.postState.init) {
-            this.getPosts()
-          }
-        } else if (index === 1) {
           if (!this.videoState.init) {
             this.getVideos()
+          }
+        } else if (index === 1) {
+          if (!this.postState.init) {
+            this.getPosts()
           }
         } else if (index === 2) {
           if (!this.rolesState.init) {
@@ -784,7 +784,10 @@
         this.videoState.init = true
 
         try {
-          await this.$store.dispatch('bangumi/getVideos', this.id)
+          await this.$store.dispatch('bangumi/getVideos', {
+            ctx: this,
+            id: this.id
+          })
         } catch (e) {
           this.$toast.error(e)
         } finally {

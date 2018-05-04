@@ -212,6 +212,9 @@
     async asyncData ({ store, ctx }) {
       await store.dispatch('bangumi/getTimeline', ctx)
     },
+    head: {
+      title: '时间轴 - 番剧'
+    },
     computed: {
       timeline () {
         return this.$store.state.bangumi.timeline.data

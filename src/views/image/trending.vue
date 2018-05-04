@@ -32,6 +32,9 @@
     components: {
       ImageWaterfall
     },
+    head: {
+      title: '相册'
+    },
     data () {
       return {
         loading: false

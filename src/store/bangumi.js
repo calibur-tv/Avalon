@@ -145,8 +145,8 @@ const actions = {
     const data = await api.show(id)
     commit('SET_BANGUMI', data)
   },
-  async getVideos ({ commit }, id) {
-    const api = new Api()
+  async getVideos ({ commit }, { id, ctx }) {
+    const api = new Api(ctx)
     const data = await api.videos(id)
     commit('SET_VIDEOS', data)
   },

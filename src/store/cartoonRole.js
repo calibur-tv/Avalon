@@ -19,8 +19,7 @@ export default {
     },
     info: {
       data: {},
-      bangumi: {},
-      fans: []
+      bangumi: {}
     }
   }),
   mutations: {
@@ -30,7 +29,7 @@ export default {
       } else {
         state.info.data.hasStar = 1
         state.info.data.fans_count++
-        state.info.fans.push(user)
+        state.fans.new.data.unshift(user)
       }
       state.info.data.star_count++
     },

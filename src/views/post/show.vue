@@ -272,7 +272,11 @@
     },
     head () {
       return {
-        title: `${this.post.title} - 帖子`
+        title: `${this.post.title} - 帖子`,
+        meta: [
+          { hid: 'description', name: 'description', content: this.truncate(this.post.content) },
+          { hid: 'keywords', name: 'keywords', content: `calibur,帖子,天下漫友是一家,${this.post.title},${this.bangumi.name}` }
+        ]
       }
     },
     computed: {
