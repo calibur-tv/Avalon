@@ -300,6 +300,15 @@
         })
       ])
     },
+    head () {
+      return {
+        title: `${this.role.name} - 角色`,
+        meta: [
+          { hid: 'description', name: 'description', content: this.role.intro },
+          { hid: 'keywords', name: 'keywords', content: `calibur,角色,天下漫友是一家,${this.role.alias}` }
+        ]
+      }
+    },
     components: {
       ImageWaterfall
     },

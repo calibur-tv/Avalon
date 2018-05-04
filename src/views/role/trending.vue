@@ -193,6 +193,9 @@
     async asyncData ({ store }) {
       await store.dispatch('cartoonRole/getTrending')
     },
+    head: {
+      title: '角色排行榜'
+    },
     computed: {
       list () {
         return this.$utils.orderBy(this.$store.state.cartoonRole.trending.data, 'star_count', 'desc')

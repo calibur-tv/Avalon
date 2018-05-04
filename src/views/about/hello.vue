@@ -110,6 +110,9 @@
 <script>
   export default {
     name: 'page-hello',
+    head: {
+      title: '欢迎'
+    },
     computed: {
       nickname () {
         return this.$store.state.login ? this.$store.state.user.nickname : ''
