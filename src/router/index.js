@@ -75,6 +75,7 @@ export function createRouter () {
           },
           {
             path: 'role/:id(\\d+)',
+            name: 'role-show',
             component: () => import('~/views/role/show')
           },
           {

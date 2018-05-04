@@ -20,11 +20,13 @@ export default {
     info: {
       data: {},
       bangumi: {},
-      images: [],
       fans: []
     }
   }),
   mutations: {
+    FOLLOW_ROLE_BANGUMI (state, { result }) {
+      state.info.bangumi.followed = result
+    },
     SET_ROLE_INFO (state, data) {
       state.info = data
     },
