@@ -24,6 +24,16 @@ export default {
     }
   }),
   mutations: {
+    ADD_ROLE_STATE (state, { hasStar, user }) {
+      if (hasStar) {
+        state.info.data.hasStar++
+      } else {
+        state.info.data.hasStar = 1
+        state.info.data.fans_count++
+        state.info.fans.push(user)
+      }
+      state.info.data.star_count++
+    },
     FOLLOW_ROLE_BANGUMI (state, { result }) {
       state.info.bangumi.followed = result
     },
@@ -83,6 +93,20 @@ export default {
       const api = new Api(ctx)
       const data = await api.show(id)
       commit('SET_ROLE_INFO', data)
+    },
+    async star ({ rootState, commit }, { bangumiId, roleId, ctx, hasStar }) {
+      const api = new Api(ctx)
+      await api.star({ bangumiId, roleId })
+      const self = rootState.user
+      commit('ADD_ROLE_STATE', {
+        hasStar,
+        user: {
+          id: self.id,
+          zone: self.zone,
+          avatar: self.avatar,
+          nickname: self.nickname
+        }
+      })
     }
   },
   getters: {}
