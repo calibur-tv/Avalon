@@ -1,5 +1,4 @@
 import { createApp } from '~/app.js'
-import log from 'log'
 
 export default ssrContext => {
   const { app, router, store } = createApp()
@@ -24,9 +23,6 @@ export default ssrContext => {
       } catch (e) {
         reject(e)
       }
-      log.debug('test', {
-        message: 'fuck'
-      })
       ssrContext.state = store.state
       ssrContext.meta = meta
       resolve(app)
