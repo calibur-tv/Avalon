@@ -523,6 +523,14 @@
         if (!this.signUp.captcha && this.showModal) {
           this.$validator.validateAll('sign-up').then((result) => {
             if (result) {
+              if (!(/^([\u4e00-\u9fa5]|[a-z0-9])+$/i.test(this.signUp.nickname))) {
+                this.$toast.error('昵称不符合要求')
+                return
+              }
+              if (!(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.signUp.access))) {
+                this.$toast.error('错误的手机号格式')
+                return
+              }
               this.signUp.captcha = true
               const ele = this.$refs.signUpCaptcha
               ele.innerHTML = ''
@@ -624,6 +632,14 @@
         }
         const nicknameIsOK = await this.$validator.validate('sign-up.nickname')
         if (nicknameIsOK) {
+          if (!(/^([\u4e00-\u9fa5]|[a-z0-9])+$/i.test(this.signUp.nickname))) {
+            this.$toast.error('昵称不符合要求')
+            return
+          }
+          if (!(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.signUp.access))) {
+            this.$toast.error('错误的手机号格式')
+            return
+          }
           const accessIsOK = await this.$validator.validate('sign-up.access')
           if (accessIsOK) {
             if (this.signUp.access !== this.signUp.tempAccess) {
