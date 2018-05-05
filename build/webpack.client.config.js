@@ -24,7 +24,7 @@ const config = merge(base, {
   resolve: {
     alias: {
       'create-api': resolve('../src/api/_create-api-client.js'),
-      'log': resolve('../log/client.js')
+      'log': resolve('../src/log/client.js')
     }
   },
   plugins: (function () {

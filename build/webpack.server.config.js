@@ -17,7 +17,7 @@ module.exports = merge(base, {
   resolve: {
     alias: {
       'create-api': resolve('../src/api/_create-api-server.js'),
-      'log': resolve('../log/server.js')
+      'log': resolve('../src/log/server.js')
     }
   },
   externals: nodeExternals({
