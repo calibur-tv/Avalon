@@ -1,5 +1,5 @@
 const bunyan = require('bunyan')
-const DEBUG = require('../.env').DEBUG || false
+const DEBUG = require('../../.env').DEBUG || false
 
 class Log {
   constructor () {
@@ -8,7 +8,7 @@ class Log {
       level: 'debug',
       streams: [{
         type: 'file',
-        path: `./debug.log`
+        path: `./log/debug.log`
       }]
     })
   }

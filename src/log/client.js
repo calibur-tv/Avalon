@@ -1,4 +1,4 @@
-const DEBUG = require('../.env').DEBUG || false
+const DEBUG = require('../../.env').DEBUG || false
 
 class Log {
   debug (name, data) {
