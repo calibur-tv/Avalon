@@ -354,7 +354,7 @@
                   <i class="iconfont icon-101" slot="tail"></i>
                 </v-select>
               </div>
-              <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 200, mode: 2 })">
+              <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 400, mode: 2 })">
               <div class="album-info" v-if="item.image_count">
                 <i class="el-icon-picture-outline"></i>
                 <span class="image-count" v-text="item.image_count"></span>
