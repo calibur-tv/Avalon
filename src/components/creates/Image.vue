@@ -17,7 +17,7 @@
   >
     <el-radio-group v-model="action" size="mini">
       <el-radio-button label="上传图片"></el-radio-button>
-      <el-radio-button label="新建专辑"></el-radio-button>
+      <el-radio-button label="新建相册"></el-radio-button>
     </el-radio-group>
     <el-form
       ref="form"
@@ -73,7 +73,7 @@
             <el-form-item label="角色">
               <el-select
                 v-model="form.roleId"
-                placeholder="请选择角色"
+                placeholder="请选择角色（可选）"
               >
                 <el-option
                   v-for="item in roles"
@@ -87,8 +87,8 @@
         </el-row>
         <el-row>
           <el-col :span="10">
-            <el-form-item label="专辑">
-              <el-select v-model="form.albumId" filterable clearable placeholder="请选择专辑">
+            <el-form-item label="相册">
+              <el-select v-model="form.albumId" filterable clearable placeholder="请选择相册（可选）">
                 <el-option
                   v-for="item in albums"
                   :key="item.id"
@@ -120,11 +120,11 @@
           </el-upload>
         </el-form-item>
       </template>
-      <template v-else-if="action === '新建专辑'">
+      <template v-else-if="action === '新建相册'">
         <el-row>
           <el-col :span="16">
             <el-form-item label="名称">
-              <el-input v-model="albumForm.name" placeholder="请填写专辑名称"></el-input>
+              <el-input v-model="albumForm.name" placeholder="请填写相册名称"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -269,9 +269,9 @@
         this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
       },
       handleRemove (file) {
-        this.images.forEach((item, index) => {
-          if (item.id === file.uid) {
-            this.images.splice(index, 1)
+        this.form.images.forEach((item, index) => {
+          if (item.uid === file.uid) {
+            this.form.images.splice(index, 1)
           }
         })
       },
@@ -279,8 +279,9 @@
         this.form.images.forEach((item, index) => {
           if (item.uid === file.uid) {
             this.form.images[index] = Object.assign(item, {
-              id: file.uid,
-              url: res.data
+              data: res.data,
+              status: 'success',
+              url: this.$resize(res.data.key, { width: 100 })
             })
           }
         })
@@ -293,7 +294,8 @@
         this.albumForm.poster = [
           {
             name: file.name,
-            url: res.data
+            data: res.data,
+            url: this.$resize(res.data.key, { width: 100 })
           }
         ]
       },
@@ -313,7 +315,14 @@
           this.$toast.error('图片大小不能超过 5MB!')
           return false
         }
-        this.form.images.push(file)
+        this.form.images.push({
+          name: file.name,
+          percentage: 0,
+          raw: file,
+          size: file.size,
+          status: 'uploading',
+          uid: file.uid
+        })
         this.pendingUpload++
 
         this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
@@ -340,7 +349,7 @@
       handleFormSubmit () {
         if (this.action === '上传图片') {
           this.uploadImages()
-        } else if (this.action === '新建专辑') {
+        } else if (this.action === '新建相册') {
           this.createAlbum()
         }
       },
@@ -404,7 +413,7 @@
             size: this.form.size,
             creator: this.form.creator,
             albumId: this.form.albumId || 0,
-            images: this.form.images.map(_ => _.url)
+            images: this.form.images.map(_ => _.data)
           })
           this.$toast.success('图片上传成功！')
           this.form = {
@@ -427,7 +436,7 @@
       },
       async createAlbum () {
         if (!this.albumForm.name) {
-          this.$toast.error('请填写专辑名称')
+          this.$toast.error('请填写相册名称')
           return
         }
         if (this.albumForm.name.length > 20) {
@@ -440,7 +449,7 @@
         }
         this.submitting = true
         const api = new ImageApi(this)
-        const poster = this.albumForm.poster.length ? this.albumForm.poster[0]['url'] : null
+        const poster = this.albumForm.poster.length ? this.albumForm.poster[0]['data'] : null
         try {
           const data = await api.createAlbum({
             bangumiId: this.albumForm.bangumiId || 0,
@@ -452,7 +461,7 @@
             creator: this.albumForm.creator
           })
           this.$store.commit('image/CREATE_ALBUM', data)
-          this.$toast.success('专辑创建成功！')
+          this.$toast.success('相册创建成功！')
           this.action = '上传图片'
           this.form.albumId = data.id
           this.albumForm = {
