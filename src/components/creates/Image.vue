@@ -157,7 +157,7 @@
             :before-upload="beforeUpload"
             :file-list="albumForm.poster"
           >
-            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button size="small" type="primary" :disalbed="submitting">点击上传</el-button>
           </el-upload>
         </el-form-item>
       </template>
@@ -269,6 +269,9 @@
         this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
       },
       handleRemove (file) {
+        if (this.submitting) {
+          return
+        }
         this.form.images.forEach((item, index) => {
           if (item.uid === file.uid) {
             this.form.images.splice(index, 1)
@@ -403,7 +406,10 @@
           return
         }
         this.submitting = true
-        this.$toast.info('上传中...')
+        const tips = this.$toast.info({
+          message: '上传中，请稍候...',
+          duration: 0
+        })
         const api = new ImageApi(this)
         try {
           const data = await api.uploadImage({
@@ -431,6 +437,7 @@
         } catch (e) {
           this.$toast.error(e)
         } finally {
+          tips.close()
           this.submitting = false
         }
       },
