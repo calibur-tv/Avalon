@@ -16,6 +16,21 @@ document.body.appendChild(bar.$el)
 
 const { app, router, store } = createApp()
 
+Vue.mixin({
+  beforeRouteUpdate (to, from, next) {
+    const { asyncData } = this.$options
+    if (asyncData) {
+      asyncData({
+        store: this.$store,
+        route: to,
+        ctx: store.state.login ? store.state.user.token : ''
+      }).then(next).catch(next)
+    } else {
+      next()
+    }
+  }
+})
+
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
@@ -37,11 +52,19 @@ window.M = window.M || Object.create(null)
 router.onReady(() => {
   router.beforeResolve(async (to, from, next) => {
     const matched = router.getMatchedComponents(to)
-    const asyncDataHooks = matched.map(c => c.asyncData).filter(_ => _)
+    const prevMatched = router.getMatchedComponents(from)
+    let diffed = false
+    const activated = matched.filter((c, i) => {
+      return diffed || (diffed = (prevMatched[i] !== c))
+    })
+    const asyncDataHooks = activated.map(c => c.asyncData).filter(_ => _)
+
     if (!asyncDataHooks.length) {
       return next()
     }
+
     bar.start()
+
     try {
       await Promise.all(asyncDataHooks.map(hook => hook({
         ctx: store.state.login ? store.state.user.token : '',
@@ -57,11 +80,11 @@ router.onReady(() => {
     }
   })
 
-  router.afterEach((to, from) => {
-    if (!dev && !(from.name === null && from.fullPath === '/')) {
-      _hmt.push(['_trackPageview', to.fullPath]) // eslint-disable-line no-undef
-    }
-  })
-
   app.$mount('#app')
+})
+
+router.afterEach((to, from) => {
+  if (!dev && !(from.name === null && from.fullPath === '/')) {
+    _hmt.push(['_trackPageview', to.fullPath]) // eslint-disable-line no-undef
+  }
 })
