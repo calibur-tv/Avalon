@@ -140,7 +140,7 @@
             </el-select>
           </el-form-item>
         </el-row>
-        <el-form-item label="漫画">
+        <el-form-item label="漫画" v-if="user.faker">
           <el-switch v-model="albumForm.isCartoon"></el-switch>
         </el-form-item>
         <el-form-item label="原创">
@@ -171,11 +171,14 @@
   export default {
     name: 'UploadImageModal',
     computed: {
-      slug () {
-        return this.$store.state.user.zone
-      },
       albums () {
         return this.$store.state.image.albums
+      },
+      user () {
+        return this.$store.state.user
+      },
+      slug () {
+        return this.user.zone
       }
     },
     data () {
