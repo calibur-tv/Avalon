@@ -863,7 +863,7 @@
           return
         }
         if (!this.$store.state.user.coin) {
-          this.$toast.warning('金币不足')
+          this.$toast.error('金币不足')
           return
         }
         try {

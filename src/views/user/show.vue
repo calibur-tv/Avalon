@@ -166,6 +166,7 @@
 
       .signature {
         margin: 30px 0 20px 0;
+        max-width: 600px;
       }
 
       .buttons {
@@ -741,7 +742,7 @@
                 </el-form-item>
                 <el-form-item label="签名" prop="signature">
                   <el-col :span="20">
-                    <el-input type="textarea" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
+                    <el-input type="textarea" :rows="5" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
                   </el-col>
                 </el-form-item>
                 <el-form-item>
@@ -764,7 +765,7 @@
 
   export default {
     async asyncData ({ route, store, ctx }) {
-      const zone = route.params.slug
+      const zone = route.params.zone
       const arr = [
         store.dispatch('users/getUser', {
           ctx, zone
@@ -776,7 +777,7 @@
       await Promise.all(arr)
     },
     head () {
-      if (!this.slug) {
+      if (!this.zone) {
         return
       }
       return {
@@ -792,12 +793,12 @@
       ImageWaterfall
     },
     computed: {
-      slug () {
-        return this.$route.params.slug
+      zone () {
+        return this.$route.params.zone
       },
       isMe () {
         return this.$store.state.login
-          ? this.slug === this.self.zone
+          ? this.zone === this.self.zone
           : false
       },
       self () {
@@ -806,10 +807,10 @@
       user () {
         return this.isMe
           ? this.self
-          : this.$store.state.users.list[this.slug]
+          : this.$store.state.users.list[this.zone]
       },
       bangumis () {
-        return this.$store.state.users.list[this.slug].bangumis
+        return this.$store.state.users.list[this.zone].bangumis
       },
       banner () {
         return this.bannerSelector.showBar
@@ -868,7 +869,7 @@
             { validator: validateNickname, trigger: 'blur' }
           ],
           signature: [
-            { max: 20, message: '请缩减至20字以内', trigger: 'blur' }
+            { max: 150, message: '请缩减至150字以内', trigger: 'blur' }
           ]
         },
         avatarCropper: {
@@ -919,7 +920,7 @@
         try {
           await this.$store.dispatch('users/getFollowBangumis', {
             ctx: this,
-            zone: this.slug
+            zone: this.zone
           })
         } finally {
           this.loadingUserBangumiFetch = false
@@ -959,7 +960,7 @@
           if (valid) {
             const birthday = this.settingForm.birthday ? new Date(this.settingForm.birthday).getTime() / 1000 : 0
             if (birthday && (Date.now() / 1000 - birthday < 315360000)) {
-              this.$toast.warning('小于10岁？不应该...')
+              this.$toast.error('小于10岁？不应该...')
               return
             }
             const api = new UserApi(this)
@@ -972,7 +973,6 @@
             api.settingProfile(data).then(() => {
               this.$toast.success('设置成功')
               this.$store.commit('SET_USER_INFO', Object.assign({}, this.self, data))
-              this.$store.commit('users/removeUser', this.slug)
             }).catch((err) => {
               this.$toast.error(err)
             })
@@ -984,7 +984,7 @@
       openAvatarModal (e) {
         const file = e.target.files[0]
         if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
-          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          this.$toast.error('仅支持 jpg / jpeg / png 格式的图片')
           return
         }
         const reader = new FileReader()
@@ -1031,7 +1031,7 @@
       selectBanner (e) {
         const file = e.target.files[0]
         if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
-          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          this.$toast.error('仅支持 jpg / jpeg / png 格式的图片')
           return
         }
         const reader = new FileReader()
