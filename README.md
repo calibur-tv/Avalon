@@ -8,6 +8,7 @@
 
 ### dir
 
+``` shell
 ├── build（webpack 打包文件）
 ├── src （所有的资源都在 src 目录下）
 │   ├── api （api文件夹）
@@ -42,3 +43,4 @@
 │   ├── app.js （init & export vue instance，不需要改动）
 │   ├── app.vue（vue instance entry，动态全局初始化<head>, etc...）
 ├── static（静态资源文件）
+```
