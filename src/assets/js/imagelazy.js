@@ -44,7 +44,7 @@ export default {
   render: function (createElement) {
     return createElement(this.tag, {
       'class': {
-        'image-lazy-mask': this.aspect
+        'image-lazy-init': this.aspect
       },
       style: this.aspect ? {
         paddingBottom: `${this.aspect * 100}%`
@@ -109,8 +109,13 @@ export default {
         if (this.aspect) {
           const id = this.$eventManager.add(this.$el, 'load', () => {
             this.$utils.setStyle(this.$el, 'padding-bottom', 0)
-            this.$el.classList.remove('image-lazy-mask')
             this.$eventManager.del(id)
+            if (this.aspect) {
+              this.$el.classList.add('image-lazy-active')
+              setTimeout(() => {
+                this.$el.classList.remove('image-lazy-init', 'image-lazy-active')
+              }, 300)
+            }
           })
         }
       } else {
