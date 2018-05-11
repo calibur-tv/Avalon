@@ -624,7 +624,7 @@
         })
       },
       showOAuth () {
-        this.$toast.warning('暂未开放第三方登录')
+        this.$toast.error('暂未开放第三方登录')
       },
       async handleRegisterAuthCode () {
         if (this.signUpStep === 3 || this.signUpStep === 1) {
@@ -656,13 +656,13 @@
                 })
               }
             } else {
-              this.$toast.warning(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+              this.$toast.error(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
             }
           } else {
-            this.$toast.warning(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+            this.$toast.error(`请填写正确的${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
           }
         } else {
-          this.$toast.warning('请先填写昵称')
+          this.$toast.error('请先填写昵称')
         }
       },
       getRegisterAuthCode (geetest) {
@@ -700,10 +700,10 @@
               })
             }
           } else {
-            this.$toast.warning(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
+            this.$toast.error(`请更换${this.signUp.method === 'email' ? '邮箱' : '手机'}`)
           }
         } else {
-          this.$toast.warning(`请填写正确的${this.resetPassword.method === 'email' ? '邮箱' : '手机'}`)
+          this.$toast.error(`请填写正确的${this.resetPassword.method === 'email' ? '邮箱' : '手机'}`)
         }
       },
       getResetAuthCode (geetest) {
@@ -718,7 +718,7 @@
         }).then(() => {
           this.resetPassword.tempAccess = ''
           this.resetStep = 3
-          this.$toast.warning(`${this.resetPassword.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
+          this.$toast.error(`${this.resetPassword.method === 'email' ? '邮件' : '短信'}已发送，请查收`)
         }).catch((err) => {
           this.resetStep = 5
           this.$toast.error(err)

@@ -616,7 +616,7 @@
           ? this.$store.state.user.id
           : -1
       },
-      slug () {
+      zone () {
         return this.$store.state.user.zone
       },
       selectionSize () {
@@ -902,7 +902,7 @@
         try {
           this.bangumis = await this.$store.dispatch('users/getFollowBangumis', {
             ctx: this,
-            zone: this.slug
+            zone: this.zone
           })
         } finally {
           this.loadingUserBangumiFetch = false
