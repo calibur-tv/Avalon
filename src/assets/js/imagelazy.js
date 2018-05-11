@@ -107,15 +107,12 @@ export default {
       if (this.tag.toLowerCase() === 'img') {
         image.setAttribute('src', src)
         if (this.aspect) {
-          const id = this.$eventManager.add(this.$el, 'load', () => {
-            this.$utils.setStyle(this.$el, 'padding-bottom', 0)
-            this.$eventManager.del(id)
-            if (this.aspect) {
-              this.$el.classList.add('image-lazy-active')
-              setTimeout(() => {
-                this.$el.classList.remove('image-lazy-init', 'image-lazy-active')
-              }, 300)
-            }
+          image.addEventListener('load', () => {
+            image.removeAttribute('style')
+            image.classList.add('image-lazy-active')
+            setTimeout(() => {
+              image.classList.remove('image-lazy-init', 'image-lazy-active')
+            }, 300)
           })
         }
       } else {
