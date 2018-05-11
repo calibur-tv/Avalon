@@ -44,15 +44,18 @@ img {
   color: transparent;
   background-color: transparent;
   border: 0;
-  transition: filter, opacity .15s linear;
-  filter: blur(0);
-  opacity: 1;
   width: 100%;
 }
 
-img.image-lazy-mask {
+img.image-lazy-init {
   filter: blur(4px);
   opacity: 0.3;
+}
+
+img.image-lazy-active {
+  transition: filter, opacity .15s linear;
+  filter: blur(0);
+  opacity: 1;
 }
 
 button {
