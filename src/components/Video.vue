@@ -821,7 +821,9 @@
         let current = this.currentTime
         let timeArr = self.formatSeconds(current)
         self.value.playing = current
-        self.value.curTime = timeArr[1] + ':' + timeArr[2]
+        self.value.curTime = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
       })
 
       video.addEventListener('progress', function () {
