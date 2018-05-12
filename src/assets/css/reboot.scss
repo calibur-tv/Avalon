@@ -47,17 +47,6 @@ img {
   width: 100%;
 }
 
-img.image-lazy-init {
-  filter: blur(4px);
-  opacity: 0.3;
-}
-
-img.image-lazy-active {
-  transition: filter, opacity .15s linear;
-  filter: blur(0);
-  opacity: 1;
-}
-
 button {
   cursor: pointer;
   background-color: transparent;
