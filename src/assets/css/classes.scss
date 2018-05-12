@@ -201,7 +201,14 @@
   }
 }
 
-.image-lazy-mask {
+img.image-lazy-init {
+  filter: blur(4px);
+  opacity: 0.3;
   background-color: #eee;
-  height: 0 !important;
+}
+
+img.image-lazy-active {
+  transition: filter, opacity .15s linear;
+  filter: blur(0);
+  opacity: 1;
 }
