@@ -497,8 +497,8 @@
 
       .cartoon-role {
         li {
-          margin-bottom: 10px;
-          padding-bottom: 10px;
+          margin-bottom: 15px;
+          padding-bottom: 15px;
           border-bottom: 1px dotted #e4e6eb;
           max-width: 800px;
         }
@@ -514,13 +514,14 @@
           overflow: hidden;
 
           h4 {
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             line-height: 19px;
           }
 
           .intro {
             height: 38px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 13px;
             @include twoline(20px);
           }
 
@@ -530,6 +531,7 @@
             span {
               margin-right: 10px;
               margin-left: 10px;
+              font-size: 13px;
             }
           }
         }
