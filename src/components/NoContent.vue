@@ -30,6 +30,10 @@
     button {
       margin-top: 15px;
     }
+
+    a {
+      color: $color-blue-normal
+    }
   }
 </style>
 

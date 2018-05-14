@@ -54,5 +54,7 @@ export default {
 
   cartoonRole (id) {
     return `/role/${id}`
-  }
+  },
+
+  roleTrending: '/role/trending'
 }
