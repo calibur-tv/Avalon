@@ -495,7 +495,51 @@
         }
       }
 
-      .load-post-btn {
+      .cartoon-role {
+        li {
+          margin-bottom: 10px;
+          padding-bottom: 10px;
+          border-bottom: 1px dotted #e4e6eb;
+          max-width: 800px;
+        }
+
+        img {
+          width: 84px;
+          height: 84px;
+          margin-right: 10px;
+          float: left;
+        }
+
+        .text {
+          overflow: hidden;
+
+          h4 {
+            margin-bottom: 5px;
+            line-height: 19px;
+          }
+
+          .intro {
+            height: 38px;
+            margin-bottom: 5px;
+            @include twoline(20px);
+          }
+
+          .meta {
+            text-align: right;
+
+            span {
+              margin-right: 10px;
+              margin-left: 10px;
+            }
+          }
+        }
+
+        .load-more-btn {
+          width: 800px;
+        }
+      }
+
+      .load-more-btn {
         margin-top: 20px;
         width: 100%;
       }
@@ -632,7 +676,7 @@
             <el-button
               :loading="posts.loading"
               v-if="!posts.noMore"
-              class="load-post-btn"
+              class="load-more-btn"
               @click="getUserPosts(false)"
               type="info"
               plain
@@ -676,7 +720,7 @@
             <el-button
               :loading="posts.loading"
               v-if="!posts.noMore"
-              class="load-post-btn"
+              class="load-more-btn"
               @click="getUserPosts(false)"
               type="info"
               plain
@@ -697,6 +741,41 @@
             </ul>
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
+        </el-tab-pane>
+        <el-tab-pane label="偶像">
+          <div class="cartoon-role" v-if="roles.data.length">
+            <ul>
+              <li class="clearfix" v-for="item in roles.data">
+                <a :href="$alias.cartoonRole(item.id)" target="_blank">
+                  <img :src="$resize(item.avatar, { width: 168 })">
+                </a>
+                <div class="text">
+                  <a :href="$alias.cartoonRole(item.id)" target="_blank">
+                    <h4 v-text="item.name"></h4>
+                  </a>
+                  <p class="intro" v-text="item.intro"></p>
+                  <div class="meta">
+                    <span>粉丝: {{ item.fans_count }}</span>
+                    ·
+                    <span>金币: {{ item.star_count }}</span>
+                    ·
+                    <span>贡献: {{ item.has_star }}</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <el-button
+              :loading="loadingFetchUserRoles"
+              v-if="!roles.noMore"
+              class="load-more-btn"
+              @click="getUserRoles(false)"
+              type="info"
+              plain
+            >{{ loadingFetchUserRoles ? '加载中' : '加载更多' }}</el-button>
+          </div>
+          <no-content v-else-if="roles.noMore">
+            <a :href="$alias.roleTrending" v-if="isMe" target="_blank">查看角色列表</a>
+          </no-content>
         </el-tab-pane>
         <el-tab-pane label="图片">
           <image-waterfall
@@ -841,6 +920,9 @@
       },
       coinCount () {
         return this.self.coin
+      },
+      roles () {
+        return this.$store.state.users.roles
       }
     },
     data () {
@@ -887,7 +969,8 @@
         postTab: '发表',
         signDayLoading: false,
         loadingUserImageFetch: false,
-        loadingUserBangumiFetch: false
+        loadingUserBangumiFetch: false,
+        loadingFetchUserRoles: false
       }
     },
     methods: {
@@ -902,6 +985,8 @@
           }
         } else if (tab.label === '帖子') {
           this.getUserPosts(true)
+        } else if (tab.label === '偶像') {
+          this.getUserRoles(true)
         } else if (tab.label === '图片') {
           this.getUserImages(true)
         }
@@ -953,6 +1038,23 @@
           this.$toast.error(e)
         } finally {
           this.loadingUserImageFetch = false
+        }
+      },
+      async getUserRoles (isFirstRequest = false) {
+        if (this.loadingFetchUserRoles) {
+          return
+        }
+        this.loadingFetchUserRoles = true
+        try {
+          await this.$store.dispatch('users/getFollowRoles', {
+            ctx: this,
+            zone: this.user.zone,
+            reset: isFirstRequest
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loadingFetchUserRoles = false
         }
       },
       saveSetting () {
