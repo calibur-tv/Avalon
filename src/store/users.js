@@ -48,6 +48,7 @@ const mutations = {
     state.roles.zone = zone
     state.roles.data = state.roles.data.concat(data)
     state.roles.noMore = data.length < 15
+    state.roles.page++
   },
   SET_USER_INFO (state, { data, zone }) {
     state.list[zone] = state.list[zone]
