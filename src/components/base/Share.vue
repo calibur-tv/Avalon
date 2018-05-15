@@ -328,7 +328,14 @@
         return `${(this.desc || document.querySelector('meta[name=description]').content).substring(0, 100)}...`
       },
       shareImage () {
-        return this.image || (document.querySelector('.share-img') && document.querySelector('.share-img').src) || ''
+        if (this.image) {
+          return this.image
+        }
+        const images = document.querySelectorAll('.share-img')
+        if (!images.length) {
+          return ''
+        }
+        return images[images.length - 1]
       },
       shareSource () {
         return (document.querySelector('meta[name=site]') && document.querySelector('meta[name=site]').content) || document.title
