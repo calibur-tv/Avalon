@@ -1,5 +1,12 @@
+<style lang="scss">
+  #__share-logo {
+    display: none;
+  }
+</style>
+
 <template>
   <div id="app">
+    <img id="__share-logo" class="share-image" src="http://image.calibur.tv/owner/logo-new/logo.png?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/150" alt="logo">
     <router-view></router-view>
   </div>
 </template>
