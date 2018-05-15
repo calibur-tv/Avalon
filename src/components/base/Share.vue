@@ -325,7 +325,7 @@
         return `${this.title || document.title} - ${document.querySelector('meta[name=description]').content}`
       },
       shareDesc () {
-        return this.desc || document.querySelector('meta[name=description]').content
+        return `${(this.desc || document.querySelector('meta[name=description]').content).substring(0, 100)}...`
       },
       shareImage () {
         return this.image || (document.querySelector('.share-img') && document.querySelector('.share-img').src) || ''
