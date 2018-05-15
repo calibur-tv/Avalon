@@ -767,7 +767,7 @@
           this.$toast.error(err)
         })
       },
-      editImage (image) {
+      startEditImage (image) {
         this.form.id = image.id
         const bangumiId = image.bangumi_id
         const roleId = image.role_id
@@ -784,15 +784,16 @@
         this.computeImageType(image)
         this.openEditModal = true
       },
-      editAlbum (album) {
+      startEditAlbum (album) {
         this.albumForm.id = album.id
         this.albumForm.name = album.name
         this.albumForm.url = album.url
         this.originAlbumData.name = album.name
         this.originAlbumData.url = album.url
-        if (album.bangumiId) {
-          this.albumForm.bangumiId = album.bangumiId
-          this.originAlbumData.bangumiId = album.bangumiId
+        const bangumiId = album.bangumi_id
+        if (bangumiId) {
+          this.albumForm.bangumiId = bangumiId
+          this.originAlbumData.bangumiId = bangumiId
         }
         this.getUpToken()
         this.getUserBangumis()
@@ -827,9 +828,23 @@
           }).catch(() => {})
         } else if (option === '编辑') {
           if (image.image_count) {
-            this.editAlbum(image)
+            this.albumForm = {
+              id: 0,
+              name: '',
+              bangumiId: '',
+              url: '',
+              poster: []
+            }
+            this.startEditAlbum(image)
           } else {
-            this.editImage(image)
+            this.form = {
+              id: '',
+              bangumiId: '',
+              size: '',
+              tags: '',
+              roleId: ''
+            }
+            this.startEditImage(image)
           }
         }
       },
@@ -918,7 +933,7 @@
         }
         const data = await this.$store.dispatch('bangumi/getRoles', {
           ctx: this,
-          bangumiId: this.form.bangumiId
+          bangumiId
         })
         this.bangumiRoles[bangumiId] = data
         this.roles = data
@@ -946,13 +961,6 @@
           this.form.tags === this.origin.tags
         ) {
           this.openEditModal = false
-          this.form = {
-            id: '',
-            bangumiId: '',
-            size: '',
-            tags: '',
-            roleId: ''
-          }
           return
         }
         this.submitting = true
@@ -970,13 +978,6 @@
           this.$toast.success('图片编辑成功！')
           this.$store.commit('image/EDIT_WATERFALL', { id, data })
           this.openEditModal = false
-          this.form = {
-            id: '',
-            bangumiId: '',
-            size: '',
-            tags: '',
-            roleId: ''
-          }
         } catch (e) {
           this.$toast.error(e)
         } finally {
@@ -1005,13 +1006,6 @@
           this.albumForm.poster.length === 0
         ) {
           this.openEditAlbumModal = false
-          this.albumForm = {
-            id: 0,
-            name: '',
-            bangumiId: '',
-            url: '',
-            poster: []
-          }
           return
         }
         this.submitting = false
@@ -1034,13 +1028,6 @@
           this.$toast.success('专辑编辑成功！')
           this.openEditAlbumModal = false
           this.$refs.uploader.clearFiles()
-          this.albumForm = {
-            id: 0,
-            name: '',
-            bangumiId: '',
-            url: '',
-            poster: []
-          }
         } catch (e) {
           this.$toast.error(e)
         } finally {
