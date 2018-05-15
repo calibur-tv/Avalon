@@ -56,7 +56,7 @@
     <el-form-item label="内容" prop="content">
       <el-input
         type="textarea"
-        placeholder="500字以内"
+        placeholder="1000字以内"
         resize="none"
         :rows="10"
         v-model.trim="forms.content"
@@ -93,7 +93,7 @@
             { type: 'number', required: true, message: '请选择相应番剧', trigger: 'change' }
           ],
           content: [
-            { required: true, max: 500, message: '内容不能为空，且不超过500字', trigger: 'blur' }
+            { required: true, max: 1000, message: '内容不能为空，且不超过1000字', trigger: 'blur' }
           ]
         },
         uploadHeaders: {
@@ -256,14 +256,14 @@
           return
         }
         const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 3
 
         if (!isFormat) {
           this.$toast.error('图片只能是 JPG 或 PNG 格式!')
           return false
         }
         if (!isLt2M) {
-          this.$toast.error('图片大小不能超过 2MB!')
+          this.$toast.error('图片大小不能超过 3MB!')
           return false
         }
 
