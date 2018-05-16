@@ -147,7 +147,7 @@
             </slot>
           </header>
           <a v-if="close" class="close" @click="handleCancel">&times;</a>
-          <main @scroll="handleScroll">
+          <main @scroll="handleScroll($event)">
             <ul v-if="scroll" ref="ul">
               <slot></slot>
             </ul>
@@ -166,6 +166,7 @@
 </template>
 
 <script>
+  import { debounce } from 'lodash'
   export default {
     name: 'v-modal',
     props: {
@@ -228,15 +229,16 @@
         this.$emit('cancel')
         this.toggle = false
       },
-      handleScroll (evt) {
+      handleScroll: debounce(function (evt) {
+        console.log(evt)
         if (!this.scroll) {
           return
         }
-        const main = evt.currentTarget
+        const main = evt.currentTarget || evt.target
         if (this.$refs.ul.clientHeight - main.clientHeight - main.scrollTop < 30) {
           this.scroll()
         }
-      }
+      }, 500)
     }
   }
 </script>
