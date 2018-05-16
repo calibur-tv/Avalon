@@ -448,6 +448,17 @@
                   <v-time class="score" v-model="user.score"></v-time>
                 </a>
               </li>
+              <p class="text-center p-def">
+                <span v-if="loadingFollowers">
+                  正在排队...
+                </span>
+                <span v-else-if="noMoreFollowers">
+                  已经全部出列...
+                </span>
+                <span v-else class="text-center">
+                  <a class="cp" @click="fetchMoreFollowers">有请下一波关注者请出列</a>
+                </span>
+              </p>
             </v-modal>
           </template>
           <span class="no-one" v-else>还没有人关注</span>
@@ -895,6 +906,7 @@
         })
       },
       async fetchMoreFollowers () {
+        console.log(this.loadingFollowers, this.noMoreFollowers)
         if (this.loadingFollowers || this.noMoreFollowers) {
           return
         }
