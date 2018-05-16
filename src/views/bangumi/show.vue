@@ -161,9 +161,6 @@
       }
     }
 
-    #posts {
-    }
-
     #load-post-btn {
       margin-top: 20px;
       width: 100%;
@@ -472,7 +469,7 @@
                 <template v-for="season in videos.data">
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
-                    <li v-for="(video, index) in season.data" :key="video.id">
+                    <li v-for="video in season.data" :key="video.id">
                       <a :href="$alias.video(video.id)"
                          target="_blank">
                         <figure>
@@ -536,7 +533,7 @@
           <el-tab-pane label="偶像">
             <div id="roles">
               <ul>
-                <li class="role" v-for="item in roles.data">
+                <li class="role" v-for="item in roles.data" :key="item.id">
                   <div class="clearfix">
                     <div class="avatar">
                       <v-img :src="item.avatar" width="90" height="90"></v-img>
@@ -906,7 +903,6 @@
         })
       },
       async fetchMoreFollowers () {
-        console.log(this.loadingFollowers, this.noMoreFollowers)
         if (this.loadingFollowers || this.noMoreFollowers) {
           return
         }
