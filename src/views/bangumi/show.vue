@@ -455,7 +455,27 @@
       </aside>
       <div class="col-main">
         <el-tabs @tab-click="handleTabClick">
-          <el-tab-pane label="视频">
+          <el-tab-pane label="帖子">
+            <ul id="posts">
+              <post-show-item
+                v-for="item in posts.data"
+                :key="item.id"
+                :item="item"
+              ></post-show-item>
+            </ul>
+            <el-button
+              :loading="postState.loading"
+              v-if="!posts.noMore"
+              id="load-post-btn"
+              @click="getPosts"
+              type="info"
+              plain
+            >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
+            <no-content v-if="posts.noMore && !posts.total">
+              <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
+            </no-content>
+          </el-tab-pane>
+          <el-tab-pane v-if="info.has_video" label="视频">
             <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
                 <template v-for="season in videos.data">
@@ -502,25 +522,12 @@
               <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
             </no-content>
           </el-tab-pane>
-          <el-tab-pane label="帖子">
-            <ul id="posts">
-              <post-show-item
-                v-for="item in posts.data"
-                :key="item.id"
-                :item="item"
-              ></post-show-item>
-            </ul>
-            <el-button
-              :loading="postState.loading"
-              v-if="!posts.noMore"
-              id="load-post-btn"
-              @click="getPosts"
-              type="info"
-              plain
-            >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
-            <no-content v-if="posts.noMore && !posts.total">
-              <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
-            </no-content>
+          <el-tab-pane v-if="info.has_cartoon" label="漫画">
+            <image-waterfall
+              :loading="imagesState.loading"
+              :role="roles.data"
+              @fetch="getCartoons(false)"
+            ></image-waterfall>
           </el-tab-pane>
           <el-tab-pane label="偶像">
             <div id="roles">
@@ -628,7 +635,7 @@
       const id = route.params.id
       await Promise.all([
         store.dispatch('bangumi/getBangumi', { ctx, id }),
-        store.dispatch('bangumi/getVideos', { ctx, id })
+        store.dispatch('bangumi/getPosts', { ctx, id })
       ])
     },
     components: {
@@ -687,11 +694,15 @@
     },
     data () {
       return {
-        videoState: {
+        postState: {
           loading: false,
           init: true
         },
-        postState: {
+        videoState: {
+          loading: false,
+          init: false
+        },
+        cartoonState: {
           loading: false,
           init: false
         },
@@ -736,25 +747,25 @@
         }
       },
       handleTabClick (tab) {
-        const index = parseInt(tab.index, 10)
-        if (index === 0) {
-          if (!this.videoState.init) {
-            this.getVideos()
-          }
-        } else if (index === 1) {
+        const label = tab.label
+        if (label === '帖子') {
           if (!this.postState.init) {
             this.getPosts()
           }
-        } else if (index === 2) {
+        } else if (label === '漫画') {
+          this.getCartoons(true)
+        } else if (label === '视频') {
+          if (!this.videoState.init) {
+            this.getVideos()
+          }
+        } else if (label === '偶像') {
           if (!this.rolesState.init) {
             this.getRoles()
           }
-        } else if (index === 3) {
-          if (!this.imagesState.init) {
-            this.getImages(true)
-            if (!this.rolesState.init) {
-              this.getRoles()
-            }
+        } else if (label === '相册') {
+          this.getImages(true)
+          if (!this.rolesState.init) {
+            this.getRoles()
           }
         }
       },
@@ -811,10 +822,25 @@
           this.postState.loading = false
         }
       },
-      async getImages (force) {
-        if (force && this.images.data.length) {
+      async getCartoons (force) {
+        if (this.cartoonState.loading) {
           return
         }
+        this.cartoonState.loading = true
+
+        try {
+          await this.$store.dispatch('image/getCartoons', {
+            ctx: this,
+            id: this.id,
+            force
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.cartoonState.loading = false
+        }
+      },
+      async getImages (force) {
         if (this.imagesState.loading) {
           return
         }

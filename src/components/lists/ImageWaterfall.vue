@@ -254,7 +254,7 @@
 
 <template>
   <div id="image-waterfall" v-if="list.length">
-    <div class="header">
+    <div class="header" v-if="showSortHeader">
       <span class="select-title">图片筛选</span>
       <el-select
         v-model="selectedSizeId"
@@ -598,6 +598,9 @@
     computed: {
       page () {
         return this.$route.name
+      },
+      showSortHeader () {
+        return !Array.isArray(this.options)
       },
       waterfall () {
         return this.$store.state.image.waterfall
