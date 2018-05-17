@@ -63,7 +63,7 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit">确认</el-button>
+      <el-button type="primary" @click="submit" :loading="submitting">确认</el-button>
     </el-form-item>
   </el-form>
 </template>
