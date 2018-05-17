@@ -38,6 +38,25 @@
         display: none;
       }
     }
+
+    #download-btn {
+      position: absolute;
+      bottom: 15px;
+      width: 80px;
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.8;
+      padding: 10px 0;
+      left: 50%;
+      margin-left: -40px;
+      z-index: 100;
+      text-shadow: 0 1px 10px gray;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 </style>
 
@@ -68,6 +87,7 @@
         ></v-img>
       </el-carousel-item>
     </el-carousel>
+    <a id="download-btn" target="_blank" :href="imageHref" :download="imageName" @click.stop>下载原图</a>
   </v-modal>
 </template>
 
@@ -78,12 +98,21 @@
       return {
         images: [],
         index: 0,
+        curPage: 1,
         open: false,
         maxWidth: 0,
         maxHeight: 0,
         maxWidthHeightRate: 0,
         maxHeightWidthRate: 0,
         length: 0
+      }
+    },
+    computed: {
+      imageHref () {
+        return this.images.length ? this.images[this.curPage - 1].split('|').pop() : ''
+      },
+      imageName () {
+        return this.imageHref ? `calibur-tv-${Date.now()}.${this.imageHref.split('.').pop()}` : ''
       }
     },
     mounted () {
@@ -97,6 +126,7 @@
         }
         this.images = Array.isArray(images) ? images : [images]
         this.index = index || 0
+        this.curPage = this.index + 1
         this.length = this.images.length
         this.open = true
         setTimeout(() => {
@@ -179,7 +209,7 @@
             this.$channel.$emit(`image-load-image-reader-${index + 1}`)
             this.$channel.$emit(`image-load-image-reader-${index - 1}`)
           }
-          this.index = index
+          this.curPage = index + 1
         })
       }
     }
