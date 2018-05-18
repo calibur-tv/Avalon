@@ -21,21 +21,19 @@
     ref="forms"
     label-width="50px"
   >
-    <template v-if="!postId || !isReply">
-      <el-form-item label="标题" prop="title">
-        <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
-      </el-form-item>
-      <el-form-item label="番剧" prop="bangumiId">
-        <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
-          <el-option
-            v-for="item in optionBangumis"
-            :label="item.name"
-            :key="item.id"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-    </template>
+    <el-form-item label="标题" prop="title">
+      <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
+    </el-form-item>
+    <el-form-item label="番剧" prop="bangumiId">
+      <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
+        <el-option
+          v-for="item in optionBangumis"
+          :label="item.name"
+          :key="item.id"
+          :value="item.id"
+        ></el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="图片">
       <el-upload
         action="https://upload.qiniup.com"
@@ -71,12 +69,6 @@
 <script>
   export default {
     name: 'create-post-form',
-    props: {
-      isReply: {
-        type: Boolean,
-        default: false
-      }
-    },
     data () {
       return {
         forms: {
@@ -152,45 +144,25 @@
           if (valid) {
             this.$captcha({
               success: async ({ data }) => {
-                if (this.postId && this.isReply) {
-                  try {
-                    await this.$store.dispatch('post/reply', {
-                      postId: this.postId - 0,
-                      content: this.formatContent,
-                      images: this.formatImages,
-                      geetest: data,
-                      ctx: this
-                    })
-                    this.images = []
-                    this.$refs.forms.resetFields()
-                    this.$refs.uploader.clearFiles()
-                    this.$toast.success('回复成功！')
-                    this.submitting = false
-                  } catch (err) {
-                    this.$toast.error(err)
-                    this.submitting = false
-                  }
-                } else {
-                  try {
-                    const id = await this.$store.dispatch('post/create', {
-                      title: this.forms.title,
-                      bangumiId: this.forms.bangumiId,
-                      desc: this.forms.content.substring(0, 120),
-                      content: this.formatContent,
-                      images: this.formatImages,
-                      geetest: data,
-                      ctx: this
-                    })
-                    this.images = []
-                    this.$refs.forms.resetFields()
-                    this.$emit('submit')
-                    this.$toast.success('发布成功！')
-                    window.location = this.$alias.post(id)
-                    this.submitting = false
-                  } catch (err) {
-                    this.$toast.error(err)
-                    this.submitting = false
-                  }
+                try {
+                  const id = await this.$store.dispatch('post/create', {
+                    title: this.forms.title,
+                    bangumiId: this.forms.bangumiId,
+                    desc: this.forms.content.substring(0, 120),
+                    content: this.formatContent,
+                    images: this.formatImages,
+                    geetest: data,
+                    ctx: this
+                  })
+                  this.images = []
+                  this.$refs.forms.resetFields()
+                  this.$emit('submit')
+                  this.$toast.success('发布成功！')
+                  window.location = this.$alias.post(id)
+                  this.submitting = false
+                } catch (err) {
+                  this.$toast.error(err)
+                  this.submitting = false
                 }
               },
               error: (e) => {
@@ -289,12 +261,10 @@
       }
     },
     mounted () {
-      if (!this.postId || !this.isReply) {
-        this.getUserFollowedBangumis()
-        this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
-          this.saveBangumiAndSelected(data)
-        })
-      }
+      this.getUserFollowedBangumis()
+      this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
+        this.saveBangumiAndSelected(data)
+      })
       if (this.$store.state.login) {
         this.getUpToken()
       }

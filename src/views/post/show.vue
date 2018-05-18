@@ -243,7 +243,7 @@
             {{ loadingLoadMore ? '加载中' : '加载更多' }}
           </el-button>
           <div id="post-reply-form">
-            <post-create-form :is-reply="true"></post-create-form>
+            <post-reply></post-reply>
           </div>
         </el-col>
       </section>
@@ -252,7 +252,7 @@
 </template>
 
 <script>
-  import PostCreateForm from '~/components/creates/Post'
+  import PostReply from '~/components/creates/PostReply'
   import PostItem from '~/components/items/Post'
 
   export default {
@@ -268,7 +268,8 @@
       })
     },
     components: {
-      PostCreateForm, PostItem
+      PostReply,
+      PostItem
     },
     head () {
       return {
