@@ -19,7 +19,7 @@ export function createStore () {
     state: () => ({
       user: null,
       login: false,
-      banner: 'banner/1.jpg'
+      banner: 'banner/2.jpg'
     }),
     mutations: {
       SET_USER (state, user) {

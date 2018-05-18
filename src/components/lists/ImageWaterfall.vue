@@ -254,7 +254,7 @@
 
 <template>
   <div id="image-waterfall" v-if="list.length">
-    <div class="header">
+    <div class="header" v-if="showSortHeader">
       <span class="select-title">图片筛选</span>
       <el-select
         v-model="selectedSizeId"
@@ -342,7 +342,7 @@
           class="image-item"
         >
           <div class="image">
-            <div class="item-wrap" :class="[ item.image_count ? 'album-wrap' : 'image-wrap' ]" @click="handleImageClick(item)">
+            <div class="item-wrap" :class="[ item.image_count ? 'album-wrap' : 'image-wrap' ]" @click="handleImageClick(item, index)">
               <i v-if="item.creator" class="creator iconfont icon-huangguan"></i>
               <div v-if="computeOptions(item).length" class="menu" @click.stop.prevent>
                 <v-select
@@ -598,6 +598,9 @@
     computed: {
       page () {
         return this.$route.name
+      },
+      showSortHeader () {
+        return !Array.isArray(this.options)
       },
       waterfall () {
         return this.$store.state.image.waterfall
@@ -871,11 +874,15 @@
         }
         this.submitToggleLike(btn, image)
       },
-      handleImageClick (image) {
+      handleImageClick (image, index) {
         if (image.image_count) {
           window.open(this.$alias.imageAlbum(image.id))
         } else {
-          this.$previewImages(`${image.width}-${image.height}|${image.url}`)
+          const images = []
+          this.list.forEach(item => {
+            images.push(`${item.width}-${item.height}|${item.url}`)
+          })
+          this.$previewImages(images, index)
         }
       },
       async getUpToken () {

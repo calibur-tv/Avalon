@@ -125,10 +125,20 @@ export default {
     }
   },
   actions: {
-    async getBangumiImages ({ state, commit }, { id, ctx, force }) {
-      if (state.waterfall.noMore && !force) {
-        return
+    async getCartoons ({ state, commit }, { id, ctx, force }) {
+      if (force) {
+        commit('RESET_WATERFALL')
       }
+      const waterfall = state.waterfall
+      const api = new BangumiApi(ctx)
+      const data = await api.cartoon({
+        id,
+        take: waterfall.take,
+        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).join(',') : null
+      })
+      commit('SET_WATERFALL', data)
+    },
+    async getBangumiImages ({ state, commit }, { id, ctx, force }) {
       if (force) {
         commit('RESET_WATERFALL')
       }
