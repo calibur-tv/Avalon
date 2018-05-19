@@ -202,13 +202,12 @@
 }
 
 img.image-lazy-init {
-  filter: blur(4px);
   opacity: 0.3;
   background-color: #eee;
 }
 
 img.image-lazy-active {
-  transition: filter, opacity .15s linear;
-  filter: blur(0);
+  transition: background-color, opacity .15s linear;
   opacity: 1;
+  background-color: transparent;
 }
