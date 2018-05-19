@@ -106,6 +106,13 @@
         flex-grow: 1;
         overflow-x: hidden;
         overflow-y: auto;
+
+        .list-loading,
+        .list-no-more {
+          text-align: center;
+          font-size: 13px;
+          margin-top: 20px;
+        }
       }
 
       >footer {
@@ -148,9 +155,13 @@
           </header>
           <a v-if="close" class="close" @click="handleCancel">&times;</a>
           <main @scroll="handleScroll($event)">
-            <ul v-if="scroll" ref="ul">
-              <slot></slot>
-            </ul>
+            <template v-if="scroll">
+              <ul ref="ul">
+                <slot></slot>
+              </ul>
+              <p class="list-loading" v-if="loading">加载中...</p>
+              <p class="list-no-more" v-else-if="noMore">没有更多了</p>
+            </template>
             <slot v-else></slot>
           </main>
           <footer v-if="footer">
@@ -167,6 +178,7 @@
 
 <script>
   import { debounce } from 'lodash'
+
   export default {
     name: 'v-modal',
     props: {
@@ -187,6 +199,10 @@
         default: true
       },
       loading: {
+        type: Boolean,
+        default: false
+      },
+      noMore: {
         type: Boolean,
         default: false
       },
@@ -230,15 +246,18 @@
         this.toggle = false
       },
       handleScroll: debounce(function (evt) {
-        console.log(evt)
-        if (!this.scroll) {
+        if (!this.scroll || this.loading || this.noMore) {
+          return
+        }
+        const ul = this.$refs.ul
+        if (!ul) {
           return
         }
         const main = evt.currentTarget || evt.target
-        if (this.$refs.ul.clientHeight - main.clientHeight - main.scrollTop < 30) {
+        if (ul.clientHeight - main.clientHeight - main.scrollTop < 30) {
           this.scroll()
         }
-      }, 500)
+      }, 200)
     }
   }
 </script>

@@ -179,9 +179,9 @@
             line-height: 24px;
             border-radius: 16px 0 0 16px;
             color: $color-white;
-            @include input-placeholder();
             border: 1px solid transparent;
             border-right: 0;
+            @include input-placeholder();
 
             &:focus {
               width: 235px;

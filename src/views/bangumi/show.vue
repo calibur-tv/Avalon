@@ -167,7 +167,7 @@
     }
 
     .col-aside {
-      ul {
+      .tags-wrap {
         margin-bottom: 20px;
       }
 
@@ -405,7 +405,7 @@
       <aside class="col-aside">
         <div id="tags" v-if="tags.length">
           <h2 class="subtitle">标签</h2>
-          <ul>
+          <ul class="tags-wrap">
             <li class="tag" v-for="tag in tags" :key="tag.id">
               <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
             </li>
@@ -435,6 +435,8 @@
               v-model="openFollowersModal"
               :header-text="`《${info.name}》的关注者们`"
               :footer="false"
+              :loading="loadingFollowers"
+              :no-more="noMoreFollowers"
               :scroll="fetchMoreFollowers"
               class="bangumi-followers-modal"
             >
@@ -445,17 +447,6 @@
                   <v-time class="score" v-model="user.score"></v-time>
                 </a>
               </li>
-              <p class="text-center p-def">
-                <span v-if="loadingFollowers">
-                  正在排队...
-                </span>
-                <span v-else-if="noMoreFollowers">
-                  已经全部出列...
-                </span>
-                <span v-else class="text-center">
-                  <a class="cp" @click="fetchMoreFollowers">有请下一波关注者请出列</a>
-                </span>
-              </p>
             </v-modal>
           </template>
           <span class="no-one" v-else>还没有人关注</span>
@@ -604,6 +595,8 @@
                 v-model="openRolesModal"
                 :header-text="`${currentRole.name} · 应援团`"
                 :footer="false"
+                :loading="loadingRoleFans"
+                :no-more="currentRoleFans.noMore"
                 :scroll="fetchCurrentRoleFans"
               >
                 <li
