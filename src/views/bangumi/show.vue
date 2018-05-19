@@ -161,16 +161,13 @@
       }
     }
 
-    #posts {
-    }
-
     #load-post-btn {
       margin-top: 20px;
       width: 100%;
     }
 
     .col-aside {
-      ul {
+      .tags-wrap {
         margin-bottom: 20px;
       }
 
@@ -408,7 +405,7 @@
       <aside class="col-aside">
         <div id="tags" v-if="tags.length">
           <h2 class="subtitle">标签</h2>
-          <ul>
+          <ul class="tags-wrap">
             <li class="tag" v-for="tag in tags" :key="tag.id">
               <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
             </li>
@@ -438,6 +435,8 @@
               v-model="openFollowersModal"
               :header-text="`《${info.name}》的关注者们`"
               :footer="false"
+              :loading="loadingFollowers"
+              :no-more="noMoreFollowers"
               :scroll="fetchMoreFollowers"
               class="bangumi-followers-modal"
             >
@@ -481,7 +480,7 @@
                 <template v-for="season in videos.data">
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
-                    <li v-for="(video, index) in season.data" :key="video.id">
+                    <li v-for="video in season.data" :key="video.id">
                       <a :href="$alias.video(video.id)"
                          target="_blank">
                         <figure>
@@ -532,7 +531,7 @@
           <el-tab-pane label="偶像">
             <div id="roles">
               <ul>
-                <li class="role" v-for="item in roles.data">
+                <li class="role" v-for="item in roles.data" :key="item.id">
                   <div class="clearfix">
                     <div class="avatar">
                       <v-img :src="item.avatar" width="90" height="90"></v-img>
@@ -596,6 +595,8 @@
                 v-model="openRolesModal"
                 :header-text="`${currentRole.name} · 应援团`"
                 :footer="false"
+                :loading="loadingRoleFans"
+                :no-more="currentRoleFans.noMore"
                 :scroll="fetchCurrentRoleFans"
               >
                 <li

@@ -44,3 +44,14 @@
 │   ├── app.vue（vue instance entry，动态全局初始化<head>, etc...）
 ├── static（静态资源文件）
 ```
+### 代码风格
+如果你使用Visual Studio Code作为编辑器，那么你可以安装一些扩展来检查和纠正代码风格
+
+必装扩展：
+- [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+建议安装：
+- [Beautify css/sass/scss/less](https://marketplace.visualstudio.com/items?itemName=michelemelluso.code-beautifier)
+- [vscode-element-helper](https://marketplace.visualstudio.com/items?itemName=ElemeFE.vscode-element-helper)

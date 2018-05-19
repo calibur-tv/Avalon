@@ -2,7 +2,7 @@ import Api from '~/api/bangumiApi'
 import CartoonRoleApi from '~/api/cartoonRoleApi'
 
 const state = () => ({
-  follows: Object.create(null),
+  follows: null,
   released: [],
   timeline: {
     data: [],
