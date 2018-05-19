@@ -208,6 +208,81 @@ img.image-lazy-init {
 
 img.image-lazy-active {
   transition: background-color, opacity .15s linear;
-  opacity: 1;
   background-color: transparent;
+  opacity: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+.cp {
+  cursor: pointer;
+}
+
+/* Margin/Padding
+-------------------------- */
+$--margin-default: 16px;
+$--padding-default: 16px;
+.m- {
+  &def {
+      margin: $--margin-default;
+  }
+  &t {
+      margin-top: $--margin-default;
+      &-0 {
+          margin-top: 0;
+      }
+  }
+  &b {
+      margin-bottom: $--margin-default;
+      &-0 {
+          margin-bottom: 0;
+      }
+  }
+  &l {
+      margin-left: $--margin-default;
+      &-0 {
+          margin-left: 0;
+      }
+  }
+  &r {
+      margin-right: $--margin-default;
+      &-0 {
+          margin-right: 0;
+      }
+  }
+}
+
+.p- {
+  &def {
+      padding: $--padding-default;
+  }
+  &t {
+      padding-top: $--padding-default;
+      &-0 {
+          padding-top: 0;
+      }
+  }
+  &b {
+      padding-bottom: $--padding-default;
+      &-0 {
+          padding-bottom: 0;
+      }
+  }
+  &l {
+      padding-left: $--padding-default;
+      &-0 {
+          padding-left: 0;
+      }
+  }
+  &r {
+      padding-right: $--padding-default;
+      &-0 {
+          padding-right: 0;
+      }
+  }
 }

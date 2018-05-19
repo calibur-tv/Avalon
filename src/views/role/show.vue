@@ -263,6 +263,8 @@
         :footer="false"
         :header-text="`${role.name} · 应援团`"
         :scroll="fetchRoleFans"
+        :loading="loadingRoleFans"
+        :no-more="noMoreFans"
         class="role-fans-modal"
       >
         <li
@@ -341,6 +343,9 @@
         return this.focusRoleSort === 'new'
           ? this.fans.data
           : this.$store.state.cartoonRole.fans.hot.data
+      },
+      noMoreFans () {
+        return this.$store.state.cartoonRole.fans[this.focusRoleSort].noMore
       }
     },
     data () {
