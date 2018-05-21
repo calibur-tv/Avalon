@@ -1,6 +1,6 @@
 <style lang="scss">
   #image-album {
-    background-color: #f5f5f5;
+    background-color: #edecea;
     $banner-height: 350px;
 
     #banner {
@@ -71,7 +71,7 @@
 
     @media (min-width: 1050px) {
       .container {
-        width: 1080px;
+        width: 936px;
         margin-bottom: 100px;
       }
     }
