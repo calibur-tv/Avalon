@@ -22,8 +22,8 @@ export default class extends BaseApi {
   }
 
   images ({ id, seenIds, take, size, tags, creator, sort }) {
-    return this.http.post(`/cartoon_role/${id}/images`, {
-      seenIds, take, size, tags, creator, sort
+    return this.http.get(`/cartoon_role/${id}/images`, {
+      params: { seenIds, take, size, tags, creator, sort }
     })
   }
 }

@@ -6,7 +6,7 @@ export default class extends BaseApi {
   }
 
   getCaptcha () {
-    return this.http.post('image/captcha')
+    return this.http.get('image/captcha')
   }
 
   getUpToken () {
@@ -44,7 +44,9 @@ export default class extends BaseApi {
   }
 
   trendingList ({ seenIds, take, sort, size, tags, bangumiId, creator }) {
-    return this.http.post('image/trendingList', { seenIds, take, sort, size, tags, bangumiId, creator })
+    return this.http.get('image/trendingList', {
+      params: { seenIds, take, sort, size, tags, bangumiId, creator }
+    })
   }
 
   createAlbum ({ bangumiId, isCartoon, name, url, width, height, creator }) {

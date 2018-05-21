@@ -16,8 +16,8 @@ export default class extends BaseApi {
   }
 
   followers ({ bangumiId, seenIds, take }) {
-    return this.http.post(`bangumi/${bangumiId}/followers`, {
-      seenIds, take
+    return this.http.get(`bangumi/${bangumiId}/followers`, {
+      params: { seenIds, take }
     })
   }
 
@@ -26,15 +26,21 @@ export default class extends BaseApi {
   }
 
   posts ({ id, seenIds, take, type }) {
-    return this.http.post(`bangumi/${id}/posts`, { seenIds, take, type })
+    return this.http.get(`bangumi/${id}/posts`, {
+      params: { seenIds, take, type }
+    })
   }
 
   images ({ id, seenIds, take, size, tags, roleId, creator }) {
-    return this.http.post(`bangumi/${id}/images`, { seenIds, take, size, tags, roleId, creator })
+    return this.http.get(`bangumi/${id}/images`, {
+      params: { seenIds, take, size, tags, roleId, creator }
+    })
   }
 
   cartoon ({ id, seenIds, take }) {
-    return this.http.post(`bangumi/${id}/cartoon`, { seenIds, take })
+    return this.http.get(`bangumi/${id}/cartoon`, {
+      params: { seenIds, take }
+    })
   }
 
   released () {

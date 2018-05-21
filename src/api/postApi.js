@@ -8,7 +8,9 @@ export default class extends BaseApi {
   }
 
   show ({ id, seenIds, take, only, replyId }) {
-    return this.http.post(`post/${id}/show`, { seenIds, take, only, replyId })
+    return this.http.get(`post/${id}/show`, {
+      params: { seenIds, take, only, replyId }
+    })
   }
 
   reply ({ postId, images, content, geetest }) {
@@ -24,7 +26,9 @@ export default class extends BaseApi {
   }
 
   comments ({ postId, seenIds }) {
-    return this.http.post(`post/${postId}/comments`, { seenIds })
+    return this.http.get(`post/${postId}/comments`, {
+      params: { seenIds }
+    })
   }
 
   deletePost (id) {
@@ -46,6 +50,8 @@ export default class extends BaseApi {
   }
 
   trending ({ sort, seenIds, take }) {
-    return this.http.post(`trending/post/${sort}`, { seenIds, take })
+    return this.http.get(`trending/post/${sort}`, {
+      params: { seenIds, take }
+    })
   }
 }
