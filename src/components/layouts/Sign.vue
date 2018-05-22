@@ -40,6 +40,7 @@
         opacity: 0;
         display: flex;
         flex-direction: column;
+        box-shadow: 0 5px 25px rgba(0,0,0,.1);
 
         button {
           user-select: none;
