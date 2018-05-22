@@ -28,14 +28,16 @@
     }
 
     .v-modal-mask {
-      background-color: rgba(0, 0, 0, .3);
+      background-color: #ffffff;
       position: absolute;
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
       transition: opacity $time;
-      opacity: 1;
+      opacity: .5;
+      filter: blur(50px);
+      filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=50, MakeShadow=false);
     }
 
     .v-modal {
