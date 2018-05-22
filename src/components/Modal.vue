@@ -230,8 +230,8 @@
         this.$emit('input', val)
       },
       value (val) {
-        val ? document.body.classList.add('v-popup') : document.body.classList.remove('v-popup')
         this.toggle = val
+        this.drawAnimation(val)
       }
     },
     data () {
@@ -240,6 +240,13 @@
       }
     },
     methods: {
+      drawAnimation (isOpen) {
+        if (isOpen) {
+          document.body.classList.add('v-popup')
+        } else {
+          document.body.classList.remove('v-popup')
+        }
+      },
       handleSubmit () {
         this.$emit('submit')
       },
