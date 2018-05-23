@@ -25,9 +25,9 @@ export default class extends BaseApi {
     })
   }
 
-  comments ({ postId, seenIds }) {
+  comments ({ postId, maxId }) {
     return this.http.get(`post/${postId}/comments`, {
-      params: { seenIds }
+      params: { maxId }
     })
   }
 
