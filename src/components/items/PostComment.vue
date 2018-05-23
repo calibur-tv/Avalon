@@ -58,20 +58,24 @@
       </button>
     </div>
     <div class="input-field" v-if="openComment">
-      <input type="text"
-             placeholder="请缩减至50字以内"
-             v-model.trim="content"
-             autofocus
-             maxlength="50">
-      <el-button size="mini"
-                 @click="openComment = false"
-                 type="info"
-                 plain
+      <input
+        type="text"
+        placeholder="请缩减至100字以内"
+        v-model.trim="content"
+        autofocus
+        maxlength="100"
+      >
+      <el-button
+        size="mini"
+        @click="openComment = false"
+        type="info"
+        plain
       >取消</el-button>
-      <el-button type="primary"
-                 @click="submit"
-                 :loading="loading"
-                 size="mini"
+      <el-button
+        type="primary"
+        @click="submit"
+        :loading="loading"
+        size="mini"
       >发表</el-button>
     </div>
   </li>
@@ -142,6 +146,9 @@
             commentId: this.comment.id
           })
         }).catch((e) => {
+          if (e === 'cancel') {
+            return
+          }
           this.$toast.error(e)
         })
       }
