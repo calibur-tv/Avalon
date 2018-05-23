@@ -86,3 +86,13 @@ label {
 input[type=checkbox], input[type=radio] {
   cursor: pointer;
 }
+
+::selection {
+  background-color: $color-pink-light;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: $color-pink-light;
+  color: #fff;
+}
