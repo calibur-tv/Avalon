@@ -19,6 +19,12 @@ export default class extends BaseApi {
     })
   }
 
+  uploadToQiniu2 (formData) {
+    return this.http.post('https://upload.qiniup.com/', formData, {
+      'Content-Type': 'multipart/form-data'
+    })
+  }
+
   getUploadType () {
     return this.http.get('image/uploadType')
   }

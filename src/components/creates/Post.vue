@@ -40,6 +40,7 @@
         multiple
         list-type="picture-card"
         ref="uploader"
+        :file-list="fileList"
         :data="uploadHeaders"
         :on-error="handleError"
         :on-remove="handleRemove"
@@ -69,6 +70,14 @@
 <script>
   export default {
     name: 'create-post-form',
+    props: {
+      fileList: {
+        type: Array,
+        default() {
+          return []
+        }
+      }
+    },
     data () {
       return {
         forms: {
@@ -145,12 +154,21 @@
             this.$captcha({
               success: async ({ data }) => {
                 try {
+                  let _images = this.formatImages.concat(this.fileList.map(x => {
+                    return {
+                      height: x.height,
+                      key: x.key,
+                      size: x.size,
+                      type: x.type,
+                      width: x.width
+                    }
+                  }))
                   const id = await this.$store.dispatch('post/create', {
                     title: this.forms.title,
                     bangumiId: this.forms.bangumiId,
                     desc: this.forms.content.substring(0, 120),
                     content: this.formatContent,
-                    images: this.formatImages,
+                    images: _images,
                     geetest: data,
                     ctx: this
                   })
@@ -206,7 +224,8 @@
         console.log(err)
         this.$toast.error(`图片：${file.name} 上传失败`)
       },
-      handleRemove (file) {
+      handleRemove (file, fileList) {
+        this.$emit('update:fileList', fileList)
         this.images.forEach((item, index) => {
           if (item.id === file.uid) {
             this.images.splice(index, 1)
