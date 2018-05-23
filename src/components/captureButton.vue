@@ -1,16 +1,16 @@
 <template>
   <div class="capture-button">
-    <el-button type="test" size="small"
+    <el-button type="text" size="small"
                :icon="icon"
                @click="shoot"
                :loading="loading"
-               v-text="label || '截图来一帖'"></el-button>
+               v-text="label || '来一帖'"></el-button>
     <v-modal
       v-model="visible"
       class="create-post-modal"
       header-text="发帖"
+      @cancel="fileList.splice(0)"
       :footer="false"
-      :loading="loading"
     >
       <v-post @submit="visible = false" :file-list.sync="fileList"></v-post>
     </v-modal>
@@ -81,6 +81,8 @@ export default {
 
 <style lang="scss">
 .capture-button {
+  right: 16px;
+  // bottom: 16px;
   position: absolute;
   display: inline-block;
 }
