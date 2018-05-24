@@ -949,6 +949,9 @@
         })
       })
       this.noMoreFollowers = this.followers.length < this.fetchFollowersCount
+      setTimeout(() => {
+        document.getElementById('tab-1').click()
+      }, 1000)
     }
   }
 </script>

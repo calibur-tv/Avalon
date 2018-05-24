@@ -42,16 +42,18 @@
     #download-btn {
       position: absolute;
       bottom: 15px;
-      width: 80px;
       color: #fff;
       text-align: center;
-      font-size: 12px;
       opacity: 0.8;
-      padding: 10px 0;
       left: 50%;
-      margin-left: -40px;
+      margin-left: -51px;
       z-index: 100;
       text-shadow: 0 1px 10px gray;
+      padding: 6px 20px;
+      border-radius: 20px;
+      border: 1px solid #fff;
+      background-color: rgba(0,0,0,.4);
+      font-size: 15px;
 
       &:hover {
         opacity: 1;
