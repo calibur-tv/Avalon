@@ -519,7 +519,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!albumForm.is_cartoon">
           <el-col :span="10">
             <el-form-item label="番剧">
               <el-select
@@ -703,7 +703,8 @@
           name: '',
           bangumiId: '',
           url: '',
-          poster: []
+          poster: [],
+          is_cartoon: false
         },
         originAlbumData: {
           name: '',
@@ -788,6 +789,7 @@
         this.openEditModal = true
       },
       startEditAlbum (album) {
+        this.albumForm.is_cartoon = album.is_cartoon
         this.albumForm.id = album.id
         this.albumForm.name = album.name
         this.albumForm.url = album.url
@@ -836,7 +838,8 @@
               name: '',
               bangumiId: '',
               url: '',
-              poster: []
+              poster: [],
+              is_cartoon: false
             }
             this.startEditAlbum(image)
           } else {
