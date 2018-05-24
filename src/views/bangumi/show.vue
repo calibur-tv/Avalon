@@ -474,7 +474,7 @@
               <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
             </no-content>
           </el-tab-pane>
-          <el-tab-pane v-if="info.has_video" label="视频">
+          <el-tab-pane label="视频" v-if="info.has_video">
             <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
                 <template v-for="season in videos.data">
@@ -521,7 +521,7 @@
               <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
             </no-content>
           </el-tab-pane>
-          <el-tab-pane v-if="info.has_cartoon" label="漫画">
+          <el-tab-pane label="漫画" v-if="info.has_cartoon">
             <image-waterfall
               :loading="imagesState.loading"
               :role="roles.data"
