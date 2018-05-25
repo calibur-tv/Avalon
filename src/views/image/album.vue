@@ -138,6 +138,34 @@
         color: #8590a6;
       }
 
+      .v-parts {
+        margin-bottom: 5px;
+        margin-top: 20px;
+
+        li {
+          margin: 0 8px 8px 0;
+        }
+
+        a {
+          border: 1px solid $color-pink-normal;
+          height: 30px;
+          color: $color-pink-normal;
+          border-radius: 4px;
+          display: block;
+          transition: .2s;
+          padding: 0 10px;
+          font-size: 14px;
+          line-height: 28px;
+
+          &:hover,
+          &.active {
+            border-color: $color-pink-deep;
+            background-color: $color-pink-deep;
+            color: $color-white;
+          }
+        }
+      }
+
       .like-panel {
         text-align: center;
         margin-bottom: 20px;
@@ -225,6 +253,23 @@
             </span>
           </el-tooltip>
         </div>
+        <v-parts
+          v-if="cartoon.length"
+          :list="cartoon"
+          :alias="$alias.imageAlbum"
+        >
+          <span slot-scope="{ item }" v-text="item.name"></span>
+        </v-parts>
+        <v-bangumi-panel
+          class="bangumi-panel"
+          v-else-if="bangumi"
+          :id="bangumi.id"
+          :name="bangumi.name"
+          :avatar="bangumi.avatar"
+          :summary="bangumi.summary"
+          :followed="bangumi.followed"
+          @follow="handleFollowAction"
+        ></v-bangumi-panel>
         <div class="like-panel">
           <el-button
             v-if="info.liked"
@@ -248,16 +293,6 @@
             {{ likeAlbumBtnText }}
           </el-button>
         </div>
-        <v-bangumi-panel
-          class="bangumi-panel"
-          v-if="bangumi"
-          :id="bangumi.id"
-          :name="bangumi.name"
-          :avatar="bangumi.avatar"
-          :summary="bangumi.summary"
-          :followed="bangumi.followed"
-          @follow="handleFollowAction"
-        ></v-bangumi-panel>
       </div>
     </div>
   </div>
@@ -265,6 +300,7 @@
 
 <script>
   import Api from '~/api/imageApi'
+  import vParts from '~/components/lists/Parts'
 
   export default {
     name: 'image-album',
@@ -273,6 +309,19 @@
         ctx,
         id: route.params.id
       })
+    },
+    head () {
+      const category = `${this.info.is_cartoon ? '漫画' : '相簿'}`
+      return {
+        title: `${this.info.name} - ${category}`,
+        meta: [
+          { hid: 'description', name: 'description', content: this.bangumi.summary },
+          { hid: 'keywords', name: 'keywords', content: `${this.info.name}，${this.bangumi.name}，${category}，${this.user.nickname}` }
+        ]
+      }
+    },
+    components: {
+      vParts
     },
     computed: {
       id () {
@@ -286,6 +335,9 @@
       },
       images () {
         return this.album.images
+      },
+      cartoon () {
+        return this.album.cartoon
       },
       previewImages () {
         return this.images.map(_ => _.url)
@@ -309,20 +361,11 @@
           : false
       }
     },
-    head () {
-      const category = `${this.info.is_cartoon ? '漫画' : '相簿'}`
-      return {
-        title: `${this.info.name} - ${category}`,
-        meta: [
-          { hid: 'description', name: 'description', content: this.bangumi.summary },
-          { hid: 'keywords', name: 'keywords', content: `${this.info.name}，${this.bangumi.name}，${category}，${this.user.nickname}` }
-        ]
-      }
-    },
     data () {
       return {
         loadingFollowAlbum: false,
-        loadingEditImages: false
+        loadingEditImages: false,
+        maxWidth: 0
       }
     },
     methods: {
