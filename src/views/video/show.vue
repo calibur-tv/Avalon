@@ -15,7 +15,6 @@
       }
 
       li {
-        float: left;
         margin: 0 8px $meta-margin-bottom 0;
       }
 
@@ -24,7 +23,8 @@
         margin-left: 10px;
       }
 
-      .meta, .more {
+      .more,
+      .v-parts a {
         border: 1px solid $color-gray-deep;
         height: $meta-height;
         color: $color-link;
@@ -49,10 +49,10 @@
         }
       }
 
-      .router-link-active {
+      .active {
         border-color: $color-blue-light;
         background-color: $color-blue-light;
-        color: $color-white;
+        color: $color-white !important;
       }
 
       .more {
@@ -107,28 +107,18 @@
         <template v-if="season && showAll">
           <template v-for="(videos, idx) in list">
             <h6 class="season-title" v-text="season.name[idx]"></h6>
-            <ul>
-              <li v-for="(video, index) in videos.data" :key="video.id">
-                <a class="meta"
-                   :class="{ 'router-link-active' : $route.params.id == video.id }"
-                   :style="{ width: `${maxWidth}px` }"
-                   :href="$alias.video(video.id)">
-                  <span>{{ video.part - videos.base }}</span>{{ video.name }}
-                </a>
-              </li>
-            </ul>
+            <v-part :list="videos.data" :alias="$alias.video">
+              <template slot-scope="{ item }">
+                <span>{{ item.part - videos.base }}</span>{{ item.name }}
+              </template>
+            </v-part>
           </template>
         </template>
-        <ul v-else>
-          <li v-for="video in sortVideos" :key="video.id">
-            <a class="meta"
-               :class="{ 'router-link-active' : $route.params.id == video.id }"
-               :style="{ width: `${maxWidth}px` }"
-               :href="$alias.video(video.id)">
-              <span>{{ video.part }}</span>{{ video.name }}
-            </a>
-          </li>
-        </ul>
+        <v-part :list="sortVideos" :alias="$alias.video" v-else>
+          <template slot-scope="{ item }">
+            <span>{{ item.part }}</span>{{ item.name }}
+          </template>
+        </v-part>
         <div class="more" v-if="showMoreBtn" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
       <no-ssr class="video-placeholder">
@@ -167,6 +157,7 @@
 <script>
   import vVideo from '~/components/Video'
   import VideoApi from '~/api/videoApi'
+  import vPart from '~/components/lists/Parts'
 
   export default {
     name: 'video-show',
@@ -180,7 +171,8 @@
       }
     },
     components: {
-      vVideo
+      vVideo,
+      vPart
     },
     async asyncData ({ route, store, ctx }) {
       await store.dispatch('video/getShow', {
