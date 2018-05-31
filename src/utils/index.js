@@ -104,7 +104,8 @@ Vue.use({
       if (!url) {
         return ''
       }
-      const link = url.match(/^http/) === null ? `${env.cdn.image}${url}` : url
+      let link = url.split('|').pop()
+      link = link.match(/^http/) === null ? `${env.cdn.image}${link}` : link
       const canUseWebP = () => {
         if (Vue.prototype.$isServer) {
           return false
@@ -155,8 +156,8 @@ Vue.mixin({
       }
 
       const attr = image.split('|http').shift().split('-')
-      const width = attr[0]
-      const height = attr[1]
+      const width = +attr[0]
+      const height = +attr[1]
 
       if (!width || !height) {
         return 0

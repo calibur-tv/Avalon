@@ -1,13 +1,14 @@
 <template>
   <el-row class="post-item" :id="`post-reply-${post.id}`">
     <el-col class="user" :span="5">
-      <a :href="$alias.user(post.user.zone)" target="_blank">
-        <v-img class="avatar" :src="post.user.avatar" :width="80" :height="80"></v-img>
+      <a :href="$alias.user(post.from_user_zone)" target="_blank">
+        <v-img class="avatar" :src="post.from_user_avatar" :width="80" :height="80"></v-img>
       </a>
-      <a class="nickname oneline" :href="$alias.user(post.user.zone)" target="_blank" v-text="post.user.nickname"></a>
+      <a class="nickname oneline" :href="$alias.user(post.from_user_zone)" target="_blank" v-text="post.from_user_name"></a>
     </el-col>
     <el-col class="content" :span="19">
-      <div class="main">
+      <!--
+        <div class="main">
         <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="$previewImages(post.images, idx)">
           <v-img
             class="image"
@@ -19,6 +20,11 @@
         </div>
         <div class="text-area" v-html="post.content"></div>
       </div>
+      -->
+      <v-json-content
+        class="main"
+        :value="post.content"
+      ></v-json-content>
       <div class="footer">
         <div class="info-bar">
           <button class="like-btn" @click="toggleLike">
@@ -26,7 +32,7 @@
             <span v-if="post.like_count">({{ post.like_count }})</span>
           </button>
           <button class="delete-btn" v-if="canDelete" @click="deletePost">删除</button>
-          <span class="floor-count">{{ post.floor_count }}楼</span>
+          <span class="floor-count">{{ post.id + 1 }}楼</span>
           <v-time v-model="post.created_at"></v-time>
         </div>
         <post-comment-list :post="post"></post-comment-list>
@@ -37,11 +43,13 @@
 
 <script>
   import PostCommentList from '~/components/lists/PostComment'
+  import vJsonContent from '~/components/JsonContent/Index'
 
   export default {
     name: 'post-item',
     components: {
-      PostCommentList
+      PostCommentList,
+      vJsonContent
     },
     props: {
       post: {
@@ -62,7 +70,7 @@
         return this.$store.state.login ? this.$store.state.user.id : 0
       },
       isMine () {
-        return this.currentUserId === this.post.user.id
+        return this.currentUserId === this.post.from_user_id
       },
       isMaster () {
         return this.currentUserId === this.$store.state.post.show.info.user.id

@@ -100,7 +100,6 @@
       return {
         images: [],
         index: 0,
-        curPage: 1,
         open: false,
         maxWidth: 0,
         maxHeight: 0,
@@ -111,7 +110,7 @@
     },
     computed: {
       imageHref () {
-        return this.images.length ? this.images[this.curPage - 1].split('|').pop() : ''
+        return this.images.length ? this.images[this.index].split('|').pop() : ''
       },
       imageName () {
         return this.imageHref ? `calibur-tv-${Date.now()}.${this.imageHref.split('.').pop()}` : ''
@@ -128,7 +127,6 @@
         }
         this.images = Array.isArray(images) ? images : [images]
         this.index = index || 0
-        this.curPage = this.index + 1
         this.length = this.images.length
         this.open = true
         setTimeout(() => {
@@ -211,7 +209,7 @@
             this.$channel.$emit(`image-load-image-reader-${index + 1}`)
             this.$channel.$emit(`image-load-image-reader-${index - 1}`)
           }
-          this.curPage = index + 1
+          this.index = index
         })
       }
     }

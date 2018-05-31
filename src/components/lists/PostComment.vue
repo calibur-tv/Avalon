@@ -125,7 +125,7 @@
     },
     computed: {
       comments () {
-        return this.post.comments
+        return this.post.comments || []
       },
       noMore () {
         return this.comments.length >= this.post.comment_count
