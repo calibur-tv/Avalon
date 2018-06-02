@@ -143,7 +143,7 @@
             <div class="control">
               <el-button size="mini" plain @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
               <el-button size="mini" plain @click="scrollToReplyForm">回复</el-button>
-              <el-button size="mini" plain v-if="isMaster" @click="deletePost(post.id)">删除</el-button>
+              <el-button size="mini" plain v-if="isMaster" @click="deletePost">删除</el-button>
               <span class="floor">共{{ total }}条</span>
             </div>
             <h1 class="oneline" v-text="post.title"></h1>
@@ -228,7 +228,7 @@
             v-for="item in list"
             :key="item.id"
             :post="item"
-            @delete="deletePost(item.id)"
+            @delete="deletePostComment(item.id)"
           ></post-item>
         </main>
         <el-col :span="19" :offset="5">
@@ -288,7 +288,7 @@
         return this.$utils.orderBy(this.resource.data.list, 'floor_count')
       },
       total () {
-        return this.resource.data.total
+        return this.resource.info.post.comment_count + 1
       },
       noMore () {
         return this.resource.data.noMore
@@ -332,7 +332,7 @@
           only: this.onlySeeMaster ? 0 : 1
         })
       },
-      deletePost (id) {
+      deletePost () {
         this.$confirm('删除后无法找回, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -340,11 +340,24 @@
         }).then(async () => {
           await this.$store.dispatch('post/deletePost', {
             ctx: this,
+            id: this.post.id
+          })
+          window.location = this.$alias.bangumi(this.bangumi.id)
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
+      },
+      deletePostComment (id) {
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          await this.$store.dispatch('post/deletePostComment', {
+            ctx: this,
             id
           })
-          if (id === this.post.id) {
-            window.location = this.$alias.bangumi(this.bangumi.id)
-          }
+          this.$toast.success('删除成功')
         }).catch((e) => {
           this.$toast.error(e)
         })

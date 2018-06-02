@@ -1,7 +1,7 @@
 <template>
   <div class="json-content">
     <div v-for="item in content" :key="item.id">
-      <p class="text-package" v-if="item.type === 'txt'">{{ item.data }}</p>
+      <div class="text-package" v-if="item.type === 'txt'" v-html="item.data"></div>
       <p class="image-package" v-else-if="item.type === 'img'" @click="$previewImages(images, computeImageIndex(item.data))">
         <v-img
           class="image"

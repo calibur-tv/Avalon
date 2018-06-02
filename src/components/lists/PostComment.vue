@@ -67,10 +67,11 @@
     </button>
     <el-collapse-transition>
       <ul v-show="comments.length && !collapsed" class="comments">
-        <post-comment-item v-for="comment in comments"
-                           :key="comment.id"
-                           :post-id="post.id"
-                           :comment="comment"
+        <post-comment-item
+          v-for="comment in comments"
+          :key="comment.id"
+          :post-id="post.id"
+          :comment="comment"
         ></post-comment-item>
       </ul>
     </el-collapse-transition>
@@ -89,7 +90,7 @@
     <div class="comment-reply" v-if="openComment">
       <input
         type="text"
-        placeholder="请缩减至50字以内"
+        placeholder="请缩减至字以内"
         v-model.trim="content"
         autofocus
         maxlength="50">
@@ -125,7 +126,7 @@
     },
     computed: {
       comments () {
-        return this.post.comments || []
+        return this.$utils.orderBy(this.post.comments, 'id', 'asc')
       },
       noMore () {
         return this.comments.length >= this.post.comment_count
@@ -134,7 +135,7 @@
         if (!this.$store.state.login) {
           return false
         }
-        return this.$store.state.user.id === this.post.user.id
+        return this.$store.state.user.id === this.post.from_user_id
       }
     },
     data () {
@@ -156,7 +157,7 @@
         try {
           await this.$store.dispatch('post/getComments', {
             ctx: this,
-            postId: this.post.id
+            id: this.post.id
           })
         } catch (e) {
           this.$toast.error(e)
@@ -176,8 +177,8 @@
         try {
           await this.$store.dispatch('post/setComment', {
             ctx: this,
-            postId: this.post.id,
-            targetUserId: this.isMine ? 0 : this.post.user.id,
+            id: this.post.id,
+            targetUserId: this.isMine ? 0 : this.post.from_user_id,
             content: this.content
           })
         } catch (e) {

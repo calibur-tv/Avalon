@@ -46,7 +46,7 @@ export default {
         : time * 1000
       : time.replace(/-/g, '/')
     const date = new Date(formatTime)
-    return `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).substr(-2)}-${(`0${date.getDate()}`).substr(-2)} ${(`0${date.getHours()}`).substr(-2)}:${(`0${date.getMinutes()}`).substr(-2)}`
+    return `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).substr(-2)}-${(`0${date.getDate()}`).substr(-2)} ${(`0${date.getHours()}`).substr(-2)}:${(`0${date.getMinutes()}`).substr(-2)}:${(`0${date.getSeconds()}`).substr(-2)}`
   },
 
   truncate (str = '', len = 200, startIndex = 0) {

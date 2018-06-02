@@ -7,12 +7,16 @@
       <a class="nickname oneline" :href="$alias.user(post.from_user_zone)" target="_blank" v-text="post.from_user_name"></a>
     </el-col>
     <el-col class="content" :span="19">
-      <!--
-        <div class="main">
-        <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="$previewImages(post.images, idx)">
+      <div class="main">
+        <div
+          class="image-package"
+          v-for="(img, idx) in post.images"
+          :key="idx"
+          @click="$previewImages(post.images, idx)"
+        >
           <v-img
             class="image"
-            :src="img"
+            :src="img.url"
             width="350"
             mode="2"
             :aspect="$computeImageAspect(img)"
@@ -20,11 +24,6 @@
         </div>
         <div class="text-area" v-html="post.content"></div>
       </div>
-      -->
-      <v-json-content
-        class="main"
-        :value="post.content"
-      ></v-json-content>
       <div class="footer">
         <div class="info-bar">
           <button class="like-btn" @click="toggleLike">
@@ -32,7 +31,7 @@
             <span v-if="post.like_count">({{ post.like_count }})</span>
           </button>
           <button class="delete-btn" v-if="canDelete" @click="deletePost">删除</button>
-          <span class="floor-count">{{ post.id + 1 }}楼</span>
+          <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time v-model="post.created_at"></v-time>
         </div>
         <post-comment-list :post="post"></post-comment-list>
@@ -94,7 +93,7 @@
         }
         this.loadingToggleLike = true
         try {
-          await this.$store.dispatch('post/toggleLike', {
+          await this.$store.dispatch('post/toggleLikeComment', {
             ctx: this,
             id: this.post.id
           })
