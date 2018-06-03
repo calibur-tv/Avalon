@@ -389,11 +389,26 @@
               .time {
                 float: right;
                 display: block;
+                line-height: 32px;
                 color: #999;
                 font-size: 12px;
                 position: relative;
                 z-index: 1;
                 margin-right: 12px;
+              }
+
+              .avatar {
+                display: block;
+                float: right;
+                margin-top: 4px;
+                position: relative;
+                z-index: 1;
+
+                img {
+                  display: block;
+                  width: 24px;
+                  height: 24px;
+                }
               }
             }
 
@@ -657,14 +672,16 @@
                   <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
                   <span class="time">
                     发表于: <v-time v-model="item.created_at"></v-time>
-                </span>
+                  </span>
                 </div>
                 <p class="content" v-text="item.desc"></p>
                 <div class="images clearfix" v-if="item.images.length">
-                  <div class="image-box"
-                       :key="image"
-                       v-for="(image, index) in item.images"
-                       @click="$previewImages(item.images, index)">
+                  <div
+                    class="image-box"
+                    :key="image"
+                    v-for="(image, index) in item.images"
+                    @click="$previewImages(item.images, index)"
+                  >
                     <v-img :src="image" height="90" mode="2"></v-img>
                   </div>
                 </div>
@@ -688,20 +705,29 @@
             <ul class="posts posts-of-reply">
               <li v-for="item in posts.data" :key="item.id">
                 <div class="header clearfix">
-                  回复来自番剧
-                  <a class="href-fade-blue" target="_blank" :href="$alias.bangumi(item.bangumi.id)" v-text="item.bangumi.name"></a>
-                  的帖子
-                  <a class="href-fade-blue" target="_blank" :href="$alias.post(item.post.id)">《{{ item.post.title }}》</a>
+                  回复：
+                  <a
+                    class="href-fade-blue"
+                    target="_blank"
+                    :href="$alias.post(item.post.id)"
+                    v-text="item.post.title"
+                  ></a>
+                  <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
+                    <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                      <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                    </a>
+                  </el-tooltip>
                   <v-time class="time" v-model="item.created_at"></v-time>
                 </div>
                 <div class="origin">
-                  <a class="href-fade-blue" target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>：
-                  <div class="content" v-html="item.parent.content"></div>
-                  <div class="images clearfix" v-if="item.parent.images.length">
-                    <div class="image-box"
-                         :key="image"
-                         v-for="(image, index) in item.parent.images"
-                         @click="$previewImages(item.parent.images, index)">
+                  <div class="content" v-html="item.post.content"></div>
+                  <div class="images clearfix" v-if="item.post.images.length">
+                    <div
+                      class="image-box"
+                      v-for="(image, index) in item.post.images"
+                      @click="$previewImages(item.post.images, index)"
+                      :key="index"
+                    >
                       <v-img :src="image" height="90" mode="2"></v-img>
                     </div>
                   </div>
@@ -709,11 +735,13 @@
                 <div class="reply">
                   <div class="content" v-html="item.content"></div>
                   <div class="images clearfix" v-if="item.images.length">
-                    <div class="image-box"
-                         :key="image"
-                         v-for="(image, index) in item.images"
-                         @click="$previewImages(item.images, index)">
-                      <v-img :src="image" height="90" mode="2"></v-img>
+                    <div
+                      class="image-box"
+                      v-for="(image, index) in item.images"
+                      @click="$previewImages(item.images, index)"
+                      :key="index"
+                    >
+                      <v-img :src="image.url" height="90" mode="2"></v-img>
                     </div>
                   </div>
                 </div>

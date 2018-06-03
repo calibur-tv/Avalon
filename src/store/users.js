@@ -158,14 +158,16 @@ const actions = {
       return
     }
     commit('SET_FOLLOW_POST_STATE', { type })
+    const list = state.posts[type].data
+    const length = list.length
     const api = new Api()
     const data = await api.followPosts({
       type,
-      take: state.posts.take,
       zone,
-      seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
+      take: state.posts.take,
+      minId: length ? list[length - 1].id : 0
     })
-    commit('SET_FOLLOW_POST_DATA', { type, data, zone })
+    data && commit('SET_FOLLOW_POST_DATA', { type, data, zone })
   },
   async daySign ({ rootState }, { ctx }) {
     if (rootState.user.signed) {
