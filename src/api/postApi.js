@@ -7,9 +7,9 @@ export default class extends BaseApi {
     })
   }
 
-  show ({ id, seenIds, take, only, replyId }) {
+  show ({ id, page, take, only, replyId }) {
     return this.http.get(`post/${id}/show`, {
-      params: { seenIds, take, only, replyId }
+      params: { page, take, only, replyId }
     })
   }
 
@@ -25,9 +25,9 @@ export default class extends BaseApi {
     })
   }
 
-  comments ({ postId, maxId }) {
+  comments ({ postId, page }) {
     return this.http.get(`post/${postId}/comments`, {
-      params: { maxId }
+      params: { page }
     })
   }
 
@@ -50,7 +50,7 @@ export default class extends BaseApi {
   }
 
   trending ({ sort, seenIds, take }) {
-    return this.http.get(`trending/post/${sort}`, {
+    return this.http.get(`post/trending/${sort}`, {
       params: { seenIds, take }
     })
   }

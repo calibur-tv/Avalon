@@ -1,17 +1,22 @@
 <template>
   <el-row class="post-item" :id="`post-reply-${post.id}`">
     <el-col class="user" :span="5">
-      <a :href="$alias.user(post.user.zone)" target="_blank">
-        <v-img class="avatar" :src="post.user.avatar" :width="80" :height="80"></v-img>
+      <a :href="$alias.user(post.from_user_zone)" target="_blank">
+        <v-img class="avatar" :src="post.from_user_avatar" :width="80" :height="80"></v-img>
       </a>
-      <a class="nickname oneline" :href="$alias.user(post.user.zone)" target="_blank" v-text="post.user.nickname"></a>
+      <a class="nickname oneline" :href="$alias.user(post.from_user_zone)" target="_blank" v-text="post.from_user_name"></a>
     </el-col>
     <el-col class="content" :span="19">
       <div class="main">
-        <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="$previewImages(post.images, idx)">
+        <div
+          class="image-package"
+          v-for="(img, idx) in post.images"
+          :key="idx"
+          @click="$previewImages(post.images, idx)"
+        >
           <v-img
             class="image"
-            :src="img"
+            :src="img.url"
             width="350"
             mode="2"
             :aspect="$computeImageAspect(img)"
@@ -62,7 +67,7 @@
         return this.$store.state.login ? this.$store.state.user.id : 0
       },
       isMine () {
-        return this.currentUserId === this.post.user.id
+        return this.currentUserId === this.post.from_user_id
       },
       isMaster () {
         return this.currentUserId === this.$store.state.post.show.info.user.id
@@ -86,7 +91,7 @@
         }
         this.loadingToggleLike = true
         try {
-          await this.$store.dispatch('post/toggleLike', {
+          await this.$store.dispatch('post/toggleLikeComment', {
             ctx: this,
             id: this.post.id
           })

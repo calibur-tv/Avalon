@@ -122,7 +122,7 @@
         try {
           await this.$store.dispatch('post/setComment', {
             ctx: this,
-            postId: this.postId,
+            id: this.postId,
             targetUserId: this.comment.from_user_id,
             content: this.content
           })

@@ -444,7 +444,7 @@
                 <a :href="$alias.user(user.zone)" target="_blank">
                   <img :src="$resize(user.avatar, { width: 120 })">
                   <span v-text="user.nickname"></span>
-                  <v-time class="score" v-model="user.score"></v-time>
+                  <v-time class="score" v-model="user.created_at"></v-time>
                 </a>
               </li>
             </v-modal>

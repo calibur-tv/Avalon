@@ -104,7 +104,8 @@ Vue.use({
       if (!url) {
         return ''
       }
-      const link = url.match(/^http/) === null ? `${env.cdn.image}${url}` : url
+      let link = url.split('|').pop()
+      link = link.match(/^http/) === null ? `${env.cdn.image}${link}` : link
       const canUseWebP = () => {
         if (Vue.prototype.$isServer) {
           return false
@@ -150,13 +151,20 @@ Vue.use({
 Vue.mixin({
   methods: {
     $computeImageAspect (image) {
-      if (image.split('|http').length === 1) {
-        return 0
-      }
+      let width
+      let height
+      if (typeof image === 'string') {
+        if (image.split('|http').length === 1) {
+          return 0
+        }
 
-      const attr = image.split('|http').shift().split('-')
-      const width = attr[0]
-      const height = attr[1]
+        const attr = image.split('|http').shift().split('-')
+        width = +attr[0]
+        height = +attr[1]
+      } else {
+        width = image.width
+        height = image.height
+      }
 
       if (!width || !height) {
         return 0
