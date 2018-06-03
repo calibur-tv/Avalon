@@ -42,13 +42,11 @@
 
 <script>
   import PostCommentList from '~/components/lists/PostComment'
-  import vJsonContent from '~/components/JsonContent/Index'
 
   export default {
     name: 'post-item',
     components: {
-      PostCommentList,
-      vJsonContent
+      PostCommentList
     },
     props: {
       post: {

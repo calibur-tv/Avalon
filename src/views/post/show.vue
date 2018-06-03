@@ -287,9 +287,6 @@
       list () {
         return this.$utils.orderBy(this.resource.data.list, 'floor_count')
       },
-      total () {
-        return this.resource.info.post.comment_count + 1
-      },
       noMore () {
         return this.resource.data.noMore
       },
@@ -298,6 +295,9 @@
       },
       post () {
         return this.resource.info.post
+      },
+      total () {
+        return this.post.comment_count + 1
       },
       master () {
         return this.resource.info.user

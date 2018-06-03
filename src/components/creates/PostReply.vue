@@ -114,7 +114,6 @@ export default {
                 this.$toast.success('回复成功！')
                 this.submitting = false
               } catch (err) {
-                console.log(err)
                 this.$toast.error(err)
                 this.submitting = false
               }
