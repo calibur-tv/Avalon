@@ -15,9 +15,9 @@ export default class extends BaseApi {
     })
   }
 
-  followers ({ bangumiId, seenIds, take }) {
+  followers ({ bangumiId, page, take }) {
     return this.http.get(`bangumi/${bangumiId}/followers`, {
-      params: { seenIds, take }
+      params: { page, take }
     })
   }
 

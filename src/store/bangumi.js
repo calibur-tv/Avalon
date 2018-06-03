@@ -19,6 +19,7 @@ const state = () => ({
   },
   tags: [],
   info: null,
+  followersPage: 1,
   posts: {
     data: [],
     total: 0,
@@ -128,6 +129,7 @@ const mutations = {
   },
   SET_BANGUMI_FOLLOWERS (state, data) {
     state.info.followers = state.info.followers.concat(data)
+    state.followersPage = state.followersPage + 1
   }
 }
 
@@ -226,7 +228,7 @@ const actions = {
     const data = await api.followers({
       take,
       bangumiId,
-      seenIds: state.info.followers.length ? state.info.followers.map(_ => _.id).join(',') : null
+      page: state.followersPage
     })
     commit('SET_BANGUMI_FOLLOWERS', data)
     return data
