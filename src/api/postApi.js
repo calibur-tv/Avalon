@@ -50,7 +50,7 @@ export default class extends BaseApi {
   }
 
   trending ({ sort, seenIds, take }) {
-    return this.http.get(`trending/post/${sort}`, {
+    return this.http.get(`post/trending/${sort}`, {
       params: { seenIds, take }
     })
   }
