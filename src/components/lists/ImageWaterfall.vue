@@ -877,15 +877,11 @@
         }
         this.submitToggleLike(btn, image)
       },
-      handleImageClick (image, index) {
+      handleImageClick (image) {
         if (image.image_count) {
           window.open(this.$alias.imageAlbum(image.id))
         } else {
-          const images = []
-          this.list.forEach(item => {
-            images.push(`${item.width}-${item.height}|${item.url}`)
-          })
-          this.$previewImages(images, index)
+          this.$previewImages(image, 0)
         }
       },
       async getUpToken () {

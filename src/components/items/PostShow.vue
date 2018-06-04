@@ -187,12 +187,12 @@
     <div class="images clearfix" v-if="item.images.length">
       <div
         class="image-box"
-        :key="image"
         v-for="(image, index) in item.images"
+        :key="index"
         @click="$previewImages(item.images, index)"
       >
         <v-img
-          :src="image"
+          :src="image.url"
           height="90"
           mode="2"
           :aspect="$computeImageAspect(image)"

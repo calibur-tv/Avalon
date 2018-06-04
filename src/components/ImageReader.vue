@@ -113,11 +113,7 @@
         if (!this.images.length) {
           return ''
         }
-        const image = this.images[this.index]
-        if (typeof image === 'string') {
-          return image.split('|').pop()
-        }
-        return image.url
+        return this.images[this.index].url
       },
       imageName () {
         return this.imageHref ? `calibur-tv-${Date.now()}.${this.imageHref.split('.').pop()}` : ''
@@ -162,21 +158,9 @@
         this.maxWidthHeightRate = this.maxWidth / this.maxHeight
         this.maxHeightWidthRate = this.maxHeight / this.maxWidth
       },
-      computeImageType (item) {
-        let width
-        let height
-        if (typeof image === 'string') {
-          if (item.split('|http').length === 1) {
-            return 0
-          }
-
-          const attr = item.split('|http').shift().split('-')
-          width = +attr[0]
-          height = +attr[1]
-        } else {
-          width = item.width
-          height = item.height
-        }
+      computeImageType (image) {
+        const width = image.width
+        const height = image.height
 
         if (!width || !height) {
           return 0
@@ -207,13 +191,12 @@
 
         return 5
       },
-      computeImageSize (item) {
-        const type = this.computeImageType(item)
-        const url = typeof item === 'string' ? item : item.url
+      computeImageSize (image) {
+        const type = this.computeImageType(image)
         if (type === 4) {
-          return this.$resize(url, { width: this.maxWidth, mode: 2 })
+          return this.$resize(image.url, { width: this.maxWidth, mode: 2 })
         }
-        return this.$resize(url, { height: this.maxHeight, mode: 2 })
+        return this.$resize(image.url, { height: this.maxHeight, mode: 2 })
       },
       handleCarouselChange (index) {
         this.$nextTick(() => {

@@ -678,11 +678,11 @@
                 <div class="images clearfix" v-if="item.images.length">
                   <div
                     class="image-box"
-                    :key="image"
                     v-for="(image, index) in item.images"
+                    :key="index"
                     @click="$previewImages(item.images, index)"
                   >
-                    <v-img :src="image" height="90" mode="2"></v-img>
+                    <v-img :src="image.url" height="90" mode="2"></v-img>
                   </div>
                 </div>
                 <div class="footer clearfix">
@@ -728,7 +728,7 @@
                       @click="$previewImages(item.post.images, index)"
                       :key="index"
                     >
-                      <v-img :src="image" height="90" mode="2"></v-img>
+                      <v-img :src="image.url" height="90" mode="2"></v-img>
                     </div>
                   </div>
                 </div>
