@@ -158,10 +158,15 @@
               <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
             </el-col>
             <el-col class="content" :span="19">
-              <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="$previewImages(post.images, idx)">
+              <div
+                class="image-package"
+                v-for="(img, idx) in post.images"
+                :key="idx"
+                @click="$previewImages(post.images, idx)"
+              >
                 <v-img
                   class="image"
-                  :src="img"
+                  :src="img.url"
                   width="350"
                   mode="2"
                   :aspect="$computeImageAspect(img)"
