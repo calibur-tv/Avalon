@@ -217,7 +217,7 @@
             width="500"
             mode="2"
             :src="img.url"
-            :aspect="$computeImageAspect(img.url)"
+            :aspect="$computeImageAspect(img)"
           ></v-img>
           <template v-if="isMine">
             <el-tooltip placement="top" effect="dark" content="删除">
