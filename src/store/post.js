@@ -126,9 +126,9 @@ const mutations = {
   followBangumi (state, result) {
     state.show.info.bangumi.followed = result
   },
-  DELETE_POST_COMMENT (state, { id }) {
+  DELETE_POST_COMMENT (state, { commentId }) {
     state.show.data.list.forEach((item, index) => {
-      if (item.id === id) {
+      if (item.id === commentId) {
         state.show.data.list.splice(index, 1)
         state.show.data.total--
       }
@@ -228,10 +228,10 @@ const actions = {
     const result = await api.toggleMark(id)
     commit('TOGGLE_MARK', result)
   },
-  async deletePostComment ({ commit }, { ctx, id }) {
+  async deletePostComment ({ commit }, { ctx, postId, commentId }) {
     const api = new Api(ctx)
-    await api.deletePostComment(id)
-    commit('DELETE_POST_COMMENT', { id })
+    await api.deleteComment({ postId, commentId })
+    commit('DELETE_POST_COMMENT', { commentId })
   }
 }
 

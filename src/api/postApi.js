@@ -36,9 +36,7 @@ export default class extends BaseApi {
   }
 
   deleteComment ({ postId, commentId }) {
-    return this.http.post(`post/${postId}/deleteComment`, {
-      id: commentId
-    })
+    return this.http.post(`post/${postId}/deleteComment`, { commentId })
   }
 
   toggleLike (id) {
