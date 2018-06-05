@@ -50,7 +50,7 @@ export default (params) => {
               validate: result.geetest_validate
             }),
             captcha
-        })
+          })
       })
       captcha.onError((err) => {
         error && error(err)
