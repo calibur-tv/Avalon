@@ -130,7 +130,7 @@ const mutations = {
     state.show.data.list.forEach((item, index) => {
       if (item.id === commentId) {
         state.show.data.list.splice(index, 1)
-        state.show.data.total--
+        state.show.info.post.comment_count--
       }
     })
   }
