@@ -360,7 +360,8 @@
         }).then(async () => {
           await this.$store.dispatch('post/deletePostComment', {
             ctx: this,
-            id
+            postId: this.post.id,
+            commentId: id
           })
           this.$toast.success('删除成功')
         }).catch((e) => {
