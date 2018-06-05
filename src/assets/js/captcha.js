@@ -11,11 +11,11 @@ export default (params) => {
       return
     }
     window.initGeetest({
-      gt: data.id,
-      challenge: data.secret,
+      gt: data.gt,
+      challenge: data.challenge,
+      offline: !data.success,
       product: product,
       width: '100%',
-      offline: true,
       new_captcha: 1
     }, (captcha) => {
       captcha.onReady(() => {
@@ -32,9 +32,26 @@ export default (params) => {
           }
         }
       }
-      captcha.onSuccess(() => typeof params === 'object'
-        ? success && success({ data, captcha })
-        : params({ data, captcha }))
+      captcha.onSuccess(() => {
+        const result = captcha.getValidate()
+        typeof params === 'object'
+          ? success && success({
+            data: Object.assign(data, {
+              challenge: result.geetest_challenge,
+              seccode: result.geetest_seccode,
+              validate: result.geetest_validate
+            }),
+            captcha
+          })
+          : params({
+            data: Object.assign(data, {
+              challenge: result.geetest_challenge,
+              seccode: result.geetest_seccode,
+              validate: result.geetest_validate
+            }),
+            captcha
+        })
+      })
       captcha.onError((err) => {
         error && error(err)
       })
