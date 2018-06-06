@@ -279,6 +279,7 @@
            }" @click.stop>
         <div class="slogan"></div>
         <div class="form-container">
+          <!--<sign-up-form></sign-up-form>-->
           <form class="form" autocomplete="off" data-vv-scope="sign-up">
             <div>
               <input type="text"
@@ -361,9 +362,13 @@
 
 <script>
   import UserApi from '~/api/userApi'
+  import SignUpForm from '~/components/forms/SignUp'
 
   export default {
     name: 'v-sign',
+    components: {
+      SignUpForm
+    },
     data () {
       return {
         showModal: false,

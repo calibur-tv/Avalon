@@ -36,19 +36,23 @@ export default (params) => {
         const result = captcha.getValidate()
         typeof params === 'object'
           ? success && success({
-            data: Object.assign(data, {
-              challenge: result.geetest_challenge,
-              seccode: result.geetest_seccode,
-              validate: result.geetest_validate
-            }),
+            data: {
+              geetest_challenge: result.geetest_challenge,
+              geetest_seccode: result.geetest_seccode,
+              geetest_validate: result.geetest_validate,
+              payload: data.payload,
+              success: data.success
+            },
             captcha
           })
           : params({
-            data: Object.assign(data, {
-              challenge: result.geetest_challenge,
-              seccode: result.geetest_seccode,
-              validate: result.geetest_validate
-            }),
+            data: {
+              geetest_challenge: result.geetest_challenge,
+              geetest_seccode: result.geetest_seccode,
+              geetest_validate: result.geetest_validate,
+              payload: data.payload,
+              success: data.success
+            },
             captcha
           })
       })
