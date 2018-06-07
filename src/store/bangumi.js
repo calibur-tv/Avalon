@@ -140,6 +140,14 @@ const mutations = {
     state.cartoon.list = state.cartoon.list.concat(data.list)
     state.cartoon.noMore = data.noMore
     state.cartoon.page = state.cartoon.page + 1
+  },
+  TOGGLE_LIKE_CARTOON (state, { id, result }) {
+    state.cartoon.list.forEach((image, index) => {
+      if (image.id === id) {
+        state.cartoon.list[index].like_count += result ? 1 : -1
+        state.cartoon.list[index].liked = result
+      }
+    })
   }
 }
 
