@@ -36,6 +36,11 @@ const state = () => ({
     id: 0,
     data: [],
     noMore: false
+  },
+  cartoon: {
+    page: 0,
+    list: [],
+    noMore: false
   }
 })
 
@@ -130,6 +135,11 @@ const mutations = {
   SET_BANGUMI_FOLLOWERS (state, data) {
     state.info.followers = state.info.followers.concat(data)
     state.followersPage = state.followersPage + 1
+  },
+  SET_BANGUMI_CARTOON (state, data) {
+    state.cartoon.list = state.cartoon.list.concat(data.list)
+    state.cartoon.noMore = data.noMore
+    state.cartoon.page = state.cartoon.page + 1
   }
 }
 
@@ -232,6 +242,14 @@ const actions = {
     })
     commit('SET_BANGUMI_FOLLOWERS', data)
     return data
+  },
+  async getCartoons ({ state, commit }, { ctx, bangumiId }) {
+    const api = new Api(ctx)
+    const data = await api.cartoon({
+      bangumiId,
+      page: state.cartoon.page
+    })
+    data && commit('SET_BANGUMI_CARTOON', data)
   }
 }
 

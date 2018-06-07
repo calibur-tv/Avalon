@@ -161,7 +161,7 @@
       }
     }
 
-    #load-post-btn {
+    .load-more-btn {
       margin-top: 20px;
       width: 100%;
     }
@@ -378,6 +378,119 @@
         text-align: center;
       }
     }
+
+    #cartoons {
+      li {
+        width: 200px;
+        height: 400px;
+        float: left;
+        box-shadow: 0 1px 3px rgba(0,0,0,.2);
+        margin: 3px 9px 15px 3px;
+        overflow: hidden;
+
+        .poster-wrap {
+          position: relative;
+          display: block;
+
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            opacity: .3;
+            background-color: transparent;
+            background-image: linear-gradient(transparent,rgba(0,0,0,.1) 20%,rgba(0,0,0,.2) 35%,rgba(0,0,0,.6) 65%,rgba(0,0,0,.9));
+          }
+
+          &:hover {
+            &:after {
+              opacity: 1;
+              height: 100%;
+              background: rgba(0,0,0,.5);
+              transition: background .2s;
+            }
+          }
+
+          img {
+            width: 100%;
+            height: 300px;
+            display: block;
+          }
+
+          .info {
+            position: absolute;
+            left: 7px;
+            bottom: 4px;
+            z-index: 1;
+            color: #fff;
+            line-height: 20px;
+
+            i {
+              font-size: 20px;
+              vertical-align: middle;
+            }
+
+            .image-count {
+              margin-left: 5px;
+              font-size: 14px;
+              vertical-align: middle;
+            }
+          }
+        }
+
+        .desc {
+          padding: 10px 16px;
+          height: 52px;
+
+          button {
+            float: right;
+            width: 50px;
+            height: 32px;
+            line-height: 32px;
+            text-align: right;
+            color: $color-gray-deep;
+            font-size: 13px;
+            margin-right: 1px;
+
+            &.liked {
+              color: $color-pink-normal;
+            }
+          }
+
+          a {
+            display: block;
+            overflow: hidden;
+            line-height: 32px;
+          }
+        }
+
+        .user {
+          display: block;
+          width: 100%;
+          height: 48px;
+          padding: 8px 16px;
+          border-top: 1px solid #f2f2f2;
+          background-color: #fafafa;
+
+          img {
+            border: 1px solid #f0f0f0;
+            vertical-align: middle;
+            margin-right: 8px;
+            float: left;
+            @include avatar(32px)
+          }
+
+          div {
+            overflow: hidden;
+            font-size: 12px;
+            margin-top: 10px;
+            color: #999;
+          }
+        }
+      }
+    }
   }
 </style>
 
@@ -465,7 +578,7 @@
             <el-button
               :loading="postState.loading"
               v-if="!posts.noMore"
-              id="load-post-btn"
+              class="load-more-btn"
               @click="getPosts"
               type="info"
               plain
@@ -522,11 +635,44 @@
             </no-content>
           </el-tab-pane>
           <el-tab-pane label="漫画" v-if="info.has_cartoon">
-            <image-waterfall
-              :loading="imagesState.loading"
-              :role="roles.data"
-              @fetch="getCartoons(false)"
-            ></image-waterfall>
+            <div id="cartoons">
+              <ul class="clearfix" v-if="cartoonInfo.list.length">
+                <li
+                  v-for="item in cartoonInfo.list"
+                  :key="item.id"
+                >
+                  <a class="poster-wrap" :href="$alias.imageAlbum(item.id)" target="_blank">
+                    <img :src="$resize(item.url, { width: 400, height: 600 })">
+                    <div class="info">
+                      <i class="el-icon-picture-outline"></i>
+                      <span class="image-count" v-text="item.image_count"></span>
+                    </div>
+                  </a>
+                  <div class="desc">
+                    <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeCartoon($event, item)">
+                      <i class="iconfont icon-guanzhu"></i>
+                      {{ item.like_count || ''  }}
+                    </button>
+                    <a class="oneline" :href="$alias.imageAlbum(item.id)" target="_blank" v-text="item.name"></a>
+                  </div>
+                  <a class="user" :href="$alias.user(item.user.zone)" target="_blank">
+                    <img :src="$resize(item.user.avatar, { width: 72 })">
+                    <div class="oneline" v-text="item.user.nickname"></div>
+                  </a>
+                </li>
+              </ul>
+              <no-content v-else-if="cartoonInfo.noMore">
+                <el-button @click="openFeedbackForCartoon" type="primary" round>求漫画</el-button>
+              </no-content>
+              <el-button
+                :loading="cartoonInfo.loading"
+                v-if="!cartoonInfo.noMore"
+                class="load-more-btn"
+                @click="getCartoons"
+                type="info"
+                plain
+              >{{ cartoonInfo.loading ? '加载中' : '加载更多' }}</el-button>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="偶像">
             <div id="roles">
@@ -577,7 +723,7 @@
               <el-button
                 :loading="rolesState.loading"
                 v-if="!roles.noMore"
-                id="load-post-btn"
+                class="load-more-btn"
                 @click="getRoles"
                 type="info"
                 plain
@@ -691,6 +837,9 @@
       },
       displayFollowers () {
         return this.followers.slice(0, 7)
+      },
+      cartoonInfo () {
+        return this.$store.state.bangumi.cartoon
       }
     },
     data () {
@@ -754,7 +903,7 @@
             this.getPosts()
           }
         } else if (label === '漫画') {
-          this.getCartoons(true)
+          this.getCartoons()
         } else if (label === '视频') {
           if (!this.videoState.init) {
             this.getVideos()
@@ -823,17 +972,16 @@
           this.postState.loading = false
         }
       },
-      async getCartoons (force) {
+      async getCartoons () {
         if (this.cartoonState.loading) {
           return
         }
         this.cartoonState.loading = true
 
         try {
-          await this.$store.dispatch('image/getCartoons', {
+          await this.$store.dispatch('bangumi/getCartoons', {
             ctx: this,
-            id: this.id,
-            force
+            bangumiId: this.id
           })
         } catch (e) {
           this.$toast.error(e)
@@ -912,7 +1060,13 @@
       openFeedbackForResource () {
         this.$channel.$emit('open-feedback', {
           type: 5,
-          desc: `我想看《${this.info.name}》第 ? 集`
+          desc: `我想看《${this.info.name}》的视频第 ? 集`
+        })
+      },
+      openFeedbackForCartoon () {
+        this.$channel.$emit('open-feedback', {
+          type: 7,
+          desc: `我想看《${this.info.name}》的漫画第 ? 话`
         })
       },
       openFeedbackForRole () {
@@ -938,7 +1092,8 @@
         } finally {
           this.loadingFollowers = false
         }
-      }
+      },
+      handleLikeCartoon () {}
     },
     mounted () {
       this.$channel.$on('get-page-bangumi-for-post-create', () => {

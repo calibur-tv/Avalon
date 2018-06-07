@@ -65,6 +65,10 @@
             value: 6
           },
           {
+            label: '求漫画',
+            value: 7
+          },
+          {
             label: '其它问题',
             value: 3
           }
