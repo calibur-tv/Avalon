@@ -9,8 +9,9 @@
       background-color: #000;
 
       > main {
-        overflow: hidden;
+        overflow: auto;
         padding: 0;
+        height: 100%;
       }
 
       img {
@@ -26,11 +27,36 @@
     }
 
     .el-carousel {
-      height: 700px;
       background-color: #000;
+      max-height: 100%;
 
       .el-carousel__container {
         height: 100%;
+      }
+
+      .el-carousel__indicators {
+        display: none;
+      }
+    }
+
+    #download-btn {
+      position: absolute;
+      bottom: 15px;
+      color: #fff;
+      text-align: center;
+      opacity: 0.8;
+      left: 50%;
+      margin-left: -51px;
+      z-index: 100;
+      text-shadow: 0 1px 10px gray;
+      padding: 6px 20px;
+      border-radius: 20px;
+      border: 1px solid #fff;
+      background-color: rgba(0,0,0,.4);
+      font-size: 15px;
+
+      &:hover {
+        opacity: 1;
       }
     }
   }
@@ -45,22 +71,25 @@
     :close="false"
   >
     <el-carousel
+      v-if="maxHeight"
       :autoplay="false"
-      arrow="always"
+      :arrow="length > 1 ? 'always' : 'never'"
       :initial-index="index"
-      height="700"
+      :height="`${maxHeight}`"
+      :style="{ height: `${maxHeight}px` }"
       @change="handleCarouselChange"
     >
       <el-carousel-item
-        v-for="item in images"
-        :key="item"
+        v-for="(item, idx) in images"
+        :key="`${idx}-${item}`"
       >
         <v-img
           :src="computeImageSize(item)"
-          :id="`image-reader-${index}`"
+          :id="`image-reader-${idx}`"
         ></v-img>
       </el-carousel-item>
     </el-carousel>
+    <a id="download-btn" target="_blank" :href="imageHref" :download="imageName" @click.stop>下载原图</a>
   </v-modal>
 </template>
 
@@ -75,17 +104,33 @@
         maxWidth: 0,
         maxHeight: 0,
         maxWidthHeightRate: 0,
-        maxHeightWidthRate: 0
+        maxHeightWidthRate: 0,
+        length: 0
+      }
+    },
+    computed: {
+      imageHref () {
+        if (!this.images.length) {
+          return ''
+        }
+        return this.images[this.index].url
+      },
+      imageName () {
+        return this.imageHref ? `calibur-tv-${Date.now()}.${this.imageHref.split('.').pop()}` : ''
       }
     },
     mounted () {
       this.computeMaxSize()
+      window.addEventListener('resize', () => {
+        this.computeMaxSize()
+      })
       this.$channel.$on('open-image-reader', ({ images, index }) => {
         if (!images) {
           return
         }
         this.images = Array.isArray(images) ? images : [images]
         this.index = index || 0
+        this.length = this.images.length
         this.open = true
         setTimeout(() => {
           const length = images.length
@@ -109,18 +154,17 @@
     methods: {
       computeMaxSize () {
         this.maxWidth = parseInt(document.body.offsetWidth * 0.9, 10)
-        this.maxHeight = 700
+        this.maxHeight = parseInt(document.body.offsetHeight * 0.9, 10)
         this.maxWidthHeightRate = this.maxWidth / this.maxHeight
         this.maxHeightWidthRate = this.maxHeight / this.maxWidth
       },
-      computeImageType (item) {
-        if (item.split('|http').length === 1) {
+      computeImageType (image) {
+        const width = image.width
+        const height = image.height
+
+        if (!width || !height) {
           return 0
         }
-
-        const attr = item.split('|http').shift().split('-')
-        const width = attr[0]
-        const height = attr[1]
 
         // 图片太小了，直接返回
         if (width < this.maxWidth && height < this.maxHeight) {
@@ -147,16 +191,28 @@
 
         return 5
       },
-      computeImageSize (item) {
-        const type = this.computeImageType(item)
+      computeImageSize (image) {
+        const type = this.computeImageType(image)
         if (type === 4) {
-          return this.$resize(item, { width: this.maxWidth, mode: 2 })
+          return this.$resize(image.url, { width: this.maxWidth, mode: 2 })
         }
-        return this.$resize(item, { height: this.maxHeight, mode: 2 })
+        return this.$resize(image.url, { height: this.maxHeight, mode: 2 })
       },
       handleCarouselChange (index) {
-        this.$channel.$emit(`image-load-image-reader-${index + 1}`)
-        this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+        this.$nextTick(() => {
+          const maxIndex = this.images.length - 1
+          if (index === 0) {
+            this.$channel.$emit(`image-load-image-reader-1`)
+            this.$channel.$emit(`image-load-image-reader-${maxIndex}`)
+          } else if (index === maxIndex) {
+            this.$channel.$emit(`image-load-image-reader-0`)
+            this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+          } else {
+            this.$channel.$emit(`image-load-image-reader-${index + 1}`)
+            this.$channel.$emit(`image-load-image-reader-${index - 1}`)
+          }
+          this.index = index
+        })
       }
     }
   }

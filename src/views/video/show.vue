@@ -3,7 +3,7 @@
     $meta-height: 30px;
     $meta-margin-bottom: 8px;
 
-    #metas {
+    #video-metas {
       margin-bottom: 20px;
       padding-right: 55px;
       overflow: hidden;
@@ -15,7 +15,6 @@
       }
 
       li {
-        float: left;
         margin: 0 8px $meta-margin-bottom 0;
       }
 
@@ -24,7 +23,8 @@
         margin-left: 10px;
       }
 
-      .meta, .more {
+      .more,
+      .v-parts a {
         border: 1px solid $color-gray-deep;
         height: $meta-height;
         color: $color-link;
@@ -49,10 +49,10 @@
         }
       }
 
-      .router-link-active {
+      .active {
         border-color: $color-blue-light;
         background-color: $color-blue-light;
-        color: $color-white;
+        color: $color-white !important;
       }
 
       .more {
@@ -103,32 +103,22 @@
           第{{ video.part }}话&nbsp;{{ video.name }}
         </h1>
       </nav>
-      <div id="metas">
+      <div id="video-metas">
         <template v-if="season && showAll">
-          <template v-for="(metas, idx) in list">
+          <template v-for="(videos, idx) in list">
             <h6 class="season-title" v-text="season.name[idx]"></h6>
-            <ul>
-              <li v-for="(meta, index) in metas.data" :key="meta.id">
-                <a class="meta"
-                   :class="{ 'router-link-active' : $route.params.id == meta.id }"
-                   :style="{ width: `${maxWidth}px` }"
-                   :href="$alias.video(meta.id)">
-                  <span>{{ videoPackage.list.repeat ? index + 1 : meta.part }}</span>{{ meta.name }}
-                </a>
-              </li>
-            </ul>
+            <v-part :list="videos.data" :alias="$alias.video">
+              <template slot-scope="{ item }">
+                <span>{{ item.part - videos.base }}</span>{{ item.name }}
+              </template>
+            </v-part>
           </template>
         </template>
-        <ul v-else>
-          <li v-for="meta in sortVideos" :key="meta.id">
-            <a class="meta"
-               :class="{ 'router-link-active' : $route.params.id == meta.id }"
-               :style="{ width: `${maxWidth}px` }"
-               :href="$alias.video(meta.id)">
-              <span>{{ meta.part }}</span>{{ meta.name }}
-            </a>
-          </li>
-        </ul>
+        <v-part :list="sortVideos" :alias="$alias.video" v-else>
+          <template slot-scope="{ item }">
+            <span>{{ item.part }}</span>{{ item.name }}
+          </template>
+        </v-part>
         <div class="more" v-if="showMoreBtn" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
       <no-ssr class="video-placeholder">
@@ -149,6 +139,7 @@
           :avatar="bangumi.avatar"
           :summary="bangumi.summary"
           :followed="bangumi.followed"
+          @follow="handleFollowAction"
         ></v-bangumi-panel>
         <v-share type="panel"></v-share>
         <el-button
@@ -166,6 +157,7 @@
 <script>
   import vVideo from '~/components/Video'
   import VideoApi from '~/api/videoApi'
+  import vPart from '~/components/lists/Parts'
 
   export default {
     name: 'video-show',
@@ -179,7 +171,8 @@
       }
     },
     components: {
-      vVideo
+      vVideo,
+      vPart
     },
     async asyncData ({ route, store, ctx }) {
       await store.dispatch('video/getShow', {
@@ -307,7 +300,7 @@
         this.maxWidth = 46 + maxlength * 8
       },
       computePage () {
-        this.take = Math.floor(document.getElementById('metas').offsetWidth / (this.maxWidth + 8)) * 2
+        this.take = Math.floor(document.getElementById('video-metas').offsetWidth / (this.maxWidth + 8)) * 2
         this.videos.forEach((meta) => {
           if (meta.id === this.id) {
             this.part = meta.part
@@ -327,11 +320,16 @@
           type: 4,
           desc: `【PC】-《${this.bangumi.name}》第${this.part}话 视频有错误，错误详情为：`
         })
+      },
+      handleFollowAction (result) {
+        this.$store.commit('video/FOLLOW_ALBUM_BANGUMI', { result })
       }
     },
     mounted () {
       this.computeMaxWidth()
-      this.computePage()
+      this.$nextTick(() => {
+        this.computePage()
+      })
       window.addEventListener('resize', () => {
         this.computeMaxWidth()
         this.computePage()

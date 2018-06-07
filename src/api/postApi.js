@@ -7,8 +7,10 @@ export default class extends BaseApi {
     })
   }
 
-  show ({ id, seenIds, take, only, replyId }) {
-    return this.http.post(`post/${id}/show`, { seenIds, take, only, replyId })
+  show ({ id, page, take, only, replyId }) {
+    return this.http.get(`post/${id}/show`, {
+      params: { page, take, only, replyId }
+    })
   }
 
   reply ({ postId, images, content, geetest }) {
@@ -23,8 +25,10 @@ export default class extends BaseApi {
     })
   }
 
-  comments ({ postId, seenIds }) {
-    return this.http.post(`post/${postId}/comments`, { seenIds })
+  comments ({ postId, page }) {
+    return this.http.get(`post/${postId}/comments`, {
+      params: { page }
+    })
   }
 
   deletePost (id) {
@@ -32,9 +36,7 @@ export default class extends BaseApi {
   }
 
   deleteComment ({ postId, commentId }) {
-    return this.http.post(`post/${postId}/deleteComment`, {
-      id: commentId
-    })
+    return this.http.post(`post/${postId}/deleteComment`, { commentId })
   }
 
   toggleLike (id) {
@@ -46,6 +48,8 @@ export default class extends BaseApi {
   }
 
   trending ({ sort, seenIds, take }) {
-    return this.http.post(`trending/post/${sort}`, { seenIds, take })
+    return this.http.get(`post/trending/${sort}`, {
+      params: { seenIds, take }
+    })
   }
 }

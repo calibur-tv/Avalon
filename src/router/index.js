@@ -51,7 +51,7 @@ export function createRouter () {
             component: () => import('~/views/video/show')
           },
           {
-            path: 'user/:slug',
+            path: 'user/:zone',
             name: 'user-show',
             component: () => import('~/views/user/show')
           },
@@ -70,8 +70,23 @@ export function createRouter () {
             component: () => import('~/views/about/hello')
           },
           {
-            path: 'trending/role',
+            path: 'role/trending',
             component: () => import('~/views/role/trending')
+          },
+          {
+            path: 'role/:id(\\d+)',
+            name: 'role-show',
+            component: () => import('~/views/role/show')
+          },
+          {
+            path: 'image/trending/:sort',
+            name: 'image-trending',
+            component: () => import('~/views/image/trending')
+          },
+          {
+            path: 'image/album/:id(\\d+)',
+            name: 'image-album',
+            component: () => import('~/views/image/album')
           }
         ]
       }

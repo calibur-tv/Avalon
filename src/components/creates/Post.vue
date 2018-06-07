@@ -21,21 +21,19 @@
     ref="forms"
     label-width="50px"
   >
-    <template v-if="!postId || !isReply">
-      <el-form-item label="标题" prop="title">
-        <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
-      </el-form-item>
-      <el-form-item label="番剧" prop="bangumiId">
-        <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
-          <el-option
-            v-for="item in optionBangumis"
-            :label="item.name"
-            :key="item.id"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-    </template>
+    <el-form-item label="标题" prop="title">
+      <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
+    </el-form-item>
+    <el-form-item label="番剧" prop="bangumiId">
+      <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
+        <el-option
+          v-for="item in optionBangumis"
+          :label="item.name"
+          :key="item.id"
+          :value="item.id"
+        ></el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="图片">
       <el-upload
         action="https://upload.qiniup.com"
@@ -56,14 +54,14 @@
     <el-form-item label="内容" prop="content">
       <el-input
         type="textarea"
-        placeholder="500字以内"
+        placeholder="1000字以内"
         resize="none"
         :rows="10"
         v-model.trim="forms.content"
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit">确认</el-button>
+      <el-button type="primary" @click="submit" :loading="submitting">确认</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -71,12 +69,6 @@
 <script>
   export default {
     name: 'create-post-form',
-    props: {
-      isReply: {
-        type: Boolean,
-        default: false
-      }
-    },
     data () {
       return {
         forms: {
@@ -93,7 +85,7 @@
             { type: 'number', required: true, message: '请选择相应番剧', trigger: 'change' }
           ],
           content: [
-            { required: true, max: 500, message: '内容不能为空，且不超过500字', trigger: 'blur' }
+            { required: true, max: 1000, message: '内容不能为空，且不超过1000字', trigger: 'blur' }
           ]
         },
         uploadHeaders: {
@@ -152,45 +144,25 @@
           if (valid) {
             this.$captcha({
               success: async ({ data }) => {
-                if (this.postId && this.isReply) {
-                  try {
-                    await this.$store.dispatch('post/reply', {
-                      postId: this.postId - 0,
-                      content: this.formatContent,
-                      images: this.formatImages,
-                      geetest: data,
-                      ctx: this
-                    })
-                    this.images = []
-                    this.$refs.forms.resetFields()
-                    this.$refs.uploader.clearFiles()
-                    this.$toast.success('回复成功！')
-                    this.submitting = false
-                  } catch (err) {
-                    this.$toast.error(err)
-                    this.submitting = false
-                  }
-                } else {
-                  try {
-                    const id = await this.$store.dispatch('post/create', {
-                      title: this.forms.title,
-                      bangumiId: this.forms.bangumiId,
-                      desc: this.forms.content.substring(0, 120),
-                      content: this.formatContent,
-                      images: this.formatImages,
-                      geetest: data,
-                      ctx: this
-                    })
-                    this.images = []
-                    this.$refs.forms.resetFields()
-                    this.$emit('submit')
-                    this.$toast.success('发布成功！')
-                    window.location = this.$alias.post(id)
-                    this.submitting = false
-                  } catch (err) {
-                    this.$toast.error(err)
-                    this.submitting = false
-                  }
+                try {
+                  const id = await this.$store.dispatch('post/create', {
+                    title: this.forms.title,
+                    bangumiId: this.forms.bangumiId,
+                    desc: this.forms.content.substring(0, 120),
+                    content: this.formatContent,
+                    images: this.formatImages,
+                    geetest: data,
+                    ctx: this
+                  })
+                  this.images = []
+                  this.$refs.forms.resetFields()
+                  this.$emit('submit')
+                  this.$toast.success('发布成功！')
+                  window.location = this.$alias.post(id)
+                  this.submitting = false
+                } catch (err) {
+                  this.$toast.error(err)
+                  this.submitting = false
                 }
               },
               error: (e) => {
@@ -256,14 +228,14 @@
           return
         }
         const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 3
 
         if (!isFormat) {
           this.$toast.error('图片只能是 JPG 或 PNG 格式!')
           return false
         }
         if (!isLt2M) {
-          this.$toast.error('图片大小不能超过 2MB!')
+          this.$toast.error('图片大小不能超过 3MB!')
           return false
         }
 
@@ -289,12 +261,10 @@
       }
     },
     mounted () {
-      if (!this.postId || !this.isReply) {
-        this.getUserFollowedBangumis()
-        this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
-          this.saveBangumiAndSelected(data)
-        })
-      }
+      this.getUserFollowedBangumis()
+      this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
+        this.saveBangumiAndSelected(data)
+      })
       if (this.$store.state.login) {
         this.getUpToken()
       }

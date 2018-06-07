@@ -1,11 +1,18 @@
+<style lang="scss">
+  #__share-logo {
+    display: none;
+  }
+</style>
+
 <template>
   <div id="app">
+    <img id="__share-logo" class="share-image" src="http://image.calibur.tv/owner/logo-new/logo.png?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/150" alt="logo">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import { qiniu, script } from 'env'
+  import { qiniu, script, env } from 'env'
 
   export default {
     name: 'Entry',
@@ -30,9 +37,9 @@
         { rel: 'shortcut icon', type: 'image/x-icon', href: `${qiniu.host}/favicon.ico` }
       ],
       script: [
-        { innerHTML: script.baiduStat, type: 'text/javascript' },
-        { innerHTML: script.baiduPush, type: 'text/javascript' }
-      ],
+        env !== 'development' ? { innerHTML: script.baiduStat, type: 'text/javascript', async: true } : '',
+        env !== 'development' ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true } : ''
+      ].filter(_ => _),
       __dangerouslyDisableSanitizers: 'script'
     },
     mounted () {

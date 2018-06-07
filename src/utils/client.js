@@ -7,8 +7,6 @@ import {
   Notification,
   MessageBox
 } from 'element-ui'
-import './validate'
-import flvjs from 'flv.js'
 import QRCode from '~/assets/js/qrcode'
 import Clipboard from '~/assets/js/clipboard'
 
@@ -33,8 +31,6 @@ Vue.use({
     }
 
     Vue.prototype.$captcha = captcha
-
-    Vue.prototype.$flvjs = flvjs
 
     Vue.prototype.$confirm = MessageBox.confirm
 
@@ -80,6 +76,9 @@ Vue.use({
     }())
 
     Vue.prototype.$checkInView = (dom, scale = 1) => {
+      if (Vue.prototype.$isServer || !(dom instanceof Element)) {
+        return false
+      }
       const rect = dom.getBoundingClientRect()
       return (rect.top < window.innerHeight * scale && rect.bottom > 0) && (rect.left < window.innerWidth * scale && rect.right > 0)
     }

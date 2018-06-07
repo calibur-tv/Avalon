@@ -161,16 +161,13 @@
       }
     }
 
-    #posts {
-    }
-
     #load-post-btn {
       margin-top: 20px;
       width: 100%;
     }
 
     .col-aside {
-      ul {
+      .tags-wrap {
         margin-bottom: 20px;
       }
 
@@ -202,6 +199,10 @@
             border: 3px solid #fff;
             border-radius: 50%;
           }
+        }
+
+        .no-one {
+          color: $color-text-normal;
         }
 
         .followers-more-btn {
@@ -238,6 +239,13 @@
               color: #333;
               vertical-align: middle;
               display: inline-block;
+            }
+
+            .score {
+              float: right;
+              font-size: 13px;
+              color: $color-text-light;
+              margin-top: 13px;
             }
           }
         }
@@ -397,45 +405,51 @@
       <aside class="col-aside">
         <div id="tags" v-if="tags.length">
           <h2 class="subtitle">标签</h2>
-          <ul>
+          <ul class="tags-wrap">
             <li class="tag" v-for="tag in tags" :key="tag.id">
               <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
             </li>
           </ul>
         </div>
-        <div id="followers" v-if="followers.length">
-          <h2 class="subtitle">关注的人（{{ info.count_like }}）</h2>
-          <ul>
-            <li class="follower" v-for="user in displayFollowers" :key="user.zone">
-              <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
+        <div id="followers">
+          <h2 class="subtitle">关注的人{{ info.count_like ? `（${info.count_like}）` : '' }}</h2>
+          <template v-if="info.count_like">
+            <ul>
+              <li class="follower" v-for="user in displayFollowers" :key="user.zone">
+                <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
+                  <a :href="$alias.user(user.zone)" target="_blank">
+                    <v-img
+                      :src="$resize(user.avatar, { width: 64, height: 64 })"
+                      :alt="user.zone"
+                    ></v-img>
+                  </a>
+                </el-tooltip>
+              </li>
+              <button
+                v-if="info.count_like > 7"
+                @click="openFollowersModal = true"
+                class="followers-more-btn el-icon-more"
+              ></button>
+            </ul>
+            <v-modal
+              v-model="openFollowersModal"
+              :header-text="`《${info.name}》的关注者们`"
+              :footer="false"
+              :loading="loadingFollowers"
+              :no-more="noMoreFollowers"
+              :scroll="fetchMoreFollowers"
+              class="bangumi-followers-modal"
+            >
+              <li v-for="user in followers" :key="user.id">
                 <a :href="$alias.user(user.zone)" target="_blank">
-                  <v-img
-                    :src="$resize(user.avatar, { width: 64, height: 64 })"
-                    :alt="user.zone"
-                  ></v-img>
+                  <img :src="$resize(user.avatar, { width: 120 })">
+                  <span v-text="user.nickname"></span>
+                  <v-time class="score" v-model="user.created_at"></v-time>
                 </a>
-              </el-tooltip>
-            </li>
-            <button
-              v-if="followers.length > 7"
-              @click="openFollowersModal = true"
-              class="followers-more-btn el-icon-more"
-            ></button>
-          </ul>
-          <v-modal
-            v-model="openFollowersModal"
-            :header-text="`《${info.name}》的关注者们`"
-            :footer="false"
-            :scroll="fetchMoreFollowers"
-            class="bangumi-followers-modal"
-          >
-            <li v-for="user in followers" :key="user.id">
-              <a :href="$alias.user(user.zone)" target="_blank">
-                <img :src="$resize(user.avatar, { width: 120 })">
-                <span v-text="user.nickname"></span>
-              </a>
-            </li>
-          </v-modal>
+              </li>
+            </v-modal>
+          </template>
+          <span class="no-one" v-else>还没有人关注</span>
         </div>
       </aside>
       <div class="col-main">
@@ -460,13 +474,13 @@
               <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
             </no-content>
           </el-tab-pane>
-          <el-tab-pane label="视频">
+          <el-tab-pane label="视频" v-if="info.has_video">
             <section id="videos" v-if="videos.data.length">
               <div v-if="info.season">
                 <template v-for="season in videos.data">
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
-                    <li v-for="(video, index) in season.data" :key="video.id">
+                    <li v-for="video in season.data" :key="video.id">
                       <a :href="$alias.video(video.id)"
                          target="_blank">
                         <figure>
@@ -476,7 +490,7 @@
                             :src="$resize(video.poster, { width: 192, height: 120 })"
                           ></v-img>
                           <figcaption class="abs">
-                            <p class="part oneline">第{{ videos.repeat ? index + 1 : video.part }}话</p>
+                            <p class="part oneline">第{{ video.part - season.base }}话</p>
                             <span class="name" v-text="video.name"></span>
                           </figcaption>
                         </figure>
@@ -507,10 +521,17 @@
               <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
             </no-content>
           </el-tab-pane>
+          <el-tab-pane label="漫画" v-if="info.has_cartoon">
+            <image-waterfall
+              :loading="imagesState.loading"
+              :role="roles.data"
+              @fetch="getCartoons(false)"
+            ></image-waterfall>
+          </el-tab-pane>
           <el-tab-pane label="偶像">
             <div id="roles">
               <ul>
-                <li class="role" v-for="item in roles.data">
+                <li class="role" v-for="item in roles.data" :key="item.id">
                   <div class="clearfix">
                     <div class="avatar">
                       <v-img :src="item.avatar" width="90" height="90"></v-img>
@@ -541,10 +562,10 @@
                     ·
                     <span v-if="item.lover">
                     守护者:
-                    <router-link :to="$alias.user(item.lover.zone)">
+                    <a target="_blank" :href="$alias.user(item.lover.zone)">
                       {{ item.lover.nickname }}
                       <v-img :src="item.lover.avatar" width="20" height="20"></v-img>
-                    </router-link>
+                    </a>
                   </span>
                     ·
                     <span class="load-list" @click="showRoleDetail(item, 'new')">最新应援</span>
@@ -574,32 +595,30 @@
                 v-model="openRolesModal"
                 :header-text="`${currentRole.name} · 应援团`"
                 :footer="false"
+                :loading="loadingRoleFans"
+                :no-more="currentRoleFans.noMore"
                 :scroll="fetchCurrentRoleFans"
               >
                 <li
                   v-for="item in currentRoleFans.data"
                   :key="item.id"
                 >
-                  <router-link class="lover-user" :to="$alias.user(item.zone)">
+                  <a class="lover-user" target="_blank" :href="$alias.user(item.zone)">
                     <img :src="$resize(item.avatar, { width: 80 })">
                     <span v-text="item.nickname"></span>
                     <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
                     <span class="score" v-else>{{ item.score }}个金币</span>
-                  </router-link>
+                  </a>
                 </li>
               </v-modal>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="图片">
+          <el-tab-pane label="相册">
             <image-waterfall
               :loading="imagesState.loading"
-              :no-more="images.noMore"
-              :list="images.data"
-              :col="4"
-              @delete="handleImageDelete"
-              @fetch="getImages"
+              :role="roles.data"
+              @fetch="getImages(false)"
             ></image-waterfall>
-            <no-content v-if="images.noMore && !images.data.length"></no-content>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -644,7 +663,7 @@
     },
     computed: {
       id () {
-        return this.$route.params.id
+        return parseInt(this.$route.params.id, 10)
       },
       info () {
         return this.$store.state.bangumi.info
@@ -665,7 +684,7 @@
         return this.$store.state.bangumi.roles
       },
       images () {
-        return this.$store.state.bangumi.images
+        return this.$store.state.image.waterfall
       },
       currentRoleFans () {
         return this.$store.state.cartoonRole.fans[this.focusRoleSort]
@@ -684,15 +703,17 @@
           loading: false,
           init: false
         },
+        cartoonState: {
+          loading: false,
+          init: false
+        },
         rolesState: {
           loading: false,
           init: false
         },
         imagesState: {
           loading: false,
-          init: false,
-          take: 12,
-          type: 'all'
+          init: false
         },
         openRolesModal: false,
         loadingRoleFans: false,
@@ -727,22 +748,25 @@
         }
       },
       handleTabClick (tab) {
-        const index = parseInt(tab.index, 10)
-        if (index === 0) {
+        const label = tab.label
+        if (label === '帖子') {
           if (!this.postState.init) {
             this.getPosts()
           }
-        } else if (index === 1) {
+        } else if (label === '漫画') {
+          this.getCartoons(true)
+        } else if (label === '视频') {
           if (!this.videoState.init) {
             this.getVideos()
           }
-        } else if (index === 2) {
+        } else if (label === '偶像') {
           if (!this.rolesState.init) {
             this.getRoles()
           }
-        } else if (index === 3) {
-          if (!this.imagesState.init) {
-            this.getImages()
+        } else if (label === '相册') {
+          this.getImages(true)
+          if (!this.rolesState.init) {
+            this.getRoles()
           }
         }
       },
@@ -772,7 +796,10 @@
         this.videoState.init = true
 
         try {
-          await this.$store.dispatch('bangumi/getVideos', this.id)
+          await this.$store.dispatch('bangumi/getVideos', {
+            ctx: this,
+            id: this.id
+          })
         } catch (e) {
           this.$toast.error(e)
         } finally {
@@ -796,17 +823,35 @@
           this.postState.loading = false
         }
       },
-      async getImages () {
-        if (this.imagesState.loading || this.images.noMore) {
+      async getCartoons (force) {
+        if (this.cartoonState.loading) {
+          return
+        }
+        this.cartoonState.loading = true
+
+        try {
+          await this.$store.dispatch('image/getCartoons', {
+            ctx: this,
+            id: this.id,
+            force
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.cartoonState.loading = false
+        }
+      },
+      async getImages (force) {
+        if (this.imagesState.loading) {
           return
         }
         this.imagesState.loading = true
 
         try {
-          await this.$store.dispatch('bangumi/getImages', {
+          await this.$store.dispatch('image/getBangumiImages', {
             ctx: this,
             id: this.id,
-            type: this.imagesState.type
+            force
           })
         } catch (e) {
           this.$toast.error(e)
@@ -845,7 +890,7 @@
           return
         }
         if (!this.$store.state.user.coin) {
-          this.$toast.warning('金币不足')
+          this.$toast.error('金币不足')
           return
         }
         try {
@@ -882,7 +927,7 @@
         }
         this.loadingFollowers = true
         try {
-          const data = this.$store.dispatch('bangumi/getFollowers', {
+          const data = await this.$store.dispatch('bangumi/getFollowers', {
             ctx: this,
             bangumiId: this.id,
             take: this.fetchFollowersCount
@@ -893,10 +938,6 @@
         } finally {
           this.loadingFollowers = false
         }
-      },
-      handleImageDelete ({ id }) {
-        this.$store.commit('bangumi/deleteImages', { id })
-        this.$toast.success('操作成功')
       }
     },
     mounted () {
@@ -908,6 +949,9 @@
         })
       })
       this.noMoreFollowers = this.followers.length < this.fetchFollowersCount
+      setTimeout(() => {
+        document.getElementById('tab-1').click()
+      }, 1000)
     }
   }
 </script>

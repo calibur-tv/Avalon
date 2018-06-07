@@ -26,6 +26,12 @@ const state = () => ({
       loading: false
     }
   },
+  roles: {
+    zone: '',
+    data: [],
+    page: 1,
+    noMore: false
+  },
   notifications: {
     checked: 0,
     take: 10,
@@ -34,16 +40,16 @@ const state = () => ({
   },
   self: {
     followBangumi: []
-  },
-  images: {
-    take: 12,
-    page: 0,
-    data: [],
-    noMore: false
   }
 })
 
 const mutations = {
+  SET_USER_ROLES (state, { data, zone }) {
+    state.roles.zone = zone
+    state.roles.data = state.roles.data.concat(data)
+    state.roles.noMore = data.length < 15
+    state.roles.page++
+  },
   SET_USER_INFO (state, { data, zone }) {
     state.list[zone] = state.list[zone]
       ? Object.assign(state.list[zone], data)
@@ -90,7 +96,7 @@ const mutations = {
     state.notifications.data.forEach((message, index) => {
       state.notifications.data[index].checked = true
     })
-    state.notifications.checked = state.notifications.data.length
+    state.notifications.checked = 88888888
   },
   CLEAR_FOLLOW_POST (state) {
     state.posts = {
@@ -117,11 +123,6 @@ const mutations = {
         loading: false
       }
     }
-  },
-  SET_USER_IMAGES (state, data) {
-    state.images.data = state.images.data.concat(data)
-    state.images.noMore = data.length < state.images.take
-    state.images.page++
   }
 }
 
@@ -157,26 +158,16 @@ const actions = {
       return
     }
     commit('SET_FOLLOW_POST_STATE', { type })
+    const list = state.posts[type].data
+    const length = list.length
     const api = new Api()
     const data = await api.followPosts({
       type,
+      zone,
       take: state.posts.take,
-      zone,
-      seenIds: state.posts[type].data.length ? state.posts[type].data.map(item => item.id).join(',') : null
+      minId: length ? list[length - 1].id : 0
     })
-    commit('SET_FOLLOW_POST_DATA', { type, data, zone })
-  },
-  async getUserImages ({ state, commit }, { zone, ctx }) {
-    if (state.images.noMore) {
-      return
-    }
-    const api = new Api(ctx)
-    const data = await api.images({
-      zone,
-      page: state.images.page,
-      take: state.images.take
-    })
-    commit('SET_USER_IMAGES', data)
+    data && commit('SET_FOLLOW_POST_DATA', { type, data, zone })
   },
   async daySign ({ rootState }, { ctx }) {
     if (rootState.user.signed) {
@@ -214,6 +205,23 @@ const actions = {
     const api = new Api(ctx)
     await api.readAllMessage()
     commit('READ_ALL_NOTIFICATION')
+  },
+  async getFollowRoles ({ state, commit }, { ctx, zone, reset }) {
+    if (
+      reset &&
+      state.roles.data.length
+    ) {
+      return
+    }
+    if (state.roles.noMore) {
+      return
+    }
+    const api = new Api(ctx)
+    const data = await api.followRoles({
+      zone,
+      page: state.roles.page
+    })
+    data && commit('SET_USER_ROLES', { data, zone })
   }
 }
 

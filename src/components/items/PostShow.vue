@@ -180,19 +180,19 @@
     </div>
     <p class="content" :class="{ 'min-height': !item.images.length }" v-text="item.desc" v-if="bangumiPage"></p>
     <p class="content" :class="{ 'min-height': !item.images.length }" v-else>
-      <a :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>
+      <a target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>
       :
       {{ item.desc }}
     </p>
     <div class="images clearfix" v-if="item.images.length">
       <div
         class="image-box"
-        :key="image"
         v-for="(image, index) in item.images"
+        :key="index"
         @click="$previewImages(item.images, index)"
       >
         <v-img
-          :src="image"
+          :src="image.url"
           height="90"
           mode="2"
           :aspect="$computeImageAspect(image)"

@@ -16,14 +16,28 @@ export default {
         data: [],
         noMore: false
       }
+    },
+    info: {
+      data: {},
+      bangumi: {}
     }
   }),
   mutations: {
-    SET_DATA (state, data) {
-      state.list = data.list
-      state.info = data.info
-      state.bangumi = data.bangumi
-      state.season = data.season
+    ADD_ROLE_STATE (state, { hasStar, user }) {
+      if (hasStar) {
+        state.info.data.hasStar++
+      } else {
+        state.info.data.hasStar = 1
+        state.info.data.fans_count++
+        state.fans.new.data.unshift(user)
+      }
+      state.info.data.star_count++
+    },
+    FOLLOW_ROLE_BANGUMI (state, { result }) {
+      state.info.bangumi.followed = result
+    },
+    SET_ROLE_INFO (state, data) {
+      state.info = data
     },
     SET_TRENDING (state, data) {
       state.trending.data = state.trending.data.concat(data)
@@ -47,11 +61,6 @@ export default {
     }
   },
   actions: {
-    async getShow ({ commit }, { id, ctx }) {
-      const api = new Api(ctx)
-      const data = await api.getShow(id)
-      commit('SET_DATA', data)
-    },
     async getTrending ({ state, commit }) {
       if (state.trending.noMore) {
         return
@@ -78,6 +87,25 @@ export default {
         seenIds: reset ? null : length ? state.fans[sort].data.map(item => item.id).join(',') : null
       }))
       commit('SET_FANS_LIST', { data, reset, sort })
+    },
+    async getRoleInfo ({ commit }, { ctx, id }) {
+      const api = new Api(ctx)
+      const data = await api.show(id)
+      commit('SET_ROLE_INFO', data)
+    },
+    async star ({ rootState, commit }, { bangumiId, roleId, ctx, hasStar }) {
+      const api = new Api(ctx)
+      await api.star({ bangumiId, roleId })
+      const self = rootState.user
+      commit('ADD_ROLE_STATE', {
+        hasStar,
+        user: {
+          id: self.id,
+          zone: self.zone,
+          avatar: self.avatar,
+          nickname: self.nickname
+        }
+      })
     }
   },
   getters: {}

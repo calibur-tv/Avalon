@@ -2,7 +2,7 @@ import Api from '~/api/bangumiApi'
 import CartoonRoleApi from '~/api/cartoonRoleApi'
 
 const state = () => ({
-  follows: Object.create(null),
+  follows: null,
   released: [],
   timeline: {
     data: [],
@@ -19,6 +19,7 @@ const state = () => ({
   },
   tags: [],
   info: null,
+  followersPage: 1,
   posts: {
     data: [],
     total: 0,
@@ -28,27 +29,21 @@ const state = () => ({
   },
   videos: {
     data: [],
-    repeat: false,
     total: 0,
     fetched: false
   },
   roles: {
+    id: 0,
     data: [],
-    noMore: false
-  },
-  images: {
-    data: [],
-    total: 0,
-    take: 12,
-    type: 0,
     noMore: false
   }
 })
 
 const mutations = {
-  SET_ROLES (state, data) {
+  SET_ROLES (state, { data, bangumiId }) {
     state.roles.data = state.roles.data.concat(data)
     state.roles.noMore = true
+    state.roles.id = bangumiId
   },
   selectTag (state, index) {
     const tag = state.tags[index]
@@ -69,6 +64,9 @@ const mutations = {
     })
   },
   SET_FOLLOW (state, { followed, self }) {
+    if (!state.info) {
+      return
+    }
     state.info.followed = followed
     followed ? state.info.count_like++ : state.info.count_like--
     if (followed) {
@@ -125,20 +123,13 @@ const mutations = {
   SET_VIDEOS (state, data) {
     state.videos = {
       data: data.videos,
-      repeat: data.repeat,
       total: data.total,
       fetched: true
     }
   },
   SET_BANGUMI_FOLLOWERS (state, data) {
     state.info.followers = state.info.followers.concat(data)
-  },
-  deleteImages (state, { id }) {
-    state.images.data.forEach((image, index) => {
-      if (image.id === id) {
-        state.images.data.splice(index, 1)
-      }
-    })
+    state.followersPage = state.followersPage + 1
   }
 }
 
@@ -156,8 +147,8 @@ const actions = {
     const data = await api.show(id)
     commit('SET_BANGUMI', data)
   },
-  async getVideos ({ commit }, id) {
-    const api = new Api()
+  async getVideos ({ commit }, { id, ctx }) {
+    const api = new Api(ctx)
     const data = await api.videos(id)
     commit('SET_VIDEOS', data)
   },
@@ -173,6 +164,7 @@ const actions = {
         nickname: rootState.user.nickname
       }
     })
+    return followed
   },
   async getReleased ({ state, commit }, ctx) {
     if (state.released.length) {
@@ -215,29 +207,14 @@ const actions = {
       total: data.total
     })
   },
-  async getRoles ({ state, commit }, { bangumiId, ctx, all }) {
-    if (state.roles.noMore) {
-      return
+  async getRoles ({ state, commit }, { bangumiId, ctx }) {
+    if (state.roles.id === bangumiId) {
+      return state.roles.data
     }
     const api = new Api(ctx)
     const data = await api.roles({ bangumiId })
-    if (all) {
-      return data
-    }
-    commit('SET_ROLES', data)
-  },
-  async getImages ({ state, commit }, { id, ctx }) {
-    const api = new Api(ctx)
-    const data = await api.images({
-      id,
-      take: state.images.take,
-      type: state.images.type,
-      seenIds: state.images.data.length ? state.images.data.map(item => item.id).join(',') : null
-    })
-    commit('SET_IMAGES', {
-      data: data.list,
-      total: data.total
-    })
+    commit('SET_ROLES', { data, bangumiId })
+    return data
   },
   async starRole ({ commit }, { bangumiId, roleId, ctx, hasStar }) {
     const api = new CartoonRoleApi(ctx)
@@ -251,7 +228,7 @@ const actions = {
     const data = await api.followers({
       take,
       bangumiId,
-      seenIds: state.info.followers.length ? state.info.followers.map(_ => _.id).join(',') : null
+      page: state.followersPage
     })
     commit('SET_BANGUMI_FOLLOWERS', data)
     return data

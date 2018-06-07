@@ -10,6 +10,7 @@
     position: relative;
     min-height: 600px;
     box-shadow: 0 1px 3px rgba(26,26,26,.1);
+    z-index: 0;
 
     &.vue-pwa-video-flex {
       display: flex;
@@ -179,12 +180,14 @@
       width: 100%;
     }
 
-    .other-site-video {
+    .not-play-screen {
       width: 100%;
       height: 100%;
       color: #ffffff;
       z-index: 999;
       text-align: center;
+      top: -50%;
+      transform: translateY(50%);
 
       p {
         width: 100%;
@@ -307,10 +310,16 @@
       @dblclick="screenclick ? screen() : ''"
       @mousemove="tool"
     >
-      <div v-if="otherSrc" class="other-site-video">
-        <p>应版权方要求，该视频暂不提供站内播放</p>
+      <div v-if="otherSrc" class="not-play-screen">
+        <p>应版权方要求 (⇀‸↼‶)，该视频暂不提供站内播放</p>
         <a :href="source" target="_blank">播放链接</a>
       </div>
+      <!--
+      <div v-else-if="isGuest" class="not-play-screen">
+        <p>流量压力太大了 (ಥ_ಥ)，需要登录才能看视频</p>
+        <a @click="$channel.$emit('sign-in')">立即登录</a>
+      </div>
+      -->
       <video
         v-else
         :preload="auto ? 'auto' : 'metadata'"
@@ -440,6 +449,11 @@
         default: false
       }
     },
+    computed: {
+      isGuest () {
+        return !this.$store.state.login
+      }
+    },
     data () {
       return {
         video: null,
@@ -512,6 +526,9 @@
         }
       },
       handleSeek (val) {
+        if (!this.video) {
+          return
+        }
         this.video.currentTime = val
         if (!this.state.playing) {
           this.handlePlay()
@@ -631,10 +648,11 @@
         }
       },
       loadResource () {
-        if (this.source.split('.').pop().toLowerCase() === 'flv') {
+        this.video = this.$refs.video
+        if (this.source.split('?')[0].split('.').pop().toLowerCase() === 'flv') {
           this.isFlv = true
-          if (this.$flvjs.isSupported()) {
-            const flvPlayer = this.$flvjs.createPlayer({
+          if (flvjs.isSupported()) {
+            const flvPlayer = flvjs.createPlayer({
               type: 'flv',
               url: this.source
             })
@@ -651,15 +669,24 @@
       }
     },
     mounted () {
+//      if (this.otherSrc || this.isGuest) {
+//        return
+//      }
       if (this.otherSrc) {
         return
       }
-      this.video = this.$refs.video
+      if (window.flvjs) {
+        this.loadResource()
+      } else {
+        import('flv.js').then(module => {
+          window.flvjs = module.default
+          this.loadResource()
+        })
+      }
       const self = this
       const video = self.$refs.video
       video.volume = self.value.voice / 100
       video.controls = false
-      self.loadResource()
 
       video.addEventListener('contextmenu', e => {
         e.preventDefault()
@@ -799,7 +826,9 @@
         let current = this.currentTime
         let timeArr = self.formatSeconds(current)
         self.value.playing = current
-        self.value.curTime = timeArr[1] + ':' + timeArr[2]
+        self.value.curTime = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
       })
 
       video.addEventListener('progress', function () {

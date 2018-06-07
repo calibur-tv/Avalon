@@ -179,9 +179,9 @@
             line-height: 24px;
             border-radius: 16px 0 0 16px;
             color: $color-white;
-            @include input-placeholder();
             border: 1px solid transparent;
             border-right: 0;
+            @include input-placeholder();
 
             &:focus {
               width: 235px;
@@ -326,7 +326,18 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <router-link class="nav-link" to="/trending/role">偶像</router-link>
+        <router-link class="nav-link" :to="$alias.roleTrending">偶像</router-link>
+        <el-dropdown>
+          <router-link class="nav-link el-dropdown-link" :to="$alias.imageTrending('new')">图片</router-link>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <router-link class="nav-link" :to="$alias.imageTrending('new')">最新上传</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link class="nav-link" :to="$alias.imageTrending('hot')">最多喜欢</router-link>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <router-link class="nav-link" to="/about/hello">功能简介</router-link>
       </nav>
       <nav class="header-right">
@@ -344,9 +355,9 @@
             <a class="nav-link" @click="showNotification = true" v-popover:popover>消息</a>
           </el-badge>
           <el-dropdown class="user-section" placement="bottom">
-            <router-link class="el-dropdown-link" :to="$alias.user(user.zone)">
+            <a class="el-dropdown-link" :href="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
-            </router-link>
+            </a>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <button @click="signOut">退出</button>
@@ -384,7 +395,12 @@
     },
     computed: {
       theme () {
-        return ['homepage', 'bangumi-show', 'user-show'].indexOf(this.$route.name) !== -1
+        return [
+          'homepage',
+          'bangumi-show',
+          'user-show',
+          'image-album'
+        ].indexOf(this.$route.name) !== -1
           ? 'mask'
           : 'blur'
       },

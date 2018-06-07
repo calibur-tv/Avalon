@@ -94,7 +94,6 @@
 
   export default {
     name: 'v-range',
-
     props: {
       min: {
         type: Number,
@@ -143,17 +142,17 @@
     computed: {
       containerStyle () {
         let style = {}
-        let size = (this.tailsize - this.barsize) / 2 + 'px'
+        let size = this.tailsize ? (this.tailsize - this.barsize) / 2 + 'px' : '0px'
         if (this.vertical) {
           style.paddingLeft = size
           style.paddingRight = size
           style.height = '100%'
-          style.width = this.tailsize + 'px'
+          style.width = (this.tailsize || this.barsize) + 'px'
         } else {
           style.paddingTop = size
           style.paddingBottom = size
           style.width = '100%'
-          style.height = this.tailsize + 'px'
+          style.height = (this.tailsize || this.barsize) + 'px'
         }
 
         return style
@@ -186,6 +185,10 @@
         }
       },
       thumbStyle () {
+        if (!this.tailsize) {
+          return {}
+        }
+
         this.getOffset()
 
         let style = {}

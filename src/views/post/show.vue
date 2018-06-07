@@ -143,7 +143,7 @@
             <div class="control">
               <el-button size="mini" plain @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
               <el-button size="mini" plain @click="scrollToReplyForm">回复</el-button>
-              <el-button size="mini" plain v-if="isMaster" @click="deletePost(post.id)">删除</el-button>
+              <el-button size="mini" plain v-if="isMaster" @click="deletePost">删除</el-button>
               <span class="floor">共{{ total }}条</span>
             </div>
             <h1 class="oneline" v-text="post.title"></h1>
@@ -158,10 +158,15 @@
               <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
             </el-col>
             <el-col class="content" :span="19">
-              <div class="image-package" v-for="(img, idx) in post.images" :key="img" @click="$previewImages(post.images, idx)">
+              <div
+                class="image-package"
+                v-for="(img, idx) in post.images"
+                :key="idx"
+                @click="$previewImages(post.images, idx)"
+              >
                 <v-img
                   class="image"
-                  :src="img"
+                  :src="img.url"
                   width="350"
                   mode="2"
                   :aspect="$computeImageAspect(img)"
@@ -228,7 +233,7 @@
             v-for="item in list"
             :key="item.id"
             :post="item"
-            @delete="deletePost(item.id)"
+            @delete="deletePostComment(item.id)"
           ></post-item>
         </main>
         <el-col :span="19" :offset="5">
@@ -243,7 +248,7 @@
             {{ loadingLoadMore ? '加载中' : '加载更多' }}
           </el-button>
           <div id="post-reply-form">
-            <post-create-form :is-reply="true"></post-create-form>
+            <post-reply></post-reply>
           </div>
         </el-col>
       </section>
@@ -252,7 +257,7 @@
 </template>
 
 <script>
-  import PostCreateForm from '~/components/creates/Post'
+  import PostReply from '~/components/creates/PostReply'
   import PostItem from '~/components/items/Post'
 
   export default {
@@ -268,11 +273,16 @@
       })
     },
     components: {
-      PostCreateForm, PostItem
+      PostReply,
+      PostItem
     },
     head () {
       return {
-        title: `${this.post.title} - 帖子`
+        title: `${this.post.title} - 帖子`,
+        meta: [
+          { hid: 'description', name: 'description', content: this.$utils.truncate(this.post.content) },
+          { hid: 'keywords', name: 'keywords', content: `calibur,帖子,天下漫友是一家,${this.post.title},${this.bangumi.name}` }
+        ]
       }
     },
     computed: {
@@ -282,9 +292,6 @@
       list () {
         return this.$utils.orderBy(this.resource.data.list, 'floor_count')
       },
-      total () {
-        return this.resource.data.total
-      },
       noMore () {
         return this.resource.data.noMore
       },
@@ -293,6 +300,9 @@
       },
       post () {
         return this.resource.info.post
+      },
+      total () {
+        return this.post.comment_count + 1
       },
       master () {
         return this.resource.info.user
@@ -327,7 +337,7 @@
           only: this.onlySeeMaster ? 0 : 1
         })
       },
-      deletePost (id) {
+      deletePost () {
         this.$confirm('删除后无法找回, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -335,11 +345,25 @@
         }).then(async () => {
           await this.$store.dispatch('post/deletePost', {
             ctx: this,
-            id
+            id: this.post.id
           })
-          if (id === this.post.id) {
-            window.location = this.$alias.bangumi(this.bangumi.id)
-          }
+          window.location = this.$alias.bangumi(this.bangumi.id)
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
+      },
+      deletePostComment (id) {
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          await this.$store.dispatch('post/deletePostComment', {
+            ctx: this,
+            postId: this.post.id,
+            commentId: id
+          })
+          this.$toast.success('删除成功')
         }).catch((e) => {
           this.$toast.error(e)
         })
@@ -353,7 +377,7 @@
           await this.$store.dispatch('post/getPost', {
             id: this.post.id,
             ctx: this,
-            only: this.onlySeeMaster
+            only: this.onlySeeMaster ? 1 : 0
           })
         } catch (e) {
           this.$toast.error(e)
@@ -375,10 +399,13 @@
         }
         this.loadingToggleLike = true
         try {
-          await this.$store.dispatch('post/toggleLike', {
+          const result = await this.$store.dispatch('post/toggleLike', {
             ctx: this,
             id: this.post.id
           })
+          if (result) {
+            this.$store.commit('USE_COIN')
+          }
         } catch (err) {
           this.$toast.error(err)
         } finally {

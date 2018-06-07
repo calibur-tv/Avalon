@@ -1,8 +1,9 @@
 const env = process.env.NODE_ENV
+const port = process.env.PORT || 3000
 const isDev = env === 'development'
 const isProd = env === 'production'
 const host = isProd ? '0.0.0.0' : '127.0.0.1'
-const port = process.env.PORT || 3000
+
 const fs = require('fs')
 const path = require('path')
 const resolve = file => path.resolve(__dirname, file)
@@ -10,10 +11,10 @@ const resolve = file => path.resolve(__dirname, file)
 const Koa = require('koa')
 const LRU = require('lru-cache')
 const Route = require('koa-router')
-const compress = require('koa-compress')
 
 const app = new Koa()
 const router = new Route()
+
 const microCache = LRU({
   max: 100,
   maxAge: isDev ? 0 : 1000 * 60 * 15
@@ -36,15 +37,6 @@ const templatePath = resolve('./src/templates/200.template.html')
 const template = cacheHTML(200)
 
 let renderer
-
-app.use(compress({
-  // eslint-disable-next-line
-  filter: function (content_type) {
-    return /text/i.test(content_type)
-  },
-  threshold: 2048,
-  flush: require('zlib').Z_SYNC_FLUSH
-}))
 
 if (isDev) {
   app.use(require('koa-logger')())
@@ -86,6 +78,12 @@ router.get('*', async ctx => {
     url: req.url,
     ctx: ctx.request
   }
+
+  ctx.set('X-XSS-Protection', '1; mode=block')
+  ctx.set('Transfer-Encoding', 'chunked')
+  ctx.set('X-Content-Type-Options', 'nosniff')
+  ctx.set('X-Frame-Options', 'DENY')
+  ctx.set('Cache-Control', 'max-age=0, private')
 
   try {
     ctx.body = await renderer.renderToString(context)

@@ -28,14 +28,16 @@
     }
 
     .v-modal-mask {
-      background-color: rgba(0, 0, 0, .3);
+      background-color: #ffffff;
       position: absolute;
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
       transition: opacity $time;
-      opacity: 1;
+      opacity: .5;
+      filter: blur(50px);
+      filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=50, MakeShadow=false);
     }
 
     .v-modal {
@@ -106,6 +108,13 @@
         flex-grow: 1;
         overflow-x: hidden;
         overflow-y: auto;
+
+        .list-loading,
+        .list-no-more {
+          text-align: center;
+          font-size: 13px;
+          margin-top: 20px;
+        }
       }
 
       >footer {
@@ -114,30 +123,20 @@
 
         button {
           float: right;
-          font-size: 14px;
-          height: 30px;
-          padding: 0 15px;
           margin-left: 10px;
-          border-radius: 4px;
-          font-weight: 600;
         }
 
         .cancel {
           background-color: $color-white;
           color: $color-text-light;
+          height: 32px;
+          font-size: 12px;
+          border-radius: 3px;
+          padding: 0 15px;
 
           &:hover {
             background-color: $color-gray-normal;
             color: $color-text-normal;
-          }
-        }
-
-        .submit {
-          background-color: $color-blue-light;
-          color: $color-white;
-
-          &:hover {
-            background-color: $color-blue-normal;
           }
         }
       }
@@ -157,15 +156,19 @@
             </slot>
           </header>
           <a v-if="close" class="close" @click="handleCancel">&times;</a>
-          <main @scroll="handleScroll">
-            <ul v-if="scroll" ref="ul">
-              <slot></slot>
-            </ul>
+          <main @scroll="handleScroll($event)">
+            <template v-if="scroll">
+              <ul ref="ul">
+                <slot></slot>
+              </ul>
+              <p class="list-loading" v-if="loading">加载中...</p>
+              <p class="list-no-more" v-else-if="noMore">没有更多了</p>
+            </template>
             <slot v-else></slot>
           </main>
           <footer v-if="footer">
             <slot name="footer">
-              <button class="submit" @click="handleSubmit" v-text="submitText"></button>
+              <el-button type="primary" size="small" :loading="loading" @click="handleSubmit" v-text="submitText"></el-button>
               <button class="cancel" @click="handleCancel" v-text="cancelText"></button>
             </slot>
           </footer>
@@ -176,6 +179,8 @@
 </template>
 
 <script>
+  import { debounce } from 'lodash'
+
   export default {
     name: 'v-modal',
     props: {
@@ -194,6 +199,14 @@
       footer: {
         type: Boolean,
         default: true
+      },
+      loading: {
+        type: Boolean,
+        default: false
+      },
+      noMore: {
+        type: Boolean,
+        default: false
       },
       submitText: {
         type: String,
@@ -217,8 +230,8 @@
         this.$emit('input', val)
       },
       value (val) {
-        val ? document.body.classList.add('v-popup') : document.body.classList.remove('v-popup')
         this.toggle = val
+        this.drawAnimation(val)
       }
     },
     data () {
@@ -227,6 +240,13 @@
       }
     },
     methods: {
+      drawAnimation (isOpen) {
+        if (isOpen) {
+          document.body.classList.add('v-popup')
+        } else {
+          document.body.classList.remove('v-popup')
+        }
+      },
       handleSubmit () {
         this.$emit('submit')
       },
@@ -234,15 +254,19 @@
         this.$emit('cancel')
         this.toggle = false
       },
-      handleScroll (evt) {
-        if (!this.scroll) {
+      handleScroll: debounce(function (evt) {
+        if (!this.scroll || this.loading || this.noMore) {
           return
         }
-        const main = evt.currentTarget
-        if (this.$refs.ul.clientHeight - main.clientHeight - main.scrollTop < 30) {
+        const ul = this.$refs.ul
+        if (!ul) {
+          return
+        }
+        const main = evt.currentTarget || evt.target
+        if (ul.clientHeight - main.clientHeight - main.scrollTop < 30) {
           this.scroll()
         }
-      }
+      }, 200)
     }
   }
 </script>

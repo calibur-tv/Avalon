@@ -166,6 +166,7 @@
 
       .signature {
         margin: 30px 0 20px 0;
+        max-width: 600px;
       }
 
       .buttons {
@@ -175,6 +176,26 @@
     }
 
     .container {
+      .faker-tips {
+        margin-left: 54px;
+        margin-bottom: 25px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        background-color: #fef0f0;
+        color: #f56c6c;
+
+        span {
+          font-size: 13px;
+          line-height: 18px;
+          font-weight: 700;
+        }
+
+        p {
+          font-size: 12px;
+          margin-top: 5px;
+        }
+      }
+
       .el-tabs__active-bar:after {
         display: none;
       }
@@ -182,6 +203,10 @@
       .el-tabs__header {
         width: 100px;
         margin-right: 50px;
+      }
+
+      .el-radio-group {
+        margin-left: 10px;
       }
 
       $video-item-width: 220px;
@@ -364,11 +389,26 @@
               .time {
                 float: right;
                 display: block;
+                line-height: 32px;
                 color: #999;
                 font-size: 12px;
                 position: relative;
                 z-index: 1;
                 margin-right: 12px;
+              }
+
+              .avatar {
+                display: block;
+                float: right;
+                margin-top: 4px;
+                position: relative;
+                z-index: 1;
+
+                img {
+                  display: block;
+                  width: 24px;
+                  height: 24px;
+                }
               }
             }
 
@@ -470,7 +510,53 @@
         }
       }
 
-      .load-post-btn {
+      .cartoon-role {
+        li {
+          margin-bottom: 15px;
+          padding-bottom: 15px;
+          border-bottom: 1px dotted #e4e6eb;
+          max-width: 800px;
+        }
+
+        img {
+          width: 84px;
+          height: 84px;
+          margin-right: 10px;
+          float: left;
+        }
+
+        .text {
+          overflow: hidden;
+
+          h4 {
+            margin-bottom: 2px;
+            line-height: 19px;
+          }
+
+          .intro {
+            height: 38px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            @include twoline(20px);
+          }
+
+          .meta {
+            text-align: right;
+
+            span {
+              margin-right: 10px;
+              margin-left: 10px;
+              font-size: 13px;
+            }
+          }
+        }
+
+        .load-more-btn {
+          width: 800px;
+        }
+      }
+
+      .load-more-btn {
         margin-top: 20px;
         width: 100%;
       }
@@ -541,9 +627,15 @@
       </no-ssr>
     </section>
     <div class="container">
+      <div class="faker-tips" v-if="user.faker">
+        <span>重要提醒</span>
+        <p>这是一个运营号，并非本人，该账号下所有信息都是搬运而来</p>
+        <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的金币也将归你所有</p>
+        <p>当然，你也有权要求我们删除所有你的内容</p>
+      </div>
       <el-tabs tab-position="left" @tab-click="handleTabClick">
         <el-tab-pane label="番剧">
-          <ul class="bangumis">
+          <ul class="bangumis" v-if="bangumis.length">
             <li v-for="item in bangumis" :key="item.id">
               <a :href="$alias.bangumi(item.id)" target="_blank">
                 <figure>
@@ -559,9 +651,10 @@
               </a>
             </li>
           </ul>
+          <no-content v-else></no-content>
         </el-tab-pane>
         <el-tab-pane label="帖子">
-          <el-radio-group v-model="postTab" @change="handlePostTabClick">
+          <el-radio-group v-model="postTab" @change="handlePostTabClick" size="mini">
             <el-radio-button label="发表"></el-radio-button>
             <el-radio-button label="回复"></el-radio-button>
             <el-radio-button label="喜欢"></el-radio-button>
@@ -579,15 +672,17 @@
                   <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
                   <span class="time">
                     发表于: <v-time v-model="item.created_at"></v-time>
-                </span>
+                  </span>
                 </div>
                 <p class="content" v-text="item.desc"></p>
                 <div class="images clearfix" v-if="item.images.length">
-                  <div class="image-box"
-                       :key="image"
-                       v-for="(image, index) in item.images"
-                       @click="$previewImages(item.images, index)">
-                    <v-img :src="image" height="90" mode="2"></v-img>
+                  <div
+                    class="image-box"
+                    v-for="(image, index) in item.images"
+                    :key="index"
+                    @click="$previewImages(item.images, index)"
+                  >
+                    <v-img :src="image.url" height="90" mode="2"></v-img>
                   </div>
                 </div>
                 <div class="footer clearfix">
@@ -600,7 +695,7 @@
             <el-button
               :loading="posts.loading"
               v-if="!posts.noMore"
-              class="load-post-btn"
+              class="load-more-btn"
               @click="getUserPosts(false)"
               type="info"
               plain
@@ -610,32 +705,43 @@
             <ul class="posts posts-of-reply">
               <li v-for="item in posts.data" :key="item.id">
                 <div class="header clearfix">
-                  回复来自番剧
-                  <a class="href-fade-blue" target="_blank" :href="$alias.bangumi(item.bangumi.id)" v-text="item.bangumi.name"></a>
-                  的帖子
-                  <a class="href-fade-blue" target="_blank" :href="$alias.post(item.post.id)">《{{ item.post.title }}》</a>
+                  回复：
+                  <a
+                    class="href-fade-blue"
+                    target="_blank"
+                    :href="$alias.post(item.post.id)"
+                    v-text="item.post.title"
+                  ></a>
+                  <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
+                    <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+                      <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                    </a>
+                  </el-tooltip>
                   <v-time class="time" v-model="item.created_at"></v-time>
                 </div>
                 <div class="origin">
-                  <a class="href-fade-blue" target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>：
-                  <div class="content" v-html="item.parent.content"></div>
-                  <div class="images clearfix" v-if="item.parent.images.length">
-                    <div class="image-box"
-                         :key="image"
-                         v-for="(image, index) in item.parent.images"
-                         @click="$previewImages(item.parent.images, index)">
-                      <v-img :src="image" height="90" mode="2"></v-img>
+                  <div class="content" v-html="item.post.content"></div>
+                  <div class="images clearfix" v-if="item.post.images.length">
+                    <div
+                      class="image-box"
+                      v-for="(image, index) in item.post.images"
+                      @click="$previewImages(item.post.images, index)"
+                      :key="index"
+                    >
+                      <v-img :src="image.url" height="90" mode="2"></v-img>
                     </div>
                   </div>
                 </div>
                 <div class="reply">
                   <div class="content" v-html="item.content"></div>
                   <div class="images clearfix" v-if="item.images.length">
-                    <div class="image-box"
-                         :key="image"
-                         v-for="(image, index) in item.images"
-                         @click="$previewImages(item.images, index)">
-                      <v-img :src="image" height="90" mode="2"></v-img>
+                    <div
+                      class="image-box"
+                      v-for="(image, index) in item.images"
+                      @click="$previewImages(item.images, index)"
+                      :key="index"
+                    >
+                      <v-img :src="image.url" height="90" mode="2"></v-img>
                     </div>
                   </div>
                 </div>
@@ -644,7 +750,7 @@
             <el-button
               :loading="posts.loading"
               v-if="!posts.noMore"
-              class="load-post-btn"
+              class="load-more-btn"
               @click="getUserPosts(false)"
               type="info"
               plain
@@ -666,16 +772,49 @@
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"></no-content>
         </el-tab-pane>
+        <el-tab-pane label="偶像">
+          <div class="cartoon-role" v-if="roles.data.length">
+            <ul>
+              <li class="clearfix" v-for="item in roles.data">
+                <a :href="$alias.cartoonRole(item.id)" target="_blank">
+                  <img :src="$resize(item.avatar, { width: 168 })">
+                </a>
+                <div class="text">
+                  <a :href="$alias.cartoonRole(item.id)" target="_blank">
+                    <h4 v-text="item.name"></h4>
+                  </a>
+                  <p class="intro" v-text="item.intro"></p>
+                  <div class="meta">
+                    <span>粉丝: {{ item.fans_count }}</span>
+                    ·
+                    <span>金币: {{ item.star_count }}</span>
+                    ·
+                    <span>贡献: {{ item.has_star }}</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <el-button
+              :loading="loadingFetchUserRoles"
+              v-if="!roles.noMore"
+              class="load-more-btn"
+              @click="getUserRoles(false)"
+              type="info"
+              plain
+            >{{ loadingFetchUserRoles ? '加载中' : '加载更多' }}</el-button>
+          </div>
+          <no-content v-else-if="roles.noMore">
+            <a :href="$alias.roleTrending" v-if="isMe" target="_blank">查看角色列表</a>
+          </no-content>
+        </el-tab-pane>
         <el-tab-pane label="图片">
           <image-waterfall
             :loading="loadingUserImageFetch"
-            :no-more="images.noMore"
-            :list="images.data"
+            :bangumi="bangumis"
             @fetch="getUserImages(false)"
-          ></image-waterfall>
-          <no-content v-if="images.noMore && !images.data.length">
+          >
             <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
-          </no-content>
+          </image-waterfall>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
@@ -687,11 +826,12 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item label="生日">
-                  <el-date-picker v-model="settingForm.birthday"
-                                  type="date"
-                                  :editable="false"
-                                  :clearable="false"
-                                  placeholder="选择日期"
+                  <el-date-picker
+                    v-model="settingForm.birthday"
+                    type="date"
+                    :editable="false"
+                    :clearable="false"
+                    placeholder="选择日期"
                   ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="性别">
@@ -702,15 +842,16 @@
                     </el-radio-group>
                   </el-col>
                   <el-col v-if="settingForm.sex">
-                    <el-switch v-model="settingForm.sexSecret"
-                               active-text="私密"
-                               inactive-text="公开"
+                    <el-switch
+                      v-model="settingForm.sexSecret"
+                      active-text="私密"
+                      inactive-text="公开"
                     ></el-switch>
                   </el-col>
                 </el-form-item>
                 <el-form-item label="签名" prop="signature">
                   <el-col :span="20">
-                    <el-input type="textarea" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
+                    <el-input type="textarea" :rows="5" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
                   </el-col>
                 </el-form-item>
                 <el-form-item>
@@ -733,7 +874,7 @@
 
   export default {
     async asyncData ({ route, store, ctx }) {
-      const zone = route.params.slug
+      const zone = route.params.zone
       const arr = [
         store.dispatch('users/getUser', {
           ctx, zone
@@ -745,7 +886,7 @@
       await Promise.all(arr)
     },
     head () {
-      if (!this.slug) {
+      if (!this.zone) {
         return
       }
       return {
@@ -761,12 +902,12 @@
       ImageWaterfall
     },
     computed: {
-      slug () {
-        return this.$route.params.slug
+      zone () {
+        return this.$route.params.zone
       },
       isMe () {
         return this.$store.state.login
-          ? this.slug === this.self.zone
+          ? this.zone === this.self.zone
           : false
       },
       self () {
@@ -775,10 +916,10 @@
       user () {
         return this.isMe
           ? this.self
-          : this.$store.state.users.list[this.slug]
+          : this.$store.state.users.list[this.zone]
       },
       bangumis () {
-        return this.$store.state.users.list[this.slug].bangumis
+        return this.$store.state.users.list[this.zone].bangumis
       },
       banner () {
         return this.bannerSelector.showBar
@@ -802,13 +943,16 @@
         return this.$store.state.users.posts[this.postListType]
       },
       images () {
-        return this.$store.state.users.images
+        return this.$store.state.image.waterfall
       },
       daySigned () {
         return this.self.daySign
       },
       coinCount () {
         return this.self.coin
+      },
+      roles () {
+        return this.$store.state.users.roles
       }
     },
     data () {
@@ -837,7 +981,7 @@
             { validator: validateNickname, trigger: 'blur' }
           ],
           signature: [
-            { max: 20, message: '请缩减至20字以内', trigger: 'blur' }
+            { max: 150, message: '请缩减至150字以内', trigger: 'blur' }
           ]
         },
         avatarCropper: {
@@ -855,7 +999,8 @@
         postTab: '发表',
         signDayLoading: false,
         loadingUserImageFetch: false,
-        loadingUserBangumiFetch: false
+        loadingUserBangumiFetch: false,
+        loadingFetchUserRoles: false
       }
     },
     methods: {
@@ -870,6 +1015,8 @@
           }
         } else if (tab.label === '帖子') {
           this.getUserPosts(true)
+        } else if (tab.label === '偶像') {
+          this.getUserRoles(true)
         } else if (tab.label === '图片') {
           this.getUserImages(true)
         }
@@ -886,9 +1033,9 @@
         }
         this.loadingUserBangumiFetch = true
         try {
-          this.$store.dispatch('users/getFollowBangumis', {
+          await this.$store.dispatch('users/getFollowBangumis', {
             ctx: this,
-            zone: this.slug
+            zone: this.zone
           })
         } finally {
           this.loadingUserBangumiFetch = false
@@ -903,8 +1050,8 @@
           zone: this.user.zone
         })
       },
-      getUserImages (isFirstRequest) {
-        if (isFirstRequest && this.$store.state.users.images.data.length) {
+      async getUserImages (isFirstRequest) {
+        if (isFirstRequest && this.images.data.length) {
           return
         }
         if (this.loadingUserImageFetch) {
@@ -912,9 +1059,10 @@
         }
         this.loadingUserImageFetch = true
         try {
-          this.$store.dispatch('users/getUserImages', {
+          await this.$store.dispatch('image/getUserImages', {
             zone: this.user.zone,
-            ctx: this
+            ctx: this,
+            force: isFirstRequest
           })
         } catch (e) {
           this.$toast.error(e)
@@ -922,12 +1070,29 @@
           this.loadingUserImageFetch = false
         }
       },
+      async getUserRoles (isFirstRequest = false) {
+        if (this.loadingFetchUserRoles) {
+          return
+        }
+        this.loadingFetchUserRoles = true
+        try {
+          await this.$store.dispatch('users/getFollowRoles', {
+            ctx: this,
+            zone: this.user.zone,
+            reset: isFirstRequest
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loadingFetchUserRoles = false
+        }
+      },
       saveSetting () {
         this.$refs.settingForm.validate((valid) => {
           if (valid) {
             const birthday = this.settingForm.birthday ? new Date(this.settingForm.birthday).getTime() / 1000 : 0
             if (birthday && (Date.now() / 1000 - birthday < 315360000)) {
-              this.$toast.warning('小于10岁？不应该...')
+              this.$toast.error('小于10岁？不应该...')
               return
             }
             const api = new UserApi(this)
@@ -940,7 +1105,6 @@
             api.settingProfile(data).then(() => {
               this.$toast.success('设置成功')
               this.$store.commit('SET_USER_INFO', Object.assign({}, this.self, data))
-              this.$store.commit('users/removeUser', this.slug)
             }).catch((err) => {
               this.$toast.error(err)
             })
@@ -952,7 +1116,7 @@
       openAvatarModal (e) {
         const file = e.target.files[0]
         if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
-          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          this.$toast.error('仅支持 jpg / jpeg / png 格式的图片')
           return
         }
         const reader = new FileReader()
@@ -999,7 +1163,7 @@
       selectBanner (e) {
         const file = e.target.files[0]
         if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
-          this.$toast.warning('仅支持 jpg / jpeg / png 格式的图片')
+          this.$toast.error('仅支持 jpg / jpeg / png 格式的图片')
           return
         }
         const reader = new FileReader()

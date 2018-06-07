@@ -1,4 +1,5 @@
 import Api from '~/api/postApi'
+import CommentApi from '~/api/commentApi'
 
 const state = () => ({
   trending: {
@@ -15,26 +16,33 @@ const state = () => ({
   show: {
     init: true,
     take: 10,
+    page: 0,
     info: {
       bangumi: null,
       user: null,
       post: null
     },
     data: {
-      total: 0,
       list: [],
       noMore: false
-    }
+    },
+    seenIds: []
   }
 })
 
 const mutations = {
   setPost (state, data) {
-    state.show.data = {
-      list: state.show.data.list.concat(data.list),
-      noMore: state.show.init ? (data.list.length < state.show.take - 1) : (data.list.length < state.show.take),
-      total: data.total
-    }
+    data.list.forEach(item => {
+      if (state.show.seenIds.indexOf(item.id) === -1) {
+        const commentIds = item.comments.map(_ => _.id)
+        state.show.data.list.push(Object.assign(item, {
+          __comment_page: 1,
+          __seen_comment_ids: commentIds
+        }))
+        state.show.seenIds.push(item.id)
+      }
+    })
+    state.show.data.noMore = state.show.init ? (data.list.length < state.show.take - 1) : (data.list.length < state.show.take)
     if (state.show.init) {
       state.show.info = {
         bangumi: data.bangumi,
@@ -43,32 +51,33 @@ const mutations = {
       }
       state.show.init = false
     }
+    state.show.page = state.show.page + 1
   },
-  setComment (state, { postId, data }) {
+  setComment (state, { id, data }) {
     state.show.data.list.forEach((item, index) => {
-      if (item.id === postId) {
+      if (item.id === id) {
         state.show.data.list[index].comments.push(data)
+        state.show.data.list[index].__seen_comment_ids.push(data.id)
         state.show.data.list[index].comment_count++
       }
     })
   },
-  setComments (state, { postId, data }) {
-    state.show.data.list.forEach((post, index) => {
-      if (post.id === postId) {
-        state.show.data.list[index].comments = state.show.data.list[index].comments.concat(data)
+  setComments (state, { id, data }) {
+    const list = state.show.data.list
+    let index = 0
+    list.forEach((post, idx) => {
+      if (post.id === id) {
+        index = idx
       }
     })
-  },
-  delPost (state, postId) {
-    if (postId === state.show.info.post.id) {
-      return
-    }
-    state.show.data.list.forEach((item, index) => {
-      if (item.id === postId) {
-        state.show.data.list.splice(index, 1)
-        state.show.data.total--
+    const seenIds = list[index].__seen_comment_ids
+    data.forEach(item => {
+      if (seenIds.indexOf(item.id) === -1) {
+        state.show.data.list[index].comments.push(item)
+        state.show.data.list[index].__seen_comment_ids.push(item.id)
       }
     })
+    state.show.data.list[index].__comment_page = list[index].__comment_page + 1
   },
   delComment (state, { postId, commentId }) {
     state.show.data.list.forEach((post, index) => {
@@ -88,18 +97,17 @@ const mutations = {
       noMore: data.length < state.trending.take
     }
   },
-  TOGGLE_LIKE (state, { id, result }) {
-    if (id === state.show.info.post.id) {
-      state.show.info.post.liked = result
-      result ? state.show.info.post.like_count++ : state.show.info.post.like_count--
-    } else {
-      state.show.data.list.forEach((item, index) => {
-        if (item.id === id) {
-          state.show.data.list[index].liked = result
-          result ? state.show.data.list[index].like_count++ : state.show.data.list[index].like_count--
-        }
-      })
-    }
+  TOGGLE_LIKE_POST (state, { result }) {
+    state.show.info.post.liked = result
+    result ? state.show.info.post.like_count++ : state.show.info.post.like_count--
+  },
+  TOGGLE_LIKE_COMMENT (state, { id, result }) {
+    state.show.data.list.forEach((item, index) => {
+      if (item.id === id) {
+        state.show.data.list[index].liked = result
+        result ? state.show.data.list[index].like_count++ : state.show.data.list[index].like_count--
+      }
+    })
   },
   TOGGLE_MARK (state, result) {
     state.show.info.post.marked = result
@@ -107,6 +115,7 @@ const mutations = {
   },
   REPLY_POST (state, data) {
     state.show.data.list.push(data)
+    state.show.seenIds.push(data.id)
     state.show.info.post.comment_count++
     state.show.data.total++
     const images = data.images
@@ -116,6 +125,14 @@ const mutations = {
   },
   followBangumi (state, result) {
     state.show.info.bangumi.followed = result
+  },
+  DELETE_POST_COMMENT (state, { commentId }) {
+    state.show.data.list.forEach((item, index) => {
+      if (item.id === commentId) {
+        state.show.data.list.splice(index, 1)
+        state.show.info.post.comment_count--
+      }
+    })
   }
 }
 
@@ -126,28 +143,36 @@ const actions = {
     const data = await api.show({
       id,
       only,
-      seenIds: length ? state.show.data.list.map(item => item.id).join(',') : null,
+      page: state.show.page,
       take: state.show.take,
       replyId: length ? null : reply
     })
     commit('setPost', data)
   },
-  async getComments ({ state, commit }, { postId }) {
-    state.show.data.list.forEach(async (post, index) => {
-      if (post.id === postId) {
-        const api = new Api()
-        const seenIds = state.show.data.list[index].comments.length
-          ? state.show.data.list[index].comments.map(item => item.id).join(',')
-          : null
-        const data = await api.comments({ postId, seenIds })
-        commit('setComments', { postId, data })
+  async getComments ({ state, commit }, { id, ctx }) {
+    let page = 0
+    state.show.data.list.forEach(item => {
+      if (item.id === id) {
+        page = item.__comment_page
       }
     })
+    const api = new CommentApi(ctx)
+    const data = await api.list({
+      type: 'post',
+      id,
+      page
+    })
+    data && commit('setComments', { id, data })
   },
-  async setComment ({ commit }, { postId, targetUserId, content, ctx }) {
-    const api = new Api(ctx)
-    const data = await api.comment({ postId, targetUserId, content })
-    commit('setComment', { data, postId })
+  async setComment ({ commit }, { id, targetUserId, content, ctx }) {
+    const api = new CommentApi(ctx)
+    const data = await api.reply({
+      type: 'post',
+      id,
+      targetUserId,
+      content
+    })
+    commit('setComment', { data, id })
   },
   // eslint-disable-next-line no-empty-pattern
   async create ({}, params) {
@@ -160,15 +185,16 @@ const actions = {
     const data = await api.reply(params)
     commit('REPLY_POST', data)
   },
-  async deletePost ({ commit }, { ctx, id }) {
+  // eslint-disable-next-line no-empty-pattern
+  async deletePost ({}, { ctx, id }) {
     const api = new Api(ctx)
     await api.deletePost(id)
-    commit('delPost', id)
   },
   async deleteComment ({ commit }, { ctx, postId, commentId }) {
-    const api = new Api(ctx)
-    await api.deleteComment({
-      postId, commentId
+    const api = new CommentApi(ctx)
+    await api.delete({
+      type: 'post',
+      id: commentId
     })
     commit('delComment', { postId, commentId })
   },
@@ -187,12 +213,25 @@ const actions = {
   async toggleLike ({ commit }, { ctx, id }) {
     const api = new Api(ctx)
     const result = await api.toggleLike(id)
-    commit('TOGGLE_LIKE', { id, result })
+    commit('TOGGLE_LIKE_POST', { result })
+  },
+  async toggleLikeComment ({ commit }, { ctx, id }) {
+    const api = new CommentApi(ctx)
+    const result = await api.toggleLike({
+      type: 'post',
+      id
+    })
+    commit('TOGGLE_LIKE_COMMENT', { id, result })
   },
   async toggleMark ({ commit }, { ctx, id }) {
     const api = new Api(ctx)
     const result = await api.toggleMark(id)
     commit('TOGGLE_MARK', result)
+  },
+  async deletePostComment ({ commit }, { ctx, postId, commentId }) {
+    const api = new Api(ctx)
+    await api.deleteComment({ postId, commentId })
+    commit('DELETE_POST_COMMENT', { commentId })
   }
 }
 

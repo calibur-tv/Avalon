@@ -44,15 +44,8 @@ img {
   color: transparent;
   background-color: transparent;
   border: 0;
-  transition: filter, opacity .15s linear;
-  filter: blur(0);
-  opacity: 1;
   width: 100%;
-}
-
-img.image-lazy-mask {
-  filter: blur(4px);
-  opacity: 0.3;
+  display: inline-block;
 }
 
 button {
@@ -82,14 +75,16 @@ input {
   }
 }
 
-label {
-  display: inline-block;
+label[role=checkbox], label[role=radio] {
   cursor: pointer;
-  font-family: 'Hiragino Sans GB',Helvetica,Arial,sans-serif;
-  vertical-align: middle;
-  user-select: none;
 }
 
-input[type=checkbox], input[type=radio] {
-  cursor: pointer;
+::selection {
+  background-color: $color-pink-light;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: $color-pink-light;
+  color: #fff;
 }

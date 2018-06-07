@@ -42,5 +42,19 @@ export default {
 
   postTrending (sort) {
     return `/post/trending/${sort}`
-  }
+  },
+
+  imageTrending (sort) {
+    return `/image/trending/${sort}`
+  },
+
+  imageAlbum (id) {
+    return `/image/album/${id}`
+  },
+
+  cartoonRole (id) {
+    return `/role/${id}`
+  },
+
+  roleTrending: '/role/trending'
 }

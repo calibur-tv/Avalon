@@ -98,6 +98,10 @@
               <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
               下的回复
             </template>
+            <template v-else-if="item.type === 5">
+              <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+              喜欢了你上传的图片
+            </template>
           </div>
         </li>
       </ul>

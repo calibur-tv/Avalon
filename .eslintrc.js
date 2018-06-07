@@ -11,8 +11,12 @@ module.exports = {
     'html'
   ],
   // add your custom rules here
-  rules: {},
+  rules: {
+      // 函数定义时括号前的空格
+      "space-before-function-paren": [0, {"anonymous": "always", "named": "never"}]
+  },
   globals: {
-    M: true
+    M: true,
+    flvjs: true
   }
 }

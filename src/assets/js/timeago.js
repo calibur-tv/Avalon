@@ -9,8 +9,8 @@ export default {
       default: parseInt(Date.now() / 1000, 10).toString()
     }
   },
-  render: function (createElement) {
-    return createElement('time', {
+  render: function (h) {
+    return h('time', {
       attrs: {
         datetime: this.$utils.timeLong(this.value)
       }

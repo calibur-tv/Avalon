@@ -11,8 +11,6 @@ import BangumiPanel from '~/components/panels/BangumiPanel'
 import NoContent from '~/components/NoContent'
 import Hr from '~/components/base/Hr'
 import Share from '~/components/base/Share'
-import vSelect from '~/components/base/Select'
-import '~/assets/js/waterfall'
 
 import {
   InfiniteScroll
@@ -34,6 +32,7 @@ import {
   Alert,
   Row,
   Col,
+  Checkbox,
   Radio,
   RadioGroup,
   RadioButton,
@@ -66,6 +65,7 @@ Vue.use(Switch)
 Vue.use(Alert)
 Vue.use(Col)
 Vue.use(Row)
+Vue.use(Checkbox)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
@@ -91,7 +91,6 @@ Vue.component(BangumiPanel.name, BangumiPanel)
 Vue.component(NoContent.name, NoContent)
 Vue.component(Hr.name, Hr)
 Vue.component(Share.name, Share)
-Vue.component(vSelect.name, vSelect)
 
 Vue.use({
   install (Vue, options) {
@@ -107,7 +106,12 @@ Vue.use({
       if (!url) {
         return ''
       }
-      const link = url.match(/^http/) === null ? `${env.cdn.image}${url}` : url
+
+      if (/imageMogr2/.test(url)) {
+        return url
+      }
+
+      const link = /^http/.test(url) ? url : `${env.cdn.image}${url}`
       const canUseWebP = () => {
         if (Vue.prototype.$isServer) {
           return false
@@ -153,13 +157,8 @@ Vue.use({
 Vue.mixin({
   methods: {
     $computeImageAspect (image) {
-      if (image.split('|http').length === 1) {
-        return 0
-      }
-
-      const attr = image.split('|http').shift().split('-')
-      const width = attr[0]
-      const height = attr[1]
+      const width = image.width
+      const height = image.height
 
       if (!width || !height) {
         return 0
