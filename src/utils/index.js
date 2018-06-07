@@ -106,6 +106,11 @@ Vue.use({
       if (!url) {
         return ''
       }
+
+      if (/imageMogr2/.test(url)) {
+        return url
+      }
+
       const link = /^http/.test(url) ? url : `${env.cdn.image}${url}`
       const canUseWebP = () => {
         if (Vue.prototype.$isServer) {
