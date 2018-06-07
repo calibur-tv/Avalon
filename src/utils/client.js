@@ -7,7 +7,6 @@ import {
   Notification,
   MessageBox
 } from 'element-ui'
-import './validate'
 import QRCode from '~/assets/js/qrcode'
 import Clipboard from '~/assets/js/clipboard'
 

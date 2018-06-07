@@ -5,26 +5,26 @@ export default class extends BaseApi {
     return this.http.post('door/user')
   }
 
-  login ({ access, secret, remember, method, geetest }) {
-    return this.http.post('door/login', {
-      access, secret, remember, method, geetest
+  sendMessage ({ phone_number, type, geetest }) {
+    return this.http.post('door/message', {
+      phone_number, type, geetest
     })
   }
 
-  register ({ method, access, secret, nickname, authCode, inviteCode, geetest }) {
+  login ({ access, secret, remember, geetest }) {
+    return this.http.post('door/login', {
+      access, secret, remember, geetest
+    })
+  }
+
+  register ({ access, secret, nickname, authCode, inviteCode }) {
     return this.http.post('door/register', {
-      method, access, secret, nickname, authCode, inviteCode, geetest
+      access, secret, nickname, authCode, inviteCode
     })
   }
 
   logout () {
     return this.http.post('door/logout')
-  }
-
-  sendSignAuthCode ({ method, access, nickname, mustNew, mustOld, geetest }) {
-    return this.http.post('door/send', {
-      method, access, nickname, mustNew, mustOld, geetest
-    })
   }
 
   getUserInfo ({ zone }) {
@@ -75,15 +75,9 @@ export default class extends BaseApi {
     return this.http.post('user/notification/clear')
   }
 
-  forgotPassword ({ method, access, geetest }) {
-    return this.http.post('door/forgot', {
-      method, access, geetest
-    })
-  }
-
-  resetPassword ({ method, access, geetest, authCode, secret }) {
+  resetPassword ({ method, access, authCode, secret }) {
     return this.http.post('door/reset', {
-      method, access, geetest, authCode, secret
+      method, access, authCode, secret
     })
   }
 

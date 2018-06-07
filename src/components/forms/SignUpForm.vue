@@ -1,63 +1,83 @@
 <style lang="scss">
   .sign-up-form {
+    input {
+      padding-left: 0 !important;
+    }
 
+    .submit-btn {
+      width: 100%;
+    }
+
+    .others {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+    }
   }
 </style>
 
 <template>
-  <el-form
-    :model="form"
-    :rules="rule"
-    ref="form"
-    status-icon
-    class="sign-up-form"
-  >
-    <el-form-item prop="nickname">
-      <el-input
-        type="text"
-        v-model="form.nickname"
-        placeholder="昵称（2-14个字符组成，1个汉字占2个字符）"
-        auto-complete="off"
-      ></el-input>
-    </el-form-item>
-    <el-form-item prop="access">
-      <el-input
-        type="text"
-        v-model="form.access"
-        placeholder="手机（填写常用手机号，用于登录）"
-        auto-complete="off"
-      ></el-input>
-    </el-form-item>
-    <el-form-item prop="secret">
-      <el-input
-        type="password"
-        v-model="form.secret"
-        placeholder="密码（6-16个字符组成，区分大小写）"
-        auto-complete="off"
-      ></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-input
-        type="number"
-        v-model="form.inviteCode"
-        placeholder="邀请码（可为空）"
-        auto-complete="off"
-      ></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button
-        type="primary"
-        @click="submitForm"
-        :loading="submitBtnLoading"
-        :disabled="submitBtnDisabled"
-      >
-        <template v-if="timeout">
-          {{ timeout }}s 后可重新获取
-        </template>
-        {{ submitBtnText }}
-      </el-button>
-    </el-form-item>
-  </el-form>
+  <div class="sign-up-form">
+    <el-form
+      :model="form"
+      :rules="rule"
+      ref="form"
+      status-icon
+    >
+      <el-form-item prop="nickname">
+        <el-input
+          type="text"
+          v-model="form.nickname"
+          placeholder="昵称（2-14个字符组成，1个汉字占2个字符）"
+          auto-complete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="access">
+        <el-input
+          type="text"
+          v-model="form.access"
+          placeholder="手机（填写常用手机号，用于登录）"
+          auto-complete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="secret">
+        <el-input
+          type="password"
+          v-model="form.secret"
+          placeholder="密码（6-16个字符组成，区分大小写）"
+          auto-complete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item v-if="!inviteCode">
+        <el-input
+          type="number"
+          v-model="form.inviteCode"
+          placeholder="邀请码（可为空）"
+          auto-complete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          class="submit-btn"
+          type="primary"
+          @click="submitForm"
+          :loading="submitBtnLoading"
+          :disabled="submitBtnDisabled"
+        >
+          {{ submitBtnText }}
+          <template v-if="timeout">
+            （{{ timeout }}s 后可重新获取）
+          </template>
+        </el-button>
+      </el-form-item>
+    </el-form>
+    <div class="others">
+      <a @click="showOAuth">社交账号注册</a>
+      <a @click="showLogin">已有账号»</a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -114,13 +134,11 @@
       }
       return {
         form: {
-          method: 'phone',
           access: '',
           secret: '',
           nickname: '',
           authCode: '',
-          inviteCode: '',
-          tempAccess: ''
+          inviteCode: this.inviteCode
         },
         rule: {
           nickname: [
@@ -186,7 +204,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             if (this.step === 0) {
-              this.signUpStep()
+              this.getRegisterAuthCode()
             }
             if (this.step === 2) {
               this.openConfirmModal()
@@ -196,26 +214,17 @@
           }
         })
       },
-      signUpStep () {
-        if (!this.form.authCode) {
-          this.getRegisterAuthCode()
-        }
-      },
       getRegisterAuthCode () {
         this.step = 1
         this.$captcha({
           success: async ({ data }) => {
             const api = new UserApi()
-            this.form.tempAccess = this.form.access
             try {
-              await api.sendSignAuthCode({
-                method: this.form.method,
-                access: this.form.access,
-                nickname: this.form.nickname,
-                mustNew: true,
+              await api.sendMessage({
+                type: 'sign_up',
+                phone_number: this.form.access,
                 geetest: data
               })
-              this.form.tempAccess = ''
               this.step = 2
               this.openConfirmModal()
             } catch (err) {
@@ -255,20 +264,26 @@
       signUp () {
         const api = new UserApi()
         api.register({
-          method: this.form.method,
           access: this.form.access,
           secret: this.form.secret,
           nickname: this.form.nickname,
           authCode: this.form.authCode,
           inviteCode: this.form.inviteCode
         }).then((res) => {
-          this.$store.success('注册成功！')
+          this.$toast.success('注册成功！')
           this.$cookie.set('JWT-TOKEN', res)
           window.location = '/about/hello'
         }).catch((err) => {
           this.step = 0
           this.$toast.error(err)
         })
+      },
+      showOAuth () {
+        this.$toast.info('暂未开放第三方注册')
+      },
+      showLogin () {
+        this.$emit('to-login')
+        this.$refs.form.resetFields()
       }
     }
   }

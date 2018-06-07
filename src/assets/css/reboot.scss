@@ -75,15 +75,7 @@ input {
   }
 }
 
-label {
-  display: inline-block;
-  cursor: pointer;
-  font-family: 'Hiragino Sans GB',Helvetica,Arial,sans-serif;
-  vertical-align: middle;
-  user-select: none;
-}
-
-input[type=checkbox], input[type=radio] {
+label[role=checkbox], label[role=radio] {
   cursor: pointer;
 }
 
