@@ -125,22 +125,9 @@ export default {
     }
   },
   actions: {
-    async getCartoons ({ state, commit }, { id, ctx, force }) {
-      if (force) {
-        commit('RESET_WATERFALL')
-      }
-      const waterfall = state.waterfall
-      const api = new BangumiApi(ctx)
-      const data = await api.cartoon({
-        id,
-        take: waterfall.take,
-        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).join(',') : null
-      })
-      commit('SET_WATERFALL', data)
-    },
     async getBangumiImages ({ state, commit }, { id, ctx, force }) {
-      if (force) {
-        commit('RESET_WATERFALL')
+      if (state.waterfall.noMore) {
+        return
       }
       const waterfall = state.waterfall
       const api = new BangumiApi(ctx)
@@ -156,11 +143,8 @@ export default {
       commit('SET_WATERFALL', data)
     },
     async getUserImages ({ state, commit }, { zone, ctx, force }) {
-      if (state.waterfall.noMore && !force) {
+      if (state.waterfall.noMore) {
         return
-      }
-      if (force) {
-        commit('RESET_WATERFALL')
       }
       const waterfall = state.waterfall
       const api = new UserApi(ctx)
@@ -176,11 +160,8 @@ export default {
       commit('SET_WATERFALL', data)
     },
     async getTrendingImages ({ state, commit }, { sort, ctx, force }) {
-      if (state.waterfall.noMore && !force) {
+      if (state.waterfall.noMore) {
         return
-      }
-      if (force) {
-        commit('RESET_WATERFALL')
       }
       const waterfall = state.waterfall
       const api = new ImageApi(ctx)
@@ -196,11 +177,8 @@ export default {
       commit('SET_WATERFALL', data)
     },
     async getRoleImages ({ state, commit }, { ctx, id, force }) {
-      if (state.waterfall.noMore && !force) {
+      if (state.waterfall.noMore) {
         return
-      }
-      if (force) {
-        commit('RESET_WATERFALL')
       }
       const waterfall = state.waterfall
       const api = new CartoonRoleApi(ctx)

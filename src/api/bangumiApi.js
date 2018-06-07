@@ -37,9 +37,9 @@ export default class extends BaseApi {
     })
   }
 
-  cartoon ({ id, seenIds, take }) {
-    return this.http.get(`bangumi/${id}/cartoon`, {
-      params: { seenIds, take }
+  cartoon ({ bangumiId, page }) {
+    return this.http.get(`bangumi/${bangumiId}/cartoon`, {
+      params: { page }
     })
   }
 
