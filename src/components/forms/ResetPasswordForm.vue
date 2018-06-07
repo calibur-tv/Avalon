@@ -160,7 +160,7 @@
               this.$toast.error(err)
               this.step = 0
             } finally {
-              this.timeout = 30
+              this.timeout = 60
               const timer = setInterval(() => {
                 if (!--this.timeout) {
                   this.step = 0
