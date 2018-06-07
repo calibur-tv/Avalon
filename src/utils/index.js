@@ -32,6 +32,7 @@ import {
   Alert,
   Row,
   Col,
+  Checkbox,
   Radio,
   RadioGroup,
   RadioButton,
@@ -64,6 +65,7 @@ Vue.use(Switch)
 Vue.use(Alert)
 Vue.use(Col)
 Vue.use(Row)
+Vue.use(Checkbox)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
