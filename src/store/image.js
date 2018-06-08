@@ -126,6 +126,9 @@ export default {
   },
   actions: {
     async getBangumiImages ({ state, commit }, { id, ctx, force }) {
+      if (force) {
+        commit('RESET_WATERFALL')
+      }
       if (state.waterfall.noMore) {
         return
       }
@@ -143,6 +146,9 @@ export default {
       commit('SET_WATERFALL', data)
     },
     async getUserImages ({ state, commit }, { zone, ctx, force }) {
+      if (force) {
+        commit('RESET_WATERFALL')
+      }
       if (state.waterfall.noMore) {
         return
       }
@@ -160,6 +166,9 @@ export default {
       commit('SET_WATERFALL', data)
     },
     async getTrendingImages ({ state, commit }, { sort, ctx, force }) {
+      if (force) {
+        commit('RESET_WATERFALL')
+      }
       if (state.waterfall.noMore) {
         return
       }
@@ -177,6 +186,9 @@ export default {
       commit('SET_WATERFALL', data)
     },
     async getRoleImages ({ state, commit }, { ctx, id, force }) {
+      if (force) {
+        commit('RESET_WATERFALL')
+      }
       if (state.waterfall.noMore) {
         return
       }
