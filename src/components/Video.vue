@@ -16,6 +16,32 @@
       height: 100%;
     }
 
+    .not-play-screen {
+      width: 100%;
+      height: 600px;
+      color: #ffffff;
+      text-align: center;
+      top: -50%;
+      transform: translateY(50%);
+      z-index: 999;
+
+      p {
+        width: 100%;
+      }
+
+      a {
+        margin-top: 20px;
+        display: inline-block;
+        border-radius: 5px;
+        border: 1px solid #fff;
+        padding: 10px 15px;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, .3);
+        }
+      }
+    }
+
     container {
       position: relative;
       display: block;

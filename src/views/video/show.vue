@@ -5,64 +5,13 @@
 
     #video-metas {
       margin-bottom: 20px;
-      padding-right: 55px;
       overflow: hidden;
       position: relative;
       min-height: 30px;
 
-      ul {
-        margin-bottom: 5px;
-      }
-
-      li {
-        margin: 0 8px $meta-margin-bottom 0;
-      }
-
       .season-title {
         padding-bottom: 10px;
         margin-left: 10px;
-      }
-
-      .more,
-      .v-parts a {
-        border: 1px solid $color-gray-deep;
-        height: $meta-height;
-        color: $color-link;
-        border-radius: 4px;
-        display: block;
-        transition: .2s;
-        padding: 0 15px 0 8px;
-        font-size: 14px;
-        line-height: 28px;
-
-        span {
-          min-width: 16px;
-          margin-right: 5px;
-          display: inline-block;
-          text-align: right;
-        }
-
-        &:hover {
-          border-color: $color-blue-light;
-          background-color: $color-blue-light;
-          color: $color-white;
-        }
-      }
-
-      .active {
-        border-color: $color-blue-light;
-        background-color: $color-blue-light;
-        color: $color-white !important;
-      }
-
-      .more {
-        cursor: pointer;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 50px;
-        padding-right: 8px;
-        text-align: center;
       }
     }
 
@@ -105,21 +54,33 @@
       </nav>
       <div id="video-metas">
         <template v-if="season && showAll">
-          <template v-for="(videos, idx) in list">
+          <template v-for="(items, idx) in list">
             <h6 class="season-title" v-text="season.name[idx]"></h6>
-            <v-part :list="videos.data" :alias="$alias.video">
+            <v-part
+              :list="items.data"
+              :alias="$alias.video"
+              :is-first="idx === 0"
+              :force-all="true"
+              :all-data="videos"
+              v-model="showAll"
+            >
               <template slot-scope="{ item }">
-                <span>{{ item.part - videos.base }}</span>{{ item.name }}
+                <span>{{ item.part - items.base }}</span>{{ item.name }}
               </template>
             </v-part>
           </template>
         </template>
-        <v-part :list="sortVideos" :alias="$alias.video" v-else>
+        <v-part
+          :list="videos"
+          :all-data="videos"
+          :alias="$alias.video"
+          v-model="showAll"
+          v-else
+        >
           <template slot-scope="{ item }">
             <span>{{ item.part }}</span>{{ item.name }}
           </template>
         </v-part>
-        <div class="more" v-if="showMoreBtn" @click="showAll = !showAll">{{ showAll ? '收起' : '展开' }}</div>
       </div>
       <no-ssr class="video-placeholder">
         <v-video
@@ -206,15 +167,8 @@
       bangumi () {
         return this.videoPackage.bangumi
       },
-      sortVideos () {
-        const begin = (this.page - 1) * this.take
-        return this.showAll ? this.videos : this.videos.slice(begin, begin + this.take)
-      },
       season () {
         return this.$store.state.video.season
-      },
-      showMoreBtn () {
-        return this.take < this.videos.length
       },
       nextPartVideo () {
         let lastId = 0
@@ -280,34 +234,11 @@
     },
     data () {
       return {
-        maxWidth: 0,
-        take: 0,
-        part: 0,
-        page: 0,
         showAll: false,
         firstPlay: true
       }
     },
     methods: {
-      computeMaxWidth () {
-        let maxlength = 0
-        this.videos.forEach(video => {
-          const templength = video.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
-          if (maxlength < templength) {
-            maxlength = templength
-          }
-        })
-        this.maxWidth = 46 + maxlength * 8
-      },
-      computePage () {
-        this.take = Math.floor(document.getElementById('video-metas').offsetWidth / (this.maxWidth + 8)) * 2
-        this.videos.forEach((meta) => {
-          if (meta.id === this.id) {
-            this.part = meta.part
-          }
-        })
-        this.page = Math.ceil(this.part / this.take)
-      },
       handlePlaying () {
         if (this.firstPlay) {
           this.firstPlay = false
@@ -318,7 +249,7 @@
       handleVideoReportClick () {
         this.$channel.$emit('open-feedback', {
           type: 4,
-          desc: `【PC】-《${this.bangumi.name}》第${this.part}话 视频有错误，错误详情为：`
+          desc: `【PC】-《${this.bangumi.name}》视频有错误，视频 id：${this.id}：错误详情为：`
         })
       },
       handleFollowAction (result) {
@@ -326,14 +257,6 @@
       }
     },
     mounted () {
-      this.computeMaxWidth()
-      this.$nextTick(() => {
-        this.computePage()
-      })
-      window.addEventListener('resize', () => {
-        this.computeMaxWidth()
-        this.computePage()
-      })
       this.$channel.$on('get-page-bangumi-for-post-create', () => {
         this.$channel.$emit('set-page-bangumi-for-post-create', {
           id: this.bangumi.id,
