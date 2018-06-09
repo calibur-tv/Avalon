@@ -1,9 +1,10 @@
 <style lang="scss">
   #footer {
     width: 100%;
-    z-index: 0;
     margin: 30px 0;
     text-align: center;
+    position: relative;
+    z-index: 2;
 
     .hr {
       margin: 0 50px;
