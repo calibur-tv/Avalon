@@ -76,6 +76,10 @@
       border-radius: 4px;
     }
 
+    chimee-center-state-loading {
+      box-sizing: content-box;
+    }
+
     chimee-volume-bar-all:after {
       top: -4px;
     }
@@ -197,7 +201,7 @@
           src: this.source,
           controls: true,
           autoplay: this.auto,
-          kernels: flvKernel ? { flvKernel } : {},
+          kernels: flvKernel ? { flv: flvKernel } : {},
           plugin: [
             {
               name: chimeePluginControlbar.name,
