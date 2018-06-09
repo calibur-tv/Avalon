@@ -139,31 +139,7 @@
       }
 
       .v-parts {
-        margin-bottom: 5px;
         margin-top: 20px;
-
-        li {
-          margin: 0 8px 8px 0;
-        }
-
-        a {
-          border: 1px solid $color-pink-normal;
-          height: 30px;
-          color: $color-pink-normal;
-          border-radius: 4px;
-          display: block;
-          transition: .2s;
-          padding: 0 10px;
-          font-size: 14px;
-          line-height: 28px;
-
-          &:hover,
-          &.active {
-            border-color: $color-pink-deep;
-            background-color: $color-pink-deep;
-            color: $color-white;
-          }
-        }
       }
 
       .like-panel {
@@ -257,6 +233,8 @@
           v-if="cartoon.length"
           :list="cartoon"
           :alias="$alias.imageAlbum"
+          :all-data="cartoon"
+          v-model="showAllPart"
         >
           <span slot-scope="{ item }" v-text="item.name"></span>
         </v-parts>
@@ -365,7 +343,7 @@
       return {
         loadingFollowAlbum: false,
         loadingEditImages: false,
-        maxWidth: 0
+        showAllPart: false
       }
     },
     methods: {
