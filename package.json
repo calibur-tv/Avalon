@@ -22,6 +22,11 @@
   "dependencies": {
     "axios": "^0.16.1",
     "bunyan": "^1.8.12",
+    "chimee": "^0.10.1",
+    "chimee-kernel-flv": "^1.4.10",
+    "chimee-player": "^1.4.5",
+    "chimee-plugin-center-state": "^0.0.11",
+    "chimee-plugin-controlbar": "^0.4.9",
     "clipboard": "^2.0.0",
     "cropperjs": "^1.1.3",
     "element-ui": "^2.0.5",
