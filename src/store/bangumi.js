@@ -7,15 +7,13 @@ const state = () => ({
   timeline: {
     data: [],
     year: new Date().getFullYear() + 1,
-    take: 5,
-    min: 0,
     noMore: false
   },
   category: {
     data: [],
     noMore: false,
-    page: 1,
-    take: 15
+    page: 0,
+    take: 10
   },
   tags: [],
   info: null,
@@ -28,8 +26,9 @@ const state = () => ({
     noMore: false
   },
   videos: {
-    data: [],
+    list: [],
     total: 0,
+    has_season: false,
     fetched: false
   },
   roles: {
@@ -89,14 +88,9 @@ const mutations = {
   },
   SET_TIMELINE (state, data) {
     const temp = state.timeline
-    const nowYear = temp.year - temp.take
-    state.timeline = {
-      data: temp.data.concat(data.list),
-      min: data.min,
-      take: temp.take,
-      year: nowYear,
-      noMore: nowYear <= data.min
-    }
+    state.timeline.data = temp.data.concat(data.list)
+    state.timeline.year = temp.year - 1
+    state.timeline.noMore = data.noMore
   },
   SET_TAGS (state, { tags, id }) {
     const ids = id ? id.split('-') : undefined
@@ -127,13 +121,14 @@ const mutations = {
   },
   SET_VIDEOS (state, data) {
     state.videos = {
-      data: data.videos,
+      list: data.videos,
       total: data.total,
+      has_season: data.has_season,
       fetched: true
     }
   },
   SET_BANGUMI_FOLLOWERS (state, data) {
-    state.info.followers = state.info.followers.concat(data)
+    state.info.followers = state.info.followers.concat(data.list)
     state.followersPage = state.followersPage + 1
   },
   SET_BANGUMI_CARTOON (state, data) {
@@ -218,7 +213,7 @@ const actions = {
       id,
       take: state.posts.take,
       type: state.posts.type,
-      seenIds: state.posts.data.length ? state.posts.data.map(item => item.id).join(',') : null
+      maxId: state.posts.data.length ? state.posts.data[state.posts.data.length - 1].id : 0
     })
     commit('SET_POSTS', {
       data: data.list,

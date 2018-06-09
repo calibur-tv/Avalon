@@ -588,9 +588,9 @@
             </no-content>
           </el-tab-pane>
           <el-tab-pane label="视频" v-if="info.has_video">
-            <section id="videos" v-if="videos.data.length">
-              <div v-if="info.season">
-                <template v-for="season in videos.data">
+            <section id="videos" v-if="videos.list.length">
+              <div v-if="videos.has_season">
+                <template v-for="season in videos.list">
                   <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
                   <ul :key="season.name">
                     <li v-for="video in season.data" :key="video.id">
@@ -613,7 +613,7 @@
                 </template>
               </div>
               <ul v-else>
-                <li v-for="video in videos.data" :key="video.id">
+                <li v-for="video in videos.list" :key="video.id">
                   <a :href="$alias.video(video.id)" target="_blank">
                     <figure>
                       <v-img

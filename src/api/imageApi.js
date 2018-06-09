@@ -10,7 +10,7 @@ export default class extends BaseApi {
   }
 
   getUpToken () {
-    return this.http.post('image/uptoken')
+    return this.http.get('image/uptoken')
   }
 
   uploadToQiniu (formData) {
