@@ -67,7 +67,7 @@
     }
 
     .video-placeholder {
-      min-height: 600px;
+      height: 600px;
       background-color: #000;
     }
 
