@@ -36,20 +36,32 @@
         background-color: $color-dark-light;
       }
     }
+
+    .creator-btn.icon-tupian {
+      background-color: red;
+    }
+
+    .creator-btn.icon-fatie1 {
+      background-color: #9266f9;
+    }
+
+    .creator-btn.icon-fankui {
+      background-color: #16c2c2;
+    }
   }
 </style>
 
 <template>
   <div id="side-tools">
     <v-creator>
-      <el-tooltip placement="top" effect="dark" content="反馈">
-        <button class="creator-btn iconfont icon-fankui" @click="showFeedModal = true"></button>
-      </el-tooltip>
       <el-tooltip placement="top" effect="dark" content="图片">
         <button class="creator-btn iconfont icon-tupian" @click="handleImageClick"></button>
       </el-tooltip>
       <el-tooltip placement="top" effect="dark" content="发帖">
         <button class="creator-btn iconfont icon-fatie1" @click="handlePostClick"></button>
+      </el-tooltip>
+      <el-tooltip placement="top" effect="dark" content="反馈">
+        <button class="creator-btn iconfont icon-fankui" @click="showFeedModal = true"></button>
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">
