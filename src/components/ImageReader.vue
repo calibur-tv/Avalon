@@ -95,7 +95,7 @@
 
 <script>
   export default {
-    name: 'ImageReader',
+    name: 'image-reader',
     data () {
       return {
         images: [],

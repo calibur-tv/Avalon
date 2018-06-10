@@ -316,10 +316,13 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" :to="$alias.postTrending('new')">帖子</router-link>
+          <router-link class="nav-link el-dropdown-link" :to="$alias.postTrending('active')">帖子</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.postTrending('new')">最新</router-link>
+              <router-link class="nav-link" :to="$alias.postTrending('news')">最新</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link class="nav-link" :to="$alias.postTrending('active')">动态</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <router-link class="nav-link" :to="$alias.postTrending('hot')">最热</router-link>
