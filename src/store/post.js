@@ -93,8 +93,8 @@ const mutations = {
   },
   setTrending (state, { data, sort }) {
     state.trending[sort] = {
-      data: state.trending[sort].data.concat(data),
-      noMore: data.length < state.trending.take
+      data: state.trending[sort].data.concat(data.list),
+      noMore: data.noMore
     }
   },
   TOGGLE_LIKE_POST (state, { result }) {

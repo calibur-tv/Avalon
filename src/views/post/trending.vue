@@ -15,25 +15,26 @@
       <div class="col-aside"></div>
       <div class="col-main">
         <div class="breadcrumb-links">
-          <router-link :to="$alias.postTrending('new')">最新</router-link>
+          <router-link :to="$alias.postTrending('news')">最新</router-link>
+          <router-link :to="$alias.postTrending('active')">动态</router-link>
           <router-link :to="$alias.postTrending('hot')">最热</router-link>
         </div>
         <ul id="posts">
           <post-show-item
-            v-for="item in post.data"
+            v-for="item in post.list"
             :key="item.id"
             :item="item"
           ></post-show-item>
         </ul>
         <el-button
-          :loading="loading"
+          :loading="post.loading"
           v-if="!post.noMore"
           id="load-post-btn"
           @click="loadMore"
           type="info"
           plain
-        >{{ loading ? '加载中' : '加载更多' }}</el-button>
-        <no-content v-if="post.noMore && !post.data.length"></no-content>
+        >{{ post.loading ? '加载中' : '加载更多' }}</el-button>
+        <no-content v-if="post.nothing"></no-content>
       </div>
     </div>
   </div>
@@ -41,13 +42,21 @@
 
 <script>
   import PostShowItem from '~/components/items/PostShow'
+  import PostApi from '~/api/postApi'
 
   export default {
     name: 'PostNews',
     async asyncData ({ store, route, ctx }) {
-      await store.dispatch('post/getTrending', {
-        sort: route.params.sort,
-        ctx
+      const sort = route.params.sort
+      if (['news', 'active', 'hot'].indexOf(sort) === -1) {
+        const error = new Error()
+        error.code = 404
+        throw error
+      }
+      await store.dispatch('trending/getTrending', {
+        type: 'post',
+        sort,
+        api: new PostApi(ctx)
       })
     },
     components: {
@@ -58,30 +67,19 @@
         return this.$route.params.sort
       },
       post () {
-        return this.$store.state.post.trending[this.sort]
-      }
-    },
-    data () {
-      return {
-        loading: false
+        return this.$store.state.trending[this.sort]
       }
     },
     methods: {
       async loadMore () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true
-
         try {
-          await this.$store.dispatch('post/getTrending', {
-            ctx: this,
-            sort: this.sort
+          await this.$store.dispatch('trending/loadMore', {
+            type: 'post',
+            sort: this.sort,
+            api: new PostApi(this)
           })
         } catch (e) {
           this.$toast.error(e)
-        } finally {
-          this.loading = false
         }
       }
     }

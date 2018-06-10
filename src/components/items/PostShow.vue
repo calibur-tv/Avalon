@@ -170,7 +170,7 @@
       </el-tooltip>
       <el-tooltip effect="dark" :content="`发表于：${item.created_at}`" placement="top" v-if="item.updated_at !== item.created_at">
         <span class="time">
-          最后回复于: <v-time v-model="item.updated_at"></v-time>
+          回复于: <v-time v-model="item.updated_at"></v-time>
         </span>
       </el-tooltip>
       <span class="time" v-else>
