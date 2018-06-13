@@ -148,10 +148,6 @@
           this.$channel.$emit('sign-in')
           return
         }
-        if (this.submitting) {
-          return
-        }
-        this.$store.commit('comment/SET_SUBMITTING', { result: true })
         this.$refs.forms.validate((valid) => {
           if (valid) {
             this.$emit('submit', {
@@ -161,8 +157,16 @@
               content: this.formatContent,
               images: this.formatImages
             })
+            this.$channel.$on('main-comment-create-success', () => {
+              this.$channel.$off('main-comment-create-success')
+              this.forms = {
+                title: '',
+                bangumiId: this.bangumiId || '',
+                content: ''
+              }
+              this.$refs.uploader.clearFiles()
+            })
           } else {
-            this.$store.commit('comment/SET_SUBMITTING', { result: false })
             return false
           }
         })

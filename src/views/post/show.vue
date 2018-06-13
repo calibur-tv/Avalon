@@ -283,6 +283,7 @@
               slot="comment-item"
               slot-scope="{ comment }"
               :post="comment"
+              :master-id="master.id"
             ></post-comment-item>
             <post-sub-comment-list
               slot="sub-comment-list"
@@ -321,6 +322,7 @@
           ctx,
           only
         }),
+        // TODO：only & reply
         store.dispatch('comment/getMainComments', {
           ctx,
           id,

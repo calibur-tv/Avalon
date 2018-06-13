@@ -96,7 +96,8 @@
     },
     data () {
       return {
-        showReplyArea: false
+        showReplyArea: false,
+        deleting: false
       }
     },
     methods: {
@@ -104,7 +105,28 @@
         this.showReplyArea = !this.showReplyArea
       },
       deleteComment () {
-
+        if (this.deleting) {
+          return
+        }
+        this.deleting = true
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('comment/deleteSubComment', {
+            type: 'post',
+            ctx: this,
+            id: this.comment.id,
+            parentId: this.comment.parent_id
+          })
+        }).catch((e) => {
+          this.deleting = false
+          if (e === 'cancel') {
+            return
+          }
+          this.$toast.error(e)
+        })
       }
     }
   }

@@ -131,29 +131,71 @@
       post: {
         required: true,
         type: Object
+      },
+      masterId: {
+        required: true,
+        type: Number
       }
     },
     computed: {
+      currentUserId () {
+        return this.$store.state.login
+          ? this.$store.state.user.id
+          : 0
+      },
+      isMine () {
+        return this.currentUserId === this.post['from_user_id']
+      },
       canDelete () {
-        return true
+        return this.isMine || this.currentUserId === this.masterId
       }
     },
     data () {
       return {
-
+        deleting: false,
+        liking: false
       }
-    },
-    created () {
-
     },
     methods: {
-      toggleLike () {
+      async toggleLike () {
+        if (this.liking) {
+          return
+        }
+        this.liking = true
+        try {
+          await this.$store.dispatch('comment/toggleLikeMainComment', {
+            ctx: this,
+            type: 'post',
+            id: this.post.id
+          })
+        } catch (e) {
+        } finally {
+          this.liking = false
+        }
       },
       deletePost () {
+        if (this.deleting) {
+          return
+        }
+        this.deleting = true
+        this.$confirm('删除后无法找回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('comment/deleteMainComment', {
+            type: 'post',
+            ctx: this,
+            id: this.post.id
+          })
+        }).catch((e) => {
+          this.deleting = false
+          if (e === 'cancel') {
+            return
+          }
+          this.$toast.error(e)
+        })
       }
-    },
-    mounted () {
-
     }
   }
 </script>

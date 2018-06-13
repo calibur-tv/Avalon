@@ -41,13 +41,17 @@ const mutations = {
         comments: childrenCommentObj
       })
     })
+    // 更新 fetchId
+    state.fetchId = formatComments[formatComments.length - 1].id
     // 操作主评论的 fetchId
     const resIds = formatComments.map(_ => _.id)
-    state.fetchId = formatComments[formatComments.length - 1].id
+    const originList = state.list
+    // 对服务端进行一个校准
+    const hasNew = !!resIds.filter(_ => originList.map(_ => _.id).indexOf(_) === -1).length
     state.list = state.list.filter(_ => resIds.indexOf(_.id) === -1)
     state.list = state.list.concat(formatComments)
-    state.noMore = comments.noMore
-    state.total = comments.total
+    state.noMore = hasNew ? comments.noMore : true
+    state.total = hasNew ? comments.total : state.list.length
   },
   SET_SUB_COMMENTS (state, { comments, parentId }) {
     let parentComment = null
@@ -61,16 +65,21 @@ const mutations = {
     if (!parentComment) {
       return
     }
+    // 更新 maxId
+    state.list[parentIndex].comments.maxId = comments.list[comments.list.length - 1].id
+    // 返回的 ids
     const resIds = comments.list.map(_ => _.id)
-    // 操作一下 maxId 即可
-    state.list[parentIndex].maxId = comments.list[comments.list.length - 1].id
-    state.list[parentIndex].comments.list = parentComment.comments.list.filter(_ => resIds.indexOf(_.id) === -1)
+    const parentCommentList = parentComment.comments.list
+    // 对服务端进行一个校准
+    const hasNew = !!resIds.filter(_ => parentCommentList.map(_ => _.id).indexOf(_) === -1).length
+    state.list[parentIndex].comments.list = parentCommentList.filter(_ => resIds.indexOf(_.id) === -1)
     state.list[parentIndex].comments.list = state.list[parentIndex].comments.list.concat(comments.list)
-    state.list[parentIndex].comments.total = comments.total
-    state.list[parentIndex].comments.noMore = comments.noMore
+    state.list[parentIndex].comments.noMore = hasNew ? comments.noMore : true
+    state.list[parentIndex].comments.total = hasNew ? comments.total : state.list[parentIndex].comments.list.length
   },
   CREATE_MAIN_COMMENT (state, comment) {
     state.list.push(comment)
+    state.list.total = state.list.total + 1
   },
   CREATE_SUB_COMMENT (state, { id, comment }) {
     state.list.forEach((item, index) => {
@@ -82,6 +91,48 @@ const mutations = {
   },
   SET_SUBMITTING (state, { result }) {
     state.submitting = result
+  },
+  DELETE_SUB_COMMENT (state, { parentId, id }) {
+    state.list.forEach((parent, index) => {
+      if (parent.id === parentId) {
+        parent.comments.list.forEach((item, subIndex) => {
+          if (item.id === id) {
+            state.list[index].comments.list.splice(subIndex, 1)
+            state.list[index].comments.total = state.list[index].comments.total - 1
+          }
+        })
+      }
+    })
+  },
+  DELETE_MAIN_COMMENT (state, { id }) {
+    state.list.forEach((item, index) => {
+      if (item.id === id) {
+        state.list.splice(index, 1)
+        state.total = state.total - 1
+      }
+    })
+  },
+  TOGGLE_LIKE_SUB_COMMENT (state, { id, parentId }) {
+    state.list.forEach((parent, index) => {
+      if (parent.id === parentId) {
+        parent.comments.list.forEach((item, subIndex) => {
+          if (item.id === id) {
+            const result = !state.list[index].comments[subIndex].liked
+            state.list[index].comments[subIndex].liked = result
+            state.list[index].comments[subIndex].like_count = state.list[index].comments[subIndex].like_count + (result ? 1 : -1)
+          }
+        })
+      }
+    })
+  },
+  TOGGLE_LIKE_MAIN_COMMENT (state, { id }) {
+    state.list.forEach((item, index) => {
+      if (item.id === id) {
+        const result = !state.list[index].liked
+        state.list[index].liked = result
+        state.list[index].like_count = state.list[index].like_count + (result ? 1 : -1)
+      }
+    })
   }
 }
 
@@ -119,8 +170,11 @@ const actions = {
     })
     commit('SET_SUB_COMMENTS', { comments, parentId })
   },
-  async createMainComment ({ commit }, data) {
-    const comment = await Api.createMainComment(data)
+  async createMainComment ({ commit }, { ctx, images, content, type, id }) {
+    const api = new Api(ctx)
+    const comment = await api.createMainComment({
+      type, id, content, images
+    })
     commit('CREATE_MAIN_COMMENT', comment)
   },
   async createSubComment ({ commit }, { ctx, id, type, content, targetUserId }) {
@@ -129,6 +183,36 @@ const actions = {
       id, type, content, targetUserId
     })
     commit('CREATE_SUB_COMMENT', { id, comment })
+  },
+  async deleteSubComment ({ commit }, { ctx, id, type, parentId }) {
+    const api = new Api(ctx)
+    await api.deleteSubComment({
+      id, type
+    })
+    commit('DELETE_SUB_COMMENT', { parentId, id })
+  },
+  async deleteMainComment ({ commit }, { ctx, id, type }) {
+    const api = new Api(ctx)
+    await api.deleteMainComment({
+      id, type
+    })
+    commit('DELETE_MAIN_COMMENT', { id })
+  },
+  async toggleLikeSubComment ({ commit }, { ctx, type, id, parentId }) {
+    const api = new Api(ctx)
+    commit('TOGGLE_LIKE_SUB_COMMENT', { id, parentId })
+    await api.toggleLikeSubComment({
+      type,
+      id
+    })
+  },
+  async toggleLikeMainComment ({ commit }, { ctx, type, id }) {
+    const api = new Api(ctx)
+    commit('TOGGLE_LIKE_MAIN_COMMENT', { id })
+    await api.toggleLikeMainComment({
+      type,
+      id
+    })
   }
 }
 

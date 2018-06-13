@@ -75,6 +75,9 @@
       },
       total () {
         return this.store.total
+      },
+      submitting () {
+        return this.store.submitting
       }
     },
     data () {
@@ -100,11 +103,25 @@
           this.loading = false
         }
       },
-      reply (data) {
-        console.log(data)
-        this.$nextTick(() => {
+      async reply (data) {
+        if (this.submitting) {
+          return
+        }
+        this.$store.commit('comment/SET_SUBMITTING', { result: true })
+        try {
+          await this.$store.dispatch('comment/createMainComment', {
+            content: data.content,
+            images: data.images,
+            type: 'post',
+            id: this.id,
+            ctx: this
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
           this.$store.commit('comment/SET_SUBMITTING', { result: false })
-        })
+          this.$channel.$emit('main-comment-create-success')
+        }
       }
     }
   }
