@@ -39,7 +39,6 @@
           type="text"
           v-model="form.access"
           placeholder="手机（填写常用手机号，用于登录）"
-          auto-complete="off"
         ></el-input>
       </el-form-item>
       <el-form-item prop="secret">
@@ -47,7 +46,6 @@
           type="password"
           v-model="form.secret"
           placeholder="密码（6-16个字符组成，区分大小写）"
-          auto-complete="off"
         ></el-input>
       </el-form-item>
       <el-form-item class="sign-in-opt">

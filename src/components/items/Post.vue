@@ -4,7 +4,12 @@
       <a :href="$alias.user(post.from_user_zone)" target="_blank">
         <v-img class="avatar" :src="post.from_user_avatar" :width="80" :height="80"></v-img>
       </a>
-      <a class="nickname oneline" :href="$alias.user(post.from_user_zone)" target="_blank" v-text="post.from_user_name"></a>
+      <a
+        class="nickname oneline"
+        :href="$alias.user(post.from_user_zone)"
+        target="_blank"
+        v-text="post.from_user_name"
+      ></a>
     </el-col>
     <el-col class="content" :span="19">
       <div class="main">
@@ -22,7 +27,7 @@
             :aspect="$computeImageAspect(img)"
           ></v-img>
         </div>
-        <div class="text-area" v-html="post.content"></div>
+        <div class="text-package" v-html="post.content"></div>
       </div>
       <div class="footer">
         <div class="info-bar">

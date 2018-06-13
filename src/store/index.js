@@ -9,6 +9,7 @@ import image from './image'
 import post from './post'
 import cartoonRole from './cartoonRole'
 import trending from './trending'
+import comment from './comment'
 
 import ImageApi from '~/api/imageApi'
 
@@ -86,7 +87,8 @@ export function createStore () {
       image,
       post,
       cartoonRole,
-      trending
+      trending,
+      comment
     }
   })
 }

@@ -1,13 +1,19 @@
 import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
-  list ({ type, id, page }) {
+  getMainCommentList ({ type, id, fetchId }) {
     return this.http.get(`${type}/comment/${id}/list`, {
-      params: { page }
+      params: { fetchId }
     })
   }
 
-  reply ({ type, id, content, targetUserId }) {
+  getSubCommentList ({ type, parentId, maxId }) {
+    return this.http.get(`${type}/comment/${parentId}/comments`, {
+      params: { maxId }
+    })
+  }
+
+  createSubComment ({ type, id, content, targetUserId }) {
     return this.http.post(`${type}/comment/${id}/reply`, { content, targetUserId })
   }
 
