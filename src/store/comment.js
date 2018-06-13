@@ -1,7 +1,11 @@
 import Api from '~/api/commentApi'
+import {
+  orderBy
+} from 'lodash'
 
 const state = () => ({
   type: '',
+  sort: 'ASC',
   fetchId: 0,
   list: [],
   total: 0,
@@ -22,8 +26,11 @@ const mutations = {
   },
   INIT_FETCH_TYPE (state, { type }) {
     state.type = type
+    if (type === 'post') {
+      state.sort = 'ASC'
+    }
   },
-  SET_MAIN_COMMENTS (state, comments) {
+  SET_MAIN_COMMENTS (state, { comments, seeReplyId }) {
     if (!comments.list.length) {
       state.noMore = comments.noMore
       state.total = comments.total
@@ -41,15 +48,18 @@ const mutations = {
         comments: childrenCommentObj
       })
     })
-    // 更新 fetchId
+    // 更新 fetchId，如果是第一页，并且有 seeReplyId，就比较麻烦
     state.fetchId = formatComments[formatComments.length - 1].id
+    if (!state.list.length && seeReplyId) {
+      state.fetchId = formatComments.map(_ => _.id).filter(_ => _ !== parseInt(seeReplyId, 10)).pop()
+    }
     // 操作主评论的 fetchId
     const resIds = formatComments.map(_ => _.id)
     const originList = state.list
     // 对服务端进行一个校准
     const hasNew = !!resIds.filter(_ => originList.map(_ => _.id).indexOf(_) === -1).length
     state.list = state.list.filter(_ => resIds.indexOf(_.id) === -1)
-    state.list = state.list.concat(formatComments)
+    state.list = orderBy(state.list.concat(formatComments), 'id', state.sort)
     state.noMore = hasNew ? comments.noMore : true
     state.total = hasNew ? comments.total : state.list.length
   },
@@ -79,7 +89,7 @@ const mutations = {
   },
   CREATE_MAIN_COMMENT (state, comment) {
     state.list.push(comment)
-    state.list.total = state.list.total + 1
+    state.total = state.total + 1
   },
   CREATE_SUB_COMMENT (state, { id, comment }) {
     state.list.forEach((item, index) => {
@@ -137,7 +147,7 @@ const mutations = {
 }
 
 const actions = {
-  async getMainComments ({ state, commit }, { ctx, type, id }) {
+  async getMainComments ({ state, commit }, { ctx, type, id, onlySeeMaster, seeReplyId }) {
     if (state.type) {
       if (state.type === type) {
         if (state.noMore) {
@@ -150,12 +160,14 @@ const actions = {
       commit('INIT_FETCH_TYPE', { type })
     }
     const api = new Api(ctx)
-    const data = await api.getMainCommentList({
+    const comments = await api.getMainCommentList({
       type,
       id,
+      onlySeeMaster,
+      seeReplyId,
       fetchId: state.fetchId
     })
-    data && commit('SET_MAIN_COMMENTS', data)
+    comments && commit('SET_MAIN_COMMENTS', { comments, seeReplyId })
   },
   async getSubComments ({ state, commit }, { ctx, type, parentId }) {
     const store = state.list.filter(_ => _.id === parentId)[0].comments

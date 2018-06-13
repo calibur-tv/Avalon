@@ -278,7 +278,11 @@
               </div>
             </div>
           </el-row>
-          <comment-main :id="post.id" type="post">
+          <comment-main
+            type="post"
+            :id="post.id"
+            :only-see-master="onlySeeMaster"
+          >
             <post-comment-item
               slot="comment-item"
               slot-scope="{ comment }"
@@ -290,12 +294,14 @@
               slot-scope="{ parentComment }"
               :parent-comment="parentComment"
             ></post-sub-comment-list>
-            <create-post-form
+            <create-comment-form
               id="post-reply-form"
               slot="footer"
               slot-scope="{ reply }"
+              type="post"
+              :with-image="true"
               @submit="reply"
-            ></create-post-form>
+            ></create-comment-form>
           </comment-main>
         </main>
       </section>
@@ -307,7 +313,7 @@
   import CommentMain from '~/components/comments/CommentMain'
   import PostCommentItem from '~/components/post/PostCommentItem'
   import PostSubCommentList from '~/components/post/PostSubCommentList'
-  import CreatePostForm from '~/components/forms/CreatePostForm'
+  import CreateCommentForm from '~/components/forms/CreateCommentForm'
 
   export default {
     name: 'post-show',
@@ -322,13 +328,12 @@
           ctx,
           only
         }),
-        // TODO：only & reply
         store.dispatch('comment/getMainComments', {
           ctx,
           id,
           type: 'post',
-          only,
-          reply: route.query.reply
+          onlySeeMaster: only,
+          seeReplyId: route.query.reply
         })
       ])
     },
@@ -336,7 +341,7 @@
       CommentMain,
       PostCommentItem,
       PostSubCommentList,
-      CreatePostForm
+      CreateCommentForm
     },
     head () {
       return {
@@ -364,7 +369,7 @@
         return this.resource.info.post
       },
       total () {
-        return this.post.comment_count + 1
+        return this.$store.state.comment.total + 1
       },
       master () {
         return this.resource.info.user

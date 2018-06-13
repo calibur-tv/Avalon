@@ -21,22 +21,7 @@
     ref="forms"
     label-width="50px"
   >
-    <template v-if="!isReply">
-      <el-form-item label="标题" prop="title">
-        <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
-      </el-form-item>
-      <el-form-item label="番剧" prop="bangumiId">
-        <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
-          <el-option
-            v-for="item in optionBangumis"
-            :label="item.name"
-            :key="item.id"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-    </template>
-    <el-form-item label="图片">
+    <el-form-item label="图片" v-if="withImage">
       <el-upload
         action="https://upload.qiniup.com"
         multiple
@@ -72,20 +57,19 @@
   export default {
     name: 'create-post-form',
     props: {
-      isReply: {
+      withImage: {
         type: Boolean,
-        default: true
+        default: false
+      },
+      type: {
+        type: String,
+        required: true,
+        validator: val => ~['post'].indexOf(val)
       }
     },
     computed: {
       isGuest () {
         return !this.$store.state.login
-      },
-      postId () {
-        return this.$route.name === 'post-show' ? parseInt(this.$route.params.id, 10) : 0
-      },
-      bangumiId () {
-        return this.$route.name === 'bangumi-show' ? parseInt(this.$route.params.id, 10) : 0
       },
       formatContent () {
         let content = this.forms.content
@@ -104,12 +88,6 @@
       formatImages () {
         return this.images.map(item => item.img)
       },
-      bangumis () {
-        return this.$store.state.users.self.followBangumi
-      },
-      optionBangumis () {
-        return this.appendBangumi.concat(this.bangumis)
-      },
       submitting () {
         return this.$store.state.comment.submitting
       }
@@ -117,28 +95,18 @@
     data () {
       return {
         forms: {
-          title: '',
-          bangumiId: this.bangumiId || '',
           content: ''
         },
         rules: {
-          title: [
-            { required: true, min: 1, max: 40, message: '标题不能为空，40字以内', trigger: 'blur' }
-          ],
-          bangumiId: [
-            { required: true, type: 'number', message: '请选择相应番剧', trigger: 'change' }
-          ],
           content: [
-            { required: true, min: 1, max: 1000, message: '内容不能为空，1000字以内', trigger: 'blur' }
+            { required: true, min: 1, max: 1000, message: '内容不能为空，1000字以内', trigger: 'submit' }
           ]
         },
         uploadHeaders: {
           token: ''
         },
         images: [],
-        exceed: 5,
-        appendBangumi: [],
-        loadingFetchBangumi: false
+        exceed: 5
       }
     },
     methods: {
@@ -151,17 +119,12 @@
         this.$refs.forms.validate((valid) => {
           if (valid) {
             this.$emit('submit', {
-              title: this.forms.title,
-              bangumiId: this.forms.bangumiId,
-              desc: this.forms.content.substring(0, 120),
               content: this.formatContent,
               images: this.formatImages
             })
             this.$channel.$on('main-comment-create-success', () => {
               this.$channel.$off('main-comment-create-success')
               this.forms = {
-                title: '',
-                bangumiId: this.bangumiId || '',
                 content: ''
               }
               this.$refs.uploader.clearFiles()
@@ -170,28 +133,6 @@
             return false
           }
         })
-      },
-      async getUserFollowedBangumis () {
-        if (this.isReply) {
-          return
-        }
-        if (this.bangumis.length) {
-          return
-        }
-        if (this.loadingFetchBangumi) {
-          return
-        }
-        this.loadingFetchBangumi = true
-        try {
-          await this.$store.dispatch('users/getFollowBangumis', {
-            zone: this.$store.state.user.zone,
-            self: true
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingFetchBangumi = false
-        }
       },
       handleError (err, file) {
         console.log(err)
@@ -233,7 +174,7 @@
 
         this.uploadHeaders.key = this.$utils.createFileName({
           userId: this.$store.state.user.id,
-          type: 'post',
+          type: this.type,
           id: this.postId,
           file
         })
@@ -250,9 +191,8 @@
       }
     },
     mounted () {
-      if (!this.isGuest) {
+      if (!this.isGuest && this.withImage) {
         this.getUpToken()
-        this.getUserFollowedBangumis()
       }
     }
   }

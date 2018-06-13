@@ -1,9 +1,9 @@
 import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
-  getMainCommentList ({ type, id, fetchId }) {
+  getMainCommentList ({ type, id, fetchId, onlySeeMaster, seeReplyId }) {
     return this.http.get(`${type}/comment/${id}/main/list`, {
-      params: { fetchId }
+      params: { fetchId, onlySeeMaster, seeReplyId }
     })
   }
 

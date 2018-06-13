@@ -61,6 +61,10 @@
         required: true,
         type: String,
         validator: val => ~['post'].indexOf(val)
+      },
+      onlySeeMaster: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
@@ -95,7 +99,8 @@
           await this.$store.dispatch('comment/getMainComments', {
             ctx: this,
             type: this.type,
-            id: this.id
+            id: this.id,
+            onlySeeMaster: this.onlySeeMaster ? 1 : 0
           })
         } catch (e) {
           this.$toast.error(e)
