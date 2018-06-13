@@ -18,7 +18,7 @@
     background-color: #fff;
     box-shadow: 3px 1px 6px rgba(0,0,0,.25);
     border-radius: 0 4px 4px 0;
-    z-index: 1;
+    z-index: 10086;
     transition: left .6s ease;
 
     .toggle {
@@ -154,6 +154,7 @@
 
     .M-menu {
       position: absolute;
+      z-index: 1;
       left: 0;
       bottom: 100%;
       width: 100%;
