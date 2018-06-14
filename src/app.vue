@@ -41,14 +41,6 @@
         env !== 'development' ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true } : ''
       ].filter(_ => _),
       __dangerouslyDisableSanitizers: 'script'
-    },
-    mounted () {
-      if (this.$store.state.login) {
-        setInterval(() => {
-          this.$store.dispatch('getNotification', this)
-        }, 60000)
-        this.$cookie.set('JWT-TOKEN', this.$store.state.user.token)
-      }
     }
   }
 </script>

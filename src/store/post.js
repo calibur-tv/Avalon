@@ -32,17 +32,6 @@ const state = () => ({
 
 const mutations = {
   setPost (state, data) {
-    data.list.forEach(item => {
-      if (state.show.seenIds.indexOf(item.id) === -1) {
-        const commentIds = item.comments.map(_ => _.id)
-        state.show.data.list.push(Object.assign(item, {
-          __comment_page: 1,
-          __seen_comment_ids: commentIds
-        }))
-        state.show.seenIds.push(item.id)
-      }
-    })
-    state.show.data.noMore = state.show.init ? (data.list.length < state.show.take - 1) : (data.list.length < state.show.take)
     if (state.show.init) {
       state.show.info = {
         bangumi: data.bangumi,
@@ -120,7 +109,7 @@ const mutations = {
     state.show.data.total++
     const images = data.images
     if (images.length) {
-      state.show.info.post.previewImages = state.show.info.post.previewImages.concat(images)
+      state.show.info.post.preview_images = state.show.info.post.preview_images.concat(images)
     }
   },
   followBangumi (state, result) {

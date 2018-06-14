@@ -25,8 +25,11 @@
       }
     }
 
-    .post-item {
+    .post-main {
       .user {
+        width: 180px;
+        float: left;
+
         .avatar {
           display: block;
           margin: 20px auto 5px auto;
@@ -49,6 +52,7 @@
         background: #fff;
         padding: 22px 0 14px;
         border-top: 1px solid #e5e9ef;
+        overflow: hidden;
 
         .main {
           min-height: 80px;
@@ -119,6 +123,51 @@
         width: 100%;
       }
     }
+
+    #comment-wrap {
+      .sub-comment-list-wrap {
+        background-color: #f7f8fa;
+        position: relative;
+        margin-left: 180px;
+
+        .sub-comment-list {
+        }
+
+        .comments {
+          padding: 4px 15px;
+
+          li {
+            display: block;
+            width: 100%;
+          }
+
+          .avatar {
+            @include avatar(32px)
+          }
+        }
+
+        .comment-reply-area {
+          padding: 0 15px 10px;
+          height: 45px;
+          line-height: 35px;
+
+          .open-comment {
+            float: right;
+            font-size: 13px;
+            margin-top: 10px;
+          }
+
+          .total {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      #comment-list-footer {
+        margin-left: 180px;
+        margin-right: 5px;
+      }
+    }
   }
 </style>
 
@@ -150,14 +199,14 @@
           </div>
         </header>
         <main>
-          <el-row class="post-item">
-            <el-col class="user" :span="5">
+          <el-row class="post-main">
+            <div class="user">
               <a :href="$alias.user(master.zone)" target="_blank">
                 <v-img class="avatar" :src="master.avatar" :width="80" :height="80"></v-img>
               </a>
               <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
-            </el-col>
-            <el-col class="content" :span="19">
+            </div>
+            <div class="content">
               <div
                 class="image-package"
                 v-for="(img, idx) in post.images"
@@ -227,54 +276,72 @@
                   ></v-share>
                 </div>
               </div>
-            </el-col>
+            </div>
           </el-row>
-          <post-item
-            v-for="item in list"
-            :key="item.id"
-            :post="item"
-            @delete="deletePostComment(item.id)"
-          ></post-item>
-        </main>
-        <el-col :span="19" :offset="5">
-          <el-button
-            :loading="loadingLoadMore"
-            v-if="!noMore"
-            class="load-post-btn"
-            @click="getPosts"
-            type="info"
-            plain
+          <comment-main
+            type="post"
+            :id="post.id"
+            :only-see-master="onlySeeMaster"
           >
-            {{ loadingLoadMore ? '加载中' : '加载更多' }}
-          </el-button>
-          <div id="post-reply-form">
-            <post-reply></post-reply>
-          </div>
-        </el-col>
+            <post-comment-item
+              slot="comment-item"
+              slot-scope="{ comment }"
+              :post="comment"
+              :master-id="master.id"
+            ></post-comment-item>
+            <post-sub-comment-list
+              slot="sub-comment-list"
+              slot-scope="{ parentComment }"
+              :parent-comment="parentComment"
+            ></post-sub-comment-list>
+            <create-comment-form
+              id="post-reply-form"
+              slot="footer"
+              slot-scope="{ reply }"
+              type="post"
+              :with-image="true"
+              @submit="reply"
+            ></create-comment-form>
+          </comment-main>
+        </main>
       </section>
     </div>
   </div>
 </template>
 
 <script>
-  import PostReply from '~/components/creates/PostReply'
-  import PostItem from '~/components/items/Post'
+  import CommentMain from '~/components/comments/CommentMain'
+  import PostCommentItem from '~/components/post/PostCommentItem'
+  import PostSubCommentList from '~/components/post/PostSubCommentList'
+  import CreateCommentForm from '~/components/forms/CreateCommentForm'
 
   export default {
     name: 'post-show',
     async asyncData ({ route, store, ctx }) {
-      await store.dispatch('post/getPost', {
-        id: route.params.id,
-        ctx,
-        only: route.query.only
-          ? parseInt(route.query.only, 10) ? 1 : 0
-          : 0,
-        reply: route.query.reply
-      })
+      const only = route.query.only
+        ? parseInt(route.query.only, 10) ? 1 : 0
+        : 0
+      const id = route.params.id
+      await Promise.all([
+        store.dispatch('post/getPost', {
+          id,
+          ctx,
+          only
+        }),
+        store.dispatch('comment/getMainComments', {
+          ctx,
+          id,
+          type: 'post',
+          onlySeeMaster: only,
+          seeReplyId: route.query.reply
+        })
+      ])
     },
     components: {
-      PostReply,
-      PostItem
+      CommentMain,
+      PostCommentItem,
+      PostSubCommentList,
+      CreateCommentForm
     },
     head () {
       return {
@@ -290,7 +357,7 @@
         return this.$store.state.post.show
       },
       list () {
-        return this.$utils.orderBy(this.resource.data.list, 'floor_count')
+        return this.$utils.orderBy(this.$store.state.comment.list, 'floor_count')
       },
       noMore () {
         return this.resource.data.noMore
@@ -302,7 +369,7 @@
         return this.resource.info.post
       },
       total () {
-        return this.post.comment_count + 1
+        return this.$store.state.comment.total + 1
       },
       master () {
         return this.resource.info.user
@@ -367,23 +434,6 @@
         }).catch((e) => {
           this.$toast.error(e)
         })
-      },
-      async getPosts () {
-        if (this.loadingLoadMore) {
-          return
-        }
-        this.loadingLoadMore = true
-        try {
-          await this.$store.dispatch('post/getPost', {
-            id: this.post.id,
-            ctx: this,
-            only: this.onlySeeMaster ? 1 : 0
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingLoadMore = false
-        }
       },
       async toggleLike () {
         if (!this.$store.state.login) {
