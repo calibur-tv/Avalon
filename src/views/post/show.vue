@@ -101,12 +101,6 @@
       }
     }
 
-    .load-post-btn {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      width: 100%;
-    }
-
     .col-aside {
       padding: 20px;
 
@@ -282,6 +276,7 @@
             type="post"
             :id="post.id"
             :only-see-master="onlySeeMaster"
+            :with-image="true"
           >
             <post-comment-item
               slot="comment-item"
@@ -294,14 +289,6 @@
               slot-scope="{ parentComment }"
               :parent-comment="parentComment"
             ></post-sub-comment-list>
-            <create-comment-form
-              id="post-reply-form"
-              slot="footer"
-              slot-scope="{ reply }"
-              type="post"
-              :with-image="true"
-              @submit="reply"
-            ></create-comment-form>
           </comment-main>
         </main>
       </section>
@@ -313,7 +300,6 @@
   import CommentMain from '~/components/comments/CommentMain'
   import PostCommentItem from '~/components/post/PostCommentItem'
   import PostSubCommentList from '~/components/post/PostSubCommentList'
-  import CreateCommentForm from '~/components/forms/CreateCommentForm'
 
   export default {
     name: 'post-show',
@@ -340,8 +326,7 @@
     components: {
       CommentMain,
       PostCommentItem,
-      PostSubCommentList,
-      CreateCommentForm
+      PostSubCommentList
     },
     head () {
       return {

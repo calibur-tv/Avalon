@@ -30,7 +30,6 @@
       </div>
     </div>
     <div id="comment-list-footer">
-      <!-- TODO: 支持分页的展示形式 -->
       <slot name="load">
         <div class="load-more-btn">
           <el-button
@@ -44,12 +43,18 @@
         </div>
       </slot>
       <!-- 主列表的底部 -->
-      <slot name="footer" :reply="reply"></slot>
+      <create-comment-form
+        :id="id"
+        :type="type"
+        :with-image="withImage"
+      ></create-comment-form>
     </div>
   </div>
 </template>
 
 <script>
+  import CreateCommentForm from '~/components/forms/CreateCommentForm'
+
   export default {
     name: 'v-comment-main',
     props: {
@@ -65,7 +70,14 @@
       onlySeeMaster: {
         type: Boolean,
         default: false
+      },
+      withImage: {
+        type: Boolean,
+        default: false
       }
+    },
+    components: {
+      CreateCommentForm
     },
     computed: {
       store () {
@@ -79,9 +91,6 @@
       },
       total () {
         return this.store.total
-      },
-      submitting () {
-        return this.store.submitting
       }
     },
     data () {
@@ -106,26 +115,6 @@
           this.$toast.error(e)
         } finally {
           this.loading = false
-        }
-      },
-      async reply (data) {
-        if (this.submitting) {
-          return
-        }
-        this.$store.commit('comment/SET_SUBMITTING', { result: true })
-        try {
-          await this.$store.dispatch('comment/createMainComment', {
-            content: data.content,
-            images: data.images,
-            type: 'post',
-            id: this.id,
-            ctx: this
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.$store.commit('comment/SET_SUBMITTING', { result: false })
-          this.$channel.$emit('main-comment-create-success')
         }
       }
     }
