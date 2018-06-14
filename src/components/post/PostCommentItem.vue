@@ -79,8 +79,8 @@
 </style>
 
 <template>
-  <el-row class="post-item" :id="`post-reply-${post.id}`">
-    <div class="user" :span="5">
+  <div class="post-item" :id="`post-reply-${post.id}`">
+    <div class="user">
       <a :href="$alias.user(post.from_user_zone)" target="_blank">
         <v-img class="avatar" :src="post.from_user_avatar" :width="80" :height="80"></v-img>
       </a>
@@ -121,7 +121,7 @@
         </div>
       </div>
     </div>
-  </el-row>
+  </div>
 </template>
 
 <script>
