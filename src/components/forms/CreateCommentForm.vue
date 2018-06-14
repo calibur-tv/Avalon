@@ -1,5 +1,5 @@
 <style lang="scss">
-  .create-post-form {
+  .create-comment-form {
     .el-upload--picture-card, .el-upload-list__item {
       width: 72px !important;
       height: 72px !important;
@@ -10,12 +10,16 @@
     .el-upload--picture-card {
       float: left;
     }
+
+    .submit-btn {
+      width: 100%;
+    }
   }
 </style>
 
 <template>
   <el-form
-    class="create-post-form"
+    class="create-comment-form"
     :model="forms"
     :rules="rules"
     ref="forms"
@@ -48,14 +52,14 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit" :loading="submitting">发布</el-button>
+      <el-button type="primary" class="submit-btn" @click="submit" :loading="submitting">发布</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
   export default {
-    name: 'create-post-form',
+    name: 'create-comment-form',
     props: {
       withImage: {
         type: Boolean,
@@ -63,8 +67,11 @@
       },
       type: {
         type: String,
-        required: true,
-        validator: val => ~['post'].indexOf(val)
+        required: true
+      },
+      id: {
+        type: Number,
+        required: true
       }
     },
     computed: {
@@ -116,19 +123,35 @@
           this.$channel.$emit('sign-in')
           return
         }
-        this.$refs.forms.validate((valid) => {
+        this.$refs.forms.validate(async (valid) => {
           if (valid) {
-            this.$emit('submit', {
-              content: this.formatContent,
-              images: this.formatImages
-            })
-            this.$channel.$on('main-comment-create-success', () => {
-              this.$channel.$off('main-comment-create-success')
+            if (this.submitting) {
+              return
+            }
+            this.$store.commit('comment/SET_SUBMITTING', { result: true })
+            try {
+              await this.$store.dispatch('comment/createMainComment', {
+                content: this.formatContent,
+                images: this.formatImages,
+                type: this.type,
+                id: this.id,
+                ctx: this
+              })
               this.forms = {
                 content: ''
               }
               this.$refs.uploader.clearFiles()
-            })
+              this.$toast.success('评论成功')
+              const list = document.querySelectorAll('.comment-item-wrap')
+              setTimeout(() => {
+                const dom = list[list.length - 1]
+                dom && this.$scrollToY(dom.offsetTop, 600)
+              }, 400)
+            } catch (e) {
+              this.$toast.error(e)
+            } finally {
+              this.$store.commit('comment/SET_SUBMITTING', { result: false })
+            }
           } else {
             return false
           }
