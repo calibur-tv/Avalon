@@ -57,6 +57,10 @@
       cursor: pointer;
     }
 
+    .hidden-cursor {
+      cursor: none;
+    }
+
     video:focus,
     video:active {
       outline: none;
@@ -217,7 +221,9 @@
     },
     data () {
       return {
-        player: null
+        player: null,
+        notMove: false,
+        timer: 0
       }
     },
     methods: {
@@ -228,6 +234,7 @@
           controls: true,
           autoplay: this.auto,
           kernels: flvKernel ? { flv: flvKernel } : {},
+          noDefaultContextMenu: true,
           plugin: [
             {
               name: chimeePluginControlbar.name,
@@ -248,6 +255,65 @@
             }
           ]
         })
+
+        document.addEventListener('fullscreenchange', () => {
+          this.handleFullScreen()
+        })
+        document.addEventListener('mozfullscreenchange', () => {
+          this.handleFullScreen()
+        })
+        document.addEventListener('webkitfullscreenchange', () => {
+          this.handleFullScreen()
+        })
+        document.addEventListener('msfullscreenchange', () => {
+          this.handleFullScreen()
+        })
+      },
+      cursorMoveFunc () {
+        this.notMove = false
+        document.getElementsByTagName('video')[0].classList.remove('hidden-cursor')
+      },
+      handleFullScreen () {
+        const isFull = this.checkIsFullScreen()
+        const video = document.getElementsByTagName('video')[0]
+        if (isFull) {
+          document.body.addEventListener('mousemove', this.cursorMoveFunc)
+          setInterval(() => {
+            this.notMove = true
+            setTimeout(() => {
+              if (this.notMove) {
+                video.classList.add('hidden-cursor')
+              }
+            }, 1000)
+          }, 2000)
+        } else {
+          video.classList.remove('hidden-cursor')
+          document.body.removeEventListener('mousemove', this.cursorMoveFunc)
+          if (this.timer) {
+            clearInterval(this.timer)
+          }
+        }
+      },
+      checkIsFullScreen () {
+        return !!(this.invokeFieldOrMethod(document, 'FullScreen') || this.invokeFieldOrMethod(document, 'IsFullScreen') || document.IsFullScreen)
+      },
+      invokeFieldOrMethod (ele, method) {
+        let usablePrefixMethod;
+        ['webkit', 'moz', 'ms', 'o', ''].forEach(function (prefix) {
+          if (usablePrefixMethod) return
+          if (prefix === '') {
+            method = method.slice(0, 1).toLowerCase() + method.slice(1)
+          }
+          let typePrefixMethod = typeof ele[prefix + method]
+          if (typePrefixMethod + '' !== 'undefined') {
+            if (typePrefixMethod === 'function') {
+              usablePrefixMethod = ele[prefix + method]()
+            } else {
+              usablePrefixMethod = ele[prefix + method]
+            }
+          }
+        })
+        return usablePrefixMethod
       }
     },
     mounted () {

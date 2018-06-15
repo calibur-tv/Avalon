@@ -62,6 +62,7 @@
       :key="item.id"
     >
       <a
+        class="oneline"
         :class="{ 'active' : id === item.id }"
         :style="{ width: `${maxWidth}px` }"
         :href="alias(item.id)"
