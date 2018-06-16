@@ -68,6 +68,7 @@
         font-size: 15px;
         height: $header-height;
         line-height: $header-height;
+        font-weight: bold;
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.24);
