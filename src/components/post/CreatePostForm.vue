@@ -178,6 +178,9 @@
               error: (e) => {
                 this.submitting = false
                 this.$toast.error(e)
+              },
+              close: () => {
+                this.submitting = false
               }
             })
           } else {
