@@ -31,6 +31,7 @@
         height: 26px;
         line-height: 16px;
         margin-top: 10px;
+        font-weight: bold;
 
         &:hover {
           background-color: $color-white;
