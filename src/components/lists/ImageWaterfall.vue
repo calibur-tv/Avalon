@@ -423,9 +423,9 @@
       plain
     >{{ loading ? '加载中' : '加载更多' }}</el-button>
     <!--编辑图片弹窗-->
-    <v-modal
+    <v-dialog
       v-model="openEditModal"
-      header-text="编辑图片"
+      title="编辑图片"
       @submit="handleImageEditDone"
     >
       <el-form
@@ -501,11 +501,11 @@
           </el-col>
         </el-row>
       </el-form>
-    </v-modal>
+    </v-dialog>
     <!--编辑专辑弹窗-->
-    <v-modal
+    <v-dialog
       v-model="openEditAlbumModal"
-      header-text="编辑专辑"
+      title="编辑专辑"
       @submit="handleAlbumEditDone"
     >
       <el-form
@@ -553,7 +553,7 @@
           </el-form-item>
         </el-row>
       </el-form>
-    </v-modal>
+    </v-dialog>
   </div>
   <no-content v-else-if="noMore">
     <slot></slot>
@@ -562,7 +562,7 @@
 
 <script>
   import Api from '~/api/imageApi'
-  import vSelect from '~/components/base/Select'
+  import vSelect from '~/components/common/Select'
 
   export default {
     name: 'ImageWaterfall',

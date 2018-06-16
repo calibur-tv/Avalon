@@ -1,33 +1,6 @@
 <style lang="scss">
-  #image-reader-modal {
-    .v-modal {
-      max-width: 90%;
-      max-height: 90%;
-      min-width: 80%;
-      height: 700px;
-      box-shadow: none;
-      background-color: #000;
-
-      > main {
-        overflow: auto;
-        padding: 0;
-        height: 100%;
-      }
-
-      img {
-        position: relative;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-      }
-    }
-
+  .el-dialog {
     .el-carousel {
-      background-color: #000;
       max-height: 100%;
 
       .el-carousel__container {
@@ -38,10 +11,25 @@
         display: none;
       }
     }
+  }
+</style>
 
-    #download-btn {
-      position: absolute;
-      bottom: 15px;
+<style lang="scss" module>
+  .image-reader-modal {
+    .img {
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+    }
+
+    .download-btn {
+      position: fixed;
+      bottom: 20px;
       color: #fff;
       text-align: center;
       opacity: 0.8;
@@ -63,12 +51,14 @@
 </style>
 
 <template>
-  <v-modal
+  <v-dialog
     v-model="open"
-    id="image-reader-modal"
     :header="false"
     :footer="false"
     :close="false"
+    :fullscreen="true"
+    :custom-class="$style.imageReaderModal"
+    width="80%"
   >
     <el-carousel
       v-if="maxHeight"
@@ -81,16 +71,17 @@
     >
       <el-carousel-item
         v-for="(item, idx) in images"
-        :key="`${idx}-${item}`"
+        :key="`${idx}-${item.url}`"
       >
         <v-img
           :src="computeImageSize(item)"
           :id="`image-reader-${idx}`"
+          :class="$style.img"
         ></v-img>
       </el-carousel-item>
     </el-carousel>
-    <a id="download-btn" target="_blank" :href="imageHref" :download="imageName" @click.stop>下载原图</a>
-  </v-modal>
+    <a :class="$style.downloadBtn" target="_blank" :href="imageHref" :download="imageName" @click.stop>下载原图</a>
+  </v-dialog>
 </template>
 
 <script>

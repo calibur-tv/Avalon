@@ -217,38 +217,6 @@
             background-color: $color-gray-deep;
           }
         }
-
-        .bangumi-followers-modal {
-          li {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-
-            img {
-              margin-right: 5px;
-              width: 32px;
-              height: 32px;
-              vertical-align: middle;
-              border: 1px solid #ddd;
-              border-radius: 50%;
-            }
-
-            span {
-              font-size: 15px;
-              color: #333;
-              vertical-align: middle;
-              display: inline-block;
-            }
-
-            .score {
-              float: right;
-              font-size: 13px;
-              color: $color-text-light;
-              margin-top: 13px;
-            }
-          }
-        }
       }
     }
 
@@ -336,39 +304,6 @@
           
           .load-list {
             cursor: pointer;
-          }
-        }
-      }
-
-      .role-fans-modal {
-        .v-modal {
-          min-height: 600px;
-
-          li {
-            float: none;
-
-            .lover-user {
-              padding: 10px 0;
-              position: relative;
-              border-bottom: 1px solid #f0f0f0;
-              display: block;
-
-              img {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                border: 1px solid $color-gray-normal;
-                margin-right: 10px;
-                vertical-align: middle;
-              }
-
-              .score {
-                float: right;
-                font-size: 13px;
-                color: $color-text-light;
-                margin-top: 13px;
-              }
-            }
           }
         }
       }
@@ -544,23 +479,23 @@
                 class="followers-more-btn el-icon-more"
               ></button>
             </ul>
-            <v-modal
+            <v-dialog
               v-model="openFollowersModal"
-              :header-text="`《${info.name}》的关注者们`"
+              :title="`《${info.name}》的关注者们`"
               :footer="false"
               :loading="loadingFollowers"
               :no-more="noMoreFollowers"
               :scroll="fetchMoreFollowers"
-              class="bangumi-followers-modal"
+              class="likes-modal"
             >
               <li v-for="user in followers" :key="user.id">
-                <a :href="$alias.user(user.zone)" target="_blank">
-                  <img :src="$resize(user.avatar, { width: 120 })">
-                  <span v-text="user.nickname"></span>
+                <a class="user" :href="$alias.user(user.zone)" target="_blank">
+                  <img class="avatar" :src="$resize(user.avatar, { width: 120 })">
+                  <span class="nickname" v-text="user.nickname"></span>
                   <v-time class="score" v-model="user.created_at"></v-time>
                 </a>
               </li>
-            </v-modal>
+            </v-dialog>
           </template>
           <span class="no-one" v-else>还没有人关注</span>
         </div>
@@ -736,10 +671,10 @@
                   <el-button @click="openFeedbackForRole" type="primary" round>求偶像</el-button>
                 </no-content>
               </template>
-              <v-modal
-                class="role-fans-modal"
+              <v-dialog
+                class="likes-modal"
                 v-model="openRolesModal"
-                :header-text="`${currentRole.name} · 应援团`"
+                :title="`${currentRole.name} · 应援团`"
                 :footer="false"
                 :loading="loadingRoleFans"
                 :no-more="currentRoleFans.noMore"
@@ -749,14 +684,14 @@
                   v-for="item in currentRoleFans.data"
                   :key="item.id"
                 >
-                  <a class="lover-user" target="_blank" :href="$alias.user(item.zone)">
-                    <img :src="$resize(item.avatar, { width: 80 })">
-                    <span v-text="item.nickname"></span>
+                  <a class="user" target="_blank" :href="$alias.user(item.zone)">
+                    <img class="avatar" :src="$resize(item.avatar, { width: 80 })">
+                    <span class="nickname" v-text="item.nickname"></span>
                     <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
                     <span class="score" v-else>{{ item.score }}个金币</span>
                   </a>
                 </li>
-              </v-modal>
+              </v-dialog>
             </div>
           </el-tab-pane>
           <el-tab-pane label="相册">
@@ -841,6 +776,9 @@
       },
       cartoonInfo () {
         return this.$store.state.bangumi.cartoon
+      },
+      noMoreFollowers () {
+        return this.info.noMoreFollowers
       }
     },
     data () {
@@ -872,7 +810,6 @@
         loadingFollow: false,
         openFollowersModal: false,
         loadingFollowers: false,
-        noMoreFollowers: false,
         fetchFollowersCount: 10
       }
     },
@@ -1085,12 +1022,11 @@
         }
         this.loadingFollowers = true
         try {
-          const data = await this.$store.dispatch('bangumi/getFollowers', {
+          await this.$store.dispatch('bangumi/getFollowers', {
             ctx: this,
             bangumiId: this.id,
             take: this.fetchFollowersCount
           })
-          this.noMoreFollowers = data.length < this.fetchFollowersCount
         } catch (e) {
           this.$toast.error(e)
         } finally {
@@ -1149,7 +1085,6 @@
           avatar: this.info.avatar
         })
       })
-      this.noMoreFollowers = this.followers.length < this.fetchFollowersCount
       setTimeout(() => {
         document.getElementById('tab-1').click()
       }, 1000)

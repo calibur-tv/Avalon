@@ -117,7 +117,9 @@ const mutations = {
     state.images.noMore = images.length >= total || data.length < state.images.take
   },
   SET_BANGUMI (state, data) {
-    state.info = data
+    state.info = Object.assign(data, {
+      noMoreFollowers: data.followers.length < 10
+    })
   },
   SET_VIDEOS (state, data) {
     state.videos = {
@@ -129,6 +131,7 @@ const mutations = {
   },
   SET_BANGUMI_FOLLOWERS (state, data) {
     state.info.followers = state.info.followers.concat(data.list)
+    state.info.noMoreFollowers = data.noMore
     state.followersPage = state.followersPage + 1
   },
   SET_BANGUMI_CARTOON (state, data) {
@@ -244,7 +247,6 @@ const actions = {
       page: state.followersPage
     })
     commit('SET_BANGUMI_FOLLOWERS', data)
-    return data
   },
   async getCartoons ({ state, commit }, { ctx, bangumiId }) {
     const api = new Api(ctx)

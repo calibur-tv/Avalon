@@ -16,23 +16,25 @@
       color: #7f9eb2;
       font-size: 13px;
     }
+  }
+</style>
 
-    .share-tips-modal {
-      text-align: left;
+<style lang="scss" module>
+  .share-tips-modal {
+    text-align: left;
 
-      .tips {
+    .tips {
 
-        p {
-          margin: 25px 10px 0 10px;
-        }
+      .p {
+        margin: 25px 10px 0 10px;
+      }
 
-        .footer {
-          padding: 20px;
+      .footer {
+        padding: 20px;
 
-          button {
-            float: right;
-            margin-left: 10px;
-          }
+        .copy-share-btn {
+          float: right;
+          margin-left: 10px;
         }
       }
     }
@@ -46,34 +48,34 @@
       <a href="/about/hello" target="_blank">功能简介</a>
       &nbsp;·&nbsp;
       <a href="javascript:;" @click="openShareModal">分享网站</a>
-      <v-modal
+      <v-dialog
         v-model="toggleShareModal"
-        class="share-tips-modal"
-        header-text="感谢分享"
-        :footer="false"
+        title="感谢分享"
+        :custom-class="$style.shareTipsModal"
       >
         <div
-          class="tips"
+          :class="$style.tips"
         >
-          <p>
+          <p :class="$style.p">
             【calibur.tv】一个纯粹的二次元社区网站，致力于实现"天下漫友是一家"！
           </p>
-          <p>
+          <p :class="$style.p">
             站内海量动漫资源在线播放，更有看漫画、cosplay、发帖、为偶像应援等功能，每天签到送金币（1金币 = 1人民币）！
           </p>
-          <p>
+          <p :class="$style.p">
             快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv
           </p>
-          <div class="footer" slot="footer">
-            <el-button
-              type="primary"
-              size="small"
-              ref="shareBtn"
-              data-clipboard-text="【calibur.tv】一个纯粹的二次元社区网站，致力于实现'天下漫友是一家'！站内海量动漫资源在线播放，更有看漫画、cosplay、发帖、为偶像应援等功能，每天签到送金币（1金币 = 1人民币）！快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv"
-            >点击复制</el-button>
-          </div>
         </div>
-      </v-modal>
+        <div slot="footer" :class="$style.footer">
+          <el-button
+            :class="$style.copyShareBtn"
+            type="primary"
+            size="small"
+            ref="shareBtn"
+            data-clipboard-text="【calibur.tv】一个纯粹的二次元社区网站，致力于实现'天下漫友是一家'！站内海量动漫资源在线播放，更有看漫画、cosplay、发帖、为偶像应援等功能，每天签到送金币（1金币 = 1人民币）！快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv"
+          >点击复制</el-button>
+        </div>
+      </v-dialog>
     </div>
   </footer>
 </template>

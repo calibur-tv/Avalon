@@ -11,39 +11,6 @@
       }
     }
 
-    .role-fans-modal {
-      .v-modal {
-        min-height: 600px;
-
-        li {
-          float: none;
-
-          .lover-user {
-            padding: 10px 0;
-            position: relative;
-            border-bottom: 1px solid #f0f0f0;
-            display: block;
-
-            img {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              border: 1px solid $color-gray-normal;
-              margin-right: 10px;
-              vertical-align: middle;
-            }
-
-            .score {
-              float: right;
-              font-size: 13px;
-              color: $color-text-light;
-              margin-top: 13px;
-            }
-          }
-        }
-      }
-    }
-
     .col-main {
       .intro {
         .avatar-wrap {
@@ -258,27 +225,27 @@
           </image-waterfall>
         </div>
       </div>
-      <v-modal
+      <v-dialog
         v-model="toggleFansListModal"
         :footer="false"
-        :header-text="`${role.name} · 应援团`"
+        :title="`${role.name} · 应援团`"
         :scroll="fetchRoleFans"
         :loading="loadingRoleFans"
         :no-more="noMoreFans"
-        class="role-fans-modal"
+        class="likes-modal"
       >
         <li
           v-for="item in fansModalData"
           :key="item.id"
         >
-          <a class="lover-user" target="_blank" :href="$alias.user(item.zone)">
-            <img :src="$resize(item.avatar, { width: 80 })">
-            <span v-text="item.nickname"></span>
+          <a class="user" target="_blank" :href="$alias.user(item.zone)">
+            <img class="avatar" :src="$resize(item.avatar, { width: 80 })">
+            <span class="nickname" v-text="item.nickname"></span>
             <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
             <span class="score" v-else>{{ item.score }}个金币</span>
           </a>
         </li>
-      </v-modal>
+      </v-dialog>
     </div>
   </div>
 </template>

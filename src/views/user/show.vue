@@ -2,38 +2,6 @@
   #user-show {
     $banner-height: 400px;
 
-    .avatar-cropper-modal {
-      .v-modal {
-        width: 400px;
-      }
-
-      .image-crop-area {
-        width: 360px;
-        height: 360px;
-        overflow: hidden;
-      }
-
-      .cropper-face {
-        left: 0;
-        top: 0;
-        overflow: hidden;
-        background-color: transparent;
-        opacity: 1;
-
-        &:after {
-          content: '';
-          position: absolute;
-          left: 2%;
-          top: 2%;
-          border-radius: 100%;
-          width: 96%;
-          height: 96%;
-          box-shadow: 0 0 0 2000px #fff;
-          opacity: .85;
-        }
-      }
-    }
-
     .banner {
       position: relative;
       width: 100%;
@@ -564,6 +532,36 @@
   }
 </style>
 
+<style lang="scss">
+  .avatar-cropper-modal {
+    .image-crop-area {
+      width: 360px;
+      height: 360px;
+      overflow: hidden;
+    }
+
+    .cropper-face {
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      background-color: transparent;
+      opacity: 1;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 2%;
+        top: 2%;
+        border-radius: 100%;
+        width: 96%;
+        height: 96%;
+        box-shadow: 0 0 0 2000px #fff;
+        opacity: .85;
+      }
+    }
+  }
+</style>
+
 <template>
   <div id="user-show">
     <section class="banner" :class="{ 'my-banner': isMe && !bannerSelector.loading }">
@@ -600,21 +598,23 @@
           </el-button>
         </template>
       </div>
-      <v-modal
+      <v-dialog
         class="avatar-cropper-modal"
         v-model="avatarCropper.showModal"
-        header-text="头像裁剪"
+        title="头像裁剪"
         :footer="false"
+        width="400px"
         @cancel="handleAvatarCropperCancel"
       >
         <v-cropper
+          v-if="avatarCropper.showModal"
           :src="avatarCropper.src"
           :file-type="avatarCropper.type"
           :uploading="avatarCropper.loading"
           @cancel="handleAvatarCropperCancel"
           @submit="handleAvatarCropperSubmit"
         ></v-cropper>
-      </v-modal>
+      </v-dialog>
       <p class="signature" v-text="user.signature"></p>
       <no-ssr>
         <transition name="el-zoom-in-bottom">
@@ -867,7 +867,7 @@
 </template>
 
 <script>
-  import vCropper from '~/components/base/Cropper'
+  import vCropper from '~/components/common/Cropper'
   import UserApi from '~/api/userApi'
   import ImageApi from '~/api/imageApi'
   import ImageWaterfall from '~/components/lists/ImageWaterfall'

@@ -286,3 +286,42 @@ $--padding-default: 16px;
       }
   }
 }
+
+.likes-modal {
+  li {
+    float: none;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .user {
+      padding: 10px 0;
+      position: relative;
+      display: block;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid $color-gray-normal;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+
+      .nickname {
+        font-size: 15px;
+        color: #333;
+        vertical-align: middle;
+        display: inline-block;
+      }
+
+      .score {
+        float: right;
+        font-size: 13px;
+        color: $color-text-light;
+        margin-top: 13px;
+      }
+    }
+  }
+}
