@@ -324,16 +324,18 @@
     </main>
     <slot></slot>
     <footer class="image-crop-footer">
-      <el-button class="cancel"
-                 type="text"
-                 @click="handleCancel"
-                 :disabled="uploading"
-                 v-if="showCancel"
+      <el-button
+        class="cancel"
+        type="text"
+        @click="handleCancel"
+        :disabled="uploading"
+        v-if="showCancel"
       >{{ textCancel }}</el-button>
-      <el-button class="submit"
-                 type="primary"
-                 :loading="uploading"
-                 @click="handleSubmit"
+      <el-button
+        class="submit"
+        type="primary"
+        :loading="uploading"
+        @click="handleSubmit"
       >{{ textSubmit }}</el-button>
     </footer>
   </section>
@@ -468,9 +470,7 @@
       handleSubmit () {
         this.cropper.getCroppedCanvas().toBlob((blob) => {
           const formData = new FormData()
-          const now = Date.now()
-          const file = new File([blob], `${now}-${Math.random().toString(36).substring(3, 6)}.${this.fileType.split('/').pop()}`, { type: this.fileType, lastModified: now })
-          formData.append(this.fileKey, file)
+          formData.append(this.fileKey, blob)
           this.$emit('submit', formData)
         }, this.fileType)
       }
