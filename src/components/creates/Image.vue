@@ -4,13 +4,21 @@
       margin-left: 20px;
       margin-bottom: 30px;
     }
+
+    .el-icon-question {
+      margin-left: 30px;
+      cursor: pointer;
+      font-size: 20px;
+      vertical-align: middle;
+      color: $color-gray-deep;
+    }
   }
 </style>
 
 <template>
-  <v-modal
+  <v-dialog
     v-model="show"
-    header-text="上传图片"
+    title="上传图片"
     @submit="handleFormSubmit"
     class="create-image-modal"
     :loading="submitting"
@@ -25,7 +33,7 @@
     >
       <template v-if="action === '上传图片'">
         <el-row>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="类型">
               <el-select
                 v-model="form.tags"
@@ -38,9 +46,12 @@
                   :value="item.id">
                 </el-option>
               </el-select>
+              <el-tooltip class="item" effect="dark" content="大概就是图片的制作场景" placement="top">
+                <i class="el-icon-question"></i>
+              </el-tooltip>
             </el-form-item>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="尺寸">
               <el-select
                 v-model="form.size"
@@ -53,11 +64,14 @@
                   :value="item.id">
                 </el-option>
               </el-select>
+              <el-tooltip class="item" effect="dark" content="大概就是图片的使用场景" placement="top">
+                <i class="el-icon-question"></i>
+              </el-tooltip>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="番剧">
               <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
                 <el-option
@@ -67,9 +81,12 @@
                   :value="item.id">
                 </el-option>
               </el-select>
+              <el-tooltip class="item" effect="dark" content="只能选择你已关注的番剧" placement="top">
+                <i class="el-icon-question"></i>
+              </el-tooltip>
             </el-form-item>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="角色">
               <el-select
                 v-model="form.roleId"
@@ -82,11 +99,14 @@
                   :value="item.id">
                 </el-option>
               </el-select>
+              <el-tooltip class="item" effect="dark" content="所选番剧里的动漫角色" placement="top">
+                <i class="el-icon-question"></i>
+              </el-tooltip>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="相册">
               <el-select v-model="form.albumId" filterable clearable placeholder="请选择相册（可选）">
                 <el-option
@@ -96,11 +116,17 @@
                   :value="item.id">
                 </el-option>
               </el-select>
+              <el-tooltip class="item" effect="dark" content="你也可以选择一个自己的相册" placement="top">
+                <i class="el-icon-question"></i>
+              </el-tooltip>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="原创">
           <el-switch v-model="form.creator"></el-switch>
+          <el-tooltip class="item" effect="dark" content="如果是搬运来的，请不要勾选" placement="top">
+            <i class="el-icon-question"></i>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="图片">
           <el-upload
@@ -138,6 +164,9 @@
                 :value="item.id">
               </el-option>
             </el-select>
+            <el-tooltip class="item" effect="dark" content="只能选择你已关注的番剧" placement="top">
+              <i class="el-icon-question"></i>
+            </el-tooltip>
           </el-form-item>
         </el-row>
         <el-form-item label="漫画" v-if="user.faker">
@@ -145,6 +174,9 @@
         </el-form-item>
         <el-form-item label="原创">
           <el-switch v-model="albumForm.creator"></el-switch>
+          <el-tooltip class="item" effect="dark" content="只有相册内容全是原创时才应该勾选" placement="top">
+            <i class="el-icon-question"></i>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="封面">
           <el-upload
@@ -162,7 +194,7 @@
         </el-form-item>
       </template>
     </el-form>
-  </v-modal>
+  </v-dialog>
 </template>
 
 <script>

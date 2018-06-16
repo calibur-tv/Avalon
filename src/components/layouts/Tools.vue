@@ -71,14 +71,13 @@
         </transition>
       </el-tooltip>
     </div>
-    <v-modal
+    <v-dialog
       v-model="showPostModal"
-      class="create-post-modal"
-      header-text="发帖"
+      title="发帖"
       :footer="false"
     >
-      <v-post @submit="showPostModal = false"></v-post>
-    </v-modal>
+      <create-post-form @submit="showPostModal = false"></create-post-form>
+    </v-dialog>
     <v-feedback v-model="showFeedModal"></v-feedback>
     <v-image></v-image>
   </div>
@@ -87,13 +86,13 @@
 <script>
   import vCreator from './Creator.vue'
   import vFeedback from '~/components/creates/Feedback'
-  import vPost from '~/components/creates/Post'
+  import CreatePostForm from '~/components/post/CreatePostForm'
   import vImage from '~/components/creates/Image'
 
   export default {
     name: 'SideTools',
     components: {
-      vCreator, vPost, vFeedback, vImage
+      vCreator, CreatePostForm, vFeedback, vImage
     },
     data () {
       return {

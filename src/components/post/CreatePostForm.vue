@@ -10,6 +10,14 @@
     .el-upload--picture-card {
       float: left;
     }
+
+    .el-icon-question {
+      margin-left: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      vertical-align: middle;
+      color: $color-gray-deep;
+    }
   }
 </style>
 
@@ -22,10 +30,10 @@
     label-width="50px"
   >
     <el-form-item label="标题" prop="title">
-      <el-input placeholder="请填写标题" v-model.trim="forms.title"></el-input>
+      <el-input v-model.trim="forms.title" placeholder="请填写帖子标题"></el-input>
     </el-form-item>
     <el-form-item label="番剧" prop="bangumiId">
-      <el-select v-model="forms.bangumiId" filterable placeholder="请选择番剧">
+      <el-select v-model="forms.bangumiId" filterable placeholder="请选择你关注的番剧">
         <el-option
           v-for="item in optionBangumis"
           :label="item.name"
@@ -33,6 +41,9 @@
           :value="item.id"
         ></el-option>
       </el-select>
+      <el-tooltip class="item" effect="dark" content="只能选择你已关注的番剧" placement="top">
+        <i class="el-icon-question"></i>
+      </el-tooltip>
     </el-form-item>
     <el-form-item label="图片">
       <el-upload
@@ -61,7 +72,7 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit" :loading="submitting">确认</el-button>
+      <el-button type="primary" @click="submit" :loading="submitting">发布</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -78,14 +89,13 @@
         },
         rules: {
           title: [
-            { required: true, message: '请输入帖子标题', trigger: 'blur' },
-            { max: 40, message: '请缩减至40字以内！', trigger: 'blur' }
+            { required: true, max: 40, message: '请输入帖子标题，最多40字', trigger: 'submit' }
           ],
           bangumiId: [
             { type: 'number', required: true, message: '请选择相应番剧', trigger: 'change' }
           ],
           content: [
-            { required: true, max: 1000, message: '内容不能为空，且不超过1000字', trigger: 'blur' }
+            { required: true, max: 1000, message: '内容不能为空，且不超过1000字', trigger: 'submit' }
           ]
         },
         uploadHeaders: {

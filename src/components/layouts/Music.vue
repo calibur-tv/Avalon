@@ -418,7 +418,7 @@
 </template>
 
 <script>
-  import vRange from '~/components/base/Range'
+  import vRange from '~/components/common/Range'
 
   export default {
     components: {

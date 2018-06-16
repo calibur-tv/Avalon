@@ -4,13 +4,13 @@ import Alias from '~/assets/js/alias'
 import Utils from '~/assets/js/utils'
 import ImageLazy from '~/assets/js/imagelazy'
 import NoSSR from '~/assets/js/nossr'
-import Modal from '~/components/Modal'
 import Banner from '~/components/layouts/Banner'
 import Time from '~/assets/js/timeago'
 import BangumiPanel from '~/components/panels/BangumiPanel'
 import NoContent from '~/components/NoContent'
-import Hr from '~/components/base/Hr'
-import Share from '~/components/base/Share'
+import Hr from '~/components/common/Hr'
+import Share from '~/components/common/Share'
+import Dialog from '~/components/common/Dialog'
 
 import {
   InfiniteScroll
@@ -83,7 +83,6 @@ Vue.use(Badge)
 Vue.use(Popover)
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
-Vue.component(Modal.name, Modal)
 Vue.component(NoSSR.name, NoSSR)
 Vue.component(Banner.name, Banner)
 Vue.component(Time.name, Time)
@@ -91,6 +90,7 @@ Vue.component(BangumiPanel.name, BangumiPanel)
 Vue.component(NoContent.name, NoContent)
 Vue.component(Hr.name, Hr)
 Vue.component(Share.name, Share)
+Vue.component(Dialog.name, Dialog)
 
 Vue.use({
   install (Vue, options) {

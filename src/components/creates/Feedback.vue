@@ -1,5 +1,11 @@
 <template>
-  <v-modal v-model="show" :footer="false" header-text="用户反馈">
+  <v-dialog
+    v-model="show"
+    title="用户反馈"
+    @submit="submit"
+    submit-text="提交"
+    cancel-text=""
+  >
     <el-form :model="forms" :rules="rules" ref="forms" label-width="50px">
       <el-form-item label="类型" prop="type">
         <el-select v-model="forms.type" placeholder="反馈类型">
@@ -19,11 +25,8 @@
           placeholder="非常感谢您的反馈，请填写详细信息方便我们解决"
         ></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submit">提交</el-button>
-      </el-form-item>
     </el-form>
-  </v-modal>
+  </v-dialog>
 </template>
 
 <script>
@@ -82,8 +85,7 @@
             { type: 'number', required: true, message: '请选择反馈类型', trigger: 'change' }
           ],
           desc: [
-            { required: true, message: '请填写反馈内容', trigger: 'blur' },
-            { max: 250, message: '最多可输入250字', trigger: 'blur' }
+            { required: true, max: 100, message: '请填写反馈内容，最多100字', trigger: 'submit' }
           ]
         }
       }
