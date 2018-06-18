@@ -68,7 +68,7 @@ const mutations = {
     state.posts.zone = zone
     state.posts[type] = {
       data: state.posts[type].data.concat(data.list),
-      noMore: data.length < state.posts.take,
+      noMore: data.noMore,
       loading: false
     }
   },

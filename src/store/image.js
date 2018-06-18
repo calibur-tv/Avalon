@@ -29,7 +29,7 @@ export default {
     DELETE_ALBUM_IMAGE (state, { index }) {
       let idsArr = state.albumShow.info.images.split(',')
       idsArr.splice(index, 1)
-      state.albumShow.info.images = idsArr.join(',')
+      state.albumShow.info.images = idsArr.toString()
       state.albumShow.images.splice(index, 1)
       state.albumShow.info.image_count--
     },
@@ -137,7 +137,7 @@ export default {
       const data = await api.images({
         id,
         take: waterfall.take,
-        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).join(',') : null,
+        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).toString() : null,
         size: waterfall.size,
         tags: waterfall.tags,
         roleId: waterfall.roleId,
@@ -156,7 +156,7 @@ export default {
       const api = new UserApi(ctx)
       const data = await api.images({
         zone,
-        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).join(',') : null,
+        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).toString() : null,
         take: waterfall.take,
         size: waterfall.size,
         tags: waterfall.tags,
@@ -175,7 +175,7 @@ export default {
       const waterfall = state.waterfall
       const api = new ImageApi(ctx)
       const data = await api.trendingList({
-        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).join(',') : null,
+        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).toString() : null,
         take: waterfall.take,
         size: waterfall.size,
         tags: waterfall.tags,
@@ -196,7 +196,7 @@ export default {
       const api = new CartoonRoleApi(ctx)
       const data = await api.images({
         id,
-        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).join(',') : null,
+        seenIds: waterfall.data.length ? waterfall.data.map(item => item.id).toString() : null,
         take: waterfall.take,
         sort: waterfall.sort,
         size: waterfall.size,
@@ -218,7 +218,7 @@ export default {
     async sortAlbumImage ({ state, commit }, { prev, next, ctx, id }) {
       let idsArr = state.albumShow.info.images.split(',')
       idsArr.splice(prev, 1, ...idsArr.splice(next, 1, idsArr[prev]))
-      idsArr = idsArr.join(',')
+      idsArr = idsArr.toString()
       const api = new ImageApi(ctx)
       await api.sortAlbum({ id, result: idsArr })
       commit('SORT_ALBUM_IMAGE', { prev, next, result: idsArr })
@@ -226,7 +226,7 @@ export default {
     async deleteAlbumImage ({ state, commit }, { index, ctx, id }) {
       let idsArr = state.albumShow.info.images.split(',')
       const imageId = idsArr.splice(index, 1)[0]
-      idsArr = idsArr.join(',')
+      idsArr = idsArr.toString()
       const api = new ImageApi(ctx)
       await api.deleteAlbumImage({ id, result: idsArr, imageId })
       commit('DELETE_ALBUM_IMAGE', { index })

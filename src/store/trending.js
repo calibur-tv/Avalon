@@ -121,7 +121,7 @@ const actions = {
       })
     } else {
       data = await api[sort]({
-        seenIds: list.length ? list.map(_ => _.id).join(',') : ''
+        seenIds: list.length ? list.map(_ => _.id).toString() : ''
       })
     }
     commit('PUSH_TRENDING_DATA', { data, sort })

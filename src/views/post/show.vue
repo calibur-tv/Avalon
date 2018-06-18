@@ -339,28 +339,19 @@
     },
     computed: {
       resource () {
-        return this.$store.state.post.show
-      },
-      list () {
-        return this.$utils.orderBy(this.$store.state.comment.list, 'floor_count')
-      },
-      noMore () {
-        return this.resource.data.noMore
+        return this.$store.state.post.info
       },
       bangumi () {
-        return this.resource.info.bangumi
+        return this.resource.bangumi
       },
       post () {
-        return this.resource.info.post
+        return this.resource.post
+      },
+      master () {
+        return this.resource.user
       },
       total () {
         return this.$store.state.comment.total + 1
-      },
-      master () {
-        return this.resource.info.user
-      },
-      masterId () {
-        return this.master.id
       },
       onlySeeMaster () {
         return !!parseInt(this.$route.query.only, 10)
@@ -369,8 +360,7 @@
         if (!this.$store.state.login) {
           return false
         }
-        const currentUserId = this.$store.state.user.id
-        return currentUserId === this.masterId
+        return this.$store.state.user.id === this.master.id
       }
     },
     data () {
@@ -400,22 +390,6 @@
             id: this.post.id
           })
           window.location = this.$alias.bangumi(this.bangumi.id)
-        }).catch((e) => {
-          this.$toast.error(e)
-        })
-      },
-      deletePostComment (id) {
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          await this.$store.dispatch('post/deletePostComment', {
-            ctx: this,
-            postId: this.post.id,
-            commentId: id
-          })
-          this.$toast.success('删除成功')
         }).catch((e) => {
           this.$toast.error(e)
         })
@@ -485,7 +459,7 @@
         })
       },
       handleBangumiFollow (result) {
-        this.$store.commit('post/followBangumi', result)
+        this.$store.commit('post/FOLLOW_BANGUMI', result)
       }
     },
     mounted () {
