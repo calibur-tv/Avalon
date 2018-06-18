@@ -115,7 +115,7 @@
         if (value.length !== 11) {
           return callback(new Error('请填写11位手机号'))
         }
-        if (!(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(value))) {
+        if (!(/^(0|86|17951)?(1)[0-9]{10}$/.test(value))) {
           return callback(new Error('错误的手机号格式'))
         }
         callback()
