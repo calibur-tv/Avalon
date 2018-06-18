@@ -6,7 +6,7 @@ const state = () => ({
   released: [],
   timeline: {
     data: [],
-    year: new Date().getFullYear() + 1,
+    year: new Date().getFullYear(),
     noMore: false
   },
   category: {

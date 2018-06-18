@@ -67,7 +67,7 @@ export default {
       }
       const api = new Api()
       const data = await api.trending({
-        seenIds: state.trending.data.length ? state.trending.data.map(item => item.id).join(',') : null
+        seenIds: state.trending.data.length ? state.trending.data.map(item => item.id).toString() : null
       })
       commit('SET_TRENDING', data)
     },
@@ -84,7 +84,7 @@ export default {
       }, sort === 'new' ? {
         minId: reset ? null : length ? state.fans[sort].data[length - 1].id : null
       } : {
-        seenIds: reset ? null : length ? state.fans[sort].data.map(item => item.id).join(',') : null
+        seenIds: reset ? null : length ? state.fans[sort].data.map(item => item.id).toString() : null
       }))
       commit('SET_FANS_LIST', { data, reset, sort })
     },
