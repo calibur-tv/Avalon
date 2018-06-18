@@ -99,9 +99,13 @@ const actions = {
         commit('CLEAR_TRENDING_SORT', { sort })
       }
     }
+    if (state[sort].loading) {
+      return
+    }
+    commit('SET_TRENDING_LOADING', { sort })
     const data = await api[sort]({
       seenIds: '',
-      minId: ''
+      minId: 0
     })
     commit('INIT_TRENDING_DATA', { data, sort })
   },
