@@ -162,6 +162,10 @@
         margin-right: 5px;
       }
     }
+
+    .load-more-btn {
+      margin-left: 0 !important;
+    }
   }
 </style>
 
@@ -276,19 +280,20 @@
             type="post"
             :id="post.id"
             :only-see-master="onlySeeMaster"
-            :with-image="true"
+            empty-text=""
           >
+            <div slot="header"></div>
             <post-comment-item
               slot="comment-item"
               slot-scope="{ comment }"
               :post="comment"
               :master-id="master.id"
             ></post-comment-item>
-            <post-sub-comment-list
-              slot="sub-comment-list"
-              slot-scope="{ parentComment }"
-              :parent-comment="parentComment"
-            ></post-sub-comment-list>
+            <div id="bottom-comment-post-form" slot="reply">
+              <post-comment-form
+                :id="post.id"
+              ></post-comment-form>
+            </div>
           </comment-main>
         </main>
       </section>
@@ -299,7 +304,7 @@
 <script>
   import CommentMain from '~/components/comments/CommentMain'
   import PostCommentItem from '~/components/post/PostCommentItem'
-  import PostSubCommentList from '~/components/post/PostSubCommentList'
+  import PostCommentForm from '~/components/post/PostCommentForm'
 
   export default {
     name: 'post-show',
@@ -326,7 +331,7 @@
     components: {
       CommentMain,
       PostCommentItem,
-      PostSubCommentList
+      PostCommentForm
     },
     head () {
       return {
@@ -365,14 +370,21 @@
     },
     data () {
       return {
-        loadingLoadMore: false,
         loadingToggleLike: false,
         loadingToggleMark: false
       }
     },
     methods: {
       scrollToReplyForm () {
-        this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        const wrap = document.getElementById('bottom-comment-post-form')
+        if (wrap) {
+          this.$scrollToY(this.$utils.getOffsetTop(wrap), 400)
+          wrap.querySelector('textarea').focus()
+        }
       },
       switchOnlyMaster () {
         window.location = this.$alias.post(this.post.id, {
@@ -450,12 +462,12 @@
         if (!replyId) {
           return
         }
-        const reply = document.getElementById(`post-reply-${replyId}`)
+        const reply = document.getElementById(`comment-${replyId}`)
         if (!reply) {
           return
         }
         this.$nextTick(() => {
-          this.$scrollToY(reply.offsetTop, 400)
+          this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400)
         })
       },
       handleBangumiFollow (result) {

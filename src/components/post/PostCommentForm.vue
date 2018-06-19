@@ -1,5 +1,7 @@
 <style lang="scss">
-  .create-comment-form {
+  .post-comment-form {
+    margin-top: 40px;
+
     .el-upload--picture-card, .el-upload-list__item {
       width: 72px !important;
       height: 72px !important;
@@ -19,13 +21,21 @@
 
 <template>
   <el-form
-    class="create-comment-form"
+    class="post-comment-form"
     :model="forms"
     :rules="rules"
     ref="forms"
-    label-width="50px"
   >
-    <el-form-item label="图片" v-if="withImage">
+    <el-form-item prop="content">
+      <el-input
+        type="textarea"
+        placeholder="1000字以内"
+        resize="vertical"
+        :rows="3"
+        v-model.trim="forms.content"
+      ></el-input>
+    </el-form-item>
+    <el-form-item>
       <el-upload
         action="https://upload.qiniup.com"
         multiple
@@ -42,33 +52,21 @@
         <i class="el-icon-plus"></i>
       </el-upload>
     </el-form-item>
-    <el-form-item label="内容" prop="content">
-      <el-input
-        type="textarea"
-        placeholder="1000字以内"
-        resize="none"
-        :rows="10"
-        v-model.trim="forms.content"
-      ></el-input>
-    </el-form-item>
     <el-form-item>
-      <el-button type="primary" class="submit-btn" @click="submit" :loading="submitting">发布</el-button>
+      <el-button
+        :loading="submitting"
+        type="primary"
+        class="submit-btn"
+        @click="submit"
+      >发表评论</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
   export default {
-    name: 'create-comment-form',
+    name: 'post-comment-form',
     props: {
-      withImage: {
-        type: Boolean,
-        default: false
-      },
-      type: {
-        type: String,
-        required: true
-      },
       id: {
         type: Number,
         required: true
@@ -130,22 +128,22 @@
             }
             this.$store.commit('comment/SET_SUBMITTING', { result: true })
             try {
-              await this.$store.dispatch('comment/createMainComment', {
+              const newComment = await this.$store.dispatch('comment/createMainComment', {
                 content: this.formatContent,
                 images: this.formatImages,
-                type: this.type,
+                type: 'post',
                 id: this.id,
                 ctx: this
               })
               this.forms = {
                 content: ''
               }
+              this.images = []
               this.$refs.uploader.clearFiles()
               this.$toast.success('评论成功')
-              const list = document.querySelectorAll('.comment-item-wrap')
               setTimeout(() => {
-                const dom = list[list.length - 1]
-                dom && this.$scrollToY(dom.offsetTop, 600)
+                const dom = document.getElementById(`comment-${newComment.id}`)
+                dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600)
               }, 400)
             } catch (e) {
               this.$toast.error(e)
@@ -197,8 +195,8 @@
 
         this.uploadHeaders.key = this.$utils.createFileName({
           userId: this.$store.state.user.id,
-          type: this.type,
           id: this.postId,
+          type: 'post',
           file
         })
 
@@ -214,7 +212,7 @@
       }
     },
     mounted () {
-      if (!this.isGuest && this.withImage) {
+      if (!this.isGuest) {
         this.getUpToken()
       }
     }

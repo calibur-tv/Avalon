@@ -44,6 +44,7 @@
         v-model.trim="content"
         maxlength="100"
         ref="input"
+        @keydown.enter="submit"
       >
     </div>
   </div>
@@ -55,8 +56,7 @@
     props: {
       type: {
         required: true,
-        type: String,
-        validator: val => ~['post'].indexOf(val)
+        type: String
       },
       id: {
         required: true,
@@ -86,6 +86,9 @@
       async submit () {
         if (!this.$store.state.login) {
           this.$channel.$emit('sign-in')
+          return
+        }
+        if (!this.content) {
           return
         }
         if (this.submitting) {

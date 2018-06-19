@@ -1,6 +1,5 @@
 <style lang="scss">
   .post-item {
-
     .user {
       width: 180px;
       float: left;
@@ -79,7 +78,7 @@
 </style>
 
 <template>
-  <div class="post-item" :id="`post-reply-${post.id}`">
+  <div class="post-item" :id="`comment-${post.id}`">
     <div class="user">
       <a :href="$alias.user(post.from_user_zone)" target="_blank">
         <v-img class="avatar" :src="post.from_user_avatar" :width="80" :height="80"></v-img>
@@ -115,16 +114,21 @@
             {{ post.liked ? '已赞' : '赞' }}
             <span v-if="post.like_count">({{ post.like_count }})</span>
           </button>
-          <button class="delete-btn" v-if="canDelete" @click="deletePost">删除</button>
+          <button class="delete-btn" v-if="canDelete" @click="deleteComment">删除</button>
           <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time v-model="post.created_at"></v-time>
         </div>
       </div>
     </div>
+    <post-sub-comment-list
+      :parent-comment="post"
+    ></post-sub-comment-list>
   </div>
 </template>
 
 <script>
+  import PostSubCommentList from './PostSubCommentList.vue'
+
   export default {
     name: 'post-comment-item',
     props: {
@@ -136,6 +140,9 @@
         required: true,
         type: Number
       }
+    },
+    components: {
+      PostSubCommentList
     },
     computed: {
       currentUserId () {
@@ -158,6 +165,10 @@
     },
     methods: {
       async toggleLike () {
+        if (!this.currentUserId) {
+          this.$channel.$emit('sign-in')
+          return
+        }
         if (this.liking) {
           return
         }
@@ -173,7 +184,7 @@
           this.liking = false
         }
       },
-      deletePost () {
+      deleteComment () {
         if (this.deleting) {
           return
         }

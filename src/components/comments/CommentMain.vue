@@ -1,12 +1,31 @@
 <style lang="scss">
   #comment-wrap {
+    font-family: Microsoft Yahei,Tahoma,Helvetica,Arial,\\5B8B\4F53,sans-serif;
+
+    .subtitle {
+      margin-bottom: 30px;
+    }
+
+    #comment-list-wrap {
+      padding-top: 20px;
+    }
+
     .load-more-btn {
-      margin-top: 20px;
-      margin-bottom: 20px;
+      margin-left: 85px;
 
       button {
         width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
       }
+    }
+
+    .no-content {
+      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 30px;
+      font-size: 12px;
+      color: #99a2aa;
     }
   }
 </style>
@@ -14,46 +33,54 @@
 <template>
   <div id="comment-wrap">
     <!-- 主列表的头部 -->
-    <slot name="header"></slot>
-    <!-- 主列表的 list -->
-    <div id="comment-list-wrap">
-      <!-- 每条主评论 -->
-      <div
-        v-for="comment in list"
-        :key="comment.id"
-        class="comment-item-wrap"
-      >
-        <!-- 主评论的内容 -->
-        <slot name="comment-item" :comment="comment"></slot>
-        <!-- 主评论的子评论列表 -->
-        <slot name="sub-comment-list" :parent-comment="comment"></slot>
-      </div>
-    </div>
-    <div id="comment-list-footer">
-      <slot name="load">
-        <div class="load-more-btn">
-          <el-button
-            type="info"
-            v-if="!noMore"
-            :loading="loading"
-            @click="loadMore"
-            plain
-            round
-          >{{ loading ? '加载中...' : '加载更多' }}</el-button>
-        </div>
-      </slot>
-      <!-- 主列表的底部 -->
-      <create-comment-form
+    <slot name="header">
+      <h3 class="subtitle">评论{{ total ? `(${total})` : '' }}</h3>
+      <comment-create-form
         :id="id"
         :type="type"
-        :with-image="withImage"
-      ></create-comment-form>
+      ></comment-create-form>
+    </slot>
+      <!-- 主列表的 list -->
+    <div id="comment-list-wrap" v-if="list.length">
+        <!-- 每条主评论 -->
+        <div
+          v-for="comment in list"
+          :key="comment.id"
+          class="comment-item-wrap"
+        >
+          <!-- 主评论的内容 -->
+          <slot name="comment-item" :comment="comment">
+            <comment-item :comment="comment" :type="type"></comment-item>
+          </slot>
+        </div>
+      </div>
+    <p class="no-content" v-else-if="emptyText" v-text="emptyText"></p>
+    <div id="comment-list-footer">
+      <div class="load-more-btn">
+        <el-button
+          type="info"
+          :loading="loading"
+          @click="loadMore"
+          v-if="!noMore"
+          plain
+          round
+        >{{ loading ? '加载中...' : '加载更多' }}</el-button>
+      </div>
+      <!-- 主列表的底部 -->
+      <slot name="reply">
+        <comment-create-form
+          v-if="list.length >= 10"
+          :id="id"
+          :type="type"
+        ></comment-create-form>
+      </slot>
     </div>
   </div>
 </template>
 
 <script>
-  import CreateCommentForm from '~/components/forms/CreateCommentForm'
+  import CommentItem from './CommentItem'
+  import CommentCreateForm from './CommentCreateForm'
 
   export default {
     name: 'v-comment-main',
@@ -65,19 +92,20 @@
       type: {
         required: true,
         type: String,
-        validator: val => ~['post'].indexOf(val)
+        validator: val => ~['post', 'video', 'image'].indexOf(val)
       },
       onlySeeMaster: {
         type: Boolean,
         default: false
       },
-      withImage: {
-        type: Boolean,
-        default: false
+      emptyText: {
+        type: String,
+        default: '暂无评论，快来抢沙发吧╮(￣▽￣)╭！'
       }
     },
     components: {
-      CreateCommentForm
+      CommentCreateForm,
+      CommentItem
     },
     computed: {
       store () {

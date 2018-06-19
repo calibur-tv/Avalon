@@ -5,7 +5,7 @@ import {
 
 const state = () => ({
   type: '',
-  sort: 'ASC',
+  sort: 'desc',
   fetchId: 0,
   list: [],
   total: 0,
@@ -27,7 +27,7 @@ const mutations = {
   INIT_FETCH_TYPE (state, { type }) {
     state.type = type
     if (type === 'post') {
-      state.sort = 'ASC'
+      state.sort = 'asc'
     }
   },
   SET_MAIN_COMMENTS (state, { comments, seeReplyId }) {
@@ -88,7 +88,9 @@ const mutations = {
     state.list[parentIndex].comments.total = hasNew ? comments.total : state.list[parentIndex].comments.list.length
   },
   CREATE_MAIN_COMMENT (state, comment) {
-    state.list.push(comment)
+    state.sort === 'asc'
+      ? state.list.push(comment)
+      : state.list.unshift(comment)
     state.total = state.total + 1
   },
   CREATE_SUB_COMMENT (state, { id, comment }) {
@@ -188,6 +190,7 @@ const actions = {
       type, id, content, images
     })
     commit('CREATE_MAIN_COMMENT', comment)
+    return comment
   },
   async createSubComment ({ commit }, { ctx, id, type, content, targetUserId }) {
     const api = new Api(ctx)
@@ -195,6 +198,7 @@ const actions = {
       id, type, content, targetUserId
     })
     commit('CREATE_SUB_COMMENT', { id, comment })
+    return comment
   },
   async deleteSubComment ({ commit }, { ctx, id, type, parentId }) {
     const api = new Api(ctx)
