@@ -138,6 +138,7 @@
               this.forms = {
                 content: ''
               }
+              this.images = []
               this.$refs.uploader.clearFiles()
               this.$toast.success('评论成功')
               setTimeout(() => {

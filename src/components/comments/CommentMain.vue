@@ -2,6 +2,10 @@
   #comment-wrap {
     font-family: Microsoft Yahei,Tahoma,Helvetica,Arial,\\5B8B\4F53,sans-serif;
 
+    .subtitle {
+      margin-bottom: 30px;
+    }
+
     #comment-list-wrap {
       padding-top: 20px;
     }
@@ -36,9 +40,8 @@
         :type="type"
       ></comment-create-form>
     </slot>
-    <template v-if="list.length">
       <!-- 主列表的 list -->
-      <div id="comment-list-wrap">
+    <div id="comment-list-wrap" v-if="list.length">
         <!-- 每条主评论 -->
         <div
           v-for="comment in list"
@@ -51,28 +54,27 @@
           </slot>
         </div>
       </div>
-      <div id="comment-list-footer">
-        <div class="load-more-btn">
-          <el-button
-            type="info"
-            :loading="loading"
-            @click="loadMore"
-            v-if="!noMore"
-            plain
-            round
-          >{{ loading ? '加载中...' : '加载更多' }}</el-button>
-        </div>
-        <!-- 主列表的底部 -->
-        <slot name="reply">
-          <comment-create-form
-            v-if="list.length >= 10"
-            :id="id"
-            :type="type"
-          ></comment-create-form>
-        </slot>
+    <p class="no-content" v-else-if="emptyText" v-text="emptyText"></p>
+    <div id="comment-list-footer">
+      <div class="load-more-btn">
+        <el-button
+          type="info"
+          :loading="loading"
+          @click="loadMore"
+          v-if="!noMore"
+          plain
+          round
+        >{{ loading ? '加载中...' : '加载更多' }}</el-button>
       </div>
-    </template>
-    <p class="no-content" v-else>暂无评论，快来抢沙发吧╮(￣▽￣)╭！</p>
+      <!-- 主列表的底部 -->
+      <slot name="reply">
+        <comment-create-form
+          v-if="list.length >= 10"
+          :id="id"
+          :type="type"
+        ></comment-create-form>
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -96,9 +98,9 @@
         type: Boolean,
         default: false
       },
-      withImage: {
-        type: Boolean,
-        default: false
+      emptyText: {
+        type: String,
+        default: '暂无评论，快来抢沙发吧╮(￣▽￣)╭！'
       }
     },
     components: {

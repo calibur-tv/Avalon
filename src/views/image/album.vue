@@ -129,7 +129,7 @@
       }
     }
 
-    .footer {
+    .album-footer {
       min-height: 260px;
       position: relative;
 
@@ -216,7 +216,7 @@
           </template>
         </div>
       </div>
-      <div class="footer">
+      <div class="album-footer">
         <div class="publish-time">
           UP：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
           &nbsp;·&nbsp;
@@ -272,6 +272,7 @@
           </el-button>
         </div>
       </div>
+      <comment-main :id="id" type="image"></comment-main>
     </div>
   </div>
 </template>
@@ -279,14 +280,21 @@
 <script>
   import Api from '~/api/imageApi'
   import vParts from '~/components/lists/Parts'
+  import CommentMain from '~/components/comments/CommentMain'
 
   export default {
     name: 'image-album',
     async asyncData ({ store, route, ctx }) {
-      await store.dispatch('image/getAlbumData', {
-        ctx,
-        id: route.params.id
-      })
+      const id = route.params.id
+      await Promise.all([
+        store.dispatch('image/getAlbumData', { ctx, id }),
+        store.dispatch('comment/getMainComments', {
+          ctx,
+          id,
+          type: 'image',
+          seeReplyId: route.query.reply
+        })
+      ])
     },
     head () {
       const category = `${this.info.is_cartoon ? '漫画' : '相簿'}`
@@ -299,7 +307,8 @@
       }
     },
     components: {
-      vParts
+      vParts,
+      CommentMain
     },
     computed: {
       id () {

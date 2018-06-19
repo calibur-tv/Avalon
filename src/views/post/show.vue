@@ -280,7 +280,7 @@
             type="post"
             :id="post.id"
             :only-see-master="onlySeeMaster"
-            :with-image="true"
+            empty-text=""
           >
             <div slot="header"></div>
             <post-comment-item
@@ -289,10 +289,11 @@
               :post="comment"
               :master-id="master.id"
             ></post-comment-item>
-            <post-comment-form
-              slot="reply"
-              :id="post.id"
-            ></post-comment-form>
+            <div id="bottom-comment-post-form" slot="reply">
+              <post-comment-form
+                :id="post.id"
+              ></post-comment-form>
+            </div>
           </comment-main>
         </main>
       </section>
@@ -369,14 +370,21 @@
     },
     data () {
       return {
-        loadingLoadMore: false,
         loadingToggleLike: false,
         loadingToggleMark: false
       }
     },
     methods: {
       scrollToReplyForm () {
-        this.$scrollToY(document.getElementById('create-comment-form').offsetTop, 400)
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        const wrap = document.getElementById('bottom-comment-post-form')
+        if (wrap) {
+          this.$scrollToY(this.$utils.getOffsetTop(wrap), 400)
+          wrap.querySelector('textarea').focus()
+        }
       },
       switchOnlyMaster () {
         window.location = this.$alias.post(this.post.id, {

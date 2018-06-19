@@ -98,7 +98,7 @@
       </div>
       <div class="content" v-html="comment.content"></div>
       <div class="footer">
-        <span class="floor-count">#{{ comment.floor_count }}</span>
+        <span class="floor-count">#{{ comment.floor_count - 1 }}</span>
         <el-tooltip placement="top" effect="dark" :content="comment.created_at">
           <v-time v-model="comment.created_at"></v-time>
         </el-tooltip>
