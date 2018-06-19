@@ -450,12 +450,12 @@
         if (!replyId) {
           return
         }
-        const reply = document.getElementById(`post-reply-${replyId}`)
+        const reply = document.getElementById(`comment-${replyId}`)
         if (!reply) {
           return
         }
         this.$nextTick(() => {
-          this.$scrollToY(reply.offsetTop, 400)
+          this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400)
         })
       },
       handleBangumiFollow (result) {

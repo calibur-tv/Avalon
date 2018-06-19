@@ -10,10 +10,6 @@
     .el-upload--picture-card {
       float: left;
     }
-
-    .submit-btn {
-      width: 100%;
-    }
   }
 </style>
 
@@ -23,7 +19,7 @@
     :model="forms"
     :rules="rules"
     ref="forms"
-    label-width="50px"
+    label-width="85px"
   >
     <el-form-item label="图片" v-if="withImage">
       <el-upload
@@ -42,17 +38,23 @@
         <i class="el-icon-plus"></i>
       </el-upload>
     </el-form-item>
-    <el-form-item label="内容" prop="content">
+    <el-form-item prop="content">
       <el-input
         type="textarea"
         placeholder="1000字以内"
         resize="none"
-        :rows="10"
+        :rows="3"
         v-model.trim="forms.content"
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" class="submit-btn" @click="submit" :loading="submitting">发布</el-button>
+      <el-button
+        :loading="submitting"
+        type="primary"
+        class="submit-btn"
+        @click="submit"
+        size="small"
+      >发表评论</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -130,7 +132,7 @@
             }
             this.$store.commit('comment/SET_SUBMITTING', { result: true })
             try {
-              await this.$store.dispatch('comment/createMainComment', {
+              const newComment = await this.$store.dispatch('comment/createMainComment', {
                 content: this.formatContent,
                 images: this.formatImages,
                 type: this.type,
@@ -140,12 +142,13 @@
               this.forms = {
                 content: ''
               }
-              this.$refs.uploader.clearFiles()
+              if (this.withImage) {
+                this.$refs.uploader.clearFiles()
+              }
               this.$toast.success('评论成功')
-              const list = document.querySelectorAll('.comment-item-wrap')
               setTimeout(() => {
-                const dom = list[list.length - 1]
-                dom && this.$scrollToY(dom.offsetTop, 600)
+                const dom = document.getElementById(`comment-${newComment.id}`)
+                dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600)
               }, 400)
             } catch (e) {
               this.$toast.error(e)

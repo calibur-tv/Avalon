@@ -22,21 +22,23 @@
 
     .video-info {
       margin-top: 30px;
+      margin-bottom: 20px;
+
+      .v-share {
+        height: 40px;
+        float: right;
+      }
+
+      .video-report {
+        margin-right: 15px;
+        margin-top: 2px;
+      }
     }
 
-    .bangumi-panel {
-      float: left;
-    }
-
-    .v-share {
-      height: 40px;
-      float: right;
-    }
-
-    .video-report {
-      float: right;
-      margin-right: 15px;
-      margin-top: 2px;
+    .col-aside {
+      .bangumi-panel {
+        float: right;
+      }
     }
   }
 </style>
@@ -92,16 +94,7 @@
           @playing="handlePlaying"
         ></v-video>
       </no-ssr>
-      <div class="clearfix video-info">
-        <v-bangumi-panel
-          class="bangumi-panel"
-          :id="bangumi.id"
-          :name="bangumi.name"
-          :avatar="bangumi.avatar"
-          :summary="bangumi.summary"
-          :followed="bangumi.followed"
-          @follow="handleFollowAction"
-        ></v-bangumi-panel>
+      <div class="video-info">
         <v-share type="panel"></v-share>
         <el-button
           type="warning"
@@ -111,14 +104,32 @@
           @click="handleVideoReportClick"
         >资源报错</el-button>
       </div>
+      <div class="clearfix">
+        <div class="col-aside">
+          <v-bangumi-panel
+            class="bangumi-panel"
+            :id="bangumi.id"
+            :name="bangumi.name"
+            :avatar="bangumi.avatar"
+            :summary="bangumi.summary"
+            :followed="bangumi.followed"
+            @follow="handleFollowAction"
+          ></v-bangumi-panel>
+        </div>
+        <div class="col-main">
+          <h3 class="subtitle">评论</h3>
+          <comment-main :id="id" type="video"></comment-main>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import vVideo from '~/components/Video'
   import VideoApi from '~/api/videoApi'
+  import vVideo from '~/components/Video'
   import vPart from '~/components/lists/Parts'
+  import CommentMain from '~/components/comments/CommentMain'
 
   export default {
     name: 'video-show',
@@ -133,13 +144,20 @@
     },
     components: {
       vVideo,
-      vPart
+      vPart,
+      CommentMain
     },
     async asyncData ({ route, store, ctx }) {
-      await store.dispatch('video/getShow', {
-        id: route.params.id,
-        ctx
-      })
+      const id = route.params.id
+      await Promise.all([
+        store.dispatch('video/getShow', { id, ctx }),
+        store.dispatch('comment/getMainComments', {
+          ctx,
+          id,
+          type: 'video',
+          seeReplyId: route.query.reply
+        })
+      ])
     },
     computed: {
       id () {

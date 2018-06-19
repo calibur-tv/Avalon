@@ -55,8 +55,7 @@
     props: {
       type: {
         required: true,
-        type: String,
-        validator: val => ~['post'].indexOf(val)
+        type: String
       },
       id: {
         required: true,

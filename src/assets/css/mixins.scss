@@ -49,6 +49,11 @@
   -webkit-box-orient: vertical;
 }
 
+%breakWord {
+  word-break: break-word !important;
+  word-break: break-all;
+}
+
 @mixin input-placeholder($color: #fff) {
   &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    $color;

@@ -24,7 +24,9 @@
         class="comment-item-wrap"
       >
         <!-- 主评论的内容 -->
-        <slot name="comment-item" :comment="comment"></slot>
+        <slot name="comment-item" :comment="comment">
+          <comment-item :comment="comment" :type="type"></comment-item>
+        </slot>
         <!-- 主评论的子评论列表 -->
         <slot name="sub-comment-list" :parent-comment="comment"></slot>
       </div>
@@ -54,6 +56,7 @@
 
 <script>
   import CreateCommentForm from '~/components/forms/CreateCommentForm'
+  import CommentItem from './CommentItem'
 
   export default {
     name: 'v-comment-main',
@@ -65,7 +68,7 @@
       type: {
         required: true,
         type: String,
-        validator: val => ~['post'].indexOf(val)
+        validator: val => ~['post', 'video', 'image'].indexOf(val)
       },
       onlySeeMaster: {
         type: Boolean,
@@ -77,7 +80,8 @@
       }
     },
     components: {
-      CreateCommentForm
+      CreateCommentForm,
+      CommentItem
     },
     computed: {
       store () {
