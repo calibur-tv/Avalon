@@ -120,10 +120,15 @@
         </div>
       </div>
     </div>
+    <post-sub-comment-list
+      :parent-comment="post"
+    ></post-sub-comment-list>
   </div>
 </template>
 
 <script>
+  import PostSubCommentList from './PostSubCommentList.vue'
+
   export default {
     name: 'post-comment-item',
     props: {
@@ -135,6 +140,9 @@
         required: true,
         type: Number
       }
+    },
+    components: {
+      PostSubCommentList
     },
     computed: {
       currentUserId () {

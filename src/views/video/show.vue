@@ -117,7 +117,6 @@
           ></v-bangumi-panel>
         </div>
         <div class="col-main">
-          <h3 class="subtitle">评论</h3>
           <comment-main :id="id" type="video"></comment-main>
         </div>
       </div>

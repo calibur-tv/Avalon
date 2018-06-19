@@ -44,6 +44,7 @@
         v-model.trim="content"
         maxlength="100"
         ref="input"
+        @keydown.enter="submit"
       >
     </div>
   </div>
@@ -85,6 +86,9 @@
       async submit () {
         if (!this.$store.state.login) {
           this.$channel.$emit('sign-in')
+          return
+        }
+        if (!this.content) {
           return
         }
         if (this.submitting) {

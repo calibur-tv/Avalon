@@ -1,5 +1,7 @@
 <style lang="scss">
-  .create-comment-form {
+  .post-comment-form {
+    margin-top: 40px;
+
     .el-upload--picture-card, .el-upload-list__item {
       width: 72px !important;
       height: 72px !important;
@@ -10,18 +12,30 @@
     .el-upload--picture-card {
       float: left;
     }
+
+    .submit-btn {
+      width: 100%;
+    }
   }
 </style>
 
 <template>
   <el-form
-    class="create-comment-form"
+    class="post-comment-form"
     :model="forms"
     :rules="rules"
     ref="forms"
-    label-width="85px"
   >
-    <el-form-item label="图片" v-if="withImage">
+    <el-form-item prop="content">
+      <el-input
+        type="textarea"
+        placeholder="1000字以内"
+        resize="vertical"
+        :rows="3"
+        v-model.trim="forms.content"
+      ></el-input>
+    </el-form-item>
+    <el-form-item>
       <el-upload
         action="https://upload.qiniup.com"
         multiple
@@ -38,22 +52,12 @@
         <i class="el-icon-plus"></i>
       </el-upload>
     </el-form-item>
-    <el-form-item prop="content">
-      <el-input
-        type="textarea"
-        placeholder="1000字以内"
-        resize="none"
-        :rows="3"
-        v-model.trim="forms.content"
-      ></el-input>
-    </el-form-item>
     <el-form-item>
       <el-button
         :loading="submitting"
         type="primary"
         class="submit-btn"
         @click="submit"
-        size="small"
       >发表评论</el-button>
     </el-form-item>
   </el-form>
@@ -61,16 +65,8 @@
 
 <script>
   export default {
-    name: 'create-comment-form',
+    name: 'post-comment-form',
     props: {
-      withImage: {
-        type: Boolean,
-        default: false
-      },
-      type: {
-        type: String,
-        required: true
-      },
       id: {
         type: Number,
         required: true
@@ -135,16 +131,14 @@
               const newComment = await this.$store.dispatch('comment/createMainComment', {
                 content: this.formatContent,
                 images: this.formatImages,
-                type: this.type,
+                type: 'post',
                 id: this.id,
                 ctx: this
               })
               this.forms = {
                 content: ''
               }
-              if (this.withImage) {
-                this.$refs.uploader.clearFiles()
-              }
+              this.$refs.uploader.clearFiles()
               this.$toast.success('评论成功')
               setTimeout(() => {
                 const dom = document.getElementById(`comment-${newComment.id}`)
@@ -200,8 +194,8 @@
 
         this.uploadHeaders.key = this.$utils.createFileName({
           userId: this.$store.state.user.id,
-          type: this.type,
           id: this.postId,
+          type: 'post',
           file
         })
 
@@ -217,7 +211,7 @@
       }
     },
     mounted () {
-      if (!this.isGuest && this.withImage) {
+      if (!this.isGuest) {
         this.getUpToken()
       }
     }

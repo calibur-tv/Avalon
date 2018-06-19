@@ -88,7 +88,7 @@
 
 <script>
   import PostSubCommentItem from '~/components/post/PostSubCommentItem'
-  import CommentReplyForm from '~/components/forms/CommentReplyForm'
+  import CommentReplyForm from '~/components/comments/CommentReplyForm'
 
   export default {
     name: 'post-sub-comment-list',

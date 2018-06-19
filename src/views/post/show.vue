@@ -162,6 +162,10 @@
         margin-right: 5px;
       }
     }
+
+    .load-more-btn {
+      margin-left: 0 !important;
+    }
   }
 </style>
 
@@ -278,17 +282,17 @@
             :only-see-master="onlySeeMaster"
             :with-image="true"
           >
+            <div slot="header"></div>
             <post-comment-item
               slot="comment-item"
               slot-scope="{ comment }"
               :post="comment"
               :master-id="master.id"
             ></post-comment-item>
-            <post-sub-comment-list
-              slot="sub-comment-list"
-              slot-scope="{ parentComment }"
-              :parent-comment="parentComment"
-            ></post-sub-comment-list>
+            <post-comment-form
+              slot="reply"
+              :id="post.id"
+            ></post-comment-form>
           </comment-main>
         </main>
       </section>
@@ -299,7 +303,7 @@
 <script>
   import CommentMain from '~/components/comments/CommentMain'
   import PostCommentItem from '~/components/post/PostCommentItem'
-  import PostSubCommentList from '~/components/post/PostSubCommentList'
+  import PostCommentForm from '~/components/post/PostCommentForm'
 
   export default {
     name: 'post-show',
@@ -326,7 +330,7 @@
     components: {
       CommentMain,
       PostCommentItem,
-      PostSubCommentList
+      PostCommentForm
     },
     head () {
       return {
@@ -372,7 +376,7 @@
     },
     methods: {
       scrollToReplyForm () {
-        this.$scrollToY(document.getElementById('post-reply-form').offsetTop, 400)
+        this.$scrollToY(document.getElementById('create-comment-form').offsetTop, 400)
       },
       switchOnlyMaster () {
         window.location = this.$alias.post(this.post.id, {

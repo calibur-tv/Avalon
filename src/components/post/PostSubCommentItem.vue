@@ -64,7 +64,7 @@
 </template>
 
 <script>
-  import CommentReplyForm from '~/components/forms/CommentReplyForm'
+  import CommentReplyForm from '~/components/comments/CommentReplyForm'
 
   export default {
     name: 'post-sub-comment-item',
