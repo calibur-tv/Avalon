@@ -120,6 +120,17 @@
       font-size: 12px;
     }
 
+    chimee-playbackrate {
+      width: 3em !important;
+      margin-left: -5px;
+      margin-right: 10px;
+      padding: 0;
+
+      chimee-playbackrate-text {
+        color: #6b6b6b;
+      }
+    }
+
     chimee-control-state {
       margin-right: 0;
     }
@@ -247,6 +258,14 @@
                 },
                 progressTime: true,
                 volume: true,
+                playbackrate: {
+                  list: [
+                    { name: '0.5', value: 0.5 },
+                    { name: '1.0', value: 1, default: true },
+                    { name: '1.2', value: 1.2 },
+                    { name: '2.0', value: 2 }
+                  ]
+                },
                 screen: true
               }
             },
