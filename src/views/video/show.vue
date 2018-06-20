@@ -188,39 +188,13 @@
         return this.$store.state.video.season
       },
       nextPartVideo () {
-        let lastId = 0
-        if (this.season) {
-          let videos = []
-          this.list.forEach(season => {
-            videos = videos.concat(season.data)
-          })
-          lastId = videos[videos.length - 1].id
-        } else {
-          lastId = this.list[this.list.length - 1].id
-        }
-        if (lastId === this.id) {
-          return ''
-        }
         let nextId = 0
-        if (this.season) {
-          this.list.forEach(season => {
-            season.data.forEach(part => {
-              if (part.id === this.id + 1) {
-                nextId = part.id
-              }
-            })
-          })
-        } else {
-          this.list.forEach(part => {
-            if (part.id === this.id + 1) {
-              nextId = part.id
-            }
-          })
-        }
-        if (!nextId) {
-          return ''
-        }
-        return `/video/${nextId}`
+        this.videos.forEach((video, index) => {
+          if (video.id === this.id && index !== this.videos.length - 1) {
+            nextId = this.videos[index + 1].id
+          }
+        })
+        return nextId ? this.$alias.video(nextId) : ''
       },
       useOtherSiteSource () {
         if (this.bangumi.others_site_video) {
