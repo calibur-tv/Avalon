@@ -7,7 +7,7 @@
       width: 100%;
       overflow: hidden;
       box-shadow: inset 0 0 15px 0 rgba(0,0,0,.5);
-      z-index: 1;
+      z-index: 3;
       height: $banner-height;
       margin-bottom: 40px;
       display: flex;
@@ -567,12 +567,12 @@
     <section class="banner" :class="{ 'my-banner': isMe && !bannerSelector.loading }">
       <div class="img bg" :style="{ backgroundImage: banner }"></div>
       <div class="banner-file-input file-input bg">
-        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png" ref="bannerInput" @change="selectBanner">
+        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="bannerInput" @change="selectBanner">
       </div>
       <div class="avatar bg file-input"
            :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
            v-if="isMe">
-        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png" ref="avatarInput" @change="openAvatarModal">
+        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="avatarInput" @change="openAvatarModal">
       </div>
       <img class="avatar"
            :src="$resize(user.avatar, { width: 200, height: 200 })"
@@ -1115,8 +1115,8 @@
       },
       openAvatarModal (e) {
         const file = e.target.files[0]
-        if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
-          this.$toast.error('仅支持 jpg / jpeg / png 格式的图片')
+        if (['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) === -1) {
+          this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
           return
         }
         const reader = new FileReader()
@@ -1162,8 +1162,8 @@
       },
       selectBanner (e) {
         const file = e.target.files[0]
-        if (['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) === -1) {
-          this.$toast.error('仅支持 jpg / jpeg / png 格式的图片')
+        if (['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) === -1) {
+          this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
           return
         }
         const reader = new FileReader()

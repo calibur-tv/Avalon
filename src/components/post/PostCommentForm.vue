@@ -181,11 +181,11 @@
           return
         }
 
-        const isFormat = ['image/jpeg', 'image/png', 'image/jpg'].indexOf(file.type) !== -1
+        const isFormat = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) !== -1
         const isLt2M = file.size / 1024 / 1024 < 5
 
         if (!isFormat) {
-          this.$toast.error('图片只能是 JPG 或 PNG 格式!')
+          this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
           return false
         }
         if (!isLt2M) {
