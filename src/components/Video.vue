@@ -83,6 +83,20 @@
       margin-top: -2px;
     }
 
+    chimee-next {
+      margin-left: 10px;
+      margin-right: 5px;
+
+      i {
+        color: #99a2aa;
+        font-size: 18px;
+
+        &:hover {
+          color: #6d757a;
+        }
+      }
+    }
+
     chimee-progressbar-all,
     chimee-volume-bar-all {
       background-color: $color-blue-normal !important;
@@ -239,6 +253,7 @@
     },
     methods: {
       initVideo ({ flvKernel, statePlugin }) {
+        const self = this
         this.player = new Chimee({
           wrapper: '#video-wrap',
           src: this.source,
@@ -251,8 +266,17 @@
               name: chimeePluginControlbar.name,
               majorColor: '#99a2aa',
               hoverColor: '#6d757a',
-              children: {
+              children: self.next ? {
                 play: true,
+                next: {
+                  tag: 'chimee-next',
+                  html: `<i class="iconfont icon-skip_next"></i>`,
+                  event: {
+                    click () {
+                      window.location = self.next
+                    }
+                  }
+                },
                 progressBar: {
                   layout: 'one-line'
                 },
@@ -267,6 +291,21 @@
                   ]
                 },
                 screen: true
+              } : {
+                play: true,
+                progressBar: {
+                  layout: 'one-line'
+                },
+                progressTime: true,
+                volume: true,
+                playbackrate: {
+                  list: [
+                    { name: '0.5', value: 0.5 },
+                    { name: '1.0', value: 1, default: true },
+                    { name: '1.2', value: 1.2 },
+                    { name: '2.0', value: 2 }
+                  ]
+                }
               }
             },
             {
