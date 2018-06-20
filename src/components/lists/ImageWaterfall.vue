@@ -1042,6 +1042,7 @@
       },
       handleError (err, file) {
         console.log(err)
+        this.albumForm.poster = []
         this.$toast.error(`图片：${file.name} 上传失败`)
       },
       beforeUpload (file) {
@@ -1061,7 +1062,13 @@
           return false
         }
 
-        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+        this.uploadHeaders.key = this.$utils.createFileName({
+          userId: this.$store.state.user.id,
+          type: 'image',
+          id: this.albumForm.id,
+          file
+        })
+        return true
       },
       handleAlbumPosterRemove () {
         this.albumForm.poster = []

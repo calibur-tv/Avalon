@@ -294,10 +294,16 @@
       handleErrorImage (err, file) {
         console.log(err)
         this.$toast.error(`图片：${file.name} 上传失败`)
+        this.form.images.forEach((item, index) => {
+          if (item.uid === file.uid) {
+            this.form.images.splice(index, 1)
+          }
+        })
         this.pendingUpload--
       },
       handleError (err, file) {
         console.log(err)
+        this.albumForm.poster = []
         this.$toast.error(`图片：${file.name} 上传失败`)
       },
       handleExceed () {
@@ -363,7 +369,12 @@
         })
         this.pendingUpload++
 
-        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+        this.uploadHeaders.key = this.$utils.createFileName({
+          userId: this.$store.state.user.id,
+          type: 'image',
+          id: 0,
+          file
+        })
       },
       beforeUpload (file) {
         if (!this.$store.state.login) {
@@ -382,7 +393,13 @@
           return false
         }
 
-        this.uploadHeaders.key = `user/${this.$store.state.user.id}/image/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+        this.uploadHeaders.key = this.$utils.createFileName({
+          userId: this.$store.state.user.id,
+          type: 'image',
+          id: 0,
+          file
+        })
+        return true
       },
       handleFormSubmit () {
         if (this.action === '上传图片') {

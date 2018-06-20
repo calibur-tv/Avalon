@@ -988,7 +988,8 @@
           src: '',
           type: '',
           showModal: false,
-          loading: false
+          loading: false,
+          file: null
         },
         bannerSelector: {
           file: null,
@@ -1121,6 +1122,7 @@
         }
         const reader = new FileReader()
         this.avatarCropper.type = file.type
+        this.avatarCropper.file = file
         reader.onload = (evt) => {
           this.avatarCropper.src = evt.target.result
           this.avatarCropper.showModal = true
@@ -1135,26 +1137,31 @@
       },
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
-        const key = `user/${this.user.id}/avatar/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        const filename = this.$utils.createFileName({
+          userId: this.user.id,
+          type: 'avatar',
+          id: 0,
+          file: this.avatarCropper.file
+        })
         const imageApi = new ImageApi()
         try {
           await this.$store.dispatch('getUpToken', this)
           formData.append('token', this.user.uptoken.upToken)
-          formData.append('key', key)
-          await imageApi.uploadToQiniu(formData)
+          formData.append('key', filename)
+          const result = await imageApi.uploadToQiniu(formData)
           const userApi = new UserApi(this)
           await userApi.settingImage({
             type: 'avatar',
-            url: key
+            url: result.key
           })
           this.$store.commit('SET_USER_INFO', {
-            avatar: `${this.$cdn.image}${key}`
+            avatar: `${this.$cdn.image}${result.key}`
           })
           this.$toast.success('头像更新成功')
         } catch (e) {
           typeof e === 'string'
             ? this.$toast.error(e)
-            : this.$toast.error('头像更新失败，请刷新页面重试')
+            : this.$toast.error('头像更新失败，请刷新页面重试或选择其他图片')
         } finally {
           this.avatarCropper.loading = false
           this.handleAvatarCropperCancel()
@@ -1182,28 +1189,33 @@
       },
       async submitBannerChange () {
         this.bannerSelector.loading = true
-        const key = `user/${this.user.id}/banner/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        const filename = this.$utils.createFileName({
+          userId: this.user.id,
+          type: 'banner',
+          id: 0,
+          file: this.bannerSelector.file
+        })
         try {
           await this.$store.dispatch('getUpToken', this)
           const formData = new FormData()
           formData.append('file', this.bannerSelector.file)
           formData.append('token', this.user.uptoken.upToken)
-          formData.append('key', key)
+          formData.append('key', filename)
           const imageApi = new ImageApi()
-          await imageApi.uploadToQiniu(formData)
+          const result = await imageApi.uploadToQiniu(formData)
           const userApi = new UserApi(this)
           await userApi.settingImage({
             type: 'banner',
-            url: key
+            url: result.key
           })
           this.$store.commit('SET_USER_INFO', {
-            banner: `${this.$cdn.image}${key}`
+            banner: `${this.$cdn.image}${result.key}`
           })
           this.$toast.success('背景更新成功')
         } catch (e) {
           typeof e === 'string'
             ? this.$toast.error(e)
-            : this.$toast.error('头像更新失败，请刷新页面重试')
+            : this.$toast.error('背景图更新失败，请刷新页面重试或选择其他图片')
         } finally {
           this.bannerSelector.loading = false
           this.cancelBannerChange()
