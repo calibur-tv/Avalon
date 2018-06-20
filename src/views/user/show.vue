@@ -988,7 +988,8 @@
           src: '',
           type: '',
           showModal: false,
-          loading: false
+          loading: false,
+          file: null
         },
         bannerSelector: {
           file: null,
@@ -1121,6 +1122,7 @@
         }
         const reader = new FileReader()
         this.avatarCropper.type = file.type
+        this.avatarCropper.file = file
         reader.onload = (evt) => {
           this.avatarCropper.src = evt.target.result
           this.avatarCropper.showModal = true
@@ -1135,7 +1137,12 @@
       },
       async handleAvatarCropperSubmit (formData) {
         this.avatarCropper.loading = true
-        const filename = `user/${this.user.id}/avatar/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        const filename = this.$utils.createFileName({
+          userId: this.user.id,
+          type: 'avatar',
+          id: 0,
+          file: this.avatarCropper.file
+        })
         const imageApi = new ImageApi()
         try {
           await this.$store.dispatch('getUpToken', this)
@@ -1182,7 +1189,12 @@
       },
       async submitBannerChange () {
         this.bannerSelector.loading = true
-        const filename = `user/${this.user.id}/banner/${Date.now()}-${Math.random().toString(36).substring(3, 6)}`
+        const filename = this.$utils.createFileName({
+          userId: this.user.id,
+          type: 'banner',
+          id: 0,
+          file: this.bannerSelector.file
+        })
         try {
           await this.$store.dispatch('getUpToken', this)
           const formData = new FormData()

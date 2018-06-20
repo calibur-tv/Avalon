@@ -217,6 +217,11 @@
       },
       handleError (err, file) {
         console.log(err)
+        this.images.forEach((item, index) => {
+          if (item.id === file.uid) {
+            this.images.splice(index, 1)
+          }
+        })
         this.$toast.error(`图片：${file.name} 上传失败`)
       },
       handleRemove (file) {
@@ -252,9 +257,12 @@
           return false
         }
 
-        this.uploadHeaders.key = this.postId
-          ? `user/${this.$store.state.user.id}/post/${this.postId}/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
-          : `user/${this.$store.state.user.id}/post/0/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`
+        this.uploadHeaders.key = this.$utils.createFileName({
+          userId: this.$store.state.user.id,
+          type: 'post',
+          id: this.postId || 0,
+          file
+        })
         return true
       },
       async getUpToken () {
