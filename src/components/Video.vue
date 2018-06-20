@@ -305,7 +305,8 @@
                     { name: '1.2', value: 1.2 },
                     { name: '2.0', value: 2 }
                   ]
-                }
+                },
+                screen: true
               }
             },
             {
