@@ -107,7 +107,7 @@
           <router-link :to="$alias.bangumiTag()">分类索引</router-link>
         </div>
         <div class="tags">
-          <h2 class="subtitle">标签列表</h2>
+          <h2 class="sub-title">标签列表</h2>
           <ul>
             <li v-for="(tag, index) in tags"
                 :key="tag.id"
@@ -123,7 +123,7 @@
           </ul>
         </div>
         <div class="bangumis" v-if="bangumis && bangumis.length">
-          <h2 class="subtitle">番剧列表</h2>
+          <h2 class="sub-title">番剧列表</h2>
           <ul
             v-infinite-scroll="loadMore"
             infinite-scroll-disabled="notFetch"

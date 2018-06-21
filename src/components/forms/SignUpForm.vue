@@ -73,7 +73,7 @@
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="others">
+    <div class="others" v-if="!inviteCode">
       <a @click="showOAuth">社交账号注册</a>
       <a @click="showLogin">已有账号»</a>
     </div>

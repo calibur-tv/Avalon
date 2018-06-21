@@ -136,7 +136,7 @@
     <div class="container">
       <div class="col-aside"></div>
       <div class="col-main">
-        <h2 class="subtitle">偶像排行榜</h2>
+        <h2 class="sub-title">偶像排行榜</h2>
         <ul
           v-infinite-scroll="loadMore"
           infinite-scroll-disabled="notFetch"
