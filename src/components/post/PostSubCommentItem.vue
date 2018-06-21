@@ -41,7 +41,7 @@
       <v-img :src="comment.from_user_avatar" width="32" height="32"></v-img>
     </a>
     <a class="href-fade-blue" :href="$alias.user(comment.from_user_zone)" target="_blank" v-text="comment.from_user_name"></a>
-    <template v-if="comment.to_user_zone">
+    <template v-if="comment.to_user_id && comment.to_user_id !== parentUserId">
       回复
       <a class="href-fade-blue" :href="$alias.user(comment.to_user_zone)" target="_blank" v-text="comment.to_user_name"></a>
     </template>
