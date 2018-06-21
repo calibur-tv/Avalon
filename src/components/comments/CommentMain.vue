@@ -50,7 +50,11 @@
         >
           <!-- 主评论的内容 -->
           <slot name="comment-item" :comment="comment">
-            <comment-item :comment="comment" :type="type"></comment-item>
+            <comment-item
+              :comment="comment"
+              :type="type"
+              :master-id="masterId"
+            ></comment-item>
           </slot>
         </div>
       </div>
@@ -97,6 +101,10 @@
       onlySeeMaster: {
         type: Boolean,
         default: false
+      },
+      masterId: {
+        type: Number,
+        required: true
       },
       emptyText: {
         type: String,

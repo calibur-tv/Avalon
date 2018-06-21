@@ -140,12 +140,12 @@
     },
     props: {
       comment: {
-        type: Object,
-        required: true
+        required: true,
+        type: Object
       },
       masterId: {
-        type: Number,
-        default: 0
+        required: true,
+        type: Number
       },
       type: [String]
     },
