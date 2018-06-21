@@ -280,6 +280,7 @@
             type="post"
             :id="post.id"
             :only-see-master="onlySeeMaster"
+            :master-id="master.id"
             empty-text=""
           >
             <div slot="header"></div>

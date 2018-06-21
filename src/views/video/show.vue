@@ -117,7 +117,11 @@
           ></v-bangumi-panel>
         </div>
         <div class="col-main">
-          <comment-main :id="id" type="video"></comment-main>
+          <comment-main
+            :id="id"
+            :master-id="video.user_id"
+            type="video"
+          ></comment-main>
         </div>
       </div>
     </div>

@@ -272,7 +272,11 @@
           </el-button>
         </div>
       </div>
-      <comment-main :id="id" type="image"></comment-main>
+      <comment-main
+        :id="id"
+        :master-id="user.id"
+        type="image"
+      ></comment-main>
     </div>
   </div>
 </template>
@@ -312,7 +316,7 @@
     },
     computed: {
       id () {
-        return this.$route.params.id
+        return parseInt(this.$route.params.id, 10)
       },
       album () {
         return this.$store.state.image.albumShow
@@ -325,9 +329,6 @@
       },
       cartoon () {
         return this.album.cartoon
-      },
-      previewImages () {
-        return this.images.map(_ => _.url)
       },
       user () {
         return this.album.user
