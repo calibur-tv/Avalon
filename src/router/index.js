@@ -70,6 +70,11 @@ export function createRouter () {
             component: () => import('~/views/about/hello')
           },
           {
+            path: 'about/invite/:id(\\d+)',
+            name: 'invite-user',
+            component: () => import('~/views/about/invite')
+          },
+          {
             path: 'role/trending',
             component: () => import('~/views/role/trending')
           },

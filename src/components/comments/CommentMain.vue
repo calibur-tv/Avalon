@@ -2,7 +2,7 @@
   #comment-wrap {
     font-family: Microsoft Yahei,Tahoma,Helvetica,Arial,\\5B8B\4F53,sans-serif;
 
-    .subtitle {
+    .sub-title {
       margin-bottom: 30px;
     }
 
@@ -34,7 +34,7 @@
   <div id="comment-wrap">
     <!-- 主列表的头部 -->
     <slot name="header">
-      <h3 class="subtitle">评论{{ total ? `(${total})` : '' }}</h3>
+      <h3 class="sub-title">评论{{ total ? `(${total})` : '' }}</h3>
       <comment-create-form
         :id="id"
         :type="type"

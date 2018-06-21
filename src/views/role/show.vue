@@ -1,6 +1,6 @@
 <style lang="scss">
   #role-show {
-    .subtitle {
+    .sub-title {
       margin-top: 35px;
       margin-bottom: 20px;
 
@@ -128,7 +128,7 @@
     <div class="container">
       <aside class="col-aside">
         <div class="bangumi">
-          <p class="subtitle">所属番剧</p>
+          <p class="sub-title">所属番剧</p>
           <v-bangumi-panel
             class="bangumi-panel"
             :id="bangumi.id"
@@ -140,7 +140,7 @@
           ></v-bangumi-panel>
         </div>
         <div class="fans">
-          <p class="subtitle">应援团{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
+          <p class="sub-title">应援团{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
           <template v-if="fans.data.length">
             <ul>
               <li class="follower" v-for="user in displayFans" :key="user.zone">
@@ -167,7 +167,7 @@
       </aside>
       <div class="col-main">
         <div class="intro clearfix">
-          <p class="subtitle">角色信息</p>
+          <p class="sub-title">角色信息</p>
           <div class="avatar-wrap">
             <img class="avatar" :src="$resize(role.avatar, { width: 200 })">
             <el-button
@@ -198,7 +198,7 @@
           </div>
         </div>
         <div class="lover" v-if="role.lover">
-          <p class="subtitle">
+          <p class="sub-title">
             守护者
             <el-button
               size="mini"
@@ -214,7 +214,7 @@
           </a>
         </div>
         <div class="images">
-          <p class="subtitle">相册</p>
+          <p class="sub-title">相册</p>
           <image-waterfall
             :loading="loadingRoleImageFetch"
             @fetch="getRoleImages(false)"

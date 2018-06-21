@@ -140,6 +140,10 @@
       .buttons {
         margin-top: 10px;
         text-align: center;
+
+        >* {
+          margin: 0 5px;
+        }
       }
     }
 
@@ -590,12 +594,17 @@
           >
             {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
           </el-button>
-          <el-button
-            type="warning"
-            size="small"
-          >
-            邀请码：{{ user.id }}
-          </el-button>
+          <el-tooltip class="item" effect="dark" placement="bottom">
+            <div slot="content">点击复制我的邀请地址<br/>邀请小伙伴们注册赚金币</div>
+            <el-button
+              type="warning"
+              size="small"
+              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
+              ref="inviteBtn"
+            >
+              邀请码：{{ user.id }}
+            </el-button>
+          </el-tooltip>
         </template>
       </div>
       <v-dialog
@@ -1243,7 +1252,19 @@
       },
       openUploadModal () {
         this.$channel.$emit('open-upload-image-modal')
+      },
+      watchCopyInviteLink () {
+        this.$nextTick(() => {
+          const clipboard = new this.$copy(this.$refs.inviteBtn.$el)
+
+          clipboard.on('success', () => {
+            this.$toast.success('复制成功')
+          })
+        })
       }
+    },
+    mounted () {
+      this.watchCopyInviteLink()
     }
   }
 </script>

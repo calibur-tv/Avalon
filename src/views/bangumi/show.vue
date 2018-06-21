@@ -452,7 +452,7 @@
     <div class="container">
       <aside class="col-aside">
         <div id="tags" v-if="tags.length">
-          <h2 class="subtitle">标签</h2>
+          <h2 class="sub-title">标签</h2>
           <ul class="tags-wrap">
             <li class="tag" v-for="tag in tags" :key="tag.id">
               <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
@@ -460,7 +460,7 @@
           </ul>
         </div>
         <div id="followers">
-          <h2 class="subtitle">关注的人{{ info.count_like ? `（${info.count_like}）` : '' }}</h2>
+          <h2 class="sub-title">关注的人{{ info.count_like ? `（${info.count_like}）` : '' }}</h2>
           <template v-if="info.count_like">
             <ul>
               <li class="follower" v-for="user in displayFollowers" :key="user.zone">

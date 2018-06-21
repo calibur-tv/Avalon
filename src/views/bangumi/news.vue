@@ -1,7 +1,7 @@
 <style lang="scss">
   #bangumi-news {
     $time-size: 30px;
-    .subtitle {
+    .sub-title {
       margin-left: $time-size / 2;
     }
 
@@ -101,7 +101,7 @@
           <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
           <router-link :to="$alias.bangumiTag()">分类索引</router-link>
         </div>
-        <h2 class="subtitle">新番放送表</h2>
+        <h2 class="sub-title">新番放送表</h2>
         <el-tabs v-model="thisWeek">
           <el-tab-pane
             v-for="(tab, index) in showtime"
