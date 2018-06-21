@@ -782,8 +782,8 @@
                 <div class="text">
                   <a :href="$alias.cartoonRole(item.id)" target="_blank">
                     <h4 v-text="item.name"></h4>
+                    <p class="intro" v-text="item.intro"></p>
                   </a>
-                  <p class="intro" v-text="item.intro"></p>
                   <div class="meta">
                     <span>粉丝: {{ item.fans_count }}</span>
                     ·
