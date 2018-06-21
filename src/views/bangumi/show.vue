@@ -614,14 +614,14 @@
               <ul>
                 <li class="role" v-for="item in roles.data" :key="item.id">
                   <div class="clearfix">
-                    <div class="avatar">
+                    <a class="avatar" target="_blank" :href="$alias.cartoonRole(item.id)">
                       <v-img :src="item.avatar" width="90" height="90"></v-img>
-                    </div>
+                    </a>
                     <div class="summary">
-                      <div class="info">
+                      <a target="_blank" :href="$alias.cartoonRole(item.id)" class="info">
                         <span class="name" v-text="item.name"></span>
                         <span class="intro">：{{ item.intro }}</span>
-                      </div>
+                      </a>
                       <el-button
                         @click="handleStarRole(item)"
                         type="warning"
