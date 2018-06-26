@@ -87,6 +87,9 @@
       this.$watch('show', (val) => {
         this.$emit('input', val)
       })
+      this.$channel.$on('search-action', ({ text, type }) => {
+        this.set(text)
+      })
       this.list = this.get()
     }
   }

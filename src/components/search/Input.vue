@@ -89,6 +89,10 @@
         if (!q) {
           return
         }
+        this.$channel.$emit('search-action', {
+          text: q,
+          type: this.selectedType
+        })
         this.$router.push({
           name: 'search-index',
           query: { q, type: this.selectedType }
