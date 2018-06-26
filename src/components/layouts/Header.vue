@@ -430,7 +430,7 @@
 <script>
   import UserApi from '~/api/userApi'
   import vSearch from '~/components/search/Input'
-  import vSearchHistory from '~/components/search/history'
+  import vSearchHistory from '~/components/search/History'
   import vNotifications from '~/components/layouts/Notifications'
 
   export default {
