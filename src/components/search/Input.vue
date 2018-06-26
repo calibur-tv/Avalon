@@ -79,6 +79,7 @@
     data () {
       return {
         word: this.value,
+        selectedType: this.type,
         state: this.autofocus ? 'focus' : 'blur'
       }
     },
@@ -90,7 +91,7 @@
         }
         this.$router.push({
           name: 'search-index',
-          query: { q, type: this.type }
+          query: { q, type: this.selectedType }
         })
       },
       handleInputFocus () {
@@ -112,6 +113,7 @@
       this.$watch('$route', (val) => {
         if (val.name === 'search-index') {
           this.word = val.query.q
+          this.selectedType = val.query.type
         }
       })
     }
