@@ -74,7 +74,22 @@ const actions = {
     })
     commit('SET_RESOURCE', { q, type, data })
   },
-  fetchMore () {
+  async fetchMore ({ state, commit }, { type, ctx }) {
+    const q = state.lastSearchKeywords
+    if (!q) {
+      return
+    }
+    const resource = state.resource[type]
+    if (resource.noMore || resource.loading) {
+      return
+    }
+    const api = new Api(ctx)
+    const data = await api.v2({
+      q,
+      type,
+      page: resource.page
+    })
+    commit('SET_RESOURCE', { q, type, data })
   }
 }
 

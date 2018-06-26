@@ -37,8 +37,27 @@
       }
     }
 
+    .no-content {
+      margin-top: 30px;
+    }
+
     .load-more-btn {
       width: 100%;
+    }
+
+    .loading-wrap {
+      position: relative;
+      width: 100%;
+      height: 100px;
+
+      .el-icon-loading {
+        color: $color-blue-light;
+        font-size: 24px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
     }
   }
 </style>
@@ -78,6 +97,7 @@
                 :key="`${item.type}-${item.id}`"
                 :is="`Flow${item.type}`"
                 :item="item"
+                :in-common="item.type != selectedType"
               ></component>
             </template>
             <el-button
@@ -89,6 +109,9 @@
               plain
               round
             >{{ loading ? '加载中' : '加载更多' }}</el-button>
+            <div class="loading-wrap" v-if="loading && !list.length">
+              <div class="el-icon-loading"></div>
+            </div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -167,7 +190,15 @@
           query: { q: this.words, type: tab.name }
         })
       },
-      loadMore () {
+      async loadMore () {
+        try {
+          await this.$store.dispatch('search/fetchMore', {
+            ctx: this,
+            type: this.selectedType
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        }
       }
     }
   }

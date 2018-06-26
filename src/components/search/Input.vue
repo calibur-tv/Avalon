@@ -72,7 +72,7 @@
         default: ''
       },
       type: {
-        type: String,
+        type: [String, Number],
         default: 0
       }
     },
@@ -94,9 +94,11 @@
         })
       },
       handleInputFocus () {
+        this.state = 'focus'
         this.$emit('focus')
       },
       handleInputBlur () {
+        this.state = 'blur'
         this.$emit('blur')
       }
     },
@@ -106,6 +108,11 @@
       })
       this.$watch('word', (val) => {
         this.$emit('input', val)
+      })
+      this.$watch('$route', (val) => {
+        if (val.name === 'search-index') {
+          this.word = val.query.q
+        }
       })
     }
   }

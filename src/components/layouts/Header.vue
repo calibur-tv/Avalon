@@ -159,78 +159,118 @@
         float: right;
         position: relative;
 
-        .search-box {
-          height: $search-height;
-          border-radius: $search-height / 2;
-          background-color: rgba(0, 0, 0, 0.2);
-          margin-top: ($header-height - $search-height) / 2;
-          margin-right: 30px;
-          float: left;
-
-          &:hover {
-            background-color: rgba(0, 0, 0, 0.4);
-          }
-
+        .search-container {
+          position: relative;
           $transition: .2s;
-          .search-ctx {
-            width: 135px;
-            background-color: transparent;
+
+          .search-input-wrap {
+            height: $search-height;
+            border-radius: $search-height / 2;
+            margin-top: ($header-height - $search-height) / 2;
+            margin-right: 30px;
             transition: $transition;
-            font-size: 12px;
-            padding: 4px 10px 4px 15px;
-            line-height: 24px;
-            border-radius: 16px 0 0 16px;
-            color: $color-white;
-            border: 1px solid transparent;
-            border-right: 0;
-            @include input-placeholder();
+            background-color: rgba(0, 0, 0, 0.2);
+            width: 167px;
+            float: left;
 
-            &:focus {
-              width: 235px;
-              background-color: $color-white;
-              color: #222;
-              @include input-placeholder(#222);
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.4);
+            }
 
-              &+.search-btn {
-                background-color: $color-white;
+            .search-input {
+              background-color: transparent;
+              padding: 4px 10px 4px 15px;
+              border-radius: 16px 0 0 16px;
+              border: 1px solid transparent;
+              line-height: 24px;
+              border-right: 0;
+              font-size: 12px;
+              color: $color-white;
+              @include input-placeholder();
+            }
+
+            .search-input-btn {
+              width: 32px;
+              height: 32px;
+              border-radius: 0 16px 16px 0;
+              background-color: transparent;
+              font-size: 18px;
+              border: 1px solid transparent;
+              border-left: 0;
+              line-height: 29px;
+              transition: $transition;
+              color: $color-white;
+            }
+
+            &.search-focus {
+              background-color: #fff;
+              width: 267px;
+
+              .search-input {
+                color: #222;
+                @include input-placeholder(#222);
+              }
+
+              .search-input-btn {
                 color: $color-text-deep;
 
                 &:hover {
                   color: $color-blue-normal;
                 }
               }
-
-              &~.search-history {
-                transition-delay: $transition;
-              }
             }
           }
 
-          @media (max-width: 768px) {
-            .search-ctx {
-              width: 85px;
+          .search-history {
+            position: absolute;
+            left: 0;
+            top: 120%;
+            height: 192px;
+            width: 267px;
+            background-color: $color-white;
+            border: 1px solid $color-gray-normal;
+            border-radius: 4px;
+            font-size: 12px;
+            padding-bottom: 5px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0 2px 4px;
 
-              &:focus {
-                width: 155px;
-              }
+            .hr {
+              margin: 0 20px;
             }
-          }
 
-          .search-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 0 16px 16px 0;
-            background-color: transparent;
-            transition: $transition;
-            color: $color-white;
-            font-family: 'iconfont' !important;
-            font-size: 18px;
-            border: 1px solid transparent;
-            border-left: 0;
-            line-height: 29px;
+            ul {
+              li {
+                height: 30px;
+                width: 100%;
+                position: relative;
 
-            &:before {
-              content: '\e761';
+                &:hover {
+                  background-color: $color-gray-normal;
+                }
+
+                a {
+                  padding: 5px 40px 5px 10px;
+                  line-height: 20px;
+                  display: block;
+                }
+
+                .del {
+                  display: block;
+                  position: absolute;
+                  right: 0;
+                  top: 0;
+                  width: 30px;
+                  height: 30px;
+                  line-height: 30px;
+                  font-size: 18px;
+                  text-align: center;
+                  cursor: pointer;
+
+                  &:hover {
+                    color: $color-blue-normal;
+                  }
+                }
+              }
             }
           }
         }
@@ -346,7 +386,12 @@
         <router-link class="nav-link" to="/about/hello">功能简介</router-link>
       </nav>
       <nav class="header-right">
-        <v-search placeholder="搜索" :history="true"></v-search>
+        <div class="search-container">
+          <v-search @blur="handleSearchBlur" @focus="searchFocus = true">
+            <i slot="submit-btn" class="iconfont icon-sousuo"></i>
+          </v-search>
+          <v-search-history v-model="searchFocus"></v-search-history>
+        </div>
         <template v-if="isLogin">
           <el-popover
             ref="popover"
@@ -384,18 +429,22 @@
 
 <script>
   import UserApi from '~/api/userApi'
-  import vSearch from '~/components/layouts/Search'
+  import vSearch from '~/components/search/Input'
+  import vSearchHistory from '~/components/search/history'
   import vNotifications from '~/components/layouts/Notifications'
 
   export default {
     name: 'v-header',
     components: {
-      vSearch, vNotifications
+      vSearch,
+      vSearchHistory,
+      vNotifications
     },
     data () {
       return {
         scrollFlag: false,
-        showNotification: false
+        showNotification: false,
+        searchFocus: false
       }
     },
     computed: {
@@ -437,6 +486,11 @@
         const api = new UserApi(this)
         api.logout()
         window.location.reload()
+      },
+      handleSearchBlur () {
+        setTimeout(() => {
+          this.searchFocus = false
+        }, 100)
       }
     },
     mounted () {
