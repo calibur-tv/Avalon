@@ -37,45 +37,37 @@
       }
 
       $search-size: 40px;
-      .search-box {
+      .search-input-wrap {
         height: $search-size;
         margin-bottom: 100px;
+        width: 550px;
+        padding: 0 50px 0 10px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0.15);
 
-        &:hover {
-          .search-ctx {
-            border: 1px solid $color-white;
-            background: rgba(0, 0, 0, 0.3);
-          }
-
-          .search-btn {
-            color: $color-white;
-          }
+        .search-input-btn {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: $search-size - 2;
+          height: $search-size - 2;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 26px;
         }
 
-        .search-ctx {
-          width: 550px;
-          height: 100%;
-          padding: 0 50px 0 10px;
-          border: 1px solid rgba(255, 255, 255, 0.8);
-          background: rgba(0, 0, 0, 0.15);
+        .search-input {
           color: #fff;
           line-height: $search-size;
           font-size: 14px;
           @include input-placeholder();
         }
 
-        .search-btn {
-          position: absolute;
-          right: 0;
-          top: 0;
-          width: $search-size;
-          height: $search-size;
-          color: rgba(255, 255, 255, 0.8);
-          font-size: 26px;
-          font-family: 'iconfont' !important;
+        &:hover {
+          border: 1px solid $color-white;
+          background: rgba(0, 0, 0, 0.3);
 
-          &:before {
-            content: '\e761';
+          .search-input-btn {
+            color: $color-white;
           }
         }
       }
@@ -120,7 +112,9 @@
     <div class="banner bg" :class="{'show' : !toggle}" :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"></div>
     <div class="index-panel">
       <div class="slogan bg" :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/slogan.png')})` }" :class="{ 'invert' : curBanner.gray > 165 }"></div>
-      <v-search :placeholder="'搜索二次元的一切'" :auto="true" :suggest="true"></v-search>
+      <v-search :placeholder="'搜索二次元的一切'" :autofocus="true">
+        <i slot="submit-btn" class="iconfont icon-sousuo"></i>
+      </v-search>
     </div>
     <div class="banner-card">
       <router-link :to="$alias.user(curBanner.user_zone)" v-if="curBanner.user_id">
@@ -144,7 +138,7 @@
 </template>
 
 <script>
-  import vSearch from '~/components/layouts/Search'
+  import vSearch from '~/components/search/Input'
 
   export default {
     name: 'homepage',
