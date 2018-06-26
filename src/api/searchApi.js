@@ -6,4 +6,10 @@ export default class extends BaseApi {
       params: q
     })
   }
+
+  v2 ({ q, type, page }) {
+    return this.http.get('search/new', {
+      params: { q, type, page }
+    })
+  }
 }
