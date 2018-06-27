@@ -50,7 +50,7 @@
         @blur="handleInputBlur"
         :autofocus="autofocus"
         maxlength="50"
-        v-model="word">
+        v-model.trim="word">
     </div>
   </form>
 </template>

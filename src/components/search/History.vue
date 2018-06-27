@@ -69,6 +69,7 @@
         try {
           localStorage.removeItem(this.cacheKey)
         } catch (e) {}
+        this.list = []
       },
       del (q) {
         const list = this.get()

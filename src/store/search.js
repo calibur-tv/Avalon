@@ -83,6 +83,7 @@ const actions = {
     if (resource.noMore || resource.loading) {
       return
     }
+    commit('SET_LOADING', { type, value: true })
     const api = new Api(ctx)
     const data = await api.v2({
       q,
