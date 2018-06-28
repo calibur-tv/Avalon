@@ -61,7 +61,7 @@
     width="80%"
   >
     <el-carousel
-      v-if="maxHeight"
+      v-if="maxHeight && open"
       :autoplay="false"
       :arrow="length > 1 ? 'always' : 'never'"
       :initial-index="index"
