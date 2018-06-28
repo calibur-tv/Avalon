@@ -340,7 +340,7 @@
           setInterval(() => {
             this.notMove = true
             setTimeout(() => {
-              if (this.notMove) {
+              if (this.notMove && this.checkIsFullScreen()) {
                 video.classList.add('hidden-cursor')
               }
             }, 1000)
