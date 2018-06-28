@@ -21,7 +21,7 @@
     }
 
     .video-info {
-      margin-top: 30px;
+      margin-top: 70px;
       margin-bottom: 20px;
 
       .v-share {

@@ -4,7 +4,6 @@
 
   .vue-pwa-video {
     box-sizing: border-box;
-    overflow: hidden;
     width: 100%;
     height: 100% !important;
     position: relative;
@@ -66,11 +65,21 @@
       outline: none;
     }
 
+    chimee-control {
+      overflow:visible !important;
+      visibility: visible !important;
+    }
+
     chimee-control-wrap {
       width: 100%;
       height: 40px;
       align-items: center;
       background-color: #fff;
+      box-shadow: 0 1px 3px rgba(26,26,26,.1);
+    }
+
+    .chimee-control-fixed container chimee-control chimee-control-wrap {
+      bottom: -40px !important;
     }
 
     chimee-progresstime {
@@ -179,7 +188,7 @@
       <a @click="$channel.$emit('sign-in')">立即登录</a>
     </div>
     -->
-    <div id="video-wrap" v-else></div>
+    <div id="video-wrap" :class="[isFull ? '' : 'chimee-control-fixed']" v-else></div>
   </div>
 </template>
 
@@ -248,7 +257,8 @@
       return {
         player: null,
         notMove: false,
-        timer: 0
+        timer: 0,
+        isFull: false
       }
     },
     methods: {
@@ -334,6 +344,7 @@
       },
       handleFullScreen () {
         const isFull = this.checkIsFullScreen()
+        this.isFull = isFull
         const video = document.getElementsByTagName('video')[0]
         if (isFull) {
           document.body.addEventListener('mousemove', this.cursorMoveFunc)
