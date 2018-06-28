@@ -201,15 +201,21 @@
   }
 }
 
-img.image-lazy-init {
+.image-lazy-init {
   opacity: 0.3;
-  background-color: #bbb;
+  background-color: #ccc;
 }
 
-img.image-lazy-active {
+.image-lazy-active {
   transition: background-color, opacity .15s linear;
-  background-color: transparent;
   opacity: 1;
+  background-color: transparent;
+}
+
+.image-shim {
+  width: auto !important;
+  display: block;
+  margin: 0 auto 5px auto;
 }
 
 .text-center {
