@@ -100,9 +100,11 @@
         >
           <v-img
             class="image"
-            :src="img.url"
-            width="350"
+            width="550"
             mode="2"
+            :src="img.url"
+            :source="img"
+            :full="true"
             :aspect="$computeImageAspect(img)"
           ></v-img>
         </div>
