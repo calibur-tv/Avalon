@@ -101,7 +101,7 @@ export default {
       if (this.$checkInView(this.$el, (this.scale - 0))) {
         this.loadResource(this.$el)
       } else {
-        const id = this.$eventManager.add(document.querySelector('._viewport'), this.events, this.$utils.throttle(() => {
+        const id = this.$eventManager.add(document, this.events, this.$utils.throttle(() => {
           if (this.$checkInView(this.$el, (this.scale - 0))) {
             this.loadResource(this.$el)
             this.$eventManager.del(id)
