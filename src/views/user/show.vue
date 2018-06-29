@@ -16,6 +16,7 @@
       align-items: center;
       color: $color-white;
       text-shadow: 0 1px 10px gray;
+      user-select: none;
 
       .img {
         width: 110%;
@@ -61,6 +62,7 @@
           height: 120px;
           transition-duration: .4s;
           transform: rotate(45deg);
+          transition-property: background-color;
 
           &:before {
             background-color: transparent;
@@ -85,35 +87,44 @@
         }
       }
 
-      $selector-height: 80px;
-      .banner-select-bar {
-        position: fixed;
+      .banner-cropper-wrap {
+        position: absolute;
         left: 0;
-        right: 0;
-        bottom: 0;
-        height: $selector-height;
-        background-color: rgba(0, 0, 0, .7);
-        padding: 0 50px;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
 
-        p {
-          font-size: 18px;
-          color: $color-white;
-          float: left;
-          line-height: $selector-height;
+        $selector-height: 80px;
+        .banner-select-bar {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: $selector-height;
+          background-color: rgba(0, 0, 0, .7);
+          padding: 0 50px;
+
+          p {
+            font-size: 18px;
+            color: $color-white;
+            float: left;
+            line-height: $selector-height;
+          }
+
+          .el-button--text {
+            color: $color-white;
+            float: right;
+            margin-top: 20px;
+            margin-right: 100px;
+          }
         }
 
-        button {
-          float: right;
-          margin-top: 20px;
-        }
-
-        .el-button--primary {
-          margin-left: 30px;
-          width: 100px;
-        }
-
-        .el-button--text {
-          color: $color-white;
+        .submit-btn {
+          position: fixed;
+          right: 50px;
+          bottom: 24px;
+          z-index: 1;
         }
       }
 
@@ -130,6 +141,7 @@
         word-wrap: break-word;
         font-size: 13px;
         line-height: 20px;
+        pointer-events: none;
       }
 
       .signature {
@@ -538,50 +550,73 @@
 
 <style lang="scss">
   .avatar-cropper-modal {
-    .image-crop-area {
-      width: 360px;
-      height: 360px;
-      overflow: hidden;
-    }
-
-    .cropper-face {
-      left: 0;
-      top: 0;
-      overflow: hidden;
-      background-color: transparent;
-      opacity: 1;
-
-      &:after {
-        content: '';
-        position: absolute;
-        left: 2%;
-        top: 2%;
-        border-radius: 100%;
-        width: 96%;
-        height: 96%;
-        box-shadow: 0 0 0 2000px #fff;
-        opacity: .85;
-      }
+    .submit-btn {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      width: 200px;
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
   }
 </style>
 
 <template>
   <div id="user-show">
-    <section class="banner" :class="{ 'my-banner': isMe && !bannerSelector.loading }">
-      <div class="img bg" :style="{ backgroundImage: banner }"></div>
-      <div class="banner-file-input file-input bg">
-        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="bannerInput" @change="selectBanner">
+    <section class="banner" :class="{ 'my-banner': isMe }">
+      <div class="img bg" :style="{ backgroundImage: `url(${$resize(user.banner, { width: 1920, mode: 0 })})` }"></div>
+      <div class="banner-cropper-wrap" v-if="isMe">
+        <template v-if="bannerSelector.showBar">
+          <image-cropper
+            :init-image="bannerSelector.image"
+            :uploading="bannerSelector.loading"
+            :auto-size="true"
+            @submit="submitBannerChange"
+          ></image-cropper>
+          <div class="banner-select-bar">
+            <p>确认要更换主页背景图吗（拖动图片可裁剪，鼠标滚动可缩放）?</p>
+            <el-button
+              @click="cancelBannerChange"
+              :disabled="bannerSelector.loading"
+              type="text"
+            >取消</el-button>
+          </div>
+        </template>
+        <div class="banner-file-input file-input bg" v-else>
+          <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="bannerInput" @change="selectBanner">
+        </div>
       </div>
-      <div class="avatar bg file-input"
-           :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
-           v-if="isMe">
-        <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="avatarInput" @change="openAvatarModal">
-      </div>
-      <img class="avatar"
-           :src="$resize(user.avatar, { width: 200, height: 200 })"
-           alt="avatar"
-           v-else>
+      <template v-if="isMe">
+        <div
+          class="avatar bg file-input"
+          :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
+        >
+          <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="avatarInput" @change="openAvatarModal">
+        </div>
+        <v-dialog
+          class="avatar-cropper-modal"
+          v-model="avatarCropper.showModal"
+          title="头像裁剪"
+          :footer="false"
+          width="400px"
+          @cancel="handleAvatarCropperCancel"
+        >
+          <image-cropper
+            v-if="avatarCropper.showModal"
+            :init-image="avatarCropper.src"
+            :uploading="avatarCropper.loading"
+            :width="358"
+            :height="358"
+            type="avatar"
+            @submit="handleAvatarCropperSubmit"
+          ></image-cropper>
+        </v-dialog>
+      </template>
+      <img
+        class="avatar"
+        :src="$resize(user.avatar, { width: 200, height: 200 })"
+        alt="avatar"
+        v-else
+      >
       <span class="nickname" v-text="user.nickname"></span>
       <div class="buttons">
         <template v-if="isMe">
@@ -607,33 +642,7 @@
           </el-tooltip>
         </template>
       </div>
-      <v-dialog
-        class="avatar-cropper-modal"
-        v-model="avatarCropper.showModal"
-        title="头像裁剪"
-        :footer="false"
-        width="400px"
-        @cancel="handleAvatarCropperCancel"
-      >
-        <v-cropper
-          v-if="avatarCropper.showModal"
-          :src="avatarCropper.src"
-          :file-type="avatarCropper.type"
-          :uploading="avatarCropper.loading"
-          @cancel="handleAvatarCropperCancel"
-          @submit="handleAvatarCropperSubmit"
-        ></v-cropper>
-      </v-dialog>
       <p class="signature" v-text="user.signature"></p>
-      <no-ssr>
-        <transition name="el-zoom-in-bottom">
-          <div class="banner-select-bar" v-if="bannerSelector.showBar">
-            <p>确认要更换主页背景图吗？</p>
-            <el-button @click="submitBannerChange" :loading="bannerSelector.loading" type="primary" round>确认</el-button>
-            <el-button @click="cancelBannerChange" :disabled="bannerSelector.loading" type="text">取消</el-button>
-          </div>
-        </transition>
-      </no-ssr>
     </section>
     <div class="container">
       <div class="faker-tips" v-if="user.faker">
@@ -876,10 +885,10 @@
 </template>
 
 <script>
-  import vCropper from '~/components/common/Cropper'
   import UserApi from '~/api/userApi'
   import ImageApi from '~/api/imageApi'
   import ImageWaterfall from '~/components/lists/ImageWaterfall'
+  import ImageCropper from '~/components/common/ImageCropper'
 
   export default {
     async asyncData ({ route, store, ctx }) {
@@ -907,7 +916,7 @@
       }
     },
     components: {
-      vCropper,
+      ImageCropper,
       ImageWaterfall
     },
     computed: {
@@ -929,11 +938,6 @@
       },
       bangumis () {
         return this.$store.state.users.list[this.zone].bangumis
-      },
-      banner () {
-        return this.bannerSelector.showBar
-          ? `url(${this.bannerSelector.image})`
-          : `url(${this.$resize(this.user.banner, { width: 1920, mode: 0 })})`
       },
       postListType () {
         const type = this.postTab
@@ -1196,7 +1200,7 @@
           this.$refs.bannerInput.value = ''
         })
       },
-      async submitBannerChange () {
+      async submitBannerChange (formData) {
         this.bannerSelector.loading = true
         const filename = this.$utils.createFileName({
           userId: this.user.id,
@@ -1206,8 +1210,6 @@
         })
         try {
           await this.$store.dispatch('getUpToken', this)
-          const formData = new FormData()
-          formData.append('file', this.bannerSelector.file)
           formData.append('token', this.user.uptoken.upToken)
           formData.append('key', filename)
           const imageApi = new ImageApi()
@@ -1261,6 +1263,9 @@
             this.$toast.success('复制成功')
           })
         })
+      },
+      handleAvatarCropperSuccess (blob) {
+        console.log(blob)
       }
     },
     mounted () {
