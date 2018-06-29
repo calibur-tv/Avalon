@@ -105,6 +105,9 @@
         if (value.length > 16) {
           return callback(new Error('密码不能大于16位'))
         }
+        if (!/^[a-z0-9]+$/i.test(value)) {
+          return callback(new Error('密码只能是英文和数字'))
+        }
         callback()
       }
       return {
