@@ -24,8 +24,8 @@ module.exports = {
     alias: {
       '~': resolve('../src'),
       'env': resolve('../.env.js'),
-      'img': resolve('../src/assets/img'),
-      'static': resolve('../static')
+      'static': resolve('../static'),
+      '@': resolve('../src/admin')
     },
     extensions: ['.js', '.vue', '.scss', '.css']
   },

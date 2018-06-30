@@ -138,6 +138,17 @@ export function createRouter () {
             component: () => import('~/views/error/503')
           }
         ]
+      },
+      {
+        path: '/admin',
+        meta: { isAdmin: true },
+        component: () => import('~/layouts/empty'),
+        children: [
+          {
+            path: 'dashboard',
+            component: () => import('@/views/dashboard/index')
+          }
+        ]
       }
     ]
   })

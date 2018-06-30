@@ -3,8 +3,8 @@ import App from './app.vue'
 import { sync } from 'vuex-router-sync'
 import { createStore } from '~/store'
 import { createRouter } from '~/router'
-import '~/assets/css/global'
 import 'normalize.css/normalize.css'
+import '~/assets/css/global'
 import '~/utils'
 
 export function createApp () {
