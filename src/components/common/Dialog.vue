@@ -150,13 +150,8 @@
 </template>
 
 <script>
-  import { Dialog } from 'element-ui'
-
   export default {
     name: 'v-dialog',
-    components: {
-      ElDialog: Dialog
-    },
     props: {
       value: {
         type: Boolean,

@@ -26,7 +26,9 @@
       htmlAttrs: {
         lang: 'zh-CN'
       },
-      bodyAttrs: '',
+      bodyAttrs: {
+        id: 'calibur-tv'
+      },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1' },

@@ -113,7 +113,7 @@
                 :key="tag.id"
                 @click="$store.commit('bangumi/selectTag', index)">
               <a @click.prevent
-                 :href="$alias.bangumiTag(tag.id)" class="el-tag"
+                 :href="$alias.bangumiTag(tag.id)" class="tag-btn"
                  :class="{ 'selected': tag.selected }"
               >{{ tag.name }}</a>
             </li>

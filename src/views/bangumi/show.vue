@@ -455,7 +455,7 @@
           <h2 class="sub-title">标签</h2>
           <ul class="tags-wrap">
             <li class="tag" v-for="tag in tags" :key="tag.id">
-              <a :href="$alias.bangumiTag(tag.id)" class="el-tag" v-text="tag.name" target="_blank"></a>
+              <a :href="$alias.bangumiTag(tag.id)" class="tag-btn" v-text="tag.name" target="_blank"></a>
             </li>
           </ul>
         </div>

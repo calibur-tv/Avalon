@@ -155,7 +155,7 @@
           .tags {
             float: left;
 
-            .el-tag {
+            .tag-btn {
               margin-top: 4px;
               margin-right: 7px;
               max-width: 60px;
@@ -369,8 +369,8 @@
                 v-if="item.image_count"
               ></a>
               <div class="tags" v-else>
-                <button class="el-tag oneline" v-text="item.size.name"></button>
-                <button class="el-tag oneline" v-for="tag in item.tags" v-text="tag.name"></button>
+                <button class="tag-btn oneline" v-text="item.size.name"></button>
+                <button class="tag-btn oneline" v-for="tag in item.tags" v-text="tag.name"></button>
               </div>
               <div class="meta">
                 <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeBtnClick($event, item)">
