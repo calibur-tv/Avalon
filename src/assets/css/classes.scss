@@ -163,7 +163,6 @@
 }
 
 .breadcrumb-links {
-
   a {
     font-size: 14px;
     transition: .2s;
@@ -222,77 +221,6 @@
   text-align: center;
 }
 
-.full-width {
-  width: 100%;
-}
-.cp {
-  cursor: pointer;
-}
-
-/* Margin/Padding
--------------------------- */
-$--margin-default: 16px;
-$--padding-default: 16px;
-.m- {
-  &def {
-      margin: $--margin-default;
-  }
-  &t {
-      margin-top: $--margin-default;
-      &-0 {
-          margin-top: 0;
-      }
-  }
-  &b {
-      margin-bottom: $--margin-default;
-      &-0 {
-          margin-bottom: 0;
-      }
-  }
-  &l {
-      margin-left: $--margin-default;
-      &-0 {
-          margin-left: 0;
-      }
-  }
-  &r {
-      margin-right: $--margin-default;
-      &-0 {
-          margin-right: 0;
-      }
-  }
-}
-
-.p- {
-  &def {
-      padding: $--padding-default;
-  }
-  &t {
-      padding-top: $--padding-default;
-      &-0 {
-          padding-top: 0;
-      }
-  }
-  &b {
-      padding-bottom: $--padding-default;
-      &-0 {
-          padding-bottom: 0;
-      }
-  }
-  &l {
-      padding-left: $--padding-default;
-      &-0 {
-          padding-left: 0;
-      }
-  }
-  &r {
-      padding-right: $--padding-default;
-      &-0 {
-          padding-right: 0;
-      }
-  }
-}
-
 .likes-modal {
   li {
     float: none;
@@ -329,5 +257,25 @@ $--padding-default: 16px;
         margin-top: 13px;
       }
     }
+  }
+}
+
+.tag-btn {
+  background-color: transparent;
+  display: inline-block;
+  padding: 0 5px;
+  height: 24px;
+  line-height: 22px;
+  font-size: 12px;
+  color: $color-pink-normal;
+  border-radius: 4px;
+  border: 1px solid $color-pink-normal;
+  white-space: nowrap;
+  font-weight: 700;
+
+  &.selected, &:hover {
+    background-color: $color-pink-deep;
+    border: 1px solid $color-pink-deep;
+    color: #fff;
   }
 }

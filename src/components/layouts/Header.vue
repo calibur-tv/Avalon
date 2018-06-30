@@ -401,9 +401,10 @@
             <v-notifications v-if="showNotification"></v-notifications>
             <span v-else></span>
           </el-popover>
-          <el-badge :value="notificationsCount" :max="99" class="item">
+          <el-badge v-if="notificationsCount" :value="notificationsCount" :max="99" class="item">
             <a class="nav-link" @click="showNotification = true" v-popover:popover>消息</a>
           </el-badge>
+          <a class="nav-link" @click="showNotification = true" v-popover:popover v-else>消息</a>
           <el-dropdown class="user-section" placement="bottom">
             <a class="el-dropdown-link" :href="$alias.user(user.zone)">
               <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">

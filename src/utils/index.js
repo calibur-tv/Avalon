@@ -11,76 +11,15 @@ import NoContent from '~/components/NoContent'
 import Hr from '~/components/common/Hr'
 import Share from '~/components/common/Share'
 import Dialog from '~/components/common/Dialog'
+import ElementUI from 'element-ui'
+import '~/assets/css/element-ui.scss'
 
 import {
   InfiniteScroll
 } from 'mint-ui'
 
-import {
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Tabs,
-  TabPane,
-  Tag,
-  Form,
-  FormItem,
-  Input,
-  Button,
-  DatePicker,
-  Switch,
-  Alert,
-  Row,
-  Col,
-  Checkbox,
-  Radio,
-  RadioGroup,
-  RadioButton,
-  Tooltip,
-  Select,
-  Option,
-  OptionGroup,
-  Upload,
-  Pagination,
-  Carousel,
-  CarouselItem,
-  Badge,
-  Popover
-} from 'element-ui'
-
-import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
-
-Vue.use(Dropdown)
-Vue.use(DropdownMenu)
-Vue.use(DropdownItem)
-Vue.use(Tabs)
-Vue.use(TabPane)
-Vue.use(Tag)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Input)
-Vue.use(Button)
-Vue.use(DatePicker)
-Vue.use(Switch)
-Vue.use(Alert)
-Vue.use(Col)
-Vue.use(Row)
-Vue.use(Checkbox)
-Vue.use(Radio)
-Vue.use(RadioGroup)
-Vue.use(RadioButton)
-Vue.use(Tooltip)
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(OptionGroup)
+Vue.use(ElementUI)
 Vue.use(InfiniteScroll)
-Vue.use(Upload)
-Vue.use(Pagination)
-Vue.use(Carousel)
-Vue.use(CarouselItem)
-Vue.component(CollapseTransition.name, CollapseTransition)
-Vue.use(Badge)
-Vue.use(Popover)
 Vue.component(ImageLazy.name, ImageLazy)
 Vue.component(Share.name, Share)
 Vue.component(NoSSR.name, NoSSR)
