@@ -217,7 +217,10 @@
 </style>
 
 <template>
-  <div class="v-share" v-if="type === 'button'">
+  <div
+    v-if="type === 'button'"
+    class="v-share"
+  >
     <el-popover
       ref="popover2"
       placement="top"
@@ -225,35 +228,45 @@
       trigger="click"
       popper-class="v-share v-share-button"
     >
-      <button v-if="canRender" :data-clipboard-text="shareUrl" ref="copy">
-        <i class="iconfont ic-link"></i>
+      <button
+        v-if="canRender"
+        ref="copy"
+        :data-clipboard-text="shareUrl"
+      >
+        <i class="iconfont ic-link"/>
         复制链接
       </button>
       <button @click="makeUrl('weibo')">
-        <i class="iconfont ic-weibo"></i>
+        <i class="iconfont ic-weibo"/>
         微博
       </button>
       <button @click="makeUrl('qq')">
-        <i class="iconfont ic-qq"></i>
+        <i class="iconfont ic-qq"/>
         QQ
       </button>
       <button @click="makeUrl('douban')">
-        <i class="iconfont ic-douban"></i>
+        <i class="iconfont ic-douban"/>
         豆瓣
       </button>
       <button @click="makeUrl('qzone')">
-        <i class="iconfont ic-qzone"></i>
+        <i class="iconfont ic-qzone"/>
         QQ空间
       </button>
     </el-popover>
     <slot>
-      <button class="share-btn" v-popover:popover2>
-        <i class="iconfont icon-emizhifeiji"></i>
+      <button
+        v-popover:popover2
+        class="share-btn"
+      >
+        <i class="iconfont icon-emizhifeiji"/>
         分享
       </button>
     </slot>
   </div>
-  <div class="v-share v-share-panel" v-else-if="type === 'panel'">
+  <div
+    v-else-if="type === 'panel'"
+    class="v-share v-share-panel"
+  >
     <el-popover
       ref="popover"
       placement="top"
@@ -263,40 +276,67 @@
       popper-class="share-popover"
     >
       <div>
-        <div class="qr-code" ref="qr"></div>
+        <div
+          ref="qr"
+          class="qr-code"
+        />
         <div class="help">
           <p>微信里点“发现”，扫一下</p>
           <p>二维码便可将本页面分享至朋友圈</p>
         </div>
       </div>
     </el-popover>
-    <button class="share-icon ic-weibo" @click="makeUrl('weibo')"></button>
-    <button class="share-icon ic-qq" @click="makeUrl('qq')"></button>
-    <button class="share-icon ic-wechat" v-popover:popover></button>
-    <button class="share-icon ic-douban" @click="makeUrl('douban')"></button>
-    <button class="share-icon ic-qzone" @click="makeUrl('qzone')"></button>
-    <el-tooltip v-if="canRender" class="item" effect="dark" content="复制链接" placement="top">
+    <button
+      class="share-icon ic-weibo"
+      @click="makeUrl('weibo')"
+    />
+    <button
+      class="share-icon ic-qq"
+      @click="makeUrl('qq')"
+    />
+    <button
+      v-popover:popover
+      class="share-icon ic-wechat"
+    />
+    <button
+      class="share-icon ic-douban"
+      @click="makeUrl('douban')"
+    />
+    <button
+      class="share-icon ic-qzone"
+      @click="makeUrl('qzone')"
+    />
+    <el-tooltip
+      v-if="canRender"
+      class="item"
+      effect="dark"
+      content="复制链接"
+      placement="top"
+    >
       <button
-        class="share-icon ic-link"
-        :data-clipboard-text="shareUrl"
         ref="copy"
-      ></button>
+        :data-clipboard-text="shareUrl"
+        class="share-icon ic-link"
+      />
     </el-tooltip>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'v-share',
+    name: 'VShare',
     props: {
       image: {
-        type: String
+        type: String,
+        default: ''
       },
       title: {
-        type: String
+        type: String,
+        default: ''
       },
       desc: {
-        type: String
+        type: String,
+        default: ''
       },
       type: {
         type: String,
@@ -304,7 +344,14 @@
         validator: val => ~['button', 'panel'].indexOf(val)
       },
       url: {
-        type: String
+        type: String,
+        default: ''
+      }
+    },
+    data () {
+      return {
+        weiboKey: '',
+        canRender: false
       }
     },
     computed: {
@@ -314,11 +361,10 @@
           : `${window.location.origin}${this.$route.fullPath}`
       }
     },
-    data () {
-      return {
-        weiboKey: '',
-        canRender: false
-      }
+    mounted () {
+      this.canRender = true
+      this.makeWechatQrCode()
+      this.watchCopyLink()
     },
     methods: {
       shareTitle () {
@@ -370,11 +416,6 @@
           })
         })
       }
-    },
-    mounted () {
-      this.canRender = true
-      this.makeWechatQrCode()
-      this.watchCopyLink()
     }
   }
 </script>

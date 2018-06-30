@@ -84,34 +84,68 @@
 </style>
 
 <template>
-  <div class="def-comment-item" :id="`comment-${comment.id}`">
+  <div
+    :id="`comment-${comment.id}`"
+    class="def-comment-item"
+  >
     <div class="user">
-      <a target="_blank" :href="$alias.user(comment.from_user_zone)">
+      <a
+        :href="$alias.user(comment.from_user_zone)"
+        target="_blank"
+      >
         <div class="avatar">
-          <img :src="$resize(comment.from_user_avatar, { width: 96 })" :alt="comment.from_user_name">
+          <img
+            :src="$resize(comment.from_user_avatar, { width: 96 })"
+            :alt="comment.from_user_name"
+          >
         </div>
       </a>
     </div>
     <div class="body">
       <div class="header">
-        <a class="href-fade-blue" target="_blank" :href="$alias.user(comment.from_user_zone)" v-text="comment.from_user_name"></a>
+        <a
+          :href="$alias.user(comment.from_user_zone)"
+          class="href-fade-blue"
+          target="_blank"
+          v-text="comment.from_user_name"
+        />
       </div>
-      <div class="content" v-html="comment.content"></div>
+      <div
+        class="content"
+        v-html="comment.content"
+      />
       <div class="footer">
         <span class="floor-count">#{{ comment.floor_count - 1 }}</span>
-        <el-tooltip placement="top" effect="dark" :content="comment.created_at">
-          <v-time v-model="comment.created_at"></v-time>
+        <el-tooltip
+          :content="comment.created_at"
+          placement="top"
+          effect="dark"
+        >
+          <v-time v-model="comment.created_at"/>
         </el-tooltip>
-        <button class="like-btn" @click="toggleLike">
+        <button
+          class="like-btn"
+          @click="toggleLike"
+        >
           <i
-            class="iconfont"
             :class="[ comment.liked ? 'icon-dianzan1 ic-liked' : 'icon-dianzan' ]"
-          ></i>
-          <span v-if="comment.like_count" v-text="comment.like_count"></span>
+            class="iconfont"
+          />
+          <span
+            v-if="comment.like_count"
+            v-text="comment.like_count"
+          />
         </button>
-        <button class="reply-btn" @click="replyComment">回复</button>
-        <button class="delete-btn" v-if="canDelete" @click="deleteComment">
-          <i class="iconfont icon-shanchu"></i>
+        <button
+          class="reply-btn"
+          @click="replyComment"
+        >回复</button>
+        <button
+          v-if="canDelete"
+          class="delete-btn"
+          @click="deleteComment"
+        >
+          <i class="iconfont icon-shanchu"/>
         </button>
       </div>
       <comment-reply-form
@@ -119,11 +153,11 @@
         :id="comment.id"
         :to-user-id="authorId"
         :type="type"
-      ></comment-reply-form>
+      />
       <sub-comment-list
         :parent-comment="comment"
         :type="type"
-      ></sub-comment-list>
+      />
     </div>
   </div>
 </template>
@@ -133,7 +167,7 @@
   import CommentReplyForm from './CommentReplyForm'
 
   export default {
-    name: 'v-comment-item',
+    name: 'VCommentItem',
     components: {
       SubCommentList,
       CommentReplyForm
@@ -147,7 +181,18 @@
         required: true,
         type: Number
       },
-      type: [String]
+      type: {
+        required: true,
+        type: String,
+        default: ''
+      }
+    },
+    data () {
+      return {
+        deleting: false,
+        liking: false,
+        showReplyArea: false
+      }
     },
     computed: {
       currentUserId () {
@@ -163,13 +208,6 @@
       },
       canDelete () {
         return this.isMine || this.currentUserId === this.masterId
-      }
-    },
-    data () {
-      return {
-        deleting: false,
-        liking: false,
-        showReplyArea: false
       }
     },
     methods: {

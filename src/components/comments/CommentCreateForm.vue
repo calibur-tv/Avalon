@@ -60,14 +60,17 @@
       <img :src="$resize(userAvatar, { width: 96 })">
     </div>
     <div class="main-area">
-      <button class="submit-btn" @click="submit">发表<br>评论</button>
+      <button
+        class="submit-btn"
+        @click="submit"
+      >发表<br>评论</button>
       <div class="text-wrap">
-      <textarea
-        placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。"
-        v-model.trim="content"
-        maxlength="1000"
-        @focus="handleTextAreaFocus"
-      ></textarea>
+        <textarea
+          v-model.trim="content"
+          placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。"
+          maxlength="1000"
+          @focus="handleTextAreaFocus"
+        />
       </div>
     </div>
   </div>
@@ -75,7 +78,7 @@
 
 <script>
   export default {
-    name: 'create-comment-form',
+    name: 'CreateCommentForm',
     props: {
       type: {
         type: String,
@@ -84,6 +87,11 @@
       id: {
         type: [Number, String],
         required: true
+      }
+    },
+    data () {
+      return {
+        content: ''
       }
     },
     computed: {
@@ -111,11 +119,6 @@
         return this.isGuest
           ? `${this.$cdn.image}default/user-avatar`
           : this.$store.state.user.avatar
-      }
-    },
-    data () {
-      return {
-        content: ''
       }
     },
     methods: {

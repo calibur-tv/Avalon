@@ -154,9 +154,9 @@
 
 <template>
   <div id="bangumi-timeline">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
-      <aside class="col-aside"></aside>
+      <aside class="col-aside"/>
       <div class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
@@ -165,33 +165,65 @@
         </div>
         <h2 class="sub-title">时间轴</h2>
         <ul
-          class="collections"
           v-infinite-scroll="loadMore"
           infinite-scroll-disabled="notFetch"
           infinite-scroll-distance="50"
+          class="collections"
         >
-          <ul v-for="col in timeline" :key="col.date" class="collection">
-            <h3 class="time" v-text="col.date"></h3>
-            <li class="bangumi" v-for="item in col.list" :key="item.id">
+          <ul
+            v-for="col in timeline"
+            :key="col.date"
+            class="collection"
+          >
+            <h3
+              class="time"
+              v-text="col.date"
+            />
+            <li
+              v-for="item in col.list"
+              :key="item.id"
+              class="bangumi"
+            >
               <figure>
-                <a :href="$alias.bangumi(item.id)" target="_blank">
+                <a
+                  :href="$alias.bangumi(item.id)"
+                  target="_blank"
+                >
                   <v-img
-                    class="face"
                     :title="item.name"
                     :alt="item.name"
-                    :src="$resize(item.avatar, { width: 180 })">
-                  </v-img>
+                    :src="$resize(item.avatar, { width: 180 })"
+                    class="face"
+                  />
                 </a>
                 <figcaption class="content">
                   <p class="head">
-                    <a target="_blank" :href="$alias.bangumi(item.id)" class="name" v-text="item.name"></a>
+                    <a
+                      :href="$alias.bangumi(item.id)"
+                      target="_blank"
+                      class="name"
+                      v-text="item.name"
+                    />
                     <!--<span v-text="item.count_score"></span>-->
                   </p>
-                  <p class="body" v-text="item.summary"></p>
+                  <p
+                    class="body"
+                    v-text="item.summary"
+                  />
                   <div class="foot">
-                    <ul class="icon-item icon-item-tag oneline" v-if="item.tags.length">
-                      <li v-for="tag in item.tags">
-                        <a target="_blank" :href="$alias.bangumiTag(tag.id)" v-text="tag.name"></a>
+                    <ul
+                      v-if="item.tags.length"
+                      class="icon-item icon-item-tag oneline"
+                    >
+                      <li
+                        v-for="tag in item.tags"
+                        :key="tag.id"
+                      >
+                        <a
+                          :href="$alias.bangumiTag(tag.id)"
+                          target="_blank"
+                          v-text="tag.name"
+                        />
                       </li>
                     </ul>
                     <!--<span v-text="item.count_like"></span>-->
@@ -215,17 +247,17 @@
     head: {
       title: '时间轴 - 番剧'
     },
+    data () {
+      return {
+        loading: false
+      }
+    },
     computed: {
       timeline () {
         return this.$store.state.bangumi.timeline.data
       },
       notFetch () {
         return this.loading || this.$store.state.bangumi.timeline.noMore
-      }
-    },
-    data () {
-      return {
-        loading: false
       }
     },
     methods: {

@@ -92,9 +92,9 @@
 
 <template>
   <div id="bangumi-news">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
-      <aside class="col-aside"></aside>
+      <aside class="col-aside"/>
       <div class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
@@ -112,12 +112,19 @@
             <ul v-if="released[index] && released[index].length">
               <li
                 v-for="item in released[index]"
-                class="bangumi"
                 :key="item.id"
+                class="bangumi"
               >
                 <figure class="clearfix">
-                  <a target="_blank" :href="$alias.bangumi(item.id)">
-                    <img class="face" :src="$resize(item.avatar, { width: 180 })" :alt="item.name">
+                  <a
+                    :href="$alias.bangumi(item.id)"
+                    target="_blank"
+                  >
+                    <img
+                      :src="$resize(item.avatar, { width: 180 })"
+                      :alt="item.name"
+                      class="face"
+                    >
                   </a>
                   <figcaption class="abs">
                     <a
@@ -125,7 +132,7 @@
                       class="name href-fade-blue"
                       target="_blank"
                       v-text="item.name"
-                    ></a>
+                    />
                     <span>
                       更新至
                       <a
@@ -133,13 +140,14 @@
                         :class="[item.update ? 'new' : 'old']"
                         :href="$alias.video(item.released_video_id)"
                         target="_blank"
-                        class="part oneline">
+                        class="part oneline"
+                      >
                         {{ item.end ? '已完结' : `${item.released_part}话` }}
                       </a>
                       <strong
-                        class="part oneline"
-                        :class="[item.update ? 'new' : 'old']"
                         v-else
+                        :class="[item.update ? 'new' : 'old']"
+                        class="part oneline"
                       >
                         {{ item.end ? '已完结' : `${item.released_part}话` }}
                       </strong>
@@ -149,7 +157,11 @@
               </li>
             </ul>
             <no-content v-else>
-              <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
+              <el-button
+                type="primary"
+                round
+                @click="openFeedbackForResource"
+              >求资源</el-button>
             </no-content>
           </el-tab-pane>
         </el-tabs>
@@ -162,22 +174,27 @@
   const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
 
   export default {
-    name: 'bangumi-news',
+    name: 'BangumiNews',
     head: {
       title: '新番放送 - 番剧'
     },
     async asyncData ({ store, ctx }) {
       await store.dispatch('bangumi/getReleased', ctx)
     },
+    data () {
+      return {
+        showtime: weeklys,
+        thisWeek: weeklys[new Date().getDay() || 7]
+      }
+    },
     computed: {
       released () {
         return this.$store.state.bangumi.released
       }
     },
-    data () {
-      return {
-        showtime: weeklys,
-        thisWeek: weeklys[new Date().getDay() || 7]
+    mounted () {
+      if (this.$route.query.from === 'search') {
+        this.$toast.info('您搜索的资源未被收录')
       }
     },
     methods: {
@@ -186,11 +203,6 @@
           type: 5,
           desc: '我想看新番：'
         })
-      }
-    },
-    mounted () {
-      if (this.$route.query.from === 'search') {
-        this.$toast.info('您搜索的资源未被收录')
       }
     }
   }

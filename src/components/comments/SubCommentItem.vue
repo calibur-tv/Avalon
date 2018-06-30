@@ -76,27 +76,52 @@
   <div class="sub-comment-item">
     <div class="sub-user">
       <div class="avatar">
-        <a target="_blank" :href="$alias.user(comment.from_user_zone)">
-          <img :src="$resize(comment.from_user_avatar, { width: 50 })" :alt="comment.from_user_name">
+        <a
+          :href="$alias.user(comment.from_user_zone)"
+          target="_blank"
+        >
+          <img
+            :src="$resize(comment.from_user_avatar, { width: 50 })"
+            :alt="comment.from_user_name"
+          >
         </a>
       </div>
     </div>
     <div class="sub-body">
-      <a class="from-user href-fade-blue" target="_blank" :href="$alias.user(comment.from_user_zone)" v-text="comment.from_user_name"></a>
+      <a
+        :href="$alias.user(comment.from_user_zone)"
+        class="from-user href-fade-blue"
+        target="_blank"
+        v-text="comment.from_user_name"
+      />
       <span class="sub-text">
         <template v-if="comment.to_user_id && comment.to_user_id !== parentUserId">
           回复
-          <a class="to-user" target="_blank" :href="$alias.user(comment.to_user_zone)">@{{ comment.to_user_name }}</a>:
+          <a
+            :href="$alias.user(comment.to_user_zone)"
+            class="to-user"
+            target="_blank"
+          >@{{ comment.to_user_name }}</a>:
         </template>
         {{ comment.content }}
       </span>
       <div class="sub-extra">
-        <el-tooltip placement="top" effect="dark" :content="comment.created_at">
-          <v-time v-model="comment.created_at"></v-time>
+        <el-tooltip
+          :content="comment.created_at"
+          placement="top"
+          effect="dark"
+        >
+          <v-time v-model="comment.created_at"/>
         </el-tooltip>
-        <button class="reply-btn" @click="openReplyForm">回复</button>
-        <button v-if="canDelete" @click="deleteComment">
-          <i class="iconfont icon-shanchu"></i>
+        <button
+          class="reply-btn"
+          @click="openReplyForm"
+        >回复</button>
+        <button
+          v-if="canDelete"
+          @click="deleteComment"
+        >
+          <i class="iconfont icon-shanchu"/>
         </button>
       </div>
       <comment-reply-form
@@ -104,7 +129,7 @@
         :type="type"
         :id="comment.parent_id"
         :to-user-id="comment.from_user_id"
-      ></comment-reply-form>
+      />
     </div>
   </div>
 </template>
@@ -113,7 +138,7 @@
   import CommentReplyForm from './CommentReplyForm'
 
   export default {
-    name: 'v-sub-comment-item',
+    name: 'VSubCommentItem',
     components: {
       CommentReplyForm
     },
@@ -126,7 +151,11 @@
         required: true,
         type: Number
       },
-      type: [String]
+      type: {
+        required: true,
+        type: String,
+        default: ''
+      }
     },
     data () {
       return {

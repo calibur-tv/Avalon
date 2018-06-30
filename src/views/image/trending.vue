@@ -1,17 +1,23 @@
 <template>
   <div id="image-trending">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
-      <div class="col-aside"></div>
+      <div class="col-aside"/>
       <div class="col-main">
         <div class="breadcrumb-links">
-          <a :class="{ 'router-link-active': $route.params.sort === 'new' }" :href="$alias.imageTrending('new')">最新</a>
-          <a :class="{ 'router-link-active': $route.params.sort === 'hot' }" :href="$alias.imageTrending('hot')">最热</a>
+          <a
+            :class="{ 'router-link-active': $route.params.sort === 'new' }"
+            :href="$alias.imageTrending('new')"
+          >最新</a>
+          <a
+            :class="{ 'router-link-active': $route.params.sort === 'hot' }"
+            :href="$alias.imageTrending('hot')"
+          >最热</a>
         </div>
         <image-waterfall
           :loading="loading"
           @fetch="getImages"
-        ></image-waterfall>
+        />
       </div>
     </div>
   </div>
@@ -21,7 +27,7 @@
   import ImageWaterfall from '~/components/lists/ImageWaterfall'
 
   export default {
-    name: 'imageTrending',
+    name: 'ImageTrending',
     async asyncData ({ store, route, ctx }) {
       await store.dispatch('image/getTrendingImages', {
         sort: route.params.sort,

@@ -12,13 +12,13 @@
 
 <template>
   <div id="layout-default">
-    <v-header></v-header>
-    <router-view class="main-view"></router-view>
-    <v-footer></v-footer>
-    <v-music></v-music>
-    <image-reader></image-reader>
+    <v-header/>
+    <router-view class="main-view"/>
+    <v-footer/>
+    <v-music/>
+    <image-reader/>
     <no-ssr>
-      <side-tools></side-tools>
+      <side-tools/>
     </no-ssr>
   </div>
 </template>
@@ -32,7 +32,7 @@
   import SideTools from '~/components/layouts/Tools'
 
   export default {
-    name: 'default-layout',
+    name: 'DefaultLayout',
     components: {
       vHeader,
       vFooter,

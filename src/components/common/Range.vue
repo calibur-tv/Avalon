@@ -61,31 +61,39 @@
 </style>
 
 <template>
-  <div class="vue-pwa-range-container"
-       :style="containerStyle"
-       :class="{ 'vue-pwa-range-disabled': disabled }"
-       @touchmove.stop
-       @click.stop>
-    <div class="vue-pwa-range"
-         ref="content">
-      <div class="vue-pwa-range-runway"
-           @click.stop="handleClick">
-      </div>
-      <div class="vue-pwa-range-loading"
-           v-if="loading"
-           @click.stop="handleClick"
-           :style="loadingStyle">
-      </div>
-      <div class="vue-pwa-range-progress"
-           @click.stop="handleClick"
-           :style="progressStyle">
-      </div>
+  <div
+    :style="containerStyle"
+    :class="{ 'vue-pwa-range-disabled': disabled }"
+    class="vue-pwa-range-container"
+    @touchmove.stop
+    @click.stop
+  >
+    <div
+      ref="content"
+      class="vue-pwa-range"
+    >
+      <div
+        class="vue-pwa-range-runway"
+        @click.stop="handleClick"
+      />
+      <div
+        v-if="loading"
+        :style="loadingStyle"
+        class="vue-pwa-range-loading"
+        @click.stop="handleClick"
+      />
+      <div
+        :style="progressStyle"
+        class="vue-pwa-range-progress"
+        @click.stop="handleClick"
+      />
     </div>
-    <div class="vue-pwa-range-thumb"
-         :style="thumbStyle"
-         ref="thumb"
-         @click.stop>
-    </div>
+    <div
+      ref="thumb"
+      :style="thumbStyle"
+      class="vue-pwa-range-thumb"
+      @click.stop
+    />
   </div>
 </template>
 
@@ -93,7 +101,7 @@
   import draggable from '~/assets/js/draggable.js'
 
   export default {
-    name: 'v-range',
+    name: 'VRange',
     props: {
       min: {
         type: Number,
@@ -112,7 +120,8 @@
         default: false
       },
       value: {
-        type: Number
+        type: Number,
+        default: 0
       },
       loading: {
         type: Number,
@@ -131,12 +140,11 @@
         default: false
       }
     },
-    watch: {
-      'value' (val) {
-        this.curRange = val
-      },
-      'curRange' (val) {
-        this.$emit('input', val)
+    data () {
+      return {
+        curRange: this.value,
+        dragState: null,
+        offset: 0
       }
     },
     computed: {
@@ -205,12 +213,34 @@
         return style
       }
     },
-    data () {
-      return {
-        curRange: this.value,
-        dragState: null,
-        offset: 0
+    watch: {
+      'value' (val) {
+        this.curRange = val
+      },
+      'curRange' (val) {
+        this.$emit('input', val)
       }
+    },
+    mounted () {
+      this.getOffset()
+
+      draggable(this.$refs.thumb, {
+        start: () => {
+          if (this.disabled) return
+          this.getThumbPosition()
+        },
+        drag: (event) => {
+          this.handleClick(event)
+        },
+        end: () => {
+          if (this.disabled) return
+          this.dragState = null
+        }
+      })
+
+      window.addEventListener('resize', () => {
+        this.getOffset()
+      })
     },
     methods: {
       progress () {
@@ -278,27 +308,6 @@
           y: thumbBox.top - contentBox.top
         }
       }
-    },
-    mounted () {
-      this.getOffset()
-
-      draggable(this.$refs.thumb, {
-        start: () => {
-          if (this.disabled) return
-          this.getThumbPosition()
-        },
-        drag: (event) => {
-          this.handleClick(event)
-        },
-        end: () => {
-          if (this.disabled) return
-          this.dragState = null
-        }
-      })
-
-      window.addEventListener('resize', () => {
-        this.getOffset()
-      })
     }
   }
 </script>

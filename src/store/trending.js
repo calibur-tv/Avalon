@@ -6,29 +6,29 @@ const state = () => ({
     total: 0,
     noMore: false,
     nothing: false,
-    loading: false
+    loading: false,
   },
   active: {
     list: [],
     total: 0,
     noMore: false,
     nothing: false,
-    loading: false
+    loading: false,
   },
   hot: {
     list: [],
     total: 0,
     noMore: false,
     nothing: false,
-    loading: false
-  }
-})
+    loading: false,
+  },
+});
 
 const mutations = {
-  INIT_TRENDING_TYPE (state, { type }) {
-    state.type = type
+  INIT_TRENDING_TYPE(state, { type }) {
+    state.type = type;
   },
-  RESET_TRENDING_STATE (state, { type }) {
+  RESET_TRENDING_STATE(state, { type }) {
     state = {
       sort: '',
       type: '',
@@ -37,107 +37,108 @@ const mutations = {
         total: 0,
         noMore: false,
         nothing: false,
-        loading: false
+        loading: false,
       },
       active: {
         list: [],
         total: 0,
         noMore: false,
         nothing: false,
-        loading: false
+        loading: false,
       },
       hot: {
         list: [],
         total: 0,
         noMore: false,
         nothing: false,
-        loading: false
-      }
-    }
-    state.type = type
+        loading: false,
+      },
+    };
+    state.type = type;
   },
-  INIT_TRENDING_DATA (state, { data, sort }) {
-    state[sort].list = data.list
-    state[sort].total = data.total
-    state[sort].noMore = data.noMore
-    state[sort].nothing = !data.list.length
-    state[sort].loading = false
+  INIT_TRENDING_DATA(state, { data, sort }) {
+    state[sort].list = data.list;
+    state[sort].total = data.total;
+    state[sort].noMore = data.noMore;
+    state[sort].nothing = !data.list.length;
+    state[sort].loading = false;
   },
-  PUSH_TRENDING_DATA (state, { data, sort }) {
-    const list = state[sort].list.concat(data.list)
-    state[sort].list = list
-    state[sort].total = data.total
-    state[sort].noMore = data.noMore
-    state[sort].nothing = !list.length
-    state[sort].loading = false
+  PUSH_TRENDING_DATA(state, { data, sort }) {
+    const list = state[sort].list.concat(data.list);
+    state[sort].list = list;
+    state[sort].total = data.total;
+    state[sort].noMore = data.noMore;
+    state[sort].nothing = !list.length;
+    state[sort].loading = false;
   },
-  SET_TRENDING_LOADING (state, { sort }) {
-    state[sort].loading = true
+  SET_TRENDING_LOADING(state, { sort }) {
+    state[sort].loading = true;
   },
-  CLEAR_TRENDING_SORT (state, { sort }) {
+  CLEAR_TRENDING_SORT(state, { sort }) {
     state[sort] = {
       list: [],
       total: 0,
       noMore: false,
       nothing: false,
-      loading: true
-    }
-  }
-}
+      loading: true,
+    };
+  },
+};
 
 const actions = {
-  async getTrending ({ state, commit }, { api, type, sort, useCache = true }) {
+  async getTrending({ state, commit }, {
+    api, type, sort, useCache = true,
+  }) {
     if (!state.type) {
-      commit('INIT_TRENDING_TYPE', { type })
+      commit('INIT_TRENDING_TYPE', { type });
     } else if (state.type !== type) {
-      commit('RESET_TRENDING_STATE', { type })
+      commit('RESET_TRENDING_STATE', { type });
     }
     if (state[sort].list.length) {
       if (useCache) {
-        return
-      } else {
-        commit('CLEAR_TRENDING_SORT', { sort })
+        return;
       }
+      commit('CLEAR_TRENDING_SORT', { sort });
     }
     if (state[sort].loading) {
-      return
+      return;
     }
-    commit('SET_TRENDING_LOADING', { sort })
+    commit('SET_TRENDING_LOADING', { sort });
     const data = await api[sort]({
       seenIds: '',
-      minId: 0
-    })
-    commit('INIT_TRENDING_DATA', { data, sort })
+      minId: 0,
+    });
+    commit('INIT_TRENDING_DATA', { data, sort });
   },
-  async loadMore ({ state, commit }, { api, sort, type }) {
+  async loadMore({ state, commit }, { api, sort, type }) {
     if (!state.type || state.type !== type) {
-      return
+      return;
     }
     if (state[sort].noMore || state[sort].loading) {
-      return
+      return;
     }
-    commit('SET_TRENDING_LOADING', { sort })
-    let data
-    const list = state[sort].list
+    commit('SET_TRENDING_LOADING', { sort });
+    let data;
+    const list = state[sort].list;
     if (sort === 'news') {
       data = await api.news({
-        minId: list.length ? list[list.length - 1].id : 0
-      })
+        minId: list.length ? list[list.length - 1].id : 0,
+      });
     } else {
       data = await api[sort]({
-        seenIds: list.length ? list.map(_ => _.id).toString() : ''
-      })
+        seenIds: list.length ? list.map(_ => _.id).toString() : '',
+      });
     }
-    commit('PUSH_TRENDING_DATA', { data, sort })
-  }
-}
+    commit('PUSH_TRENDING_DATA', { data, sort });
+  },
+};
 
-const getters = {}
+const getters = {};
 
 export default {
   namespaced: true,
   state,
   actions,
   mutations,
-  getters
-}
+  getters,
+};

@@ -31,11 +31,11 @@
       accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
       canvas-color="rgba(0, 0, 0, .05)"
       @init="onInit"
-    ></croppa>
-    <div class="tools"></div>
+    />
+    <div class="tools"/>
     <el-button
-      class="submit-btn"
       :loading="uploading"
+      class="submit-btn"
       type="primary"
       size="small"
       round
@@ -49,7 +49,7 @@
   import 'vue-croppa/dist/vue-croppa.css'
 
   export default {
-    name: 'image-cropper',
+    name: 'ImageCropper',
     components: {
       'croppa': Croppa.component
     },
@@ -75,7 +75,8 @@
         default: 0
       },
       initImage: {
-        type: String
+        type: String,
+        default: ''
       },
       type: {
         type: String,

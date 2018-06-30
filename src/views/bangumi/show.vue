@@ -432,30 +432,51 @@
 <template>
   <div id="bangumi-show">
     <section id="banner">
-      <div class="img bg" :style="{ backgroundImage: info ? `url(${$resize(info.banner, { width: 1920, mode: 0 })})` : '' }"></div>
+      <div
+        :style="{ backgroundImage: info ? `url(${$resize(info.banner, { width: 1920, mode: 0 })})` : '' }"
+        class="img bg"
+      />
       <div class="info">
-        <h1 class="title" v-text="info.name"></h1>
-        <p class="summary" v-text="info.summary"></p>
+        <h1
+          class="title"
+          v-text="info.name"
+        />
+        <p
+          class="summary"
+          v-text="info.summary"
+        />
         <div class="console">
           <button
+            :class="[ info.followed ? 'is-followed' : 'not-follow' ]"
             class="follow"
             @click="follow"
-            :class="[ info.followed ? 'is-followed' : 'not-follow' ]"
           >
-            <i class="iconfont icon-guanzhu"></i>
+            <i class="iconfont icon-guanzhu"/>
             {{ info.followed ? '已关注' : '关注' }}
           </button>
         </div>
       </div>
-      <v-share type="panel"></v-share>
+      <v-share type="panel"/>
     </section>
     <div class="container">
       <aside class="col-aside">
-        <div id="tags" v-if="tags.length">
+        <div
+          v-if="tags.length"
+          id="tags"
+        >
           <h2 class="sub-title">标签</h2>
           <ul class="tags-wrap">
-            <li class="tag" v-for="tag in tags" :key="tag.id">
-              <a :href="$alias.bangumiTag(tag.id)" class="tag-btn" v-text="tag.name" target="_blank"></a>
+            <li
+              v-for="tag in tags"
+              :key="tag.id"
+              class="tag"
+            >
+              <a
+                :href="$alias.bangumiTag(tag.id)"
+                class="tag-btn"
+                target="_blank"
+                v-text="tag.name"
+              />
             </li>
           </ul>
         </div>
@@ -463,21 +484,33 @@
           <h2 class="sub-title">关注的人{{ info.count_like ? `（${info.count_like}）` : '' }}</h2>
           <template v-if="info.count_like">
             <ul>
-              <li class="follower" v-for="user in displayFollowers" :key="user.zone">
-                <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
-                  <a :href="$alias.user(user.zone)" target="_blank">
+              <li
+                v-for="user in displayFollowers"
+                :key="user.zone"
+                class="follower"
+              >
+                <el-tooltip
+                  :content="user.nickname"
+                  class="item"
+                  effect="dark"
+                  placement="top"
+                >
+                  <a
+                    :href="$alias.user(user.zone)"
+                    target="_blank"
+                  >
                     <v-img
                       :src="$resize(user.avatar, { width: 64, height: 64 })"
                       :alt="user.zone"
-                    ></v-img>
+                    />
                   </a>
                 </el-tooltip>
               </li>
               <button
                 v-if="info.count_like > 7"
-                @click="openFollowersModal = true"
                 class="followers-more-btn el-icon-more"
-              ></button>
+                @click="openFollowersModal = true"
+              />
             </ul>
             <v-dialog
               v-model="openFollowersModal"
@@ -488,16 +521,35 @@
               :scroll="fetchMoreFollowers"
               class="likes-modal"
             >
-              <li v-for="user in followers" :key="user.id">
-                <a class="user" :href="$alias.user(user.zone)" target="_blank">
-                  <img class="avatar" :src="$resize(user.avatar, { width: 120 })">
-                  <span class="nickname" v-text="user.nickname"></span>
-                  <v-time class="score" v-model="user.created_at"></v-time>
+              <li
+                v-for="user in followers"
+                :key="user.id"
+              >
+                <a
+                  :href="$alias.user(user.zone)"
+                  class="user"
+                  target="_blank"
+                >
+                  <img
+                    :src="$resize(user.avatar, { width: 120 })"
+                    class="avatar"
+                  >
+                  <span
+                    class="nickname"
+                    v-text="user.nickname"
+                  />
+                  <v-time
+                    v-model="user.created_at"
+                    class="score"
+                  />
                 </a>
               </li>
             </v-dialog>
           </template>
-          <span class="no-one" v-else>还没有人关注</span>
+          <span
+            v-else
+            class="no-one"
+          >还没有人关注</span>
         </div>
       </aside>
       <div class="col-main">
@@ -508,57 +560,90 @@
                 v-for="item in posts.data"
                 :key="item.id"
                 :item="item"
-              ></post-show-item>
+              />
             </ul>
             <el-button
-              :loading="postState.loading"
               v-if="!posts.noMore"
+              :loading="postState.loading"
               class="load-more-btn"
-              @click="getPosts"
               type="info"
               plain
+              @click="getPosts"
             >{{ postState.loading ? '加载中' : '加载更多' }}</el-button>
             <no-content v-if="posts.noMore && !posts.total">
-              <el-button @click="openCreatePostModal" type="primary" round>发表《{{ info.name }}》的第一个帖子</el-button>
+              <el-button
+                type="primary"
+                round
+                @click="openCreatePostModal"
+              >发表《{{ info.name }}》的第一个帖子</el-button>
             </no-content>
           </el-tab-pane>
-          <el-tab-pane label="视频" v-if="info.has_video">
-            <section id="videos" v-if="videos.list.length">
+          <el-tab-pane
+            v-if="info.has_video"
+            label="视频"
+          >
+            <section
+              v-if="videos.list.length"
+              id="videos"
+            >
               <div v-if="videos.has_season">
-                <template v-for="season in videos.list">
-                  <h3 class="celltitle" v-text="season.name" :key="season.name"></h3>
-                  <ul :key="season.name">
-                    <li v-for="video in season.data" :key="video.id">
-                      <a :href="$alias.video(video.id)"
-                         target="_blank">
+                <div
+                  v-for="season in videos.list"
+                  :key="season.name"
+                >
+                  <h3
+                    class="celltitle"
+                    v-text="season.name"
+                  />
+                  <ul>
+                    <li
+                      v-for="video in season.data"
+                      :key="video.id"
+                    >
+                      <a
+                        :href="$alias.video(video.id)"
+                        target="_blank"
+                      >
                         <figure>
                           <v-img
-                            class="bg"
                             :alt="video.name"
                             :src="$resize(video.poster, { width: 192, height: 120 })"
-                          ></v-img>
+                            class="bg"
+                          />
                           <figcaption class="abs">
                             <p class="part oneline">第{{ video.part - season.base }}话</p>
-                            <span class="name" v-text="video.name"></span>
+                            <span
+                              class="name"
+                              v-text="video.name"
+                            />
                           </figcaption>
                         </figure>
                       </a>
                     </li>
                   </ul>
-                </template>
+                </div>
               </div>
               <ul v-else>
-                <li v-for="video in videos.list" :key="video.id">
-                  <a :href="$alias.video(video.id)" target="_blank">
+                <li
+                  v-for="video in videos.list"
+                  :key="video.id"
+                >
+                  <a
+                    :href="$alias.video(video.id)"
+                    target="_blank"
+                  >
                     <figure>
                       <v-img
-                        class="bg"
                         :alt="video.name"
                         :src="$resize(video.poster, { width: 192, height: 120 })"
-                      ></v-img>
+                        class="bg"
+                      />
                       <figcaption class="abs">
                         <p class="part oneline">第{{ video.part }}话</p>
-                        <span class="name" v-text="video.name"></span>
+                        <span
+                          class="name"
+                          v-text="video.name"
+                        />
                       </figcaption>
                     </figure>
                   </a>
@@ -566,129 +651,230 @@
               </ul>
             </section>
             <no-content v-else-if="videos.fetched">
-              <el-button @click="openFeedbackForResource" type="primary" round>求资源</el-button>
+              <el-button
+                type="primary"
+                round
+                @click="openFeedbackForResource"
+              >求资源</el-button>
             </no-content>
           </el-tab-pane>
-          <el-tab-pane label="漫画" v-if="info.has_cartoon">
+          <el-tab-pane
+            v-if="info.has_cartoon"
+            label="漫画"
+          >
             <div id="cartoons">
-              <ul class="clearfix" v-if="cartoonInfo.list.length">
+              <ul
+                v-if="cartoonInfo.list.length"
+                class="clearfix"
+              >
                 <li
                   v-for="item in cartoonInfo.list"
                   :key="item.id"
                 >
-                  <a class="poster-wrap" :href="$alias.imageAlbum(item.id)" target="_blank">
+                  <a
+                    :href="$alias.imageAlbum(item.id)"
+                    class="poster-wrap"
+                    target="_blank"
+                  >
                     <img :src="$resize(item.url, { width: 400, height: 600 })">
                     <div class="info">
-                      <i class="el-icon-picture-outline"></i>
-                      <span class="image-count" v-text="item.image_count"></span>
+                      <i class="el-icon-picture-outline"/>
+                      <span
+                        class="image-count"
+                        v-text="item.image_count"
+                      />
                     </div>
                   </a>
                   <div class="desc">
-                    <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeCartoon($event, item)">
-                      <i class="iconfont icon-guanzhu"></i>
-                      {{ item.like_count || ''  }}
+                    <button
+                      :class="{ 'liked': item.liked }"
+                      class="like"
+                      @click="handleLikeCartoon($event, item)"
+                    >
+                      <i class="iconfont icon-guanzhu"/>
+                      {{ item.like_count || '' }}
                     </button>
-                    <a class="oneline" :href="$alias.imageAlbum(item.id)" target="_blank" v-text="item.name"></a>
+                    <a
+                      :href="$alias.imageAlbum(item.id)"
+                      class="oneline"
+                      target="_blank"
+                      v-text="item.name"
+                    />
                   </div>
-                  <a class="user" :href="$alias.user(item.user.zone)" target="_blank">
+                  <a
+                    :href="$alias.user(item.user.zone)"
+                    class="user"
+                    target="_blank"
+                  >
                     <img :src="$resize(item.user.avatar, { width: 72 })">
-                    <div class="oneline" v-text="item.user.nickname"></div>
+                    <div
+                      class="oneline"
+                      v-text="item.user.nickname"
+                    />
                   </a>
                 </li>
               </ul>
               <no-content v-else-if="cartoonInfo.noMore">
-                <el-button @click="openFeedbackForCartoon" type="primary" round>求漫画</el-button>
+                <el-button
+                  type="primary"
+                  round
+                  @click="openFeedbackForCartoon"
+                >求漫画</el-button>
               </no-content>
               <el-button
-                :loading="cartoonInfo.loading"
                 v-if="!cartoonInfo.noMore"
+                :loading="cartoonInfo.loading"
                 class="load-more-btn"
-                @click="getCartoons(false)"
                 type="info"
                 plain
+                @click="getCartoons(false)"
               >{{ cartoonInfo.loading ? '加载中' : '加载更多' }}</el-button>
             </div>
           </el-tab-pane>
           <el-tab-pane label="偶像">
             <div id="roles">
               <ul>
-                <li class="role" v-for="item in roles.data" :key="item.id">
+                <li
+                  v-for="item in roles.data"
+                  :key="item.id"
+                  class="role"
+                >
                   <div class="clearfix">
-                    <a class="avatar" target="_blank" :href="$alias.cartoonRole(item.id)">
-                      <v-img :src="item.avatar" width="90" height="90"></v-img>
+                    <a
+                      :href="$alias.cartoonRole(item.id)"
+                      class="avatar"
+                      target="_blank"
+                    >
+                      <v-img
+                        :src="item.avatar"
+                        width="90"
+                        height="90"
+                      />
                     </a>
                     <div class="summary">
-                      <a target="_blank" :href="$alias.cartoonRole(item.id)" class="info">
-                        <span class="name" v-text="item.name"></span>
+                      <a
+                        :href="$alias.cartoonRole(item.id)"
+                        target="_blank"
+                        class="info"
+                      >
+                        <span
+                          class="name"
+                          v-text="item.name"
+                        />
                         <span class="intro">：{{ item.intro }}</span>
                       </a>
                       <el-button
-                        @click="handleStarRole(item)"
                         type="warning"
                         class="star"
                         size="mini"
-                        plain>为TA应援</el-button>
+                        plain
+                        @click="handleStarRole(item)"
+                      >为TA应援</el-button>
                     </div>
                   </div>
-                  <div class="footer" v-if="item.fans_count">
-                  <span>
-                    粉丝:
-                    {{ $utils.shortenNumber(item.fans_count) }}
-                  </span>
+                  <div
+                    v-if="item.fans_count"
+                    class="footer"
+                  >
+                    <span>
+                      粉丝:
+                      {{ $utils.shortenNumber(item.fans_count) }}
+                    </span>
                     ·
                     <span>
-                    金币:
-                    {{ $utils.shortenNumber(item.star_count) }}
-                  </span>
+                      金币:
+                      {{ $utils.shortenNumber(item.star_count) }}
+                    </span>
                     ·
                     <span v-if="item.lover">
-                    守护者:
-                    <a target="_blank" :href="$alias.user(item.lover.zone)">
-                      {{ item.lover.nickname }}
-                      <v-img :src="item.lover.avatar" width="20" height="20"></v-img>
-                    </a>
-                  </span>
+                      守护者:
+                      <a
+                        :href="$alias.user(item.lover.zone)"
+                        target="_blank"
+                      >
+                        {{ item.lover.nickname }}
+                        <v-img
+                          :src="item.lover.avatar"
+                          width="20"
+                          height="20"
+                        />
+                      </a>
+                    </span>
                     ·
-                    <span class="load-list" @click="showRoleDetail(item, 'new')">最新应援</span>
+                    <span
+                      class="load-list"
+                      @click="showRoleDetail(item, 'new')"
+                    >最新应援</span>
                     ·
-                    <span class="load-list" @click="showRoleDetail(item, 'hot')">最多应援</span>
+                    <span
+                      class="load-list"
+                      @click="showRoleDetail(item, 'hot')"
+                    >最多应援</span>
                   </div>
                 </li>
               </ul>
               <el-button
-                :loading="rolesState.loading"
                 v-if="!roles.noMore"
+                :loading="rolesState.loading"
                 class="load-more-btn"
-                @click="getRoles"
                 type="info"
                 plain
+                @click="getRoles"
               >{{ rolesState.loading ? '加载中' : '加载更多' }}</el-button>
               <template v-if="roles.noMore">
-                <div v-if="roles.data.length" class="load-more-roles">
-                  <el-button @click="openFeedbackForRole" type="primary" round>没有你喜欢的角色？</el-button>
+                <div
+                  v-if="roles.data.length"
+                  class="load-more-roles"
+                >
+                  <el-button
+                    type="primary"
+                    round
+                    @click="openFeedbackForRole"
+                  >没有你喜欢的角色？</el-button>
                 </div>
                 <no-content v-else>
-                  <el-button @click="openFeedbackForRole" type="primary" round>求偶像</el-button>
+                  <el-button
+                    type="primary"
+                    round
+                    @click="openFeedbackForRole"
+                  >求偶像</el-button>
                 </no-content>
               </template>
               <v-dialog
-                class="likes-modal"
                 v-model="openRolesModal"
                 :title="`${currentRole.name} · 应援团`"
                 :footer="false"
                 :loading="loadingRoleFans"
                 :no-more="currentRoleFans.noMore"
                 :scroll="fetchCurrentRoleFans"
+                class="likes-modal"
               >
                 <li
                   v-for="item in currentRoleFans.data"
                   :key="item.id"
                 >
-                  <a class="user" target="_blank" :href="$alias.user(item.zone)">
-                    <img class="avatar" :src="$resize(item.avatar, { width: 80 })">
-                    <span class="nickname" v-text="item.nickname"></span>
-                    <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
-                    <span class="score" v-else>{{ item.score }}个金币</span>
+                  <a
+                    :href="$alias.user(item.zone)"
+                    class="user"
+                    target="_blank"
+                  >
+                    <img
+                      :src="$resize(item.avatar, { width: 80 })"
+                      class="avatar"
+                    >
+                    <span
+                      class="nickname"
+                      v-text="item.nickname"
+                    />
+                    <v-time
+                      v-if="focusRoleSort === 'new'"
+                      v-model="item.score"
+                      class="score"
+                    />
+                    <span
+                      v-else
+                      class="score"
+                    >{{ item.score }}个金币</span>
                   </a>
                 </li>
               </v-dialog>
@@ -699,7 +885,7 @@
               :loading="imagesState.loading"
               :role="roles.data"
               @fetch="getImages(false)"
-            ></image-waterfall>
+            />
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -713,7 +899,7 @@
   import ImageApi from '~/api/imageApi'
 
   export default {
-    name: 'bangumi-show',
+    name: 'BangumiShow',
     async asyncData ({ route, store, ctx }) {
       const id = route.params.id
       await Promise.all([
@@ -741,6 +927,38 @@
           { hid: 'description', name: 'description', content: this.info.summary },
           { hid: 'keywords', name: 'keywords', content: keywords }
         ]
+      }
+    },
+    data () {
+      return {
+        postState: {
+          loading: false,
+          init: true
+        },
+        videoState: {
+          loading: false,
+          init: false
+        },
+        cartoonState: {
+          loading: false,
+          init: false
+        },
+        rolesState: {
+          loading: false,
+          init: false
+        },
+        imagesState: {
+          loading: false,
+          init: false
+        },
+        openRolesModal: false,
+        loadingRoleFans: false,
+        focusRoleSort: 'new',
+        currentRole: {},
+        loadingFollow: false,
+        openFollowersModal: false,
+        loadingFollowers: false,
+        fetchFollowersCount: 10
       }
     },
     computed: {
@@ -781,37 +999,17 @@
         return this.info.noMoreFollowers
       }
     },
-    data () {
-      return {
-        postState: {
-          loading: false,
-          init: true
-        },
-        videoState: {
-          loading: false,
-          init: false
-        },
-        cartoonState: {
-          loading: false,
-          init: false
-        },
-        rolesState: {
-          loading: false,
-          init: false
-        },
-        imagesState: {
-          loading: false,
-          init: false
-        },
-        openRolesModal: false,
-        loadingRoleFans: false,
-        focusRoleSort: 'new',
-        currentRole: {},
-        loadingFollow: false,
-        openFollowersModal: false,
-        loadingFollowers: false,
-        fetchFollowersCount: 10
-      }
+    mounted () {
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.info.id,
+          name: this.info.name,
+          avatar: this.info.avatar
+        })
+      })
+      setTimeout(() => {
+        document.getElementById('tab-1').click()
+      }, 1000)
     },
     methods: {
       async follow () {
@@ -1076,18 +1274,6 @@
           btn.removeAttribute('disabled')
         }
       }
-    },
-    mounted () {
-      this.$channel.$on('get-page-bangumi-for-post-create', () => {
-        this.$channel.$emit('set-page-bangumi-for-post-create', {
-          id: this.info.id,
-          name: this.info.name,
-          avatar: this.info.avatar
-        })
-      })
-      setTimeout(() => {
-        document.getElementById('tab-1').click()
-      }, 1000)
     }
   }
 </script>

@@ -112,36 +112,60 @@
       top="0"
     >
       <div class="v-dialog-container">
-        <div v-if="header" slot="header" class="v-dialog-header">
-          <h4 class="v-dialog-title" v-text="title"></h4>
+        <div
+          v-if="header"
+          slot="header"
+          class="v-dialog-header"
+        >
+          <h4
+            class="v-dialog-title"
+            v-text="title"
+          />
         </div>
-        <button class="v-dialog-close-btn" @click="cancel" v-if="close">&times;</button>
-        <main class="v-dialog-content" :style="computeDialogHeight" @scroll="handleScroll">
+        <button
+          v-if="close"
+          class="v-dialog-close-btn"
+          @click="cancel"
+        >&times;</button>
+        <main
+          :style="computeDialogHeight"
+          class="v-dialog-content"
+          @scroll="handleScroll"
+        >
           <template v-if="scroll">
             <ul ref="ul">
-              <slot></slot>
+              <slot/>
             </ul>
-            <p class="list-loading" v-if="loading">加载中...</p>
-            <p class="list-no-more" v-else-if="noMore">没有更多了</p>
+            <p
+              v-if="loading"
+              class="list-loading"
+            >加载中...</p>
+            <p
+              v-else-if="noMore"
+              class="list-no-more"
+            >没有更多了</p>
           </template>
-          <slot v-else></slot>
+          <slot v-else/>
         </main>
-        <div v-if="footer" class="v-dialog-footer">
+        <div
+          v-if="footer"
+          class="v-dialog-footer"
+        >
           <slot name="footer">
             <button
-              @click="cancel"
-              class="v-dialog-cancel-btn"
               v-if="cancelText"
+              class="v-dialog-cancel-btn"
+              @click="cancel"
               v-text="cancelText"
-            ></button>
+            />
             <el-button
+              :loading="loading"
               type="primary"
               size="small"
-              @click="submit"
               class="v-dialog-submit-btn"
+              @click="submit"
               v-text="submitText"
-              :loading="loading"
-            ></el-button>
+            />
           </slot>
         </div>
       </div>
@@ -151,7 +175,7 @@
 
 <script>
   export default {
-    name: 'v-dialog',
+    name: 'VDialog',
     props: {
       value: {
         type: Boolean,
@@ -233,6 +257,19 @@
         }
       }
     },
+    mounted () {
+      this.$watch('value', (val) => {
+        this.dialogVisible = val
+      })
+      this.$watch('dialogVisible', (val) => {
+        this.$emit('input', val)
+        if (val) {
+          document.getElementById('app').classList.add('v-dialog-mask')
+        } else {
+          document.getElementById('app').classList.remove('v-dialog-mask')
+        }
+      })
+    },
     methods: {
       beforeClose (done) {
         done()
@@ -259,19 +296,6 @@
           this.scroll()
         }
       }
-    },
-    mounted () {
-      this.$watch('value', (val) => {
-        this.dialogVisible = val
-      })
-      this.$watch('dialogVisible', (val) => {
-        this.$emit('input', val)
-        if (val) {
-          document.getElementById('app').classList.add('v-dialog-mask')
-        } else {
-          document.getElementById('app').classList.remove('v-dialog-mask')
-        }
-      })
     }
   }
 </script>

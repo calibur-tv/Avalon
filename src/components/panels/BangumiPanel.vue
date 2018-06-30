@@ -50,28 +50,34 @@
       :href="$alias.bangumi(id)"
       target="_blank"
     >
-      <v-img :src="$resize(avatar, { width: 180 })"></v-img>
+      <v-img
+        :src="$resize(avatar, { width: 180 })"
+      />
     </a>
-    <a :class="$style.name"
-       target="_blank"
-       :href="$alias.bangumi(id)"
-       v-text="name"
-    ></a>
-    <p :class="$style.summary" v-text="summary"></p>
+    <a
+      :class="$style.name"
+      :href="$alias.bangumi(id)"
+      target="_blank"
+      v-text="name"
+    />
+    <p
+      :class="$style.summary"
+      v-text="summary"
+    />
     <el-button
-      type="danger"
-      size="mini"
-      @click="handleFollow"
       v-if="followed"
       :loading="loadingFollow"
+      type="danger"
+      size="mini"
       plain
+      @click="handleFollow"
     >已关注</el-button>
     <el-button
+      v-else
+      :loading="loadingFollow"
       type="danger"
       size="mini"
       @click="handleFollow"
-      :loading="loadingFollow"
-      v-else
     >关注</el-button>
   </div>
 </template>
@@ -80,7 +86,7 @@
   import Api from '~/api/bangumiApi'
 
   export default {
-    name: 'v-bangumi-panel',
+    name: 'VBangumiPanel',
     props: {
       id: {
         required: true,

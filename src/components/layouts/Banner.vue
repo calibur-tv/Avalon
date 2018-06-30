@@ -8,12 +8,16 @@
 </style>
 
 <template>
-  <div id="banner" class="bg" :style="{ 'backgroundImage': `url(${bg})` }"></div>
+  <div
+    id="banner"
+    :style="{ 'backgroundImage': `url(${bg})` }"
+    class="bg"
+  />
 </template>
 
 <script>
   export default {
-    name: 'v-banner',
+    name: 'VBanner',
     computed: {
       bg () {
         return this.$resize(this.$store.state.banner, { width: 1920, mode: 0 })

@@ -253,160 +253,269 @@
 </style>
 
 <template>
-  <div id="image-waterfall" v-if="list.length">
-    <div class="header" v-if="showSortHeader">
+  <div
+    v-if="list.length"
+    id="image-waterfall"
+  >
+    <div
+      v-if="showSortHeader"
+      class="header"
+    >
       <span class="select-title">图片筛选</span>
       <el-select
         v-model="selectedSizeId"
+        :disabled="loading"
         size="mini"
         placeholder="尺寸筛选"
-        :disabled="loading"
         @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in selectionSize"
           :key="item.id"
           :label="item.name"
-          :value="item.id">
-        </el-option>
+          :value="item.id"
+        />
       </el-select>
       <el-select
         v-model="selectedTagsId"
+        :disabled="loading"
         size="mini"
         placeholder="标签筛选"
-        :disabled="loading"
         @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in selectionTags"
           :key="item.id"
           :label="item.name"
-          :value="item.id">
-        </el-option>
+          :value="item.id"
+        />
       </el-select>
       <el-select
+        v-if="selectionBangumis.length"
         v-model="selectedBangumiId"
+        :disabled="loading"
         size="mini"
         placeholder="番剧筛选"
         filterable
-        :disabled="loading"
         @change="handleLoadMoreClick(true)"
-        v-if="selectionBangumis.length"
       >
         <el-option
           v-for="item in selectionBangumis"
           :key="item.id"
           :label="item.name"
-          :value="item.id">
-        </el-option>
+          :value="item.id"
+        />
       </el-select>
       <el-select
+        v-if="selectionRoles.length"
         v-model="selectedRoleId"
+        :disabled="loading"
         size="mini"
         placeholder="角色筛选"
         filterable
-        :disabled="loading"
         @change="handleLoadMoreClick(true)"
-        v-if="selectionRoles.length"
       >
         <el-option
           v-for="item in selectionRoles"
           :key="item.id"
           :label="item.name"
-          :value="item.id">
-        </el-option>
+          :value="item.id"
+        />
       </el-select>
       <el-select
         v-model="selectedCreatorId"
+        :disabled="loading"
         size="mini"
         placeholder="原创分类"
-        :disabled="loading"
         @change="handleLoadMoreClick(true)"
       >
         <el-option
           v-for="item in creators"
           :key="item.id"
           :label="item.name"
-          :value="item.id">
-        </el-option>
+          :value="item.id"
+        />
       </el-select>
     </div>
     <no-ssr>
-      <waterfall class="image-container" :line-gap="212" :auto-resize="false">
+      <waterfall
+        :line-gap="212"
+        :auto-resize="false"
+        class="image-container"
+      >
         <waterfall-slot
           v-for="(item, index) in list"
-          width="200"
           :height="computeBoxHeight(item)"
           :order="index"
           :key="item.id"
+          width="200"
           class="image-item"
         >
           <div class="image">
-            <div class="item-wrap" :class="[ item.image_count ? 'album-wrap' : 'image-wrap' ]" @click="handleImageClick(item, index)">
-              <i v-if="item.creator" class="creator iconfont icon-huangguan"></i>
-              <div v-if="computeOptions(item).length" class="menu" @click.stop.prevent>
+            <div
+              :class="[ item.image_count ? 'album-wrap' : 'image-wrap' ]"
+              class="item-wrap"
+              @click="handleImageClick(item, index)"
+            >
+              <i
+                v-if="item.creator"
+                class="creator iconfont icon-huangguan"
+              />
+              <div
+                v-if="computeOptions(item).length"
+                class="menu"
+                @click.stop.prevent
+              >
                 <v-select
-                  placeholder=""
                   :options="computeOptions(item)"
                   :abort="true"
+                  placeholder=""
                   @submit="handleMenuSelected($event, item)"
                 >
-                  <i class="iconfont icon-101" slot="tail"></i>
+                  <i
+                    slot="tail"
+                    class="iconfont icon-101"
+                  />
                 </v-select>
               </div>
-              <img width="200" :height="computeImageHeight(item)" :src="$resize(item.url, { width: 400, mode: 2 })">
-              <div class="album-info" v-if="item.image_count">
-                <i class="el-icon-picture-outline"></i>
-                <span class="image-count" v-text="item.image_count"></span>
+              <img
+                :height="computeImageHeight(item)"
+                :src="$resize(item.url, { width: 400, mode: 2 })"
+                width="200"
+              >
+              <div
+                v-if="item.image_count"
+                class="album-info"
+              >
+                <i class="el-icon-picture-outline"/>
+                <span
+                  class="image-count"
+                  v-text="item.image_count"
+                />
               </div>
             </div>
             <div class="desc">
               <a
+                v-if="item.image_count"
                 class="name oneline"
                 href="javascript:;"
                 target="_blank"
                 v-text="item.name"
-                v-if="item.image_count"
-              ></a>
-              <div class="tags" v-else>
-                <button class="tag-btn oneline" v-text="item.size.name"></button>
-                <button class="tag-btn oneline" v-for="tag in item.tags" v-text="tag.name"></button>
+              />
+              <div
+                v-else
+                class="tags"
+              >
+                <button
+                  class="tag-btn oneline"
+                  v-text="item.size.name"
+                />
+                <button
+                  v-for="(tag, index) in item.tags"
+                  :key="index"
+                  class="tag-btn oneline"
+                  v-text="tag.name"
+                />
               </div>
               <div class="meta">
-                <button class="like" :class="{ 'liked': item.liked }" @click="handleLikeBtnClick($event, item)">
-                  <i class="iconfont icon-guanzhu"></i>
-                  {{ item.like_count || ''  }}
+                <button
+                  :class="{ 'liked': item.liked }"
+                  class="like"
+                  @click="handleLikeBtnClick($event, item)"
+                >
+                  <i class="iconfont icon-guanzhu"/>
+                  {{ item.like_count || '' }}
                 </button>
               </div>
             </div>
-            <div class="detail user clearfix" v-if="page === 'image-trending'">
-              <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
+            <div
+              v-if="page === 'image-trending'"
+              class="detail user clearfix"
+            >
+              <a
+                :href="$alias.user(item.user.zone)"
+                class="avatar"
+                target="_blank"
+              >
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
               <div class="info">
-                <a class="oneline" :class="{ 'margin-top': !item.bangumi }" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-                <a class="oneline" v-if="item.bangumi_id" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
+                <a
+                  :class="{ 'margin-top': !item.bangumi }"
+                  :href="$alias.user(item.user.zone)"
+                  target="_blank"
+                  class="oneline"
+                  v-text="item.user.nickname"
+                />
+                <a
+                  v-if="item.bangumi_id"
+                  :href="$alias.bangumi(item.bangumi.id)"
+                  target="_blank"
+                  class="oneline"
+                  v-text="item.bangumi.name"
+                />
               </div>
             </div>
             <template v-else-if="page === 'user-show'">
-              <div class="detail bangumi clearfix" v-if="item.bangumi_id">
-                <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
+              <div
+                v-if="item.bangumi_id"
+                class="detail bangumi clearfix"
+              >
+                <a
+                  :href="$alias.bangumi(item.bangumi.id)"
+                  class="avatar"
+                  target="_blank"
+                >
                   <img :src="$resize(item.bangumi.avatar, { width: 72 })">
                 </a>
-                <div class="info" :class="{ 'margin-top': !item.role_id }">
-                  <a class="oneline" :href="$alias.bangumi(item.bangumi.id)" target="_blank" v-text="item.bangumi.name"></a>
-                  <div v-if="item.role" class="oneline" v-text="item.role.name"></div>
+                <div
+                  :class="{ 'margin-top': !item.role_id }"
+                  class="info"
+                >
+                  <a
+                    :href="$alias.bangumi(item.bangumi.id)"
+                    class="oneline"
+                    target="_blank"
+                    v-text="item.bangumi.name"
+                  />
+                  <div
+                    v-if="item.role"
+                    class="oneline"
+                    v-text="item.role.name"
+                  />
                 </div>
               </div>
             </template>
-            <div class="detail user clearfix" v-else-if="page === 'bangumi-show'">
-              <a class="avatar" :href="$alias.user(item.user.zone)" target="_blank">
+            <div
+              v-else-if="page === 'bangumi-show'"
+              class="detail user clearfix"
+            >
+              <a
+                :href="$alias.user(item.user.zone)"
+                class="avatar"
+                target="_blank"
+              >
                 <img :src="$resize(item.user.avatar, { width: 72 })">
               </a>
-              <div class="info" :class="{ 'margin-top': !item.role_id }">
-                <a class="oneline" :href="$alias.user(item.user.zone)" target="_blank" v-text="item.user.nickname"></a>
-                <a v-if="item.role_id" :href="$alias.cartoonRole(item.role_id)" target="_blank">
-                  <div class="oneline" v-text="item.role.name"></div>
+              <div
+                :class="{ 'margin-top': !item.role_id }"
+                class="info"
+              >
+                <a
+                  :href="$alias.user(item.user.zone)"
+                  class="oneline"
+                  target="_blank"
+                  v-text="item.user.nickname"
+                />
+                <a
+                  v-if="item.role_id"
+                  :href="$alias.cartoonRole(item.role_id)"
+                  target="_blank"
+                >
+                  <div
+                    class="oneline"
+                    v-text="item.role.name"
+                  />
                 </a>
               </div>
             </div>
@@ -415,12 +524,12 @@
       </waterfall>
     </no-ssr>
     <el-button
-      :loading="loading"
       v-if="!noMore"
+      :loading="loading"
       class="load-more-btn"
-      @click="handleLoadMoreClick(false)"
       type="info"
       plain
+      @click="handleLoadMoreClick(false)"
     >{{ loading ? '加载中' : '加载更多' }}</el-button>
     <!--编辑图片弹窗-->
     <v-dialog
@@ -443,8 +552,8 @@
                   v-for="item in options.tags"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -458,8 +567,8 @@
                   v-for="item in options.size"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -477,8 +586,8 @@
                   v-for="item in bangumis"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -494,8 +603,8 @@
                   v-for="item in roles"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -515,7 +624,10 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="名称">
-              <el-input v-model="albumForm.name" placeholder="请填写专辑名称"></el-input>
+              <el-input
+                v-model="albumForm.name"
+                placeholder="请填写专辑名称"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -531,8 +643,8 @@
                   v-for="item in bangumis"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -540,15 +652,18 @@
         <el-row>
           <el-form-item label="封面">
             <el-upload
-              action="https://upload.qiniup.com"
               ref="uploader"
               :data="uploadHeaders"
               :on-error="handleError"
               :before-upload="beforeUpload"
               :on-remove="handleAlbumPosterRemove"
               :on-success="handleAlbumUploadSuccess"
+              action="https://upload.qiniup.com"
             >
-              <el-button size="small" type="primary">点击更换</el-button>
+              <el-button
+                size="small"
+                type="primary"
+              >点击更换</el-button>
             </el-upload>
           </el-form-item>
         </el-row>
@@ -556,7 +671,7 @@
     </v-dialog>
   </div>
   <no-content v-else-if="noMore">
-    <slot></slot>
+    <slot/>
   </no-content>
 </template>
 
@@ -593,64 +708,6 @@
       role: {
         type: Array,
         default: () => []
-      }
-    },
-    computed: {
-      page () {
-        return this.$route.name
-      },
-      showSortHeader () {
-        return !Array.isArray(this.options)
-      },
-      waterfall () {
-        return this.$store.state.image.waterfall
-      },
-      list () {
-        return this.waterfall.data
-      },
-      noMore () {
-        return this.waterfall.noMore
-      },
-      options () {
-        return this.waterfall.options
-      },
-      curUserId () {
-        return this.$store.state.login
-          ? this.$store.state.user.id
-          : -1
-      },
-      zone () {
-        return this.$store.state.user.zone
-      },
-      selectionSize () {
-        return this.options.size ? [{
-          id: 0,
-          name: '全部尺寸'
-        }].concat(this.options.size) : []
-      },
-      selectionTags () {
-        return this.options.tags ? [{
-          id: 0,
-          name: '全部类型'
-        }].concat(this.options.tags) : []
-      },
-      selectionBangumis () {
-        return this.bangumi.length ? [{
-          id: -1,
-          name: '全部番剧'
-        }, {
-          id: 0,
-          name: '未指定'
-        }].concat(this.bangumi) : []
-      },
-      selectionRoles () {
-        return this.role.length ? [{
-          id: -1,
-          name: '全部角色'
-        }, {
-          id: 0,
-          name: '未指定'
-        }].concat(this.role) : []
       }
     },
     data () {
@@ -711,6 +768,64 @@
           bangumiId: '',
           url: ''
         }
+      }
+    },
+    computed: {
+      page () {
+        return this.$route.name
+      },
+      showSortHeader () {
+        return !Array.isArray(this.options)
+      },
+      waterfall () {
+        return this.$store.state.image.waterfall
+      },
+      list () {
+        return this.waterfall.data
+      },
+      noMore () {
+        return this.waterfall.noMore
+      },
+      options () {
+        return this.waterfall.options
+      },
+      curUserId () {
+        return this.$store.state.login
+          ? this.$store.state.user.id
+          : -1
+      },
+      zone () {
+        return this.$store.state.user.zone
+      },
+      selectionSize () {
+        return this.options.size ? [{
+          id: 0,
+          name: '全部尺寸'
+        }].concat(this.options.size) : []
+      },
+      selectionTags () {
+        return this.options.tags ? [{
+          id: 0,
+          name: '全部类型'
+        }].concat(this.options.tags) : []
+      },
+      selectionBangumis () {
+        return this.bangumi.length ? [{
+          id: -1,
+          name: '全部番剧'
+        }, {
+          id: 0,
+          name: '未指定'
+        }].concat(this.bangumi) : []
+      },
+      selectionRoles () {
+        return this.role.length ? [{
+          id: -1,
+          name: '全部角色'
+        }, {
+          id: 0,
+          name: '未指定'
+        }].concat(this.role) : []
       }
     },
     methods: {

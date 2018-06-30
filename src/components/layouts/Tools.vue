@@ -54,32 +54,62 @@
 <template>
   <div id="side-tools">
     <v-creator>
-      <el-tooltip placement="top" effect="dark" content="图片">
-        <button class="creator-btn iconfont icon-tupian" @click="handleImageClick"></button>
+      <el-tooltip
+        placement="top"
+        effect="dark"
+        content="图片"
+      >
+        <button
+          class="creator-btn iconfont icon-tupian"
+          @click="handleImageClick"
+        />
       </el-tooltip>
-      <el-tooltip placement="top" effect="dark" content="发帖">
-        <button class="creator-btn iconfont icon-fatie1" @click="handlePostClick"></button>
+      <el-tooltip
+        placement="top"
+        effect="dark"
+        content="发帖"
+      >
+        <button
+          class="creator-btn iconfont icon-fatie1"
+          @click="handlePostClick"
+        />
       </el-tooltip>
-      <el-tooltip placement="top" effect="dark" content="反馈">
-        <button class="creator-btn iconfont icon-fankui" @click="showFeedModal = true"></button>
+      <el-tooltip
+        placement="top"
+        effect="dark"
+        content="反馈"
+      >
+        <button
+          class="creator-btn iconfont icon-fankui"
+          @click="showFeedModal = true"
+        />
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">
-      <el-tooltip placement="right" effect="dark" content="返回">
+      <el-tooltip
+        placement="right"
+        effect="dark"
+        content="返回"
+      >
         <transition name="el-fade-in">
-          <button v-show="showToTop" id="to-top-btn" class="iconfont icon-fanhuidingbu" @click="$scrollToY(0)"></button>
+          <button
+            v-show="showToTop"
+            id="to-top-btn"
+            class="iconfont icon-fanhuidingbu"
+            @click="$scrollToY(0)"
+          />
         </transition>
       </el-tooltip>
     </div>
     <v-dialog
       v-model="showPostModal"
-      title="发帖"
       :footer="false"
+      title="发帖"
     >
-      <create-post-form @submit="showPostModal = false"></create-post-form>
+      <create-post-form @submit="showPostModal = false"/>
     </v-dialog>
-    <v-feedback v-model="showFeedModal"></v-feedback>
-    <v-image></v-image>
+    <v-feedback v-model="showFeedModal"/>
+    <v-image/>
   </div>
 </template>
 
@@ -101,6 +131,20 @@
         showFeedModal: false
       }
     },
+    mounted () {
+      this.computeShow()
+      document.addEventListener('scroll', this.$utils.throttle(() => {
+        this.computeShow()
+      }, 500))
+      window.addEventListener('resize', this.$utils.throttle(() => {
+        this.computeShow()
+      }, 500))
+      this.$channel.$on('show-create-post-modal', () => {
+        this.$store.state.login
+          ? this.showPostModal = true
+          : this.$channel.$emit('sign-in')
+      })
+    },
     methods: {
       handlePostClick () {
         if (!this.$store.state.login) {
@@ -121,20 +165,6 @@
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight
       }
-    },
-    mounted () {
-      this.computeShow()
-      document.addEventListener('scroll', this.$utils.throttle(() => {
-        this.computeShow()
-      }, 500))
-      window.addEventListener('resize', this.$utils.throttle(() => {
-        this.computeShow()
-      }, 500))
-      this.$channel.$on('show-create-post-modal', () => {
-        this.$store.state.login
-          ? this.showPostModal = true
-          : this.$channel.$emit('sign-in')
-      })
     }
   }
 </script>

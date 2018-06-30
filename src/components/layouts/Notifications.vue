@@ -65,41 +65,82 @@
 
 <template>
   <div id="header-notification-box">
-    <div class="header"></div>
+    <div class="header"/>
     <div class="main">
       <ul
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="notFetch"
         infinite-scroll-distance="10"
       >
-        <li v-for="item in list" :key="item.id" :class="{ 'checked': item.checked }" @click="readMsg(item.id)">
+        <li
+          v-for="item in list"
+          :key="item.id"
+          :class="{ 'checked': item.checked }"
+          @click="readMsg(item.id)"
+        >
           <div>
             <!-- 我的主题帖被回复了 -->
             <template v-if="item.type === 1">
-              <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                v-text="item.user.nickname"
+              />
               回复了你的帖子
-              <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
+              <a
+                :href="item.data.link"
+                target="_blank"
+                v-text="item.data.title"
+              />
             </template>
             <!-- 我的楼层贴被评论 / 回复了 -->
             <template v-else-if="item.type === 2">
-              <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                v-text="item.user.nickname"
+              />
               评论了你在帖子
-              <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
+              <a
+                :href="item.data.link"
+                target="_blank"
+                v-text="item.data.title"
+              />
               下的内容
             </template>
             <template v-else-if="item.type === 3">
-              <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                v-text="item.user.nickname"
+              />
               喜欢了你的帖子
-              <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
+              <a
+                :href="item.data.link"
+                target="_blank"
+                v-text="item.data.title"
+              />
             </template>
             <template v-else-if="item.type === 4">
-              <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                v-text="item.user.nickname"
+              />
               赞了你在帖子
-              <a target="_blank" :href="item.data.link" v-text="item.data.title"></a>
+              <a
+                :href="item.data.link"
+                target="_blank"
+                v-text="item.data.title"
+              />
               下的回复
             </template>
             <template v-else-if="item.type === 5">
-              <a target="_blank" :href="$alias.user(item.user.zone)" v-text="item.user.nickname"></a>
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                v-text="item.user.nickname"
+              />
               喜欢了你上传的图片
             </template>
           </div>
@@ -115,6 +156,11 @@
 <script>
   export default {
     name: 'HeaderNotifications',
+    data () {
+      return {
+        loading: false
+      }
+    },
     computed: {
       list () {
         return this.$store.state.users.notifications.data
@@ -125,11 +171,6 @@
       notificationsCount () {
         const result = this.$store.state.user.notification - this.$store.state.users.notifications.checked
         return result < 0 ? 0 : result
-      }
-    },
-    data () {
-      return {
-        loading: false
       }
     },
     methods: {

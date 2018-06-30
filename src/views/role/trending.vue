@@ -132,9 +132,9 @@
 
 <template>
   <div id="trending-role">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
-      <div class="col-aside"></div>
+      <div class="col-aside"/>
       <div class="col-main">
         <h2 class="sub-title">偶像排行榜</h2>
         <ul
@@ -147,22 +147,51 @@
             :key="item.id"
           >
             <div class="clearfix">
-              <a target="_blank" :href="$alias.cartoonRole(item.id)" class="avatar">
-                <v-img :src="item.avatar" width="90" height="90"></v-img>
+              <a
+                :href="$alias.cartoonRole(item.id)"
+                target="_blank"
+                class="avatar"
+              >
+                <v-img
+                  :src="item.avatar"
+                  width="90"
+                  height="90"
+                />
               </a>
               <div class="summary">
-                <a target="_blank" :href="$alias.cartoonRole(item.id)" class="role">
-                  <span class="name" v-text="item.name"></span>
+                <a
+                  :href="$alias.cartoonRole(item.id)"
+                  target="_blank"
+                  class="role"
+                >
+                  <span
+                    class="name"
+                    v-text="item.name"
+                  />
                   <span class="intro">：{{ item.intro }}</span>
                 </a>
-                <div class="lover" v-if="item.lover_id">
+                <div
+                  v-if="item.lover_id"
+                  class="lover"
+                >
                   <span>守护者：</span>
-                  <a class="fr" target="_blank" :href="$alias.user(item.lover_zone)">
-                    <span v-text="item.lover_nickname"></span>
-                    <v-img :src="item.lover_avatar" width="20" height="20"></v-img>
+                  <a
+                    :href="$alias.user(item.lover_zone)"
+                    class="fr"
+                    target="_blank"
+                  >
+                    <span v-text="item.lover_nickname"/>
+                    <v-img
+                      :src="item.lover_avatar"
+                      width="20"
+                      height="20"
+                    />
                   </a>
                 </div>
-                <div class="lover" v-else></div>
+                <div
+                  v-else
+                  class="lover"
+                />
               </div>
               <div class="footer">
                 <div class="stats">
@@ -175,9 +204,17 @@
                     {{ $utils.shortenNumber(item.star_count) }}
                   </span>
                   <span>排名:</span>
-                  <span class="top" :data-index="item.fans_count ? index + 1 : '无'"></span>
+                  <span
+                    :data-index="item.fans_count ? index + 1 : '无'"
+                    class="top"
+                  />
                 </div>
-                <a class="bangumi" target="_blank" :href="$alias.bangumi(item.bangumi_id)" v-text="item.bangumi_name"></a>
+                <a
+                  :href="$alias.bangumi(item.bangumi_id)"
+                  class="bangumi"
+                  target="_blank"
+                  v-text="item.bangumi_name"
+                />
               </div>
             </div>
           </li>
@@ -189,12 +226,17 @@
 
 <script>
   export default {
-    name: 'trending-role',
+    name: 'TrendingRole',
     async asyncData ({ store }) {
       await store.dispatch('cartoonRole/getTrending')
     },
     head: {
       title: '角色排行榜'
+    },
+    data () {
+      return {
+        loading: false
+      }
     },
     computed: {
       list () {
@@ -202,11 +244,6 @@
       },
       notFetch () {
         return this.loading || this.$store.state.cartoonRole.trending.noMore
-      }
-    },
-    data () {
-      return {
-        loading: false
       }
     },
     methods: {

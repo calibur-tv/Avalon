@@ -160,72 +160,113 @@
 <template>
   <div id="image-album">
     <section id="banner">
-      <div class="img bg" :style="{ backgroundImage: `url(${$resize(info.poster, { width: 1920, mode: 0 })})` }"></div>
+      <div
+        :style="{ backgroundImage: `url(${$resize(info.poster, { width: 1920, mode: 0 })})` }"
+        class="img bg"
+      />
       <div class="container">
         <div class="panel">
           <h1 class="title">《{{ info.name }}》</h1>
           <p class="author">
-            UP：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
+            UP：
+            <a
+              :href="$alias.user(user.zone)"
+              target="_blank"
+              v-text="user.nickname"
+            />
             &nbsp;·&nbsp;
             共：{{ info.image_count }}张
           </p>
         </div>
       </div>
-      <v-share type="panel"></v-share>
+      <v-share type="panel"/>
     </section>
     <div class="container">
       <nav>
         <h1 class="breadcrumb">
-          <a :href="$alias.index" target="_blank">主站</a>
-          <a v-if="bangumi" :href="$alias.bangumi(bangumi.id)" target="_blank" v-text="bangumi.name"></a>
+          <a
+            :href="$alias.index"
+            target="_blank"
+          >主站</a>
+          <a
+            v-if="bangumi"
+            :href="$alias.bangumi(bangumi.id)"
+            target="_blank"
+            v-text="bangumi.name"
+          />
           <a href="javascript:;">{{ info.is_cartoon ? '漫画' : '相簿' }}</a>
           {{ info.name }}
         </h1>
       </nav>
       <div class="images-wrap">
         <div
-          class="image-package"
           v-for="(img, idx) in images"
           :key="img.id"
+          class="image-package"
         >
           <v-img
+            :src="img.url"
+            :aspect="$computeImageAspect(img)"
             class="image"
             width="500"
             mode="2"
-            :src="img.url"
-            :aspect="$computeImageAspect(img)"
-          ></v-img>
+          />
           <template v-if="isMine">
-            <el-tooltip placement="top" effect="dark" content="删除">
-              <button class="sort-btn delete-btn el-icon-close" @click="handleImageDelete(idx)"></button>
-            </el-tooltip>
-            <el-tooltip placement="right" effect="dark" content="上移">
+            <el-tooltip
+              placement="top"
+              effect="dark"
+              content="删除"
+            >
               <button
-                class="sort-btn to-prev el-icon-caret-top"
+                class="sort-btn delete-btn el-icon-close"
+                @click="handleImageDelete(idx)"
+              />
+            </el-tooltip>
+            <el-tooltip
+              placement="right"
+              effect="dark"
+              content="上移"
+            >
+              <button
                 v-if="idx"
+                class="sort-btn to-prev el-icon-caret-top"
                 @click="handleSortBtnClick(idx, false)"
-              ></button>
+              />
             </el-tooltip>
-            <el-tooltip placement="right" effect="dark" content="下移">
+            <el-tooltip
+              placement="right"
+              effect="dark"
+              content="下移"
+            >
               <button
-                class="sort-btn to-next el-icon-caret-bottom"
                 v-if="idx !== images.length - 1"
+                class="sort-btn to-next el-icon-caret-bottom"
                 @click="handleSortBtnClick(idx, true)"
-              ></button>
+              />
             </el-tooltip>
           </template>
         </div>
       </div>
       <div class="album-footer">
         <div class="publish-time">
-          UP：<a :href="$alias.user(user.zone)" target="_blank" v-text="user.nickname"></a>
+          UP：
+          <a
+            :href="$alias.user(user.zone)"
+            target="_blank"
+            v-text="user.nickname"
+          />
           &nbsp;·&nbsp;
           <span v-if="info.updated_at === info.created_at">
-            发布于：<v-time v-model="info.created_at"></v-time>
+            发布于：<v-time v-model="info.created_at"/>
           </span>
-          <el-tooltip placement="top" effect="dark" :content="`发布于：${info.created_at}`" v-else>
+          <el-tooltip
+            v-else
+            :content="`发布于：${info.created_at}`"
+            placement="top"
+            effect="dark"
+          >
             <span>
-              编辑于：<v-time v-model="info.updated_at"></v-time>
+              编辑于：<v-time v-model="info.updated_at"/>
             </span>
           </el-tooltip>
         </div>
@@ -236,38 +277,41 @@
           :all-data="cartoon"
           v-model="showAllPart"
         >
-          <span slot-scope="{ item }" v-text="item.name"></span>
+          <span
+            slot-scope="{ item }"
+            v-text="item.name"
+          />
         </v-parts>
         <v-bangumi-panel
-          class="bangumi-panel"
           v-else-if="bangumi"
           :id="bangumi.id"
           :name="bangumi.name"
           :avatar="bangumi.avatar"
           :summary="bangumi.summary"
           :followed="bangumi.followed"
+          class="bangumi-panel"
           @follow="handleFollowAction"
-        ></v-bangumi-panel>
+        />
         <div class="like-panel">
           <el-button
             v-if="info.liked"
             :type="info.is_creator ? 'warning' : 'danger'"
-            @click="handleAlbumLike"
+            :loading="loadingFollowAlbum"
             round
             plain
-            :loading="loadingFollowAlbum"
+            @click="handleAlbumLike"
           >
-            <i class="iconfont icon-guanzhu"></i>
+            <i class="iconfont icon-guanzhu"/>
             {{ likeAlbumBtnText }}
           </el-button>
           <el-button
+            v-else
             :type="info.is_creator ? 'warning' : 'danger'"
+            :loading="loadingFollowAlbum"
             round
             @click="handleAlbumLike"
-            :loading="loadingFollowAlbum"
-            v-else
           >
-            <i class="iconfont icon-guanzhu"></i>
+            <i class="iconfont icon-guanzhu"/>
             {{ likeAlbumBtnText }}
           </el-button>
         </div>
@@ -276,7 +320,7 @@
         :id="id"
         :master-id="user.id"
         type="image"
-      ></comment-main>
+      />
     </div>
   </div>
 </template>
@@ -287,7 +331,7 @@
   import CommentMain from '~/components/comments/CommentMain'
 
   export default {
-    name: 'image-album',
+    name: 'ImageAlbum',
     async asyncData ({ store, route, ctx }) {
       const id = route.params.id
       await Promise.all([
@@ -313,6 +357,13 @@
     components: {
       vParts,
       CommentMain
+    },
+    data () {
+      return {
+        loadingFollowAlbum: false,
+        loadingEditImages: false,
+        showAllPart: false
+      }
     },
     computed: {
       id () {
@@ -349,12 +400,14 @@
           : false
       }
     },
-    data () {
-      return {
-        loadingFollowAlbum: false,
-        loadingEditImages: false,
-        showAllPart: false
-      }
+    mounted () {
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.bangumi.id,
+          name: this.bangumi.name,
+          avatar: this.bangumi.avatar
+        })
+      })
     },
     methods: {
       handleFollowAction (result) {
@@ -443,15 +496,6 @@
           }
         }).catch((e) => {})
       }
-    },
-    mounted () {
-      this.$channel.$on('get-page-bangumi-for-post-create', () => {
-        this.$channel.$emit('set-page-bangumi-for-post-create', {
-          id: this.bangumi.id,
-          name: this.bangumi.name,
-          avatar: this.bangumi.avatar
-        })
-      })
     }
   }
 </script>

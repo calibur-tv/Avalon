@@ -44,20 +44,39 @@
 </style>
 
 <template>
-  <div id="video-show" class="main">
-    <v-banner></v-banner>
+  <div
+    id="video-show"
+    class="main"
+  >
+    <v-banner/>
     <div class="container">
       <nav>
-        <h1 class="breadcrumb" v-if="bangumi && video">
-          <a :href="$alias.index" target="_blank">主站</a>
-          <a :href="$alias.bangumi(bangumi.id)" target="_blank" v-text="bangumi.name"></a>
+        <h1
+          v-if="bangumi && video"
+          class="breadcrumb"
+        >
+          <a
+            :href="$alias.index"
+            target="_blank"
+          >主站</a>
+          <a
+            :href="$alias.bangumi(bangumi.id)"
+            target="_blank"
+            v-text="bangumi.name"
+          />
           第{{ video.part }}话&nbsp;{{ video.name }}
         </h1>
       </nav>
       <div id="video-metas">
         <template v-if="season && showAll">
-          <template v-for="(items, idx) in list">
-            <h6 class="season-title" v-text="season.name[idx]"></h6>
+          <div
+            v-for="(items, idx) in list"
+            :key="idx"
+          >
+            <h6
+              class="season-title"
+              v-text="season.name[idx]"
+            />
             <v-part
               :list="items.data"
               :alias="$alias.video"
@@ -70,14 +89,14 @@
                 <span>{{ item.part - items.base }}</span>{{ item.name }}
               </template>
             </v-part>
-          </template>
+          </div>
         </template>
         <v-part
+          v-else
           :list="videos"
           :all-data="videos"
           :alias="$alias.video"
           v-model="showAll"
-          v-else
         >
           <template slot-scope="{ item }">
             <span>{{ item.part }}</span>{{ item.name }}
@@ -92,10 +111,10 @@
           :poster="$resize(video.poster)"
           :next="nextPartVideo"
           @playing="handlePlaying"
-        ></v-video>
+        />
       </no-ssr>
       <div class="video-info">
-        <v-share type="panel"></v-share>
+        <v-share type="panel"/>
         <el-button
           type="warning"
           size="medium"
@@ -107,21 +126,21 @@
       <div class="clearfix">
         <div class="col-aside">
           <v-bangumi-panel
-            class="bangumi-panel"
             :id="bangumi.id"
             :name="bangumi.name"
             :avatar="bangumi.avatar"
             :summary="bangumi.summary"
             :followed="bangumi.followed"
+            class="bangumi-panel"
             @follow="handleFollowAction"
-          ></v-bangumi-panel>
+          />
         </div>
         <div class="col-main">
           <comment-main
             :id="id"
             :master-id="video.user_id"
             type="video"
-          ></comment-main>
+          />
         </div>
       </div>
     </div>
@@ -135,7 +154,7 @@
   import CommentMain from '~/components/comments/CommentMain'
 
   export default {
-    name: 'video-show',
+    name: 'VideoShow',
     head () {
       return {
         title: `${this.bangumi.name} : 第${this.video.part}话 ${this.video.name} - 视频`,
@@ -161,6 +180,12 @@
           seeReplyId: route.query.reply
         })
       ])
+    },
+    data () {
+      return {
+        showAll: false,
+        firstPlay: true
+      }
     },
     computed: {
       id () {
@@ -209,9 +234,9 @@
           return true
         }
         return !((
-            resource.video[720] && resource.video[720].src
-          ) || (
-            resource.video[1080] && resource.video[1080].src
+          resource.video[720] && resource.video[720].src
+        ) || (
+          resource.video[1080] && resource.video[1080].src
         ))
       },
       computeVideoSrc () {
@@ -227,11 +252,14 @@
             : video.url
       }
     },
-    data () {
-      return {
-        showAll: false,
-        firstPlay: true
-      }
+    mounted () {
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.bangumi.id,
+          name: this.bangumi.name,
+          avatar: this.bangumi.avatar
+        })
+      })
     },
     methods: {
       handlePlaying () {
@@ -250,15 +278,6 @@
       handleFollowAction (result) {
         this.$store.commit('video/FOLLOW_ALBUM_BANGUMI', { result })
       }
-    },
-    mounted () {
-      this.$channel.$on('get-page-bangumi-for-post-create', () => {
-        this.$channel.$emit('set-page-bangumi-for-post-create', {
-          id: this.bangumi.id,
-          name: this.bangumi.name,
-          avatar: this.bangumi.avatar
-        })
-      })
     }
   }
 </script>

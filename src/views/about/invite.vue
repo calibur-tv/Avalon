@@ -31,7 +31,7 @@
 
 <template>
   <div id="invite-user">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
       <template v-if="user">
         <h3 class="sub-title">欢迎注册 calibur.tv</h3>
@@ -40,24 +40,29 @@
           <br>
           快来邀请小伙伴一起注册 calibur 吧
           <br>
-          <el-tooltip class="item" effect="dark" placement="bottom">
-            <div slot="content">点击复制我的邀请地址<br/>邀请小伙伴们注册赚金币</div>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            placement="bottom"
+          >
+            <div slot="content">点击复制我的邀请地址<br>邀请小伙伴们注册赚金币</div>
             <el-button
+              ref="inviteBtn"
+              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
               type="warning"
               size="large"
-              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
-              ref="inviteBtn"
             >
               邀请码：{{ user.id }}
             </el-button>
           </el-tooltip>
         </p>
       </template>
-      <div class="sign-wrap" v-else>
+      <div
+        v-else
+        class="sign-wrap"
+      >
         <h3>欢迎注册 calibur.tv</h3>
-        <sign-up-form
-          :invite-code="inviteUserId"
-        ></sign-up-form>
+        <sign-up-form :invite-code="inviteUserId"/>
       </div>
     </div>
   </div>
@@ -67,7 +72,7 @@
   import SignUpForm from '~/components/forms/SignUpForm'
 
   export default {
-    name: 'invite-user',
+    name: 'InviteUser',
     components: {
       SignUpForm
     },
@@ -78,6 +83,9 @@
       user () {
         return this.$store.state.user
       }
+    },
+    mounted () {
+      this.watchCopyInviteLink()
     },
     methods: {
       watchCopyInviteLink () {
@@ -92,9 +100,6 @@
           })
         })
       }
-    },
-    mounted () {
-      this.watchCopyInviteLink()
     }
   }
 </script>

@@ -17,33 +17,33 @@
 <template>
   <div class="reset-password-form">
     <el-form
+      ref="form"
       :model="form"
       :rules="rule"
-      ref="form"
     >
       <el-form-item prop="access">
         <el-input
+          v-model.trim="form.access"
           type="text"
-          v-model="form.access"
           placeholder="手机号"
           auto-complete="off"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item prop="secret">
         <el-input
+          v-model.trim="form.secret"
           type="password"
-          v-model="form.secret"
           placeholder="新密码"
           auto-complete="off"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item>
         <el-button
+          :loading="submitBtnLoading"
+          :disabled="submitBtnDisabled"
           class="submit-btn"
           type="primary"
           @click="submitForm"
-          :loading="submitBtnLoading"
-          :disabled="submitBtnDisabled"
         >
           {{ submitBtnText }}
           <template v-if="timeout">
@@ -63,28 +63,7 @@
   import UserApi from '~/api/userApi'
 
   export default {
-    name: 'reset-password-form',
-    computed: {
-      submitBtnText () {
-        if (this.step === 0) {
-          return '立即重置'
-        } else if (this.step === 1) {
-          return '提交中...'
-        } else if (this.step === 2) {
-          return '短信已发送'
-        } else if (this.step === 3) {
-          return '已重置'
-        }
-      },
-      submitBtnLoading () {
-        return this.step === 1 || this.step === 3
-      },
-      submitBtnDisabled () {
-        return (
-            this.timeout !== 0 && this.step === 0
-          ) || this.step === 3
-      }
-    },
+    name: 'ResetPasswordForm',
     data () {
       const validateAccess = (rule, value, callback) => {
         if (!value) {
@@ -126,6 +105,27 @@
         },
         step: 0,
         timeout: 0
+      }
+    },
+    computed: {
+      submitBtnText () {
+        if (this.step === 0) {
+          return '立即重置'
+        } else if (this.step === 1) {
+          return '提交中...'
+        } else if (this.step === 2) {
+          return '短信已发送'
+        } else if (this.step === 3) {
+          return '已重置'
+        }
+      },
+      submitBtnLoading () {
+        return this.step === 1 || this.step === 3
+      },
+      submitBtnDisabled () {
+        return (
+            this.timeout !== 0 && this.step === 0
+          ) || this.step === 3
       }
     },
     methods: {

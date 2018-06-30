@@ -31,14 +31,14 @@
 
 <template>
   <div class="hr">
-    <span></span>
-    <p v-text="text"></p>
+    <span/>
+    <p v-text="text"/>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'v-hr',
+    name: 'VHr',
     props: {
       text: {
         required: true,

@@ -96,10 +96,13 @@
 </style>
 
 <template>
-  <div id="bangumi-tags" class="main">
-    <v-banner></v-banner>
+  <div
+    id="bangumi-tags"
+    class="main"
+  >
+    <v-banner/>
     <div class="container">
-      <aside class="col-aside"></aside>
+      <aside class="col-aside"/>
       <section class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
@@ -109,42 +112,67 @@
         <div class="tags">
           <h2 class="sub-title">标签列表</h2>
           <ul>
-            <li v-for="(tag, index) in tags"
-                :key="tag.id"
-                @click="$store.commit('bangumi/selectTag', index)">
-              <a @click.prevent
-                 :href="$alias.bangumiTag(tag.id)" class="tag-btn"
-                 :class="{ 'selected': tag.selected }"
+            <li
+              v-for="(tag, index) in tags"
+              :key="tag.id"
+              @click="$store.commit('bangumi/selectTag', index)"
+            >
+              <a
+                :href="$alias.bangumiTag(tag.id)"
+                :class="{ 'selected': tag.selected }"
+                class="tag-btn"
+                @click.prevent
               >{{ tag.name }}</a>
             </li>
             <li>
-              <button class="btn" @click="refresh">点击查找</button>
+              <button
+                class="btn"
+                @click="refresh"
+              >点击查找</button>
             </li>
           </ul>
         </div>
-        <div class="bangumis" v-if="bangumis && bangumis.length">
+        <div
+          v-if="bangumis && bangumis.length"
+          class="bangumis"
+        >
           <h2 class="sub-title">番剧列表</h2>
           <ul
             v-infinite-scroll="loadMore"
             infinite-scroll-disabled="notFetch"
             infinite-scroll-distance="200"
           >
-            <li class="bangumi" v-for="item in bangumis" :key="item.id">
+            <li
+              v-for="item in bangumis"
+              :key="item.id"
+              class="bangumi"
+            >
               <figure>
-                <a :href="$alias.bangumi(item.id)" target="_blank">
+                <a
+                  :href="$alias.bangumi(item.id)"
+                  target="_blank"
+                >
                   <v-img
-                    class="face"
                     :title="item.name"
                     :alt="item.name"
-                    :src="$resize(item.avatar, { width: 180 })">
-                  </v-img>
+                    :src="$resize(item.avatar, { width: 180 })"
+                    class="face"
+                  />
                 </a>
                 <figcaption class="content">
                   <p class="head">
-                    <a target="_blank" :href="$alias.bangumi(item.id)" class="name" v-text="item.name"></a>
+                    <a
+                      :href="$alias.bangumi(item.id)"
+                      target="_blank"
+                      class="name"
+                      v-text="item.name"
+                    />
                     <!--<span v-text="item.count_score"></span>-->
                   </p>
-                  <p class="body" v-text="item.summary"></p>
+                  <p
+                    class="body"
+                    v-text="item.summary"
+                  />
                   <div class="foot">
                     <!--<span v-text="item.count_like"></span>-->
                   </div>
@@ -153,7 +181,7 @@
             </li>
           </ul>
         </div>
-        <no-content v-else-if="id"></no-content>
+        <no-content v-else-if="id"/>
       </section>
     </div>
   </div>
@@ -161,7 +189,7 @@
 
 <script>
   export default {
-    name: 'bangumi-tags',
+    name: 'BangumiTags',
     head: {
       title: '分类索引 - 番剧'
     },
@@ -179,6 +207,11 @@
       }
       await Promise.all(arr)
     },
+    data () {
+      return {
+        loading: false
+      }
+    },
     computed: {
       id () {
         return this.$route.query.id
@@ -191,11 +224,6 @@
       },
       notFetch () {
         return this.loading || this.$store.state.bangumi.category.noMore
-      }
-    },
-    data () {
-      return {
-        loading: false
       }
     },
     methods: {

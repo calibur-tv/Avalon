@@ -28,38 +28,45 @@
 
 <template>
   <div class="sign-in-form">
-    <img class="logo" src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip" alt="sign-logo">
+    <img
+      class="logo"
+      src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip"
+      alt="sign-logo"
+    >
     <el-form
+      ref="form"
       :model="form"
       :rules="rule"
-      ref="form"
     >
       <el-form-item prop="access">
         <el-input
+          v-model.trim="form.access"
           type="text"
-          v-model="form.access"
           placeholder="手机（填写常用手机号，用于登录）"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item prop="secret">
         <el-input
+          v-model.trim="form.secret"
           type="password"
-          v-model="form.secret"
           placeholder="密码（6-16个字符组成，区分大小写）"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item class="sign-in-opt">
         <div class="opt-container">
           <el-checkbox v-model="form.remember">记住我</el-checkbox>
-          <button type="button" @click="showOAuth">社交账号登录</button>
+          <button
+            type="button"
+            @click="showOAuth"
+          >社交账号登录</button>
         </div>
       </el-form-item>
       <el-form-item>
         <el-button
+          :loading="loading"
           class="submit-btn"
           type="primary"
           @click="submitForm"
-          :loading="loading"
         >登录</el-button>
       </el-form-item>
     </el-form>
@@ -74,7 +81,7 @@
   import UserApi from '~/api/userApi'
 
   export default {
-    name: 'sign-in-form',
+    name: 'SignInForm',
     data () {
       const validateAccess = (rule, value, callback) => {
         if (!value) {

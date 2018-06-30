@@ -54,22 +54,40 @@
 
 <template>
   <div class="search-item-user">
-    <a target="_blank" :href="$alias.user(item.zone)" class="avatar">
-      <img :src="$resize(item.avatar, { width: 180 })" :alt="item.nickname">
+    <a
+      :href="$alias.user(item.zone)"
+      target="_blank"
+      class="avatar"
+    >
+      <img
+        :src="$resize(item.avatar, { width: 180 })"
+        :alt="item.nickname"
+      >
     </a>
     <div class="intro">
       <div class="head">
-        <span class="badge" v-if="inCommon">用户</span>
-        <a target="_blank" class="nickname" :href="$alias.user(item.zone)" v-text="item.nickname"></a>
+        <span
+          v-if="inCommon"
+          class="badge"
+        >用户</span>
+        <a
+          :href="$alias.user(item.zone)"
+          target="_blank"
+          class="nickname"
+          v-text="item.nickname"
+        />
       </div>
-      <p class="signature" v-text="item.signature"></p>
+      <p
+        class="signature"
+        v-text="item.signature"
+      />
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'search-item-user',
+    name: 'SearchItemUser',
     props: {
       item: {
         required: true,

@@ -18,14 +18,17 @@
 <template>
   <v-dialog
     v-model="show"
-    title="上传图片"
-    @submit="handleFormSubmit"
-    class="create-image-modal"
     :loading="submitting"
+    title="上传图片"
+    class="create-image-modal"
+    @submit="handleFormSubmit"
   >
-    <el-radio-group v-model="action" size="mini">
-      <el-radio-button label="上传图片"></el-radio-button>
-      <el-radio-button label="新建相册"></el-radio-button>
+    <el-radio-group
+      v-model="action"
+      size="mini"
+    >
+      <el-radio-button label="上传图片"/>
+      <el-radio-button label="新建相册"/>
     </el-radio-group>
     <el-form
       ref="form"
@@ -43,11 +46,16 @@
                   v-for="item in options.tags"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
-              <el-tooltip class="item" effect="dark" content="大概就是图片的制作场景" placement="top">
-                <i class="el-icon-question"></i>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="大概就是图片的制作场景"
+                placement="top"
+              >
+                <i class="el-icon-question"/>
               </el-tooltip>
             </el-form-item>
           </el-col>
@@ -61,11 +69,16 @@
                   v-for="item in options.size"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
-              <el-tooltip class="item" effect="dark" content="大概就是图片的使用场景" placement="top">
-                <i class="el-icon-question"></i>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="大概就是图片的使用场景"
+                placement="top"
+              >
+                <i class="el-icon-question"/>
               </el-tooltip>
             </el-form-item>
           </el-col>
@@ -73,16 +86,26 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="番剧">
-              <el-select v-model="form.bangumiId" filterable placeholder="请选择番剧" @change="getBangumiRoles">
+              <el-select
+                v-model="form.bangumiId"
+                filterable
+                placeholder="请选择番剧"
+                @change="getBangumiRoles"
+              >
                 <el-option
                   v-for="item in bangumis"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
-              <el-tooltip class="item" effect="dark" content="只能选择你已关注的番剧" placement="top">
-                <i class="el-icon-question"></i>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="只能选择你已关注的番剧"
+                placement="top"
+              >
+                <i class="el-icon-question"/>
               </el-tooltip>
             </el-form-item>
           </el-col>
@@ -96,11 +119,16 @@
                   v-for="item in roles"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
-              <el-tooltip class="item" effect="dark" content="所选番剧里的动漫角色" placement="top">
-                <i class="el-icon-question"></i>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="所选番剧里的动漫角色"
+                placement="top"
+              >
+                <i class="el-icon-question"/>
               </el-tooltip>
             </el-form-item>
           </el-col>
@@ -108,29 +136,43 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="相册">
-              <el-select v-model="form.albumId" filterable clearable placeholder="请选择相册（可选）">
+              <el-select
+                v-model="form.albumId"
+                filterable
+                clearable
+                placeholder="请选择相册（可选）"
+              >
                 <el-option
                   v-for="item in albums"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-select>
-              <el-tooltip class="item" effect="dark" content="你也可以选择一个自己的相册" placement="top">
-                <i class="el-icon-question"></i>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="你也可以选择一个自己的相册"
+                placement="top"
+              >
+                <i class="el-icon-question"/>
               </el-tooltip>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="原创">
-          <el-switch v-model="form.creator"></el-switch>
-          <el-tooltip class="item" effect="dark" content="如果是搬运来的，请不要勾选" placement="top">
-            <i class="el-icon-question"></i>
+          <el-switch v-model="form.creator"/>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="如果是搬运来的，请不要勾选"
+            placement="top"
+          >
+            <i class="el-icon-question"/>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="图片">
           <el-upload
-            action="https://upload.qiniup.com"
             ref="uploader"
             :data="uploadHeaders"
             :on-error="handleErrorImage"
@@ -139,10 +181,14 @@
             :before-upload="beforeUploadImage"
             :file-list="form.images"
             :on-exceed="handleExceed"
-            multiple
             :limit="exceed"
+            multiple
+            action="https://upload.qiniup.com"
           >
-            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button
+              size="small"
+              type="primary"
+            >点击上传</el-button>
           </el-upload>
         </el-form-item>
       </template>
@@ -150,37 +196,56 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="名称">
-              <el-input v-model="albumForm.name" placeholder="请填写相册名称"></el-input>
+              <el-input
+                v-model="albumForm.name"
+                placeholder="请填写相册名称"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-form-item label="番剧">
-            <el-select v-model="albumForm.bangumiId" filterable placeholder="请选择番剧">
+            <el-select
+              v-model="albumForm.bangumiId"
+              filterable
+              placeholder="请选择番剧"
+            >
               <el-option
                 v-for="item in bangumis"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id">
-              </el-option>
+                :value="item.id"
+              />
             </el-select>
-            <el-tooltip class="item" effect="dark" content="只能选择你已关注的番剧" placement="top">
-              <i class="el-icon-question"></i>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="只能选择你已关注的番剧"
+              placement="top"
+            >
+              <i class="el-icon-question"/>
             </el-tooltip>
           </el-form-item>
         </el-row>
-        <el-form-item label="漫画" v-if="user.faker">
-          <el-switch v-model="albumForm.isCartoon"></el-switch>
+        <el-form-item
+          v-if="user.faker"
+          label="漫画"
+        >
+          <el-switch v-model="albumForm.isCartoon"/>
         </el-form-item>
         <el-form-item label="原创">
-          <el-switch v-model="albumForm.creator"></el-switch>
-          <el-tooltip class="item" effect="dark" content="只有相册内容全是原创时才应该勾选" placement="top">
-            <i class="el-icon-question"></i>
+          <el-switch v-model="albumForm.creator"/>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="只有相册内容全是原创时才应该勾选"
+            placement="top"
+          >
+            <i class="el-icon-question"/>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="封面">
           <el-upload
-            action="https://upload.qiniup.com"
             ref="albumUploader"
             :data="uploadHeaders"
             :on-error="handleError"
@@ -188,8 +253,13 @@
             :on-success="handleAlbumUploadSuccess"
             :before-upload="beforeUpload"
             :file-list="albumForm.poster"
+            action="https://upload.qiniup.com"
           >
-            <el-button size="small" type="primary" :disalbed="submitting">点击上传</el-button>
+            <el-button
+              :disalbed="submitting"
+              size="small"
+              type="primary"
+            >点击上传</el-button>
           </el-upload>
         </el-form-item>
       </template>
@@ -202,17 +272,6 @@
 
   export default {
     name: 'UploadImageModal',
-    computed: {
-      albums () {
-        return this.$store.state.image.albums
-      },
-      user () {
-        return this.$store.state.user
-      },
-      zone () {
-        return this.user.zone
-      }
-    },
     data () {
       return {
         uploadHeaders: {
@@ -247,6 +306,26 @@
         exceed: 10,
         pendingUpload: 0
       }
+    },
+    computed: {
+      albums () {
+        return this.$store.state.image.albums
+      },
+      user () {
+        return this.$store.state.user
+      },
+      zone () {
+        return this.user.zone
+      }
+    },
+    mounted () {
+      this.$channel.$on('open-upload-image-modal', () => {
+        this.getUploadType()
+        this.getUserBangumis()
+        this.getUserAlbum()
+        this.getUpToken()
+        this.show = true
+      })
     },
     methods: {
       async getUserBangumis () {
@@ -537,15 +616,6 @@
           this.submitting = false
         }
       }
-    },
-    mounted () {
-      this.$channel.$on('open-upload-image-modal', () => {
-        this.getUploadType()
-        this.getUserBangumis()
-        this.getUserAlbum()
-        this.getUpToken()
-        this.show = true
-      })
     }
   }
 </script>

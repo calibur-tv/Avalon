@@ -326,48 +326,79 @@
 </style>
 
 <template>
-  <div id="music" :class="[ open ? 'M-open' : 'M-close' ]">
-    <audio ref="audio"></audio>
-    <button class="toggle" @click="musicToggle">
-      <i class="iconfont icon-yinle"></i>
+  <div
+    id="music"
+    :class="[ open ? 'M-open' : 'M-close' ]"
+  >
+    <audio ref="audio"/>
+    <button
+      class="toggle"
+      @click="musicToggle"
+    >
+      <i class="iconfont icon-yinle"/>
     </button>
     <div class="M-main">
       <div class="M-warp">
-        <img class="M-face" :src="now.img">
+        <img
+          :src="now.img"
+          class="M-face"
+        >
         <div class="M-control">
           <div class="header">
             <div class="left">
               <a>{{ now.name }}</a>
-              <span class="M-dot"></span>
+              <span class="M-dot"/>
               <a>{{ now.player }}</a>
             </div>
-            <button class="menu-btn" :class="{ 'menu-click' : status.menuShow }" @click="status.menuShow = !status.menuShow">
-              <i class="iconfont icon-liebiao"></i>
+            <button
+              :class="{ 'menu-click' : status.menuShow }"
+              class="menu-btn"
+              @click="status.menuShow = !status.menuShow"
+            >
+              <i class="iconfont icon-liebiao"/>
             </button>
           </div>
           <div class="center">
             <div class="M-play-control">
-              <button class="sm-btn" @click="next(false)">
-                <i class="iconfont icon-svgprevious"></i>
+              <button
+                class="sm-btn"
+                @click="next(false)"
+              >
+                <i class="iconfont icon-svgprevious"/>
               </button>
-              <button class="lg-btn" @click="handlePlayBtnClick">
-                <i class="iconfont" :class="[ status.playing ? 'icon-icon-' : 'icon-bofang1' ]"></i>
+              <button
+                class="lg-btn"
+                @click="handlePlayBtnClick"
+              >
+                <i
+                  :class="[ status.playing ? 'icon-icon-' : 'icon-bofang1' ]"
+                  class="iconfont"
+                />
               </button>
-              <button class="sm-btn" @click="next(true)">
-                <i class="iconfont icon-iconfontsvgnext"></i>
+              <button
+                class="sm-btn"
+                @click="next(true)"
+              >
+                <i class="iconfont icon-iconfontsvgnext"/>
               </button>
             </div>
             <div class="M-voice-control">
-              <button class="sm-btn" @click="handleMuteBtnClick">
-                <i class="iconfont" :class="[ status.silent ? 'icon-jingyin' : 'icon-zengdayinliang' ]"></i>
+              <button
+                class="sm-btn"
+                @click="handleMuteBtnClick"
+              >
+                <i
+                  :class="[ status.silent ? 'icon-jingyin' : 'icon-zengdayinliang' ]"
+                  class="iconfont"
+                />
               </button>
               <span class="M-all-voice">
                 <v-range
                   v-model="status.voice"
-                  @rangeChangeEvent="volume"
                   :barsize="3"
                   :tailsize="9"
-                ></v-range>
+                  @rangeChangeEvent="volume"
+                />
               </span>
             </div>
           </div>
@@ -383,30 +414,49 @@
           :barsize="3"
           :tailsize="0"
           :disabled="true"
-        ></v-range>
+        />
       </span>
     </div>
-    <div class="M-menu" :class="{ 'menu-show': status.menuShow }">
+    <div
+      :class="{ 'menu-show': status.menuShow }"
+      class="M-menu"
+    >
       <div class="M-menu-wrap">
         <div class="header">
           <h3 class="list">歌曲列表</h3>
-          <button class="close" @click="status.menuShow = false">&times;</button>
+          <button
+            class="close"
+            @click="status.menuShow = false"
+          >&times;</button>
         </div>
         <div class="body">
           <div class="title item">
             <div class="item-right">歌手</div>
             <div class="item-left">歌曲</div>
           </div>
-          <div class="item" v-for="item in list">
+          <div
+            v-for="(item, index) in list"
+            :key="index"
+            class="item"
+          >
             <div class="item-right oneline">{{ item.player }}</div>
             <div class="item-left">
               <div>
-                <span v-show="item.playing" :class="['icon', status.playing ? 'icon-play' : 'icon-pause']"></span>
-                <a @click="loadSource(item)">{{ item.name }}</a>
+                <span
+                  v-show="item.playing"
+                  :class="['icon', status.playing ? 'icon-play' : 'icon-pause']"
+                />
+                <a
+                  @click="loadSource(item)"
+                >{{ item.name }}</a>
               </div>
               <div class="hover">
-                <button title="点击播放" class="sm-btn play" @click="loadSource(item)">
-                  <i class="iconfont icon-tongji"></i>
+                <button
+                  title="点击播放"
+                  class="sm-btn play"
+                  @click="loadSource(item)"
+                >
+                  <i class="iconfont icon-tongji"/>
                 </button>
               </div>
             </div>
@@ -474,6 +524,38 @@
           selected: true,
           playing: false
         }))
+      })
+    },
+    mounted () {
+      const audio = this.$refs.audio
+      this.player = audio
+      audio.volume = 0.5
+
+      audio.addEventListener('ended', () => {
+        this.status.playing = false
+        this.next(true)
+      })
+
+      audio.addEventListener('durationchange', () => {
+        const duration = audio.duration
+        const timeArr = this.formatSeconds(duration)
+        this.status.duration = duration
+        this.time.all = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
+      })
+
+      audio.addEventListener('timeupdate', () => {
+        const current = audio.currentTime
+        const timeArr = this.formatSeconds(current)
+        this.status.current = current
+        this.time.cur = timeArr[0]
+          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
+          : `${timeArr[1]}:${timeArr[2]}`
+      })
+
+      audio.addEventListener('error', () => {
+        this.next(true)
       })
     },
     methods: {
@@ -556,38 +638,6 @@
         this.status.playing = !this.status.playing
         this.player.paused ? this.player.play() : this.player.pause()
       }
-    },
-    mounted () {
-      const audio = this.$refs.audio
-      this.player = audio
-      audio.volume = 0.5
-
-      audio.addEventListener('ended', () => {
-        this.status.playing = false
-        this.next(true)
-      })
-
-      audio.addEventListener('durationchange', () => {
-        const duration = audio.duration
-        const timeArr = this.formatSeconds(duration)
-        this.status.duration = duration
-        this.time.all = timeArr[0]
-          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
-          : `${timeArr[1]}:${timeArr[2]}`
-      })
-
-      audio.addEventListener('timeupdate', () => {
-        const current = audio.currentTime
-        const timeArr = this.formatSeconds(current)
-        this.status.current = current
-        this.time.cur = timeArr[0]
-          ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
-          : `${timeArr[1]}:${timeArr[2]}`
-      })
-
-      audio.addEventListener('error', () => {
-        this.next(true)
-      })
     }
   }
 </script>

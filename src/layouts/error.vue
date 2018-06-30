@@ -52,19 +52,22 @@
 
 <template>
   <div id="error-default">
-    <v-header></v-header>
-    <v-banner></v-banner>
+    <v-header/>
+    <v-banner/>
     <div class="error-message">
-      <img class="error-img" src="https://image.calibur.tv/owner/error/404.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/500/h/500">
+      <img
+        class="error-img"
+        src="https://image.calibur.tv/owner/error/404.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/500/h/500"
+      >
       <div class="error-show">
-        <router-view class="error-config"></router-view>
+        <router-view class="error-config"/>
         <div class="error-log">
           <p>错误来源：{{ from }}</p>
           <p>错误信息：{{ message }}</p>
         </div>
       </div>
     </div>
-    <v-footer></v-footer>
+    <v-footer/>
   </div>
 </template>
 
@@ -73,7 +76,7 @@
   import vFooter from '~/components/layouts/Footer'
 
   export default {
-    name: 'error-layout',
+    name: 'ErrorLayout',
     components: {
       vHeader,
       vFooter

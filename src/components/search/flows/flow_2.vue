@@ -76,25 +76,52 @@
 
 <template>
   <div class="search-item-bangumi">
-    <a target="_blank" :href="$alias.bangumi(item.id)" class="in-common-avatar" v-if="inCommon">
-      <img :src="$resize(item.avatar, { width: 180, height: 240 })" :alt="item.name">
+    <a
+      v-if="inCommon"
+      :href="$alias.bangumi(item.id)"
+      target="_blank"
+      class="in-common-avatar"
+    >
+      <img
+        :src="$resize(item.avatar, { width: 180, height: 240 })"
+        :alt="item.name"
+      >
     </a>
-    <a target="_blank" :href="$alias.bangumi(item.id)" class="avatar" v-else>
-      <img :src="$resize(item.avatar, { width: 252, height: 336 })" :alt="item.name">
+    <a
+      v-else
+      :href="$alias.bangumi(item.id)"
+      target="_blank"
+      class="avatar"
+    >
+      <img
+        :src="$resize(item.avatar, { width: 252, height: 336 })"
+        :alt="item.name"
+      >
     </a>
     <div class="intro">
       <div class="head">
-        <span class="badge" v-if="inCommon">番剧</span>
-        <a target="_blank" class="name" :href="$alias.bangumi(item.id)" v-text="item.name"></a>
+        <span
+          v-if="inCommon"
+          class="badge"
+        >番剧</span>
+        <a
+          :href="$alias.bangumi(item.id)"
+          target="_blank"
+          class="name"
+          v-text="item.name"
+        />
       </div>
-      <p class="summary" v-text="item.summary"></p>
+      <p
+        class="summary"
+        v-text="item.summary"
+      />
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'search-item-bangumi',
+    name: 'SearchItemBangumi',
     props: {
       item: {
         required: true,

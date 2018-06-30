@@ -5,12 +5,25 @@
 
 <template>
   <transition name="el-fade-in">
-    <div class="search-history" v-if="show && list.length">
-      <v-hr text="历史搜索"></v-hr>
+    <div
+      v-if="show && list.length"
+      class="search-history"
+    >
+      <v-hr text="历史搜索"/>
       <ul>
-        <li v-for="item in list">
-          <a class="oneline" v-text="item" @click="query(item)"></a>
-          <span class="del" @click.stop="del(item)">&times;</span>
+        <li
+          v-for="(item, index) in list"
+          :key="index"
+        >
+          <a
+            class="oneline"
+            @click="query(item)"
+            v-text="item"
+          />
+          <span
+            class="del"
+            @click.stop="del(item)"
+          >&times;</span>
         </li>
       </ul>
     </div>
@@ -19,7 +32,7 @@
 
 <script>
   export default {
-    name: 'v-search-history',
+    name: 'VSearchHistory',
     props: {
       value: {
         type: Boolean,
@@ -33,6 +46,18 @@
         list: [],
         maxLen: 5
       }
+    },
+    mounted () {
+      this.$watch('value', (val) => {
+        this.show = val
+      })
+      this.$watch('show', (val) => {
+        this.$emit('input', val)
+      })
+      this.$channel.$on('search-action', ({ text, type }) => {
+        this.set(text)
+      })
+      this.list = this.get()
     },
     methods: {
       query (q) {
@@ -80,18 +105,6 @@
         } catch (e) {}
         this.list.splice(index, 1)
       }
-    },
-    mounted () {
-      this.$watch('value', (val) => {
-        this.show = val
-      })
-      this.$watch('show', (val) => {
-        this.$emit('input', val)
-      })
-      this.$channel.$on('search-action', ({ text, type }) => {
-        this.set(text)
-      })
-      this.list = this.get()
     }
   }
 </script>

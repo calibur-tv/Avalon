@@ -54,22 +54,40 @@
 
 <template>
   <div class="search-item-role">
-    <a target="_blank" :href="$alias.cartoonRole(item.id)" class="avatar">
-      <img :src="$resize(item.avatar, { width: 180 })" :alt="item.name">
+    <a
+      :href="$alias.cartoonRole(item.id)"
+      target="_blank"
+      class="avatar"
+    >
+      <img
+        :src="$resize(item.avatar, { width: 180 })"
+        :alt="item.name"
+      >
     </a>
     <div class="intro">
       <div class="head">
-        <span class="badge" v-if="inCommon">偶像</span>
-        <a target="_blank" class="name" :href="$alias.cartoonRole(item.id)" v-text="item.name"></a>
+        <span
+          v-if="inCommon"
+          class="badge"
+        >偶像</span>
+        <a
+          :href="$alias.cartoonRole(item.id)"
+          target="_blank"
+          class="name"
+          v-text="item.name"
+        />
       </div>
-      <p class="intro" v-text="item.intro"></p>
+      <p
+        class="intro"
+        v-text="item.intro"
+      />
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'search-item-role',
+    name: 'SearchItemRole',
     props: {
       item: {
         required: true,

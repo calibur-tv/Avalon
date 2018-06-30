@@ -89,58 +89,92 @@
 <template>
   <div class="v-select-wrap">
     <div
+      :class="{ 'open': show }"
       class="v-select-submit-wrap"
       @click.stop="handleSubmitClick"
-      :class="{ 'open': show }"
     >
       <slot name="tail">
-        <svg viewBox="0 0 10 6"
-             aria-hidden="true">
-          <path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path>
+        <svg
+          viewBox="0 0 10 6"
+          aria-hidden="true"
+        >
+          <path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"/>
         </svg>
       </slot>
     </div>
-    <div class="v-select-text-area-wrap" v-if="enter" @click="handleTextAreaFocus">
-      <ul class="v-select-selected-item-wrap" v-if="haveSelected" @click.stop>
+    <div
+      v-if="enter"
+      class="v-select-text-area-wrap"
+      @click="handleTextAreaFocus"
+    >
+      <ul
+        v-if="haveSelected"
+        class="v-select-selected-item-wrap"
+        @click.stop
+      >
         <li
           v-for="item in selectedList"
           :key="item.__uuid__"
           class="v-select-selected-item"
         >
           <slot name="selected">
-            <span class="v-selected-selected-cancel" v-if="multi" @click="handleSelectedCancel(item)">&times;</span>
+            <span
+              v-if="multi"
+              class="v-selected-selected-cancel"
+              @click="handleSelectedCancel(item)"
+            >&times;</span>
             {{ item[`${showLabel}`] }}
           </slot>
         </li>
       </ul>
-      <div class="v-select-placeholder" v-else-if="!show">
+      <div
+        v-else-if="!show"
+        class="v-select-placeholder"
+      >
         <slot name="placeholder">
           {{ placeholder }}
         </slot>
       </div>
       <div class="v-select-input-wrap">
         <input
-          class="v-select-input"
           v-model="input"
+          class="v-select-input"
+          type="text"
           @keyup.enter="handleSubmitClick"
-          type="text">
+        >
       </div>
     </div>
-    <div class="v-select-text-area-wrap" v-else>
-      <div class="v-select-input-wrap" @click="handleTextAreaFocus">
-        <ul class="v-select-selected-item-wrap" v-if="haveSelected">
+    <div
+      v-else
+      class="v-select-text-area-wrap"
+    >
+      <div
+        class="v-select-input-wrap"
+        @click="handleTextAreaFocus"
+      >
+        <ul
+          v-if="haveSelected"
+          class="v-select-selected-item-wrap"
+        >
           <li
             v-for="item in selectedList"
             :key="item.__uuid__"
             class="v-select-selected-item"
           >
             <slot name="selected">
-              <span class="v-selected-selected-cancel" v-if="multi" @click="handleSelectedCancel(item)">&times;</span>
+              <span
+                v-if="multi"
+                class="v-selected-selected-cancel"
+                @click="handleSelectedCancel(item)"
+              >&times;</span>
               {{ item[`${showLabel}`] }}
             </slot>
           </li>
         </ul>
-        <div class="v-select-placeholder" v-else>
+        <div
+          v-else
+          class="v-select-placeholder"
+        >
           <slot name="placeholder">
             {{ placeholder }}
           </slot>
@@ -148,16 +182,20 @@
       </div>
     </div>
     <transition name="zoom-in-top">
-      <ul class="v-select-options-wrap" ref="ul" v-show="show">
+      <ul
+        v-show="show"
+        ref="ul"
+        class="v-select-options-wrap"
+      >
         <slot name="options">
           <li
             v-for="item in list"
-            class="v-select-options-item"
             :class="{
               'selected': item[`${selectedLabel}`],
               'disabled': item[`${disabledLabel}`]
             }"
             :key="item.__uuid__"
+            class="v-select-options-item"
             @click="handleOptionClick(item)"
           >
             {{ item[`${showLabel}`] }}
@@ -227,7 +265,7 @@
   }
 
   export default {
-    name: 'v-select',
+    name: 'VSelect',
     props: {
       enter: {
         type: Boolean,
@@ -235,7 +273,7 @@
       },
       options: {
         required: true,
-        default: [],
+        default: () => [],
         type: Array
       },
       showLabel: {
@@ -258,7 +296,10 @@
         type: [String, Object],
         default: '请选择'
       },
-      value: {},
+      value: {
+        type: [String, Object],
+        default: ''
+      },
       required: {
         type: Boolean,
         default: true
@@ -272,18 +313,12 @@
         default: false
       }
     },
-    watch: {
-      options (val) {
-        this.list = encodeOptions(val, this.selectedLabel, this.disabledLabel, this.$set)
-      },
-      list: {
-        handler (val) {
-          this.setSelected(val)
-        },
-        deep: true
-      },
-      selected (val) {
-        this.$emit('input', val)
+    data () {
+      return {
+        show: false,
+        list: encodeOptions(this.options, this.selectedLabel, this.disabledLabel, this.$set),
+        selected: undefined,
+        input: ''
       }
     },
     computed: {
@@ -307,13 +342,31 @@
           : false
       }
     },
-    data () {
-      return {
-        show: false,
-        list: encodeOptions(this.options, this.selectedLabel, this.disabledLabel, this.$set),
-        selected: undefined,
-        input: ''
+    watch: {
+      options (val) {
+        this.list = encodeOptions(val, this.selectedLabel, this.disabledLabel, this.$set)
+      },
+      list: {
+        handler (val) {
+          this.setSelected(val)
+        },
+        deep: true
+      },
+      selected (val) {
+        this.$emit('input', val)
       }
+    },
+    mounted () {
+      this.setSelected(this.list, true)
+      this.hackOptionsEncode()
+      document.body.addEventListener('click', (e) => {
+        if (!this.show) {
+          return
+        }
+        if (!this.$refs.ul.contains(e.target)) {
+          this.show = false
+        }
+      })
     },
     methods: {
       decodeOption (option) {
@@ -451,18 +504,6 @@
         }
         item[this.selectedLabel] = false
       }
-    },
-    mounted () {
-      this.setSelected(this.list, true)
-      this.hackOptionsEncode()
-      document.body.addEventListener('click', (e) => {
-        if (!this.show) {
-          return
-        }
-        if (!this.$refs.ul.contains(e.target)) {
-          this.show = false
-        }
-      })
     }
   }
 </script>
