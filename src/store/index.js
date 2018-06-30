@@ -39,8 +39,13 @@ export function createStore () {
       }
     },
     actions: {
-      async init ({ commit }, ctx) {
+      async initAuth ({ commit }, { ctx, must }) {
         const cookie = ctx.header.cookie
+        const throwError = () => {
+          const error = new Error()
+          error.code = 401
+          throw error
+        }
         if (cookie) {
           let token = ''
           cookie.split('; ').forEach(item => {
@@ -55,14 +60,17 @@ export function createStore () {
               const user = await api.getLoginUser()
               if (user) {
                 commit('SET_USER', user)
-              }
+              } else if (must) { throwError() }
             } catch (e) {
-              // do nothing
+              if (must) { throwError() }
             }
-          }
-        }
+          } else if (must) { throwError() }
+        } else if (must) { throwError() }
       },
       async getUpToken ({ state, commit }, ctx) {
+        if (!state.user) {
+          return
+        }
         if (state.user.uptoken.expiredAt <= parseInt(Date.now() / 1000, 10)) {
           const api = new ImageApi(ctx)
           const data = await api.getUpToken()
@@ -71,7 +79,10 @@ export function createStore () {
           })
         }
       },
-      async getNotification ({ commit }, ctx) {
+      async getNotification ({ state, commit }, ctx) {
+        if (!state.user) {
+          return
+        }
         const api = new UserApi(ctx)
         const data = await api.getNotificationCount()
         commit('SET_USER_INFO', {

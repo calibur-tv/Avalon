@@ -8,11 +8,13 @@
   <div id="app">
     <img id="__share-logo" class="share-image" src="https://image.calibur.tv/owner/logo-new/logo.png?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/150" alt="logo">
     <router-view></router-view>
+    <v-sign></v-sign>
   </div>
 </template>
 
 <script>
   import { qiniu, script, env } from 'env'
+  import vSign from '~/components/layouts/Sign'
 
   export default {
     name: 'Entry',
@@ -41,6 +43,9 @@
         env !== 'development' ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true } : ''
       ].filter(_ => _),
       __dangerouslyDisableSanitizers: 'script'
+    },
+    components: {
+      vSign
     }
   }
 </script>

@@ -20,7 +20,7 @@ class Http {
       })
       return res.data.data
     } catch (e) {
-      const code = e.response ? e.response.status : 500
+      const code = e.response ? e.response.status || 0 : 503
       if (code === 401) {
         return null
       }
@@ -40,7 +40,7 @@ class Http {
       }
       return res.data.data
     } catch (e) {
-      const code = e.response ? e.response.status : 500
+      const code = e.response ? e.response.status || 0 : 503
       if (code === 401) {
         return null
       }
