@@ -14,10 +14,14 @@ export function createRouter () {
   return new Router({
     mode: 'history',
     base: '/',
+    scrollBehavior (to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    },
     routes: [
       {
         path: '/',
         component: () => import('~/layouts/default'),
+        meta: { useAuth: true },
         children: [
           {
             path: '',
@@ -97,6 +101,41 @@ export function createRouter () {
             path: 'search',
             name: 'search-index',
             component: () => import('~/views/search/index')
+          }
+        ]
+      },
+      {
+        path: '/errors',
+        meta: { useAuth: false },
+        component: () => import('~/layouts/error'),
+        children: [
+          {
+            path: '400',
+            component: () => import('~/views/error/400')
+          },
+          {
+            path: '401',
+            component: () => import('~/views/error/401')
+          },
+          {
+            path: '403',
+            component: () => import('~/views/error/403')
+          },
+          {
+            path: '404',
+            component: () => import('~/views/error/404')
+          },
+          {
+            path: '429',
+            component: () => import('~/views/error/429')
+          },
+          {
+            path: '500',
+            component: () => import('~/views/error/500')
+          },
+          {
+            path: '503',
+            component: () => import('~/views/error/503')
           }
         ]
       }

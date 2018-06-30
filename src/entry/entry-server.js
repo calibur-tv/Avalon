@@ -5,27 +5,43 @@ export default ssrContext => {
   const meta = app.$meta()
 
   return new Promise((resolve, reject) => {
-    router.push(ssrContext.url)
+    const url = ssrContext.url
+    router.push(url)
     router.onReady(async () => {
       const matchedComponents = router.getMatchedComponents()
       if (!matchedComponents.length) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject({ code: 404 })
       }
+      const ctx = ssrContext.ctx
+      const routeMatched = router.currentRoute.matched
+      const useAuth = routeMatched.some(record => record.meta.useAuth)
+      const mustAuth = routeMatched.some(record => record.meta.mustAuth)
       try {
-        const matched = matchedComponents.map(({asyncData}) => asyncData && asyncData({
-          ctx: ssrContext.ctx,
+        if (mustAuth) {
+          await store.dispatch('initAuth', {
+            ctx,
+            must: true
+          })
+        }
+        const matched = matchedComponents.map(({ asyncData }) => asyncData && asyncData({
+          ctx,
           store,
           route: router.currentRoute
         }))
-        matched.unshift(store.dispatch('init', ssrContext.ctx))
+        if (useAuth) {
+          matched.unshift(store.dispatch('initAuth', {
+            ctx,
+            must: false
+          }))
+        }
         await Promise.all(matched)
+        ssrContext.state = store.state
+        ssrContext.meta = meta
+        resolve(app)
       } catch (e) {
         reject(e)
       }
-      ssrContext.state = store.state
-      ssrContext.meta = meta
-      resolve(app)
     }, reject)
   })
 }

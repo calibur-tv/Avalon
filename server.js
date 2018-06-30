@@ -20,7 +20,7 @@ const microCache = LRU({
   maxAge: isDev ? 0 : 1000 * 60 * 15
 })
 const cacheHTML = (status) => {
-  const code = [200, 404, 429, 500, 503].indexOf(status) !== -1 ? status : 500
+  const code = [200, 408].indexOf(status) !== -1 ? status : 408
   const hit = microCache.get(`render-html-${code}`)
   let html
   if (hit && !isDev) {
@@ -69,8 +69,8 @@ router.get('*', async ctx => {
   ctx.type = 'html'
 
   if (!renderer) {
-    ctx.status = 503
-    ctx.body = cacheHTML(503)
+    ctx.status = 408
+    ctx.body = cacheHTML(408)
     return
   }
 
@@ -88,10 +88,18 @@ router.get('*', async ctx => {
   try {
     ctx.body = await renderer.renderToString(context)
   } catch (e) {
-    const code = e.code || 500
-    ctx.status = code
-    console.error(e)
-    ctx.body = cacheHTML(code)
+    const code = e.code || 0
+    if (isDev) {
+      console.error(e)
+    }
+    switch (code) {
+      case 302:
+        ctx.redirect(e.url)
+        break
+      default:
+        ctx.redirect(`/errors/${code}?redirect=${encodeURIComponent(req.url)}&message=${e.message}`)
+        break
+    }
   }
 })
 
