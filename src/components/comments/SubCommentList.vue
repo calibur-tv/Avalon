@@ -28,15 +28,24 @@
       :comment="comment"
       :parent-user-id="authorId"
       :type="type"
-    ></sub-comment-item>
-    <div class="view-more" v-if="!comments.noMore || comments.list.length > 5">
+    />
+    <div
+      v-if="!comments.noMore || comments.list.length > 5"
+      class="view-more"
+    >
       共<strong>{{ comments.total }}</strong>条回复
-      <template v-if="!comments.noMore">
-        ，<button class="more-btn" @click="loadMore">查看更多</button>
+      <template
+        v-if="!comments.noMore"
+      >
+        ，
+        <button
+          class="more-btn"
+          @click="loadMore"
+        >查看更多</button>
       </template>
       <button
-        class="collapse-btn"
         v-if="showCollapse"
+        class="collapse-btn"
         @click="collapsed = !collapsed"
       >{{ collapsed ? '展开' : '收起' }}</button>
     </div>
@@ -47,16 +56,27 @@
   import SubCommentItem from './SubCommentItem.vue'
 
   export default {
-    name: 'v-sub-comment-list',
+    name: 'VSubCommentList',
+    components: {
+      SubCommentItem
+    },
     props: {
       parentComment: {
         required: true,
         type: Object
       },
-      type: [String]
+      type: {
+        required: true,
+        type: String,
+        default: ''
+      }
     },
-    components: {
-      SubCommentItem
+    data () {
+      return {
+        loading: false,
+        showCollapse: false,
+        collapsed: false
+      }
     },
     computed: {
       comments () {
@@ -79,13 +99,6 @@
         return result.concat(
           comments.filter(_ => _.id > data.maxId && ids.indexOf(_.id) === -1)
         )
-      }
-    },
-    data () {
-      return {
-        loading: false,
-        showCollapse: false,
-        collapsed: false
       }
     },
     methods: {

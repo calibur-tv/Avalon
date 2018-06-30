@@ -76,24 +76,34 @@
 </style>
 
 <template>
-  <div id="creator-button-wrap" v-show="$route.name !== 'homepage'">
+  <div
+    v-show="$route.name !== 'homepage'"
+    id="creator-button-wrap"
+  >
     <div class="creator-button-box">
       <div
-        class="mint-palette-button"
         :class="{ expand: expanded, 'mint-palette-button-active': transforming }"
+        class="mint-palette-button"
         @animationend="onMainAnimationEnd"
         @webkitAnimationEnd="onMainAnimationEnd"
         @mozAnimationEnd="onMainAnimationEnd"
       >
-        <div class="mint-sub-button-container" @click="collapse">
-          <slot></slot>
+        <div
+          class="mint-sub-button-container"
+          @click="collapse"
+        >
+          <slot/>
         </div>
-        <el-tooltip placement="right" effect="dark" content="创作">
+        <el-tooltip
+          placement="right"
+          effect="dark"
+          content="创作"
+        >
           <button
-            @click="toggle"
-            class="mint-main-button iconfont icon-fatie1"
             :style="mainButtonStyle"
-          ></button>
+            class="mint-main-button iconfont icon-fatie1"
+            @click="toggle"
+          />
         </el-tooltip>
       </div>
     </div>
@@ -102,13 +112,7 @@
 
 <script>
   export default {
-    name: 'mt-palette-button',
-    data: function () {
-      return {
-        transforming: false, // 是否正在执行动画
-        expanded: false // 是否已经展开子按钮
-      }
-    },
+    name: 'MtPaletteButton',
     props: {
       offset: {
         type: Number, // 扇面偏移角，默认是四分之π，配合默认方向lt
@@ -125,6 +129,40 @@
       mainButtonStyle: {
         type: String, // 应用到 mint-main-button 上的 class
         default: ''
+      }
+    },
+    data: function () {
+      return {
+        transforming: false, // 是否正在执行动画
+        expanded: false // 是否已经展开子按钮
+      }
+    },
+    mounted () {
+      this.slotChildren = []
+      for (let i = 0; i < this.$slots.default.length; i++) {
+        if (this.$slots.default[i].elm.nodeType !== 3) {
+          this.slotChildren.push(this.$slots.default[i])
+        }
+      }
+      let css = ''
+      let directionArc = Math.PI * (3 + Math.max(['lt', 't', 'rt', 'r', 'rb', 'b', 'lb', 'l'].indexOf(this.direction), 0)) / 4
+      for (let i = 0; i < this.slotChildren.length; i++) {
+        const arc = (Math.PI - this.offset * 2) / (this.slotChildren.length - 1) * i + this.offset + directionArc
+        const x = (Math.cos(arc) * this.radius).toFixed(2)
+        const y = (Math.sin(arc) * this.radius).toFixed(2)
+        css += '.expand .palette-button-' + this._uid + '-sub-' + i + '{transform:translate(' + x + 'px,' + y + 'px) rotate(720deg);transition-delay:' + 0.03 * i + 's}'
+        this.slotChildren[i].elm.className += (' palette-button-' + this._uid + '-sub-' + i)
+      }
+      this.styleNode = document.createElement('style')
+      this.styleNode.type = 'text/css'
+      this.styleNode.rel = 'stylesheet'
+      this.styleNode.title = 'palette button style'
+      this.styleNode.appendChild(document.createTextNode(css))
+      document.getElementsByTagName('head')[0].appendChild(this.styleNode)
+    },
+    destroyed () {
+      if (this.styleNode) {
+        this.styleNode.parentNode.removeChild(this.styleNode)
       }
     },
     methods: {
@@ -156,34 +194,6 @@
         this.$backdrop.hide()
         this.expanded = false
         this.$emit('collapse', event)
-      }
-    },
-    mounted () {
-      this.slotChildren = []
-      for (let i = 0; i < this.$slots.default.length; i++) {
-        if (this.$slots.default[i].elm.nodeType !== 3) {
-          this.slotChildren.push(this.$slots.default[i])
-        }
-      }
-      let css = ''
-      let directionArc = Math.PI * (3 + Math.max(['lt', 't', 'rt', 'r', 'rb', 'b', 'lb', 'l'].indexOf(this.direction), 0)) / 4
-      for (let i = 0; i < this.slotChildren.length; i++) {
-        const arc = (Math.PI - this.offset * 2) / (this.slotChildren.length - 1) * i + this.offset + directionArc
-        const x = (Math.cos(arc) * this.radius).toFixed(2)
-        const y = (Math.sin(arc) * this.radius).toFixed(2)
-        css += '.expand .palette-button-' + this._uid + '-sub-' + i + '{transform:translate(' + x + 'px,' + y + 'px) rotate(720deg);transition-delay:' + 0.03 * i + 's}'
-        this.slotChildren[i].elm.className += (' palette-button-' + this._uid + '-sub-' + i)
-      }
-      this.styleNode = document.createElement('style')
-      this.styleNode.type = 'text/css'
-      this.styleNode.rel = 'stylesheet'
-      this.styleNode.title = 'palette button style'
-      this.styleNode.appendChild(document.createTextNode(css))
-      document.getElementsByTagName('head')[0].appendChild(this.styleNode)
-    },
-    destroyed () {
-      if (this.styleNode) {
-        this.styleNode.parentNode.removeChild(this.styleNode)
       }
     }
   }

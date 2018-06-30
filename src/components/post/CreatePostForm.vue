@@ -23,33 +23,48 @@
 
 <template>
   <el-form
-    class="create-post-form"
+    ref="forms"
     :model="forms"
     :rules="rules"
-    ref="forms"
     label-width="50px"
+    class="create-post-form"
   >
-    <el-form-item label="标题" prop="title">
-      <el-input v-model.trim="forms.title" placeholder="请填写帖子标题"></el-input>
+    <el-form-item
+      label="标题"
+      prop="title"
+    >
+      <el-input
+        v-model.trim="forms.title"
+        placeholder="请填写帖子标题"
+      />
     </el-form-item>
-    <el-form-item label="番剧" prop="bangumiId">
-      <el-select v-model="forms.bangumiId" filterable placeholder="请选择你关注的番剧">
+    <el-form-item
+      label="番剧"
+      prop="bangumiId"
+    >
+      <el-select
+        v-model="forms.bangumiId"
+        filterable
+        placeholder="请选择你关注的番剧"
+      >
         <el-option
           v-for="item in optionBangumis"
           :label="item.name"
           :key="item.id"
           :value="item.id"
-        ></el-option>
+        />
       </el-select>
-      <el-tooltip class="item" effect="dark" content="只能选择你已关注的番剧" placement="top">
-        <i class="el-icon-question"></i>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="只能选择你已关注的番剧"
+        placement="top"
+      >
+        <i class="el-icon-question"/>
       </el-tooltip>
     </el-form-item>
     <el-form-item label="图片">
       <el-upload
-        action="https://upload.qiniup.com"
-        multiple
-        list-type="picture-card"
         ref="uploader"
         :data="uploadHeaders"
         :on-error="handleError"
@@ -58,28 +73,38 @@
         :on-exceed="handleExceed"
         :limit="exceed"
         :before-upload="beforeUpload"
+        action="https://upload.qiniup.com"
+        multiple
+        list-type="picture-card"
       >
-        <i class="el-icon-plus"></i>
+        <i class="el-icon-plus"/>
       </el-upload>
     </el-form-item>
-    <el-form-item label="内容" prop="content">
+    <el-form-item
+      label="内容"
+      prop="content"
+    >
       <el-input
+        v-model.trim="forms.content"
+        :rows="10"
         type="textarea"
         placeholder="1000字以内"
         resize="none"
-        :rows="10"
-        v-model.trim="forms.content"
-      ></el-input>
+      />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit" :loading="submitting">发布</el-button>
+      <el-button
+        :loading="submitting"
+        type="primary"
+        @click="submit"
+      >发布</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
   export default {
-    name: 'create-post-form',
+    name: 'CreatePostForm',
     data () {
       return {
         forms: {
@@ -138,6 +163,18 @@
       optionBangumis () {
         return this.appendBangumi.concat(this.bangumis)
       }
+    },
+    mounted () {
+      this.getUserFollowedBangumis()
+      this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
+        this.saveBangumiAndSelected(data)
+      })
+      if (this.$store.state.login) {
+        this.getUpToken()
+      }
+    },
+    beforeDestroy () {
+      this.$channel.$off('set-page-bangumi-for-post-create')
     },
     methods: {
       submit () {
@@ -280,18 +317,6 @@
         }
         this.appendBangumi.push(data)
       }
-    },
-    mounted () {
-      this.getUserFollowedBangumis()
-      this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
-        this.saveBangumiAndSelected(data)
-      })
-      if (this.$store.state.login) {
-        this.getUpToken()
-      }
-    },
-    beforeDestroy () {
-      this.$channel.$off('set-page-bangumi-for-post-create')
     }
   }
 </script>

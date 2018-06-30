@@ -64,33 +64,36 @@
 
 <template>
   <div id="search-index">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
       <div class="search-panel">
         <v-search
-          placeholder="搜索二次元的一切"
           v-model="words"
           :type="selectedType"
+          placeholder="搜索二次元的一切"
         >
           <template slot="submit-btn">
-            <i class="iconfont icon-sousuo"></i>
+            <i class="iconfont icon-sousuo"/>
             搜索
           </template>
         </v-search>
       </div>
-      <el-tabs v-model="selectedType" @tab-click="handleTabClick">
+      <el-tabs
+        v-model="selectedType"
+        @tab-click="handleTabClick"
+      >
         <el-tab-pane
           v-for="(tab, index) in tabs"
           :key="index"
           :name="index"
           :label="tab"
         >
-          <div class="col-aside"></div>
+          <div class="col-aside"/>
           <div class="col-main">
             <component
-              :is="`Nothing${selectedType}`"
               v-if="noMore && !list.length"
-            ></component>
+              :is="`Nothing${selectedType}`"
+            />
             <template v-else>
               <component
                 v-for="item in list"
@@ -98,19 +101,22 @@
                 :is="`Flow${item.type}`"
                 :item="item"
                 :in-common="item.type != selectedType"
-              ></component>
+              />
             </template>
             <el-button
-              class="load-more-btn"
-              :loading="loading"
               v-if="!noMore && list.length"
-              @click="loadMore"
+              :loading="loading"
               type="info"
               plain
               round
+              class="load-more-btn"
+              @click="loadMore"
             >{{ loading ? '加载中' : '加载更多' }}</el-button>
-            <div class="loading-wrap" v-if="loading && !list.length">
-              <div class="el-icon-loading"></div>
+            <div
+              v-if="loading && !list.length"
+              class="loading-wrap"
+            >
+              <div class="el-icon-loading"/>
             </div>
           </div>
         </el-tab-pane>
@@ -134,7 +140,7 @@
   import Nothing5 from '~/components/search/nothing/nothing_5'
 
   export default {
-    name: 'search-index',
+    name: 'SearchIndex',
     async asyncData ({ store, route, ctx }) {
       const args = route.query
       await store.dispatch('search/fetchData', {
@@ -157,6 +163,12 @@
       Nothing4,
       Nothing5
     },
+    data () {
+      return {
+        selectedType: this.$route.query.type,
+        words: this.$route.query.q
+      }
+    },
     computed: {
       resource () {
         return this.$store.state.search.resource[this.selectedType]
@@ -175,12 +187,6 @@
       },
       tabs () {
         return this.$store.state.search.tabs
-      }
-    },
-    data () {
-      return {
-        selectedType: this.$route.query.type,
-        words: this.$route.query.q
       }
     },
     methods: {

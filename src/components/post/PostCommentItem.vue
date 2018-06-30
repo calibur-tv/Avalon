@@ -78,53 +78,72 @@
 </style>
 
 <template>
-  <div class="post-item" :id="`comment-${post.id}`">
+  <div
+    :id="`comment-${post.id}`"
+    class="post-item"
+  >
     <div class="user">
-      <a :href="$alias.user(post.from_user_zone)" target="_blank">
-        <v-img class="avatar" :src="post.from_user_avatar" :width="80" :height="80"></v-img>
+      <a
+        :href="$alias.user(post.from_user_zone)"
+        target="_blank"
+      >
+        <v-img
+          :src="post.from_user_avatar"
+          :width="80"
+          :height="80"
+          class="avatar"
+        />
       </a>
       <a
         :href="$alias.user(post.from_user_zone)"
         class="nickname oneline"
         target="_blank"
         v-text="post.from_user_name"
-      ></a>
+      />
     </div>
     <div class="content">
       <div class="main">
         <div
-          class="image-package"
           v-for="(img, idx) in post.images"
           :key="idx"
+          class="image-package"
           @click="$previewImages(post.images, idx)"
         >
           <v-img
-            class="image"
-            width="550"
-            mode="2"
             :src="img.url"
             :source="img"
             :full="true"
             :aspect="$computeImageAspect(img)"
-          ></v-img>
+            class="image"
+            width="550"
+            mode="2"
+          />
         </div>
-        <div class="text-package" v-html="post.content"></div>
+        <div
+          class="text-package"
+          v-html="post.content"
+        />
       </div>
       <div class="footer">
         <div class="info-bar">
-          <button class="like-btn" @click="toggleLike">
+          <button
+            class="like-btn"
+            @click="toggleLike"
+          >
             {{ post.liked ? '已赞' : '赞' }}
             <span v-if="post.like_count">({{ post.like_count }})</span>
           </button>
-          <button class="delete-btn" v-if="canDelete" @click="deleteComment">删除</button>
+          <button
+            v-if="canDelete"
+            class="delete-btn"
+            @click="deleteComment"
+          >删除</button>
           <span class="floor-count">{{ post.floor_count }}楼</span>
-          <v-time v-model="post.created_at"></v-time>
+          <v-time v-model="post.created_at"/>
         </div>
       </div>
     </div>
-    <post-sub-comment-list
-      :parent-comment="post"
-    ></post-sub-comment-list>
+    <post-sub-comment-list :parent-comment="post"/>
   </div>
 </template>
 
@@ -132,7 +151,10 @@
   import PostSubCommentList from './PostSubCommentList.vue'
 
   export default {
-    name: 'post-comment-item',
+    name: 'PostCommentItem',
+    components: {
+      PostSubCommentList
+    },
     props: {
       post: {
         required: true,
@@ -143,8 +165,11 @@
         type: Number
       }
     },
-    components: {
-      PostSubCommentList
+    data () {
+      return {
+        deleting: false,
+        liking: false
+      }
     },
     computed: {
       currentUserId () {
@@ -157,12 +182,6 @@
       },
       canDelete () {
         return this.isMine || this.currentUserId === this.masterId
-      }
-    },
-    data () {
-      return {
-        deleting: false,
-        liking: false
       }
     },
     methods: {

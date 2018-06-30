@@ -53,7 +53,7 @@
 
 <template>
   <div id="about-hello">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
       <div class="col-main">
         <h1>欢迎来到 calibur.tv{{ nickname ? ',' : '！' }} {{ nickname }}</h1>
@@ -116,7 +116,7 @@
 
 <script>
   export default {
-    name: 'page-hello',
+    name: 'DoorHello',
     head: {
       title: '欢迎'
     },

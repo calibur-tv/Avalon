@@ -22,28 +22,31 @@
 </style>
 
 <template>
-  <div class="comment-reply-form" v-if="open">
+  <div
+    v-if="open"
+    class="comment-reply-form"
+  >
     <div class="btn-group">
       <el-button
         size="mini"
-        @click="cancel"
         type="info"
         plain
+        @click="cancel"
       >取消</el-button>
       <el-button
-        type="primary"
-        @click="submit"
         :loading="submitting"
         size="mini"
+        type="primary"
+        @click="submit"
       >发表</el-button>
     </div>
     <div class="input-wrap">
       <input
+        ref="input"
+        v-model.trim="content"
         type="text"
         placeholder="请缩减至100字以内"
-        v-model.trim="content"
         maxlength="100"
-        ref="input"
         @keydown.enter="submit"
       >
     </div>
@@ -52,7 +55,7 @@
 
 <script>
   export default {
-    name: 'comment-reply-form',
+    name: 'CommentReplyForm',
     props: {
       type: {
         required: true,
@@ -78,6 +81,19 @@
         submitting: false,
         content: ''
       }
+    },
+    mounted () {
+      this.$watch('value', (val) => {
+        this.open = val
+        if (val) {
+          this.$nextTick(() => {
+            this.$refs.input.focus()
+          })
+        }
+      })
+      this.$watch('open', (val) => {
+        this.$emit('input', val)
+      })
     },
     methods: {
       cancel () {
@@ -111,19 +127,6 @@
           this.submitting = false
         }
       }
-    },
-    mounted () {
-      this.$watch('value', (val) => {
-        this.open = val
-        if (val) {
-          this.$nextTick(() => {
-            this.$refs.input.focus()
-          })
-        }
-      })
-      this.$watch('open', (val) => {
-        this.$emit('input', val)
-      })
     }
   }
 </script>

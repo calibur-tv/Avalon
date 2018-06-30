@@ -77,16 +77,22 @@
           :src="computeImageSize(item)"
           :id="`image-reader-${idx}`"
           :class="$style.img"
-        ></v-img>
+        />
       </el-carousel-item>
     </el-carousel>
-    <a :class="$style.downloadBtn" target="_blank" :href="imageHref" :download="imageName" @click.stop>下载原图</a>
+    <a
+      :class="$style.downloadBtn"
+      :href="imageHref"
+      :download="imageName"
+      target="_blank"
+      @click.stop
+    >下载原图</a>
   </v-dialog>
 </template>
 
 <script>
   export default {
-    name: 'image-reader',
+    name: 'ImageReader',
     data () {
       return {
         images: [],

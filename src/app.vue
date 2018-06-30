@@ -6,9 +6,14 @@
 
 <template>
   <div id="app">
-    <img id="__share-logo" class="share-image" src="https://image.calibur.tv/owner/logo-new/logo.png?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/150" alt="logo">
-    <router-view></router-view>
-    <v-sign></v-sign>
+    <img
+      id="__share-logo"
+      class="share-image"
+      src="https://image.calibur.tv/owner/logo-new/logo.png?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/150"
+      alt="logo"
+    >
+    <router-view/>
+    <v-sign/>
   </div>
 </template>
 

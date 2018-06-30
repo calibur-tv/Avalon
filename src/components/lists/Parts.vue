@@ -56,24 +56,27 @@
 </style>
 
 <template>
-  <ul class="v-parts" v-if="maxWidth">
+  <ul
+    v-if="maxWidth"
+    class="v-parts"
+  >
     <li
       v-for="item in filterList"
       :key="item.id"
     >
       <a
-        class="oneline"
         :class="{ 'active' : id === item.id }"
         :style="{ width: `${maxWidth}px` }"
         :href="alias(item.id)"
+        class="oneline"
       >
-        <slot :item="item"></slot>
+        <slot :item="item"/>
       </a>
     </li>
     <button
       v-if="showMoreBtn"
-      @click="handleFilter"
       class="more"
+      @click="handleFilter"
     >
       {{ showAll ? '收起' : '展开' }}
     </button>
@@ -82,7 +85,7 @@
 
 <script>
   export default {
-    name: 'v-parts',
+    name: 'VParts',
     props: {
       list: {
         type: Array,
@@ -109,12 +112,13 @@
         required: true
       }
     },
-    watch: {
-      value (val) {
-        this.showAll = val
-      },
-      showAll (val) {
-        this.$emit('input', val)
+    data () {
+      return {
+        maxWidth: 0,
+        take: 0,
+        part: 0,
+        page: 0,
+        showAll: this.value
       }
     },
     computed: {
@@ -134,14 +138,19 @@
           : this.isFirst && (this.take < this.list.length)
       }
     },
-    data () {
-      return {
-        maxWidth: 0,
-        take: 0,
-        part: 0,
-        page: 0,
-        showAll: this.value
+    watch: {
+      value (val) {
+        this.showAll = val
+      },
+      showAll (val) {
+        this.$emit('input', val)
       }
+    },
+    mounted () {
+      this.computeMaxWidth()
+      this.$watch('list', () => {
+        this.computeMaxWidth()
+      })
     },
     methods: {
       computeMaxWidth () {
@@ -169,12 +178,6 @@
       handleFilter () {
         this.showAll = !this.showAll
       }
-    },
-    mounted () {
-      this.computeMaxWidth()
-      this.$watch('list', () => {
-        this.computeMaxWidth()
-      })
     }
   }
 </script>

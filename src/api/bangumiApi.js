@@ -1,65 +1,69 @@
-import BaseApi from './_baseApi'
+import BaseApi from './_baseApi';
 
 export default class extends BaseApi {
-  show (id) {
-    return this.http.get(`bangumi/${id}/show`)
+  show(id) {
+    return this.http.get(`bangumi/${id}/show`);
   }
 
-  follow (id) {
-    return this.http.post(`bangumi/${id}/toggleFollow`)
+  follow(id) {
+    return this.http.post(`bangumi/${id}/toggleFollow`);
   }
 
-  roles ({ bangumiId, seenIds, all }) {
+  roles({ bangumiId, seenIds, all }) {
     return this.http.get(`bangumi/${bangumiId}/roles`, {
-      params: { seenIds, all }
-    })
+      params: { seenIds, all },
+    });
   }
 
-  followers ({ bangumiId, page, take }) {
+  followers({ bangumiId, page, take }) {
     return this.http.get(`bangumi/${bangumiId}/followers`, {
-      params: { page, take }
-    })
+      params: { page, take },
+    });
   }
 
-  videos (id) {
-    return this.http.get(`bangumi/${id}/videos`)
+  videos(id) {
+    return this.http.get(`bangumi/${id}/videos`);
   }
 
-  posts ({ id, maxId, take }) {
+  posts({ id, maxId, take }) {
     return this.http.get(`bangumi/${id}/posts/news`, {
-      params: { maxId, take }
-    })
+      params: { maxId, take },
+    });
   }
 
-  images ({ id, seenIds, take, size, tags, roleId, creator }) {
+  images({
+    id, seenIds, take, size, tags, roleId, creator,
+  }) {
     return this.http.get(`bangumi/${id}/images`, {
-      params: { seenIds, take, size, tags, roleId, creator }
-    })
+      params: {
+        seenIds, take, size, tags, roleId, creator,
+      },
+    });
   }
 
-  cartoon ({ bangumiId, page }) {
+  cartoon({ bangumiId, page }) {
     return this.http.get(`bangumi/${bangumiId}/cartoon`, {
-      params: { page }
-    })
+      params: { page },
+    });
   }
 
-  released () {
-    return this.http.get('bangumi/released')
+  released() {
+    return this.http.get('bangumi/released');
   }
 
-  timeline ({ year, take }) {
+  timeline({ year, take }) {
     return this.http.get('bangumi/timeline', {
-      params: { year, take }
-    })
+      params: { year, take },
+    });
   }
 
-  tags () {
-    return this.http.get('bangumi/tags')
+  tags() {
+    return this.http.get('bangumi/tags');
   }
 
-  category ({ id, page, take }) {
+  category({ id, page, take }) {
     return this.http.get('bangumi/category', {
-      params: { id, page, take }
-    })
+      params: { id, page, take },
+    });
   }
 }

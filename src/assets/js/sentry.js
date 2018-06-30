@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import Raven from 'raven-js'
-import RavenVue from 'raven-js/plugins/vue'
+import Vue from 'vue';
+import Raven from 'raven-js';
+import RavenVue from 'raven-js/plugins/vue';
 
 export default ({ url, version }) => {
   try {
@@ -8,17 +8,17 @@ export default ({ url, version }) => {
       release: version,
       environment: 'production',
       ignoreUrls: [
-        /^file:\/\//
+        /^file:\/\//,
       ],
-      shouldSendCallback (data) {
-        let shouldSend = true
+      shouldSendCallback(data) {
+        let shouldSend = true;
         try {
-          const exception = data.exception.values[0]
-          shouldSend = exception.stacktrace.frames.length > 1
+          const exception = data.exception.values[0];
+          shouldSend = exception.stacktrace.frames.length > 1;
         } catch (e) {
-          shouldSend = false
+          shouldSend = false;
         }
-        return shouldSend
+        return shouldSend;
       },
       ignoreErrors: [
         'TuiaMedia is not defined',
@@ -34,10 +34,10 @@ export default ({ url, version }) => {
         "null is not an object (evaluating 'conDoc.getElementsByTagName')",
         "null is not an object (evaluating 'v.src')",
         "null is not an object (evaluating 'window.mttLongPressVar.tagName')",
-        "canvasList.forEach is not a function. (In 'canvasList.forEach', 'canvasList.forEach' is undefined)"
-      ]
-    }).addPlugin(RavenVue, Vue).install()
+        "canvasList.forEach is not a function. (In 'canvasList.forEach', 'canvasList.forEach' is undefined)",
+      ],
+    }).addPlugin(RavenVue, Vue).install();
   } catch (e) {
-    Raven.captureException(e)
+    Raven.captureException(e);
   }
-}
+};

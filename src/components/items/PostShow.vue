@@ -158,65 +158,122 @@
 <template>
   <li class="post-show-item">
     <div class="header clearfix">
-      <el-tooltip v-if="bangumiPage" effect="dark" :content="item.user.nickname" placement="top">
-        <a class="user-avatar" :href="$alias.user(item.user.zone)" target="_blank">
-          <v-img :src="item.user.avatar" width="32" height="32"></v-img>
+      <el-tooltip
+        v-if="bangumiPage"
+        :content="item.user.nickname"
+        effect="dark"
+        placement="top"
+      >
+        <a
+          :href="$alias.user(item.user.zone)"
+          class="user-avatar"
+          target="_blank"
+        >
+          <v-img
+            :src="item.user.avatar"
+            width="32"
+            height="32"
+          />
         </a>
       </el-tooltip>
-      <el-tooltip effect="dark" :content="item.bangumi.name" placement="top" v-else>
-        <a class="bangumi-avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-          <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+      <el-tooltip
+        v-else
+        :content="item.bangumi.name"
+        effect="dark"
+        placement="top"
+      >
+        <a
+          :href="$alias.bangumi(item.bangumi.id)"
+          class="bangumi-avatar"
+          target="_blank"
+        >
+          <v-img
+            :src="item.bangumi.avatar"
+            width="32"
+            height="32"
+          />
         </a>
       </el-tooltip>
-      <el-tooltip effect="dark" :content="`发表于：${item.created_at}`" placement="top" v-if="item.updated_at !== item.created_at">
+      <el-tooltip
+        v-if="item.updated_at !== item.created_at"
+        :content="`发表于：${item.created_at}`"
+        effect="dark"
+        placement="top"
+      >
         <span class="time">
-          回复于: <v-time v-model="item.updated_at"></v-time>
+          回复于: <v-time v-model="item.updated_at"/>
         </span>
       </el-tooltip>
-      <span class="time" v-else>
-        发表于: <v-time v-model="item.updated_at"></v-time>
+      <span
+        v-else
+        class="time"
+      >
+        发表于: <v-time v-model="item.updated_at"/>
       </span>
-      <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+      <a
+        :href="$alias.post(item.id)"
+        class="title oneline href-fade-blue"
+        target="_blank"
+        v-text="item.title"
+      />
     </div>
-    <p class="content" :class="{ 'min-height': !item.images.length }" v-text="item.desc" v-if="bangumiPage"></p>
-    <p class="content" :class="{ 'min-height': !item.images.length }" v-else>
-      <a target="_blank" :href="$alias.user(item.user.zone)">{{ item.user.nickname }}</a>
+    <p
+      v-if="bangumiPage"
+      :class="{ 'min-height': !item.images.length }"
+      class="content"
+      v-text="item.desc"
+    />
+    <p
+      v-else
+      :class="{ 'min-height': !item.images.length }"
+      class="content"
+    >
+      <a
+        :href="$alias.user(item.user.zone)"
+        target="_blank"
+      >{{ item.user.nickname }}</a>
       :
       {{ item.desc }}
     </p>
-    <div class="images clearfix" v-if="item.images.length">
+    <div
+      v-if="item.images.length"
+      class="images clearfix"
+    >
       <div
-        class="image-box"
         v-for="(image, index) in item.images"
         :key="index"
+        class="image-box"
         @click="$previewImages(item.images, index)"
       >
         <v-img
           :src="image.url"
+          :aspect="$computeImageAspect(image)"
           height="90"
           mode="2"
-          :aspect="$computeImageAspect(image)"
-        ></v-img>
+        />
       </div>
     </div>
-    <span class="counter" v-text="item.comment_count"></span>
+    <span
+      class="counter"
+      v-text="item.comment_count"
+    />
     <div class="footer">
       <v-share
-        type="button"
         :url="`/post/${item.id}`"
         :title="item.title"
         :desc="item.desc"
-      ></v-share>
+        type="button"
+      />
       <span :class="{ 'done': item.marked }">
-        <i class="iconfont icon-buoumaotubiao44"></i>
+        <i class="iconfont icon-buoumaotubiao44"/>
         收藏数&nbsp;({{ item.mark_count }})
       </span>
       <span :class="{ 'done': item.liked }">
-        <i class="iconfont icon-guanzhu"></i>
+        <i class="iconfont icon-guanzhu"/>
         喜欢数&nbsp;({{ item.like_count }})
       </span>
       <span>
-        <i class="iconfont icon-ai-eye"></i>
+        <i class="iconfont icon-ai-eye"/>
         阅读数&nbsp;({{ item.view_count }})
       </span>
     </div>

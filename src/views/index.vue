@@ -108,28 +108,64 @@
 
 <template>
   <div id="homepage">
-    <div class="banner bg" :class="{'show' : toggle}" :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : '' }"></div>
-    <div class="banner bg" :class="{'show' : !toggle}" :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"></div>
+    <div
+      :class="{'show' : toggle}"
+      :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : '' }"
+      class="banner bg"
+    />
+    <div
+      :class="{'show' : !toggle}"
+      :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"
+      class="banner bg"
+    />
     <div class="index-panel">
-      <div class="slogan bg" :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/slogan.png')})` }" :class="{ 'invert' : curBanner.gray > 165 }"></div>
-      <v-search :placeholder="'搜索二次元的一切'" :autofocus="true">
-        <i slot="submit-btn" class="iconfont icon-sousuo"></i>
+      <div
+        :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/slogan.png')})` }"
+        :class="{ 'invert' : curBanner.gray > 165 }"
+        class="slogan bg"
+      />
+      <v-search
+        :placeholder="'搜索二次元的一切'"
+        :autofocus="true"
+      >
+        <i
+          slot="submit-btn"
+          class="iconfont icon-sousuo"
+        />
       </v-search>
     </div>
     <div class="banner-card">
-      <router-link :to="$alias.user(curBanner.user_zone)" v-if="curBanner.user_id">
-        <img class="avatar" :src="$resize(curBanner.user_avatar, { width: 80 })">
+      <router-link
+        v-if="curBanner.user_id"
+        :to="$alias.user(curBanner.user_zone)"
+      >
+        <img
+          :src="$resize(curBanner.user_avatar, { width: 80 })"
+          class="avatar"
+        >
       </router-link>
-      <img class="avatar" :src="$resize('https://image.calibur.tv/default/user-avatar', { width: 80 })" v-else>
+      <img
+        v-else
+        :src="$resize('https://image.calibur.tv/default/user-avatar', { width: 80 })"
+        class="avatar"
+      >
       <div class="content">
         <p class="oneline">
           作者：
-          <router-link :to="$alias.user(curBanner.user_zone)" v-if="curBanner.user_id" v-text="curBanner.user_nickname"></router-link>
+          <router-link
+            v-if="curBanner.user_id"
+            :to="$alias.user(curBanner.user_zone)"
+            v-text="curBanner.user_nickname"
+          />
           <span v-else>{{ curBanner.bangumi_id ? '原画' : '未知' }}</span>
         </p>
         <p class="oneline">
           番剧：
-          <router-link :to="$alias.bangumi(curBanner.bangumi_id)" v-if="curBanner.bangumi_id" v-text="curBanner.bangumi_name"></router-link>
+          <router-link
+            v-if="curBanner.bangumi_id"
+            :to="$alias.bangumi(curBanner.bangumi_id)"
+            v-text="curBanner.bangumi_name"
+          />
           <span v-else>未知</span>
         </p>
       </div>
@@ -141,22 +177,12 @@
   import vSearch from '~/components/search/Input'
 
   export default {
-    name: 'homepage',
+    name: 'Homepage',
     components: {
       vSearch
     },
     async asyncData ({ store, ctx }) {
       await store.dispatch('homepage/getBanners', ctx)
-    },
-    computed: {
-      banners () {
-        return this.$store.state.homepage.banners
-      },
-      curBanner () {
-        return this.toggle
-          ? this.banner1
-          : this.banner2
-      }
     },
     data () {
       return {
@@ -172,11 +198,27 @@
         }
       }
     },
+    computed: {
+      banners () {
+        return this.$store.state.homepage.banners
+      },
+      curBanner () {
+        return this.toggle
+          ? this.banner1
+          : this.banner2
+      }
+    },
     created () {
       this.banner1 = this.banners[0]
     },
     mounted () {
       this.loopBanner()
+    },
+    beforeDestroy () {
+      if (this.timer) {
+        clearInterval(this.timer)
+        this.timer = null
+      }
     },
     methods: {
       loopBanner () {
@@ -190,12 +232,6 @@
             this.toggle = !this.toggle
           }, 7500)
         }, 15000)
-      }
-    },
-    beforeDestroy () {
-      if (this.timer) {
-        clearInterval(this.timer)
-        this.timer = null
       }
     }
   }

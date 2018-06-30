@@ -2,28 +2,42 @@
   <v-dialog
     v-model="show"
     title="用户反馈"
-    @submit="submit"
     submit-text="提交"
     cancel-text=""
+    @submit="submit"
   >
-    <el-form :model="forms" :rules="rules" ref="forms" label-width="50px">
-      <el-form-item label="类型" prop="type">
-        <el-select v-model="forms.type" placeholder="反馈类型">
+    <el-form
+      ref="forms"
+      :model="forms"
+      :rules="rules"
+      label-width="50px"
+    >
+      <el-form-item
+        label="类型"
+        prop="type"
+      >
+        <el-select
+          v-model="forms.type"
+          placeholder="反馈类型"
+        >
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="详情" prop="desc">
+      <el-form-item
+        label="详情"
+        prop="desc"
+      >
         <el-input
-          type="textarea"
-          :rows="6"
           v-model.trim="forms.desc"
+          :rows="6"
+          type="textarea"
           placeholder="非常感谢您的反馈，请填写详细信息方便我们解决"
-        ></el-input>
+        />
       </el-form-item>
     </el-form>
   </v-dialog>
@@ -33,14 +47,11 @@
   import Api from '~/api/userApi'
 
   export default {
-    name: 'create-feedback',
-    props: ['value'],
-    watch: {
-      value (val) {
-        this.show = val
-      },
-      show (val) {
-        this.$emit('input', val)
+    name: 'CreateFeedback',
+    props: {
+      value: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -90,6 +101,21 @@
         }
       }
     },
+    watch: {
+      value (val) {
+        this.show = val
+      },
+      show (val) {
+        this.$emit('input', val)
+      }
+    },
+    mounted () {
+      this.$channel.$on('open-feedback', ({ type, desc }) => {
+        this.forms.type = type || ''
+        this.forms.desc = desc || ''
+        this.show = true
+      })
+    },
     methods: {
       submit () {
         this.$refs.forms.validate(async (valid) => {
@@ -108,13 +134,6 @@
           }
         })
       }
-    },
-    mounted () {
-      this.$channel.$on('open-feedback', ({ type, desc }) => {
-        this.forms.type = type || ''
-        this.forms.desc = desc || ''
-        this.show = true
-      })
     }
   }
 </script>

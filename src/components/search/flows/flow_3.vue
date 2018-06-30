@@ -76,25 +76,52 @@
 
 <template>
   <div class="search-item-video">
-    <a target="_blank" :href="$alias.video(item.id)" class="in-common-avatar" v-if="inCommon">
-      <img :src="$resize(item.poster, { width: 180, height: 102 })" :alt="item.name">
+    <a
+      v-if="inCommon"
+      :href="$alias.video(item.id)"
+      target="_blank"
+      class="in-common-avatar"
+    >
+      <img
+        :src="$resize(item.poster, { width: 180, height: 102 })"
+        :alt="item.name"
+      >
     </a>
-    <a target="_blank" :href="$alias.video(item.id)" class="avatar" v-else>
-      <img :src="$resize(item.poster, { width: 320, height: 200 })" :alt="item.name">
+    <a
+      v-else
+      :href="$alias.video(item.id)"
+      target="_blank"
+      class="avatar"
+    >
+      <img
+        :src="$resize(item.poster, { width: 320, height: 200 })"
+        :alt="item.name"
+      >
     </a>
     <div class="intro">
       <div class="head">
-        <span class="badge" v-if="inCommon">视频</span>
-        <a target="_blank" class="name" :href="$alias.video(item.id)" v-text="item.name"></a>
+        <span
+          v-if="inCommon"
+          class="badge"
+        >视频</span>
+        <a
+          :href="$alias.video(item.id)"
+          target="_blank"
+          class="name"
+          v-text="item.name"
+        />
       </div>
-      <p class="summary" v-text="item.summary"></p>
+      <p
+        class="summary"
+        v-text="item.summary"
+      />
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'search-item-video',
+    name: 'SearchItemVideo',
     props: {
       item: {
         required: true,

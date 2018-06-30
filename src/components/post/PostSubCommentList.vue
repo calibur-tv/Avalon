@@ -52,37 +52,46 @@
       class="comments-collapsed-btn"
       @click="clickCollapsedBtn"
       v-text="computeCollapsedBtnText"
-    ></button>
+    />
     <el-collapse-transition>
-      <div class="post-sub-comment-list" v-if="hasComment && !collapsed">
+      <div
+        v-if="hasComment && !collapsed"
+        class="post-sub-comment-list"
+      >
         <post-sub-comment-item
           v-for="comment in comments.list"
           :key="comment.id"
           :comment="comment"
           :parent-user-id="authorId"
-        ></post-sub-comment-item>
+        />
       </div>
     </el-collapse-transition>
-    <div class="sub-comment-footer" v-if="hasComment && !collapsed">
+    <div
+      v-if="hasComment && !collapsed"
+      class="sub-comment-footer"
+    >
       <div class="more">
         <el-button
+          v-if="!comments.noMore"
           :loading="loading"
           size="mini"
-          v-if="!comments.noMore"
-          @click="loadMore"
           round
+          @click="loadMore"
         >点击加载更多</el-button>
         <span class="total">共{{ comments.total }}条</span>
       </div>
-      <button class="toggle" @click="toggleCommentArea">我也说一句</button>
+      <button
+        class="toggle"
+        @click="toggleCommentArea"
+      >我也说一句</button>
     </div>
     <comment-reply-form
-      type="post"
-      class="footer-reply-area"
+      v-model="showReplyArea"
       :id="parentId"
       :to-user-id="authorId"
-      v-model="showReplyArea"
-    ></comment-reply-form>
+      type="post"
+      class="footer-reply-area"
+    />
   </div>
 </template>
 
@@ -91,16 +100,23 @@
   import CommentReplyForm from '~/components/comments/CommentReplyForm'
 
   export default {
-    name: 'post-sub-comment-list',
+    name: 'PostSubCommentList',
+    components: {
+      PostSubCommentItem,
+      CommentReplyForm
+    },
     props: {
       parentComment: {
         required: true,
         type: Object
       }
     },
-    components: {
-      PostSubCommentItem,
-      CommentReplyForm
+    data () {
+      return {
+        collapsed: false,
+        showReplyArea: false,
+        loading: false
+      }
     },
     computed: {
       comments () {
@@ -126,13 +142,6 @@
       },
       hasComment () {
         return !!this.comments.list.length
-      }
-    },
-    data () {
-      return {
-        collapsed: false,
-        showReplyArea: false,
-        loading: false
       }
     },
     methods: {

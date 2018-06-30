@@ -339,75 +339,151 @@
 </style>
 
 <template>
-  <header id="header" :class="[theme, 'white', scrollFlag ? 'scroll-show' : 'scroll-hide']">
+  <header
+    id="header"
+    :class="[theme, 'white', scrollFlag ? 'scroll-show' : 'scroll-hide']"
+  >
     <div class="text">
       <nav class="container header-left">
-        <router-link class="nav-link" :to="$alias.index">主站</router-link>
+        <router-link
+          :to="$alias.index"
+          class="nav-link"
+        >主站</router-link>
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" :to="$alias.bangumiNews">番剧</router-link>
+          <router-link
+            :to="$alias.bangumiNews"
+            class="nav-link el-dropdown-link"
+          >番剧</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.bangumiNews">新番放送</router-link>
+              <router-link
+                :to="$alias.bangumiNews"
+                class="nav-link"
+              >新番放送</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.bangumiTimeline">时间轴</router-link>
+              <router-link
+                :to="$alias.bangumiTimeline"
+                class="nav-link"
+              >时间轴</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.bangumiTag()">分类索引</router-link>
+              <router-link
+                :to="$alias.bangumiTag()"
+                class="nav-link"
+              >分类索引</router-link>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" :to="$alias.postTrending('active')">帖子</router-link>
+          <router-link
+            :to="$alias.postTrending('active')"
+            class="nav-link el-dropdown-link"
+          >帖子</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.postTrending('news')">最新</router-link>
+              <router-link
+                :to="$alias.postTrending('news')"
+                class="nav-link"
+              >最新</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.postTrending('active')">动态</router-link>
+              <router-link
+                :to="$alias.postTrending('active')"
+                class="nav-link"
+              >动态</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.postTrending('hot')">最热</router-link>
+              <router-link
+                :to="$alias.postTrending('hot')"
+                class="nav-link"
+              >最热</router-link>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <router-link class="nav-link" :to="$alias.roleTrending">偶像</router-link>
+        <router-link
+          :to="$alias.roleTrending"
+          class="nav-link"
+        >偶像</router-link>
         <el-dropdown>
-          <router-link class="nav-link el-dropdown-link" :to="$alias.imageTrending('new')">图片</router-link>
+          <router-link
+            :to="$alias.imageTrending('new')"
+            class="nav-link el-dropdown-link"
+          >图片</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.imageTrending('new')">最新上传</router-link>
+              <router-link
+                :to="$alias.imageTrending('new')"
+                class="nav-link"
+              >最新上传</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link class="nav-link" :to="$alias.imageTrending('hot')">最多喜欢</router-link>
+              <router-link
+                :to="$alias.imageTrending('hot')"
+                class="nav-link"
+              >最多喜欢</router-link>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <router-link class="nav-link" to="/about/hello">功能简介</router-link>
+        <router-link
+          class="nav-link"
+          to="/about/hello"
+        >功能简介</router-link>
       </nav>
       <nav class="header-right">
         <div class="search-container">
-          <v-search @blur="handleSearchBlur" @focus="searchFocus = true">
-            <i slot="submit-btn" class="iconfont icon-sousuo"></i>
+          <v-search
+            @blur="handleSearchBlur"
+            @focus="searchFocus = true"
+          >
+            <i
+              slot="submit-btn"
+              class="iconfont icon-sousuo"
+            />
           </v-search>
-          <v-search-history v-model="searchFocus"></v-search-history>
+          <v-search-history v-model="searchFocus"/>
         </div>
         <template v-if="isLogin">
           <el-popover
             ref="popover"
             width="320"
             placement="bottom-end"
-            trigger="click">
-            <v-notifications v-if="showNotification"></v-notifications>
-            <span v-else></span>
+            trigger="click"
+          >
+            <v-notifications v-if="showNotification"/>
+            <span v-else/>
           </el-popover>
-          <el-badge v-if="notificationsCount" :value="notificationsCount" :max="99" class="item">
-            <a class="nav-link" @click="showNotification = true" v-popover:popover>消息</a>
+          <el-badge
+            v-if="notificationsCount"
+            :value="notificationsCount"
+            :max="99"
+            class="item"
+          >
+            <a
+              v-popover:popover
+              class="nav-link"
+              @click="showNotification = true"
+            >消息</a>
           </el-badge>
-          <a class="nav-link" @click="showNotification = true" v-popover:popover v-else>消息</a>
-          <el-dropdown class="user-section" placement="bottom">
-            <a class="el-dropdown-link" :href="$alias.user(user.zone)">
-              <img class="avatar" :src="$resize(user.avatar, { width: 72, height: 72 })" :alt="user.nickname">
+          <a
+            v-popover:popover
+            v-else
+            class="nav-link"
+            @click="showNotification = true"
+          >消息</a>
+          <el-dropdown
+            class="user-section"
+            placement="bottom"
+          >
+            <a
+              :href="$alias.user(user.zone)"
+              class="el-dropdown-link"
+            >
+              <img
+                :src="$resize(user.avatar, { width: 72, height: 72 })"
+                :alt="user.nickname"
+                class="avatar"
+              >
             </a>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
@@ -417,13 +493,22 @@
           </el-dropdown>
         </template>
         <template v-else>
-          <button class="sign-btn sign-in" @click="signIn">登录</button>
-          <button class="sign-btn sign-up" @click="signUp">注册</button>
+          <button
+            class="sign-btn sign-in"
+            @click="signIn"
+          >登录</button>
+          <button
+            class="sign-btn sign-up"
+            @click="signUp"
+          >注册</button>
         </template>
       </nav>
     </div>
     <div class="background abs">
-      <div class="shim" :style="computedBg"></div>
+      <div
+        :style="computedBg"
+        class="shim"
+      />
     </div>
   </header>
 </template>
@@ -435,7 +520,7 @@
   import vNotifications from '~/components/layouts/Notifications'
 
   export default {
-    name: 'v-header',
+    name: 'VHeader',
     components: {
       vSearch,
       vSearchHistory,
@@ -475,6 +560,11 @@
         return result < 0 ? 0 : result
       }
     },
+    mounted () {
+      document.addEventListener('scroll', () => {
+        this.scrollFlag = window.scrollY > 200
+      })
+    },
     methods: {
       signIn () {
         this.$channel.$emit('sign-in')
@@ -493,11 +583,6 @@
           this.searchFocus = false
         }, 100)
       }
-    },
-    mounted () {
-      document.addEventListener('scroll', () => {
-        this.scrollFlag = window.scrollY > 200
-      })
     }
   }
 </script>

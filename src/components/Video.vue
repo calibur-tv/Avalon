@@ -178,9 +178,15 @@
 
 <template>
   <div class="vue-pwa-video">
-    <div v-if="otherSrc" class="not-play-screen">
+    <div
+      v-if="otherSrc"
+      class="not-play-screen"
+    >
       <p>应版权方要求 (⇀‸↼‶)，该视频暂不提供站内播放</p>
-      <a :href="source" target="_blank">播放链接</a>
+      <a
+        :href="source"
+        target="_blank"
+      >播放链接</a>
     </div>
     <!--
     <div v-else-if="isGuest" class="not-play-screen">
@@ -188,7 +194,11 @@
       <a @click="$channel.$emit('sign-in')">立即登录</a>
     </div>
     -->
-    <div id="video-wrap" :class="[isFull ? '' : 'chimee-control-fixed']" v-else></div>
+    <div
+      v-else
+      id="video-wrap"
+      :class="[isFull ? '' : 'chimee-control-fixed']"
+    />
   </div>
 </template>
 
@@ -197,21 +207,16 @@
   import chimeePluginControlbar from 'chimee-plugin-controlbar'
 
   export default {
-    name: 'v-video',
+    name: 'VVideo',
     props: {
       source: {
+        type: [String, Object],
         default: '',
         required: true
       },
       otherSrc: {
         type: Boolean,
         required: true
-      },
-      info: {
-        type: String
-      },
-      poster: {
-        type: String
       },
       auto: {
         type: Boolean,
@@ -224,9 +229,6 @@
       cover: {
         type: Boolean,
         default: false
-      },
-      loading: {
-        type: String
       },
       screenclick: {
         type: Boolean,
@@ -245,6 +247,14 @@
         default: false
       }
     },
+    data () {
+      return {
+        player: null,
+        notMove: false,
+        timer: 0,
+        isFull: false
+      }
+    },
     computed: {
       isGuest () {
         return !this.$store.state.login
@@ -253,13 +263,27 @@
         return this.source.split('?')[0].split('.').pop().toLowerCase() === 'flv'
       }
     },
-    data () {
-      return {
-        player: null,
-        notMove: false,
-        timer: 0,
-        isFull: false
+    mounted () {
+      if (this.otherSrc) {
+        return
       }
+      Chimee.install(chimeePluginControlbar)
+      import('chimee-plugin-center-state').then(chimeePluginCenterState => {
+        Chimee.install(chimeePluginCenterState)
+        if (this.isFlv) {
+          import('chimee-kernel-flv').then(module => {
+            this.initVideo({
+              flvKernel: module,
+              statePlugin: chimeePluginCenterState
+            })
+          })
+        } else {
+          this.initVideo({
+            flvKernel: null,
+            statePlugin: chimeePluginCenterState
+          })
+        }
+      })
     },
     methods: {
       initVideo ({ flvKernel, statePlugin }) {
@@ -385,28 +409,6 @@
         })
         return usablePrefixMethod
       }
-    },
-    mounted () {
-      if (this.otherSrc) {
-        return
-      }
-      Chimee.install(chimeePluginControlbar)
-      import('chimee-plugin-center-state').then(chimeePluginCenterState => {
-        Chimee.install(chimeePluginCenterState)
-        if (this.isFlv) {
-          import('chimee-kernel-flv').then(module => {
-            this.initVideo({
-              flvKernel: module,
-              statePlugin: chimeePluginCenterState
-            })
-          })
-        } else {
-          this.initVideo({
-            flvKernel: null,
-            statePlugin: chimeePluginCenterState
-          })
-        }
-      })
     }
   }
 </script>

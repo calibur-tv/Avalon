@@ -38,36 +38,46 @@
       <comment-create-form
         :id="id"
         :type="type"
-      ></comment-create-form>
+      />
     </slot>
-      <!-- 主列表的 list -->
-    <div id="comment-list-wrap" v-if="list.length">
-        <!-- 每条主评论 -->
-        <div
-          v-for="comment in list"
-          :key="comment.id"
-          class="comment-item-wrap"
+    <!-- 主列表的 list -->
+    <div
+      v-if="list.length"
+      id="comment-list-wrap"
+    >
+      <!-- 每条主评论 -->
+      <div
+        v-for="comment in list"
+        :key="comment.id"
+        class="comment-item-wrap"
+      >
+        <!-- 主评论的内容 -->
+        <slot
+          :comment="comment"
+          name="comment-item"
         >
-          <!-- 主评论的内容 -->
-          <slot name="comment-item" :comment="comment">
-            <comment-item
-              :comment="comment"
-              :type="type"
-              :master-id="masterId"
-            ></comment-item>
-          </slot>
-        </div>
+          <comment-item
+            :comment="comment"
+            :type="type"
+            :master-id="masterId"
+          />
+        </slot>
       </div>
-    <p class="no-content" v-else-if="emptyText" v-text="emptyText"></p>
+    </div>
+    <p
+      v-else-if="emptyText"
+      class="no-content"
+      v-text="emptyText"
+    />
     <div id="comment-list-footer">
       <div class="load-more-btn">
         <el-button
-          type="info"
-          :loading="loading"
-          @click="loadMore"
           v-if="!noMore"
+          :loading="loading"
+          type="info"
           plain
           round
+          @click="loadMore"
         >{{ loading ? '加载中...' : '加载更多' }}</el-button>
       </div>
       <!-- 主列表的底部 -->
@@ -76,7 +86,7 @@
           v-if="list.length >= 10"
           :id="id"
           :type="type"
-        ></comment-create-form>
+        />
       </slot>
     </div>
   </div>
@@ -87,7 +97,11 @@
   import CommentCreateForm from './CommentCreateForm'
 
   export default {
-    name: 'v-comment-main',
+    name: 'VCommentMain',
+    components: {
+      CommentCreateForm,
+      CommentItem
+    },
     props: {
       id: {
         required: true,
@@ -111,9 +125,10 @@
         default: '暂无评论，快来抢沙发吧╮(￣▽￣)╭！'
       }
     },
-    components: {
-      CommentCreateForm,
-      CommentItem
+    data () {
+      return {
+        loading: false
+      }
     },
     computed: {
       store () {
@@ -127,11 +142,6 @@
       },
       total () {
         return this.store.total
-      }
-    },
-    data () {
-      return {
-        loading: false
       }
     },
     methods: {

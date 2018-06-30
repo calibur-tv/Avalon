@@ -21,50 +21,50 @@
 <template>
   <div class="sign-up-form">
     <el-form
+      ref="form"
       :model="form"
       :rules="rule"
-      ref="form"
       status-icon
     >
       <el-form-item prop="nickname">
         <el-input
+          v-model.trim="form.nickname"
           type="text"
-          v-model="form.nickname"
           placeholder="昵称（2-14个字符组成，1个汉字占2个字符）"
           auto-complete="off"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item prop="access">
         <el-input
+          v-model.trim="form.access"
           type="text"
-          v-model="form.access"
           placeholder="手机（填写常用手机号，用于登录）"
           auto-complete="off"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item prop="secret">
         <el-input
+          v-model.trim="form.secret"
           type="password"
-          v-model="form.secret"
           placeholder="密码（6-16个字符组成，区分大小写）"
           auto-complete="off"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item v-if="!inviteCode">
         <el-input
+          v-model.trim="form.inviteCode"
           type="number"
-          v-model="form.inviteCode"
           placeholder="邀请码（可为空）"
           auto-complete="off"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item>
         <el-button
+          :loading="submitBtnLoading"
+          :disabled="submitBtnDisabled"
           class="submit-btn"
           type="primary"
           @click="submitForm"
-          :loading="submitBtnLoading"
-          :disabled="submitBtnDisabled"
         >
           {{ submitBtnText }}
           <template v-if="timeout">
@@ -73,7 +73,10 @@
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="others" v-if="!inviteCode">
+    <div
+      v-if="!inviteCode"
+      class="others"
+    >
       <a @click="showOAuth">社交账号注册</a>
       <a @click="showLogin">已有账号»</a>
     </div>
@@ -84,7 +87,7 @@
   import UserApi from '~/api/userApi'
 
   export default {
-    name: 'sign-up-form',
+    name: 'SignUpForm',
     props: {
       inviteCode: {
         type: String,

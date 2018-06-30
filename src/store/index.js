@@ -1,94 +1,94 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import UserApi from '~/api/userApi'
-import homepage from './homepage'
-import bangumi from './bangumi'
-import video from './video'
-import users from './users'
-import image from './image'
-import post from './post'
-import cartoonRole from './cartoonRole'
-import trending from './trending'
-import comment from './comment'
-import search from './search'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import UserApi from '~/api/userApi';
+import homepage from './homepage';
+import bangumi from './bangumi';
+import video from './video';
+import users from './users';
+import image from './image';
+import post from './post';
+import cartoonRole from './cartoonRole';
+import trending from './trending';
+import comment from './comment';
+import search from './search';
 
-import ImageApi from '~/api/imageApi'
+import ImageApi from '~/api/imageApi';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-export function createStore () {
+export function createStore() {
   return new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     state: () => ({
       user: null,
       login: false,
-      banner: 'banner/2.jpg'
+      banner: 'banner/2.jpg',
     }),
     mutations: {
-      SET_USER (state, user) {
-        state.user = user
-        state.login = true
+      SET_USER(state, user) {
+        state.user = user;
+        state.login = true;
       },
-      SET_USER_INFO (state, data) {
-        Object.keys(data).forEach(key => {
-          state.user[key] = data[key]
-        })
+      SET_USER_INFO(state, data) {
+        Object.keys(data).forEach((key) => {
+          state.user[key] = data[key];
+        });
       },
-      USE_COIN (state) {
-        state.user.coin && state.user.coin--
-      }
+      USE_COIN(state) {
+        state.user.coin && state.user.coin--;
+      },
     },
     actions: {
-      async initAuth ({ commit }, { ctx, must }) {
-        const cookie = ctx.header.cookie
+      async initAuth({ commit }, { ctx, must }) {
+        const cookie = ctx.header.cookie;
         const throwError = () => {
-          const error = new Error()
-          error.code = 401
-          throw error
-        }
+          const error = new Error();
+          error.code = 401;
+          throw error;
+        };
         if (cookie) {
-          let token = ''
-          cookie.split('; ').forEach(item => {
-            const temp = item.split('=')
+          let token = '';
+          cookie.split('; ').forEach((item) => {
+            const temp = item.split('=');
             if (temp[0] === 'JWT-TOKEN') {
-              token = temp[1]
+              token = temp[1];
             }
-          })
+          });
           if (token) {
-            const api = new UserApi(ctx)
+            const api = new UserApi(ctx);
             try {
-              const user = await api.getLoginUser()
+              const user = await api.getLoginUser();
               if (user) {
-                commit('SET_USER', user)
-              } else if (must) { throwError() }
+                commit('SET_USER', user);
+              } else if (must) { throwError(); }
             } catch (e) {
-              if (must) { throwError() }
+              if (must) { throwError(); }
             }
-          } else if (must) { throwError() }
-        } else if (must) { throwError() }
+          } else if (must) { throwError(); }
+        } else if (must) { throwError(); }
       },
-      async getUpToken ({ state, commit }, ctx) {
+      async getUpToken({ state, commit }, ctx) {
         if (!state.user) {
-          return
+          return;
         }
         if (state.user.uptoken.expiredAt <= parseInt(Date.now() / 1000, 10)) {
-          const api = new ImageApi(ctx)
-          const data = await api.getUpToken()
+          const api = new ImageApi(ctx);
+          const data = await api.getUpToken();
           commit('SET_USER_INFO', {
-            uptoken: data
-          })
+            uptoken: data,
+          });
         }
       },
-      async getNotification ({ state, commit }, ctx) {
+      async getNotification({ state, commit }, ctx) {
         if (!state.user) {
-          return
+          return;
         }
-        const api = new UserApi(ctx)
-        const data = await api.getNotificationCount()
+        const api = new UserApi(ctx);
+        const data = await api.getNotificationCount();
         commit('SET_USER_INFO', {
-          notification: data
-        })
-      }
+          notification: data,
+        });
+      },
     },
     getters: {},
     modules: {
@@ -101,7 +101,7 @@ export function createStore () {
       cartoonRole,
       trending,
       comment,
-      search
-    }
-  })
+      search,
+    },
+  });
 }

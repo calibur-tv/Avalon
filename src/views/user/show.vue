@@ -562,42 +562,64 @@
 
 <template>
   <div id="user-show">
-    <section class="banner" :class="{ 'my-banner': isMe }">
-      <div class="img bg" :style="{ backgroundImage: `url(${$resize(user.banner, { width: 1920, mode: 0 })})` }"></div>
-      <div class="banner-cropper-wrap" v-if="isMe">
+    <section
+      :class="{ 'my-banner': isMe }"
+      class="banner"
+    >
+      <div
+        :style="{ backgroundImage: `url(${$resize(user.banner, { width: 1920, mode: 0 })})` }"
+        class="img bg"
+      />
+      <div
+        v-if="isMe"
+        class="banner-cropper-wrap"
+      >
         <template v-if="bannerSelector.showBar">
           <image-cropper
             :init-image="bannerSelector.image"
             :uploading="bannerSelector.loading"
             :auto-size="true"
             @submit="submitBannerChange"
-          ></image-cropper>
+          />
           <div class="banner-select-bar">
             <p>确认要更换主页背景图吗（拖动图片可裁剪，鼠标滚动可缩放）?</p>
             <el-button
-              @click="cancelBannerChange"
               :disabled="bannerSelector.loading"
               type="text"
+              @click="cancelBannerChange"
             >取消</el-button>
           </div>
         </template>
-        <div class="banner-file-input file-input bg" v-else>
-          <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="bannerInput" @change="selectBanner">
+        <div
+          v-else
+          class="banner-file-input file-input bg"
+        >
+          <input
+            ref="bannerInput"
+            :accept="$imageAcceptStr"
+            type="file"
+            @change="selectBanner"
+          >
         </div>
       </div>
       <template v-if="isMe">
         <div
-          class="avatar bg file-input"
           :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
+          class="avatar bg file-input"
         >
-          <input type="file" accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif" ref="avatarInput" @change="openAvatarModal">
+          <input
+            ref="avatarInput"
+            :accept="$imageAcceptStr"
+            type="file"
+            @change="openAvatarModal"
+          >
         </div>
         <v-dialog
-          class="avatar-cropper-modal"
           v-model="avatarCropper.showModal"
-          title="头像裁剪"
           :footer="false"
           width="400px"
+          title="头像裁剪"
+          class="avatar-cropper-modal"
           @cancel="handleAvatarCropperCancel"
         >
           <image-cropper
@@ -608,99 +630,163 @@
             :height="358"
             type="avatar"
             @submit="handleAvatarCropperSubmit"
-          ></image-cropper>
+          />
         </v-dialog>
       </template>
       <img
-        class="avatar"
-        :src="$resize(user.avatar, { width: 200, height: 200 })"
-        alt="avatar"
         v-else
+        :src="$resize(user.avatar, { width: 200, height: 200 })"
+        class="avatar"
+        alt="avatar"
       >
-      <span class="nickname" v-text="user.nickname"></span>
+      <span
+        class="nickname"
+        v-text="user.nickname"
+      />
       <div class="buttons">
         <template v-if="isMe">
           <el-button
-            type="primary"
             :disabled="daySigned"
             :loading="signDayLoading"
+            type="primary"
             size="small"
             @click="handleDaySign"
           >
             {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
           </el-button>
-          <el-tooltip class="item" effect="dark" placement="bottom">
-            <div slot="content">点击复制我的邀请地址<br/>邀请小伙伴们注册赚金币</div>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            placement="bottom"
+          >
+            <div slot="content">
+              点击复制我的邀请地址
+              <br>
+              邀请小伙伴们注册赚金币
+            </div>
             <el-button
+              ref="inviteBtn"
+              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
               type="warning"
               size="small"
-              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
-              ref="inviteBtn"
-            >
-              邀请码：{{ user.id }}
-            </el-button>
+            >邀请码：{{ user.id }}</el-button>
           </el-tooltip>
         </template>
       </div>
-      <p class="signature" v-text="user.signature"></p>
+      <p
+        class="signature"
+        v-text="user.signature"
+      />
     </section>
     <div class="container">
-      <div class="faker-tips" v-if="user.faker">
+      <div
+        v-if="user.faker"
+        class="faker-tips"
+      >
         <span>重要提醒</span>
         <p>这是一个运营号，并非本人，该账号下所有信息都是搬运而来</p>
         <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的金币也将归你所有</p>
         <p>当然，你也有权要求我们删除所有你的内容</p>
       </div>
-      <el-tabs tab-position="left" @tab-click="handleTabClick">
+      <el-tabs
+        tab-position="left"
+        @tab-click="handleTabClick"
+      >
         <el-tab-pane label="番剧">
-          <ul class="bangumis" v-if="bangumis.length">
-            <li v-for="item in bangumis" :key="item.id">
-              <a :href="$alias.bangumi(item.id)" target="_blank">
+          <ul
+            v-if="bangumis.length"
+            class="bangumis"
+          >
+            <li
+              v-for="item in bangumis"
+              :key="item.id"
+            >
+              <a
+                :href="$alias.bangumi(item.id)"
+                target="_blank"
+              >
                 <figure>
                   <v-img
-                    class="bg"
                     :alt="item.name"
                     :src="$resize(item.avatar, { width: 160, height: 160 })"
-                  ></v-img>
+                    class="bg"
+                  />
                   <figcaption class="abs">
-                    <p class="name" v-text="item.name"></p>
+                    <p
+                      class="name"
+                      v-text="item.name"
+                    />
                   </figcaption>
                 </figure>
               </a>
             </li>
           </ul>
-          <no-content v-else></no-content>
+          <no-content v-else/>
         </el-tab-pane>
         <el-tab-pane label="帖子">
-          <el-radio-group v-model="postTab" @change="handlePostTabClick" size="mini">
-            <el-radio-button label="发表"></el-radio-button>
-            <el-radio-button label="回复"></el-radio-button>
-            <el-radio-button label="喜欢"></el-radio-button>
-            <el-radio-button label="收藏"></el-radio-button>
+          <el-radio-group
+            v-model="postTab"
+            size="mini"
+            @change="handlePostTabClick"
+          >
+            <el-radio-button label="发表"/>
+            <el-radio-button label="回复"/>
+            <el-radio-button label="喜欢"/>
+            <el-radio-button label="收藏"/>
           </el-radio-group>
           <template v-if="postListType === 'mine'">
             <ul class="posts posts-of-mine">
-              <li v-for="item in posts.data" :key="item.id">
+              <li
+                v-for="item in posts.data"
+                :key="item.id"
+              >
                 <div class="header clearfix">
-                  <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
-                    <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-                      <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                  <el-tooltip
+                    :content="item.bangumi.name"
+                    effect="dark"
+                    placement="top"
+                  >
+                    <a
+                      :href="$alias.bangumi(item.bangumi.id)"
+                      class="avatar"
+                      target="_blank"
+                    >
+                      <v-img
+                        :src="item.bangumi.avatar"
+                        width="32"
+                        height="32"
+                      />
                     </a>
                   </el-tooltip>
-                  <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+                  <a
+                    :href="$alias.post(item.id)"
+                    class="title oneline href-fade-blue"
+                    target="_blank"
+                    v-text="item.title"
+                  />
                   <span class="time">
-                    发表于: <v-time v-model="item.created_at"></v-time>
+                    发表于: <v-time v-model="item.created_at"/>
                   </span>
                 </div>
-                <p class="content" v-text="item.desc"></p>
-                <div class="images clearfix" v-if="item.images.length">
+                <p
+                  class="content"
+                  v-text="item.desc"
+                />
+                <div
+                  v-if="item.images.length"
+                  class="images clearfix"
+                >
                   <div
-                    class="image-box"
                     v-for="(image, index) in item.images"
                     :key="index"
+                    class="image-box"
                     @click="$previewImages(item.images, index)"
                   >
-                    <v-img :src="image.url" height="90" mode="2"></v-img>
+                    <v-img
+                      :src="image.url"
+                      height="90"
+                      mode="2"
+                    />
                   </div>
                 </div>
                 <div class="footer clearfix">
@@ -711,96 +797,166 @@
               </li>
             </ul>
             <el-button
-              :loading="posts.loading"
               v-if="!posts.noMore"
+              :loading="posts.loading"
               class="load-more-btn"
-              @click="getUserPosts(false)"
               type="info"
               plain
+              @click="getUserPosts(false)"
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
           </template>
           <template v-else-if="postListType === 'reply'">
             <ul class="posts posts-of-reply">
-              <li v-for="item in posts.data" :key="item.id">
+              <li
+                v-for="item in posts.data"
+                :key="item.id"
+              >
                 <div class="header clearfix">
                   回复：
                   <a
+                    :href="$alias.post(item.post.id)"
                     class="href-fade-blue"
                     target="_blank"
-                    :href="$alias.post(item.post.id)"
                     v-text="item.post.title"
-                  ></a>
-                  <el-tooltip effect="dark" :content="item.bangumi.name" placement="top">
-                    <a class="avatar" :href="$alias.bangumi(item.bangumi.id)" target="_blank">
-                      <v-img :src="item.bangumi.avatar" width="32" height="32"></v-img>
+                  />
+                  <el-tooltip
+                    :content="item.bangumi.name"
+                    effect="dark"
+                    placement="top"
+                  >
+                    <a
+                      :href="$alias.bangumi(item.bangumi.id)"
+                      class="avatar"
+                      target="_blank"
+                    >
+                      <v-img
+                        :src="item.bangumi.avatar"
+                        width="32"
+                        height="32"
+                      />
                     </a>
                   </el-tooltip>
-                  <v-time class="time" v-model="item.created_at"></v-time>
+                  <v-time
+                    v-model="item.created_at"
+                    class="time"
+                  />
                 </div>
                 <div class="origin">
-                  <div class="content" v-html="item.post.content"></div>
-                  <div class="images clearfix" v-if="item.post.images.length">
+                  <div
+                    class="content"
+                    v-html="item.post.content"
+                  />
+                  <div
+                    v-if="item.post.images.length"
+                    class="images clearfix"
+                  >
                     <div
-                      class="image-box"
                       v-for="(image, index) in item.post.images"
-                      @click="$previewImages(item.post.images, index)"
                       :key="index"
+                      class="image-box"
+                      @click="$previewImages(item.post.images, index)"
                     >
-                      <v-img :src="image.url" height="90" mode="2"></v-img>
+                      <v-img
+                        :src="image.url"
+                        height="90"
+                        mode="2"
+                      />
                     </div>
                   </div>
                 </div>
                 <div class="reply">
-                  <div class="content" v-html="item.content"></div>
-                  <div class="images clearfix" v-if="item.images.length">
+                  <div
+                    class="content"
+                    v-html="item.content"
+                  />
+                  <div
+                    v-if="item.images.length"
+                    class="images clearfix"
+                  >
                     <div
-                      class="image-box"
                       v-for="(image, index) in item.images"
-                      @click="$previewImages(item.images, index)"
                       :key="index"
+                      class="image-box"
+                      @click="$previewImages(item.images, index)"
                     >
-                      <v-img :src="image.url" height="90" mode="2"></v-img>
+                      <v-img
+                        :src="image.url"
+                        height="90"
+                        mode="2"
+                      />
                     </div>
                   </div>
                 </div>
               </li>
             </ul>
             <el-button
-              :loading="posts.loading"
               v-if="!posts.noMore"
+              :loading="posts.loading"
               class="load-more-btn"
-              @click="getUserPosts(false)"
               type="info"
               plain
+              @click="getUserPosts(false)"
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
           </template>
           <template v-else-if="postListType === 'like'">
             <ul class="posts posts-of-like">
-              <li v-for="item in posts.data" :key="item.id">
-                <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+              <li
+                v-for="item in posts.data"
+                :key="item.id"
+              >
+                <a
+                  :href="$alias.post(item.id)"
+                  class="title oneline href-fade-blue"
+                  target="_blank"
+                  v-text="item.title"
+                />
               </li>
             </ul>
           </template>
           <template v-else-if="postListType === 'mark'">
             <ul class="posts posts-of-mark">
-              <li v-for="item in posts.data" :key="item.id">
-                <a class="title oneline href-fade-blue" target="_blank" :href="$alias.post(item.id)" v-text="item.title"></a>
+              <li
+                v-for="item in posts.data"
+                :key="item.id"
+              >
+                <a
+                  :href="$alias.post(item.id)"
+                  class="title oneline href-fade-blue"
+                  target="_blank"
+                  v-text="item.title"
+                />
               </li>
             </ul>
           </template>
-          <no-content v-if="posts.noMore && !posts.data.length"></no-content>
+          <no-content v-if="posts.noMore && !posts.data.length"/>
         </el-tab-pane>
         <el-tab-pane label="偶像">
-          <div class="cartoon-role" v-if="roles.data.length">
+          <div
+            v-if="roles.data.length"
+            class="cartoon-role"
+          >
             <ul>
-              <li class="clearfix" v-for="item in roles.data">
-                <a :href="$alias.cartoonRole(item.id)" target="_blank">
+              <li
+                v-for="item in roles.data"
+                :key="item.id"
+                class="clearfix"
+              >
+                <a
+                  :href="$alias.cartoonRole(item.id)"
+                  target="_blank"
+                >
                   <img :src="$resize(item.avatar, { width: 168 })">
                 </a>
                 <div class="text">
-                  <a :href="$alias.cartoonRole(item.id)" target="_blank">
-                    <h4 v-text="item.name"></h4>
-                    <p class="intro" v-text="item.intro"></p>
+                  <a
+                    :href="$alias.cartoonRole(item.id)"
+                    target="_blank"
+                  >
+                    <h4 v-text="item.name"/>
+                    <p
+                      class="intro"
+                      v-text="item.intro"
+                    />
                   </a>
                   <div class="meta">
                     <span>粉丝: {{ item.fans_count }}</span>
@@ -813,16 +969,20 @@
               </li>
             </ul>
             <el-button
-              :loading="loadingFetchUserRoles"
               v-if="!roles.noMore"
+              :loading="loadingFetchUserRoles"
               class="load-more-btn"
-              @click="getUserRoles(false)"
-              type="info"
               plain
+              type="info"
+              @click="getUserRoles(false)"
             >{{ loadingFetchUserRoles ? '加载中' : '加载更多' }}</el-button>
           </div>
           <no-content v-else-if="roles.noMore">
-            <a :href="$alias.roleTrending" v-if="isMe" target="_blank">查看角色列表</a>
+            <a
+              v-if="isMe"
+              :href="$alias.roleTrending"
+              target="_blank"
+            >查看角色列表</a>
           </no-content>
         </el-tab-pane>
         <el-tab-pane label="图片">
@@ -831,26 +991,39 @@
             :bangumi="bangumis"
             @fetch="getUserImages(false)"
           >
-            <el-button v-if="isMe" @click="openUploadModal" type="primary" round>上传图片</el-button>
+            <el-button
+              v-if="isMe"
+              round
+              type="primary"
+              @click="openUploadModal"
+            >上传图片</el-button>
           </image-waterfall>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <no-ssr>
-              <el-form :model="settingForm" :rules="settingRule" ref="settingForm" label-width="50px">
-                <el-form-item label="昵称" prop="nickname">
+              <el-form
+                ref="settingForm"
+                :model="settingForm"
+                :rules="settingRule"
+                label-width="50px"
+              >
+                <el-form-item
+                  label="昵称"
+                  prop="nickname"
+                >
                   <el-col :span="10">
-                    <el-input v-model="settingForm.nickname"></el-input>
+                    <el-input v-model="settingForm.nickname"/>
                   </el-col>
                 </el-form-item>
                 <el-form-item label="生日">
                   <el-date-picker
                     v-model="settingForm.birthday"
-                    type="date"
                     :editable="false"
                     :clearable="false"
+                    type="date"
                     placeholder="选择日期"
-                  ></el-date-picker>
+                  />
                 </el-form-item>
                 <el-form-item label="性别">
                   <el-col>
@@ -864,16 +1037,27 @@
                       v-model="settingForm.sexSecret"
                       active-text="私密"
                       inactive-text="公开"
-                    ></el-switch>
+                    />
                   </el-col>
                 </el-form-item>
-                <el-form-item label="签名" prop="signature">
+                <el-form-item
+                  label="签名"
+                  prop="signature"
+                >
                   <el-col :span="20">
-                    <el-input type="textarea" :rows="5" v-model="settingForm.signature" placeholder="用简单的言语，表达深刻的心"></el-input>
+                    <el-input
+                      v-model="settingForm.signature"
+                      :rows="5"
+                      type="textarea"
+                      placeholder="用简单的言语，表达深刻的心"
+                    />
                   </el-col>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="saveSetting">提交</el-button>
+                  <el-button
+                    type="primary"
+                    @click="saveSetting"
+                  >提交</el-button>
                 </el-form-item>
               </el-form>
             </no-ssr>
@@ -891,6 +1075,7 @@
   import ImageCropper from '~/components/common/ImageCropper'
 
   export default {
+    name: 'UserShow',
     async asyncData ({ route, store, ctx }) {
       const zone = route.params.zone
       const arr = [
@@ -918,6 +1103,55 @@
     components: {
       ImageCropper,
       ImageWaterfall
+    },
+    data () {
+      const validateNickname = (rule, value, callback) => {
+        const length = value.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
+        if (!length) {
+          callback(new Error('昵称不能为空'))
+        } else if (length < 2) {
+          callback(new Error('昵称至少为2个字符'))
+        } else if (length > 14) {
+          callback(new Error('昵称不能超过14个字符'))
+        }
+        callback()
+      }
+      return {
+        tabActive: 'bangumi',
+        settingForm: {
+          nickname: '',
+          signature: '',
+          sex: 0,
+          sexSecret: false,
+          birthday: ''
+        },
+        settingRule: {
+          nickname: [
+            { validator: validateNickname, trigger: 'blur' }
+          ],
+          signature: [
+            { max: 150, message: '请缩减至150字以内', trigger: 'blur' }
+          ]
+        },
+        avatarCropper: {
+          src: '',
+          type: '',
+          showModal: false,
+          loading: false,
+          file: null
+        },
+        bannerSelector: {
+          file: null,
+          image: '',
+          showBar: false,
+          loading: false
+        },
+        postTab: '发表',
+        signDayLoading: false,
+        loadingUserImageFetch: false,
+        loadingUserBangumiFetch: false,
+        loadingFetchUserRoles: false
+      }
     },
     computed: {
       zone () {
@@ -968,54 +1202,8 @@
         return this.$store.state.users.roles
       }
     },
-    data () {
-      const validateNickname = (rule, value, callback) => {
-        const length = value.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
-        if (!length) {
-          callback(new Error('昵称不能为空'))
-        } else if (length < 2) {
-          callback(new Error('昵称至少为2个字符'))
-        } else if (length > 14) {
-          callback(new Error('昵称不能超过14个字符'))
-        }
-        callback()
-      }
-      return {
-        tabActive: 'bangumi',
-        settingForm: {
-          nickname: '',
-          signature: '',
-          sex: 0,
-          sexSecret: false,
-          birthday: ''
-        },
-        settingRule: {
-          nickname: [
-            { validator: validateNickname, trigger: 'blur' }
-          ],
-          signature: [
-            { max: 150, message: '请缩减至150字以内', trigger: 'blur' }
-          ]
-        },
-        avatarCropper: {
-          src: '',
-          type: '',
-          showModal: false,
-          loading: false,
-          file: null
-        },
-        bannerSelector: {
-          file: null,
-          image: '',
-          showBar: false,
-          loading: false
-        },
-        postTab: '发表',
-        signDayLoading: false,
-        loadingUserImageFetch: false,
-        loadingUserBangumiFetch: false,
-        loadingFetchUserRoles: false
-      }
+    mounted () {
+      this.watchCopyInviteLink()
     },
     methods: {
       handleTabClick (tab) {
@@ -1267,9 +1455,6 @@
       handleAvatarCropperSuccess (blob) {
         console.log(blob)
       }
-    },
-    mounted () {
-      this.watchCopyInviteLink()
     }
   }
 </script>

@@ -10,9 +10,9 @@
 
 <template>
   <div id="post-trending">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
-      <div class="col-aside"></div>
+      <div class="col-aside"/>
       <div class="col-main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.postTrending('news')">最新</router-link>
@@ -24,17 +24,17 @@
             v-for="item in post.list"
             :key="item.id"
             :item="item"
-          ></post-show-item>
+          />
         </ul>
         <el-button
-          :loading="post.loading"
           v-if="!post.noMore"
           id="load-post-btn"
-          @click="loadMore"
-          type="info"
+          :loading="post.loading"
           plain
+          type="info"
+          @click="loadMore"
         >{{ post.loading ? '加载中' : '加载更多' }}</el-button>
-        <no-content v-if="post.nothing"></no-content>
+        <no-content v-if="post.nothing"/>
       </div>
     </div>
   </div>

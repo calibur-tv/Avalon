@@ -1,28 +1,28 @@
-const bunyan = require('bunyan')
-const DEBUG = require('../../.env').DEBUG || false
+const bunyan = require('bunyan');
+const DEBUG = require('../../.env').DEBUG || false;
 
 class Log {
-  constructor () {
+  constructor() {
     this.log = bunyan.createLogger({
       name: 'avalon',
       level: 'debug',
       streams: [{
         type: 'file',
-        path: `./log/debug.log`
-      }]
-    })
+        path: './log/debug.log',
+      }],
+    });
   }
 
-  debug (name, data) {
+  debug(name, data) {
     if (!DEBUG) {
-      return
+      return;
     }
     try {
       this.log.info(Object.assign(data, {
-        'index_name': name
-      }))
+        index_name: name,
+      }));
     } catch (e) {}
   }
 }
 
-module.exports = new Log()
+module.exports = new Log();

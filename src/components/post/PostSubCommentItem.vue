@@ -37,29 +37,55 @@
 
 <template>
   <div class="post-sub-comment-item">
-    <a class="avatar" :href="$alias.user(comment.from_user_zone)" target="_blank">
-      <v-img :src="comment.from_user_avatar" width="32" height="32"></v-img>
+    <a
+      :href="$alias.user(comment.from_user_zone)"
+      class="avatar"
+      target="_blank"
+    >
+      <v-img
+        :src="comment.from_user_avatar"
+        width="32"
+        height="32"
+      />
     </a>
-    <a class="href-fade-blue" :href="$alias.user(comment.from_user_zone)" target="_blank" v-text="comment.from_user_name"></a>
-    <template v-if="comment.to_user_id && comment.to_user_id !== parentUserId">
+    <a
+      :href="$alias.user(comment.from_user_zone)"
+      class="href-fade-blue"
+      target="_blank"
+      v-text="comment.from_user_name"
+    />
+    <template
+      v-if="comment.to_user_id && comment.to_user_id !== parentUserId"
+    >
       回复
-      <a class="href-fade-blue" :href="$alias.user(comment.to_user_zone)" target="_blank" v-text="comment.to_user_name"></a>
+      <a
+        :href="$alias.user(comment.to_user_zone)"
+        class="href-fade-blue"
+        target="_blank"
+        v-text="comment.to_user_name"
+      />
     </template>
     :
     <span class="comment-content">{{ comment.content }}</span>
     <div class="reply-area">
-      <v-time v-model="comment.created_at"></v-time>
-      <button v-if="canDelete" @click="deleteComment">删除</button>
-      <button v-if="!isMine" @click="toggleCommentArea">
+      <v-time v-model="comment.created_at"/>
+      <button
+        v-if="canDelete"
+        @click="deleteComment"
+      >删除</button>
+      <button
+        v-if="!isMine"
+        @click="toggleCommentArea"
+      >
         {{ showReplyArea ? '收起' : '回复' }}
       </button>
     </div>
     <comment-reply-form
-      type="post"
+      v-model="showReplyArea"
       :id="comment.parent_id"
       :to-user-id="comment.from_user_id"
-      v-model="showReplyArea"
-    ></comment-reply-form>
+      type="post"
+    />
   </div>
 </template>
 
@@ -67,7 +93,10 @@
   import CommentReplyForm from '~/components/comments/CommentReplyForm'
 
   export default {
-    name: 'post-sub-comment-item',
+    name: 'PostSubCommentItem',
+    components: {
+      CommentReplyForm
+    },
     props: {
       comment: {
         required: true,
@@ -78,8 +107,11 @@
         type: Number
       }
     },
-    components: {
-      CommentReplyForm
+    data () {
+      return {
+        showReplyArea: false,
+        deleting: false
+      }
     },
     computed: {
       currentUserId () {
@@ -92,12 +124,6 @@
       },
       canDelete () {
         return this.isMine || this.currentUserId === this.parentUserId
-      }
-    },
-    data () {
-      return {
-        showReplyArea: false,
-        deleting: false
       }
     },
     methods: {

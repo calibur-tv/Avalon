@@ -124,40 +124,52 @@
 
 <template>
   <div id="role-show">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
       <aside class="col-aside">
         <div class="bangumi">
           <p class="sub-title">所属番剧</p>
           <v-bangumi-panel
-            class="bangumi-panel"
             :id="bangumi.id"
             :name="bangumi.name"
             :avatar="bangumi.avatar"
             :summary="bangumi.summary"
             :followed="bangumi.followed"
+            class="bangumi-panel"
             @follow="handleFollowBangumiAction"
-          ></v-bangumi-panel>
+          />
         </div>
         <div class="fans">
           <p class="sub-title">应援团{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
           <template v-if="fans.data.length">
             <ul>
-              <li class="follower" v-for="user in displayFans" :key="user.zone">
-                <el-tooltip class="item" effect="dark" :content="user.nickname" placement="top">
-                  <a :href="$alias.user(user.zone)" target="_blank">
+              <li
+                v-for="user in displayFans"
+                :key="user.zone"
+                class="follower"
+              >
+                <el-tooltip
+                  :content="user.nickname"
+                  class="item"
+                  effect="dark"
+                  placement="top"
+                >
+                  <a
+                    :href="$alias.user(user.zone)"
+                    target="_blank"
+                  >
                     <v-img
                       :src="$resize(user.avatar, { width: 64, height: 64 })"
                       :alt="user.zone"
-                    ></v-img>
+                    />
                   </a>
                 </el-tooltip>
               </li>
               <button
                 v-if="role.fans_count > 6"
-                @click="openFansModal('new')"
                 class="more-btn el-icon-more"
-              ></button>
+                @click="openFansModal('new')"
+              />
             </ul>
           </template>
           <template v-else>
@@ -169,18 +181,24 @@
         <div class="intro clearfix">
           <p class="sub-title">角色信息</p>
           <div class="avatar-wrap">
-            <img class="avatar" :src="$resize(role.avatar, { width: 200 })">
+            <img
+              :src="$resize(role.avatar, { width: 200 })"
+              class="avatar"
+            >
             <el-button
-              @click="handleStarRole"
               type="warning"
               class="star"
               size="mini"
               round
               plain
+              @click="handleStarRole"
             >为TA应援</el-button>
           </div>
           <div class="info">
-            <h1 class="name" v-text="role.name"></h1>
+            <h1
+              class="name"
+              v-text="role.name"
+            />
             <p class="summary">
               <strong>简介：</strong>{{ role.intro }}
             </p>
@@ -188,16 +206,22 @@
               <strong>别名：</strong>
               <li
                 v-for="(name, index) in computeRoleAlias"
-                v-text="name"
                 :key="index"
-              ></li>
+                v-text="name"
+              />
             </ul>
-            <p class="coin" v-if="role.star_count">
+            <p
+              v-if="role.star_count"
+              class="coin"
+            >
               <strong>粉丝：</strong>共有 {{ role.fans_count }} 个粉丝，收获了 {{ role.star_count }} 个金币
             </p>
           </div>
         </div>
-        <div class="lover" v-if="role.lover">
+        <div
+          v-if="role.lover"
+          class="lover"
+        >
           <p class="sub-title">
             守护者
             <el-button
@@ -206,11 +230,15 @@
               @click="openFansModal('hot')"
             >排行榜</el-button>
           </p>
-          <a class="user" target="_blank" :href="$alias.user(role.lover.zone)">
+          <a
+            :href="$alias.user(role.lover.zone)"
+            class="user"
+            target="_blank"
+          >
             <div class="avatar">
               <img :src="$resize(role.lover.avatar, { width: 80 })">
             </div>
-            <span v-text="role.lover.nickname"></span>
+            <span v-text="role.lover.nickname"/>
           </a>
         </div>
         <div class="images">
@@ -219,7 +247,11 @@
             :loading="loadingRoleImageFetch"
             @fetch="getRoleImages(false)"
           >
-            <el-button @click="openUploadModal" type="primary" round>
+            <el-button
+              type="primary"
+              round
+              @click="openUploadModal"
+            >
               上传 {{ role.name }} 的第一张图片
             </el-button>
           </image-waterfall>
@@ -238,11 +270,28 @@
           v-for="item in fansModalData"
           :key="item.id"
         >
-          <a class="user" target="_blank" :href="$alias.user(item.zone)">
-            <img class="avatar" :src="$resize(item.avatar, { width: 80 })">
-            <span class="nickname" v-text="item.nickname"></span>
-            <v-time class="score" v-if="focusRoleSort === 'new'" v-model="item.score"></v-time>
-            <span class="score" v-else>{{ item.score }}个金币</span>
+          <a
+            :href="$alias.user(item.zone)"
+            class="user"
+            target="_blank"
+          >
+            <img
+              :src="$resize(item.avatar, { width: 80 })"
+              class="avatar"
+            >
+            <span
+              class="nickname"
+              v-text="item.nickname"
+            />
+            <v-time
+              v-if="focusRoleSort === 'new'"
+              v-model="item.score"
+              class="score"
+            />
+            <span
+              v-else
+              class="score"
+            >{{ item.score }}个金币</span>
           </a>
         </li>
       </v-dialog>
@@ -254,7 +303,7 @@
   import ImageWaterfall from '~/components/lists/ImageWaterfall'
 
   export default {
-    name: 'role-show',
+    name: 'RoleShow',
     async asyncData ({ store, route, ctx }) {
       const id = route.params.id
       await Promise.all([
@@ -280,6 +329,14 @@
     },
     components: {
       ImageWaterfall
+    },
+    data () {
+      return {
+        toggleFansListModal: false,
+        loadingRoleImageFetch: false,
+        loadingRoleFans: false,
+        focusRoleSort: 'new'
+      }
     },
     computed: {
       id () {
@@ -313,14 +370,6 @@
       },
       noMoreFans () {
         return this.$store.state.cartoonRole.fans[this.focusRoleSort].noMore
-      }
-    },
-    data () {
-      return {
-        toggleFansListModal: false,
-        loadingRoleImageFetch: false,
-        loadingRoleFans: false,
-        focusRoleSort: 'new'
       }
     },
     methods: {

@@ -1,15 +1,15 @@
-import BaseApi from './_baseApi'
+import BaseApi from './_baseApi';
 
 export default class extends BaseApi {
-  index (q) {
+  index(q) {
     return this.http.get('search/index', {
-      params: q
-    })
+      params: q,
+    });
   }
 
-  v2 ({ q, type, page }) {
+  v2({ q, type, page }) {
     return this.http.get('search/new', {
-      params: { q, type, page }
-    })
+      params: { q, type, page },
+    });
   }
 }

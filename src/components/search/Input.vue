@@ -24,17 +24,23 @@
 
 <template>
   <form
+    :class="`search-${state}`"
     action="#"
     method="get"
     class="search-input-wrap"
-    :class="`search-${state}`"
     @submit.prevent="submit"
   >
-    <button type="submit" class="search-input-btn">
+    <button
+      type="submit"
+      class="search-input-btn"
+    >
       <slot name="submit-btn">搜索</slot>
     </button>
     <div class="search-input-text">
       <input
+        :placeholder="placeholder"
+        :autofocus="autofocus"
+        v-model.trim="word"
         class="search-input"
         type="text"
         name="q"
@@ -45,19 +51,17 @@
         autocorrect="off"
         role="combobox"
         spellcheck="false"
-        :placeholder="placeholder"
+        maxlength="50"
         @focus="handleInputFocus"
         @blur="handleInputBlur"
-        :autofocus="autofocus"
-        maxlength="50"
-        v-model.trim="word">
+      >
     </div>
   </form>
 </template>
 
 <script>
   export default {
-    name: 'v-search-input',
+    name: 'VSearchInput',
     props: {
       placeholder: {
         type: String,
@@ -83,6 +87,20 @@
         state: this.autofocus ? 'focus' : 'blur'
       }
     },
+    mounted () {
+      this.$watch('value', (val) => {
+        this.word = val
+      })
+      this.$watch('word', (val) => {
+        this.$emit('input', val)
+      })
+      this.$watch('$route', (val) => {
+        if (val.name === 'search-index') {
+          this.word = val.query.q
+          this.selectedType = val.query.type
+        }
+      })
+    },
     methods: {
       submit () {
         const q = this.word
@@ -106,20 +124,6 @@
         this.state = 'blur'
         this.$emit('blur')
       }
-    },
-    mounted () {
-      this.$watch('value', (val) => {
-        this.word = val
-      })
-      this.$watch('word', (val) => {
-        this.$emit('input', val)
-      })
-      this.$watch('$route', (val) => {
-        if (val.name === 'search-index') {
-          this.word = val.query.q
-          this.selectedType = val.query.type
-        }
-      })
     }
   }
 </script>

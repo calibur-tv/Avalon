@@ -5,12 +5,12 @@
 
 <template>
   <div class="search-nothing-post">
-    <no-content></no-content>
+    <no-content/>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'search-nothing-post'
+    name: 'SearchNothingPost'
   }
 </script>

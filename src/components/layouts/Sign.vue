@@ -191,44 +191,55 @@
     :class="[ showModal ? 'space-enter' : 'space-leave' ]"
     @click="hiddenSign"
   >
-    <div class="sign-modal-wrap abs" ref="wrap">
+    <div
+      ref="wrap"
+      class="sign-modal-wrap abs"
+    >
       <div
-        class="sign-modal sign-in-modal"
         :class="{
           'sign-in-init' : !showSignIn && !showSignUp,
           'sign-in-show' : showSignIn && !showSignUp,
           'sign-in-turn' : !showSignIn && showSignUp
         }"
+        class="sign-modal sign-in-modal"
         @click.stop
       >
-        <div class="form-container" v-show="showReset">
-          <img class="logo" src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip" alt="sign-logo">
+        <div
+          v-show="showReset"
+          class="form-container"
+        >
+          <img
+            class="logo"
+            src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip"
+            alt="sign-logo"
+          >
           <reset-password-form
             @to-login="showReset = false"
             @to-register="showRegister"
-          ></reset-password-form>
+          />
         </div>
-        <div class="form-container" v-show="!showReset">
+        <div
+          v-show="!showReset"
+          class="form-container"
+        >
           <sign-in-form
             @to-reset="showReset = true"
             @to-register="showRegister"
-          ></sign-in-form>
+          />
         </div>
       </div>
       <div
-        class="sign-modal sign-up-modal"
         :class="{
           'sign-up-init' : !showSignUp && !showSignIn,
           'sign-up-show' : showSignUp && !showSignIn,
           'sign-up-turn' : !showSignUp && showSignIn
         }"
+        class="sign-modal sign-up-modal"
         @click.stop
       >
-        <div class="slogan"></div>
+        <div class="slogan"/>
         <div class="form-container">
-          <sign-up-form
-            @to-login="showLogin"
-          ></sign-up-form>
+          <sign-up-form @to-login="showLogin"/>
         </div>
       </div>
     </div>
@@ -241,7 +252,7 @@
   import ResetPasswordForm from '~/components/forms/ResetPasswordForm'
 
   export default {
-    name: 'v-sign',
+    name: 'VSign',
     components: {
       SignUpForm,
       SignInForm,

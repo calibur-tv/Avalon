@@ -21,25 +21,22 @@
 
 <template>
   <el-form
-    class="post-comment-form"
+    ref="forms"
     :model="forms"
     :rules="rules"
-    ref="forms"
+    class="post-comment-form"
   >
     <el-form-item prop="content">
       <el-input
+        v-model.trim="forms.content"
+        :rows="3"
         type="textarea"
         placeholder="1000字以内"
         resize="vertical"
-        :rows="3"
-        v-model.trim="forms.content"
-      ></el-input>
+      />
     </el-form-item>
     <el-form-item>
       <el-upload
-        action="https://upload.qiniup.com"
-        multiple
-        list-type="picture-card"
         ref="uploader"
         :data="uploadHeaders"
         :on-error="handleError"
@@ -48,8 +45,11 @@
         :on-exceed="handleExceed"
         :limit="exceed"
         :before-upload="beforeUpload"
+        action="https://upload.qiniup.com"
+        multiple
+        list-type="picture-card"
       >
-        <i class="el-icon-plus"></i>
+        <i class="el-icon-plus"/>
       </el-upload>
     </el-form-item>
     <el-form-item>
@@ -65,11 +65,28 @@
 
 <script>
   export default {
-    name: 'post-comment-form',
+    name: 'PostCommentForm',
     props: {
       id: {
         type: Number,
         required: true
+      }
+    },
+    data () {
+      return {
+        forms: {
+          content: ''
+        },
+        rules: {
+          content: [
+            { required: true, min: 1, max: 1000, message: '内容不能为空，1000字以内', trigger: 'submit' }
+          ]
+        },
+        uploadHeaders: {
+          token: ''
+        },
+        images: [],
+        exceed: 5
       }
     },
     computed: {
@@ -97,21 +114,9 @@
         return this.$store.state.comment.submitting
       }
     },
-    data () {
-      return {
-        forms: {
-          content: ''
-        },
-        rules: {
-          content: [
-            { required: true, min: 1, max: 1000, message: '内容不能为空，1000字以内', trigger: 'submit' }
-          ]
-        },
-        uploadHeaders: {
-          token: ''
-        },
-        images: [],
-        exceed: 5
+    mounted () {
+      if (!this.isGuest) {
+        this.getUpToken()
       }
     },
     methods: {
@@ -209,11 +214,6 @@
         } catch (e) {
           this.$toast.error(e)
         }
-      }
-    },
-    mounted () {
-      if (!this.isGuest) {
-        this.getUpToken()
       }
     }
   }

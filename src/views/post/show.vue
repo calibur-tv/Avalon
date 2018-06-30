@@ -171,131 +171,164 @@
 
 <template>
   <div id="post-show">
-    <v-banner></v-banner>
+    <v-banner/>
     <div class="container">
       <aside class="col-aside">
         <v-bangumi-panel
-          class="bangumi-panel"
           :id="bangumi.id"
           :avatar="bangumi.avatar"
           :name="bangumi.name"
           :followed="bangumi.followed"
           :summary="bangumi.summary"
+          class="bangumi-panel"
           @follow="handleBangumiFollow"
-        ></v-bangumi-panel>
+        />
       </aside>
       <section class="col-main clearfix">
         <header>
           <div class="title-wrap">
             <div class="control">
-              <el-button size="mini" plain @click="switchOnlyMaster">{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
-              <el-button size="mini" plain @click="scrollToReplyForm">回复</el-button>
-              <el-button size="mini" plain v-if="isMaster" @click="deletePost">删除</el-button>
+              <el-button
+                size="mini"
+                plain
+                @click="switchOnlyMaster"
+              >{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
+              <el-button
+                size="mini"
+                plain
+                @click="scrollToReplyForm"
+              >回复</el-button>
+              <el-button
+                v-if="isMaster"
+                size="mini"
+                plain
+                @click="deletePost"
+              >删除</el-button>
               <span class="floor">共{{ total }}条</span>
             </div>
-            <h1 class="oneline" v-text="post.title"></h1>
+            <h1
+              class="oneline"
+              v-text="post.title"
+            />
           </div>
         </header>
         <main>
           <el-row class="post-main">
             <div class="user">
-              <a :href="$alias.user(master.zone)" target="_blank">
-                <v-img class="avatar" :src="master.avatar" :width="80" :height="80"></v-img>
+              <a
+                :href="$alias.user(master.zone)"
+                target="_blank"
+              >
+                <v-img
+                  :src="master.avatar"
+                  :width="80"
+                  :height="80"
+                  class="avatar"
+                />
               </a>
-              <a class="nickname oneline" :href="$alias.user(master.zone)" target="_blank" v-text="master.nickname"></a>
+              <a
+                :href="$alias.user(master.zone)"
+                class="nickname oneline"
+                target="_blank"
+                v-text="master.nickname"
+              />
             </div>
             <div class="content">
               <div
-                class="image-package"
                 v-for="(img, idx) in post.images"
                 :key="idx"
+                class="image-package"
                 @click="$previewImages(post.images, idx)"
               >
                 <v-img
-                  class="image"
                   :src="img.url"
-                  width="550"
-                  mode="2"
                   :source="img"
                   :full="true"
                   :aspect="$computeImageAspect(img)"
-                ></v-img>
+                  width="550"
+                  mode="2"
+                  class="image"
+                />
               </div>
-              <div class="text-area" v-html="post.content"></div>
+              <div
+                class="text-area"
+                v-html="post.content"
+              />
               <div class="likes-wrap">
                 <el-button
-                  type="danger"
-                  @click="toggleLike"
-                  :loading="loadingToggleLike"
                   v-if="post.liked"
+                  :loading="loadingToggleLike"
                   round
                   plain
+                  type="danger"
+                  @click="toggleLike"
                 >
-                  <i class="iconfont icon-guanzhu"></i>
+                  <i class="iconfont icon-guanzhu"/>
                   已喜欢({{ post.like_count }})
                 </el-button>
                 <el-button
-                  type="danger"
-                  @click="toggleLike"
+                  v-else
                   :loading="loadingToggleLike"
                   round
-                  v-else
+                  type="danger"
+                  @click="toggleLike"
                 >
-                  <i class="iconfont icon-guanzhu"></i>
+                  <i class="iconfont icon-guanzhu"/>
                   喜欢{{ post.like_count ? `(${post.like_count})` : '' }}
                 </el-button>
                 <el-button
-                  type="warning"
-                  @click="toggleMark"
-                  :loading="loadingToggleMark"
                   v-if="post.marked"
+                  :loading="loadingToggleMark"
                   round
                   plain
+                  type="warning"
+                  @click="toggleMark"
                 >
-                  <i class="iconfont icon-buoumaotubiao44"></i>
+                  <i class="iconfont icon-buoumaotubiao44"/>
                   已收藏({{ post.mark_count }})
                 </el-button>
                 <el-button
-                  type="warning"
-                  @click="toggleMark"
+                  v-else
                   :loading="loadingToggleMark"
                   round
-                  v-else
+                  type="warning"
+                  @click="toggleMark"
                 >
-                  <i class="iconfont icon-buoumaotubiao44"></i>
+                  <i class="iconfont icon-buoumaotubiao44"/>
                   收藏{{ post.mark_count ? `(${post.mark_count})` : '' }}
                 </el-button>
               </div>
               <div class="footer">
                 <div class="info-bar">
                   <span class="floor-count">1楼</span>
-                  <v-time v-model="post.created_at"></v-time>
+                  <v-time v-model="post.created_at"/>
                   <v-share
-                    type="panel"
                     :desc="post.desc"
-                  ></v-share>
+                    type="panel"
+                  />
                 </div>
               </div>
             </div>
           </el-row>
           <comment-main
-            type="post"
             :id="post.id"
             :only-see-master="onlySeeMaster"
             :master-id="master.id"
             empty-text=""
+            type="post"
           >
-            <div slot="header"></div>
+            <div slot="header"/>
             <post-comment-item
               slot="comment-item"
               slot-scope="{ comment }"
               :post="comment"
               :master-id="master.id"
-            ></post-comment-item>
-            <div id="bottom-comment-post-form" slot="reply">
-              <post-comment-form
-                :id="post.id"
-              ></post-comment-form>
+            />
+            <div
+              id="bottom-comment-post-form"
+              slot="reply"
+            >
+              <post-comment-form :id="post.id"/>
             </div>
           </comment-main>
         </main>
@@ -310,7 +343,7 @@
   import PostCommentForm from '~/components/post/PostCommentForm'
 
   export default {
-    name: 'post-show',
+    name: 'PostShow',
     async asyncData ({ route, store, ctx }) {
       const only = route.query.only
         ? parseInt(route.query.only, 10) ? 1 : 0
@@ -345,6 +378,12 @@
         ]
       }
     },
+    data () {
+      return {
+        loadingToggleLike: false,
+        loadingToggleMark: false
+      }
+    },
     computed: {
       resource () {
         return this.$store.state.post.info
@@ -371,11 +410,15 @@
         return this.$store.state.user.id === this.master.id
       }
     },
-    data () {
-      return {
-        loadingToggleLike: false,
-        loadingToggleMark: false
-      }
+    mounted () {
+      this.scrollToReply()
+      this.$channel.$on('get-page-bangumi-for-post-create', () => {
+        this.$channel.$emit('set-page-bangumi-for-post-create', {
+          id: this.bangumi.id,
+          name: this.bangumi.name,
+          avatar: this.bangumi.avatar
+        })
+      })
     },
     methods: {
       scrollToReplyForm () {
@@ -476,16 +519,6 @@
       handleBangumiFollow (result) {
         this.$store.commit('post/FOLLOW_BANGUMI', result)
       }
-    },
-    mounted () {
-      this.scrollToReply()
-      this.$channel.$on('get-page-bangumi-for-post-create', () => {
-        this.$channel.$emit('set-page-bangumi-for-post-create', {
-          id: this.bangumi.id,
-          name: this.bangumi.name,
-          avatar: this.bangumi.avatar
-        })
-      })
     }
   }
 </script>

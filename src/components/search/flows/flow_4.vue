@@ -82,23 +82,37 @@
 <template>
   <div class="search-item-post">
     <div class="head">
-      <span class="badge" v-if="inCommon">帖子</span>
-      <a target="_blank" class="title" :href="$alias.post(item.id)" v-text="item.title"></a>
+      <span
+        v-if="inCommon"
+        class="badge"
+      >帖子</span>
+      <a
+        :href="$alias.post(item.id)"
+        target="_blank"
+        class="title"
+        v-text="item.title"
+      />
     </div>
-    <div class="desc" v-text="item.desc"></div>
-    <div class="images clearfix" v-if="item.images.length">
+    <div
+      class="desc"
+      v-text="item.desc"
+    />
+    <div
+      v-if="item.images.length"
+      class="images clearfix"
+    >
       <div
-        class="image-box"
         v-for="(image, index) in item.images"
         :key="index"
+        class="image-box"
         @click="$previewImages(item.images, index)"
       >
         <v-img
           :src="image.url"
+          :aspect="$computeImageAspect(image)"
           height="90"
           mode="2"
-          :aspect="$computeImageAspect(image)"
-        ></v-img>
+        />
       </div>
     </div>
   </div>
@@ -106,7 +120,7 @@
 
 <script>
   export default {
-    name: 'search-item-post',
+    name: 'SearchItemPost',
     props: {
       item: {
         required: true,

@@ -10,32 +10,6 @@
 
 <script>
   export default {
-    name: 'v-',
-    components: {
-
-    },
-    props: {
-
-    },
-    watch: {
-
-    },
-    computed: {
-
-    },
-    data () {
-      return {
-
-      }
-    },
-    created () {
-
-    },
-    methods: {
-
-    },
-    mounted () {
-
-    }
+    name: ''
   }
 </script>

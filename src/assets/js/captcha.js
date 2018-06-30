@@ -1,39 +1,41 @@
-import Api from '~/api/imageApi'
-import './geetest'
+import Api from '~/api/imageApi';
+import './geetest';
 
 export default (params) => {
-  const { type, elem, success, error, ready, async, close } = typeof params === 'object' ? params : {}
-  const api = new Api()
-  const product = type || 'bind'
+  const {
+    type, elem, success, error, ready, async, close,
+  } = typeof params === 'object' ? params : {};
+  const api = new Api();
+  const product = type || 'bind';
   api.getCaptcha().then((data) => {
     if (!window.initGeetest) {
-      error && error('验证码加载失败，请刷新网页重试')
-      return
+      error && error('验证码加载失败，请刷新网页重试');
+      return;
     }
     window.initGeetest({
       gt: data.gt,
       challenge: data.challenge,
       offline: !data.success,
-      product: product,
+      product,
       width: '100%',
-      new_captcha: 1
+      new_captcha: 1,
     }, (captcha) => {
       captcha.onReady(() => {
-        ready && ready()
-      })
+        ready && ready();
+      });
       if (product === 'float') {
-        captcha.appendTo(elem)
+        captcha.appendTo(elem);
       } else if (product === 'bind') {
         if (!async) {
-          captcha.onReady(() => captcha.verify())
+          captcha.onReady(() => captcha.verify());
         } else {
           elem.onclick = () => {
-            captcha.verify()
-          }
+            captcha.verify();
+          };
         }
       }
       captcha.onSuccess(() => {
-        const result = captcha.getValidate()
+        const result = captcha.getValidate();
         typeof params === 'object'
           ? success && success({
             data: {
@@ -41,9 +43,9 @@ export default (params) => {
               geetest_seccode: result.geetest_seccode,
               geetest_validate: result.geetest_validate,
               payload: data.payload,
-              success: data.success
+              success: data.success,
             },
-            captcha
+            captcha,
           })
           : params({
             data: {
@@ -51,19 +53,19 @@ export default (params) => {
               geetest_seccode: result.geetest_seccode,
               geetest_validate: result.geetest_validate,
               payload: data.payload,
-              success: data.success
+              success: data.success,
             },
-            captcha
-          })
-      })
+            captcha,
+          });
+      });
       captcha.onError((err) => {
-        error && error(err)
-      })
+        error && error(err);
+      });
       captcha.onClose(() => {
-        close && close()
-      })
-    })
+        close && close();
+      });
+    });
   }).catch((err) => {
-    error && error(err)
-  })
-}
+    error && error(err);
+  });
+};
