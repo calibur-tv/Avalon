@@ -43,7 +43,7 @@
       overflow: hidden;
     }
 
-    .svg-icon {
+    .fas {
       margin-right: 16px;
     }
 
@@ -51,50 +51,6 @@
       border: none;
       height: 100%;
       width: 100% !important;
-    }
-
-    .hideSidebar {
-      .sidebar-container {
-        width: 36px !important;
-      }
-
-      .main-container {
-        margin-left: 36px;
-      }
-
-      .submenu-title-noDropdown {
-        padding-left: 10px !important;
-        position: relative;
-
-        .el-tooltip {
-          padding: 0 10px !important;
-        }
-      }
-      .el-submenu {
-        overflow: hidden;
-
-        &>.el-submenu__title {
-          padding-left: 10px !important;
-
-          .el-submenu__icon-arrow {
-            display: none;
-          }
-        }
-      }
-
-      .el-menu--collapse {
-        .el-submenu {
-          &>.el-submenu__title {
-            &>span {
-              height: 0;
-              width: 0;
-              overflow: hidden;
-              visibility: hidden;
-              display: inline-block;
-            }
-          }
-        }
-      }
     }
 
     .sidebar-container .nest-menu .el-submenu>.el-submenu__title,
@@ -115,6 +71,50 @@
 
     .el-menu--collapse .el-menu .el-submenu {
       min-width: 180px !important;
+    }
+  }
+
+  .hideSidebar {
+    .sidebar-container {
+      width: 36px !important;
+    }
+
+    .main-container {
+      margin-left: 36px;
+    }
+
+    .submenu-title-noDropdown {
+      padding-left: 10px !important;
+      position: relative;
+
+      .el-tooltip {
+        padding: 0 10px !important;
+      }
+    }
+    .el-submenu {
+      overflow: hidden;
+
+      &>.el-submenu__title {
+        padding-left: 10px !important;
+
+        .el-submenu__icon-arrow {
+          display: none;
+        }
+      }
+    }
+
+    .el-menu--collapse {
+      .el-submenu {
+        &>.el-submenu__title {
+          &>span {
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            visibility: hidden;
+            display: inline-block;
+          }
+        }
+      }
     }
   }
 </style>

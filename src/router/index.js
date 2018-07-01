@@ -160,21 +160,21 @@ export function createRouter() {
           {
             path: 'example',
             name: 'Example',
-            meta: { title: 'Example' },
+            meta: { title: 'Example', icon: 'coffee' },
             component: () => import('~/layouts/empty'),
             redirect: 'example/table',
             children: [
               {
                 path: 'table',
                 name: 'Table',
-                component: () => import('@/views/table/index'),
-                meta: { title: 'Table' }
+                meta: { title: 'Table', icon: 'coffee' },
+                component: () => import('@/views/table/index')
               },
               {
                 path: 'tree',
                 name: 'Tree',
-                component: () => import('@/views/tree/index'),
-                meta: { title: 'Tree' }
+                meta: { title: 'Tree', icon: 'coffee' },
+                component: () => import('@/views/tree/index')
               }
             ]
           },
@@ -186,7 +186,7 @@ export function createRouter() {
               {
                 path: 'index',
                 name: 'Form',
-                meta: { title: 'Form' },
+                meta: { title: 'Form', icon: 'coffee' },
                 component: () => import('@/views/form/index')
               }
             ]

@@ -56,6 +56,12 @@
       Sidebar,
       AppMain
     },
+    head: {
+      title: 'calibur - 控制台',
+      link: [
+        { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.1.0/css/all.css' }
+      ]
+    },
     computed: {
       sidebar() {
         return this.$store.state.admin.sidebar
