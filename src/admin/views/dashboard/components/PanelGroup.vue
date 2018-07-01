@@ -14,10 +14,7 @@
         @click="handleSetLineChartData('newVisitis')"
       >
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon
-            icon-class="peoples"
-            class-name="users"
-          />
+          <svg-icon icon-class="users"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">New Visits</div>
@@ -41,10 +38,7 @@
         @click="handleSetLineChartData('messages')"
       >
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon
-            icon-class="message"
-            class-name="comments"
-          />
+          <svg-icon icon-class="comments"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Messages</div>
@@ -68,10 +62,7 @@
         @click="handleSetLineChartData('purchases')"
       >
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon
-            icon-class="money"
-            class-name="dollar-sign"
-          />
+          <svg-icon icon-class="dollar-sign"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Purchases</div>
@@ -95,10 +86,7 @@
         @click="handleSetLineChartData('shoppings')"
       >
         <div class="card-panel-icon-wrapper icon-shoppingCard">
-          <svg-icon
-            icon-class="shoppingCard"
-            class-name="shopping-cart"
-          />
+          <svg-icon icon-class="shopping-cart"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Shoppings</div>

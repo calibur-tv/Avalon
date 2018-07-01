@@ -17,7 +17,7 @@
     },
     computed: {
       computeClass () {
-        return this.className.replace( /[A-Z]/g, i => {
+        return this.iconClass.replace( /[A-Z]/g, i => {
           return '-' + i.toLowerCase();
         })
       }
