@@ -11,6 +11,7 @@ import cartoonRole from './cartoonRole';
 import trending from './trending';
 import comment from './comment';
 import search from './search';
+import admin from './admin';
 
 import ImageApi from '~/api/imageApi';
 
@@ -95,6 +96,7 @@ export function createStore() {
     },
     getters: {},
     modules: {
+      admin,
       homepage,
       bangumi,
       video,

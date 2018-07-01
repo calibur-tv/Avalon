@@ -142,15 +142,54 @@ export function createRouter() {
       {
         path: '/admin',
         meta: { isAdmin: true },
-        component: () => import('~/layouts/empty'),
+        component: () => import('~/layouts/admin'),
         children: [
           {
-            path: '/',
+            path: '',
+            hidden: true,
             redirect: 'dashboard',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'dashboard',
+                name: 'Dashboard',
+                component: () => import('@/views/dashboard/index'),
+              },
+            ]
           },
           {
-            path: 'dashboard',
-            component: () => import('@/views/dashboard/index'),
+            path: 'example',
+            name: 'Example',
+            meta: { title: 'Example' },
+            component: () => import('~/layouts/empty'),
+            redirect: 'example/table',
+            children: [
+              {
+                path: 'table',
+                name: 'Table',
+                component: () => import('@/views/table/index'),
+                meta: { title: 'Table' }
+              },
+              {
+                path: 'tree',
+                name: 'Tree',
+                component: () => import('@/views/tree/index'),
+                meta: { title: 'Tree' }
+              }
+            ]
+          },
+          {
+            path: 'form',
+            component: () => import('~/layouts/empty'),
+            redirect: 'index',
+            children: [
+              {
+                path: 'index',
+                name: 'Form',
+                meta: { title: 'Form' },
+                component: () => import('@/views/form/index')
+              }
+            ]
           },
         ],
       },
