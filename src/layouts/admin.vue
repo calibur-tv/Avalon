@@ -28,6 +28,12 @@
     label {
       font-weight: 700;
     }
+
+    ul {
+      &:before, &:after {
+        content: none;
+      }
+    }
   }
 </style>
 
@@ -45,9 +51,11 @@
 </template>
 
 <script>
-  import Navbar from '@/components/Navbar'
-  import Sidebar from '@/components/Sidebar/index'
-  import AppMain from '@/components/AppMain'
+  import Navbar from '@/components/Layout/Navbar'
+  import Sidebar from '@/components/Layout/Sidebar'
+  import AppMain from '@/components/Layout/AppMain'
+  import '@/filters'
+  import '@/utils/icon'
 
   export default {
     name: 'AdminLayout',

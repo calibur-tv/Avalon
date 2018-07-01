@@ -1,10 +1,5 @@
 <template>
-  <svg
-    :class="svgClass"
-    aria-hidden="true"
-  >
-    <use :xlink:href="iconName"/>
-  </svg>
+  <i :class="[className, 'fas', `fa-${computeClass}`]"/>
 </template>
 
 <script>
@@ -21,26 +16,11 @@
       }
     },
     computed: {
-      iconName() {
-        return `#icon-${this.iconClass}`
-      },
-      svgClass() {
-        if (this.className) {
-          return 'svg-icon ' + this.className
-        } else {
-          return 'svg-icon'
-        }
+      computeClass () {
+        return this.className.replace( /[A-Z]/g, i => {
+          return '-' + i.toLowerCase();
+        })
       }
     }
   }
 </script>
-
-<style scoped>
-  .svg-icon {
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
-  }
-</style>

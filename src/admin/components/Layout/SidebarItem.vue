@@ -13,10 +13,9 @@
           :index="item.path+'/'+item.children[0].path"
           :class="{'submenu-title-noDropdown':!isNest}"
         >
-          <i
+          <svg-icon
             v-if="item.children[0].meta && item.children[0].meta.icon"
-            :class="'fa-' + item.children[0].meta.icon"
-            class="fas"
+            :icon-class="item.children[0].meta.icon"
           />
           <span
             v-if="item.children[0].meta && item.children[0].meta.title"
@@ -31,10 +30,9 @@
         :key="item.name"
       >
         <template slot="title">
-          <i
+          <svg-icon
             v-if="item.meta && item.meta.icon"
-            :class="'fa-' + item.meta.icon"
-            class="fas"
+            :icon-class="item.meta.icon"
           />
           <span
             v-if="item.meta && item.meta.title"
@@ -58,10 +56,9 @@
             :key="child.name"
           >
             <el-menu-item :index="item.path+'/'+child.path">
-              <i
+              <svg-icon
                 v-if="child.meta && child.meta.icon"
-                :class="'fa-' + item.meta.icon"
-                class="fas"
+                :icon-class="item.meta.icon"
               />
               <span
                 v-if="child.meta && child.meta.title"
