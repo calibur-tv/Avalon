@@ -106,7 +106,7 @@ export function createRouter() {
       },
       {
         path: '/errors',
-        meta: { useAuth: false },
+        meta: { useAuth: true },
         component: () => import('~/layouts/error'),
         children: [
           {
@@ -144,6 +144,10 @@ export function createRouter() {
         meta: { isAdmin: true },
         component: () => import('~/layouts/empty'),
         children: [
+          {
+            path: '/',
+            redirect: 'dashboard',
+          },
           {
             path: 'dashboard',
             component: () => import('@/views/dashboard/index'),

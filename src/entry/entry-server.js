@@ -17,11 +17,13 @@ export default (ssrContext) => {
       const routeMatched = router.currentRoute.matched;
       const useAuth = routeMatched.some(record => record.meta.useAuth);
       const mustAuth = routeMatched.some(record => record.meta.mustAuth);
+      const mustAdmin = routeMatched.some(record => record.meta.isAdmin);
       try {
-        if (mustAuth) {
+        if (mustAuth || mustAdmin) {
           await store.dispatch('initAuth', {
             ctx,
             must: true,
+            admin: mustAdmin
           });
         }
         const matched = matchedComponents.map(({ asyncData }) => asyncData && asyncData({
@@ -33,6 +35,7 @@ export default (ssrContext) => {
           matched.unshift(store.dispatch('initAuth', {
             ctx,
             must: false,
+            admin: false
           }));
         }
         await Promise.all(matched);
