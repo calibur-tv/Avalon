@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
   .dashboard-editor-container {
+    margin: -20px;
     padding: 32px;
     background-color: rgb(240, 242, 245);
 
@@ -14,9 +15,7 @@
 <template>
   <div class="dashboard-editor-container">
     <panel-group/>
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart/>
-    </el-row>
+    <line-chart/>
   </div>
 </template>
 

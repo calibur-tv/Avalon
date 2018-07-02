@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-input
       v-model="filterText"
       placeholder="Filter keyword"

@@ -4,7 +4,7 @@
   $menuHover: #001528;
   // 主体区域
   .main-container {
-    min-height: 100%;
+    height: 100%;
     transition: margin-left .28s;
     margin-left: 180px;
   }

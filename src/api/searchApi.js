@@ -12,4 +12,8 @@ export default class extends BaseApi {
       params: { q, type, page },
     });
   }
+
+  bangumis () {
+    return this.http.get('search/bangumis')
+  }
 }

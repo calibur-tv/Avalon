@@ -3,6 +3,9 @@ const state = () => ({
     opened: true,
     withoutAnimation: false
   },
+  search: {
+    bangumis: []
+  },
   device: 'desktop'
 });
 

@@ -8,11 +8,16 @@
     @extend %clearfix;
 
     .app-main {
-      min-height: 100%
-    }
-
-    .app-container {
+      height: 100%;
       padding: 20px;
+
+      >* {
+        min-height: 100%;
+
+        >header {
+          margin-bottom: 20px;
+        }
+      }
     }
 
     .drawer-bg {

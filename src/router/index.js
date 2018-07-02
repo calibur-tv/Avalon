@@ -191,6 +191,19 @@ export function createRouter() {
               }
             ]
           },
+          {
+            path: 'image',
+            component: () => import('~/layouts/empty'),
+            redirect: 'banner',
+            children: [
+              {
+                path: 'banner',
+                name: 'banner',
+                meta: { title: '主站轮播图', icon: 'coffee' },
+                component: () => import('@/views/image/banner')
+              }
+            ]
+          }
         ],
       },
     ],

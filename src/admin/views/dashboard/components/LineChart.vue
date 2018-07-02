@@ -1,5 +1,8 @@
 <template>
-  <el-row>
+  <el-row
+    v-if="!loading"
+    style="background:#fff;padding:16px 16px 0;margin-bottom:32px;"
+  >
     <el-col
       :span="10" 
       :offset="1"

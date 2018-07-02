@@ -21,6 +21,7 @@ const state = () => ({
       loading: false,
     },
   }))),
+  bangumis: []
 });
 
 const mutations = {
@@ -47,6 +48,9 @@ const mutations = {
     state.resource[type].total = data.total;
     state.resource[type].loading = false;
   },
+  SET_BANGUMIS(state, data) {
+    state.bangumis = data
+  }
 };
 
 const actions = {
@@ -88,6 +92,14 @@ const actions = {
     });
     commit('SET_RESOURCE', { q, type, data });
   },
+  async fetchBangumis({ state, commit }) {
+    if (state.bangumis.length) {
+      return
+    }
+    const api = new Api()
+    const data = await api.bangumis();
+    commit('SET_BANGUMIS', data)
+  }
 };
 
 const getters = {};
