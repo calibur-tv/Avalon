@@ -214,6 +214,18 @@ export function createRouter() {
                 name: 'bangumi-list',
                 meta: { title: '番剧管理', icon: 'coffee' },
                 component: () => import('@/views/bangumi/list')
+              },
+              {
+                path: 'edit/:id(\\d+)',
+                name: 'bangumi-edit',
+                hidden: true,
+                component: () => import('@/views/bangumi/edit')
+              },
+              {
+                path: 'create',
+                name: 'bangumi-create',
+                hidden: true,
+                component: () => import('@/views/bangumi/edit')
               }
             ]
           }

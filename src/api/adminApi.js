@@ -34,4 +34,14 @@ export default class extends BaseApi {
       params: { zone }
     })
   }
+
+  bangumiRelease ({ bangumi_id, video_id }) {
+    return this.http.post('admin/bangumi/release', {
+      bangumi_id, video_id
+    })
+  }
+
+  bangumiDelete ({ id }) {
+    return this.http.post('admin/bangumi/delete', { id })
+  }
 }

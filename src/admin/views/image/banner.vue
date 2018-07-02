@@ -140,10 +140,7 @@
     >
       <el-form>
         <el-form-item label="选择番剧">
-          <bangumi-search
-            v-model="form.bangumi_id"
-            :clear="true"
-          />
+          <bangumi-search v-model="form.bangumi_id"/>
         </el-form-item>
         <el-form-item label="选择作者">
           {{ form.user_nickname }}
@@ -302,7 +299,8 @@
             gray: this.form.gray
           })
           this.$toast.success('操作成功')
-          this.showCreateModal = false
+          this.showCreateModal = false;
+          window.location.reload();
         } catch (e) {
           this.$toast.error(e)
         } finally {
