@@ -158,27 +158,6 @@ export function createRouter() {
             ]
           },
           {
-            path: 'example',
-            name: 'Example',
-            meta: { title: 'Example', icon: 'coffee' },
-            component: () => import('~/layouts/empty'),
-            redirect: 'example/table',
-            children: [
-              {
-                path: 'table',
-                name: 'Table',
-                meta: { title: 'Table', icon: 'coffee' },
-                component: () => import('@/views/table/index')
-              },
-              {
-                path: 'tree',
-                name: 'Tree',
-                meta: { title: 'Tree', icon: 'coffee' },
-                component: () => import('@/views/tree/index')
-              }
-            ]
-          },
-          {
             path: 'bangumi',
             name: 'Bangumi',
             meta: { title: '番剧管理', icon: 'coffee' },
@@ -207,15 +186,23 @@ export function createRouter() {
             ]
           },
           {
-            path: 'image',
+            path: 'runner',
+            name: 'Image',
+            meta: { title: '内容运营', icon: 'coffee' },
+            redirect: 'runner/image/banner',
             component: () => import('~/layouts/empty'),
-            redirect: 'image/banner',
             children: [
               {
-                path: 'banner',
+                path: 'image/banner',
                 name: 'image-banner',
-                meta: { title: '主站轮播图', icon: 'coffee' },
+                meta: { title: '主站轮播', icon: 'coffee' },
                 component: () => import('@/views/image/banner')
+              },
+              {
+                path: 'tag/list',
+                name: 'tag-list',
+                meta: { title: '标签列表', icon: 'coffee' },
+                component: () => import('@/views/tag/list')
               }
             ]
           },

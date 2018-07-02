@@ -58,4 +58,8 @@ export default class extends BaseApi {
   bangumiEdit (params) {
     return this.http.post('admin/bangumi/edit', params)
   }
+
+  allTag () {
+    return this.http.get('admin/tag/all')
+  }
 }
