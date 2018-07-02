@@ -35,6 +35,12 @@ export default class extends BaseApi {
     })
   }
 
+  bangumiInfo ({ id }) {
+    return this.http.get('admin/bangumi/info', {
+      params: { id }
+    })
+  }
+
   bangumiRelease ({ bangumi_id, video_id }) {
     return this.http.post('admin/bangumi/release', {
       bangumi_id, video_id
@@ -43,5 +49,13 @@ export default class extends BaseApi {
 
   bangumiDelete ({ id }) {
     return this.http.post('admin/bangumi/delete', { id })
+  }
+
+  bangumiCreate (params) {
+    return this.http.post('admin/bangumi/create', params)
+  }
+
+  bangumiEdit (params) {
+    return this.http.post('admin/bangumi/edit', params)
   }
 }

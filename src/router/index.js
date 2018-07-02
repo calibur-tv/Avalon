@@ -179,22 +179,37 @@ export function createRouter() {
             ]
           },
           {
-            path: 'form',
+            path: 'bangumi',
+            name: 'Bangumi',
+            meta: { title: '番剧管理', icon: 'coffee' },
             component: () => import('~/layouts/empty'),
-            redirect: 'index',
+            redirect: 'bangumi/list',
             children: [
               {
-                path: 'index',
-                name: 'Form',
-                meta: { title: 'Form', icon: 'coffee' },
-                component: () => import('@/views/form/index')
+                path: 'list',
+                name: 'bangumi-list',
+                meta: { title: '番剧列表', icon: 'coffee' },
+                component: () => import('@/views/bangumi/list')
+              },
+              {
+                path: 'edit/:id(\\d+)',
+                name: 'bangumi-edit',
+                hidden: true,
+                meta: { title: '编辑番剧', icon: 'coffee' },
+                component: () => import('@/views/bangumi/edit')
+              },
+              {
+                path: 'create',
+                name: 'bangumi-create',
+                meta: { title: '创建番剧', icon: 'coffee' },
+                component: () => import('@/views/bangumi/edit')
               }
             ]
           },
           {
             path: 'image',
             component: () => import('~/layouts/empty'),
-            redirect: 'banner',
+            redirect: 'image/banner',
             children: [
               {
                 path: 'banner',
@@ -204,31 +219,6 @@ export function createRouter() {
               }
             ]
           },
-          {
-            path: 'bangumi',
-            component: () => import('~/layouts/empty'),
-            redirect: 'list',
-            children: [
-              {
-                path: 'list',
-                name: 'bangumi-list',
-                meta: { title: '番剧管理', icon: 'coffee' },
-                component: () => import('@/views/bangumi/list')
-              },
-              {
-                path: 'edit/:id(\\d+)',
-                name: 'bangumi-edit',
-                hidden: true,
-                component: () => import('@/views/bangumi/edit')
-              },
-              {
-                path: 'create',
-                name: 'bangumi-create',
-                hidden: true,
-                component: () => import('@/views/bangumi/edit')
-              }
-            ]
-          }
         ],
       },
     ],

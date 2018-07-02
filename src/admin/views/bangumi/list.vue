@@ -54,10 +54,8 @@
             type="warning"
             @click="handleUpdate(scope.row.id)"
           >更新</el-button>
-          <!--
-          v-if="currentUserId === 1"
-          -->
           <el-button
+            v-if="currentUserId === 1"
             type="danger"
             size="small"
             icon="delete"

@@ -36,14 +36,14 @@ Vue.mixin({
         return
       }
       const isFormat = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) !== -1
-      const isLt5M = file.size / 1024 / 1024 < this.uploadConfig.max
+      const isLt5M = file.size / 1024 / 1024 < this.uploadConfig.max;
 
       if (!isFormat) {
         this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
         return false
       }
       if (!isLt5M) {
-        this.$toast.error('图片大小不能超过 5MB!')
+        this.$toast.error(`图片大小不能超过 ${this.uploadConfig.max}MB!`)
         return false
       }
 
