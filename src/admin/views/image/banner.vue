@@ -97,7 +97,7 @@
     </header>
     <div class="image-wrap">
       <div
-        v-for="(item, index) in pageData"
+        v-for="item in pageData"
         :key="item.id"
         class="loop"
       >
@@ -127,7 +127,7 @@
           >编辑</button>
           <el-switch
             v-model="item.use"
-            @change="handleSwitch(item, index)"
+            @change="handleSwitch(item)"
           />
         </div>
       </div>
@@ -229,13 +229,16 @@
         }
       },
       getImageGrayLevel () {
-        console.log(getImageGray(this.$refs.another, 100))
         this.form.gray = getImageGray(this.$refs.another, 100)
       },
-      handleSwitch () {
-      },
-      handlePageChange (val) {
-        this.page.cur = val
+      handleSwitch (item) {
+        const api = new Api(this)
+        api.indexBannerToggle(item.id).then((result) => {
+          item.use = result
+          this.$toast.success('操作成功')
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
       },
       openEditModal (item) {
         this.form = {

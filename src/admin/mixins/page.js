@@ -19,5 +19,10 @@ Vue.mixin({
       const begin = (this.page.cur - 1) * this.page.size;
       return this.list.slice(begin, begin + this.page.size)
     }
+  },
+  methods: {
+    handlePageChange (val) {
+      this.page.cur = val
+    }
   }
 });

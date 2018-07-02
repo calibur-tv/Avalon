@@ -198,9 +198,22 @@ export function createRouter() {
             children: [
               {
                 path: 'banner',
-                name: 'banner',
+                name: 'image-banner',
                 meta: { title: '主站轮播图', icon: 'coffee' },
                 component: () => import('@/views/image/banner')
+              }
+            ]
+          },
+          {
+            path: 'bangumi',
+            component: () => import('~/layouts/empty'),
+            redirect: 'list',
+            children: [
+              {
+                path: 'list',
+                name: 'bangumi-list',
+                meta: { title: '番剧管理', icon: 'coffee' },
+                component: () => import('@/views/bangumi/list')
               }
             ]
           }
