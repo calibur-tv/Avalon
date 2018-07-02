@@ -1,153 +1,136 @@
 <template>
-  <div
-    :class="className"
-    :style="{height:height,width:width}"
-  />
+  <el-row>
+    <el-col
+      :span="10" 
+      :offset="1"
+    >
+      <ve-line
+        v-for="(key, index) in types"
+        :key="index"
+        :data="computeData(key)"
+        :settings="computeSetting(key)"
+      />
+    </el-col>
+    <el-col 
+      :span="10" 
+      :offset="1"
+    >
+      <ve-line
+        v-for="(key, index) in types"
+        :key="index"
+        :data="computeAriseData(key)"
+        :settings="computeAriseSetting(key)"
+      />
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-  import echarts from 'echarts'
-  require('echarts/theme/macarons') // echarts theme
-  import { debounce } from '@/utils'
+  import Api from '~/api/adminApi'
 
   export default {
-    props: {
-      className: {
-        type: String,
-        default: 'chart'
-      },
-      width: {
-        type: String,
-        default: '100%'
-      },
-      height: {
-        type: String,
-        default: '350px'
-      },
-      autoResize: {
-        type: Boolean,
-        default: true
-      },
-      chartData: {
-        type: Object,
-        default: null
-      }
-    },
     data() {
       return {
-        chart: null
-      }
-    },
-    watch: {
-      chartData: {
-        deep: true,
-        handler(val) {
-          this.setOptions(val)
+        loading: true,
+        resource: [],
+        keyMaps: {
+          create_bangumi: '创建番剧',
+          create_image: '总图片数',
+          create_image_album: '总相册数',
+          create_post: '总发帖',
+          create_post_image: '总帖图数',
+          create_post_reply: '总回帖量',
+          create_role: '角色总数',
+          create_video: '视频总量',
+          user_register: '用户总量'
+        },
+        ariseKeyMaps: {
+          create_bangumi: '番剧增长率',
+          create_image: '图片增长率',
+          create_image_album: '相册增长率',
+          create_post: '帖子增长率',
+          create_post_image: '帖图增长率',
+          create_post_reply: '回帖增长率',
+          create_role: '角色增长率',
+          create_video: '视频增长率',
+          user_register: '用户增长率'
         }
       }
     },
-    mounted() {
-      this.initChart()
-      if (this.autoResize) {
-        this.__resizeHanlder = debounce(() => {
-          if (this.chart) {
-            this.chart.resize()
-          }
-        }, 100)
-        window.addEventListener('resize', this.__resizeHanlder)
+    computed: {
+      groupByTypeData () {
+        return _.mapValues(_.groupBy(this.resource, 'type'),
+          clist => clist.map(item => _.omit(item, 'type')))
+      },
+      types () {
+        return Object.keys(this.groupByTypeData)
       }
-
-      // 监听侧边栏的变化
-      const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-      sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
     },
-    beforeDestroy() {
-      if (!this.chart) {
-        return
-      }
-      if (this.autoResize) {
-        window.removeEventListener('resize', this.__resizeHanlder)
-      }
-
-      const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-      sidebarElm.removeEventListener('transitionend', this.__resizeHanlder)
-
-      this.chart.dispose()
-      this.chart = null
+    created () {
+      console.log('created');
+      this.getData()
     },
     methods: {
-      setOptions({ expectedData, actualData } = {}) {
-        this.chart.setOption({
-          xAxis: {
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            boundaryGap: false,
-            axisTick: {
-              show: false
+      getData () {
+        const api = new Api(this)
+        api.timelineStats({
+          days: 30
+        }).then((data) => {
+          this.resource = data.map(_ => {
+            const day = parseInt(_.day, 10) * 1000
+            return {
+              id: parseInt(_.id, 10),
+              day: parseInt(_.day, 10) * 1000,
+              time: this.$moment(day).format('MM月DD日'),
+              count: parseInt(_.count, 10),
+              type: _.type
             }
-          },
-          grid: {
-            left: 10,
-            right: 10,
-            bottom: 20,
-            top: 30,
-            containLabel: true
-          },
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross'
-            },
-            padding: [5, 10]
-          },
-          yAxis: {
-            axisTick: {
-              show: false
-            }
-          },
-          legend: {
-            data: ['expected', 'actual']
-          },
-          series: [{
-            name: 'expected', itemStyle: {
-              normal: {
-                color: '#FF005A',
-                lineStyle: {
-                  color: '#FF005A',
-                  width: 2
-                }
-              }
-            },
-            smooth: true,
-            type: 'line',
-            data: expectedData,
-            animationDuration: 2800,
-            animationEasing: 'cubicInOut'
-          },
-            {
-              name: 'actual',
-              smooth: true,
-              type: 'line',
-              itemStyle: {
-                normal: {
-                  color: '#3888fa',
-                  lineStyle: {
-                    color: '#3888fa',
-                    width: 2
-                  },
-                  areaStyle: {
-                    color: '#f3f8ff'
-                  }
-                }
-              },
-              data: actualData,
-              animationDuration: 2800,
-              animationEasing: 'quadraticOut'
-            }]
+          });
+          this.loading = false;
         })
       },
-      initChart() {
-        this.chart = echarts.init(this.$el, 'macarons')
-        this.setOptions(this.chartData)
+      computeData (key) {
+        const data = this.groupByTypeData[key]
+        return {
+          rows: _.sortBy(data.map(_ => _), 'day', 'asc')
+        }
+      },
+      computeAriseData (key) {
+        const data = _.sortBy(this.groupByTypeData[key], 'day', 'asc')
+        const result = data.map((item, index) => {
+          if (!index) {
+            return Object.assign({}, item, {
+              count: 0
+            })
+          }
+          const lastVal = data[index - 1].count
+          return Object.assign({}, item, {
+            count: parseFloat((item.count - lastVal) / lastVal)
+          })
+        })
+        return {
+          rows: result
+        }
+      },
+      computeSetting (key) {
+        return {
+          metrics: ['count'],
+          dimension: ['time'],
+          labelMap: {
+            count: this.keyMaps[key]
+          }
+        }
+      },
+      computeAriseSetting (key) {
+        return {
+          metrics: ['count'],
+          dimension: ['time'],
+          yAxisType: ['percent'],
+          digit: 2,
+          labelMap: {
+            count: this.ariseKeyMaps[key]
+          }
+        }
       }
     }
   }

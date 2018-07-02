@@ -45,7 +45,9 @@
     <sidebar class="sidebar-container"/>
     <div class="main-container">
       <navbar/>
-      <app-main/>
+      <no-ssr>
+        <app-main/>
+      </no-ssr>
     </div>
   </div>
 </template>
@@ -54,8 +56,10 @@
   import Navbar from '@/components/Layout/Navbar'
   import Sidebar from '@/components/Layout/Sidebar'
   import AppMain from '@/components/Layout/AppMain'
+  import 'moment'
+  import 'lodash'
   import '@/filters'
-  import '@/utils/icon'
+  import '@/utils/library'
 
   export default {
     name: 'AdminLayout',
