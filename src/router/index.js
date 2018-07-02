@@ -160,7 +160,7 @@ export function createRouter() {
           {
             path: 'bangumi',
             name: 'Bangumi',
-            meta: { title: '番剧管理', icon: 'coffee' },
+            meta: { title: '番剧', icon: 'coffee' },
             component: () => import('~/layouts/empty'),
             redirect: 'bangumi/list',
             children: [
@@ -186,9 +186,36 @@ export function createRouter() {
             ]
           },
           {
-            path: 'runner',
+            path: 'cartoon',
+            name: 'Cartoon',
+            meta: { title: '漫画', icon: 'coffee' },
+            redirect: 'cartoon/bangumis',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'bangumis',
+                name: 'cartoon-bangumis',
+                meta: { title: '番剧列表', icon: 'coffee' },
+                component: () => import('@/views/cartoon/bangumis')
+              },
+              {
+                path: 'edit/:id(\\d+)',
+                name: 'cartoon-edit',
+                hidden: true,
+                component: () => import('@/views/cartoon/edit')
+              },
+              {
+                path: 'list',
+                name: 'cartoon-list',
+                meta: { title: '漫画列表', icon: 'coffee' },
+                component: () => import('@/views/cartoon/list')
+              }
+            ]
+          },
+          {
+            path: 'cm',
             name: 'Image',
-            meta: { title: '内容运营', icon: 'coffee' },
+            meta: { title: '运营', icon: 'coffee' },
             redirect: 'runner/image/banner',
             component: () => import('~/layouts/empty'),
             children: [

@@ -74,4 +74,26 @@ export default class extends BaseApi {
       name, model
     })
   }
+
+  cartoonBangumis () {
+    return this.http.get('admin/cartoon/bangumis')
+  }
+
+  cartoonDetail ({ id }) {
+    return this.http.get('admin/cartoon/list_of_bangumi', {
+      params: { id }
+    })
+  }
+
+  cartoonSort ({ id, cartoon }) {
+    return this.http.post('admin/cartoon/sort', {
+      id, cartoon
+    })
+  }
+
+  cartoonEdit ({ id, name, url }) {
+    return this.http.post('admin/cartoon/edit', {
+      id, name, url
+    })
+  }
 }

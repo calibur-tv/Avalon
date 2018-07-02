@@ -17,6 +17,11 @@
         >header {
           margin-bottom: 20px;
         }
+
+        >footer {
+          margin-top: 20px;
+          margin-right: 30px;
+        }
       }
     }
 
