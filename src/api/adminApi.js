@@ -62,4 +62,16 @@ export default class extends BaseApi {
   allTag () {
     return this.http.get('admin/tag/all')
   }
+
+  editTag ({ id, name }) {
+    return this.http.post('admin/tag/edit', {
+      id, name
+    })
+  }
+
+  editCreate ({ name, model }) {
+    return this.http.post('admin/tag/create', {
+      name, model
+    })
+  }
 }
