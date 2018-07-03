@@ -33,6 +33,10 @@
         label="播放量"
         prop="count_played"
       />
+      <el-table-column
+        label="评论量"
+        prop="comment_count"
+      />
     </el-table>
     <v-page
       :state="pageState"

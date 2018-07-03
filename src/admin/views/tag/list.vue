@@ -147,8 +147,8 @@
           }).then(() => {
             this.$toast.success('更新成功');
             tag.name = value
-          }).catch(() => {
-            this.$toast.error('更新失败');
+          }).catch((e) => {
+            this.$toast.error(e);
           })
         }).catch(() => {});
       },

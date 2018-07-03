@@ -320,6 +320,21 @@ export function createRouter() {
               }
             ]
           },
+          {
+            path: 'console',
+            name: 'Console',
+            meta: { title: '管理', icon: 'coffee' },
+            redirect: 'console/admins',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'admins',
+                name: 'admin-list',
+                meta: { title: '管理', icon: 'coffee' },
+                component: () => import('@/views/console/admins')
+              },
+            ]
+          }
         ],
       },
     ],

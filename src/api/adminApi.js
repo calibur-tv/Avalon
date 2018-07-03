@@ -176,4 +176,16 @@ export default class extends BaseApi {
   readFeedback ({ id }) {
     return this.http.post('admin/user/feedback/read', { id })
   }
+
+  getAdminList () {
+    return this.http.get('admin/console/list')
+  }
+
+  removeAdmin ({ id }) {
+    return this.http.post('admin/console/remove', { id })
+  }
+
+  addAdmin ({ id }) {
+    return this.http.post('admin/console/add', { id })
+  }
 }

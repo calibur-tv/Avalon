@@ -113,8 +113,8 @@
             video_id: value
           }).then(() => {
             this.$toast.success('更新成功');
-          }).catch(() => {
-            this.$toast.error('更新失败');
+          }).catch((e) => {
+            this.$toast.error(e);
           })
         }).catch(() => {});
       },
