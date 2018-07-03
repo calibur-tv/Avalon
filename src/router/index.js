@@ -284,6 +284,12 @@ export function createRouter() {
                 name: 'tag-list',
                 meta: { title: '标签列表', icon: 'coffee' },
                 component: () => import('@/views/tag/list')
+              },
+              {
+                path: 'faker/list',
+                name: 'faker-list',
+                meta: { title: '运营号', icon: 'coffee' },
+                component: () => import('@/views/user/faker')
               }
             ]
           },

@@ -134,4 +134,20 @@ export default class extends BaseApi {
   cartoonRoleCreate (params) {
     return this.http.post('admin/cartoon_role/create', params)
   }
+
+  getFakerList () {
+    return this.http.get('admin/user/faker/list')
+  }
+
+  rebornFakerUser ({ id, phone }) {
+    return this.http.post('admin/user/faker/reborn', {
+      id, phone
+    })
+  }
+
+  createFakerUser ({ nickname, phone }) {
+    return this.http.post('admin/user/faker/create', {
+      nickname, phone
+    })
+  }
 }
