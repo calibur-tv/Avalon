@@ -274,10 +274,10 @@ export function createRouter() {
             component: () => import('~/layouts/empty'),
             children: [
               {
-                path: 'list',
-                name: 'user-list',
-                meta: { title: '用户列表', icon: 'coffee' },
-                component: () => import('@/views/user/list')
+                path: 'dalao',
+                name: 'user-dalao',
+                meta: { title: '大佬列表', icon: 'coffee' },
+                component: () => import('@/views/user/dalao')
               },
               {
                 path: 'show',
@@ -289,9 +289,9 @@ export function createRouter() {
           },
           {
             path: 'cm',
-            name: 'Image',
+            name: 'Cm',
             meta: { title: '运营', icon: 'coffee' },
-            redirect: 'runner/image/banner',
+            redirect: 'cm/image/banner',
             component: () => import('~/layouts/empty'),
             children: [
               {
