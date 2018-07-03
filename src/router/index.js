@@ -267,6 +267,27 @@ export function createRouter() {
             ]
           },
           {
+            path: 'user',
+            name: 'User',
+            meta: { title: '用户', icon: 'coffee' },
+            redirect: 'user/list',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'list',
+                name: 'user-list',
+                meta: { title: '用户列表', icon: 'coffee' },
+                component: () => import('@/views/user/list')
+              },
+              {
+                path: 'show',
+                name: 'user-show',
+                meta: { title: '用户查询', icon: 'coffee' },
+                component: () => import('@/views/user/show')
+              },
+            ]
+          },
+          {
             path: 'cm',
             name: 'Image',
             meta: { title: '运营', icon: 'coffee' },

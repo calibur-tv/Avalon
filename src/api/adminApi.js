@@ -150,4 +150,22 @@ export default class extends BaseApi {
       nickname, phone
     })
   }
+
+  getCoinDescUser ({ to_page, cur_page, take }) {
+    return this.http.get('admin/user/dalao', {
+      params: { to_page, cur_page, take }
+    })
+  }
+
+  addUserToTrial ({ id }) {
+    return this.http.post('admin/user/add_to_trial', { id })
+  }
+
+  blockUser ({ id }) {
+    return this.http.post('admin/user/block', { id })
+  }
+
+  recoverUser ({ id }) {
+    return this.http.post('admin/user/recover', { id })
+  }
 }

@@ -20,7 +20,10 @@
         >搜索</el-button>
       </el-col>
     </el-row>
-    <p style="font-size: 12px;color: #8590a6;margin-left: 2px">
+    <p
+      v-if="!disabled"
+      style="font-size: 12px;color: #8590a6;margin-left: 2px;line-height: 40px;"
+    >
       搜索结果：
       <span
         v-if="!user && !loading"
@@ -41,7 +44,11 @@
     props: {
       value: {
         type: [Number, String],
-        required: true
+        default: ''
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -68,6 +75,11 @@
           return
         }
         this.lastQ = q;
+
+        if (this.disabled) {
+          this.$emit('submit', q);
+          return
+        }
 
         const api = new Api(this);
         try {
