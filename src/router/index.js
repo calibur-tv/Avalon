@@ -294,6 +294,21 @@ export function createRouter() {
             ]
           },
           {
+            path: 'trial',
+            name: 'Trial',
+            meta: { title: '审核', icon: 'code-branch' },
+            redirect: 'trial/test',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'test',
+                name: 'trial-test',
+                meta: { title: '审核测试', icon: 'coffee' },
+                component: () => import('@/views/trial/test')
+              },
+            ]
+          },
+          {
             path: 'cm',
             name: 'Cm',
             meta: { title: '运营', icon: 'code-branch' },

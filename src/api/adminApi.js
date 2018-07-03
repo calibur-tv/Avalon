@@ -188,4 +188,16 @@ export default class extends BaseApi {
   addAdmin ({ id }) {
     return this.http.post('admin/console/add', { id })
   }
+
+  trialTestImage ({ url }) {
+    return this.http.get('admin/trial/test/image', {
+      params: { url }
+    })
+  }
+
+  trialTestText ({ text }) {
+    return this.http.get('admin/trial/test/text', {
+      params: { text }
+    })
+  }
 }
