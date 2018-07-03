@@ -1,6 +1,6 @@
 <template>
   <div
-    v-loading="loading"
+    v-loading="pageLoading"
     id="bangumi-list"
   >
     <header>
@@ -66,7 +66,7 @@
     </el-table>
     <v-page
       :change="handlePageChange"
-      :state="page"
+      :state="pageState"
     />
   </div>
 </template>
@@ -76,12 +76,6 @@
   import Api from '~/api/adminApi'
 
   export default {
-    data () {
-      return {
-        loading: true,
-        list: []
-      }
-    },
     mixin: [
       pageMixin
     ],
@@ -98,11 +92,13 @@
     },
     methods: {
       async getData () {
+        this.pageLoading = true
         await this.$store.dispatch('search/fetchBangumis')
-        this.list = this.bangumis
-        this.page.size = 20
-        this.page.total = this.bangumis.length
-        this.loading = false
+        this.pageList = this.bangumis
+        this.pageState.cur = 1
+        this.pageState.size = 20
+        this.pageState.total = this.bangumis.length
+        this.pageLoading = false
       },
       handleUpdate (id) {
         this.$prompt('请输入视频id', '提示', {

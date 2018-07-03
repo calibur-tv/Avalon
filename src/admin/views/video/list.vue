@@ -1,12 +1,15 @@
 <template>
   <div
-    v-loading="loading"
+    v-loading="pageLoading"
     id="video-list"
   >
     <header>
       <el-row>
         <el-col :span="10">
-          <bangumi-search @search="handleBangumiSearch"/>
+          <bangumi-search
+            placeholder="请先选择番剧"
+            @search="handleBangumiSearch"
+          />
         </el-col>
       </el-row>
     </header>
@@ -53,7 +56,7 @@
     </el-table>
     <v-page
       :change="getData"
-      :state="page"
+      :state="pageState"
     />
     <v-dialog
       v-model="showEditorModal"
@@ -137,17 +140,9 @@
   import deepAssign from 'deep-assign'
 
   export default {
-    components: {
-
-    },
-    props: {
-
-    },
     data () {
       return {
-        loading: false,
         bangumiId: 0,
-        list: [],
         showEditorModal: false,
         editSubmitting: false,
         editForm: {
@@ -180,44 +175,33 @@
     mixin: [
       pageMixin
     ],
-    computed: {
-
-    },
-    watch: {
-
-    },
-    created () {
-    },
-    mounted () {
-
-    },
     methods: {
       async getData (page) {
-        if (page <= this.page.max) {
-          this.page.cur = page
+        if (page <= this.pageState.max) {
+          this.pageState.cur = page
           return
         }
-        if (this.loading) {
+        if (this.pageLoading) {
           return
         }
-        this.loading = true;
-        this.page.size = 10;
-        const api = new Api(this)
+        this.pageLoading = true;
+        this.pageState.size = 10;
+        const api = new Api(this);
         try {
           const data = await api.getBangumiVideoList({
             id: this.bangumiId,
-            cur_page: this.page.cur,
             to_page: page,
-            take: this.page.size
-          })
-          this.page.total = data.total
-          this.page.cur = page
-          this.page.max = page
-          this.list = this.list.concat(data.list)
+            cur_page: this.pageState.cur,
+            take: this.pageState.size
+          });
+          this.pageState.total = data.total
+          this.pageState.cur = page;
+          this.pageState.max = page;
+          this.pageList = this.pageList.concat(data.list)
         } catch (e) {
           this.$toast.error(e)
         } finally {
-          this.loading = false
+          this.pageLoading = false
         }
       },
       handleBangumiSearch (id) {

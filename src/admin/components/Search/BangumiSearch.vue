@@ -29,6 +29,10 @@
       clear: {
         type: Boolean,
         default: true
+      },
+      placeholder: {
+        type: String,
+        default: '无'
       }
     },
     data () {
@@ -43,7 +47,7 @@
       bangumis () {
         return [{
           id: 0,
-          name: '未选择',
+          name: this.placeholder,
           alias: '无，不，未选择'
         }].concat(this.$store.state.search.bangumis)
       }

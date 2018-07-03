@@ -1,6 +1,6 @@
 <template>
   <div
-    v-loading="loading"
+    v-loading="pageLoading"
     id="tag-list"
   >
     <header>
@@ -20,7 +20,6 @@
     >
       <el-table-column
         prop="id"
-        sortable
         label="索引"
       />
       <el-table-column
@@ -52,7 +51,7 @@
     </el-table>
     <v-page
       :change="handlePageChange"
-      :state="page"
+      :state="pageState"
     />
     <v-dialog
       v-model="showCreateModal"
@@ -94,7 +93,6 @@
       return {
         showCreateModal: false,
         createLoading: false,
-        loading: true,
         types: [
           {
             value: 0,
@@ -109,7 +107,6 @@
             text: '图片尺寸'
           }
         ],
-        list: [],
         createForm: {
           model: 0,
           name: ''
@@ -124,16 +121,18 @@
     },
     methods: {
       async getData () {
+        this.pageLoading = true;
         const api = new Api(this);
         try {
-          const data = await api.allTag()
-          this.page.total = data.length
-          this.page.size = 20
-          this.list = data
+          const data = await api.allTag();
+          this.pageState.total = data.length
+          this.pageState.cur = 1;
+          this.pageState.size = 20;
+          this.pageList = data
         } catch (e) {
           this.$toast.error(e)
         } finally {
-          this.loading = false
+          this.pageLoading = false;
         }
       },
       editTagName (tag) {

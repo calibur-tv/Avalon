@@ -110,4 +110,10 @@ export default class extends BaseApi {
   videoSave (arr) {
     return this.http.post('admin/video/save', arr)
   }
+
+  getTrendingVideo ({ cur_page, to_page, take }) {
+    return this.http.get('admin/video/trending', {
+      params: { cur_page, to_page, take }
+    })
+  }
 }

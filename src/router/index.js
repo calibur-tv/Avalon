@@ -226,6 +226,12 @@ export function createRouter() {
                 component: () => import('@/views/video/list')
               },
               {
+                path: 'trending',
+                name: 'video-trending',
+                meta: { title: '播放排行', icon: 'coffee' },
+                component: () => import('@/views/video/trending')
+              },
+              {
                 path: 'create',
                 name: 'video-create',
                 meta: { title: '新建视频', icon: 'coffee' },

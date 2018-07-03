@@ -3,29 +3,31 @@ import Vue from 'vue';
 Vue.mixin({
   data () {
     return {
-      page: {
+      pageState: {
         max: 0,
         cur: 0,
         size: 10,
         total: 0,
       },
+      pageLoading: false,
+      pageList: []
     }
   },
   computed: {
     pageData () {
-      if (!this.list) {
+      if (!this.pageList.length) {
         return []
       }
-      const begin = (this.page.cur - 1) * this.page.size;
-      return this.list.slice(begin, begin + this.page.size)
+      const begin = (this.pageState.cur - 1) * this.pageState.size;
+      return this.pageList.slice(begin, begin + this.pageState.size)
     }
   },
   methods: {
     handlePageChange (val) {
-      this.page.cur = val
+      this.pageState.cur = val
     },
     resetPageState () {
-      this.page = {
+      this.pageState = {
         max: 0,
         cur: 0,
         size: 10,

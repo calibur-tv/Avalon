@@ -74,7 +74,7 @@
 
 <template>
   <div
-    v-loading="loading"
+    v-loading="pageLoading"
     id="image-banner"
   >
     <img
@@ -184,7 +184,7 @@
     </v-dialog>
     <v-page
       :change="handlePageChange"
-      :state="page"
+      :state="pageState"
     />
   </div>
 </template>
@@ -198,8 +198,6 @@
   export default {
     data () {
       return {
-        list: [],
-        loading: true,
         showEditModal: false,
         showCreateModal: false,
         modalLoading: false,
@@ -215,14 +213,16 @@
     },
     methods: {
       async getData () {
+        this.pageLoading = true;
         const api = new Api(this);
         try {
           const data = await api.indexBannerList();
-          this.page.size = 12
-          this.page.total = data.length
-          this.list = data
+          this.pageState.cur = 1;
+          this.pageState.size = 12
+          this.pageState.total = data.length
+          this.pageList = data
         } finally {
-          this.loading = false;
+          this.pageLoading = false;
         }
       },
       getImageGrayLevel () {

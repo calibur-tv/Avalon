@@ -1,6 +1,6 @@
 <template>
   <div
-    v-loading="loading"
+    v-loading="pageLoading"
     id="cartoon-bangumis"
   >
     <el-table
@@ -31,7 +31,7 @@
     </el-table>
     <v-page
       :change="handlePageChange"
-      :state="page"
+      :state="pageState"
     />
   </div>
 </template>
@@ -41,12 +41,6 @@
   import pageMixin from '@/mixins/page'
 
   export default {
-    data () {
-      return {
-        loading: true,
-        list: []
-      }
-    },
     mixin: [
       pageMixin
     ],
@@ -55,15 +49,17 @@
     },
     methods: {
       async getData () {
+        this.pageLoading = true;
         const api = new Api(this);
         try {
           const data = await api.cartoonBangumis();
-          this.page.total = data.length;
-          this.list = data
+          this.pageState.cur = 1;
+          this.pageState.total = data.length;
+          this.pageList = data
         } catch (e) {
           this.$toast.error(e)
         } finally {
-          this.loading = false
+          this.pageLoading = false
         }
       }
     }
