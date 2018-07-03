@@ -212,4 +212,18 @@ export default class extends BaseApi {
   addTrialWords ({ words }) {
     return this.http.post('admin/trial/words/add', { words })
   }
+
+  getTrialUsers () {
+    return this.http.get('admin/trial/user/list')
+  }
+
+  deleteUserInfo ({ id, key, value }) {
+    return this.http.post('admin/trial/user/delete_info', {
+      id, key, value
+    })
+  }
+
+  passUser ({ id }) {
+    return this.http.post('admin/trial/user/pass', { id })
+  }
 }
