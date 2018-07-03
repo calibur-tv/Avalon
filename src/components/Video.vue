@@ -348,6 +348,10 @@
             }
           ]
         })
+        
+        this.player.on('playing', () => {
+          this.$emit('playing')
+        });
 
         document.addEventListener('fullscreenchange', () => {
           this.handleFullScreen()

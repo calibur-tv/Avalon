@@ -160,7 +160,7 @@ export function createRouter() {
           {
             path: 'bangumi',
             name: 'Bangumi',
-            meta: { title: '番剧', icon: 'coffee' },
+            meta: { title: '番剧', icon: 'film' },
             component: () => import('~/layouts/empty'),
             redirect: 'bangumi/list',
             children: [
@@ -188,7 +188,7 @@ export function createRouter() {
           {
             path: 'video',
             name: 'Video',
-            meta: { title: '视频', icon: 'coffee' },
+            meta: { title: '视频', icon: 'video' },
             redirect: 'video/list',
             component: () => import('~/layouts/empty'),
             children: [
@@ -215,7 +215,7 @@ export function createRouter() {
           {
             path: 'cartoon',
             name: 'Cartoon',
-            meta: { title: '漫画', icon: 'coffee' },
+            meta: { title: '漫画', icon: 'images' },
             redirect: 'cartoon/bangumis',
             component: () => import('~/layouts/empty'),
             children: [
@@ -242,7 +242,7 @@ export function createRouter() {
           {
             path: 'role',
             name: 'Role',
-            meta: { title: '偶像', icon: 'coffee' },
+            meta: { title: '偶像', icon: 'grin-stars' },
             redirect: 'role/list',
             component: () => import('~/layouts/empty'),
             children: [
@@ -269,7 +269,7 @@ export function createRouter() {
           {
             path: 'user',
             name: 'User',
-            meta: { title: '用户', icon: 'coffee' },
+            meta: { title: '用户', icon: 'users' },
             redirect: 'user/list',
             component: () => import('~/layouts/empty'),
             children: [
@@ -296,7 +296,7 @@ export function createRouter() {
           {
             path: 'cm',
             name: 'Cm',
-            meta: { title: '运营', icon: 'coffee' },
+            meta: { title: '运营', icon: 'code-branch' },
             redirect: 'cm/image/banner',
             component: () => import('~/layouts/empty'),
             children: [
@@ -323,14 +323,14 @@ export function createRouter() {
           {
             path: 'console',
             name: 'Console',
-            meta: { title: '管理', icon: 'coffee' },
+            meta: { title: '管理', icon: 'unlock' },
             redirect: 'console/admins',
             component: () => import('~/layouts/empty'),
             children: [
               {
                 path: 'admins',
                 name: 'admin-list',
-                meta: { title: '管理', icon: 'coffee' },
+                meta: { title: '管理', icon: 'unlock' },
                 component: () => import('@/views/console/admins')
               },
             ]
