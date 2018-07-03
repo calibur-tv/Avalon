@@ -186,6 +186,33 @@ export function createRouter() {
             ]
           },
           {
+            path: 'video',
+            name: 'Video',
+            meta: { title: '视频', icon: 'coffee' },
+            redirect: 'video/list',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'list',
+                name: 'video-list',
+                meta: { title: '视频列表', icon: 'coffee' },
+                component: () => import('@/views/video/list')
+              },
+              {
+                path: 'trending',
+                name: 'video-trending',
+                meta: { title: '播放排行', icon: 'coffee' },
+                component: () => import('@/views/video/trending')
+              },
+              {
+                path: 'create',
+                name: 'video-create',
+                meta: { title: '新建视频', icon: 'coffee' },
+                component: () => import('@/views/video/create')
+              }
+            ]
+          },
+          {
             path: 'cartoon',
             name: 'Cartoon',
             meta: { title: '漫画', icon: 'coffee' },
@@ -213,29 +240,23 @@ export function createRouter() {
             ]
           },
           {
-            path: 'video',
-            name: 'Video',
-            meta: { title: '视频', icon: 'coffee' },
-            redirect: 'video/list',
+            path: 'role',
+            name: 'Role',
+            meta: { title: '偶像', icon: 'coffee' },
+            redirect: 'role/list',
             component: () => import('~/layouts/empty'),
             children: [
               {
                 path: 'list',
-                name: 'video-list',
-                meta: { title: '视频列表', icon: 'coffee' },
-                component: () => import('@/views/video/list')
-              },
-              {
-                path: 'trending',
-                name: 'video-trending',
-                meta: { title: '播放排行', icon: 'coffee' },
-                component: () => import('@/views/video/trending')
+                name: 'role-list',
+                meta: { title: '偶像列表', icon: 'coffee' },
+                component: () => import('@/views/role/list')
               },
               {
                 path: 'create',
-                name: 'video-create',
-                meta: { title: '新建视频', icon: 'coffee' },
-                component: () => import('@/views/video/create')
+                name: 'role-create',
+                meta: { title: '添加偶像', icon: 'coffee' },
+                component: () => import('@/views/role/create')
               }
             ]
           },

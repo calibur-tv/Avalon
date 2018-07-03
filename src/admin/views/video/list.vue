@@ -235,14 +235,25 @@
         this.editForm.poster = this.editForm.poster.split('calibur.tv/').pop()
         this.showEditorModal = true;
       },
-      handleDelete () {
+      handleDelete (video) {
+        this.$confirm('确认要执行该操作吗?', '提示').then(() => {
+          const api = new Api(this);
+          api.videoDelete({
+            id: video.id
+          }).then(() => {
+            video.deleted_at = !video.deleted_at
+            this.$message.success('操作成功');
+          }).catch(() => {
+            this.$message.error('操作失败');
+          })
+        }).catch(() => {});
       },
       async handleEditDone () {
         if (this.editSubmitting) {
           return
         }
         this.editSubmitting = true;
-        const api = new Api(this)
+        const api = new Api(this);
         try {
           await api.videoEdit(Object.assign({}, this.editForm, {
             url: this.editForm.url.split('?').shift()
