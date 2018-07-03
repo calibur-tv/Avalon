@@ -306,6 +306,12 @@ export function createRouter() {
                 meta: { title: '审核测试', icon: 'coffee' },
                 component: () => import('@/views/trial/test')
               },
+              {
+                path: 'words',
+                name: 'trial-words',
+                meta: { title: '敏感词库', icon: 'coffee' },
+                component: () => import('@/views/trial/words')
+              }
             ]
           },
           {

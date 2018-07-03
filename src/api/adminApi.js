@@ -200,4 +200,16 @@ export default class extends BaseApi {
       params: { text }
     })
   }
+
+  getTrialWords () {
+    return this.http.get('admin/trial/words/list')
+  }
+
+  deleteTrialWords ({ words }) {
+    return this.http.post('admin/trial/words/delete', { words })
+  }
+
+  addTrialWords ({ words }) {
+    return this.http.post('admin/trial/words/add', { words })
+  }
 }
