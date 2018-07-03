@@ -198,7 +198,7 @@
             url: this.editingItem.url
           });
           this.toggleEditModal = false;
-          this.$message.success('更新成功');
+          this.$toast.success('更新成功');
           this.list.forEach((item, index) => {
             if (item.id === this.editingItem.id) {
               this.list[index].name = this.editingItem.name
@@ -206,7 +206,7 @@
             }
           });
         } catch (e) {
-          this.$message.error(e);
+          this.$toast.error(e);
         }
       },
       handleUpUploadSuccess (res) {

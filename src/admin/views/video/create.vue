@@ -395,7 +395,7 @@
       validateAndSaveNames () {
         const names = this.form.names;
         if (!names) {
-          this.$message.error('标题不能为空');
+          this.$toast.error('标题不能为空');
           return;
         }
         const parts = this.form.parts;
@@ -403,7 +403,7 @@
         const titles = names.split('\n')
         const result = [];
         if (titles.length !== length) {
-          this.$message.error('标题个数不对');
+          this.$toast.error('标题个数不对');
           return;
         }
         let goOut = false;
@@ -414,7 +414,7 @@
           result.push(title.trim())
         });
         if (goOut) {
-          this.$message.error('每一个标题都不能为空，且不能超过30字');
+          this.$toast.error('每一个标题都不能为空，且不能超过30字');
           return;
         }
         this.form.titles = result
@@ -426,7 +426,7 @@
           if (this.form.haveSelfResource) {
             this.saver.videos = true
           } else {
-            this.$message.error('资源链接不能为空');
+            this.$toast.error('资源链接不能为空');
           }
           return
         }
@@ -435,12 +435,12 @@
         const arr = videos.split('\n')
         if (this.form.haveSelfResource) {
           if (arr.length > length) {
-            this.$message.error('外链视频的个数大于视频的总数');
+            this.$toast.error('外链视频的个数大于视频的总数');
             return;
           }
         } else {
           if (arr.length !== length) {
-            this.$message.error('资源个数');
+            this.$toast.error('资源个数');
             return;
           }
         }
@@ -453,7 +453,7 @@
           result.push(video.trim().split('?').shift());
         })
         if (goOut) {
-          this.$message.error('存在不合法的链接');
+          this.$toast.error('存在不合法的链接');
           return;
         }
         this.form.urls = result;
@@ -506,7 +506,7 @@
         const api = new Api(this)
         try {
           await api.videoSave(arr);
-          this.$message.success('操作成功');
+          this.$toast.success('操作成功');
           this.$refs.form.resetFields();
           this.resetForm();
         } catch (e) {

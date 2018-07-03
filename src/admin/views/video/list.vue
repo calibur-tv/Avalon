@@ -242,9 +242,9 @@
             id: video.id
           }).then(() => {
             video.deleted_at = !video.deleted_at
-            this.$message.success('操作成功');
+            this.$toast.success('操作成功');
           }).catch(() => {
-            this.$message.error('操作失败');
+            this.$toast.error('操作失败');
           })
         }).catch(() => {});
       },

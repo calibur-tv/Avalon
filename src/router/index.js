@@ -253,10 +253,16 @@ export function createRouter() {
                 component: () => import('@/views/role/list')
               },
               {
+                path: 'edit/:id(\\d+)',
+                name: 'role-edit',
+                hidden: true,
+                component: () => import('@/views/role/edit')
+              },
+              {
                 path: 'create',
                 name: 'role-create',
                 meta: { title: '添加偶像', icon: 'coffee' },
-                component: () => import('@/views/role/create')
+                component: () => import('@/views/role/edit')
               }
             ]
           },

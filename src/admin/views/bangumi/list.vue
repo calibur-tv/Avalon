@@ -112,9 +112,9 @@
             bangumi_id: id,
             video_id: value
           }).then(() => {
-            this.$message.success('更新成功');
+            this.$toast.success('更新成功');
           }).catch(() => {
-            this.$message.error('更新失败');
+            this.$toast.error('更新失败');
           })
         }).catch(() => {});
       },
@@ -124,10 +124,10 @@
           api.bangumiDelete({
             id: bangumi.id
           }).then(() => {
-            this.$message.success('操作成功');
+            this.$toast.success('操作成功');
             window.location.reload();
           }).catch(() => {
-            this.$message.error('操作失败');
+            this.$toast.error('操作失败');
           })
         }).catch(() => {});
       },

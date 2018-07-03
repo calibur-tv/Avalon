@@ -54,20 +54,24 @@
         label="金币数"
         prop="star_count"
       />
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <router-link :to="`/admin/role/edit/${scope.row.id}`">
+            <el-button
+              size="small"
+              type="primary"
+            >编辑</el-button>
+          </router-link>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-  import BangumiApi from '~/api/bangumiApi'
+  import Api from '~/api/bangumiApi'
 
   export default {
-    components: {
-
-    },
-    props: {
-
-    },
     data () {
       return {
         bangumiId: 0,
@@ -75,25 +79,13 @@
         loading: false
       }
     },
-    computed: {
-
-    },
-    watch: {
-
-    },
-    created () {
-
-    },
-    mounted () {
-
-    },
     methods: {
       async getData () {
         if (this.loading) {
           return
         }
         this.loading = true;
-        const api = new BangumiApi();
+        const api = new Api();
         try {
           this.list = await api.roles({
             bangumiId: this.bangumiId

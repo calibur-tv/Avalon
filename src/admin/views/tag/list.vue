@@ -145,10 +145,10 @@
             id: tag.id,
             name: value
           }).then(() => {
-            this.$message.success('更新成功');
+            this.$toast.success('更新成功');
             tag.name = value
           }).catch(() => {
-            this.$message.error('更新失败');
+            this.$toast.error('更新失败');
           })
         }).catch(() => {});
       },

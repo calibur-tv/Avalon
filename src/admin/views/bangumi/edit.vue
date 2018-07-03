@@ -4,6 +4,7 @@
     id="bangumi-edit"
   >
     <el-form
+      v-if="form"
       ref="form"
       :model="form"
       :rules="rules"
@@ -361,9 +362,7 @@
       }
       return {
         loading: !!id,
-        bangumi: null,
         tags: [],
-        collections: [],
         releaseWeekly: [
           {
             id: 0,
@@ -398,23 +397,7 @@
             name: '周日'
           }
         ],
-        form: {
-          name: '',
-          alias: '',
-          released_at: 0,
-          published_at: '',
-          tags: [],
-          collection_id: 0,
-          avatar: '',
-          banner: '',
-          season: '',
-          summary: '',
-          others_site_video: false,
-          isCollection: false,
-          end: false,
-          has_video: true,
-          has_cartoon: false
-        },
+        form: null,
         rules: {
           name: [
             { required: true, message: '请输入番剧名称', trigger: 'blur' }
@@ -446,6 +429,12 @@
         return +(this.$route.params.id || 0)
       }
     },
+    watch: {
+      $route () {
+        this.getBangumiById();
+        this.getUpToken();
+      }
+    },
     created () {
       this.getBangumiById();
       this.getBangumiTags();
@@ -454,6 +443,23 @@
     methods: {
       getBangumiById () {
         if (!this.id) {
+          this.form = {
+            name: '',
+            alias: '',
+            released_at: 0,
+            published_at: '',
+            tags: [],
+            collection_id: 0,
+            avatar: '',
+            banner: '',
+            season: '',
+            summary: '',
+            others_site_video: false,
+            isCollection: false,
+            end: false,
+            has_video: true,
+            has_cartoon: false
+          }
           return
         }
 
@@ -461,12 +467,10 @@
         api.bangumiInfo({
           id: this.id
         }).then((resp) => {
-          const data = Object.assign(resp, {
+          this.form = Object.assign(resp, {
             banner: resp.banner.split('.calibur.tv/').pop(),
             avatar: resp.avatar.split('.calibur.tv/').pop()
           });
-          this.bangumi = data
-          this.form = data
           this.loading = false
         })
       },
@@ -487,11 +491,11 @@
         return this.beforeImageUpload(file);
       },
       handleAvatarSuccess(res) {
-        this.$message.success('上传成功');
+        this.$toast.success('上传成功');
         this.form.avatar = res.data.key
       },
       handleBannerSuccess(res) {
-        this.$message.success('上传成功');
+        this.$toast.success('上传成功');
         this.form.banner = res.data.key
       },
       submitForm() {
@@ -508,7 +512,7 @@
               } else {
                 jumpId = await api.bangumiCreate(params)
               }
-              this.$message.success('操作成功');
+              this.$toast.success('操作成功');
               this.$router.push({
                 path: '/admin/bangumi/list'
               });
@@ -516,7 +520,7 @@
                 window.open(this.$alias.bangumi(jumpId))
               }, 2000);
             } catch (e) {
-              this.$message.error('操作失败');
+              this.$toast.error('操作失败');
             }
           }
         });

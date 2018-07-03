@@ -120,4 +120,18 @@ export default class extends BaseApi {
       params: { cur_page, to_page, take }
     })
   }
+
+  cartoonRoleInfo ({ id }) {
+    return this.http.get('admin/cartoon_role/show', {
+      params: { id }
+    })
+  }
+
+  cartoonRoleEdit (params) {
+    return this.http.post('admin/cartoon_role/edit', params)
+  }
+
+  cartoonRoleCreate (params) {
+    return this.http.post('admin/cartoon_role/create', params)
+  }
 }
