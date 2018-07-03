@@ -307,11 +307,29 @@ export function createRouter() {
                 component: () => import('@/views/trial/test')
               },
               {
-                path: 'words',
-                name: 'trial-words',
-                meta: { title: '敏感词库', icon: 'coffee' },
-                component: () => import('@/views/trial/words')
-              }
+                path: 'user',
+                name: 'trial-user',
+                meta: { title: '用户审核', icon: 'coffee' },
+                component: () => import('@/views/trial/user')
+              },
+              {
+                path: 'post',
+                name: 'trial-post',
+                meta: { title: '帖子审核', icon: 'coffee' },
+                component: () => import('@/views/trial/post')
+              },
+              {
+                path: 'comment',
+                name: 'trial-comment',
+                meta: { title: '评论审核', icon: 'coffee' },
+                component: () => import('@/views/trial/comment')
+              },
+              {
+                path: 'image',
+                name: 'trial-image',
+                meta: { title: '图片审核', icon: 'coffee' },
+                component: () => import('@/views/trial/image')
+              },
             ]
           },
           {
@@ -334,10 +352,16 @@ export function createRouter() {
                 component: () => import('@/views/tag/list')
               },
               {
-                path: 'faker/list',
+                path: 'user/faker',
                 name: 'faker-list',
                 meta: { title: '运营号', icon: 'coffee' },
                 component: () => import('@/views/user/faker')
+              },
+              {
+                path: 'trial/words',
+                name: 'trial-words',
+                meta: { title: '敏感词库', icon: 'coffee' },
+                component: () => import('@/views/trial/words')
               }
             ]
           },
