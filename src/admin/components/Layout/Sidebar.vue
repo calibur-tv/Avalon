@@ -45,6 +45,7 @@
 
     .fas {
       margin-right: 16px;
+      width: 18px;
     }
 
     .el-menu {
