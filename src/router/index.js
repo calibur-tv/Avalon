@@ -285,6 +285,12 @@ export function createRouter() {
                 meta: { title: '用户查询', icon: 'coffee' },
                 component: () => import('@/views/user/show')
               },
+              {
+                path: 'feedback',
+                name: 'user-feedback',
+                meta: { title: '用户反馈', icon: 'coffee' },
+                component: () => import('@/views/user/feedback')
+              },
             ]
           },
           {

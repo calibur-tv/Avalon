@@ -168,4 +168,12 @@ export default class extends BaseApi {
   recoverUser ({ id }) {
     return this.http.post('admin/user/recover', { id })
   }
+
+  getUserFeedback () {
+    return this.http.get('admin/user/feedback/list')
+  }
+
+  readFeedback ({ id }) {
+    return this.http.post('admin/user/feedback/read', { id })
+  }
 }
