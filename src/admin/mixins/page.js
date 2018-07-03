@@ -4,10 +4,10 @@ Vue.mixin({
   data () {
     return {
       page: {
+        max: 0,
+        cur: 0,
         size: 10,
-        cur: 1,
         total: 0,
-        maxPage: 1
       },
     }
   },
@@ -23,6 +23,14 @@ Vue.mixin({
   methods: {
     handlePageChange (val) {
       this.page.cur = val
+    },
+    resetPageState () {
+      this.page = {
+        max: 0,
+        cur: 0,
+        size: 10,
+        total: 0,
+      }
     }
   }
 });

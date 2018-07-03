@@ -96,4 +96,18 @@ export default class extends BaseApi {
       id, name, url
     })
   }
+
+  getBangumiVideoList ({ id, cur_page, to_page, take }) {
+    return this.http.get('admin/video/bangumis', {
+      params: { id, cur_page, to_page, take }
+    })
+  }
+
+  videoEdit (params) {
+    return this.http.post('admin/video/edit', params)
+  }
+
+  videoSave (arr) {
+    return this.http.post('admin/video/save', arr)
+  }
 }

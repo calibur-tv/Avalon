@@ -35,7 +35,7 @@
       return {
         init: true,
         loading: true,
-        searchId: this.value,
+        searchId: +this.value,
         filteredOptions: []
       }
     },
@@ -43,7 +43,7 @@
       bangumis () {
         return [{
           id: 0,
-          name: '无',
+          name: '未选择',
           alias: '无，不，未选择'
         }].concat(this.$store.state.search.bangumis)
       }
@@ -74,7 +74,7 @@
       },
       async getBangumis () {
         this.init = false
-        if (this.bangumis.length) {
+        if (this.bangumis.length > 1) {
           this.filteredOptions = this.bangumis
           this.loading = false
           return

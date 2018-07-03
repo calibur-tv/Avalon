@@ -213,6 +213,27 @@ export function createRouter() {
             ]
           },
           {
+            path: 'video',
+            name: 'Video',
+            meta: { title: '视频', icon: 'coffee' },
+            redirect: 'video/list',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'list',
+                name: 'video-list',
+                meta: { title: '视频列表', icon: 'coffee' },
+                component: () => import('@/views/video/list')
+              },
+              {
+                path: 'create',
+                name: 'video-create',
+                meta: { title: '新建视频', icon: 'coffee' },
+                component: () => import('@/views/video/create')
+              }
+            ]
+          },
+          {
             path: 'cm',
             name: 'Image',
             meta: { title: '运营', icon: 'coffee' },
