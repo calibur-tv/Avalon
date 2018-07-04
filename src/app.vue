@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import { qiniu, script, env } from 'env'
+  import { cdn, script, env } from 'env'
   import vSign from '~/components/layouts/Sign'
 
   export default {
@@ -31,7 +31,7 @@
         { hid: 'keywords', name: 'keywords', content: 'calibur，咖喱棒, 动漫，ACG，二次元，视频，番剧，动画，新番，神作, 排行榜, 贴吧, 盖楼, 应援, 帖子, 在线' }
       ],
       link: [
-        { rel: 'shortcut icon', type: 'image/x-icon', href: `${qiniu.host}/favicon.ico` }
+        { rel: 'shortcut icon', type: 'image/x-icon', href: `${cdn.static}/favicon.ico` }
       ],
       script: [
         env !== 'development' ? { innerHTML: script.baiduStat, type: 'text/javascript', async: true } : '',

@@ -7,17 +7,18 @@ const CompressionPlugin = require('compression-webpack-plugin')
 const resolve = file => path.resolve(__dirname, file)
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
-const qiniu = require('../.env').qiniu
-const now = new Date().getTime()
+const cdn = require('../.env').cdn
+const staticFilePrefix = require('../qiniu.json').key_prefix
 // const SentryPlugin = require('./webpack.sentry.plugin.js')
 // const SentryConfig = require('./sentry.config.js')
+const now = new Date().getTime()
 
 module.exports = {
   cache: true,
   devtool: isProd ? false : 'sourcemap',
   output: {
     path: resolve('../dist'),
-    publicPath: isProd ? `${qiniu.host}${qiniu.prefix}` : '/dist/',
+    publicPath: isProd ? `${cdn.static}${staticFilePrefix}` : '/dist/',
     filename: isDev ? '[name].js' : '[name].[chunkhash].js'
   },
   resolve: {
@@ -146,7 +147,8 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-          RELEASE: JSON.stringify(now || 'dev')
+          RELEASE: JSON.stringify(now || 'dev'),
+          API_HOST: JSON.stringify(process.env.API_HOST || 'https://api.calibur.tv/')
         }
       }),
       new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(zh-cn)$/)
