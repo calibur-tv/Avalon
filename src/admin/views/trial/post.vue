@@ -66,7 +66,10 @@
 </style>
 
 <template>
-  <div id="trial-post">
+  <div
+    v-loading="loading"
+    id="trial-post"
+  >
     <header v-if="isKing">
       <el-button
         type="danger"
