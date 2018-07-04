@@ -56,24 +56,24 @@
           >更新</el-button>
           <el-button
             v-if="currentUserId === 1"
-            type="danger"
+            :type="scope.row.deleted_at ? 'success' : 'danger'"
             size="small"
             icon="delete"
             @click="handleDelete(scope.row)"
-          >删除</el-button>
+          >{{ scope.row.deleted_at ? '恢复' : '删除' }}</el-button>
         </template>
       </el-table-column>
     </el-table>
     <v-page
-      :change="handlePageChange"
+      :change="getData"
       :state="pageState"
     />
   </div>
 </template>
 
 <script>
-  import pageMixin from '@/mixins/page'
   import Api from '~/api/adminApi'
+  import pageMixin from '@/mixins/page'
 
   export default {
     mixin: [
@@ -88,17 +88,35 @@
       }
     },
     mounted () {
-      this.getData()
+      this.getData(1)
     },
     methods: {
-      async getData () {
-        this.pageLoading = true
-        await this.$store.dispatch('search/fetchBangumis')
-        this.pageList = this.bangumis
-        this.pageState.cur = 1
-        this.pageState.size = 20
-        this.pageState.total = this.bangumis.length
-        this.pageLoading = false
+      async getData (page) {
+        if (page <= this.pageState.max) {
+          this.pageState.cur = page
+          return
+        }
+        if (this.pageLoading) {
+          return
+        }
+        this.pageLoading = true;
+        this.pageState.size = 15;
+        const api = new Api(this);
+        try {
+          const data = await api.getBangumiList({
+            to_page: page,
+            cur_page: this.pageState.cur,
+            take: this.pageState.size
+          });
+          this.pageState.total = data.total
+          this.pageState.cur = page;
+          this.pageState.max = page;
+          this.pageList = this.pageList.concat(data.list)
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.pageLoading = false
+        }
       },
       handleUpdate (id) {
         this.$prompt('请输入视频id', '提示', {
@@ -120,12 +138,12 @@
       },
       handleDelete (bangumi) {
         this.$confirm('确认要执行该操作吗?', '提示').then(() => {
-          const api = new Api(this)
+          const api = new Api(this);
           api.bangumiDelete({
             id: bangumi.id
           }).then(() => {
             this.$toast.success('操作成功');
-            window.location.reload();
+            bangumi.deleted_at = !bangumi.deleted_at;
           }).catch(() => {
             this.$toast.error('操作失败');
           })

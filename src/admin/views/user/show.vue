@@ -114,7 +114,7 @@
       </div>
       <div>
         <span class="label">权限：</span>
-        {{ user.is_admin ? '管理员' : '普通用户' }}
+        {{ user.is_admin == 1 ? '管理员' : '普通用户' }}
       </div>
       <div>
         <span class="label">操作：</span>

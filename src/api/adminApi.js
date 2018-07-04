@@ -51,6 +51,12 @@ export default class extends BaseApi {
     })
   }
 
+  getBangumiList ({ cur_page, to_page, take }) {
+    return this.http.get('admin/bangumi/list', {
+      params: { cur_page, to_page, take }
+    })
+  }
+
   bangumiDelete ({ id }) {
     return this.http.post('admin/bangumi/delete', { id })
   }
