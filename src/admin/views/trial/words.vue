@@ -2,6 +2,7 @@
   #trial-words {
     .tags-wrap {
       margin: 50px 90px 50px 100px;
+      height: 400px;
 
       .el-tag {
         margin-left: 10px;
@@ -42,6 +43,7 @@
       <el-tag
         v-for="tag in pageData"
         :key="tag"
+        :disable-transitions="true"
         type="info"
         v-text="tag"
       />
