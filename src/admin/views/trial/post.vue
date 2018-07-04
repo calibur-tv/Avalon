@@ -1,5 +1,10 @@
 <style lang="scss">
   #trial-post {
+    header {
+      text-align: right;
+      margin-right: 15px;
+    }
+
     .trial-post-item {
       padding-bottom: 20px;
       margin-bottom: 20px;
@@ -62,6 +67,14 @@
 
 <template>
   <div id="trial-post">
+    <header v-if="isKing">
+      <el-button
+        type="danger"
+        icon="delete"
+        size="small"
+        @click="quickDelete"
+      >一键删帖</el-button>
+    </header>
     <div>
       <div
         v-for="(item, index) in list"
@@ -166,6 +179,11 @@
         loading: true
       }
     },
+    computed: {
+      isKing () {
+        return this.$store.state.user.id === 1
+      }
+    },
     created () {
       this.getData()
     },
@@ -230,6 +248,27 @@
           });
         }).catch(() => {});
       },
+      quickDelete () {
+        this.$prompt('请输入帖子id', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^\d+$/,
+          inputErrorMessage: '非法的id'
+        }).then(({ value }) => {
+          if (value < 1) {
+            this.$toast.error('非法的id');
+            return;
+          }
+          const api = new Api(this);
+          api.deletePost({
+            id: value
+          }).then(() => {
+            this.$toast.success('操作成功');
+          }).catch((e) => {
+            this.$toast.error(e);
+          })
+        }).catch(() => {});
+      }
     }
   }
 </script>
