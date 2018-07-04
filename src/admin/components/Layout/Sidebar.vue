@@ -54,8 +54,8 @@
       width: 100% !important;
     }
 
-    .sidebar-container .nest-menu .el-submenu>.el-submenu__title,
-    .sidebar-container .el-submenu .el-menu-item {
+    & .nest-menu .el-submenu>.el-submenu__title,
+    & .el-submenu .el-menu-item {
       min-width: 180px !important;
       background-color: $subMenuBg !important;
 

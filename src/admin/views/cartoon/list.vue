@@ -4,7 +4,7 @@
 
 <template>
   <div id="cartoon-list">
-    cartoon list
+    漫画的观看排行榜，待工
   </div>
 </template>
 
