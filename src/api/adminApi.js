@@ -254,4 +254,16 @@ export default class extends BaseApi {
   passImage ({ id }) {
     return this.http.post('admin/trial/image/pass', { id })
   }
+
+  getTrialComments () {
+    return this.http.get('admin/trial/comment/list')
+  }
+
+  passComment ({ id, type }) {
+    return this.http.post('admin/trial/comment/pass', { id, type })
+  }
+
+  deleteComment ({ id, type }) {
+    return this.http.post('admin/trial/comment/delete', { id, type })
+  }
 }
