@@ -29,6 +29,10 @@ $--color-primary: $color-blue-normal !default;
   .el-popover {
     padding: 0;
   }
+
+  .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: #606266;
+  }
 }
 
 $--font-path: '../../../node_modules/element-ui/lib/theme-chalk/fonts';

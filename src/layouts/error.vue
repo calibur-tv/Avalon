@@ -44,7 +44,10 @@
       font-size: 12px;
 
       p {
+        word-break: break-all;
+        max-height: 195px;
         margin-top: 10px;
+        overflow: hidden;
       }
     }
   }

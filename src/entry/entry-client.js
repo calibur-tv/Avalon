@@ -1,9 +1,9 @@
 import 'es6-promise/auto';
 import Vue from 'vue';
+import { sentry, env } from 'env';
 import { createApp } from '~/app.js';
 import ProgressBar from '~/components/layouts/ProgressBar';
 import Sentry from '~/assets/js/sentry';
-import { sentry, env } from 'env';
 import '~/assets/js/polyfill/blob';
 import '~/utils/client';
 
@@ -51,6 +51,28 @@ window.M = window.M || Object.create(null);
 
 router.onReady(() => {
   router.beforeResolve(async (to, from, next) => {
+    const fullPath = to.fullPath;
+
+    if (store.state.login) {
+      // 管理后台
+      if (to.matched.some(record => record.meta.isAdmin) && !store.state.user.is_admin) {
+        Vue.prototype.$toast.warning('您没有足够的权限访问该页面！');
+        return next({
+          path: '/errors/403',
+          query: { redirect: fullPath }
+        })
+      }
+    } else {
+      // 用户个人页
+      if (to.matched.some(record => record.meta.mustAuth || record.meta.isAdmin)) {
+        Vue.prototype.$toast.warning('继续操作前请先登录！');
+        return next({
+          path: '/errors/401',
+          query: { redirect: fullPath }
+        })
+      }
+    }
+
     const matched = router.getMatchedComponents(to);
     const prevMatched = router.getMatchedComponents(from);
     let diffed = false;

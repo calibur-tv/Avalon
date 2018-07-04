@@ -148,7 +148,8 @@ module.exports = {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
           RELEASE: JSON.stringify(now || 'dev')
         }
-      })
+      }),
+      new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(zh-cn)$/)
     ]
 
     if (isProd) {

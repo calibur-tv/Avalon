@@ -106,7 +106,7 @@ export function createRouter() {
       },
       {
         path: '/errors',
-        meta: { useAuth: false },
+        meta: { useAuth: true },
         component: () => import('~/layouts/error'),
         children: [
           {
@@ -142,12 +142,244 @@ export function createRouter() {
       {
         path: '/admin',
         meta: { isAdmin: true },
-        component: () => import('~/layouts/empty'),
+        component: () => import('~/layouts/admin'),
         children: [
           {
-            path: 'dashboard',
-            component: () => import('@/views/dashboard/index'),
+            path: '',
+            hidden: true,
+            redirect: 'dashboard',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'dashboard',
+                name: 'Dashboard',
+                component: () => import('@/views/dashboard/index'),
+              },
+            ]
           },
+          {
+            path: 'bangumi',
+            name: 'Bangumi',
+            meta: { title: '番剧', icon: 'film' },
+            component: () => import('~/layouts/empty'),
+            redirect: 'bangumi/list',
+            children: [
+              {
+                path: 'list',
+                name: 'bangumi-list',
+                meta: { title: '番剧列表', icon: 'coffee' },
+                component: () => import('@/views/bangumi/list')
+              },
+              {
+                path: 'edit/:id(\\d+)',
+                name: 'bangumi-edit',
+                hidden: true,
+                meta: { title: '编辑番剧', icon: 'coffee' },
+                component: () => import('@/views/bangumi/edit')
+              },
+              {
+                path: 'create',
+                name: 'bangumi-create',
+                meta: { title: '创建番剧', icon: 'coffee' },
+                component: () => import('@/views/bangumi/edit')
+              }
+            ]
+          },
+          {
+            path: 'video',
+            name: 'Video',
+            meta: { title: '视频', icon: 'video' },
+            redirect: 'video/list',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'list',
+                name: 'video-list',
+                meta: { title: '视频列表', icon: 'coffee' },
+                component: () => import('@/views/video/list')
+              },
+              {
+                path: 'trending',
+                name: 'video-trending',
+                meta: { title: '播放排行', icon: 'coffee' },
+                component: () => import('@/views/video/trending')
+              },
+              {
+                path: 'create',
+                name: 'video-create',
+                meta: { title: '新建视频', icon: 'coffee' },
+                component: () => import('@/views/video/create')
+              }
+            ]
+          },
+          {
+            path: 'cartoon',
+            name: 'Cartoon',
+            meta: { title: '漫画', icon: 'images' },
+            redirect: 'cartoon/bangumis',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'bangumis',
+                name: 'cartoon-bangumis',
+                meta: { title: '番剧列表', icon: 'coffee' },
+                component: () => import('@/views/cartoon/bangumis')
+              },
+              {
+                path: 'edit/:id(\\d+)',
+                name: 'cartoon-edit',
+                hidden: true,
+                component: () => import('@/views/cartoon/edit')
+              },
+              {
+                path: 'list',
+                name: 'cartoon-list',
+                meta: { title: '漫画列表', icon: 'coffee' },
+                component: () => import('@/views/cartoon/list')
+              }
+            ]
+          },
+          {
+            path: 'role',
+            name: 'Role',
+            meta: { title: '偶像', icon: 'grin-stars' },
+            redirect: 'role/list',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'list',
+                name: 'role-list',
+                meta: { title: '偶像列表', icon: 'coffee' },
+                component: () => import('@/views/role/list')
+              },
+              {
+                path: 'edit/:id(\\d+)',
+                name: 'role-edit',
+                hidden: true,
+                component: () => import('@/views/role/edit')
+              },
+              {
+                path: 'create',
+                name: 'role-create',
+                meta: { title: '添加偶像', icon: 'coffee' },
+                component: () => import('@/views/role/edit')
+              }
+            ]
+          },
+          {
+            path: 'user',
+            name: 'User',
+            meta: { title: '用户', icon: 'users' },
+            redirect: 'user/list',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'dalao',
+                name: 'user-dalao',
+                meta: { title: '大佬列表', icon: 'coffee' },
+                component: () => import('@/views/user/dalao')
+              },
+              {
+                path: 'show',
+                name: 'user-info',
+                meta: { title: '用户查询', icon: 'coffee' },
+                component: () => import('@/views/user/show')
+              },
+              {
+                path: 'feedback',
+                name: 'user-feedback',
+                meta: { title: '用户反馈', icon: 'coffee' },
+                component: () => import('@/views/user/feedback')
+              },
+            ]
+          },
+          {
+            path: 'trial',
+            name: 'Trial',
+            meta: { title: '审核', icon: 'code-branch' },
+            redirect: 'trial/test',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'test',
+                name: 'trial-test',
+                meta: { title: '审核测试', icon: 'coffee' },
+                component: () => import('@/views/trial/test')
+              },
+              {
+                path: 'user',
+                name: 'trial-user',
+                meta: { title: '用户审核', icon: 'coffee' },
+                component: () => import('@/views/trial/user')
+              },
+              {
+                path: 'post',
+                name: 'trial-post',
+                meta: { title: '帖子审核', icon: 'coffee' },
+                component: () => import('@/views/trial/post')
+              },
+              {
+                path: 'comment',
+                name: 'trial-comment',
+                meta: { title: '评论审核', icon: 'coffee' },
+                component: () => import('@/views/trial/comment')
+              },
+              {
+                path: 'image',
+                name: 'trial-image',
+                meta: { title: '图片审核', icon: 'coffee' },
+                component: () => import('@/views/trial/image')
+              },
+            ]
+          },
+          {
+            path: 'cm',
+            name: 'Cm',
+            meta: { title: '运营', icon: 'code-branch' },
+            redirect: 'cm/image/banner',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'image/banner',
+                name: 'image-banner',
+                meta: { title: '主站轮播', icon: 'coffee' },
+                component: () => import('@/views/image/banner')
+              },
+              {
+                path: 'tag/list',
+                name: 'tag-list',
+                meta: { title: '标签列表', icon: 'coffee' },
+                component: () => import('@/views/tag/list')
+              },
+              {
+                path: 'user/faker',
+                name: 'faker-list',
+                meta: { title: '运营号', icon: 'coffee' },
+                component: () => import('@/views/user/faker')
+              },
+              {
+                path: 'trial/words',
+                name: 'trial-words',
+                meta: { title: '敏感词库', icon: 'coffee' },
+                component: () => import('@/views/trial/words')
+              }
+            ]
+          },
+          {
+            path: 'console',
+            name: 'Console',
+            meta: { title: '管理', icon: 'unlock' },
+            redirect: 'console/admins',
+            component: () => import('~/layouts/empty'),
+            children: [
+              {
+                path: 'admins',
+                name: 'admin-list',
+                meta: { title: '管理', icon: 'unlock' },
+                component: () => import('@/views/console/admins')
+              },
+            ]
+          }
         ],
       },
     ],

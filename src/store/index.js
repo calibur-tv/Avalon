@@ -11,6 +11,7 @@ import cartoonRole from './cartoonRole';
 import trending from './trending';
 import comment from './comment';
 import search from './search';
+import admin from './admin';
 
 import ImageApi from '~/api/imageApi';
 
@@ -39,11 +40,11 @@ export function createStore() {
       },
     },
     actions: {
-      async initAuth({ commit }, { ctx, must }) {
+      async initAuth({ commit }, { ctx, must, admin }) {
         const cookie = ctx.header.cookie;
-        const throwError = () => {
+        const throwError = (code) => {
           const error = new Error();
-          error.code = 401;
+          error.code = code || 401;
           throw error;
         };
         if (cookie) {
@@ -59,6 +60,9 @@ export function createStore() {
             try {
               const user = await api.getLoginUser();
               if (user) {
+                if (admin && !user.is_admin) {
+                  throwError(403);
+                }
                 commit('SET_USER', user);
               } else if (must) { throwError(); }
             } catch (e) {
@@ -92,6 +96,7 @@ export function createStore() {
     },
     getters: {},
     modules: {
+      admin,
       homepage,
       bangumi,
       video,

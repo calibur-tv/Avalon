@@ -188,12 +188,13 @@
         target="_blank"
       >播放链接</a>
     </div>
-    <!--
-    <div v-else-if="isGuest" class="not-play-screen">
-      <p>流量压力太大了 (ಥ_ಥ)，需要登录才能看视频</p>
+    <div
+      v-else-if="isGuest"
+      class="not-play-screen"
+    >
+      <p>流量压力太大了 (ಥ_ಥ)，需要登录才能看番</p>
       <a @click="$channel.$emit('sign-in')">立即登录</a>
     </div>
-    -->
     <div
       v-else
       id="video-wrap"
@@ -264,7 +265,7 @@
       }
     },
     mounted () {
-      if (this.otherSrc) {
+      if (this.otherSrc || this.isGuest) {
         return
       }
       Chimee.install(chimeePluginControlbar)
@@ -348,6 +349,10 @@
             }
           ]
         })
+        
+        this.player.on('playing', () => {
+          this.$emit('playing')
+        });
 
         document.addEventListener('fullscreenchange', () => {
           this.handleFullScreen()
