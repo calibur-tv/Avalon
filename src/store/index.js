@@ -61,15 +61,15 @@ export function createStore() {
               const user = await api.getLoginUser();
               if (user) {
                 if (admin && !user.is_admin) {
-                  throwError(403);
+                  return throwError(403);
                 }
                 commit('SET_USER', user);
-              } else if (must) { throwError(); }
+              } else if (must) { return throwError(); }
             } catch (e) {
-              if (must) { throwError(); }
+              if (must) { return throwError(e.code); }
             }
-          } else if (must) { throwError(); }
-        } else if (must) { throwError(); }
+          } else if (must) { return throwError(); }
+        } else if (must) { return throwError(); }
       },
       async getUpToken({ state, commit }, ctx) {
         if (!state.user) {
