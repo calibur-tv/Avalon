@@ -216,6 +216,9 @@
           api.deletePost({ id }).then(() => {
             this.list.splice(index, 1);
             this.$toast.success('操作成功')
+            this.$channel.$emit('admin-trial-do', {
+              type: 'posts'
+            })
           }).catch((e) => {
             console.log(e);
             this.$message.error(e);
@@ -227,6 +230,9 @@
         api.passPost({ id }).then(() => {
           this.list.splice(index, 1);
           this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'posts'
+          })
         }).catch((e) => {
           this.$message.error(e);
         });

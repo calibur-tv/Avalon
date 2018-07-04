@@ -281,7 +281,7 @@ export function createRouter() {
               },
               {
                 path: 'show',
-                name: 'user-show',
+                name: 'user-info',
                 meta: { title: '用户查询', icon: 'coffee' },
                 component: () => import('@/views/user/show')
               },

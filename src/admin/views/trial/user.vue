@@ -143,6 +143,9 @@
         const api = new Api(this);
         api.passUser({ id }).then(() => {
           this.list.splice(index, 1);
+          this.$channel.$emit('admin-trial-do', {
+            type: 'users'
+          })
         }).catch((e) => {
           console.log(e);
           this.$toast.error(e);
@@ -157,6 +160,9 @@
           const api = new Api(this);
           api.blockUser({ id }).then(() => {
             this.list.splice(index, 1);
+            this.$channel.$emit('admin-trial-do', {
+              type: 'users'
+            })
           }).catch((e) => {
             console.log(e);
             this.$toast.error(e);

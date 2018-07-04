@@ -147,6 +147,9 @@
         }).then(() => {
           this.$message.success('操作成功')
           this.list.splice(index, 1);
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments'
+          })
         }).catch((err) => {
           console.log(err);
           this.$Message.error(err)
@@ -160,6 +163,9 @@
         }).then(() => {
           this.$message.success('操作成功');
           this.list.splice(index, 1);
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments'
+          })
         }).catch((err) => {
           console.log(err);
           this.$Message.error(err)

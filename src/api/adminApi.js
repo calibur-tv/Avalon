@@ -1,6 +1,10 @@
 import BaseApi from './_baseApi'
 
 export default class extends BaseApi {
+  getTodo () {
+    return this.http.get('admin/todo')
+  }
+
   realtimeStats () {
     return this.http.get('admin/stats/realtime')
   }

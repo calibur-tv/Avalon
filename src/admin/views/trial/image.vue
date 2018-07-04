@@ -104,6 +104,9 @@
           const api = new Api(this);
           api.deleteImage({ id }).then(() => {
             this.list.splice(index, 1);
+            this.$channel.$emit('admin-trial-do', {
+              type: 'images'
+            })
           }).catch((e) => {
             console.log(e);
             this.$message.error(e);
@@ -114,6 +117,9 @@
         const api = new Api(this);
         api.passImage({ id }).then(() => {
           this.list.splice(index, 1);
+          this.$channel.$emit('admin-trial-do', {
+            type: 'images'
+          })
         }).catch((e) => {
           console.log(e);
           this.$message.error(e);

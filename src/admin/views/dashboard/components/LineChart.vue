@@ -43,6 +43,7 @@
           create_post: '总发帖',
           create_post_image: '总帖图数',
           create_post_reply: '总回帖量',
+          create_comment: '发评论',
           create_role: '角色总数',
           create_video: '视频总量',
           user_register: '用户总量'
@@ -54,6 +55,7 @@
           create_post: '帖子增长率',
           create_post_image: '帖图增长率',
           create_post_reply: '回帖增长率',
+          create_comment: '评论增长率',
           create_role: '角色增长率',
           create_video: '视频增长率',
           user_register: '用户增长率'
@@ -70,7 +72,6 @@
       }
     },
     created () {
-      console.log('created');
       this.getData()
     },
     methods: {
