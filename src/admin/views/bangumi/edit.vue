@@ -513,12 +513,10 @@
                 jumpId = await api.bangumiCreate(params)
               }
               this.$toast.success('操作成功');
-              this.$router.push({
-                path: '/admin/bangumi/list'
-              });
               setTimeout(() => {
                 window.open(this.$alias.bangumi(jumpId))
               }, 2000);
+              window.location = '/admin/bangumi/list';
             } catch (e) {
               this.$toast.error('操作失败');
             }
