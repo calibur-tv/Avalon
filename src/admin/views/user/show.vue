@@ -105,6 +105,10 @@
         {{ user.birthday }}
       </div>
       <div>
+        <span class="label">创建时间：</span>
+        {{ user.created_at }}
+      </div>
+      <div>
         <span class="label">状态：</span>
         {{ user.deleted_at ? '已封禁' : user.state == 1 ? '审核中' : '正常' }}
       </div>
