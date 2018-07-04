@@ -1,5 +1,7 @@
 node_modules
-dist
+dist/*
+!dist/vue-ssr-client-manifest.json
+!dist/vue-ssr-server-bundle.json
 .idea
 .DS_Store
 *.log
