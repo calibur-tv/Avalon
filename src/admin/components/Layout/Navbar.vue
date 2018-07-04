@@ -164,7 +164,10 @@
       }
     },
     mounted () {
-      this.getTodo()
+      this.getTodo();
+      this.$channel.$on('admin-trial-do', ({ type }) => {
+        this.todo[type] = this.todo[type] - 1
+      })
     },
     methods: {
       toggleSideBar() {
@@ -174,9 +177,6 @@
         const api = new Api(this)
         api.getTodo().then((data) => {
           this.todo = data
-          this.$channel.$on('admin-trial-do', ({ type }) => {
-            this.todo[type] = this.todo[type] - 1
-          })
         }).catch(() => {})
       }
     }
