@@ -162,6 +162,9 @@
     computed: {
       queryZone () {
         return this.$route.query.zone || ''
+      },
+      queryId () {
+        return +(this.$route.query.id || 0)
       }
     },
     watch: {
@@ -176,6 +179,9 @@
       if (this.queryZone) {
         this.searchUserByZone(this.queryZone)
       }
+      if (this.queryId) {
+        this.searchUserById(this.queryId)
+      }
     },
     methods: {
       async searchUserByZone (zone) {
@@ -186,6 +192,20 @@
         const api = new Api(this);
         try {
           this.user = await api.searchUser({ zone })
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.searching = false;
+        }
+      },
+      async searchUserById (id) {
+        if (this.searching) {
+          return
+        }
+        this.searching = true;
+        const api = new Api(this);
+        try {
+          this.user = await api.searchUser({ id })
         } catch (e) {
           this.$toast.error(e)
         } finally {
