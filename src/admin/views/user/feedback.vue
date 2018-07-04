@@ -107,6 +107,9 @@
         try {
           await api.readFeedback({ id });
           this.pageList.splice(index, 1);
+          this.$channel.$emit('admin-trial-do', {
+            type: 'feedback'
+          });
           this.$toast.success('操作成功');
         } catch (e) {
           this.$toast.error(e)

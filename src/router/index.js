@@ -270,7 +270,7 @@ export function createRouter() {
             path: 'user',
             name: 'User',
             meta: { title: '用户', icon: 'users' },
-            redirect: 'user/list',
+            redirect: 'user/dalao',
             component: () => import('~/layouts/empty'),
             children: [
               {
