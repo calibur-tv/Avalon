@@ -15,22 +15,11 @@
         round
       >回首页</el-button>
     </router-link>
-    <el-button
-      type="primary"
-      size="mini"
-      round
-      @click="sign"
-    >登录</el-button>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Error403',
-    methods: {
-      sign () {
-        this.$channel.$emit('sign-in')
-      }
-    }
+    name: 'Error403'
   }
 </script>
