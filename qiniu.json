@@ -1,0 +1,11 @@
+{
+  "src_dir"            :   "/Users/yuistack/Documents/calibur/Avalon/dist",
+  "bucket"             :   "clannader",
+  "overwrite"          :   true,
+  "rescan_local"       :   true,
+  "skip_suffixes"      :   ".DS_Store",
+  "log_file"           :   "/Users/yuistack/Documents/calibur/Avalon/log/qiniu.log",
+  "log_level"          :   "info",
+  "log_stdout"         :   true,
+  "file_type"          :   0
+}
