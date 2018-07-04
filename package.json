@@ -8,7 +8,7 @@
     "analyzer": "cross-env NODE_ENV=staging webpack --config build/webpack.analyzer.config.js --progress --hide-modules",
     "remove": "rimraf dist",
     "staging": "npm run remove && npm run staging:client && npm run staging:server",
-    "staging:client": "cross-env NODE_ENV=staging API_HOST=https://t-www.calibur.tv/api/ webpack --config build/webpack.client.config.js --progress --hide-modules",
+    "staging:client": "cross-env NODE_ENV=staging API_HOST=https://t-api.calibur.tv/ webpack --config build/webpack.client.config.js --progress --hide-modules",
     "staging:server": "cross-env NODE_ENV=staging API_HOST=http://localhost/ webpack --config build/webpack.server.config.js --progress --hide-modules",
     "build": "npm run remove && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production API_HOST=https://api.calibur.tv/ webpack --config build/webpack.client.config.js --progress --hide-modules",
