@@ -30,6 +30,16 @@
             type="primary"
             @click="remove(scope.$index, scope.row.id)"
           >确认</el-button>
+          <router-link
+            v-if="scope.row.user_id != 0"
+            :to="`/admin/user/show?zone=${scope.row.user_id}`"
+          >
+            <el-button
+              size="small"
+              type="primary"
+              style="margin-left: 10px"
+            >查看用户</el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
