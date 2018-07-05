@@ -57,6 +57,30 @@ export default class extends BaseApi {
     })
   }
 
+  setBangumiManager ({ user_id, bangumi_id }) {
+    return this.http.post('admin/bangumi/manager/set', {
+      user_id, bangumi_id
+    })
+  }
+
+  removeBangumiManager ({ user_id, bangumi_id }) {
+    return this.http.post('admin/bangumi/manager/remove', {
+      user_id, bangumi_id
+    })
+  }
+
+  upgradeBangumiManager ({ user_id, bangumi_id }) {
+    return this.http.post('admin/bangumi/manager/upgrade', {
+      user_id, bangumi_id
+    })
+  }
+
+  downgradeBangumiManager ({ user_id, bangumi_id }) {
+    return this.http.post('admin/bangumi/manager/downgrade', {
+      user_id, bangumi_id
+    })
+  }
+
   bangumiDelete ({ id }) {
     return this.http.post('admin/bangumi/delete', { id })
   }
