@@ -49,12 +49,6 @@
           </router-link>
           &nbsp;
           <el-button
-            size="small"
-            icon="upload2"
-            type="warning"
-            @click="handleUpdate(scope.row.id)"
-          >更新</el-button>
-          <el-button
             v-if="currentUserId === 1"
             :type="scope.row.deleted_at ? 'success' : 'danger'"
             size="small"
@@ -117,24 +111,6 @@
         } finally {
           this.pageLoading = false
         }
-      },
-      handleUpdate (id) {
-        this.$prompt('请输入视频id', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^([1-9][0-9]*)$/,
-          inputErrorMessage: 'id 格式不正确'
-        }).then(({ value }) => {
-          const api = new Api(this)
-          api.bangumiRelease({
-            bangumi_id: id,
-            video_id: value
-          }).then(() => {
-            this.$toast.success('更新成功');
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
       },
       handleDelete (bangumi) {
         this.$confirm('确认要执行该操作吗?', '提示').then(() => {

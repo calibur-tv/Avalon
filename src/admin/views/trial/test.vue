@@ -59,21 +59,32 @@
     >
       <div>
         <span class="label">色情</span>
-        <p>检测：{{ imageResult.sex.success ? '成功' : '失败' }}</p>
+        <p>审核：{{ imageResult.sex.review ? '需要' : '不需要' }}</p>
+        <p>删除：{{ imageResult.sex.delete ? '需要' : '不需要' }}</p>
         <p>状态：{{ imageResult.sex.label }}</p>
-        <p>审核：{{ imageResult.warn.review ? '需要' : '不需要' }}</p>
+        <p>分值：{{ imageResult.sex.score }}</p>
       </div>
       <div>
         <span class="label">暴恐</span>
-        <p>检测：{{ imageResult.warn.success ? '成功' : '失败' }}</p>
-        <p>状态：{{ imageResult.warn.label }}</p>
         <p>审核：{{ imageResult.warn.review ? '需要' : '不需要' }}</p>
+        <p>删除：{{ imageResult.warn.delete ? '需要' : '不需要' }}</p>
+        <p>状态：{{ imageResult.warn.label }}</p>
+        <p>分值：{{ imageResult.warn.score }}</p>
       </div>
       <div>
         <span class="label">政治敏感</span>
-        <p>检测：{{ imageResult.daddy.success ? '成功' : '失败' }}</p>
-        <p>信息：{{ imageResult.daddy.message }}</p>
         <p>审核：{{ imageResult.daddy.review ? '需要' : '不需要' }}</p>
+        <p>删除：{{ imageResult.daddy.delete ? '需要' : '不需要' }}</p>
+        <p>详情：
+          <el-tag
+            v-for="(name, index) in computedDaddyDetail(imageResult.daddy.detail)"
+            :key="index"
+            type="info"
+            size="mini"
+            v-text="name"
+          />
+          <template v-if="!computedDaddyDetail(imageResult.daddy.detail).length">无</template>
+        </p>
       </div>
     </div>
     <p
@@ -179,6 +190,12 @@
         } finally {
           this.testing = false
         }
+      },
+      computedDaddyDetail (detail) {
+        if (!detail.length) {
+          return []
+        }
+        return detail.map(item => item.value.name)
       }
     }
   }
