@@ -192,6 +192,10 @@
         }
       },
       computedDaddyDetail (detail) {
+        if (!Array.isArray(detail))
+        {
+          return []
+        }
         if (!detail.length) {
           return []
         }
