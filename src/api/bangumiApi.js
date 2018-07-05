@@ -21,6 +21,10 @@ export default class extends BaseApi {
     });
   }
 
+  managers ({ bangumiId }) {
+    return this.http.get(`bangumi/${bangumiId}/managers`)
+  }
+
   videos(id) {
     return this.http.get(`bangumi/${id}/videos`);
   }

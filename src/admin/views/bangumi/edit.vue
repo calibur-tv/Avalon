@@ -1,8 +1,24 @@
+<style lang="scss">
+  #bangumi-edit {
+    header {
+      text-align: right;
+    }
+  }
+</style>
+
 <template>
   <div
     v-loading="loading"
     id="bangumi-edit"
   >
+    <header v-if="id">
+      <el-button
+        size="small"
+        icon="upload2"
+        type="warning"
+        @click="updateRelease"
+      >更新视频资源</el-button>
+    </header>
     <el-form
       v-if="form"
       ref="form"
@@ -472,6 +488,9 @@
             avatar: resp.avatar.split('.calibur.tv/').pop()
           });
           this.loading = false
+        }).catch((err) => {
+          this.$toast.error(err)
+          this.loading = false
         })
       },
       getBangumiTags () {
@@ -522,6 +541,24 @@
             }
           }
         });
+      },
+      updateRelease() {
+        this.$prompt('请输入视频id', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^([1-9][0-9]*)$/,
+          inputErrorMessage: 'id 格式不正确'
+        }).then(({ value }) => {
+          const api = new Api(this);
+          api.bangumiRelease({
+            bangumi_id: this.id,
+            video_id: value
+          }).then(() => {
+            this.$toast.success('更新成功');
+          }).catch((e) => {
+            this.$toast.error(e);
+          })
+        }).catch(() => {});
       }
     }
   }

@@ -171,6 +171,12 @@ export function createRouter() {
                 component: () => import('@/views/bangumi/list')
               },
               {
+                path: 'manager',
+                name: 'bangumi-manager',
+                meta: { title: '吧主管理', icon: 'coffee' },
+                component: () => import('@/views/bangumi/manager')
+              },
+              {
                 path: 'edit/:id(\\d+)',
                 name: 'bangumi-edit',
                 hidden: true,
