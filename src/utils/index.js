@@ -11,7 +11,8 @@ import NoContent from '~/components/NoContent';
 import Hr from '~/components/common/Hr';
 import Share from '~/components/common/Share';
 import Dialog from '~/components/common/Dialog';
-import Layout from '~/components/layouts/Layout'
+import Layout from '~/components/layouts/Layout';
+import AvaDialog from '~/components/common/AvaDialog';
 import ElementUI from 'element-ui';
 import '~/assets/css/element-ui.scss';
 
@@ -20,6 +21,7 @@ import { InfiniteScroll } from 'mint-ui';
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
 Vue.component(Layout.name, Layout);
+Vue.component(AvaDialog.name, AvaDialog);
 Vue.component(ImageLazy.name, ImageLazy);
 Vue.component(Share.name, Share);
 Vue.component(NoSSR.name, NoSSR);
