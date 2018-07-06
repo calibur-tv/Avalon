@@ -10,17 +10,16 @@
 <template>
   <div id="bangumi-setting">
     <el-form
-      ref="ruleForm"
+      ref="form"
       :model="info"
       :rules="rules"
       label-width="40px"
-      class="demo-ruleForm"
     >
       <el-form-item
         label="名称"
         prop="name"
       >
-        <el-input v-model="name"/>
+        <el-input v-model.trim="name"/>
       </el-form-item>
       <el-form-item label="头像">
         <img
@@ -74,7 +73,7 @@
         prop="summary"
       >
         <el-input
-          v-model="summary"
+          v-model.trim="summary"
           :rows="5"
           type="textarea"
           placeholder="请输入番剧简介"
@@ -82,16 +81,17 @@
       </el-form-item>
       <el-form-item>
         <el-button
+          :loading="submitting"
           type="primary"
-          @click="submitForm('ruleForm')"
-        >立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+          @click="submit"
+        >确认修改</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+  import BangumiApi from '~/api/bangumiApi'
   import uploadMixin from '~/mixins/upload'
 
   export default {
@@ -106,6 +106,24 @@
         }
         callback();
       };
+      const validateName = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请先填写番剧名称'));
+        }
+        if (value.length > 35) {
+          return callback(new Error('名称最长 35 个字'));
+        }
+        callback();
+      };
+      const validateDesc = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请先填写番剧简介'));
+        }
+        if (value.length > 200) {
+          return callback(new Error('简介最多 200 个字'));
+        }
+        callback();
+      };
       return {
         state: {
           loading: false,
@@ -113,21 +131,20 @@
         },
         rules: {
           name: [
-            { message: '请输入番剧名称', trigger: 'blur'},
-            { min: 1, max: 35, message: '长度在 1 到 35 个字符', trigger: 'change'}
+            { validator: validateName, trigger: 'submit' }
           ],
           summary: [
-            { message: '请输入番剧名称', trigger: 'blur'},
-            { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'change'}
+            { validator: validateDesc, trigger: 'submit' }
           ],
           tags: [
-            { validator: validateTags, trigger: 'change' }
+            { validator: validateTags, trigger: 'submit' }
           ],
         },
         cache: {
           avatar: '',
           banner: ''
-        }
+        },
+        submitting: false
       }
     },
     mixin: [
@@ -210,18 +227,36 @@
       })
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      submit() {
+        this.$refs.form.validate(async (valid) => {
           if (valid) {
-            alert('submit!');
+            if (this.submitting) {
+              return
+            }
+            this.submitting = true;
+            const api = new BangumiApi(this);
+            try {
+              await api.edit({
+                id: this.info.id,
+                name: this.name,
+                summary: this.summary,
+                avatar: this.avatar.split('.calibur.tv/').pop(),
+                banner: this.banner.split('.calibur.tv/').pop(),
+                tags: this.tags
+              });
+              this.$toast.success('修改成功');
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000)
+            } catch (err) {
+              this.$toast.error(err);
+            } finally {
+              this.submitting = false;
+            }
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
       },
       beforeAvatarUpload(file) {
         this.uploadConfig.max = 1;

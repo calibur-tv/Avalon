@@ -15,6 +15,12 @@ export default class extends BaseApi {
     });
   }
 
+  edit ({ id, name, summary, avatar, banner, tags }) {
+    return this.http.post(`bangumi/${id}/edit`, {
+      name, summary, avatar, banner, tags
+    })
+  }
+
   followers({ bangumiId, page, take }) {
     return this.http.get(`bangumi/${bangumiId}/followers`, {
       params: { page, take },
