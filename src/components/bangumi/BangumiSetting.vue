@@ -15,12 +15,14 @@
       :rules="rules"
       label-width="40px"
     >
+      <!--
       <el-form-item
         label="名称"
         prop="name"
       >
         <el-input v-model.trim="name"/>
       </el-form-item>
+      -->
       <el-form-item label="头像">
         <img
           :src="$resize(avatar, { width: 200 })"

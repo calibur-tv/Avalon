@@ -19,7 +19,7 @@
             size="medium"
             @click="addManager"
           >
-            添加番主
+            添加吧主
           </el-button>
         </el-col>
       </el-row>
@@ -44,7 +44,7 @@
       />
       <el-table-column label="权限">
         <template slot-scope="scope">
-          {{ scope.row.is_leader ? '大番主' : '小番主' }}
+          {{ scope.row.is_leader ? '大吧主' : '小吧主' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -74,13 +74,13 @@
               type="warning"
               size="mini"
               @click="downgradeManager(scope.row.user.id, scope.$index)"
-            >降为小番主</el-button>
+            >降为小吧主</el-button>
             <el-button
               v-else
               type="success"
               size="mini"
               @click="upgradeManager(scope.row.user.id, scope.$index)"
-            >升为大番主</el-button>
+            >升为大吧主</el-button>
           </template>
         </template>
       </el-table-column>
