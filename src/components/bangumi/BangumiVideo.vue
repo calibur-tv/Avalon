@@ -125,11 +125,11 @@
         </li>
       </ul>
     </section>
-    <no-content v-else-if="videos.init">
+    <no-content v-else-if="videos.fetched">
       <el-button
         type="primary"
         round
-        @click="openFeedbackForResource"
+        @click="openFeedback"
       >求资源</el-button>
     </no-content>
   </div>
@@ -142,7 +142,7 @@
       return {
         state: {
           loading: false,
-          init: false,
+          fetched: false,
         },
       }
     },
@@ -156,13 +156,13 @@
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-video', () => {
-        if (!this.state.init) {
-          this.getVideos()
+        if (!this.state.fetched) {
+          this.getData()
         }
       })
     },
     methods: {
-      async getVideos () {
+      async getData () {
         if (this.state.loading) {
           return
         }
@@ -177,10 +177,10 @@
           this.$toast.error(e)
         } finally {
           this.state.loading = false
-          this.state.init = true
+          this.state.fetched = true
         }
       },
-      openFeedbackForResource () {
+      openFeedback () {
         this.$channel.$emit('open-feedback', {
           type: 5,
           desc: `我想看《${this.info.name}》的视频第 ? 集`

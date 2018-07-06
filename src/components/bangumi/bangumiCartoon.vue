@@ -170,7 +170,7 @@
       <el-button
         type="primary"
         round
-        @click="openFeedbackForCartoon"
+        @click="openFeedback"
       >求漫画</el-button>
     </no-content>
     <el-button
@@ -179,7 +179,7 @@
       class="load-more-btn"
       type="info"
       plain
-      @click="getCartoons(false)"
+      @click="getData(false)"
     >{{ cartoons.loading ? '加载中' : '加载更多' }}</el-button>
   </div>
 </template>
@@ -206,12 +206,12 @@
     mounted () {
       this.$channel.$on('bangumi-tab-switch-cartoon', () => {
         if (!this.state.fetched) {
-          this.getCartoons()
+          this.getData()
         }
       })
     },
     methods: {
-      async getCartoons () {
+      async getData () {
         if (this.state.loading) {
           return
         }
@@ -229,7 +229,7 @@
           this.state.fetched = true
         }
       },
-      openFeedbackForCartoon () {
+      openFeedback () {
         this.$channel.$emit('open-feedback', {
           type: 7,
           desc: `我想看《${this.info.name}》的漫画第 ? 话`

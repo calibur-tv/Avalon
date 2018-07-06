@@ -13,13 +13,13 @@
       class="load-more-btn"
       type="info"
       plain
-      @click="getPosts"
+      @click="getData"
     >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
     <no-content v-if="posts.noMore && !posts.total">
       <el-button
         type="primary"
         round
-        @click="openCreatePostModal"
+        @click="openFeedback"
       >发表《{{ info.name }}》的第一个帖子</el-button>
     </no-content>
   </div>
@@ -37,7 +37,7 @@
       return {
         state: {
           loading: false,
-          init: true
+          fetched: true
         },
       }
     },
@@ -51,13 +51,13 @@
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-post', () => {
-        if (!this.state.init) {
-          this.getPosts()
+        if (!this.state.fetched) {
+          this.getData()
         }
       })
     },
     methods: {
-      async getPosts () {
+      async getData () {
         if (this.state.loading || this.posts.noMore) {
           return
         }
@@ -74,7 +74,7 @@
           this.state.loading = false
         }
       },
-      openCreatePostModal () {
+      openFeedback () {
         this.$channel.$emit('show-create-post-modal')
       },
     }

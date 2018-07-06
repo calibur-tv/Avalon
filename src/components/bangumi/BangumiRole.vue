@@ -192,14 +192,14 @@
         <el-button
           type="primary"
           round
-          @click="openFeedbackForRole"
+          @click="openFeedback"
         >没有你喜欢的角色？</el-button>
       </div>
       <no-content v-else>
         <el-button
           type="primary"
           round
-          @click="openFeedbackForRole"
+          @click="openFeedback"
         >求偶像</el-button>
       </no-content>
     </template>
@@ -273,12 +273,12 @@
     mounted () {
       this.$channel.$on('bangumi-tab-switch-role', () => {
         if (!this.state.fetched) {
-          this.getRoles()
+          this.getData()
         }
       })
     },
     methods: {
-      async getRoles () {
+      async getData () {
         if (this.state.loading) {
           return
         }
@@ -343,7 +343,7 @@
           this.$toast.error(e)
         }
       },
-      openFeedbackForRole () {
+      openFeedback () {
         this.$channel.$emit('open-feedback', {
           type: 6,
           desc: `我想要为《${this.info.name}》的 ? 应援`

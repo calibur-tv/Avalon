@@ -8,7 +8,7 @@
   <div id="bangumi-image">
     <image-waterfall
       :loading="state.loading"
-      @fetch="getImages(false)"
+      @fetch="getData(false)"
     />
   </div>
 </template>
@@ -41,12 +41,12 @@
     mounted () {
       this.$channel.$on('bangumi-tab-switch-image', () => {
         if (!this.state.fetched) {
-          this.getImages(true)
+          this.getData(true)
         }
       })
     },
     methods: {
-      async getImages (force) {
+      async getData (force) {
         if (this.state.loading) {
           return
         }
