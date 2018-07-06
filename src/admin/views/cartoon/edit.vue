@@ -110,7 +110,7 @@
 
 <script>
   import Api from '~/api/adminApi'
-  import uploadMixin from '@/mixins/upload'
+  import uploadMixin from '~/mixins/upload'
 
   export default {
     data () {

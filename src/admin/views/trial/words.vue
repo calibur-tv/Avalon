@@ -74,7 +74,7 @@
 
 <script>
   import Api from '~/api/adminApi'
-  import pageMixin from '@/mixins/page'
+  import pageMixin from '~/mixins/page'
 
   export default {
     mixin: [

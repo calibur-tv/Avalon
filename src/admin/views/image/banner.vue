@@ -192,8 +192,8 @@
 <script>
   import Api from '~/api/adminApi'
   import getImageGray from '@/utils/imageGray'
-  import pageMixin from '@/mixins/page'
-  import uploadMixin from '@/mixins/upload'
+  import pageMixin from '~/mixins/page'
+  import uploadMixin from '~/mixins/upload'
 
   export default {
     data () {

@@ -44,6 +44,12 @@
         <el-tab-pane label="相册">
           <bangumi-image/>
         </el-tab-pane>
+        <el-tab-pane
+          v-if="info.is_master"
+          label="设置"
+        >
+          <bangumi-setting/>
+        </el-tab-pane>
       </el-tabs>
       <bangumi-aside slot="aside"/>
     </v-layout>
@@ -58,6 +64,7 @@
   import BangumiCartoon from '~/components/bangumi/BangumiCartoon'
   import BangumiRole from '~/components/bangumi/BangumiRole'
   import BangumiImage from '~/components/bangumi/BangumiImage'
+  import BangumiSetting from '~/components/bangumi/BangumiSetting'
 
   export default {
     name: 'BangumiShow',
@@ -75,7 +82,8 @@
       BangumiVideo,
       BangumiCartoon,
       BangumiRole,
-      BangumiImage
+      BangumiImage,
+      BangumiSetting
     },
     head () {
       if (!this.id) {
@@ -125,6 +133,9 @@
             break;
           case '相册':
             this.$channel.$emit('bangumi-tab-switch-image')
+            break;
+          case '设置':
+            this.$channel.$emit('bangumi-tab-switch-setting')
             break;
         }
       },
