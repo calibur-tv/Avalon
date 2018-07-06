@@ -272,7 +272,7 @@
 <script>
   import Api from '~/api/adminApi'
   import BangumiApi from '~/api/bangumiApi'
-  import uploadMixin from '@/mixins/upload'
+  import uploadMixin from '~/mixins/upload'
 
   export default {
     data () {

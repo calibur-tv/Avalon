@@ -300,4 +300,12 @@ export default class extends BaseApi {
   deleteComment ({ id, type }) {
     return this.http.post('admin/trial/comment/delete', { id, type })
   }
+
+  getTrialBangumis () {
+    return this.http.get('admin/trial/bangumi/list')
+  }
+
+  passBangumi ({ id }) {
+    return this.http.post('admin/trial/bangumi/pass', { id })
+  }
 }

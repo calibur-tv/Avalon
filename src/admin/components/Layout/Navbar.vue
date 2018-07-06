@@ -122,6 +122,15 @@
           size="mini"
         >用户反馈：{{ todo.feedback }}</el-button>
       </router-link>
+      <router-link
+        v-if="todo.bangumi"
+        to="/admin/trial/bangumi"
+      >
+        <el-button
+          type="danger"
+          size="mini"
+        >番剧审核：{{ todo.bangumi }}</el-button>
+      </router-link>
     </div>
   </nav>
 </template>

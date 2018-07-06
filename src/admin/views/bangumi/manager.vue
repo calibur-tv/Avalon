@@ -105,10 +105,6 @@
         return this.$store.state.user.id === 1
       }
     },
-    created () {
-      this.searchBangumiManager(71)
-      this.bangumiId = 71
-    },
     methods: {
       searchBangumiManager (id) {
         if (id === this.bangumiId) {

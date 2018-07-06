@@ -147,6 +147,9 @@ const mutations = {
       }
     });
   },
+  SET_BANGUMI_INFO(state, { key, value }) {
+    state.info[key] = value
+  }
 };
 
 const actions = {
