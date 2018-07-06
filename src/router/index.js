@@ -319,6 +319,12 @@ export function createRouter() {
                 component: () => import('@/views/trial/user')
               },
               {
+                path: 'bangumi',
+                name: 'trial-bangumi',
+                meta: { title: '番剧审核', icon: 'coffee' },
+                component: () => import('@/views/trial/bangumi')
+              },
+              {
                 path: 'post',
                 name: 'trial-post',
                 meta: { title: '帖子审核', icon: 'coffee' },
