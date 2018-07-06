@@ -184,7 +184,7 @@
         try {
           await this.$store.dispatch('bangumi/getFollowers', {
             ctx: this,
-            bangumiId: this.id,
+            bangumiId: this.info.id,
             take: this.fetchFollowersCount
           })
         } catch (e) {
