@@ -135,6 +135,7 @@
           const api = new Api(this)
           try {
             await api.setNice({ id })
+            this.$toast.success('设置成功')
           } catch (err) {
             this.$toast.error(err)
           } finally {
@@ -163,6 +164,7 @@
           const api = new Api(this)
           try {
             await api.setTop({ id })
+            this.$toast.success('设置成功')
           } catch (err) {
             this.$toast.error(err)
           } finally {
@@ -191,6 +193,7 @@
           const api = new Api(this)
           try {
             await api.removeNice({ id })
+            this.$toast.success('设置成功')
           } catch (err) {
             this.$toast.error(err)
           } finally {
@@ -219,6 +222,7 @@
           const api = new Api(this);
           try {
             await api.removeTop({ id })
+            this.$toast.success('设置成功')
           } catch (err) {
             this.$toast.error(err)
           } finally {

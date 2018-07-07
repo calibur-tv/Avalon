@@ -40,13 +40,6 @@
         }
       }
 
-      .footer {
-        a {
-          margin-left: 10px;
-          margin-right: 10px;
-        }
-      }
-
       .item {
         margin-bottom: 10px;
       }
@@ -142,7 +135,11 @@
             />
           </div>
         </div>
-        <div class="footer item">
+        <div class="item">
+          <span class="label">状态：</span>
+          {{ computePostState(item) }}
+        </div>
+        <div class="item">
           <span class="label">操作：</span>
           <el-button
             size="small"
@@ -154,7 +151,10 @@
             type="danger"
             @click="delPost(index, item.id)"
           >删帖</el-button>
-          <router-link :to="`/admin/user/show?zone=${item.user.zone}`">
+          <router-link
+            :to="`/admin/user/show?zone=${item.user.zone}`"
+            style="margin-left: 10px;margin-right: 10px"
+          >
             <el-button
               size="small"
               type="warning"
@@ -277,6 +277,21 @@
             this.$toast.error(e);
           })
         }).catch(() => {});
+      },
+      computePostState(post) {
+        if (post.deleted_at) {
+          return '已删除'
+        }
+        if (post.user_id === post.state) {
+          return '刚发布'
+        }
+        if (post.is_nice) {
+          return '被加精'
+        }
+        if (post.top_at) {
+          return '被置顶'
+        }
+        return '未知'
       }
     }
   }
