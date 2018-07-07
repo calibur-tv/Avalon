@@ -35,10 +35,7 @@
           >{{ scope.row.name }}</a>
         </template>
       </el-table-column>
-      <el-table-column
-        width="300"
-        label="操作"
-      >
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <router-link :to="`/admin/bangumi/edit/${scope.row.id}`">
             <el-button
@@ -49,12 +46,11 @@
           </router-link>
           &nbsp;
           <el-button
-            v-if="currentUserId === 1"
-            :type="scope.row.deleted_at ? 'success' : 'danger'"
+            v-if="scope.row.deleted_at"
+            type="danger"
             size="small"
             icon="delete"
-            @click="handleDelete(scope.row)"
-          >{{ scope.row.deleted_at ? '恢复' : '删除' }}</el-button>
+          >已删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,9 +73,6 @@
       bangumis () {
         return this.$store.state.search.bangumis
       },
-      currentUserId () {
-        return this.$store.state.user.id
-      }
     },
     mounted () {
       this.getData(1)
@@ -111,19 +104,6 @@
         } finally {
           this.pageLoading = false
         }
-      },
-      handleDelete (bangumi) {
-        this.$confirm('确认要执行该操作吗?', '提示').then(() => {
-          const api = new Api(this);
-          api.bangumiDelete({
-            id: bangumi.id
-          }).then(() => {
-            this.$toast.success('操作成功');
-            bangumi.deleted_at = !bangumi.deleted_at;
-          }).catch(() => {
-            this.$toast.error('操作失败');
-          })
-        }).catch(() => {});
       },
       handleBangumiSearch (id) {
         this.$router.push({
