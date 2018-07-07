@@ -1,12 +1,13 @@
 <style lang="scss" module>
   .bangumi-panel {
+    position: relative;
     width: 206px;
     height: 258px;
-    text-align: center;
     border-radius: 4px;
     font-size: 14px;
-    position: relative;
     box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    margin-bottom: 20px;
+    text-align: center;
 
     .avatar {
       margin: 0 auto 8px;

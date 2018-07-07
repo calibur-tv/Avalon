@@ -72,6 +72,7 @@
       const id = route.params.id
       await Promise.all([
         store.dispatch('bangumi/getBangumi', { ctx, id }),
+        store.dispatch('bangumi/getTopPosts', { ctx, id }),
         store.dispatch('bangumi/getPosts', { ctx, id })
       ])
     },

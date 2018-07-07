@@ -41,6 +41,7 @@ const state = () => ({
     list: [],
     noMore: false,
   },
+  topPosts: []
 });
 
 const mutations = {
@@ -109,6 +110,9 @@ const mutations = {
     state.posts.data = posts;
     state.posts.total = total;
     state.posts.noMore = posts.length >= total || data.length < state.posts.take;
+  },
+  SET_TOP_POST (state, data) {
+    state.topPosts = data
   },
   SET_IMAGES(state, { data, total }) {
     const images = state.images.data.concat(data);
@@ -261,6 +265,11 @@ const actions = {
     });
     data && commit('SET_BANGUMI_CARTOON', data);
   },
+  async getTopPosts({ commit }, { ctx, id }) {
+    const api = new Api(ctx);
+    const data = await api.getTopPosts({ id })
+    commit('SET_TOP_POST', data)
+  }
 };
 
 const getters = {};
