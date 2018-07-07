@@ -271,7 +271,8 @@
             user_id: this.form.user_id
           })
           this.$toast.success('操作成功')
-          this.showEditModal = false
+          this.showEditModal = false;
+          this.form = {};
         } catch (e) {
           this.$toast.error(e)
         } finally {
@@ -298,7 +299,7 @@
             user_id: this.form.user_id,
             gray: this.form.gray
           })
-          this.$toast.success('操作成功')
+          this.$toast.success('操作成功');
           this.showCreateModal = false;
           window.location.reload();
         } catch (e) {
