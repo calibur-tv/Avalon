@@ -131,6 +131,15 @@
           size="mini"
         >番剧审核：{{ todo.bangumi }}</el-button>
       </router-link>
+      <router-link
+        v-if="todo.role"
+        to="/admin/trial/role"
+      >
+        <el-button
+          type="danger"
+          size="mini"
+        >偶像审核：{{ todo.role }}</el-button>
+      </router-link>
     </div>
   </nav>
 </template>

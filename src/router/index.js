@@ -342,6 +342,12 @@ export function createRouter() {
                 meta: { title: '图片审核', icon: 'coffee' },
                 component: () => import('@/views/trial/image')
               },
+              {
+                path: 'role',
+                name: 'trial-role',
+                meta: { title: '偶像审核', icon: 'coffee' },
+                component: () => import('@/views/trial/role')
+              },
             ]
           },
           {

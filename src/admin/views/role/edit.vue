@@ -30,7 +30,7 @@
         <el-input
           v-model.trim="form.alias"
           type="textarea"
-          placeholder="中文名、日文名、英文名... 名字之间以逗号分隔"
+          placeholder="中文名、日文名、英文名... 名字之间以英文逗号分隔"
         />
       </el-form-item>
       <el-form-item
@@ -130,8 +130,8 @@
       const validateAlias = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入番剧别名'));
-        } else if (value.split(/,|，/).length <= 1) {
-          callback(new Error('请输入多个别名，用逗号分隔'));
+        } else if (value.split(/,/).length <= 1) {
+          callback(new Error('请输入多个别名，用英文逗号分隔'));
         } else {
           callback();
         }
