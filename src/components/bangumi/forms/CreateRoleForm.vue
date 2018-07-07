@@ -28,13 +28,17 @@
         style="width: 100%"
       />
     </el-form-item>
-    <el-form-item label="头像">
+    <el-form-item
+      label="头像"
+      prop="avatar"
+    >
       <img
         v-if="form.avatar"
         :src="$resize(form.avatar, { width: 200 })"
         class="avatar"
       >
       <el-upload
+        ref="upload"
         :data="uploadHeaders"
         :action="imageUploadAction"
         :on-error="handleImageUploadError"
@@ -67,7 +71,7 @@
 </template>
 
 <script>
-  import BangumiApi from '~/api/bangumiApi'
+  import CartoonRoleApi from '~/api/cartoonRoleApi'
   import uploadMixin from '~/mixins/upload'
 
   export default {
@@ -110,6 +114,12 @@
         }
         callback();
       };
+      const validateAvatar = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请先上传头像'));
+        }
+        callback();
+      };
       return {
         form: {
           bangumi_id: this.bangumiId,
@@ -124,6 +134,9 @@
           ],
           intro: [
             { validator: validateDesc, trigger: 'submit' }
+          ],
+          avatar: [
+            { validator: validateAvatar, trigger: 'submit' }
           ],
           alias: [
             { validator: validateAlias, trigger: 'submit' }
@@ -146,20 +159,19 @@
               return
             }
             this.submitting = true;
-            const api = new BangumiApi(this);
+            const api = new CartoonRoleApi(this);
+            const name = this.form.name;
             try {
-              await api.edit({
-                id: this.info.id,
-                name: this.name,
-                summary: this.summary,
-                avatar: this.avatar.split('.calibur.tv/').pop(),
-                banner: this.banner.split('.calibur.tv/').pop(),
-                tags: this.tags
+              await api.create({
+                bangumi_id: this.form.bangumi_id,
+                name: name,
+                intro: this.form.intro,
+                avatar: this.form.avatar.split('.calibur.tv/').pop(),
+                alias: [name].concat(this.form.alias.filter(_ => _ !== name)).toString()
               });
-              this.$toast.success('修改成功');
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000)
+              this.$refs.upload.clearFiles();
+              this.$refs.form.resetFields();
+              this.$toast.success('添加成功');
             } catch (err) {
               this.$toast.error(err);
             } finally {

@@ -20,7 +20,6 @@
       >
         <bangumi-edit-form/>
       </el-collapse-item>
-      <!--
       <el-collapse-item
         title="添加偶像"
         name="2"
@@ -35,7 +34,6 @@
         </el-alert>
         <create-role-form :bangumi-id="info.id"/>
       </el-collapse-item>
-      -->
     </el-collapse>
   </div>
 </template>

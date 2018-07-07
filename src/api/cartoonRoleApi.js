@@ -19,6 +19,12 @@ export default class extends BaseApi {
     });
   }
 
+  create ({ bangumi_id, name, intro, avatar, alias }) {
+    return this.http.post('cartoon_role/create', {
+      bangumi_id, name, intro, avatar, alias
+    })
+  }
+
   show(id) {
     return this.http.get(`/cartoon_role/${id}/show`);
   }
@@ -31,5 +37,17 @@ export default class extends BaseApi {
         seenIds, take, size, tags, creator, sort,
       },
     });
+  }
+
+  trialList () {
+    return this.http.get('admin/trial/cartoon_role/list')
+  }
+
+  trialPass ({ id }) {
+    return this.http.post('admin/trial/cartoon_role/pass', { id })
+  }
+
+  trialBan ({ id, bangumi_id }) {
+    return this.http.post('admin/trial/cartoon_role/ban', { id, bangumi_id })
   }
 }
