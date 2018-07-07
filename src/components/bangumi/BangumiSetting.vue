@@ -34,6 +34,12 @@
         </el-alert>
         <create-role-form :bangumi-id="info.id"/>
       </el-collapse-item>
+      <el-collapse-item
+        title="帖子操作"
+        name="3"
+      >
+        <bangumi-post-setting/>
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
@@ -41,12 +47,14 @@
 <script>
   import BangumiEditForm from '~/components/bangumi/forms/BangumiEditForm'
   import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
+  import BangumiPostSetting from '~/components/bangumi/forms/BangumiPostSetting'
 
   export default {
     name: 'BangumiSetting',
     components: {
       BangumiEditForm,
-      CreateRoleForm
+      CreateRoleForm,
+      BangumiPostSetting
     },
     data () {
       return {

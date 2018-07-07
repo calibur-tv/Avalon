@@ -72,4 +72,20 @@ export default class extends BaseApi {
       params: { seenIds },
     });
   }
+
+  setTop ({ id }) {
+    return this.http.post('post/manager/top/set', { id })
+  }
+
+  removeTop ({ id }) {
+    return this.http.post('post/manager/top/remove', { id })
+  }
+
+  setNice ({ id }) {
+    return this.http.post('post/manager/nice/set', { id })
+  }
+
+  removeNice ({ id }) {
+    return this.http.post('post/manager/nice/remove', { id })
+  }
 }
