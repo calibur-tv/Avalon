@@ -1,7 +1,7 @@
 <style lang="scss">
   #bangumi-cartoon {
     li {
-      width: 200px;
+      width: 198px;
       height: 400px;
       float: left;
       box-shadow: 0 1px 3px rgba(0,0,0,.2);

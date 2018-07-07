@@ -32,7 +32,10 @@
           <div>1：请勿添加与《{{ info.name }}》无关的偶像</div>
           <div>2：添加偶像之前，请先在偶像列表里查找是否已添加过，请勿重复添加</div>
         </el-alert>
-        <create-role-form :bangumi-id="info.id"/>
+        <create-role-form
+          :bangumi-id="info.id"
+          :is-create="true"
+        />
       </el-collapse-item>
       <el-collapse-item
         title="帖子操作"
