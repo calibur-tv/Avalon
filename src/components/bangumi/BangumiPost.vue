@@ -2,7 +2,7 @@
   <div id="bangumi-post">
     <ul>
       <post-show-item
-        v-for="item in posts.data"
+        v-for="item in postList"
         :key="item.id"
         :item="item"
       />
@@ -15,7 +15,7 @@
       plain
       @click="getData"
     >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
-    <no-content v-if="posts.noMore && !posts.total">
+    <no-content v-if="posts.noMore && !posts.total && !topPosts.length">
       <el-button
         type="primary"
         round
@@ -48,6 +48,12 @@
       posts () {
         return this.$store.state.bangumi.posts
       },
+      topPosts () {
+        return this.$store.state.bangumi.topPosts
+      },
+      postList () {
+        return this.topPosts.concat(this.posts.data)
+      }
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-post', () => {

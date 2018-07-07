@@ -12,6 +12,21 @@
         overflow: hidden;
       }
 
+      .nice_badge {
+        float: left;
+        height: 22px;
+        line-height: 20px;
+        color: #fff;
+        cursor: default;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        padding: 1px 6px;
+        border-radius: 4px;
+        margin: 16px 5px 0 0;
+        background-color: $color-pink-deep;
+      }
+
       .control {
         float: right;
         line-height: 55px;
@@ -172,19 +187,8 @@
 <template>
   <div id="post-show">
     <v-banner/>
-    <div class="container">
-      <aside class="col-aside">
-        <v-bangumi-panel
-          :id="bangumi.id"
-          :avatar="bangumi.avatar"
-          :name="bangumi.name"
-          :followed="bangumi.followed"
-          :summary="bangumi.summary"
-          class="bangumi-panel"
-          @follow="handleBangumiFollow"
-        />
-      </aside>
-      <section class="col-main clearfix">
+    <v-layout>
+      <section slot="main">
         <header>
           <div class="title-wrap">
             <div class="control">
@@ -206,6 +210,10 @@
               >删除</el-button>
               <span class="floor">共{{ total }}条</span>
             </div>
+            <div
+              v-if="post.is_nice"
+              class="nice_badge"
+            >精</div>
             <h1
               class="oneline"
               v-text="post.title"
@@ -333,7 +341,18 @@
           </comment-main>
         </main>
       </section>
-    </div>
+      <aside slot="aside">
+        <v-bangumi-panel
+          :id="bangumi.id"
+          :avatar="bangumi.avatar"
+          :name="bangumi.name"
+          :followed="bangumi.followed"
+          :summary="bangumi.summary"
+          class="bangumi-panel"
+          @follow="handleBangumiFollow"
+        />
+      </aside>
+    </v-layout>
   </div>
 </template>
 

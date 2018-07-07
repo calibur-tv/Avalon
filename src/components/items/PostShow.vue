@@ -40,7 +40,7 @@
       .title {
         font-size: 14px;
         line-height: 32px;
-        display: block;
+        display: inline-block;
       }
 
       .time {
@@ -50,6 +50,28 @@
         color: #999;
         font-size: 12px;
         margin-left: 10px;
+      }
+
+      .top_badge, .nice_badge {
+        float: left;
+        height: 22px;
+        line-height: 20px;
+        color: #fff;
+        cursor: default;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        padding: 1px 6px;
+        border-radius: 4px;
+        margin: 5px 5px 0 0;
+      }
+
+      .top_badge {
+        background-color: $color-blue-normal;
+      }
+
+      .nice_badge {
+        background-color: $color-pink-deep;
       }
     }
 
@@ -210,6 +232,14 @@
       >
         发表于: <v-time v-model="item.updated_at"/>
       </span>
+      <div
+        v-if="item.top_at"
+        class="top_badge"
+      >置顶</div>
+      <div
+        v-if="item.is_nice"
+        class="nice_badge"
+      >精</div>
       <a
         :href="$alias.post(item.id)"
         class="title oneline href-fade-blue"

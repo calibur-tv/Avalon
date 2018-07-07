@@ -76,4 +76,8 @@ export default class extends BaseApi {
       params: { id, page, take },
     });
   }
+
+  getTopPosts({ id }) {
+    return this.http.get(`bangumi/${id}/posts/top`);
+  }
 }
