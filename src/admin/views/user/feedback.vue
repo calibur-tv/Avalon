@@ -32,7 +32,7 @@
           >确认</el-button>
           <router-link
             v-if="scope.row.user_id != 0"
-            :to="`/admin/user/show?zone=${scope.row.user_id}`"
+            :to="`/admin/user/show?id=${scope.row.user_id}`"
           >
             <el-button
               size="small"
