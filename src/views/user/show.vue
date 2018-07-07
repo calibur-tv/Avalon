@@ -276,13 +276,7 @@
               .title {
                 font-size: 14px;
                 line-height: 32px;
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                padding-right: 240px;
-                z-index: 0;
+                overflow: hidden;
               }
 
               .time {
@@ -352,6 +346,28 @@
                 float: right;
               }
             }
+          }
+
+          .top_badge, .nice_badge {
+            float: left;
+            height: 22px;
+            line-height: 20px;
+            color: #fff;
+            cursor: default;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin: 5px 5px 0 0;
+          }
+
+          .top_badge {
+            background-color: $color-blue-normal;
+          }
+
+          .nice_badge {
+            background-color: $color-pink-deep;
           }
         }
 
@@ -731,8 +747,6 @@
           >
             <el-radio-button label="发表"/>
             <el-radio-button label="回复"/>
-            <el-radio-button label="喜欢"/>
-            <el-radio-button label="收藏"/>
           </el-radio-group>
           <template v-if="postListType === 'mine'">
             <ul class="posts posts-of-mine">
@@ -751,13 +765,21 @@
                       class="avatar"
                       target="_blank"
                     >
-                      <v-img
+                      <img
                         :src="item.bangumi.avatar"
                         width="32"
                         height="32"
-                      />
+                      >
                     </a>
                   </el-tooltip>
+                  <div
+                    v-if="item.top_at"
+                    class="top_badge"
+                  >置顶</div>
+                  <div
+                    v-if="item.is_nice"
+                    class="nice_badge"
+                  >精</div>
                   <a
                     :href="$alias.post(item.id)"
                     class="title oneline href-fade-blue"
@@ -897,36 +919,6 @@
               plain
               @click="getUserPosts(false)"
             >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
-          </template>
-          <template v-else-if="postListType === 'like'">
-            <ul class="posts posts-of-like">
-              <li
-                v-for="item in posts.data"
-                :key="item.id"
-              >
-                <a
-                  :href="$alias.post(item.id)"
-                  class="title oneline href-fade-blue"
-                  target="_blank"
-                  v-text="item.title"
-                />
-              </li>
-            </ul>
-          </template>
-          <template v-else-if="postListType === 'mark'">
-            <ul class="posts posts-of-mark">
-              <li
-                v-for="item in posts.data"
-                :key="item.id"
-              >
-                <a
-                  :href="$alias.post(item.id)"
-                  class="title oneline href-fade-blue"
-                  target="_blank"
-                  v-text="item.title"
-                />
-              </li>
-            </ul>
           </template>
           <no-content v-if="posts.noMore && !posts.data.length"/>
         </el-tab-pane>

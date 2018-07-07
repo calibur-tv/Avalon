@@ -20,8 +20,14 @@ export default class extends BaseApi {
   }
 
   create ({ bangumi_id, name, intro, avatar, alias }) {
-    return this.http.post('cartoon_role/create', {
+    return this.http.post('cartoon_role/manager/create', {
       bangumi_id, name, intro, avatar, alias
+    })
+  }
+
+  edit ({ id, bangumi_id, name, intro, avatar, alias }) {
+    return this.http.post('cartoon_role/manager/edit', {
+      id, bangumi_id, name, intro, avatar, alias
     })
   }
 

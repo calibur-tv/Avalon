@@ -6,6 +6,7 @@
     label-width="40px"
   >
     <el-form-item
+      v-if="isCreate || isAdmin"
       label="名称"
       prop="name"
     >
@@ -36,6 +37,7 @@
         v-if="form.avatar"
         :src="$resize(form.avatar, { width: 200 })"
         class="avatar"
+        style="width: 100px;height: 100px;"
       >
       <el-upload
         ref="upload"
@@ -81,9 +83,17 @@
         type: Boolean,
         default: false
       },
+      isCreate: {
+        type: Boolean,
+        default: false
+      },
       bangumiId: {
         type: Number,
         default: 0
+      },
+      role: {
+        type: Object,
+        default: null
       }
     },
     data () {
@@ -123,10 +133,10 @@
       return {
         form: {
           bangumi_id: this.bangumiId,
-          name: '',
-          alias: [],
-          avatar: '',
-          intro: ''
+          name: this.role ? this.role.name : '',
+          alias: this.role ? this.role.alias.split(',') : [],
+          avatar: this.role ? this.role.avatar : '',
+          intro: this.role ? this.role.intro : ''
         },
         rules: {
           name: [
@@ -162,16 +172,24 @@
             const api = new CartoonRoleApi(this);
             const name = this.form.name;
             try {
-              await api.create({
+              const params = {
                 bangumi_id: this.form.bangumi_id,
                 name: name,
                 intro: this.form.intro,
                 avatar: this.form.avatar.split('.calibur.tv/').pop(),
                 alias: [name].concat(this.form.alias.filter(_ => _ !== name)).toString()
-              });
-              this.$refs.upload.clearFiles();
-              this.$refs.form.resetFields();
-              this.$toast.success('添加成功');
+              }
+              if (this.isCreate) {
+                await api.create(params);
+                this.$refs.form.resetFields();
+                this.$refs.upload.clearFiles();
+                this.$toast.success('添加成功');
+              } else {
+                await api.edit(Object.assign(params, {
+                  id: this.role.id
+                }));
+                this.$emit('success')
+              }
             } catch (err) {
               this.$toast.error(err);
             } finally {

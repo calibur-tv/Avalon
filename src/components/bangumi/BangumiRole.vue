@@ -47,10 +47,11 @@
           }
         }
 
-        .star {
+        .star, .edit {
           float: right;
           margin-top: 14px;
           border-radius: 14px;
+          margin-left: 10px;
         }
       }
 
@@ -72,17 +73,13 @@
           margin-top: -3px;
         }
 
-        a {
+        a, button {
           font-size: 12px;
           color: $color-text-normal;
         }
 
         span {
           font-size: 12px;
-        }
-
-        .load-list {
-          cursor: pointer;
         }
       }
     }
@@ -133,6 +130,13 @@
               plain
               @click="handleStarRole(item)"
             >为TA应援</el-button>
+            <el-button
+              v-if="info.is_master"
+              class="edit"
+              size="mini"
+              plain
+              @click="showEditRoleModal(item)"
+            >编辑偶像</el-button>
           </div>
         </div>
         <div
@@ -164,15 +168,9 @@
             </a>
           </span>
           ·
-          <span
-            class="load-list"
-            @click="showRoleDetail(item, 'new')"
-          >最新应援</span>
+          <button @click="showRoleDetail(item, 'new')">最新应援</button>
           ·
-          <span
-            class="load-list"
-            @click="showRoleDetail(item, 'hot')"
-          >最多应援</span>
+          <button @click="showRoleDetail(item, 'hot')">最多应援</button>
         </div>
       </li>
     </ul>
@@ -204,6 +202,7 @@
       </no-content>
     </template>
     <v-dialog
+      v-if="currentRole"
       v-model="openRolesModal"
       :title="`${currentRole.name} · 应援团`"
       :footer="false"
@@ -241,12 +240,30 @@
         </a>
       </li>
     </v-dialog>
+    <v-dialog
+      v-if="currentRole"
+      v-model="showEditModal"
+      :title="`编辑 - ${currentRole.name}`"
+      :footer="false"
+    >
+      <create-role-form
+        :role="currentRole"
+        :bangumi-id="info.id"
+        @success="cartoonRoleEditSuccess"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+  import uploadMixin from '~/mixins/upload'
+  import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
+
   export default {
     name: 'BangumiRole',
+    components: {
+      CreateRoleForm
+    },
     data () {
       return {
         state: {
@@ -256,9 +273,13 @@
         openRolesModal: false,
         loadingRoleFans: false,
         focusRoleSort: 'new',
-        currentRole: {},
+        showEditModal: false,
+        currentRole: null,
       }
     },
+    mixin: [
+      uploadMixin
+    ],
     computed: {
       info () {
         return this.$store.state.bangumi.info
@@ -349,6 +370,17 @@
           desc: `我想要为《${this.info.name}》的 ? 应援`
         })
       },
+      showEditRoleModal (role) {
+        this.currentRole = role
+        this.uploadConfig.max = 1
+        this.uploadConfig.pathPrefix = `bangumi/${this.info.id}/role/${role.id}/avatar`
+        this.showEditModal = true
+      },
+      cartoonRoleEditSuccess () {
+        this.$toast.success('编辑成功，刷新网页后可查看')
+        this.showEditModal = false
+        this.currentRole = null
+      }
     }
   }
 </script>
