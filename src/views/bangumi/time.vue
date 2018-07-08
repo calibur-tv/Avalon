@@ -210,24 +210,6 @@
                     class="body"
                     v-text="item.summary"
                   />
-                  <div class="foot">
-                    <ul
-                      v-if="item.tags.length"
-                      class="icon-item icon-item-tag oneline"
-                    >
-                      <li
-                        v-for="tag in item.tags"
-                        :key="tag.id"
-                      >
-                        <a
-                          :href="$alias.bangumiTag(tag.id)"
-                          target="_blank"
-                          v-text="tag.name"
-                        />
-                      </li>
-                    </ul>
-                    <!--<span v-text="item.count_like"></span>-->
-                  </div>
                 </figcaption>
               </figure>
             </li>
