@@ -499,7 +499,8 @@
         }).then((resp) => {
           this.form = Object.assign(resp, {
             banner: resp.banner.split('.calibur.tv/').pop(),
-            avatar: resp.avatar.split('.calibur.tv/').pop()
+            avatar: resp.avatar.split('.calibur.tv/').pop(),
+            tags: resp.tags.map(_ => _.id)
           });
           this.loading = false
         }).catch((err) => {
