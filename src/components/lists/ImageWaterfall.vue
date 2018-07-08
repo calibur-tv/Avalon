@@ -257,6 +257,7 @@
     v-if="list.length"
     id="image-waterfall"
   >
+    <!--
     <div
       v-if="showSortHeader"
       class="header"
@@ -337,6 +338,7 @@
         />
       </el-select>
     </div>
+    -->
     <no-ssr>
       <waterfall
         :line-gap="212"

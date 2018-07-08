@@ -207,8 +207,11 @@ export default {
       });
       commit('SET_WATERFALL', data);
     },
-    async userAlbum({ commit }, { ctx }) {
-      const api = new UserApi(ctx);
+    async userAlbum({ state, commit }, { ctx }) {
+      if (state.albums.length) {
+        return
+      }
+      const api = new ImageApi(ctx);
       const data = await api.getUserAlbums();
       commit('SET_USER_IMAGE_ALBUMS', data);
     },

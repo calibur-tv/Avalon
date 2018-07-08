@@ -62,11 +62,27 @@ export default class extends BaseApi {
   }
 
   createAlbum({
-    bangumiId, isCartoon, name, url, width, height, creator,
+    bangumi_id, name, url, width, height, size, type, is_creator, is_cartoon, part,
   }) {
-    return this.http.post('image/createAlbum', {
-      bangumiId, isCartoon, name, url, width, height, creator,
+    return this.http.post('image/album/create', {
+      bangumi_id, name, url, width, height, size, type, is_creator, is_cartoon, part,
     });
+  }
+
+  uploadSingleImage({ bangumi_id, name, url, width, height, size, type, is_creator }) {
+    return this.http.post('image/single/upload', {
+      bangumi_id, name, url, width, height, size, type, is_creator
+    })
+  }
+
+  uploadManyImage({ album_id, images }) {
+    return this.http.post('image/album/upload', {
+      album_id, images
+    })
+  }
+
+  getUserAlbums() {
+    return this.http.get('image/album/users')
   }
 
   editAlbum(params) {

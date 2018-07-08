@@ -13,6 +13,7 @@ import Share from '~/components/common/Share';
 import Dialog from '~/components/common/Dialog';
 import Layout from '~/components/layouts/Layout';
 import AvaDialog from '~/components/common/AvaDialog';
+import BangumiSearch from '~/components/search/BangumiSearch'
 import ElementUI from 'element-ui';
 import '~/assets/css/element-ui.scss';
 
@@ -20,6 +21,7 @@ import { InfiniteScroll } from 'mint-ui';
 
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
+Vue.component(BangumiSearch.name, BangumiSearch)
 Vue.component(Layout.name, Layout);
 Vue.component(AvaDialog.name, AvaDialog);
 Vue.component(ImageLazy.name, ImageLazy);
