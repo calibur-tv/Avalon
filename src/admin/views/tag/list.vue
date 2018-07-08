@@ -4,13 +4,34 @@
     id="tag-list"
   >
     <header>
-      <el-button
-        type="primary"
-        @click="showCreateModal = true"
-      >
-        <i class="el-icon-plus"/>
-        添加标签
-      </el-button>
+      <el-row>
+        <el-col :span="18">
+          <el-select
+            v-model="selectedType"
+            placeholder="选择查询种类"
+            @change="getData"
+          >
+            <el-option
+              v-for="type in types"
+              :key="type.value"
+              :label="type.text"
+              :value="type.value"
+            />
+          </el-select>
+        </el-col>
+        <el-col
+          :span="6"
+          style="text-align: right"
+        >
+          <el-button
+            type="primary"
+            @click="showCreateModal = true"
+          >
+            <i class="el-icon-plus"/>
+            添加标签
+          </el-button>
+        </el-col>
+      </el-row>
     </header>
     <el-table
       :data="pageData"
@@ -26,17 +47,6 @@
         prop="name"
         label="名称"
       />
-      <el-table-column
-        :filters="types"
-        :filter-method="filterTag"
-        prop="model"
-        label="类型"
-        filter-placement="bottom-start"
-      >
-        <template slot-scope="scope">
-          {{ modelFormat(scope.row.model) }}
-        </template>
-      </el-table-column>
       <el-table-column
         label="操作">
         <template slot-scope="scope">
@@ -65,8 +75,8 @@
       >
         <el-form-item label="类型">
           <el-select
-            v-model="createForm.model"
-            placeholder="请选择"
+            v-model="createForm.type"
+            placeholder="请选择标签类别"
           >
             <el-option
               v-for="type in types"
@@ -95,7 +105,7 @@
         createLoading: false,
         types: [
           {
-            value: 0,
+            value: 'bangumi',
             text: '番剧'
           },
           {
@@ -107,8 +117,9 @@
             text: '图片尺寸'
           }
         ],
+        selectedType: 'bangumi',
         createForm: {
-          model: 0,
+          type: '',
           name: ''
         }
       }
@@ -124,13 +135,15 @@
         this.pageLoading = true;
         const api = new Api(this);
         try {
-          const data = await api.allTag();
-          this.pageState.total = data.length
+          const data = await api.allTag({
+            type: this.selectedType
+          });
+          this.pageState.total = data.length;
           this.pageState.cur = 1;
           this.pageState.size = 20;
           this.pageList = data
         } catch (e) {
-          this.$toast.error(e)
+          this.$toast.error(e);
         } finally {
           this.pageLoading = false;
         }
@@ -143,7 +156,8 @@
           const api = new Api(this)
           api.editTag({
             id: tag.id,
-            name: value
+            name: value,
+            type: this.selectedType
           }).then(() => {
             this.$toast.success('更新成功');
             tag.name = value
@@ -152,28 +166,14 @@
           })
         }).catch(() => {});
       },
-      modelFormat(key) {
-        for (const type of this.types) {
-          if (type.text === key) {
-            return type.value
-          }
-          if (type.value === key) {
-            return type.text
-          }
-        }
-      },
-      filterTag(value, row) {
-        return row.model === value;
-      },
       handleCreateDone () {
         const name = this.createForm.name;
-        const model = this.createForm.model;
         if (!this.createForm.name) {
           this.$toast.error('名字不能为空');
           return;
         }
-        for (const tag of this.list) {
-          if (tag.name === name && tag.model === model) {
+        for (const tag of this.pageList) {
+          if (tag.name === name) {
             this.$toast.error('标签已存在');
             return;
           }
@@ -183,10 +183,9 @@
         }
         this.createLoading = true;
         const api = new Api(this);
-        api.editCreate({ name, model }).then((id) => {
-          this.list.unshift({
+        api.createTag({ name, type: this.createForm.type }).then((id) => {
+          this.pageList.unshift({
             name,
-            model,
             id
           });
           this.$toast.success('操作成功');

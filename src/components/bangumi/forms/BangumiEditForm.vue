@@ -95,10 +95,10 @@
     data () {
       const validateTags = (rule, value, callback) => {
         if (!value || !value.length) {
-          return callback(new Error('至少选择 1 个标签'));
+          return callback(new Error('至少保留 1 个标签'));
         }
-        if (value.length > 5) {
-          return callback(new Error('最多选择 5 个标签'));
+        if (value.length > 10) {
+          return callback(new Error('最多选择 10 个标签'));
         }
         callback();
       };
@@ -129,7 +129,7 @@
             { validator: validateDesc, trigger: 'submit' }
           ],
           tags: [
-            { validator: validateTags, trigger: 'submit' }
+            { validator: validateTags, trigger: 'change' }
           ],
         },
         cache: {
@@ -177,7 +177,7 @@
         },
         set (value) {
           const result = value.map(_ => {
-            if (typeof _ === 'number') {
+            if (typeof _ !== 'object') {
               return this.bangumiTags.filter(tag => tag.id === _).map(selected => {
                 return {
                   id: selected.id,

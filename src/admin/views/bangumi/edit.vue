@@ -284,6 +284,15 @@
   export default {
     data () {
       const id = +(this.$route.params.id || 0)
+      const validateTags = (rule, value, callback) => {
+        if (!value || !value.length) {
+          return callback(new Error('至少保留 1 个标签'));
+        }
+        if (value.length > 10) {
+          return callback(new Error('最多选择 10 个标签'));
+        }
+        callback();
+      };
       const validateAlias = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入番剧别名'));
@@ -432,7 +441,7 @@
             { validator: validatePublish, trigger: 'change' }
           ],
           tags: [
-            { type: 'array', required: true, message: '至少要选择一个标签', trigger: 'change' }
+            { validator: validateTags, trigger: 'change' },
           ],
           season: [
             { validator: validateSeason, trigger: 'blur' }

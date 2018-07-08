@@ -93,19 +93,21 @@ export default class extends BaseApi {
     return this.http.post('admin/bangumi/edit', params)
   }
 
-  allTag () {
-    return this.http.get('admin/tag/all')
-  }
-
-  editTag ({ id, name }) {
-    return this.http.post('admin/tag/edit', {
-      id, name
+  allTag ({ type }) {
+    return this.http.get('admin/tag/all', {
+      params: { type }
     })
   }
 
-  editCreate ({ name, model }) {
+  editTag ({ id, name, type }) {
+    return this.http.post('admin/tag/edit', {
+      id, name, type
+    })
+  }
+
+  createTag ({ name, type }) {
     return this.http.post('admin/tag/create', {
-      name, model
+      name, type
     })
   }
 
