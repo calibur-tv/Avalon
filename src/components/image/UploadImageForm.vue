@@ -114,6 +114,7 @@
             :on-exceed="handleManyExceed"
             :limit="exceed"
             :action="imageUploadAction"
+            :accept="imageUploadAccept"
             multiple
             list-type="picture-card"
           >
@@ -166,6 +167,7 @@
             :on-success="handleSingleImageUploadSuccess"
             :before-upload="beforeSingleImageUpload"
             :on-remove="handleSingleImageRemove"
+            :accept="imageUploadAccept"
             :action="imageUploadAction"
           >
             <el-button
@@ -196,6 +198,9 @@
 
   export default {
     name: 'UploadImageForm',
+    mixins: [
+      uploadMixin
+    ],
     props: {
       appendAlbums: {
         type: Array,
@@ -247,9 +252,6 @@
         }
       };
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       albums () {
         return this.$store.state.image.albums
@@ -327,7 +329,7 @@
               this.$refs.singleUpload.clearFiles();
               this.$toast.success('创建成功');
               this.submitting = false;
-//              window.location = `/image/${id}`
+              window.location = `/pins/${id}`
             }).catch((err) => {
               this.$toast.error(err);
               this.submitting = false;
@@ -398,8 +400,9 @@
             }
             this.submitting = true;
             const api = new ImageApi(this);
+            const albumId = this.form.album_id
             api.uploadManyImage({
-              album_id: this.form.album_id,
+              album_id: albumId,
               images: this.form.images.map(_ => {
                 return {
                   url: _.url.split('calibur.tv/').pop().split('?')[0],
@@ -409,13 +412,17 @@
                   height: _.height
                 }
               })
-            }).then((id) => {
+            }).then(() => {
               this.form.album_id = '';
               this.form.images = [];
               this.$refs.manyUpload.clearFiles();
               this.$toast.success('上传成功');
               this.submitting = false;
-//              window.location = `/image/${id}`
+              if (this.$route.name === 'image-show' && !(this.$route.params.id - albumId)) {
+                window.location.reload()
+              } else {
+                window.location = `/pins/${albumId}`
+              }
             }).catch((err) => {
               this.$toast.error(err);
               this.submitting = false;

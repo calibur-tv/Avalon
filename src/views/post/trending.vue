@@ -42,7 +42,6 @@
 
 <script>
   import PostShowItem from '~/components/items/PostShow'
-  import PostApi from '~/api/postApi'
 
   export default {
     name: 'PostNews',
@@ -56,7 +55,7 @@
       await store.dispatch('trending/getTrending', {
         type: 'post',
         sort,
-        api: new PostApi(ctx)
+        ctx
       })
     },
     components: {
@@ -67,7 +66,9 @@
         return this.$route.params.sort
       },
       post () {
-        return this.$store.state.trending[this.sort]
+        return this.$store.state.trending.type === 'post'
+          ? this.$store.state.trending[this.sort]
+          : []
       }
     },
     methods: {
@@ -76,7 +77,7 @@
           await this.$store.dispatch('trending/loadMore', {
             type: 'post',
             sort: this.sort,
-            api: new PostApi(this)
+            ctx: this
           })
         } catch (e) {
           this.$toast.error(e)

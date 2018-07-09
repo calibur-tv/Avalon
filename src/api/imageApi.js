@@ -61,6 +61,34 @@ export default class extends BaseApi {
     });
   }
 
+  news({ minId }) {
+    return this.http.get(`image/trending/news`, {
+      params: { minId }
+    })
+  }
+
+  active({ seenIds }) {
+    return this.http.get(`image/trending/active`, {
+      params: { seenIds }
+    })
+  }
+
+  hot({ seenIds }) {
+    return this.http.get(`image/trending/hot`, {
+      params: { seenIds }
+    })
+  }
+
+  show({ id }) {
+    return this.http.get(`image/${id}/show`)
+  }
+
+  users({ zone, page }) {
+    return this.http.get('image/users', {
+      params: { zone, page }
+    })
+  }
+
   createAlbum({
     bangumi_id, name, url, width, height, size, type, is_creator, is_cartoon, part,
   }) {

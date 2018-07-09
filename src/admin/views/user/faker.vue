@@ -55,7 +55,7 @@
   import pageMixin from '~/mixins/page'
 
   export default {
-    mixin: [
+    mixins: [
       pageMixin
     ],
     created () {

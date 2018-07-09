@@ -6,6 +6,19 @@ import CartoonRoleApi from '~/api/cartoonRoleApi';
 export default {
   namespaced: true,
   state: () => ({
+    show: null,
+    users: {
+      list: [],
+      page: 0,
+      total: 0,
+      noMore: false,
+    },
+    trending: {
+      sort: '',
+      list: [],
+      total: 0,
+      noMore: false
+    },
     waterfall: {
       data: [],
       take: 12,
@@ -18,14 +31,23 @@ export default {
       creator: -1,
     },
     albums: [],
-    albumShow: {
-      user: {},
-      bangumi: {},
-      images: [],
-      info: {},
-    },
   }),
   mutations: {
+    SET_USER_IMAGES(state, data) {
+      state.users.list = state.users.list.concat(data.list)
+      state.users.noMore = data.noMore
+      state.users.total = data.total
+      state.users.page = state.users.page + 1
+    },
+    SET_IMAGE_INFO(state, data) {
+      state.show = data
+    },
+    SHOW_TOGGLE_LIKE(state, { result }) {
+      state.show.liked = result
+    },
+    SHOW_FOLLOW_BANGUMI(state, { result }) {
+      state.show.bangumi.followed = result
+    },
     DELETE_ALBUM_IMAGE(state, { index }) {
       const idsArr = state.albumShow.info.images.split(',');
       idsArr.splice(index, 1);
@@ -38,16 +60,6 @@ export default {
       imagesArr.splice(prev, 1, ...imagesArr.splice(next, 1, imagesArr[prev]));
       state.albumShow.images = imagesArr;
       state.albumShow.info.images = result;
-    },
-    ALBUM_LIKE(state, { result }) {
-      state.albumShow.info.liked = result;
-      result ? state.albumShow.info.like_count++ : state.albumShow.info.like_count--;
-    },
-    FOLLOW_ALBUM_BANGUMI(state, { result }) {
-      if (!state.albumShow.bangumi) {
-        return;
-      }
-      state.albumShow.bangumi.followed = result;
     },
     SET_ALBUM(state, data) {
       state.albumShow = data;
@@ -127,6 +139,19 @@ export default {
     },
   },
   actions: {
+    async show({ commit }, { id, ctx }) {
+      const api = new ImageApi(ctx)
+      const data = await api.show({ id })
+      commit('SET_IMAGE_INFO', data)
+    },
+    async users({ state, commit }, { zone, ctx }) {
+      const api = new ImageApi(ctx)
+      const data = await api.users({
+        zone,
+        page: state.users.page
+      });
+      commit('SET_USER_IMAGES', data)
+    },
     async getBangumiImages({ state, commit }, { id, ctx, force }) {
       if (force) {
         commit('RESET_WATERFALL');

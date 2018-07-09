@@ -117,7 +117,7 @@
         default: false
       },
       masterId: {
-        type: Number,
+        type: [Number, String],
         required: true
       },
       emptyText: {

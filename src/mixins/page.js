@@ -1,6 +1,4 @@
-import Vue from 'vue';
-
-Vue.mixin({
+export default {
   data () {
     return {
       pageState: {
@@ -35,4 +33,4 @@ Vue.mixin({
       }
     }
   }
-});
+}

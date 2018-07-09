@@ -113,6 +113,9 @@
   import uploadMixin from '~/mixins/upload'
 
   export default {
+    mixins: [
+      uploadMixin
+    ],
     data () {
       return {
         loading: false,
@@ -123,9 +126,6 @@
         list: []
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       id () {
         return this.$route.params.id

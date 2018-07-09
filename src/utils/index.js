@@ -21,7 +21,7 @@ import { InfiniteScroll } from 'mint-ui';
 
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
-Vue.component(BangumiSearch.name, BangumiSearch)
+Vue.component(BangumiSearch.name, BangumiSearch);
 Vue.component(Layout.name, Layout);
 Vue.component(AvaDialog.name, AvaDialog);
 Vue.component(ImageLazy.name, ImageLazy);

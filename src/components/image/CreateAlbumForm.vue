@@ -89,6 +89,7 @@
         :before-upload="beforePosterUpload"
         :on-remove="handlePosterRemove"
         :action="imageUploadAction"
+        :accept="imageUploadAccept"
       >
         <el-button
           :loading="submitting"
@@ -114,6 +115,9 @@
 
   export default {
     name: 'CreateAlbumForm',
+    mixins: [
+      uploadMixin
+    ],
     props: {
       bangumiId: {
         type: [Number, String],
@@ -178,9 +182,6 @@
         }
       };
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       currentUserId () {
         return this.$store.state.user.id

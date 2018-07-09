@@ -1,3 +1,5 @@
+import Api from '~/api/trendingApi';
+
 const state = () => ({
   sort: '',
   type: '',
@@ -29,32 +31,29 @@ const mutations = {
     state.type = type;
   },
   RESET_TRENDING_STATE(state, { type }) {
-    state = {
-      sort: '',
-      type: '',
-      news: {
-        list: [],
-        total: 0,
-        noMore: false,
-        nothing: false,
-        loading: false,
-      },
-      active: {
-        list: [],
-        total: 0,
-        noMore: false,
-        nothing: false,
-        loading: false,
-      },
-      hot: {
-        list: [],
-        total: 0,
-        noMore: false,
-        nothing: false,
-        loading: false,
-      },
-    };
-    state.type = type;
+    state.sort = ''
+    state.type = type
+    state.news = {
+      list: [],
+      total: 0,
+      noMore: false,
+      nothing: false,
+      loading: false,
+    }
+    state.active = {
+      list: [],
+      total: 0,
+      noMore: false,
+      nothing: false,
+      loading: false,
+    }
+    state.hot = {
+      list: [],
+      total: 0,
+      noMore: false,
+      nothing: false,
+      loading: false,
+    }
   },
   INIT_TRENDING_DATA(state, { data, sort }) {
     state[sort].list = data.list;
@@ -87,7 +86,7 @@ const mutations = {
 
 const actions = {
   async getTrending({ state, commit }, {
-    api, type, sort, useCache = true,
+    ctx, type, sort, take, bangumiId = 0, useCache = true,
   }) {
     if (!state.type) {
       commit('INIT_TRENDING_TYPE', { type });
@@ -104,13 +103,18 @@ const actions = {
       return;
     }
     commit('SET_TRENDING_LOADING', { sort });
-    const data = await api[sort]({
+    const api = new Api(ctx)
+    const data = await api.fetch({
       seenIds: '',
       minId: 0,
+      sort,
+      take,
+      type,
+      bangumiId
     });
     commit('INIT_TRENDING_DATA', { data, sort });
   },
-  async loadMore({ state, commit }, { api, sort, type }) {
+  async loadMore({ state, commit }, { ctx, sort, type, take, bangumiId = 0 }) {
     if (!state.type || state.type !== type) {
       return;
     }
@@ -120,13 +124,22 @@ const actions = {
     commit('SET_TRENDING_LOADING', { sort });
     let data;
     const list = state[sort].list;
+    const api = new Api(ctx);
     if (sort === 'news') {
-      data = await api.news({
+      data = await api.fetch({
+        sort,
+        type,
+        take,
         minId: list.length ? list[list.length - 1].id : 0,
+        bangumiId
       });
     } else {
-      data = await api[sort]({
+      data = await api.fetch({
+        sort,
+        type,
+        take,
         seenIds: list.length ? list.map(_ => _.id).toString() : '',
+        bangumiId
       });
     }
     commit('PUSH_TRENDING_DATA', { data, sort });

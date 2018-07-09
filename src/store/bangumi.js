@@ -223,7 +223,7 @@ const actions = {
       id,
       take: state.posts.take,
       type: state.posts.type,
-      maxId: state.posts.data.length ? state.posts.data[state.posts.data.length - 1].id : 0,
+      minId: state.posts.data.length ? state.posts.data[state.posts.data.length - 1].id : 0,
     });
     commit('SET_POSTS', {
       data: data.list,

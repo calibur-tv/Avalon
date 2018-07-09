@@ -7,21 +7,23 @@
         :item="item"
       />
     </ul>
-    <el-button
-      v-if="!posts.noMore"
-      :loading="state.loading"
-      class="load-more-btn"
-      type="info"
-      plain
-      @click="getData"
-    >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
-    <no-content v-if="posts.noMore && !posts.total && !topPosts.length">
+    <template v-if="posts">
       <el-button
-        type="primary"
-        round
-        @click="openFeedback"
-      >发表《{{ info.name }}》的第一个帖子</el-button>
-    </no-content>
+        v-if="!posts.noMore"
+        :loading="posts.loading"
+        class="load-more-btn"
+        type="info"
+        plain
+        @click="loadMore"
+      >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+      <no-content v-if="posts.noMore && !posts.total && !topPosts.length">
+        <el-button
+          type="primary"
+          round
+          @click="openFeedback"
+        >发表《{{ info.name }}》的第一个帖子</el-button>
+      </no-content>
+    </template>
   </div>
 </template>
 
@@ -33,51 +35,52 @@
     components: {
       PostShowItem
     },
-    data () {
-      return {
-        state: {
-          loading: false,
-          fetched: true
-        },
-      }
-    },
     computed: {
       info () {
         return this.$store.state.bangumi.info
       },
       posts () {
-        return this.$store.state.bangumi.posts
+        return this.$store.state.trending.type === 'post'
+          ? this.$store.state.trending.active
+          : null
       },
       topPosts () {
         return this.$store.state.bangumi.topPosts
       },
       postList () {
-        return this.topPosts.concat(this.posts.data)
+        return this.posts
+          ? this.topPosts.concat(this.posts.list)
+          : this.topPosts
       }
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-post', () => {
-        if (!this.state.fetched) {
-          this.getData()
-        }
+        this.getData()
       })
     },
     methods: {
       async getData () {
-        if (this.state.loading || this.posts.noMore) {
-          return
-        }
-        this.state.loading = true
-
         try {
-          await this.$store.dispatch('bangumi/getPosts', {
+          await this.$store.dispatch('trending/getTrending', {
+            type: 'post',
+            sort: 'active',
             ctx: this,
-            id: this.info.id
+            bangumiId: this.info.id
           })
         } catch (e) {
           this.$toast.error(e)
-        } finally {
-          this.state.loading = false
+        }
+      },
+      async loadMore () {
+        try {
+          await this.$store.dispatch('trending/loadMore', {
+            type: 'post',
+            sort: 'active',
+            ctx: this,
+            bangumiId: this.info.id
+          })
+        } catch (e) {
+          this.$toast.error(e)
         }
       },
       openFeedback () {

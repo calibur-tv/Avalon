@@ -88,9 +88,14 @@ export function createRouter() {
             component: () => import('~/views/role/show'),
           },
           {
-            path: 'image/trending/:sort',
+            path: 'pins/trending/:sort',
             name: 'image-trending',
             component: () => import('~/views/image/trending'),
+          },
+          {
+            path: 'pins/:id(\\d+)',
+            name: 'image-show',
+            component: () => import('~/views/image/show')
           },
           {
             path: 'image/album/:id(\\d+)',

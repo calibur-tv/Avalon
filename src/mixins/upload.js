@@ -1,7 +1,6 @@
-import Vue from 'vue';
 import { cdn } from 'env';
 
-Vue.mixin({
+export default {
   data () {
     return {
       uploadHeaders: {
@@ -13,6 +12,7 @@ Vue.mixin({
         pathPrefix: '',
         params: null
       },
+      imageUploadAccept: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].toString(),
       imageUploadAction: 'https://upload.qiniup.com',
       imagePrefix: cdn.image
     }
@@ -32,14 +32,15 @@ Vue.mixin({
     },
     beforeImageUpload (file) {
       if (!this.$store.state.login) {
-        this.$channel.$emit('sign-in')
+        this.$channel.$emit('sign-in');
         return
       }
-      const isFormat = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) !== -1
+
+      const isFormat = this.imageUploadAccept.split(',').indexOf(file.type) !== -1
       const isLt5M = file.size / 1024 / 1024 < this.uploadConfig.max;
 
       if (!isFormat) {
-        this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
+        this.$toast.error('仅支持jpg, jpeg, png, gif格式的图片');
         return false
       }
       if (!isLt5M) {
@@ -63,4 +64,4 @@ Vue.mixin({
       return true
     }
   }
-});
+}

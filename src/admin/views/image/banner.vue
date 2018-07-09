@@ -196,6 +196,10 @@
   import uploadMixin from '~/mixins/upload'
 
   export default {
+    mixins: [
+      pageMixin,
+      uploadMixin
+    ],
     data () {
       return {
         showEditModal: false,
@@ -204,10 +208,6 @@
         form: {}
       }
     },
-    mixin: [
-      pageMixin,
-      uploadMixin
-    ],
     created () {
       this.getData();
     },

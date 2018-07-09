@@ -282,6 +282,9 @@
   import uploadMixin from '~/mixins/upload'
 
   export default {
+    mixins: [
+      uploadMixin
+    ],
     data () {
       const id = +(this.$route.params.id || 0)
       const validateTags = (rule, value, callback) => {
@@ -453,9 +456,6 @@
         }
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       id () {
         return +(this.$route.params.id || 0)

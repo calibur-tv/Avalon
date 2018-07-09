@@ -78,6 +78,9 @@
 
   export default {
     name: 'CreateRoleForm',
+    mixins: [
+      uploadMixin
+    ],
     props: {
       isAdmin: {
         type: Boolean,
@@ -155,9 +158,6 @@
         submitting: false
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     mounted () {
       this.getUpToken();
     },

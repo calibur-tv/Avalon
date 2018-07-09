@@ -407,15 +407,21 @@
         >偶像</router-link>
         <el-dropdown>
           <router-link
-            :to="$alias.imageTrending('new')"
+            :to="$alias.imageTrending('active')"
             class="nav-link el-dropdown-link"
-          >图片</router-link>
+          >相册</router-link>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
               <router-link
-                :to="$alias.imageTrending('new')"
+                :to="$alias.imageTrending('news')"
                 class="nav-link"
               >最新上传</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link
+                :to="$alias.imageTrending('active')"
+                class="nav-link"
+              >最近活跃</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <router-link
@@ -535,14 +541,24 @@
     },
     computed: {
       theme () {
-        return [
-          'homepage',
-          'bangumi-show',
-          'user-show',
-          'image-album'
-        ].indexOf(this.$route.name) !== -1
-          ? 'mask'
-          : 'blur'
+        const pageName = this.$route.name
+        if ([
+            'homepage',
+            'bangumi-show',
+            'user-show',
+            'image-album'
+          ].indexOf(pageName) !== -1) {
+          return 'mask'
+        }
+        if (
+          pageName === 'image-show' &&
+          this.$store.state.image.show &&
+          this.$store.state.image.show.is_album
+        ) {
+          return 'mask'
+        }
+
+        return 'blur'
       },
       computedBg () {
         return this.theme === 'blur' ? {

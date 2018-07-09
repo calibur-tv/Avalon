@@ -241,21 +241,6 @@
             <span v-text="role.lover.nickname"/>
           </a>
         </div>
-        <div class="images">
-          <p class="sub-title">相册</p>
-          <image-waterfall
-            :loading="loadingRoleImageFetch"
-            @fetch="getRoleImages(false)"
-          >
-            <el-button
-              type="primary"
-              round
-              @click="openUploadModal"
-            >
-              上传 {{ role.name }} 的第一张图片
-            </el-button>
-          </image-waterfall>
-        </div>
       </div>
       <v-dialog
         v-model="toggleFansListModal"
@@ -300,15 +285,12 @@
 </template>
 
 <script>
-  import ImageWaterfall from '~/components/lists/ImageWaterfall'
-
   export default {
     name: 'RoleShow',
     async asyncData ({ store, route, ctx }) {
       const id = route.params.id
       await Promise.all([
         store.dispatch('cartoonRole/getRoleInfo', { ctx, id }),
-        store.dispatch('image/getRoleImages', { ctx, id }),
         store.dispatch('cartoonRole/getFansList', {
           ctx,
           bangumiId: 0,
@@ -326,9 +308,6 @@
           { hid: 'keywords', name: 'keywords', content: `calibur,角色,天下漫友是一家,${this.role.alias}` }
         ]
       }
-    },
-    components: {
-      ImageWaterfall
     },
     data () {
       return {
@@ -351,9 +330,6 @@
       bangumi () {
         return this.info.bangumi
       },
-      images () {
-        return this.info.images
-      },
       fans () {
         return this.$store.state.cartoonRole.fans.new
       },
@@ -375,23 +351,6 @@
     methods: {
       handleFollowBangumiAction (result) {
         this.$store.commit('cartoonRole/FOLLOW_ROLE_BANGUMI', { result })
-      },
-      async getRoleImages (force) {
-        if (this.loadingRoleImageFetch) {
-          return
-        }
-        this.loadingRoleImageFetch = true
-        try {
-          await this.$store.dispatch('image/getRoleImages', {
-            ctx: this,
-            id: this.id,
-            force
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingRoleImageFetch = false
-        }
       },
       async handleStarRole () {
         if (!this.$store.state.login) {
@@ -440,9 +399,6 @@
         this.focusRoleSort = sort
         this.toggleFansListModal = true
         this.fetchRoleFans(true)
-      },
-      openUploadModal () {
-        this.$channel.$emit('open-upload-image-modal')
       }
     }
   }
