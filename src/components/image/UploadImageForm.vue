@@ -29,17 +29,46 @@
   }
 
   .choice-album-item {
-    img {
-      width: 24px;
+    .meta {
+      float: right;
       height: 24px;
+      margin-top: 5px;
+      width: 24px;
+      line-height: 24px;
+      font-size: 12px;
       border-radius: 3px;
-      margin-right: 5px;
-      margin-top: -2px;
-      vertical-align: middle;
+      text-align: center;
+      color: #fff;
+      margin-left: 10px;
     }
 
-    span {
-      font-size: 14px;
+    .image-count {
+      background-color: $color-gray-deep;
+    }
+
+    .is-creator {
+      background-color: gold;
+    }
+
+    .is-cartoon {
+      background-color: $color-pink-deep;
+    }
+
+    .info {
+      overflow: hidden;
+
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 3px;
+        margin-right: 5px;
+        margin-top: -2px;
+        vertical-align: middle;
+      }
+
+      span {
+        font-size: 14px;
+      }
     }
   }
 </style>
@@ -81,8 +110,22 @@
           :value="item.id"
           class="choice-album-item"
         >
-          <img :src="$resize(item.url, { width: 48 })">
-          <span v-text="item.name"/>
+          <div
+            class="image-count meta"
+            v-text="item.image_count"
+          />
+          <div
+            v-if="item.is_creator"
+            class="is-creator meta"
+          >创</div>
+          <div
+            v-if="item.is_cartoon"
+            class="is-cartoon meta"
+          >漫</div>
+          <div class="info">
+            <img :src="$resize(item.source.url, { width: 48 })">
+            <span v-text="item.name"/>
+          </div>
         </el-option>
       </el-select>
     </el-form-item>
