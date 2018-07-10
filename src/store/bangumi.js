@@ -38,6 +38,9 @@ const state = () => ({
   },
   cartoon: {
     page: 0,
+    take: 12,
+    sort: 'desc',
+    total: 0,
     list: [],
     noMore: false,
   },
@@ -262,6 +265,8 @@ const actions = {
     const data = await api.cartoon({
       bangumiId,
       page: state.cartoon.page,
+      take: state.cartoon.take,
+      sort: state.cartoon.sort
     });
     data && commit('SET_BANGUMI_CARTOON', data);
   },

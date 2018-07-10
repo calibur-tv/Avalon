@@ -2,11 +2,12 @@
   #bangumi-cartoon {
     li {
       width: 198px;
-      height: 400px;
-      float: left;
+      height: 406px;
       box-shadow: 0 1px 3px rgba(0,0,0,.2);
       margin: 3px 9px 15px 3px;
+      background-color: #FAFAFA;
       overflow: hidden;
+      float: left;
 
       .poster-wrap {
         position: relative;
@@ -60,53 +61,49 @@
         }
       }
 
-      .desc {
-        padding: 10px 16px;
-        height: 52px;
+      .intro {
+        height: 55px;
+        padding: 5px 15px;
+        background-color: #fff;
 
-        button {
-          float: right;
-          width: 50px;
-          height: 32px;
-          line-height: 32px;
-          text-align: right;
-          color: $color-gray-deep;
-          font-size: 13px;
-          margin-right: 1px;
-
-          &.liked {
-            color: $color-pink-normal;
-          }
+        .name, .social {
+          height: 20px;
+          font-size: 12px;
+          line-height: 20px;
         }
 
-        a {
-          display: block;
-          overflow: hidden;
-          line-height: 32px;
+        .social {
+          color: $color-text-light;
+          margin-top: 5px;
+
+          span {
+            margin-right: 10px;
+          }
+
+          .done {
+            color: $color-pink-deep;
+          }
         }
       }
 
-      .user {
-        display: block;
-        width: 100%;
-        height: 48px;
-        padding: 8px 16px;
-        border-top: 1px solid #f2f2f2;
-        background-color: #fafafa;
+      .about {
+        height: 51px;
+        padding: 10px 15px;
+        border-top: 1px solid #F2F2F2;
 
-        img {
-          border: 1px solid #f0f0f0;
-          vertical-align: middle;
-          margin-right: 8px;
+        .user-avatar {
+          display: block;
+          margin-right: 10px;
+          overflow: hidden;
           float: left;
-          @include avatar(32px)
+          @include avatar-2(30px);
         }
 
-        div {
-          overflow: hidden;
+        .main-name {
+          line-height: 30px;
           font-size: 12px;
-          margin-top: 10px;
-          color: #999;
+          word-wrap: break-word;
+          color: $color-text-normal;
         }
       }
     }
@@ -115,57 +112,70 @@
 
 <template>
   <div id="bangumi-cartoon">
-    <ul
-      v-if="cartoons.list.length"
-      class="clearfix"
-    >
-      <li
-        v-for="item in cartoons.list"
-        :key="item.id"
+    <template v-if="cartoons.list.length">
+      <ul
+        class="clearfix"
       >
-        <a
-          :href="$alias.imageAlbum(item.id)"
-          class="poster-wrap"
-          target="_blank"
+        <li
+          v-for="item in cartoons.list"
+          :key="item.id"
         >
-          <img :src="$resize(item.url, { width: 400, height: 600 })">
-          <div class="info">
-            <i class="el-icon-picture-outline"/>
-            <span
-              class="image-count"
-              v-text="item.image_count"
-            />
-          </div>
-        </a>
-        <div class="desc">
-          <button
-            :class="{ 'liked': item.liked }"
-            class="like"
-            @click="handleLikeCartoon($event, item)"
-          >
-            <i class="iconfont icon-guanzhu"/>
-            {{ item.like_count || '' }}
-          </button>
           <a
-            :href="$alias.imageAlbum(item.id)"
-            class="oneline"
+            :href="$alias.image(item.id)"
             target="_blank"
-            v-text="item.name"
-          />
-        </div>
-        <a
-          :href="$alias.user(item.user.zone)"
-          class="user"
-          target="_blank"
-        >
-          <img :src="$resize(item.user.avatar, { width: 72 })">
-          <div
-            class="oneline"
-            v-text="item.user.nickname"
-          />
-        </a>
-      </li>
-    </ul>
+          >
+            <div class="poster-wrap">
+              <img :src="$resize(item.source.url, { width: 400, height: 600 })">
+              <div class="info">
+                <i class="el-icon-picture-outline"/>
+                <span
+                  class="image-count"
+                  v-text="item.image_count"
+                />
+              </div>
+            </div>
+            <div class="intro">
+              <p class="name oneline">{{ item.part }}：{{ item.name }}</p>
+              <div class="social">
+                <span
+                  v-if="item.like_count"
+                  :class="{ 'done': item.liked }"
+                >
+                  <i class="iconfont icon-guanzhu"/>
+                  {{ item.like_count }}
+                </span>
+                <span
+                  v-if="item.comment_count"
+                  :class="{ 'done': item.commented }"
+                >
+                  <i class="iconfont icon-pinglun1"/>
+                  {{ item.comment_count }}
+                </span>
+                <span v-if="item.view_count">
+                  <i class="iconfont icon-ai-eye"/>
+                  {{ item.view_count }}
+                </span>
+              </div>
+            </div>
+            <div class="about">
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                class="user-avatar"
+              >
+                <img :src="$resize(item.user.avatar, { width: 60 })">
+              </a>
+              <a
+                :href="$alias.user(item.user.zone)"
+                target="_blank"
+                class="main-name"
+                v-text="item.user.nickname"
+              />
+            </div>
+          </a>
+        </li>
+      </ul>
+    </template>
     <no-content v-else-if="cartoons.noMore">
       <el-button
         type="primary"
