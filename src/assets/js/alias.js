@@ -52,10 +52,6 @@ export default {
     return `/pins/trending/${sort}`;
   },
 
-  imageAlbum(id) {
-    return `/image/album/${id}`;
-  },
-
   cartoonRole(id) {
     return `/role/${id}`;
   },

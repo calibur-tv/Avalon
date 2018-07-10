@@ -9,7 +9,7 @@
       <el-table-column label="名称">
         <template slot-scope="scope">
           <a
-            :href="$alias.imageAlbum(scope.row.id)"
+            :href="$alias.image(scope.row.id)"
             target="_blank"
           >{{ scope.row.name }}</a>
         </template>
