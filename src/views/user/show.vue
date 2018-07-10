@@ -977,19 +977,13 @@
             >查看角色列表</a>
           </no-content>
         </el-tab-pane>
-        <el-tab-pane label="图片">
-          <image-waterfall
-            :loading="loadingUserImageFetch"
-            :bangumi="bangumis"
-            @fetch="getUserImages(false)"
-          >
-            <el-button
-              v-if="isMe"
-              round
-              type="primary"
-              @click="openUploadModal"
-            >上传图片</el-button>
-          </image-waterfall>
+        <el-tab-pane label="相册">
+          <image-waterfall-flow
+            :list="images.list"
+            :no-more="images.noMore"
+            :loading="images.loading"
+            @load="getUserImages(false)"
+          />
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
@@ -1063,8 +1057,8 @@
 <script>
   import UserApi from '~/api/userApi'
   import ImageApi from '~/api/imageApi'
-  import ImageWaterfall from '~/components/lists/ImageWaterfall'
   import ImageCropper from '~/components/common/ImageCropper'
+  import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
 
   export default {
     name: 'UserShow',
@@ -1094,7 +1088,7 @@
     },
     components: {
       ImageCropper,
-      ImageWaterfall
+      ImageWaterfallFlow
     },
     data () {
       const validateNickname = (rule, value, callback) => {
@@ -1182,7 +1176,7 @@
         return this.$store.state.users.posts[this.postListType]
       },
       images () {
-        return this.$store.state.image.waterfall
+        return this.$store.state.image.users
       },
       daySigned () {
         return this.self.daySign
@@ -1211,7 +1205,7 @@
           this.getUserPosts(true)
         } else if (tab.label === '偶像') {
           this.getUserRoles(true)
-        } else if (tab.label === '图片') {
+        } else if (tab.label === '相册') {
           this.getUserImages(true)
         }
       },
@@ -1245,7 +1239,7 @@
         })
       },
       async getUserImages (isFirstRequest) {
-        if (isFirstRequest && this.images.data.length) {
+        if (isFirstRequest && this.images.list.length) {
           return
         }
         if (this.loadingUserImageFetch) {
@@ -1253,7 +1247,7 @@
         }
         this.loadingUserImageFetch = true
         try {
-          await this.$store.dispatch('image/getUserImages', {
+          await this.$store.dispatch('image/users', {
             zone: this.user.zone,
             ctx: this,
             force: isFirstRequest
@@ -1436,6 +1430,9 @@
         this.$channel.$emit('open-upload-image-modal')
       },
       watchCopyInviteLink () {
+        if (!this.$refs.inviteBtn) {
+          return
+        }
         this.$nextTick(() => {
           const clipboard = new this.$copy(this.$refs.inviteBtn.$el)
 
@@ -1443,9 +1440,6 @@
             this.$toast.success('复制成功')
           })
         })
-      },
-      handleAvatarCropperSuccess (blob) {
-        console.log(blob)
       }
     }
   }

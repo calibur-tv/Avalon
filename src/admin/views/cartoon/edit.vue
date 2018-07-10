@@ -9,7 +9,7 @@
       <el-table-column label="名称">
         <template slot-scope="scope">
           <a
-            :href="$alias.imageAlbum(scope.row.id)"
+            :href="$alias.image(scope.row.id)"
             target="_blank"
           >{{ scope.row.name }}</a>
         </template>
@@ -113,6 +113,9 @@
   import uploadMixin from '~/mixins/upload'
 
   export default {
+    mixins: [
+      uploadMixin
+    ],
     data () {
       return {
         loading: false,
@@ -123,9 +126,6 @@
         list: []
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       id () {
         return this.$route.params.id

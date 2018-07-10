@@ -38,6 +38,9 @@ const state = () => ({
   },
   cartoon: {
     page: 0,
+    take: 12,
+    sort: 'desc',
+    total: 0,
     list: [],
     noMore: false,
   },
@@ -138,21 +141,28 @@ const mutations = {
     state.info.noMoreFollowers = data.noMore;
     state.followersPage += 1;
   },
+  SET_BANGUMI_INFO(state, { key, value }) {
+    state.info[key] = value
+  },
   SET_BANGUMI_CARTOON(state, data) {
     state.cartoon.list = state.cartoon.list.concat(data.list);
     state.cartoon.noMore = data.noMore;
+    state.cartoon.total = data.total;
     state.cartoon.page = state.cartoon.page + 1;
   },
-  TOGGLE_LIKE_CARTOON(state, { id, result }) {
-    state.cartoon.list.forEach((image, index) => {
-      if (image.id === id) {
-        state.cartoon.list[index].like_count += result ? 1 : -1;
-        state.cartoon.list[index].liked = result;
-      }
-    });
+  REVERSE_CARTOON(state, { sort }) {
+    state.cartoon.list = state.cartoon.list.reverse()
+    state.cartoon.sort = sort
   },
-  SET_BANGUMI_INFO(state, { key, value }) {
-    state.info[key] = value
+  RESET_CARTOON(state, { sort }) {
+    state.cartoon = {
+      page: 0,
+      take: 12,
+      sort,
+      total: 0,
+      list: [],
+      noMore: false,
+    }
   }
 };
 
@@ -223,7 +233,7 @@ const actions = {
       id,
       take: state.posts.take,
       type: state.posts.type,
-      maxId: state.posts.data.length ? state.posts.data[state.posts.data.length - 1].id : 0,
+      minId: state.posts.data.length ? state.posts.data[state.posts.data.length - 1].id : 0,
     });
     commit('SET_POSTS', {
       data: data.list,
@@ -262,6 +272,23 @@ const actions = {
     const data = await api.cartoon({
       bangumiId,
       page: state.cartoon.page,
+      take: state.cartoon.take,
+      sort: state.cartoon.sort
+    });
+    data && commit('SET_BANGUMI_CARTOON', data);
+  },
+  async changeCartoonSort({ state, commit }, { ctx, bangumiId, sort }) {
+    if (state.cartoon.noMore) {
+      commit('REVERSE_CARTOON', { sort });
+      return
+    }
+    commit('RESET_CARTOON', { sort });
+    const api = new Api(ctx);
+    const data = await api.cartoon({
+      take: state.cartoon.take,
+      page: 0,
+      bangumiId,
+      sort
     });
     data && commit('SET_BANGUMI_CARTOON', data);
   },

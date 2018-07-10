@@ -52,6 +52,9 @@
   import UaDetector from '@/utils/ua'
 
   export default {
+    mixins: [
+      pageMixin
+    ],
     data () {
       return {
         options: [
@@ -82,9 +85,6 @@
         ],
       }
     },
-    mixin: [
-      pageMixin
-    ],
     created () {
       this.getData();
     },

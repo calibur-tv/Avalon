@@ -99,6 +99,9 @@
   import pageMixin from '~/mixins/page'
 
   export default {
+    mixins: [
+      pageMixin
+    ],
     data () {
       return {
         showCreateModal: false,
@@ -124,9 +127,6 @@
         }
       }
     },
-    mixin: [
-      pageMixin
-    ],
     created () {
       this.getData();
     },

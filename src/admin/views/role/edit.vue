@@ -126,6 +126,9 @@
   import uploadMixin from '~/mixins/upload'
 
   export default {
+    mixins: [
+      uploadMixin
+    ],
     data () {
       const validateAlias = (rule, value, callback) => {
         if (value === '') {
@@ -161,9 +164,6 @@
         submitting: false
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       id () {
         return +(this.$route.params.id || 0)

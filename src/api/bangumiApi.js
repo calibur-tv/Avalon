@@ -35,9 +35,9 @@ export default class extends BaseApi {
     return this.http.get(`bangumi/${id}/videos`);
   }
 
-  posts({ id, maxId, take }) {
-    return this.http.get(`bangumi/${id}/posts/news`, {
-      params: { maxId, take },
+  posts({ id, minId, take }) {
+    return this.http.get(`bangumi/${id}/posts/active`, {
+      params: { minId, take },
     });
   }
 
@@ -51,9 +51,9 @@ export default class extends BaseApi {
     });
   }
 
-  cartoon({ bangumiId, page }) {
+  cartoon({ bangumiId, page, take, sort }) {
     return this.http.get(`bangumi/${bangumiId}/cartoon`, {
-      params: { page },
+      params: { page, take, sort },
     });
   }
 

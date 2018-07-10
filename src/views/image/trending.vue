@@ -6,17 +6,23 @@
       <div class="col-main">
         <div class="breadcrumb-links">
           <a
-            :class="{ 'router-link-active': $route.params.sort === 'new' }"
-            :href="$alias.imageTrending('new')"
-          >最新</a>
+            :class="{ 'router-link-active': $route.params.sort === 'news' }"
+            :href="$alias.imageTrending('news')"
+          >最新上传</a>
+          <a
+            :class="{ 'router-link-active': $route.params.sort === 'active' }"
+            :href="$alias.imageTrending('active')"
+          >最近活跃</a>
           <a
             :class="{ 'router-link-active': $route.params.sort === 'hot' }"
             :href="$alias.imageTrending('hot')"
-          >最热</a>
+          >最多喜欢</a>
         </div>
-        <image-waterfall
-          :loading="loading"
-          @fetch="getImages"
+        <image-waterfall-flow
+          :list="images.list"
+          :no-more="images.noMore"
+          :loading="images.loading"
+          @load="loadMore"
         />
       </div>
     </div>
@@ -24,48 +30,51 @@
 </template>
 
 <script>
-  import ImageWaterfall from '~/components/lists/ImageWaterfall'
+  import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
 
   export default {
     name: 'ImageTrending',
     async asyncData ({ store, route, ctx }) {
-      await store.dispatch('image/getTrendingImages', {
-        sort: route.params.sort,
+      const sort = route.params.sort
+      if (['news', 'active', 'hot'].indexOf(sort) === -1) {
+        const error = new Error()
+        error.code = 404
+        throw error
+      }
+      await store.dispatch('trending/getTrending', {
+        type: 'image',
+        sort,
         ctx,
-        force: true
+        take: 12
       })
     },
     components: {
-      ImageWaterfall
+      ImageWaterfallFlow
     },
     head: {
       title: '相册'
     },
-    data () {
-      return {
-        loading: false
-      }
-    },
     computed: {
+      sort () {
+        return this.$route.params.sort
+      },
       images () {
-        return this.$store.state.image.waterfall
+        return this.$store.state.trending.type === 'image'
+          ? this.$store.state.trending[this.sort]
+          : []
       }
     },
     methods: {
-      async getImages () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true
+      async loadMore () {
         try {
-          await this.$store.dispatch('image/getTrendingImages', {
-            sort: this.$route.params.sort,
+          await this.$store.dispatch('trending/loadMore', {
+            type: 'image',
+            sort: this.sort,
+            take: 12,
             ctx: this
           })
         } catch (e) {
           this.$toast.error(e)
-        } finally {
-          this.loading = false
         }
       }
     }

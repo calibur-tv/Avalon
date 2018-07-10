@@ -1,12 +1,27 @@
 <style lang="scss">
   #bangumi-cartoon {
-    li {
+    .header {
+      margin-bottom: 15px;
+      text-align: right;
+
+      .total {
+        float: left;
+        line-height: 28px;
+      }
+
+      .el-select {
+        margin-right: 8px;
+      }
+    }
+
+    .cartoon {
       width: 198px;
-      height: 400px;
-      float: left;
+      height: 406px;
       box-shadow: 0 1px 3px rgba(0,0,0,.2);
       margin: 3px 9px 15px 3px;
+      background-color: #FAFAFA;
       overflow: hidden;
+      float: left;
 
       .poster-wrap {
         position: relative;
@@ -60,53 +75,53 @@
         }
       }
 
-      .desc {
-        padding: 10px 16px;
-        height: 52px;
+      .intro {
+        height: 55px;
+        padding: 5px 15px;
+        background-color: #fff;
 
-        button {
-          float: right;
-          width: 50px;
-          height: 32px;
-          line-height: 32px;
-          text-align: right;
-          color: $color-gray-deep;
-          font-size: 13px;
-          margin-right: 1px;
-
-          &.liked {
-            color: $color-pink-normal;
-          }
+        .name, .social {
+          height: 20px;
+          font-size: 12px;
+          line-height: 20px;
         }
 
-        a {
-          display: block;
-          overflow: hidden;
-          line-height: 32px;
+        .name {
+          margin-top: 3px;
+        }
+
+        .social {
+          color: $color-text-light;
+          margin-top: 2px;
+
+          span {
+            margin-right: 10px;
+          }
+
+          .done {
+            color: $color-pink-deep;
+          }
         }
       }
 
-      .user {
-        display: block;
-        width: 100%;
-        height: 48px;
-        padding: 8px 16px;
-        border-top: 1px solid #f2f2f2;
-        background-color: #fafafa;
+      .about {
+        height: 51px;
+        padding: 10px 15px;
+        border-top: 1px solid #F2F2F2;
 
-        img {
-          border: 1px solid #f0f0f0;
-          vertical-align: middle;
-          margin-right: 8px;
+        .user-avatar {
+          display: block;
+          margin-right: 10px;
+          overflow: hidden;
           float: left;
-          @include avatar(32px)
+          @include avatar-2(30px);
         }
 
-        div {
-          overflow: hidden;
+        .main-name {
+          line-height: 30px;
           font-size: 12px;
-          margin-top: 10px;
-          color: #999;
+          word-wrap: break-word;
+          color: $color-text-normal;
         }
       }
     }
@@ -115,57 +130,86 @@
 
 <template>
   <div id="bangumi-cartoon">
-    <ul
-      v-if="cartoons.list.length"
-      class="clearfix"
-    >
-      <li
-        v-for="item in cartoons.list"
-        :key="item.id"
-      >
-        <a
-          :href="$alias.imageAlbum(item.id)"
-          class="poster-wrap"
-          target="_blank"
+    <template v-if="cartoons.list.length">
+      <div class="header">
+        <strong class="total">共 {{ cartoons.total }} 集</strong>
+        <el-select
+          v-model="sort"
+          :loading="state.loading"
+          size="mini"
         >
-          <img :src="$resize(item.url, { width: 400, height: 600 })">
-          <div class="info">
-            <i class="el-icon-picture-outline"/>
-            <span
-              class="image-count"
-              v-text="item.image_count"
+          <el-option
+            v-for="item in order"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+      <ul
+        class="clearfix"
+      >
+        <li
+          v-for="item in cartoons.list"
+          :key="item.id"
+          class="cartoon"
+        >
+          <a
+            :href="$alias.image(item.id)"
+            target="_blank"
+          >
+            <div class="poster-wrap">
+              <img :src="$resize(item.source.url, { width: 396, height: 600 })">
+              <div class="info">
+                <i class="el-icon-picture-outline"/>
+                <span
+                  class="image-count"
+                  v-text="item.image_count"
+                />
+              </div>
+            </div>
+            <div class="intro">
+              <p class="name oneline">【 {{ item.part }} 】{{ item.name }}</p>
+              <div class="social">
+                <span
+                  v-if="item.like_count"
+                  :class="{ 'done': item.liked }"
+                >
+                  <i class="iconfont icon-guanzhu"/>
+                  {{ item.like_count }}
+                </span>
+                <span
+                  v-if="item.comment_count"
+                  :class="{ 'done': item.commented }"
+                >
+                  <i class="iconfont icon-pinglun1"/>
+                  {{ item.comment_count }}
+                </span>
+                <span v-if="item.view_count">
+                  <i class="iconfont icon-ai-eye"/>
+                  {{ item.view_count }}
+                </span>
+              </div>
+            </div>
+          </a>
+          <div class="about">
+            <a
+              :href="$alias.user(item.user.zone)"
+              target="_blank"
+              class="user-avatar"
+            >
+              <img :src="$resize(item.user.avatar, { width: 60 })">
+            </a>
+            <a
+              :href="$alias.user(item.user.zone)"
+              target="_blank"
+              class="main-name"
+              v-text="item.user.nickname"
             />
           </div>
-        </a>
-        <div class="desc">
-          <button
-            :class="{ 'liked': item.liked }"
-            class="like"
-            @click="handleLikeCartoon($event, item)"
-          >
-            <i class="iconfont icon-guanzhu"/>
-            {{ item.like_count || '' }}
-          </button>
-          <a
-            :href="$alias.imageAlbum(item.id)"
-            class="oneline"
-            target="_blank"
-            v-text="item.name"
-          />
-        </div>
-        <a
-          :href="$alias.user(item.user.zone)"
-          class="user"
-          target="_blank"
-        >
-          <img :src="$resize(item.user.avatar, { width: 72 })">
-          <div
-            class="oneline"
-            v-text="item.user.nickname"
-          />
-        </a>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </template>
     <no-content v-else-if="cartoons.noMore">
       <el-button
         type="primary"
@@ -175,12 +219,12 @@
     </no-content>
     <el-button
       v-if="!cartoons.noMore"
-      :loading="cartoons.loading"
+      :loading="state.loading"
       class="load-more-btn"
       type="info"
       plain
       @click="getData(false)"
-    >{{ cartoons.loading ? '加载中' : '加载更多' }}</el-button>
+    >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
   </div>
 </template>
 
@@ -193,6 +237,16 @@
           loading: false,
           fetched: false
         },
+        order: [
+          {
+            label: '由大到小排序',
+            value: 'desc'
+          },
+          {
+            label: '由小到大排序',
+            value: 'asc'
+          }
+        ]
       }
     },
     computed: {
@@ -202,6 +256,18 @@
       cartoons () {
         return this.$store.state.bangumi.cartoon
       },
+      sort: {
+        get () {
+          return this.cartoons.sort
+        },
+        set (sort) {
+          this.$store.dispatch('bangumi/changeCartoonSort', {
+            sort,
+            ctx: this,
+            bangumiId: this.info.id
+          })
+        }
+      }
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-cartoon', () => {
@@ -234,49 +300,6 @@
           type: 7,
           desc: `我想看《${this.info.name}》的漫画第 ? 话`
         })
-      },
-      handleLikeCartoon (e, image) {
-        if (!this.$store.state.login) {
-          this.$toast.info('继续操作前请先登录')
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (image.user_id === this.$store.state.user.id) {
-          this.$toast.info('不能为自己的图片点赞')
-          return
-        }
-        const btn = e.currentTarget
-        if (!image.liked) {
-          this.$confirm('原创图片点赞需要金币, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.submitToggleLikeCartoon(btn, image)
-          }).catch(() => {})
-          return
-        }
-        this.submitToggleLikeCartoon(btn, image)
-      },
-      async submitToggleLikeCartoon (btn, image) {
-        btn.setAttribute('disabled', 'disabled')
-        // do like
-        const api = new ImageApi(this)
-        try {
-          const result = await api.toggleLike({ id: image.id })
-          if (image.creator && result) {
-            this.$store.commit('USE_COIN')
-          }
-          this.$toast.success('操作成功')
-          this.$store.commit('bangumi/TOGGLE_LIKE_CARTOON', {
-            id: image.id,
-            result
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          btn.removeAttribute('disabled')
-        }
       }
     }
   }

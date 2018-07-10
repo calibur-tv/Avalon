@@ -28,6 +28,10 @@ export default {
     return `/video/${id}`;
   },
 
+  image(id) {
+    return `/pins/${id}`
+  },
+
   post(id, query) {
     return this.__query(`/post/${id}`, query);
   },
@@ -45,11 +49,7 @@ export default {
   },
 
   imageTrending(sort) {
-    return `/image/trending/${sort}`;
-  },
-
-  imageAlbum(id) {
-    return `/image/album/${id}`;
+    return `/pins/trending/${sort}`;
   },
 
   cartoonRole(id) {

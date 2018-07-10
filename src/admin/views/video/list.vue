@@ -140,6 +140,9 @@
   import deepAssign from 'deep-assign'
 
   export default {
+    mixins: [
+      pageMixin
+    ],
     data () {
       return {
         bangumiId: 0,
@@ -172,9 +175,6 @@
         }
       }
     },
-    mixin: [
-      pageMixin
-    ],
     methods: {
       async getData (page) {
         if (page <= this.pageState.max) {

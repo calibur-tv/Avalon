@@ -86,6 +86,9 @@
 
   export default {
     name: 'BangumiEditForm',
+    mixins: [
+      uploadMixin
+    ],
     props: {
       isAdmin: {
         type: Boolean,
@@ -139,9 +142,6 @@
         submitting: false
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       bangumiTags () {
         return this.$store.state.bangumi.tags

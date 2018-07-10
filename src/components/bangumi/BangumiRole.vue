@@ -264,6 +264,9 @@
     components: {
       CreateRoleForm
     },
+    mixins: [
+      uploadMixin
+    ],
     data () {
       return {
         state: {
@@ -277,9 +280,6 @@
         currentRole: null,
       }
     },
-    mixin: [
-      uploadMixin
-    ],
     computed: {
       info () {
         return this.$store.state.bangumi.info
