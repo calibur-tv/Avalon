@@ -1,6 +1,20 @@
 <style lang="scss">
   #bangumi-cartoon {
-    li {
+    .header {
+      margin-bottom: 15px;
+      text-align: right;
+
+      .total {
+        float: left;
+        line-height: 28px;
+      }
+
+      .el-select {
+        margin-right: 8px;
+      }
+    }
+
+    .cartoon {
       width: 198px;
       height: 406px;
       box-shadow: 0 1px 3px rgba(0,0,0,.2);
@@ -113,12 +127,28 @@
 <template>
   <div id="bangumi-cartoon">
     <template v-if="cartoons.list.length">
+      <div class="header">
+        <strong class="total">共 {{ cartoons.total }} 集</strong>
+        <el-select
+          v-model="sort"
+          :loading="state.loading"
+          size="mini"
+        >
+          <el-option
+            v-for="item in order"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
       <ul
         class="clearfix"
       >
         <li
           v-for="item in cartoons.list"
           :key="item.id"
+          class="cartoon"
         >
           <a
             :href="$alias.image(item.id)"
@@ -135,7 +165,7 @@
               </div>
             </div>
             <div class="intro">
-              <p class="name oneline">{{ item.part }}：{{ item.name }}</p>
+              <p class="name oneline">【 {{ item.part }} 】{{ item.name }}</p>
               <div class="social">
                 <span
                   v-if="item.like_count"
@@ -185,12 +215,12 @@
     </no-content>
     <el-button
       v-if="!cartoons.noMore"
-      :loading="cartoons.loading"
+      :loading="state.loading"
       class="load-more-btn"
       type="info"
       plain
       @click="getData(false)"
-    >{{ cartoons.loading ? '加载中' : '加载更多' }}</el-button>
+    >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
   </div>
 </template>
 
@@ -203,6 +233,16 @@
           loading: false,
           fetched: false
         },
+        order: [
+          {
+            label: '由大到小排序',
+            value: 'desc'
+          },
+          {
+            label: '由小到大排序',
+            value: 'asc'
+          }
+        ]
       }
     },
     computed: {
@@ -212,6 +252,18 @@
       cartoons () {
         return this.$store.state.bangumi.cartoon
       },
+      sort: {
+        get () {
+          return this.cartoons.sort
+        },
+        set (sort) {
+          this.$store.dispatch('bangumi/changeCartoonSort', {
+            sort,
+            ctx: this,
+            bangumiId: this.info.id
+          })
+        }
+      }
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-cartoon', () => {
