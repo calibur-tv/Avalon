@@ -16,7 +16,6 @@
 </template>
 
 <script>
-  import ImageApi from '~/api/imageApi'
   import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
 
   export default {
