@@ -19,22 +19,6 @@ export default class extends BaseApi {
     });
   }
 
-  getUploadType() {
-    return this.http.get('image/uploadType');
-  }
-
-  uploadImage({
-    images, bangumiId, roleId, tags, size, creator, albumId,
-  }) {
-    return this.http.post('image/upload', {
-      images, bangumiId, roleId, tags, size, creator, albumId,
-    });
-  }
-
-  deleteImage({ id }) {
-    return this.http.post('image/delete', { id });
-  }
-
   trialReport({ id }) {
     return this.http.post('image/report', { id });
   }
@@ -49,34 +33,6 @@ export default class extends BaseApi {
 
   toggleLike({ id }) {
     return this.http.post('image/toggleLike', { id });
-  }
-
-  trendingList({
-    seenIds, take, sort, size, tags, bangumiId, creator,
-  }) {
-    return this.http.get('image/trendingList', {
-      params: {
-        seenIds, take, sort, size, tags, bangumiId, creator,
-      },
-    });
-  }
-
-  news({ minId }) {
-    return this.http.get(`image/trending/news`, {
-      params: { minId }
-    })
-  }
-
-  active({ seenIds }) {
-    return this.http.get(`image/trending/active`, {
-      params: { seenIds }
-    })
-  }
-
-  hot({ seenIds }) {
-    return this.http.get(`image/trending/hot`, {
-      params: { seenIds }
-    })
   }
 
   show({ id }) {
@@ -97,6 +53,14 @@ export default class extends BaseApi {
     });
   }
 
+  editAlbum({
+    id, name, url, width, height, size, type, part,
+  }) {
+    return this.http.post('image/album/edit', {
+      id, name, url, width, height, size, type, part,
+    });
+  }
+
   uploadSingleImage({ bangumi_id, name, url, width, height, size, type, is_creator }) {
     return this.http.post('image/single/upload', {
       bangumi_id, name, url, width, height, size, type, is_creator
@@ -109,16 +73,18 @@ export default class extends BaseApi {
     })
   }
 
+  deleteAlbum({ id }) {
+    return this.http.post('image/album/delete', { id })
+  }
+
+  editSingleImage({ id, name, bangumi_id }) {
+    return this.http.post('image/single/edit', {
+      id, name, bangumi_id
+    })
+  }
+
   getUserAlbums() {
     return this.http.get('image/album/users')
-  }
-
-  editAlbum(params) {
-    return this.http.post('image/editAlbum', params);
-  }
-
-  getAlbumData({ id }) {
-    return this.http.get(`image/album/${id}/show`);
   }
 
   sortAlbum({ id, result }) {

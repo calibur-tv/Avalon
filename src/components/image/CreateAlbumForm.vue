@@ -33,6 +33,7 @@
       <el-input
         v-model="form.name"
         :placeholder="isCartoon ? '填写这一话的名字' : '给相册起一个名字'"
+        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item
@@ -43,6 +44,7 @@
       <el-input-number
         v-model="form.part"
         :min="1"
+        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item
@@ -199,18 +201,7 @@
             }
             this.submitting = true;
             const api = new ImageApi(this);
-            api.createAlbum({
-              bangumi_id: this.form.bangumi_id,
-              name: this.form.name,
-              url: this.form.poster.url,
-              width: this.form.poster.width,
-              height: this.form.poster.height,
-              size: this.form.poster.size,
-              type: this.form.poster.type,
-              part: this.form.part,
-              is_cartoon: this.form.is_cartoon,
-              is_creator: this.form.is_creator
-            }).then((data) => {
+            api.createAlbum(Object.assign({}, this.form, this.form.poster)).then((data) => {
               this.$refs.form.resetFields();
               this.$refs.upload.clearFiles();
               this.$toast.success('创建成功');
@@ -219,6 +210,11 @@
             }).catch((err) => {
               this.$toast.error(err);
               this.submitting = false;
+              if (/审核/.test(err)) {
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1000)
+              }
             })
           } else {
             return false;

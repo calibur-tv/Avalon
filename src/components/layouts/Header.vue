@@ -553,7 +553,7 @@
         if (
           pageName === 'image-show' &&
           this.$store.state.image.show &&
-          this.$store.state.image.show.is_album
+          this.$store.state.image.show.is_cartoon
         ) {
           return 'mask'
         }

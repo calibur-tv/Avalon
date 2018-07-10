@@ -49,17 +49,11 @@ export default {
       state.show.bangumi.followed = result
     },
     DELETE_ALBUM_IMAGE(state, { index }) {
-      const idsArr = state.albumShow.info.images.split(',');
-      idsArr.splice(index, 1);
-      state.albumShow.info.images = idsArr.toString();
-      state.albumShow.images.splice(index, 1);
-      state.albumShow.info.image_count--;
+      state.show.images.splice(index, 1);
+      state.show.image_count--;
     },
-    SORT_ALBUM_IMAGE(state, { prev, next, result }) {
-      const imagesArr = state.albumShow.images;
-      imagesArr.splice(prev, 1, ...imagesArr.splice(next, 1, imagesArr[prev]));
-      state.albumShow.images = imagesArr;
-      state.albumShow.info.images = result;
+    SORT_ALBUM_IMAGE(state, result) {
+      state.show.images = result;
     },
     SET_ALBUM(state, data) {
       state.albumShow = data;
@@ -248,19 +242,18 @@ export default {
     async sortAlbumImage({ state, commit }, {
       prev, next, ctx, id,
     }) {
-      let idsArr = state.albumShow.info.images.split(',');
-      idsArr.splice(prev, 1, ...idsArr.splice(next, 1, idsArr[prev]));
-      idsArr = idsArr.toString();
+      let imageArr = state.show.images.map(_ => _);
+      imageArr.splice(prev, 1, ...imageArr.splice(next, 1, imageArr[prev]));
+      const result = imageArr.map(_ => _.id).toString();
       const api = new ImageApi(ctx);
-      await api.sortAlbum({ id, result: idsArr });
-      commit('SORT_ALBUM_IMAGE', { prev, next, result: idsArr });
+      await api.sortAlbum({ id, result });
+      commit('SORT_ALBUM_IMAGE', imageArr);
     },
     async deleteAlbumImage({ state, commit }, { index, ctx, id }) {
-      let idsArr = state.albumShow.info.images.split(',');
+      let idsArr = state.show.images.map(_ => _.id);
       const imageId = idsArr.splice(index, 1)[0];
-      idsArr = idsArr.toString();
       const api = new ImageApi(ctx);
-      await api.deleteAlbumImage({ id, result: idsArr, imageId });
+      await api.deleteAlbumImage({ id, result: idsArr.toString(), imageId });
       commit('DELETE_ALBUM_IMAGE', { index });
     },
   },

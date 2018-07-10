@@ -80,6 +80,14 @@
       border: 1px solid #d8d8d8;
       padding: 30px 20px 0;
       margin-bottom: 20px;
+
+      .breadcrumb {
+        overflow: hidden;
+      }
+
+      .edit-area {
+        float: right;
+      }
     }
 
     .images-wrap {
@@ -171,7 +179,7 @@
     id="image-show"
   >
     <section
-      v-if="info.is_album"
+      v-if="info.is_cartoon"
       id="image-banner"
     >
       <div
@@ -198,6 +206,45 @@
     <v-banner v-else/>
     <div class="container">
       <nav>
+        <div
+          v-if="editable && isMine"
+          class="edit-area"
+        >
+          <el-button
+            round
+            plain
+            type="primary"
+            size="mini"
+            @click="openEditModal = true"
+          >
+            编辑
+          </el-button>
+          <el-button
+            round
+            plain
+            type="danger"
+            size="mini"
+            @click="handleDeleteAlbum"
+          >
+            删除
+          </el-button>
+          <v-dialog
+            v-model="openEditModal"
+            :title="`编辑${albumType}`"
+            :footer="false"
+          >
+            <edit-album-form
+              v-if="info.is_album"
+              :bangumi-id="bangumi.id"
+              :album-id="info.id"
+              :album="info"
+            />
+            <edit-image-form
+              v-else
+              :image="info"
+            />
+          </v-dialog>
+        </div>
         <h1 class="breadcrumb">
           <a
             href="/"
@@ -209,14 +256,14 @@
             target="_blank"
             v-text="bangumi.name"
           />
-          <a href="javascript:;">{{ info.is_cartoon ? '漫画' : '相册' }}</a>
+          <a href="javascript:;">{{ albumType }}</a>
           {{ info.name }}
         </h1>
       </nav>
       <div class="images-wrap">
         <template v-if="info.is_album">
           <div
-            v-for="(img, idx) in info.images"
+            v-for="(img, idx) in images"
             :key="img.id"
             class="image-package"
           >
@@ -227,7 +274,7 @@
               width="500"
               mode="2"
             />
-            <template v-if="isMine">
+            <template v-if="editable">
               <el-tooltip
                 placement="top"
                 effect="dark"
@@ -255,7 +302,7 @@
                 content="下移"
               >
                 <button
-                  v-if="idx !== info.images.length - 1"
+                  v-if="idx !== images.length - 1"
                   class="sort-btn to-next el-icon-caret-bottom"
                   @click="handleSortBtnClick(idx, true)"
                 />
@@ -357,6 +404,8 @@
   import Api from '~/api/imageApi'
   import vParts from '~/components/lists/Parts'
   import CommentMain from '~/components/comments/CommentMain'
+  import EditAlbumForm from '~/components/image/EditAlbumForm'
+  import EditImageForm from '~/components/image/EditImageForm'
 
   export default {
     name: 'ImageShow',
@@ -374,18 +423,21 @@
     },
     components: {
       vParts,
-      CommentMain
+      CommentMain,
+      EditAlbumForm,
+      EditImageForm
     },
     data () {
       return {
         loadingFollowAlbum: false,
         loadingEditImages: false,
-        showAllPart: false
+        showAllPart: false,
+        openEditModal: false
       }
     },
     computed: {
       id () {
-        return this.$route.params.id
+        return +this.$route.params.id
       },
       info () {
         return this.$store.state.image.show
@@ -395,6 +447,9 @@
       },
       source () {
         return this.info.source
+      },
+      images () {
+        return this.info.images
       },
       bangumi () {
         return this.info.bangumi
@@ -413,6 +468,23 @@
         return this.$store.state.login
           ? this.user.id === this.$store.state.user.id
           : false
+      },
+      editable() {
+        return this.$store.state.login
+          ? this.info.is_cartoon
+            ? this.bangumi.is_master
+            : this.user.id === this.$store.state.user.id
+          : false
+      },
+      albumType () {
+        if (!this.info.is_album) {
+          return '图片'
+        }
+        if (this.info.is_cartoon)
+        {
+          return '漫画'
+        }
+        return '相册'
       }
     },
     methods: {
@@ -470,7 +542,7 @@
             next: toNext ? index + 1 : index,
             ctx: this,
             id: this.id
-          })
+          });
           this.$toast.success('操作成功')
         } catch (e) {
           this.$toast.error(e)
@@ -494,13 +566,36 @@
               index,
               ctx: this,
               id: this.id
-            })
+            });
+            this.$toast.success('操作成功');
           } catch (e) {
             this.$toast.error(e)
           } finally {
             this.loadingEditImages = false
           }
         }).catch((e) => {})
+      },
+      handleDeleteAlbum () {
+        this.$prompt(`请输入${this.albumType}的名字`, '删除确认', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          if (value !== this.info.name) {
+            this.$toast.error('名字不对');
+            return;
+          }
+          const api = new Api(this);
+          api.deleteAlbum({
+            id: this.info.id
+          }).then(() => {
+            this.$toast.success('操作成功');
+            setTimeout(() => {
+              window.location.reload()
+            }, 1000)
+          }).catch((err) => {
+            this.$toast.error(err);
+          })
+        }).catch(() => {})
       }
     }
   }

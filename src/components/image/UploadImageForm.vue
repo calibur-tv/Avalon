@@ -166,6 +166,7 @@
         </el-form-item>
         <el-form-item>
           <el-button
+            :loading="submitting"
             type="primary"
             size="small"
             @click="submitManyImage"
@@ -178,12 +179,16 @@
         <el-form-item label="名字">
           <el-input
             v-model="form.name"
+            :disabled="submitting"
             placeholder="给图片起个名字"
           />
         </el-form-item>
         <el-form-item label="原创">
           <el-row>
-            <el-switch v-model="form.is_creator"/>
+            <el-switch
+              v-model="form.is_creator"
+              :disabled="submitting"
+            />
             <el-tooltip
               class="item"
               effect="dark"
@@ -348,7 +353,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             if (this.form.name.length > 30) {
-              this.$toast.error('名称最长 30 个字');
+              this.$toast.error('名字最长 30 个字');
               return
             }
             if (this.submitting) {
@@ -356,16 +361,7 @@
             }
             this.submitting = true;
             const api = new ImageApi(this);
-            api.uploadSingleImage({
-              bangumi_id: this.form.bangumi_id,
-              name: this.form.name,
-              url: this.form.image.url,
-              width: this.form.image.width,
-              height: this.form.image.height,
-              size: this.form.image.size,
-              type: this.form.image.type,
-              is_creator: this.form.is_creator
-            }).then((id) => {
+            api.uploadSingleImage(Object.assign({}, this.form, this.form.image)).then((id) => {
               this.form.name = '';
               this.form.is_creator = false;
               this.form.image = null;
@@ -469,6 +465,11 @@
             }).catch((err) => {
               this.$toast.error(err);
               this.submitting = false;
+              if (/审核/.test(err)) {
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1000)
+              }
             })
           } else {
             return false;
