@@ -8,6 +8,10 @@
     .image {
       margin-bottom: 20px;
     }
+
+    .name {
+      margin-bottom: 10px;
+    }
   }
 </style>
 
@@ -21,8 +25,14 @@
         type="danger"
         icon="delete"
         size="small"
-        @click="quickDelete"
-      >一键删帖</el-button>
+        @click="quickDeleteImage"
+      >一键删图片</el-button>
+      <el-button
+        type="danger"
+        icon="delete"
+        size="small"
+        @click="quickDeleteAlbum"
+      >一键删相册</el-button>
     </header>
     <div>
       <el-col
@@ -40,15 +50,20 @@
             <img :src="$resize(image.url, { width: 300, mode: 2 })">
           </a>
           <div style="padding: 14px;">
+            <p
+              v-if="image.name"
+              class="name"
+              v-text="image.name"
+            />
             <el-button
               type="success"
               size="mini"
-              @click="passImage(image.id, index)"
+              @click="passImage(image, index)"
             >通过</el-button>
             <el-button
               type="danger"
               size="mini"
-              @click="deleteImage(image.id, index)"
+              @click="deleteImage(image, index)"
             >删除</el-button>
             <router-link
               :to="`/admin/user/show?id=${image.user_id}`"
@@ -95,14 +110,17 @@
           this.loading = false;
         })
       },
-      deleteImage (id, index) {
+      deleteImage (image, index) {
         this.$confirm('确定要删除吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           const api = new Api(this);
-          api.deleteImage({ id }).then(() => {
+          api.deleteImage({
+            id: image.id,
+            type: image.bangumi_id ? 'album' : 'image'
+          }).then(() => {
             this.list.splice(index, 1);
             this.$channel.$emit('admin-trial-do', {
               type: 'images'
@@ -113,9 +131,12 @@
           });
         }).catch(() => {});
       },
-      passImage (id, index) {
+      passImage (image, index) {
         const api = new Api(this);
-        api.passImage({ id }).then(() => {
+        api.passImage({
+          id: image.id,
+          type: image.bangumi_id ? 'album' : 'image'
+        }).then(() => {
           this.list.splice(index, 1);
           this.$channel.$emit('admin-trial-do', {
             type: 'images'
@@ -125,8 +146,8 @@
           this.$message.error(e);
         });
       },
-      quickDelete () {
-        this.$prompt('请输入帖子id', '提示', {
+      quickDeleteAlbum () {
+        this.$prompt('请输入相册id', '删除相册', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputPattern: /^\d+$/,
@@ -138,7 +159,30 @@
           }
           const api = new Api(this);
           api.deleteImage({
-            id: value
+            id: value,
+            type: 'album'
+          }).then(() => {
+            this.$toast.success('操作成功');
+          }).catch((e) => {
+            this.$toast.error(e);
+          })
+        }).catch(() => {});
+      },
+      quickDeleteImage () {
+        this.$prompt('请输入图片id', '删除图片', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^\d+$/,
+          inputErrorMessage: '非法的id'
+        }).then(({ value }) => {
+          if (value < 1) {
+            this.$toast.error('非法的id');
+            return;
+          }
+          const api = new Api(this);
+          api.deleteImage({
+            id: value,
+            type: 'image'
           }).then(() => {
             this.$toast.success('操作成功');
           }).catch((e) => {

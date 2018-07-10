@@ -207,11 +207,6 @@
             }).catch((err) => {
               this.$toast.error(err);
               this.submitting = false;
-              if (/审核/.test(err)) {
-                setTimeout(() => {
-                  window.location.reload()
-                }, 1000)
-              }
             })
           } else {
             return false;

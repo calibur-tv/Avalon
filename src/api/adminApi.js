@@ -283,12 +283,12 @@ export default class extends BaseApi {
     return this.http.get('admin/trial/image/list')
   }
 
-  deleteImage ({ id }) {
-    return this.http.post('admin/trial/image/delete', { id })
+  deleteImage ({ id, type }) {
+    return this.http.post('admin/trial/image/delete', { id, type })
   }
 
-  passImage ({ id }) {
-    return this.http.post('admin/trial/image/pass', { id })
+  passImage ({ id, type }) {
+    return this.http.post('admin/trial/image/pass', { id, type })
   }
 
   getTrialComments () {
