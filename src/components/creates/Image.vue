@@ -27,7 +27,6 @@
 </template>
 
 <script>
-  import ImageApi from '~/api/imageApi'
   import UploadImageForm from '~/components/image/UploadImageForm'
   import CreateAlbumForm from '~/components/image/CreateAlbumForm'
 

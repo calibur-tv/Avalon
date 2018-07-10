@@ -80,66 +80,68 @@
     :rules="rule"
     label-width="45px"
   >
-    <el-alert
-      type="info"
-      title=""
-      class="tips"
-      show-icon
-    >
-      <p>如果想要批量上传图片，就选择一个相册（需要先创建）</p>
-      <p>如果想上传单张精品美图，就选择一个番剧</p>
-    </el-alert>
-    <el-form-item
-      v-if="!form.bangumi_id"
-      label="相册"
-      prop="album_id"
-    >
-      <el-select
-        v-model="form.album_id"
-        :filterable="true"
-        :clearable="true"
-        :loading="fetchingAlbum"
-        :disabled="submitting"
-        style="width: 100%"
-        placeholder="【批量上传】选择要上传图片的相册"
+    <template v-if="!isCartoon">
+      <el-alert
+        type="info"
+        title=""
+        class="tips"
+        show-icon
       >
-        <el-option
-          v-for="item in selectionAlbum"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-          class="choice-album-item"
+        <p>如果想要批量上传图片，就选择一个相册（需要先创建）</p>
+        <p>如果想上传单张精品美图，就选择一个番剧</p>
+      </el-alert>
+      <el-form-item
+        v-if="!form.bangumi_id"
+        label="相册"
+        prop="album_id"
+      >
+        <el-select
+          v-model="form.album_id"
+          :filterable="true"
+          :clearable="true"
+          :loading="fetchingAlbum"
+          :disabled="submitting"
+          style="width: 100%"
+          placeholder="【批量上传】选择要上传图片的相册"
         >
-          <div
-            class="image-count meta"
-            v-text="item.image_count"
-          />
-          <div
-            v-if="item.is_creator"
-            class="is-creator meta"
-          >创</div>
-          <div
-            v-if="item.is_cartoon"
-            class="is-cartoon meta"
-          >漫</div>
-          <div class="info">
-            <img :src="$resize(item.source.url, { width: 48 })">
-            <span v-text="item.name"/>
-          </div>
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item
-      v-if="!form.album_id"
-      label="番剧"
-      prop="bangumi_id"
-    >
-      <bangumi-search
-        v-model="form.bangumi_id"
-        :disabled="submitting"
-        placeholder="【单个上传】选择要投稿的番剧"
-      />
-    </el-form-item>
+          <el-option
+            v-for="item in selectionAlbum"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+            class="choice-album-item"
+          >
+            <div
+              class="image-count meta"
+              v-text="item.image_count"
+            />
+            <div
+              v-if="item.is_creator"
+              class="is-creator meta"
+            >创</div>
+            <div
+              v-if="item.is_cartoon"
+              class="is-cartoon meta"
+            >漫</div>
+            <div class="info">
+              <img :src="$resize(item.source.url, { width: 48 })">
+              <span v-text="item.name"/>
+            </div>
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        v-if="!form.album_id"
+        label="番剧"
+        prop="bangumi_id"
+      >
+        <bangumi-search
+          v-model="form.bangumi_id"
+          :disabled="submitting"
+          placeholder="【单个上传】选择要投稿的番剧"
+        />
+      </el-form-item>
+    </template>
     <template v-if="form.album_id || form.bangumi_id">
       <template v-if="form.album_id">
         <el-form-item
@@ -261,6 +263,14 @@
       selectedAlbumId: {
         type: [Number, String],
         default: ''
+      },
+      isCartoon: {
+        type: Boolean,
+        default: false
+      },
+      exceed: {
+        type: Number,
+        default: 7
       }
     },
     data() {
@@ -280,7 +290,6 @@
         submitting: false,
         fetchingAlbum: false,
         pendingUpload: 0,
-        exceed: 7,
         form: {
           name: '',
           album_id: this.selectedAlbumId,

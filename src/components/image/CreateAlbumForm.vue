@@ -58,10 +58,7 @@
         placeholder="请选择要投稿的番剧"
       />
     </el-form-item>
-    <el-form-item
-      v-if="!isCartoon"
-      label="原创"
-    >
+    <el-form-item label="原创">
       <el-row>
         <el-switch v-model="form.is_creator"/>
         <el-tooltip

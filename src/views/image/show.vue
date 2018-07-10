@@ -1,14 +1,14 @@
 <style lang="scss">
   #image-show {
-    background-color: #edecea;
     $banner-height: 350px;
 
     #image-banner {
       position: relative;
       width: 100%;
+      height: $banner-height;
+      margin-bottom: 35px;
       overflow: hidden;
       z-index: 1;
-      height: $banner-height;
 
       .img {
         position: absolute;
@@ -64,21 +64,7 @@
       }
     }
 
-    .container {
-      background-color: #fff;
-      padding: 30px 27px;
-    }
-
-    @media (min-width: 1050px) {
-      .container {
-        width: 936px;
-        margin-bottom: 100px;
-      }
-    }
-
     nav {
-      border: 1px solid #d8d8d8;
-      padding: 30px 20px 0;
       margin-bottom: 20px;
 
       .breadcrumb {
@@ -204,154 +190,193 @@
       <v-share type="panel"/>
     </section>
     <v-banner v-else/>
-    <div class="container">
-      <nav>
-        <div
-          v-if="editable && isMine"
-          class="edit-area"
-        >
-          <el-button
-            round
-            plain
-            type="primary"
-            size="mini"
-            @click="openEditModal = true"
-          >
-            编辑
-          </el-button>
-          <el-button
-            round
-            plain
-            type="danger"
-            size="mini"
-            @click="handleDeleteAlbum"
-          >
-            删除
-          </el-button>
-          <v-dialog
-            v-model="openEditModal"
-            :title="`编辑${albumType}`"
-            :footer="false"
-          >
-            <edit-album-form
-              v-if="info.is_album"
-              :bangumi-id="bangumi.id"
-              :album-id="info.id"
-              :album="info"
-            />
-            <edit-image-form
-              v-else
-              :image="info"
-            />
-          </v-dialog>
-        </div>
-        <h1 class="breadcrumb">
-          <a
-            href="/"
-            target="_blank"
-          >主站</a>
-          <a
-            v-if="bangumi"
-            :href="$alias.bangumi(bangumi.id)"
-            target="_blank"
-            v-text="bangumi.name"
-          />
-          <a href="javascript:;">{{ albumType }}</a>
-          {{ info.name }}
-        </h1>
-      </nav>
-      <div class="images-wrap">
-        <template v-if="info.is_album">
+    <v-layout>
+      <template slot="main">
+        <nav>
           <div
-            v-for="(img, idx) in images"
-            :key="img.id"
+            v-if="editable && isMine"
+            class="edit-area"
+          >
+            <el-button
+              round
+              plain
+              type="primary"
+              size="mini"
+              @click="openEditModal = true"
+            >
+              编辑
+            </el-button>
+            <el-button
+              round
+              plain
+              type="danger"
+              size="mini"
+              @click="handleDeleteAlbum"
+            >
+              删除
+            </el-button>
+            <v-dialog
+              v-model="openEditModal"
+              :title="`编辑${albumType}`"
+              :footer="false"
+            >
+              <edit-album-form
+                v-if="info.is_album"
+                :bangumi-id="bangumi.id"
+                :album-id="info.id"
+                :album="info"
+              />
+              <edit-image-form
+                v-else
+                :image="info"
+              />
+            </v-dialog>
+          </div>
+          <h1 class="breadcrumb">
+            <a
+              href="/"
+              target="_blank"
+            >主站</a>
+            <a
+              v-if="bangumi"
+              :href="$alias.bangumi(bangumi.id)"
+              target="_blank"
+              v-text="bangumi.name"
+            />
+            <a href="javascript:;">{{ albumType }}</a>
+            {{ info.name }}
+          </h1>
+        </nav>
+        <div class="images-wrap">
+          <template v-if="info.is_album">
+            <div
+              v-for="(img, idx) in images"
+              :key="img.id"
+              class="image-package"
+            >
+              <v-img
+                :src="img.url"
+                :aspect="$computeImageAspect(img)"
+                class="image"
+                width="500"
+                mode="2"
+              />
+              <template v-if="editable">
+                <el-tooltip
+                  placement="top"
+                  effect="dark"
+                  content="删除"
+                >
+                  <button
+                    class="sort-btn delete-btn el-icon-close"
+                    @click="handleImageDelete(idx)"
+                  />
+                </el-tooltip>
+                <el-tooltip
+                  placement="right"
+                  effect="dark"
+                  content="上移"
+                >
+                  <button
+                    v-if="idx"
+                    class="sort-btn to-prev el-icon-caret-top"
+                    @click="handleSortBtnClick(idx, false)"
+                  />
+                </el-tooltip>
+                <el-tooltip
+                  placement="right"
+                  effect="dark"
+                  content="下移"
+                >
+                  <button
+                    v-if="idx !== images.length - 1"
+                    class="sort-btn to-next el-icon-caret-bottom"
+                    @click="handleSortBtnClick(idx, true)"
+                  />
+                </el-tooltip>
+              </template>
+            </div>
+          </template>
+          <div
+            v-else
             class="image-package"
           >
             <v-img
-              :src="img.url"
-              :aspect="$computeImageAspect(img)"
+              :src="source.url"
+              :aspect="$computeImageAspect(source)"
               class="image"
               width="500"
               mode="2"
             />
-            <template v-if="editable">
-              <el-tooltip
-                placement="top"
-                effect="dark"
-                content="删除"
-              >
-                <button
-                  class="sort-btn delete-btn el-icon-close"
-                  @click="handleImageDelete(idx)"
-                />
-              </el-tooltip>
-              <el-tooltip
-                placement="right"
-                effect="dark"
-                content="上移"
-              >
-                <button
-                  v-if="idx"
-                  class="sort-btn to-prev el-icon-caret-top"
-                  @click="handleSortBtnClick(idx, false)"
-                />
-              </el-tooltip>
-              <el-tooltip
-                placement="right"
-                effect="dark"
-                content="下移"
-              >
-                <button
-                  v-if="idx !== images.length - 1"
-                  class="sort-btn to-next el-icon-caret-bottom"
-                  @click="handleSortBtnClick(idx, true)"
-                />
-              </el-tooltip>
-            </template>
           </div>
-        </template>
-        <div
-          v-else
-          class="image-package"
-        >
-          <v-img
-            :src="source.url"
-            :aspect="$computeImageAspect(source)"
-            class="image"
-            width="500"
-            mode="2"
-          />
         </div>
-      </div>
-      <div
-        v-if="info.image_count"
-        class="album-footer"
-      >
-        <div class="publish-time">
-          UP：
-          <a
-            :href="$alias.user(user.zone)"
-            target="_blank"
-            v-text="user.nickname"
-          />
-          &nbsp;·&nbsp;
-          <span>
-            发布于：<v-time v-model="info.created_at"/>
-          </span>
-        </div>
-        <v-parts
-          v-if="info.is_cartoon"
-          :list="info.parts"
-          :alias="$alias.image"
-          :all-data="info.parts"
-          v-model="showAllPart"
+        <p
+          v-if="!info.image_count"
+          class="no-image"
         >
-          <span slot-scope="{ item }">
-            {{ item.part }}：{{ item.name }}
-          </span>
-        </v-parts>
+          还没有上传图片
+        </p>
+        <div class="album-footer">
+          <div class="publish-time">
+            UP：
+            <a
+              :href="$alias.user(user.zone)"
+              target="_blank"
+              v-text="user.nickname"
+            />
+            &nbsp;·&nbsp;
+            <span>
+              发布于：<v-time v-model="info.created_at"/>
+            </span>
+          </div>
+          <v-parts
+            v-if="info.is_cartoon"
+            :list="info.parts"
+            :alias="$alias.image"
+            :all-data="info.parts"
+            v-model="showAllPart"
+          >
+            <span slot-scope="{ item }">
+              {{ item.part }}：{{ item.name }}
+            </span>
+          </v-parts>
+          <div
+            v-if="info.image_count"
+            class="like-panel"
+          >
+            <el-button
+              v-if="info.liked"
+              :type="info.is_creator ? 'warning' : 'danger'"
+              :loading="loadingFollowAlbum"
+              round
+              plain
+              @click="handleAlbumLike"
+            >
+              <i class="iconfont icon-guanzhu"/>
+              {{ likeAlbumBtnText }}
+            </el-button>
+            <el-button
+              v-else
+              :type="info.is_creator ? 'warning' : 'danger'"
+              :loading="loadingFollowAlbum"
+              round
+              @click="handleAlbumLike"
+            >
+              <i class="iconfont icon-guanzhu"/>
+              {{ likeAlbumBtnText }}
+            </el-button>
+          </div>
+        </div>
+        <comment-main
+          v-if="info.image_count || info.is_cartoon"
+          :id="id"
+          :master-id="user.id"
+          type="image"
+        />
+      </template>
+      <template slot="aside">
+        <h3 class="sub-title">所属番剧</h3>
         <v-bangumi-panel
-          v-else-if="bangumi"
           :id="bangumi.id"
           :name="bangumi.name"
           :avatar="bangumi.avatar"
@@ -360,43 +385,8 @@
           class="bangumi-panel"
           @follow="handleFollowAction"
         />
-        <div class="like-panel">
-          <el-button
-            v-if="info.liked"
-            :type="info.is_creator ? 'warning' : 'danger'"
-            :loading="loadingFollowAlbum"
-            round
-            plain
-            @click="handleAlbumLike"
-          >
-            <i class="iconfont icon-guanzhu"/>
-            {{ likeAlbumBtnText }}
-          </el-button>
-          <el-button
-            v-else
-            :type="info.is_creator ? 'warning' : 'danger'"
-            :loading="loadingFollowAlbum"
-            round
-            @click="handleAlbumLike"
-          >
-            <i class="iconfont icon-guanzhu"/>
-            {{ likeAlbumBtnText }}
-          </el-button>
-        </div>
-      </div>
-      <p
-        v-else
-        class="no-image"
-      >
-        还没有上传图片
-      </p>
-      <comment-main
-        v-if="info.image_count"
-        :id="id"
-        :master-id="user.id"
-        type="image"
-      />
-    </div>
+      </template>
+    </v-layout>
   </div>
 </template>
 

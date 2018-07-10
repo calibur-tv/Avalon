@@ -144,6 +144,7 @@ const mutations = {
   SET_BANGUMI_CARTOON(state, data) {
     state.cartoon.list = state.cartoon.list.concat(data.list);
     state.cartoon.noMore = data.noMore;
+    state.cartoon.total = data.total;
     state.cartoon.page = state.cartoon.page + 1;
   },
   TOGGLE_LIKE_CARTOON(state, { id, result }) {

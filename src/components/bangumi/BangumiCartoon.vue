@@ -125,7 +125,7 @@
             target="_blank"
           >
             <div class="poster-wrap">
-              <img :src="$resize(item.source.url, { width: 400, height: 600 })">
+              <img :src="$resize(item.source.url, { width: 396, height: 600 })">
               <div class="info">
                 <i class="el-icon-picture-outline"/>
                 <span
@@ -244,49 +244,6 @@
           type: 7,
           desc: `我想看《${this.info.name}》的漫画第 ? 话`
         })
-      },
-      handleLikeCartoon (e, image) {
-        if (!this.$store.state.login) {
-          this.$toast.info('继续操作前请先登录')
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (image.user_id === this.$store.state.user.id) {
-          this.$toast.info('不能为自己的图片点赞')
-          return
-        }
-        const btn = e.currentTarget
-        if (!image.liked) {
-          this.$confirm('原创图片点赞需要金币, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.submitToggleLikeCartoon(btn, image)
-          }).catch(() => {})
-          return
-        }
-        this.submitToggleLikeCartoon(btn, image)
-      },
-      async submitToggleLikeCartoon (btn, image) {
-        btn.setAttribute('disabled', 'disabled')
-        // do like
-        const api = new ImageApi(this)
-        try {
-          const result = await api.toggleLike({ id: image.id })
-          if (image.creator && result) {
-            this.$store.commit('USE_COIN')
-          }
-          this.$toast.success('操作成功')
-          this.$store.commit('bangumi/TOGGLE_LIKE_CARTOON', {
-            id: image.id,
-            result
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          btn.removeAttribute('disabled')
-        }
       }
     }
   }
