@@ -141,22 +141,14 @@ const mutations = {
     state.info.noMoreFollowers = data.noMore;
     state.followersPage += 1;
   },
+  SET_BANGUMI_INFO(state, { key, value }) {
+    state.info[key] = value
+  },
   SET_BANGUMI_CARTOON(state, data) {
     state.cartoon.list = state.cartoon.list.concat(data.list);
     state.cartoon.noMore = data.noMore;
     state.cartoon.total = data.total;
     state.cartoon.page = state.cartoon.page + 1;
-  },
-  TOGGLE_LIKE_CARTOON(state, { id, result }) {
-    state.cartoon.list.forEach((image, index) => {
-      if (image.id === id) {
-        state.cartoon.list[index].like_count += result ? 1 : -1;
-        state.cartoon.list[index].liked = result;
-      }
-    });
-  },
-  SET_BANGUMI_INFO(state, { key, value }) {
-    state.info[key] = value
   },
   REVERSE_CARTOON(state, { sort }) {
     state.cartoon.list = state.cartoon.list.reverse()

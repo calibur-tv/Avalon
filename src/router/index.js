@@ -98,11 +98,6 @@ export function createRouter() {
             component: () => import('~/views/image/show')
           },
           {
-            path: 'image/album/:id(\\d+)',
-            name: 'image-album',
-            component: () => import('~/views/image/album'),
-          },
-          {
             path: 'search',
             name: 'search-index',
             component: () => import('~/views/search/index'),

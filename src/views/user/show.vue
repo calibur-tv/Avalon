@@ -1253,7 +1253,6 @@
             force: isFirstRequest
           })
         } catch (e) {
-          console.log(e);
           this.$toast.error(e)
         } finally {
           this.loadingUserImageFetch = false

@@ -86,9 +86,13 @@
           line-height: 20px;
         }
 
+        .name {
+          margin-top: 3px;
+        }
+
         .social {
           color: $color-text-light;
-          margin-top: 5px;
+          margin-top: 2px;
 
           span {
             margin-right: 10px;
@@ -187,22 +191,22 @@
                 </span>
               </div>
             </div>
-            <div class="about">
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                class="user-avatar"
-              >
-                <img :src="$resize(item.user.avatar, { width: 60 })">
-              </a>
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                class="main-name"
-                v-text="item.user.nickname"
-              />
-            </div>
           </a>
+          <div class="about">
+            <a
+              :href="$alias.user(item.user.zone)"
+              target="_blank"
+              class="user-avatar"
+            >
+              <img :src="$resize(item.user.avatar, { width: 60 })">
+            </a>
+            <a
+              :href="$alias.user(item.user.zone)"
+              target="_blank"
+              class="main-name"
+              v-text="item.user.nickname"
+            />
+          </div>
         </li>
       </ul>
     </template>
