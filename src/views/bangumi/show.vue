@@ -44,9 +44,11 @@
         <el-tab-pane label="相册">
           <bangumi-image/>
         </el-tab-pane>
+        <!--
         <el-tab-pane label="漫评">
           <bangumi-score/>
         </el-tab-pane>
+        -->
         <el-tab-pane
           v-if="info.is_master"
           label="设置"
