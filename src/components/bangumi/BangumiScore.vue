@@ -1,102 +1,172 @@
 <style lang="scss">
   #bangumi-score {
+    .bangumi-score-wrap {
+      border-right: 1px solid $color-gray-normal;
+    }
 
+    .bangumi-score-total {
+      padding-left: 80px;
+
+      .intro {
+        margin-bottom: 15px;
+
+        .total {
+          float: left;
+          font-size: 28px;
+          line-height: 56px;
+          margin-right: 15px;
+        }
+
+        .rate {
+          overflow: hidden;
+          padding-top: 10px;
+
+          span {
+            font-size: 12px;
+            color: $color-text-normal;
+          }
+        }
+      }
+
+      .ladder {
+        width: 200px;
+
+        .label, .percent {
+          margin-right: 10px;
+          font-size: 13px;
+          line-height: 14px;
+          color: $color-text-normal;
+          vertical-align: middle;
+        }
+
+        .score {
+          display: inline-block;
+          height: 10px;
+          background-color: rgb(247, 186, 42);
+          margin-right: 5px;
+          border-radius: 3px;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 </style>
 
 <template>
   <div id="bangumi-score">
     <el-row>
-      <el-col :span="12">
-        <ve-radar
-          ref="radar"
-          :data="chartData"
-          :setting="chartSettings"
-          :loading="loading"
-          :legend-visible="false"
-          :tooltip-visible="false"
-          :resizeable="false"
-          :extend="chartExtend"
-          width="100%"
-          height="400px"
+      <el-col
+        :span="12"
+        class="bangumi-score-wrap"
+      >
+        <bangumi-score-chart
+          :source="scores"
+          size="300px"
         />
       </el-col>
+      <el-col
+        :span="12"
+        class="bangumi-score-total"
+      >
+        <div class="intro">
+          <div
+            class="total"
+            v-text="totalScore"
+          />
+          <div class="rate">
+            <el-rate
+              v-model="totalRate"
+              disabled
+            />
+            <span class="count">{{ scoreCount }}人评价</span>
+          </div>
+        </div>
+        <div class="ladder">
+          <div
+            v-for="(star, index) in percent"
+            :key="index"
+            class="star"
+          >
+            <span class="label">{{ star.key }}星</span>
+            <div
+              :style="{ width: star.data }"
+              class="score"
+            />
+            <span
+              class="percent"
+              v-text="star.data"
+            />
+          </div>
+        </div>
+      </el-col>
     </el-row>
+    <create-score-form
+      :bangumi-id="info.id"
+      :bangumi-name="info.name"
+    />
   </div>
 </template>
 
 <script>
+  import CreateScoreForm from '~/components/bangumi/forms/CreateScoreForm'
+  import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
+
   export default {
     name: 'BangumiScore',
     components: {
-
-    },
-    props: {
-
+      CreateScoreForm,
+      BangumiScoreChart
     },
     data () {
       return {
-        loading: true,
-        chartExtend: {
-          radar: {
-            indicator: [
-              { name: '笑点', max: 10 },
-              { name: '泪点', max: 10 },
-              { name: '燃点', max: 10 },
-              { name: '萌点', max: 10 },
-              { name: '音乐', max: 10 },
-              { name: '画面', max: 10 },
-              { name: '情节', max: 10 },
-              { name: '人物', max: 10 },
-              { name: '内涵', max: 10 },
-              { name: '风格', max: 10 },
-            ],
-            shape: 'polygon',
-            splitArea: {
-              show: false
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: '##ccd0d7',
-                type: 'dotted'
-              }
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: '#ccd0d7',
-                type: 'dotted'
-              }
-            },
-            splitNumber: 10
+        scores: {
+          'total': 67,
+          'lol': 8.4,
+          'cry': 7.7,
+          'fight': 8.1,
+          'moe': 5.4,
+          'sound': 6.2,
+          'vision': 10.0,
+          'story': 1,
+          'role': 1.5,
+          'express': 3.8,
+          'style': 9
+        },
+        scoreCount: 10,
+        percent: [
+          {
+            key: 1,
+            data: '10%'
+          },
+          {
+            key: 2,
+            data: '21%'
+          },
+          {
+            key: 3,
+            data: '44%'
+          },
+          {
+            key: 4,
+            data: '13%'
+          },
+          {
+            key: 5,
+            data: '12%'
           }
-        },
-        chartSettings: {
-          dimension: '',
-          metrics: ['笑点', '泪点', '燃点', '萌点', '音乐', '画面', '情节', '人物', '内涵', '风格']
-        },
-        chartData: {
-          columns: ['笑点', '泪点', '燃点', '萌点', '音乐', '画面', '情节', '人物', '内涵', '风格'],
-          rows: [
-            {
-              '笑点': 8.4,
-              '泪点': 7.7,
-              '燃点': 8.1,
-              '萌点': 5.4,
-              '音乐': 6.2,
-              '画面': 10.0,
-              '情节': 0,
-              '人物': 1.5,
-              '内涵': 3.8,
-              '风格': 4.6
-            }
-          ]
-        }
+        ]
       }
     },
     computed: {
-
+      totalRate () {
+        return this.scores.total / 20
+      },
+      totalScore () {
+        return this.scores.total / 10
+      },
+      info () {
+        return this.$store.state.bangumi.info
+      },
     },
     watch: {
 
@@ -106,10 +176,6 @@
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-score', () => {
-        this.loading = false;
-        this.$nextTick(() => {
-          this.$refs.radar.echarts.resize()
-        })
       })
     },
     methods: {
