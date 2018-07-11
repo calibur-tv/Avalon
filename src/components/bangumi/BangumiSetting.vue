@@ -62,7 +62,7 @@
           <upload-image-form
             :selected-album-id="createdAlbum.id"
             :selected-bangumi-id="info.id"
-            :exceed="31"
+            :exceed="51"
             :is-cartoon="true"
           />
         </template>

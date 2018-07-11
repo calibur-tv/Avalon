@@ -4,14 +4,23 @@
 </style>
 
 <template>
-  <div id="bangumi-image">
+  <div
+    v-if="images"
+    id="bangumi-image"
+  >
     <image-waterfall-flow
-      v-if="images"
       :list="images.list"
       :no-more="images.noMore"
       :loading="images.loading"
       @load="loadMore"
     />
+    <no-content v-if="images.noMore && !images.total">
+      <el-button
+        type="primary"
+        round
+        @click="openUploadImageModal"
+      >上传《{{ info.name }}》的第一张图片</el-button>
+    </no-content>
   </div>
 </template>
 
@@ -63,6 +72,9 @@
           this.$toast.error(e)
         }
       },
+      openUploadImageModal () {
+        this.$channel.$emit('open-upload-image-modal')
+      }
     }
   }
 </script>

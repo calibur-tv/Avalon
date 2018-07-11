@@ -16,9 +16,11 @@ import AvaDialog from '~/components/common/AvaDialog';
 import BangumiSearch from '~/components/search/BangumiSearch'
 import ElementUI from 'element-ui';
 import '~/assets/css/element-ui.scss';
+import VCharts from 'v-charts';
 
 import { InfiniteScroll } from 'mint-ui';
 
+Vue.use(VCharts);
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
 Vue.component(BangumiSearch.name, BangumiSearch);
