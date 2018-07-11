@@ -20,7 +20,7 @@
         <el-button
           type="primary"
           round
-          @click="openFeedback"
+          @click="openCreatePostModal"
         >发表《{{ info.name }}》的第一个帖子</el-button>
       </no-content>
     </template>
@@ -83,7 +83,7 @@
           this.$toast.error(e)
         }
       },
-      openFeedback () {
+      openCreatePostModal () {
         this.$channel.$emit('show-create-post-modal')
       },
     }
