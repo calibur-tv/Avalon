@@ -55,24 +55,6 @@ export default class extends BaseApi {
     return this.http.post(`post/${id}/toggleMark`);
   }
 
-  news({ minId }) {
-    return this.http.get('post/trending/news', {
-      params: { minId },
-    });
-  }
-
-  hot({ seenIds }) {
-    return this.http.get('post/trending/hot', {
-      params: { seenIds },
-    });
-  }
-
-  active({ seenIds }) {
-    return this.http.get('post/trending/active', {
-      params: { seenIds },
-    });
-  }
-
   setTop ({ id }) {
     return this.http.post('post/manager/top/set', { id })
   }
