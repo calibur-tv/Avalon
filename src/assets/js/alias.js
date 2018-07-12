@@ -28,6 +28,10 @@ export default {
     return `/video/${id}`;
   },
 
+  score(id) {
+    return `/review/${id}`;
+  },
+
   image(id) {
     return `/pins/${id}`
   },

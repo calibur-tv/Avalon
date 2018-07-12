@@ -1,9 +1,11 @@
 <template>
-  <el-form label-width="45px">
+  <el-form
+    :disabled="submitting"
+    label-width="45px"
+  >
     <el-form-item label="名字">
       <el-input
         v-model="form.name"
-        :disabled="submitting"
         placeholder="给图片起个名字"
       />
     </el-form-item>
@@ -11,7 +13,6 @@
       <bangumi-search
         v-model="form.bangumi_id"
         :clear="false"
-        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item>

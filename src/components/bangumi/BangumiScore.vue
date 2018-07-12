@@ -54,13 +54,14 @@
 
 <template>
   <div id="bangumi-score">
-    <el-row>
+    <el-row v-if="bangumiScore">
       <el-col
         :span="12"
         class="bangumi-score-wrap"
       >
         <bangumi-score-chart
-          :source="scores"
+          :source="bangumiScore.radar"
+          :loading="loading"
           size="300px"
         />
       </el-col>
@@ -78,28 +79,31 @@
               v-model="totalRate"
               disabled
             />
-            <span class="count">{{ scoreCount }}人评价</span>
+            <span class="count">{{ bangumiScore.count }}人评价</span>
           </div>
         </div>
         <div class="ladder">
           <div
-            v-for="(star, index) in percent"
+            v-for="(star, index) in bangumiScore.ladder"
             :key="index"
             class="star"
           >
             <span class="label">{{ star.key }}星</span>
             <div
-              :style="{ width: star.data }"
+              :style="{ width: `${130 * star.val / bangumiScore.count}px` }"
               class="score"
             />
             <span
               class="percent"
-              v-text="star.data"
+              v-text="`${star.val / bangumiScore.count * 100}%`"
             />
           </div>
         </div>
       </el-col>
     </el-row>
+    <template v-else-if="!loading">
+      还没有评分
+    </template>
     <create-score-form
       :bangumi-id="info.id"
       :bangumi-name="info.name"
@@ -110,6 +114,7 @@
 <script>
   import CreateScoreForm from '~/components/bangumi/forms/CreateScoreForm'
   import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
+  import ScoreApi from '~/api/scoreApi'
 
   export default {
     name: 'BangumiScore',
@@ -119,67 +124,71 @@
     },
     data () {
       return {
-        scores: {
-          'total': 67,
-          'lol': 8.4,
-          'cry': 7.7,
-          'fight': 8.1,
-          'moe': 5.4,
-          'sound': 6.2,
-          'vision': 10.0,
-          'story': 1,
-          'role': 1.5,
-          'express': 3.8,
-          'style': 9
-        },
-        scoreCount: 10,
-        percent: [
-          {
-            key: 1,
-            data: '10%'
-          },
-          {
-            key: 2,
-            data: '21%'
-          },
-          {
-            key: 3,
-            data: '44%'
-          },
-          {
-            key: 4,
-            data: '13%'
-          },
-          {
-            key: 5,
-            data: '12%'
-          }
-        ]
+        loading: false,
+        bangumiScore: null
       }
     },
     computed: {
       totalRate () {
-        return this.scores.total / 20
+        return this.bangumiScore.total / 20
       },
       totalScore () {
-        return this.scores.total / 10
+        return this.bangumiScore.total / 10
       },
       info () {
         return this.$store.state.bangumi.info
       },
-    },
-    watch: {
-
-    },
-    created () {
-
+      scores () {
+        return this.$store.state.trending.type === 'score'
+          ? this.$store.state.trending.active
+          : null
+      },
     },
     mounted () {
       this.$channel.$on('bangumi-tab-switch-score', () => {
+        this.getData()
+        this.getScore()
       })
     },
     methods: {
-
+      async getData () {
+        try {
+          await this.$store.dispatch('trending/getTrending', {
+            type: 'score',
+            sort: 'active',
+            ctx: this,
+            bangumiId: this.info.id
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        }
+      },
+      async loadMore () {
+        try {
+          await this.$store.dispatch('trending/loadMore', {
+            type: 'score',
+            sort: 'active',
+            ctx: this,
+            bangumiId: this.info.id
+          })
+        } catch (e) {
+          this.$toast.error(e)
+        }
+      },
+      async getScore () {
+        if (this.loading || this.bangumiScore) {
+          return
+        }
+        this.loading = true;
+        const api = new ScoreApi(this);
+        try {
+          this.bangumiScore = await api.bangumiScore(this.info.id)
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.loading = false
+        }
+      }
     }
   }
 </script>

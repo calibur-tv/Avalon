@@ -78,6 +78,7 @@
     ref="form"
     :model="form"
     :rules="rule"
+    :disabled="submitting"
     label-width="45px"
   >
     <template v-if="!isCartoon">
@@ -100,7 +101,6 @@
           :filterable="true"
           :clearable="true"
           :loading="fetchingAlbum"
-          :disabled="submitting"
           style="width: 100%"
           placeholder="【批量上传】选择要上传图片的相册"
         >
@@ -137,7 +137,6 @@
       >
         <bangumi-search
           v-model="form.bangumi_id"
-          :disabled="submitting"
           placeholder="【单个上传】选择要投稿的番剧"
         />
       </el-form-item>
@@ -181,7 +180,6 @@
         <el-form-item label="名字">
           <el-input
             v-model="form.name"
-            :disabled="submitting"
             placeholder="给图片起个名字"
           />
         </el-form-item>
@@ -189,7 +187,6 @@
           <el-row>
             <el-switch
               v-model="form.is_creator"
-              :disabled="submitting"
             />
             <el-tooltip
               class="item"

@@ -561,6 +561,10 @@
         width: 100%;
       }
     }
+
+    .user-setting-form {
+      width: 750px;
+    }
   }
 </style>
 
@@ -987,66 +991,7 @@
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
-            <no-ssr>
-              <el-form
-                ref="settingForm"
-                :model="settingForm"
-                :rules="settingRule"
-                label-width="50px"
-              >
-                <el-form-item
-                  label="昵称"
-                  prop="nickname"
-                >
-                  <el-col :span="10">
-                    <el-input v-model="settingForm.nickname"/>
-                  </el-col>
-                </el-form-item>
-                <el-form-item label="生日">
-                  <el-date-picker
-                    v-model="settingForm.birthday"
-                    :editable="false"
-                    :clearable="false"
-                    type="date"
-                    placeholder="选择日期"
-                  />
-                </el-form-item>
-                <el-form-item label="性别">
-                  <el-col>
-                    <el-radio-group v-model="settingForm.sex">
-                      <el-radio :label="1">男</el-radio>
-                      <el-radio :label="2">女</el-radio>
-                    </el-radio-group>
-                  </el-col>
-                  <el-col v-if="settingForm.sex">
-                    <el-switch
-                      v-model="settingForm.sexSecret"
-                      active-text="私密"
-                      inactive-text="公开"
-                    />
-                  </el-col>
-                </el-form-item>
-                <el-form-item
-                  label="签名"
-                  prop="signature"
-                >
-                  <el-col :span="20">
-                    <el-input
-                      v-model="settingForm.signature"
-                      :rows="5"
-                      type="textarea"
-                      placeholder="用简单的言语，表达深刻的心"
-                    />
-                  </el-col>
-                </el-form-item>
-                <el-form-item>
-                  <el-button
-                    type="primary"
-                    @click="saveSetting"
-                  >提交</el-button>
-                </el-form-item>
-              </el-form>
-            </no-ssr>
+            <user-setting-form/>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -1059,6 +1004,7 @@
   import ImageApi from '~/api/imageApi'
   import ImageCropper from '~/components/common/ImageCropper'
   import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
+  import UserSettingForm from '~/components/user/forms/UserSettingForm'
 
   export default {
     name: 'UserShow',
@@ -1088,37 +1034,12 @@
     },
     components: {
       ImageCropper,
-      ImageWaterfallFlow
+      ImageWaterfallFlow,
+      UserSettingForm
     },
     data () {
-      const validateNickname = (rule, value, callback) => {
-        const length = value.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
-        if (!length) {
-          callback(new Error('昵称不能为空'))
-        } else if (length < 2) {
-          callback(new Error('昵称至少为2个字符'))
-        } else if (length > 14) {
-          callback(new Error('昵称不能超过14个字符'))
-        }
-        callback()
-      }
       return {
         tabActive: 'bangumi',
-        settingForm: {
-          nickname: '',
-          signature: '',
-          sex: 0,
-          sexSecret: false,
-          birthday: ''
-        },
-        settingRule: {
-          nickname: [
-            { validator: validateNickname, trigger: 'blur' }
-          ],
-          signature: [
-            { max: 150, message: '请缩减至150字以内', trigger: 'blur' }
-          ]
-        },
         avatarCropper: {
           src: '',
           type: '',
@@ -1194,13 +1115,6 @@
     methods: {
       handleTabClick (tab) {
         if (tab.label === '设置') {
-          this.settingForm = {
-            nickname: this.self.nickname,
-            signature: this.self.signature,
-            sex: this.self.sex > 2 ? this.self.sex - 2 : this.self.sex,
-            sexSecret: this.self.sex > 2,
-            birthday: this.self.birthday ? this.self.birthday * 1000 : ''
-          }
         } else if (tab.label === '帖子') {
           this.getUserPosts(true)
         } else if (tab.label === '偶像') {
@@ -1275,32 +1189,6 @@
           this.loadingFetchUserRoles = false
         }
       },
-      saveSetting () {
-        this.$refs.settingForm.validate((valid) => {
-          if (valid) {
-            const birthday = this.settingForm.birthday ? new Date(this.settingForm.birthday).getTime() / 1000 : 0
-            if (birthday && (Date.now() / 1000 - birthday < 315360000)) {
-              this.$toast.error('小于10岁？不应该...')
-              return
-            }
-            const api = new UserApi(this)
-            const data = {
-              nickname: this.settingForm.nickname,
-              signature: this.settingForm.signature,
-              sex: parseInt(this.settingForm.sex, 10) + (this.settingForm.sexSecret ? 2 : 0),
-              birthday: birthday
-            }
-            api.settingProfile(data).then(() => {
-              this.$toast.success('设置成功')
-              this.$store.commit('SET_USER_INFO', Object.assign({}, this.self, data))
-            }).catch((err) => {
-              this.$toast.error(err)
-            })
-          } else {
-            return false
-          }
-        })
-      },
       openAvatarModal (e) {
         const file = e.target.files[0]
         if (['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) === -1) {
@@ -1340,10 +1228,11 @@
           await userApi.settingImage({
             type: 'avatar',
             url: result.key
-          })
-          this.$store.commit('SET_USER_INFO', {
-            avatar: `${this.$cdn.image}${result.key}`
-          })
+          });
+          this.$store.commit('UPDATE_USER_INFO', {
+            key: 'avatar',
+            value: `${this.$cdn.image}${result.key}`
+          });
           this.$toast.success('头像更新成功')
         } catch (e) {
           typeof e === 'string'
@@ -1393,8 +1282,9 @@
             type: 'banner',
             url: result.key
           })
-          this.$store.commit('SET_USER_INFO', {
-            banner: `${this.$cdn.image}${result.key}`
+          this.$store.commit('UPDATE_USER_INFO', {
+            key: 'banner',
+            value: `${this.$cdn.image}${result.key}`
           })
           this.$toast.success('背景更新成功')
         } catch (e) {
@@ -1415,10 +1305,14 @@
         try {
           await this.$store.dispatch('users/daySign', {
             ctx: this
-          })
-          this.$store.commit('SET_USER_INFO', {
-            daySign: true,
-            coin: this.coinCount + 1
+          });
+          this.$store.commit('UPDATE_USER_INFO', {
+            key: 'daySign',
+            value: true
+          });
+          this.$store.commit('UPDATE_USER_INFO', {
+            key: 'coin',
+            value: this.coinCount + 1
           })
         } catch (e) {
           this.$toast.error(e)

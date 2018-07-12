@@ -38,6 +38,9 @@ export function createStore() {
       USE_COIN(state) {
         state.user.coin && state.user.coin--;
       },
+      UPDATE_USER_INFO(state, { key, value }) {
+        state.user[key] = value
+      },
     },
     actions: {
       async initAuth({ commit }, { ctx, must, admin }) {
@@ -78,9 +81,10 @@ export function createStore() {
         if (state.user.uptoken.expiredAt <= parseInt(Date.now() / 1000, 10)) {
           const api = new ImageApi(ctx);
           const data = await api.getUpToken();
-          commit('SET_USER_INFO', {
-            uptoken: data,
-          });
+          commit('UPDATE_USER_INFO', {
+            key: 'uptoken',
+            value: data
+          })
         }
       },
       async getNotification({ state, commit }, ctx) {
@@ -89,9 +93,10 @@ export function createStore() {
         }
         const api = new UserApi(ctx);
         const data = await api.getNotificationCount();
-        commit('SET_USER_INFO', {
-          notification: data,
-        });
+        commit('UPDATE_USER_INFO', {
+          key: 'notification',
+          value: data
+        })
       },
     },
     getters: {},

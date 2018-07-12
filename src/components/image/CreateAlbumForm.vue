@@ -24,6 +24,7 @@
     ref="form"
     :model="form"
     :rules="rule"
+    :disabled="submitting"
     label-width="45px"
   >
     <el-form-item
@@ -33,7 +34,6 @@
       <el-input
         v-model="form.name"
         :placeholder="isCartoon ? '填写这一话的名字' : '给相册起一个名字'"
-        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item
@@ -44,7 +44,6 @@
       <el-input-number
         v-model="form.part"
         :min="1"
-        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item
@@ -54,7 +53,6 @@
     >
       <bangumi-search
         v-model="form.bangumi_id"
-        :disabled="submitting"
         placeholder="请选择要投稿的番剧"
       />
     </el-form-item>
