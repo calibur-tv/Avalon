@@ -1,51 +1,78 @@
 <style lang="scss">
   #bangumi-score {
-    .bangumi-score-wrap {
-      border-right: 1px solid $color-gray-normal;
-    }
+    #bangumi-score-panel {
 
-    .bangumi-score-total {
-      padding-left: 80px;
+      .bangumi-score-wrap {
+        border-right: 1px solid $color-gray-normal;
+      }
 
-      .intro {
-        margin-bottom: 15px;
+      .bangumi-score-total {
+        padding-left: 80px;
 
-        .total {
-          float: left;
-          font-size: 28px;
-          line-height: 56px;
-          margin-right: 15px;
+        .intro {
+          margin-bottom: 15px;
+
+          .total {
+            float: left;
+            font-size: 28px;
+            line-height: 56px;
+            margin-right: 15px;
+          }
+
+          .rate {
+            overflow: hidden;
+            padding-top: 10px;
+
+            span {
+              font-size: 12px;
+              color: $color-text-normal;
+            }
+          }
         }
 
-        .rate {
-          overflow: hidden;
-          padding-top: 10px;
+        .ladder {
+          width: 200px;
 
-          span {
-            font-size: 12px;
+          .label, .percent {
+            margin-right: 10px;
+            font-size: 13px;
+            line-height: 14px;
             color: $color-text-normal;
+            vertical-align: middle;
+          }
+
+          .score {
+            display: inline-block;
+            height: 10px;
+            background-color: rgb(247, 186, 42);
+            margin-right: 5px;
+            border-radius: 3px;
+            vertical-align: middle;
           }
         }
       }
+    }
 
-      .ladder {
-        width: 200px;
+    #create-score-form {
+      margin-top: 30px;
 
-        .label, .percent {
-          margin-right: 10px;
-          font-size: 13px;
-          line-height: 14px;
-          color: $color-text-normal;
-          vertical-align: middle;
-        }
+      .el-form-item__content,
+      .submit-btn {
+        margin-right: 120px;
+      }
 
-        .score {
-          display: inline-block;
-          height: 10px;
-          background-color: rgb(247, 186, 42);
-          margin-right: 5px;
-          border-radius: 3px;
-          vertical-align: middle;
+      .submit-btn button {
+        width: 100%;
+      }
+    }
+
+    #score-list {
+      width: 720px;
+      margin-top: 30px;
+
+      .sub-title {
+        button {
+          float: right;
         }
       }
     }
@@ -54,7 +81,10 @@
 
 <template>
   <div id="bangumi-score">
-    <el-row v-if="bangumiScore">
+    <el-row
+      v-if="bangumiScore"
+      id="bangumi-score-panel"
+    >
       <el-col
         :span="12"
         class="bangumi-score-wrap"
@@ -101,31 +131,70 @@
         </div>
       </el-col>
     </el-row>
-    <template v-else-if="!loading">
-      还没有评分
-    </template>
+    <no-content v-else-if="!loading && !showCreateModal">
+      <el-button
+        type="primary"
+        round
+        @click="openCreateScoreModal"
+      >写下《{{ info.name }}》的第一篇漫评</el-button>
+    </no-content>
     <create-score-form
+      v-if="showCreateModal"
       :bangumi-id="info.id"
       :bangumi-name="info.name"
     />
+    <div
+      v-if="scores && scores.total"
+      id="score-list"
+    >
+      <h3 class="sub-title">
+        共 {{ scores.total }} 条漫评
+        <el-button
+          v-if="!info.scored"
+          plan
+          round
+          type="primary"
+          size="mini"
+          @click="openCreateScoreModal"
+        >
+          写漫评
+        </el-button>
+      </h3>
+      <score-flow
+        v-for="item in scores.list"
+        :key="item.id"
+        :item="item"
+      />
+      <el-button
+        v-if="!scores.noMore"
+        :loading="scores.loading"
+        class="load-more-btn"
+        type="info"
+        plain
+        @click="loadMore"
+      >{{ scores.loading ? '加载中' : '加载更多' }}</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-  import CreateScoreForm from '~/components/bangumi/forms/CreateScoreForm'
-  import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
   import ScoreApi from '~/api/scoreApi'
+  import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
+  import CreateScoreForm from '~/components/score/CreateScoreForm'
+  import ScoreFlow from '~/components/score/ScoreFlow'
 
   export default {
     name: 'BangumiScore',
     components: {
       CreateScoreForm,
-      BangumiScoreChart
+      BangumiScoreChart,
+      ScoreFlow
     },
     data () {
       return {
         loading: false,
-        bangumiScore: null
+        bangumiScore: null,
+        showCreateModal: false
       }
     },
     computed: {
@@ -188,6 +257,17 @@
         } finally {
           this.loading = false
         }
+      },
+      openCreateScoreModal () {
+        if (this.showCreateModal) {
+          this.showCreateModal = false
+          return
+        }
+        if (!this.$store.state.login) {
+          this.$channel.$emit('sign-in')
+          return
+        }
+        this.showCreateModal = true
       }
     }
   }

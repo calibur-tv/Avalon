@@ -10,4 +10,10 @@ export default class extends BaseApi {
   create(params) {
     return this.http.post('score/create', params)
   }
+
+  getUsersScore({ user_id, page, take }) {
+    return this.http.get('score/users', {
+      params: { user_id, page, take }
+    })
+  }
 }

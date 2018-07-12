@@ -3,6 +3,10 @@
     .el-rate__item {
       margin-top: 10px;
     }
+
+    .submit-btn {
+      text-align: right;
+    }
   }
 </style>
 
@@ -107,12 +111,13 @@
         type="textarea"
       />
     </el-form-item>
-    <el-button
-      :loading="submitting"
-      type="primary"
-      size="mini"
-      @click="submit"
-    >提交</el-button>
+    <div class="submit-btn">
+      <el-button
+        :loading="submitting"
+        type="primary"
+        @click="submit"
+      >提交</el-button>
+    </div>
   </el-form>
 </template>
 
@@ -155,15 +160,26 @@
           this.$toast.error('至少说点什么吧');
           return
         }
+        const api = new ScoreApi(this);
+        const scores = {}
+        let total = 0
+        Object.keys(this.form).forEach(key => {
+          const value = this.form[key]
+          scores[key] = value * 2
+          total += value
+        })
+        if (!total) {
+          this.$toast.error('请不要恶意发表漫评')
+          return
+        }
+        if (total === 100) {
+          this.$toast.error('请认真考虑后再发表')
+          return
+        }
         if (this.submitting) {
           return
         }
         this.submitting = true;
-        const api = new ScoreApi(this);
-        const scores = {}
-        Object.keys(this.form).forEach(key => {
-          scores[key] = this.form[key] * 2
-        })
         this.$captcha({
           success: async ({ data }) => {
             try {
