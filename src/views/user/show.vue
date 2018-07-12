@@ -1128,7 +1128,7 @@
             this.$channel.$emit('user-tab-switch-post');
             break;
           case '偶像':
-            this.getUserPosts(true);
+            this.getUserRoles(true);
             this.$channel.$emit('user-tab-switch-role');
             break;
           case '相册':
@@ -1339,9 +1339,6 @@
         } finally {
           this.signDayLoading = false
         }
-      },
-      openUploadModal () {
-        this.$channel.$emit('open-upload-image-modal')
       },
       watchCopyInviteLink () {
         if (!this.$refs.inviteBtn) {

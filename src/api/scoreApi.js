@@ -16,4 +16,12 @@ export default class extends BaseApi {
       params: { user_id, page, take }
     })
   }
+
+  show({ id }) {
+    return this.http.get(`score/${id}/show`)
+  }
+
+  delete({ id }) {
+    return this.http.post('score/delete', { id })
+  }
 }

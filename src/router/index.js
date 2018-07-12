@@ -98,6 +98,11 @@ export function createRouter() {
             component: () => import('~/views/image/show')
           },
           {
+            path: 'review/:id(\\d+)',
+            name: 'score-show',
+            component: () => import('~/views/score/show')
+          },
+          {
             path: 'search',
             name: 'search-index',
             component: () => import('~/views/search/index'),
