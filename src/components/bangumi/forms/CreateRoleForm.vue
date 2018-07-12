@@ -3,6 +3,7 @@
     ref="form"
     :model="form"
     :rules="rules"
+    :disabled="submitting"
     label-width="40px"
   >
     <el-form-item

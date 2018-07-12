@@ -140,20 +140,6 @@
       bangumiId () {
         return this.$route.name === 'bangumi-show' ? parseInt(this.$route.params.id, 10) : 0
       },
-      formatContent () {
-        let content = this.forms.content
-        while (content.match('\n\n\n') !== null) {
-          content = content.replace(/\n\n\n/g, '\n\n')
-        }
-        content = content.split('\n')
-
-        const res = []
-        content.forEach(item => {
-          res.push(item ? `<p>${item}</p>` : '<p><br/></p>')
-        })
-
-        return res.join('')
-      },
       formatImages () {
         return this.images.map(item => item.img)
       },
@@ -196,7 +182,7 @@
                     title: this.forms.title,
                     bangumiId: this.forms.bangumiId,
                     desc: this.forms.content.substring(0, 120),
-                    content: this.formatContent,
+                    content: this.$utils.convertPureTextToRich(this.forms.content),
                     images: this.formatImages,
                     geetest: data,
                     ctx: this

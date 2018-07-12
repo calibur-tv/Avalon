@@ -1,5 +1,6 @@
 <template>
   <el-form
+    :disabled="submitting"
     label-width="45px"
   >
     <el-form-item
@@ -9,7 +10,6 @@
       <el-input
         v-model="form.name"
         :placeholder="isCartoon ? '填写这一话的名字' : '给相册起一个名字'"
-        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item
@@ -20,7 +20,6 @@
       <el-input-number
         v-model="form.part"
         :min="1"
-        :disabled="submitting"
       />
     </el-form-item>
     <el-form-item

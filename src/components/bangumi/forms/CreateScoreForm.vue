@@ -7,7 +7,10 @@
 </style>
 
 <template>
-  <el-form id="create-score-form">
+  <el-form
+    id="create-score-form"
+    :disabled="submitting"
+  >
     <el-row>
       <el-col :span="8">
         <el-form-item label="笑点">
@@ -98,16 +101,24 @@
     </el-row>
     <el-form-item>
       <el-input
-        v-model.trim="form.content"
+        v-model.trim="content"
         :rows="10"
         :placeholder="`请不要吝啬你的笔墨，留下你对《${bangumiName}》的回忆吧！`"
         type="textarea"
       />
     </el-form-item>
+    <el-button
+      :loading="submitting"
+      type="primary"
+      size="mini"
+      @click="submit"
+    >提交</el-button>
   </el-form>
 </template>
 
 <script>
+  import ScoreApi from '~/api/scoreApi'
+
   export default {
     name: 'CreateScoreForm',
     props: {
@@ -122,8 +133,8 @@
     },
     data () {
       return {
+        content: '',
         form: {
-          content: '',
           lol: 0,
           cry: 0,
           fight: 0,
@@ -134,23 +145,53 @@
           role: 0,
           express: 0,
           style: 0
-        }
+        },
+        submitting: false
       }
     },
-    computed: {
-
-    },
-    watch: {
-
-    },
-    created () {
-
-    },
-    mounted () {
-
-    },
     methods: {
-
+      async submit () {
+        if (!this.content) {
+          this.$toast.error('至少说点什么吧');
+          return
+        }
+        if (this.submitting) {
+          return
+        }
+        this.submitting = true;
+        const api = new ScoreApi(this);
+        const scores = {}
+        Object.keys(this.form).forEach(key => {
+          scores[key] = this.form[key] * 2
+        })
+        this.$captcha({
+          success: async ({ data }) => {
+            try {
+              const id = await api.create(Object.assign({}, scores, {
+                bangumi_id: this.bangumiId,
+                content: this.$utils.convertPureTextToRich(this.content),
+                intro: this.content.substring(0, 120),
+                geetest: data
+              }))
+              this.$toast.success('发表成功')
+              setTimeout(() => {
+                window.location = this.$alias.score(id);
+              }, 400);
+            } catch (e) {
+              this.$toast.error(e);
+            } finally {
+              this.submitting = false
+            }
+          },
+          error: (e) => {
+            this.submitting = false
+            this.$toast.error(e)
+          },
+          close: () => {
+            this.submitting = false
+          }
+        })
+      }
     }
   }
 </script>
