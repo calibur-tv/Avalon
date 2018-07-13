@@ -161,13 +161,13 @@
           return
         }
         const api = new ScoreApi(this);
-        const scores = {}
+        const scores = {};
         let total = 0
         Object.keys(this.form).forEach(key => {
           const value = this.form[key]
           scores[key] = value * 2
           total += value
-        })
+        });
         if (!total) {
           this.$toast.error('请不要恶意发表漫评')
           return

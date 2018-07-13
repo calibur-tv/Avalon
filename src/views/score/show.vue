@@ -141,15 +141,15 @@
                 <el-rate
                   v-model="info[item]"
                   disabled
+                  allow-half
                 />
               </el-tooltip>
             </div>
           </div>
         </div>
-        <div
-          class="score-body"
-          v-html="info.content"
-        />
+        <div class="score-body">
+          <json-content :content="info.content"/>
+        </div>
         <div class="score-footer">
           <el-button
             v-if="info.liked"
@@ -197,6 +197,7 @@
   import ToggleApi from '~/api/toggleApi'
   import ScoreApi from '~/api/scoreApi'
   import CommentMain from '~/components/comments/CommentMain'
+  import JsonContent from '~/components/jsonEditor/JsonContent'
 
   export default {
     name: 'ScoreShow',
@@ -215,7 +216,8 @@
       ])
     },
     components: {
-      CommentMain
+      CommentMain,
+      JsonContent
     },
     data () {
       const labelMap = {

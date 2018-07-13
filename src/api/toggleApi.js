@@ -16,4 +16,10 @@ export default class extends BaseApi {
   mark ({ type, id }) {
     return this.http.post('toggle/mark', { type, id })
   }
+
+  check ({ type, id }) {
+    return this.http.get('toggle/check', {
+      params: { type, id }
+    })
+  }
 }

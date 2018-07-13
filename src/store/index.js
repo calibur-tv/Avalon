@@ -13,6 +13,7 @@ import comment from './comment';
 import search from './search';
 import admin from './admin';
 import score from './score';
+import editor from './editor'
 
 import ImageApi from '~/api/imageApi';
 
@@ -114,6 +115,7 @@ export function createStore() {
       comment,
       search,
       score,
+      editor
     },
   });
 }

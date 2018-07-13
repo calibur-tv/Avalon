@@ -110,6 +110,18 @@ export function createRouter() {
         ],
       },
       {
+        path: '/review',
+        component: () => import('~/layouts/write'),
+        meta: { mustAuth: true },
+        children: [
+          {
+            path: 'create',
+            name: 'score-create',
+            component: () => import('~/views/score/create')
+          },
+        ]
+      },
+      {
         path: '/errors',
         meta: { useAuth: true },
         component: () => import('~/layouts/error'),
