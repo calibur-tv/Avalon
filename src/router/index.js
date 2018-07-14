@@ -98,11 +98,33 @@ export function createRouter() {
             component: () => import('~/views/image/show')
           },
           {
+            path: 'review/:id(\\d+)',
+            name: 'score-show',
+            component: () => import('~/views/score/show')
+          },
+          {
             path: 'search',
             name: 'search-index',
             component: () => import('~/views/search/index'),
           },
         ],
+      },
+      {
+        path: '/review',
+        component: () => import('~/layouts/write'),
+        meta: { useAuth: true },
+        children: [
+          {
+            path: 'create',
+            name: 'score-create',
+            component: () => import('~/views/score/create')
+          },
+          {
+            path: 'edit/:id(\\d+)',
+            name: 'score-edit',
+            component: () => import('~/views/score/create')
+          },
+        ]
       },
       {
         path: '/errors',
@@ -347,6 +369,12 @@ export function createRouter() {
                 name: 'trial-role',
                 meta: { title: '偶像审核', icon: 'coffee' },
                 component: () => import('@/views/trial/role')
+              },
+              {
+                path: 'score',
+                name: 'trial-score',
+                meta: { title: '漫评审核', icon: 'coffee' },
+                component: () => import('@/views/trial/score')
               },
             ]
           },

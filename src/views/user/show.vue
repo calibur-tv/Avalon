@@ -989,6 +989,9 @@
             @load="getUserImages(false)"
           />
         </el-tab-pane>
+        <el-tab-pane label="漫评">
+          <user-score-list :user-id="user.id"/>
+        </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
             <user-setting-form/>
@@ -1005,6 +1008,7 @@
   import ImageCropper from '~/components/common/ImageCropper'
   import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
   import UserSettingForm from '~/components/user/forms/UserSettingForm'
+  import UserScoreList from '~/components/user/UserScoreList'
 
   export default {
     name: 'UserShow',
@@ -1035,7 +1039,8 @@
     components: {
       ImageCropper,
       ImageWaterfallFlow,
-      UserSettingForm
+      UserSettingForm,
+      UserScoreList
     },
     data () {
       return {
@@ -1114,13 +1119,28 @@
     },
     methods: {
       handleTabClick (tab) {
-        if (tab.label === '设置') {
-        } else if (tab.label === '帖子') {
-          this.getUserPosts(true)
-        } else if (tab.label === '偶像') {
-          this.getUserRoles(true)
-        } else if (tab.label === '相册') {
-          this.getUserImages(true)
+        switch (tab.label) {
+          case '番剧':
+            this.$channel.$emit('user-tab-switch-bangumi');
+            break;
+          case '帖子':
+            this.getUserPosts(true);
+            this.$channel.$emit('user-tab-switch-post');
+            break;
+          case '偶像':
+            this.getUserRoles(true);
+            this.$channel.$emit('user-tab-switch-role');
+            break;
+          case '相册':
+            this.getUserImages(true);
+            this.$channel.$emit('user-tab-switch-image');
+            break;
+          case '漫评':
+            this.$channel.$emit('user-tab-switch-score');
+            break;
+          case '设置':
+            this.$channel.$emit('user-tab-switch-setting');
+            break;
         }
       },
       handlePostTabClick () {
@@ -1319,9 +1339,6 @@
         } finally {
           this.signDayLoading = false
         }
-      },
-      openUploadModal () {
-        this.$channel.$emit('open-upload-image-modal')
       },
       watchCopyInviteLink () {
         if (!this.$refs.inviteBtn) {

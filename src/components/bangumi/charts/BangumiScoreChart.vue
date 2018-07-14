@@ -38,7 +38,7 @@
         sound: '音乐',
         vision: '画面',
         story: '情节',
-        role: '人物',
+        role: '人设',
         express: '内涵',
         style: '风格'
       }

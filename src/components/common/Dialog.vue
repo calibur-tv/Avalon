@@ -74,6 +74,10 @@
         margin-top: 20px;
         cursor: default;
       }
+
+      img {
+        max-width: 100%;
+      }
     }
 
     .v-dialog-footer {

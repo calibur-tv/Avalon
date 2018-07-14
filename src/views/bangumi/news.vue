@@ -5,7 +5,7 @@
       margin-left: $time-size / 2;
     }
 
-    .col-main {
+    .layout-main {
       margin-left: 15px;
     }
 
@@ -29,59 +29,53 @@
       margin: 0 10px 20px 0;
       float: left;
 
-      figure {
-        position: relative;
+      .avatar {
+        width: 65px;
+        height: 65px;
+        display: block;
+        float: left;
+        margin-right: 8px;
 
-        >a {
-          margin-right: 8px;
-          width: 65px;
-          height: 65px;
-          display: block;
-          float: left;
-          position: relative;
-          z-index: 1;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 5px;
+        }
+      }
 
-          img {
-            width: 100%;
-            height: 100%;
-          }
+      .intro {
+        overflow: hidden;
+        font-size: 12px;
+
+        .name {
+          height: 37px;
+          margin-top: 5px;
+          margin-bottom: 5px;
+          @include twoline(16px);
         }
 
-        figcaption {
-          padding: 5px 0 5px 73px;
-          z-index: 0;
-          font-size: 12px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
+        span {
+          color: $color-text-light;
+          line-height: 18px;
 
-          .name {
-            @include twoline(13px);
-          }
+          .part {
+            border-radius: 9px;
+            color: $color-white;
+            text-align: center;
+            padding: 0 4px;
+            height: 18px;
+            min-width: 36px;
+            max-width: 50px;
+            margin-left: 5px;
+            display: inline-block;
+            vertical-align: top;
 
-          span {
-            color: $color-text-light;
-            line-height: 18px;
+            &.new {
+              background-color: $color-pink-normal;
+            }
 
-            .part {
-              border-radius: 9px;
-              color: $color-white;
-              text-align: center;
-              padding: 0 4px;
-              height: 18px;
-              min-width: 36px;
-              max-width: 50px;
-              margin-left: 5px;
-              display: inline-block;
-              vertical-align: top;
-
-              &.new {
-                background-color: $color-pink-normal;
-              }
-
-              &.old {
-                background-color: $color-dark-light;
-              }
+            &.old {
+              background-color: $color-dark-light;
             }
           }
         }
@@ -93,13 +87,12 @@
 <template>
   <div id="bangumi-news">
     <v-banner/>
-    <div class="container">
-      <aside class="col-aside"/>
-      <div class="col-main">
+    <v-layout>
+      <template slot="main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
           <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-          <router-link :to="$alias.bangumiTag()">分类索引</router-link>
+          <a :href="$alias.bangumiTag()">分类索引</a>
         </div>
         <h2 class="sub-title">新番放送表</h2>
         <el-tabs v-model="thisWeek">
@@ -115,45 +108,43 @@
                 :key="item.id"
                 class="bangumi"
               >
-                <figure class="clearfix">
+                <a
+                  :href="$alias.bangumi(item.id)"
+                  target="_blank"
+                  class="avatar"
+                >
+                  <img
+                    :src="$resize(item.avatar, { width: 180 })"
+                    :alt="item.name"
+                  >
+                </a>
+                <div class="intro">
                   <a
                     :href="$alias.bangumi(item.id)"
+                    class="name href-fade-blue"
                     target="_blank"
-                  >
-                    <img
-                      :src="$resize(item.avatar, { width: 180 })"
-                      :alt="item.name"
-                      class="face"
-                    >
-                  </a>
-                  <figcaption class="abs">
+                    v-text="item.name"
+                  />
+                  <span>
+                    更新至
                     <a
-                      :href="$alias.bangumi(item.id)"
-                      class="name href-fade-blue"
+                      v-if="item.released_video_id"
+                      :class="[item.update ? 'new' : 'old']"
+                      :href="$alias.video(item.released_video_id)"
                       target="_blank"
-                      v-text="item.name"
-                    />
-                    <span>
-                      更新至
-                      <a
-                        v-if="item.released_video_id"
-                        :class="[item.update ? 'new' : 'old']"
-                        :href="$alias.video(item.released_video_id)"
-                        target="_blank"
-                        class="part oneline"
-                      >
-                        {{ item.end ? '已完结' : `${item.released_part}话` }}
-                      </a>
-                      <strong
-                        v-else
-                        :class="[item.update ? 'new' : 'old']"
-                        class="part oneline"
-                      >
-                        {{ item.end ? '已完结' : `${item.released_part}话` }}
-                      </strong>
-                    </span>
-                  </figcaption>
-                </figure>
+                      class="part oneline"
+                    >
+                      {{ item.end ? '已完结' : `${item.released_part}话` }}
+                    </a>
+                    <strong
+                      v-else
+                      :class="[item.update ? 'new' : 'old']"
+                      class="part oneline"
+                    >
+                      {{ item.end ? '已完结' : `${item.released_part}话` }}
+                    </strong>
+                  </span>
+                </div>
               </li>
             </ul>
             <no-content v-else>
@@ -165,8 +156,8 @@
             </no-content>
           </el-tab-pane>
         </el-tabs>
-      </div>
-    </div>
+      </template>
+    </v-layout>
   </div>
 </template>
 

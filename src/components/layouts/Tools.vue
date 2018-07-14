@@ -16,7 +16,7 @@
       pointer-events: none;
     }
 
-    #to-top-btn {
+    .tool-btn {
       background-color: $color-gray-deep;
       width: 60px;
       height: 60px;
@@ -30,19 +30,32 @@
       pointer-events: auto;
       position: absolute;
       right: 60px;
-      bottom: 70px;
 
       &:hover {
         background-color: $color-dark-light;
       }
     }
 
+    .top-btn {
+      bottom: 70px;
+    }
+
+    .feedback-btn {
+      bottom: 135px;
+    }
+
     .creator-btn.icon-tupian {
       background-color: red;
     }
 
-    .creator-btn.icon-fatie1 {
-      background-color: #9266f9;
+    .score-btn {
+      background-color: #9266f9 !important;
+
+      a {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
     }
 
     .creator-btn.icon-fankui {
@@ -57,7 +70,7 @@
       <el-tooltip
         placement="top"
         effect="dark"
-        content="图片"
+        content="传图片"
       >
         <button
           class="creator-btn iconfont icon-tupian"
@@ -67,25 +80,41 @@
       <el-tooltip
         placement="top"
         effect="dark"
-        content="发帖"
+        content="写漫评"
       >
-        <button
-          class="creator-btn iconfont icon-fatie1"
-          @click="handlePostClick"
-        />
+        <button class="creator-btn score-btn">
+          <a
+            :href="$alias.createScore"
+            target="_blank"
+          >
+            <i class="iconfont icon-fatie1"/>
+          </a>
+        </button>
       </el-tooltip>
       <el-tooltip
         placement="top"
         effect="dark"
-        content="反馈"
+        content="发帖"
       >
         <button
           class="creator-btn iconfont icon-fankui"
-          @click="showFeedModal = true"
+          @click="handlePostClick"
         />
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">
+      <el-tooltip
+        placement="right"
+        effect="dark"
+        content="反馈"
+      >
+        <button
+          class="tool-btn feedback-btn"
+          @click="showFeedModal = true"
+        >
+          <i class="el-icon-service"/>
+        </button>
+      </el-tooltip>
       <el-tooltip
         placement="right"
         effect="dark"
@@ -94,10 +123,11 @@
         <transition name="el-fade-in">
           <button
             v-show="showToTop"
-            id="to-top-btn"
-            class="iconfont icon-fanhuidingbu"
+            class="tool-btn top-btn"
             @click="$scrollToY(0)"
-          />
+          >
+            <i class="el-icon-arrow-up"/>
+          </button>
         </transition>
       </el-tooltip>
     </div>
@@ -129,6 +159,11 @@
         showToTop: false,
         showPostModal: false,
         showFeedModal: false
+      }
+    },
+    computed: {
+      isGuest () {
+        return !this.$store.state.login
       }
     },
     mounted () {
