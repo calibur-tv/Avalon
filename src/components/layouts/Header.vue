@@ -147,10 +147,11 @@
       }
 
       .header-left {
-        height: $header-height;
         position: absolute;
         top: 0;
         left: 50%;
+        height: $header-height;
+        margin-left: -15px;
         transform: translate(-50%);
       }
 

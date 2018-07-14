@@ -1,9 +1,5 @@
 <style lang="scss">
   #bangumi-tags {
-    .layout-main {
-      margin-left: 15px;
-    }
-
     .bangumis {
       margin-left: 15px;
     }

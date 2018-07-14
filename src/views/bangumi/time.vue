@@ -5,10 +5,6 @@
       margin-left: $time-size / 2;
     }
 
-    .layout-main {
-      margin-left: 15px;
-    }
-
     .collections {
       position: relative;
 
