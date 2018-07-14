@@ -47,6 +47,7 @@
 <template>
   <div id="user-score-list">
     <el-radio-group
+      v-if="isMine"
       v-model="active"
       size="mini"
       @change="handleTabSwitch"

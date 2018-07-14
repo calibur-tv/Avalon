@@ -307,17 +307,19 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          const api = new ScoreApi(this);
-          await api.delete({
-            id: this.info.id
-          });
-          this.$toast.success('操作成功');
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000)
-        }).catch((e) => {
-          this.$toast.error(e)
-        })
+          const api = new ScoreApi(this)
+          try {
+            await api.delete({
+              id: this.info.id
+            })
+            this.$toast.success('操作成功')
+            setTimeout(() => {
+              window.location.reload()
+            }, 1000)
+          } catch (e) {
+            this.$toast.error(e)
+          }
+        }).catch(() => {})
       }
     }
   }

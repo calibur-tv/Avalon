@@ -188,7 +188,7 @@
           total += value
         });
         if (!total) {
-          this.$toast.error('请不要恶意发表漫评');
+          this.$toast.error('请先选择各维度分值');
           return
         }
         if (total === 100) {

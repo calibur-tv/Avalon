@@ -53,19 +53,6 @@
       }
     }
 
-    #create-score-form {
-      margin-top: 30px;
-
-      .el-form-item__content,
-      .submit-btn {
-        margin-right: 120px;
-      }
-
-      .submit-btn button {
-        width: 100%;
-      }
-    }
-
     #score-list {
       width: 720px;
       margin-top: 30px;

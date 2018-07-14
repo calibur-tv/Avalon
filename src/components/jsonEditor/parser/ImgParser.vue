@@ -14,6 +14,7 @@
       line-height: 1.7;
       text-align: center;
       display: inline-block;
+      @extend %breakWord;
     }
   }
 </style>
