@@ -5,7 +5,7 @@
       margin-left: $time-size / 2;
     }
 
-    .col-main {
+    .layout-main {
       margin-left: 15px;
     }
 
@@ -65,87 +65,39 @@
 
     .bangumi {
       width: 100%;
+      padding: 20px 10px;
+      @extend %clearfix;
 
-      figure {
-        padding: 20px 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-start;
+      .avatar {
+        width: 90px;
+        height: 90px;
+        margin-right: 15px;
+        float: left;
 
-        .face {
-          width: 90px;
-          height: 90px;
-          flex-shrink: 0;
-          margin-right: 15px;
-          display: block;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 5px;
+        }
+      }
+
+      .content {
+        overflow: hidden;
+
+        .title {
+          font-size: 18px;
+          font-weight: bold;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
 
-        .content {
-          flex: auto;
-
-          .head {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-
-            .name {
-              font-size: 18px;
-              font-weight: bold;
-
-              &:hover {
-                text-decoration: underline;
-              }
-            }
-
-            .score {
-
-            }
-          }
-
-          .body {
-            margin: 10px 0 12px 0;
-            color: $color-text-light;
-            font-size: 13px;
-            @include twoline(18px);
-          }
-
-          .foot {
-            height: 16px;
-
-            .icon-item {
-
-              li {
-                position: relative;
-                margin-right: 10px;
-                float: left;
-
-                a {
-                  color: $color-text-light;
-                  display: inline-block;
-                }
-
-                &:after {
-                  content: '·';
-                  position: absolute;
-                  width: 10px;
-                  right:-10px;
-                  bottom: 0;
-                  top: 0;
-                  text-align: center;
-                }
-
-                &:last-child {
-                  margin-right: 0;
-
-                  &:after {
-                    content: '';
-                  }
-                }
-              }
-            }
-          }
+        .desc {
+          margin: 10px 0 12px 0;
+          color: $color-text-light;
+          font-size: 13px;
+          @include twoline(18px);
         }
       }
     }
@@ -155,13 +107,12 @@
 <template>
   <div id="bangumi-timeline">
     <v-banner/>
-    <div class="container">
-      <aside class="col-aside"/>
-      <div class="col-main">
+    <v-layout>
+      <template slot="main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.bangumiNews">新番放送</router-link>
           <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-          <router-link :to="$alias.bangumiTag()">分类索引</router-link>
+          <a :href="$alias.bangumiTag()">分类索引</a>
         </div>
         <h2 class="sub-title">时间轴</h2>
         <ul
@@ -184,39 +135,34 @@
               :key="item.id"
               class="bangumi"
             >
-              <figure>
+              <a
+                :href="$alias.bangumi(item.id)"
+                target="_blank"
+                class="avatar"
+              >
+                <v-img
+                  :title="item.name"
+                  :alt="item.name"
+                  :src="$resize(item.avatar, { width: 180 })"
+                />
+              </a>
+              <div class="content">
                 <a
                   :href="$alias.bangumi(item.id)"
                   target="_blank"
-                >
-                  <v-img
-                    :title="item.name"
-                    :alt="item.name"
-                    :src="$resize(item.avatar, { width: 180 })"
-                    class="face"
-                  />
-                </a>
-                <figcaption class="content">
-                  <p class="head">
-                    <a
-                      :href="$alias.bangumi(item.id)"
-                      target="_blank"
-                      class="name"
-                      v-text="item.name"
-                    />
-                    <!--<span v-text="item.count_score"></span>-->
-                  </p>
-                  <p
-                    class="body"
-                    v-text="item.summary"
-                  />
-                </figcaption>
-              </figure>
+                  class="title"
+                  v-text="item.name"
+                />
+                <p
+                  class="desc"
+                  v-text="item.summary"
+                />
+              </div>
             </li>
           </ul>
         </ul>
-      </div>
-    </div>
+      </template>
+    </v-layout>
   </div>
 </template>
 
