@@ -140,6 +140,15 @@
           size="mini"
         >偶像审核：{{ todo.role }}</el-button>
       </router-link>
+      <router-link
+        v-if="todo.score"
+        to="/admin/trial/score"
+      >
+        <el-button
+          type="danger"
+          size="mini"
+        >漫评审核：{{ todo.score }}</el-button>
+      </router-link>
     </div>
   </nav>
 </template>

@@ -370,6 +370,12 @@ export function createRouter() {
                 meta: { title: '偶像审核', icon: 'coffee' },
                 component: () => import('@/views/trial/role')
               },
+              {
+                path: 'score',
+                name: 'trial-score',
+                meta: { title: '漫评审核', icon: 'coffee' },
+                component: () => import('@/views/trial/score')
+              },
             ]
           },
           {

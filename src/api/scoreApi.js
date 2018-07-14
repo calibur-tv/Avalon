@@ -42,4 +42,16 @@ export default class extends BaseApi {
       params: { user_id, page, take }
     })
   }
+
+  trials () {
+    return this.http.get('admin/trial/score/list')
+  }
+
+  ban (id) {
+    return this.http.post('admin/trial/score/ban', { id })
+  }
+
+  pass (id) {
+    return this.http.post('admin/trial/score/pass', { id })
+  }
 }
