@@ -65,7 +65,10 @@
 </style>
 
 <template>
-  <div id="side-tools">
+  <div
+    v-show="$route.name !== 'homepage'"
+    id="side-tools"
+  >
     <v-creator>
       <el-tooltip
         placement="top"

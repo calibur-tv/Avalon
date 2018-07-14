@@ -252,7 +252,7 @@
         story: '情节',
         role: '人设',
         express: '内涵',
-        style: '风格'
+        style: '美感'
       }
       return {
         labelMap,

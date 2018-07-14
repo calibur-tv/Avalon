@@ -76,10 +76,7 @@
 </style>
 
 <template>
-  <div
-    v-show="$route.name !== 'homepage'"
-    id="creator-button-wrap"
-  >
+  <div id="creator-button-wrap">
     <div class="creator-button-box">
       <div
         :class="{ expand: expanded, 'mint-palette-button-active': transforming }"
