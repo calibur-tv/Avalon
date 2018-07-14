@@ -5,6 +5,10 @@ export default class extends BaseApi {
     return this.http.get(`score/${id}/show`)
   }
 
+  edit({ id }) {
+    return this.http.get(`score/${id}/edit`)
+  }
+
   check ({ id }) {
     return this.http.get('score/check', {
       params: { id }
@@ -13,6 +17,10 @@ export default class extends BaseApi {
 
   create(params) {
     return this.http.post('score/create', params)
+  }
+
+  drafts() {
+    return this.http.get('score/drafts')
   }
 
   update(params) {

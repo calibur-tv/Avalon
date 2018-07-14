@@ -32,6 +32,7 @@ const templates = {
  */
 
 const state = () => ({
+  resource: null,
   selectedIndex: 0,
   sections: [templates.txt]
 });
@@ -63,11 +64,20 @@ const mutations = {
   DELETE_SECTION (state, { index }) {
     state.sections.splice(index, 1);
     state.selectedIndex = index - 1
+  },
+  SORT_SECTION (state, { index }) {
+    state.sections.splice(index - 1, 1, ...state.sections.splice(index, 1, state.sections[index - 1]));
+  },
+  INIT_SECTION (state, data) {
+    state.sections = data['content'];
+    state.resource = data;
   }
 };
 
 const actions = {
-  async getData () {
+  async getData ({ commit }, { api, id }) {
+    const data = await api.edit({ id });
+    commit('INIT_SECTION', data);
   }
 };
 

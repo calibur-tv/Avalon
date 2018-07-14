@@ -60,5 +60,11 @@ export default {
     return `/role/${id}`;
   },
 
+  editScore(id) {
+    return `/review/edit/${id}`;
+  },
+
+  createScore: '/review/create',
+
   roleTrending: '/role/trending',
 };

@@ -115,7 +115,8 @@
     mounted () {
       this.$channel.$on('write-save-done', () => {
         this.saving = false
-      })
+      });
+      this.getUpToken();
     },
     methods: {
       handleImageUploadSuccess (res) {

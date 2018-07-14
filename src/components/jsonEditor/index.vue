@@ -30,6 +30,7 @@
         @preview="handleItemPreview"
         @create="handleItemAppend"
         @delete="handleItemDelete"
+        @sort="handleItemSort"
       />
     </div>
     <component
@@ -132,6 +133,9 @@
       },
       handleItemDelete ({ index }) {
         this.$store.commit('editor/DELETE_SECTION', { index })
+      },
+      handleItemSort ({ index }) {
+        this.$store.commit('editor/SORT_SECTION', { index })
       },
       focusTextarea () {
         this.$nextTick(() => {

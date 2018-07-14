@@ -131,34 +131,37 @@
         </div>
       </el-col>
     </el-row>
-    <no-content v-else-if="!loading && !showCreateModal">
-      <el-button
-        type="primary"
-        round
-        @click="openCreateScoreModal"
-      >写下《{{ info.name }}》的第一篇漫评</el-button>
+    <no-content v-else-if="!loading">
+      <a
+        :href="`${$alias.createScore}?bid=${info.id}`"
+        target="_blank"
+      >
+        <el-button
+          type="primary"
+          round
+        >写下《{{ info.name }}》的第一篇漫评</el-button>
+      </a>
     </no-content>
-    <create-score-form
-      v-if="showCreateModal"
-      :bangumi-id="info.id"
-      :bangumi-name="info.name"
-    />
     <div
       v-if="scores && scores.total"
       id="score-list"
     >
       <h3 class="sub-title">
         共 {{ scores.total }} 条漫评
-        <el-button
-          v-if="!info.scored"
-          plan
-          round
-          type="primary"
-          size="mini"
-          @click="openCreateScoreModal"
+        <a
+          :href="`${$alias.createScore}?bid=${info.id}`"
+          target="_blank"
         >
-          写漫评
-        </el-button>
+          <el-button
+            v-if="!info.scored"
+            plan
+            round
+            type="primary"
+            size="mini"
+          >
+            写漫评
+          </el-button>
+        </a>
       </h3>
       <score-flow
         v-for="item in scores.list"
@@ -180,21 +183,18 @@
 <script>
   import ScoreApi from '~/api/scoreApi'
   import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
-  import CreateScoreForm from '~/components/score/CreateScoreForm'
   import ScoreFlow from '~/components/score/ScoreFlow'
 
   export default {
     name: 'BangumiScore',
     components: {
-      CreateScoreForm,
       BangumiScoreChart,
       ScoreFlow
     },
     data () {
       return {
         loading: false,
-        bangumiScore: null,
-        showCreateModal: false
+        bangumiScore: null
       }
     },
     computed: {
@@ -257,17 +257,6 @@
         } finally {
           this.loading = false
         }
-      },
-      openCreateScoreModal () {
-        if (this.showCreateModal) {
-          this.showCreateModal = false
-          return
-        }
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        this.showCreateModal = true
       }
     }
   }

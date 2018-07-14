@@ -161,7 +161,7 @@
         return this.$route.name
       },
       starCount () {
-        return this.item.total / 20
+        return this.item.total / 2
       }
     }
   }

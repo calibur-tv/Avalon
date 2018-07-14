@@ -77,6 +77,11 @@
       margin: 0 auto;
       padding-top: 100px;
     }
+
+    .not-login {
+      text-align: center;
+      margin-top: 30vh;
+    }
   }
 </style>
 
@@ -96,63 +101,91 @@
           <p>calibur.tv</p>
           <p>天下漫友是一家</p>
         </div>
-        <el-tooltip
-          :content="user.nickname"
-          placement="bottom"
-          effect="dark"
-        >
-          <button class="avatar">
-            <img :src="$resize(user.avatar, { width: 60 })">
-          </button>
-        </el-tooltip>
-        <el-button
-          size="small"
-          icon="el-icon-share"
-          class="primary"
-          round
-          plain
-          @click="emitPublish"
-        >{{ id ? '发布更新' : '发布' }}</el-button>
-        <el-button
-          v-if="!id"
-          size="small"
-          icon="el-icon-upload2"
-          class="warning"
-          plain
-          round
-          @click="emitSave"
-        >保存</el-button>
-        <!--
-        <el-button
-          size="small"
-          icon="el-icon-view"
-          class="success"
-          plain
-          round
-          @click="emitPreview"
-        >预览</el-button>
-        -->
-        <el-button
-          v-if="id"
-          size="small"
-          icon="el-icon-delete"
-          class="danger"
-          plain
-          round
-          @click="emitDestroy"
-        >删除</el-button>
+        <template v-if="user">
+          <el-tooltip
+            :content="user.nickname"
+            placement="bottom"
+            effect="dark"
+          >
+            <button class="avatar">
+              <img :src="$resize(user.avatar, { width: 60 })">
+            </button>
+          </el-tooltip>
+          <el-button
+            size="small"
+            icon="el-icon-share"
+            class="primary"
+            round
+            plain
+            @click="emitPublish"
+          >{{ id ? '发布更新' : '发布' }}</el-button>
+          <el-button
+            v-if="!published"
+            size="small"
+            icon="el-icon-upload2"
+            class="warning"
+            plain
+            round
+            @click="emitSave"
+          >保存</el-button>
+          <el-button
+            size="small"
+            icon="el-icon-view"
+            class="success"
+            plain
+            round
+            @click="emitPreview"
+          >预览</el-button>
+          <el-button
+            v-if="id"
+            size="small"
+            icon="el-icon-delete"
+            class="danger"
+            plain
+            round
+            @click="emitDestroy"
+          >删除</el-button>
+        </template>
       </div>
     </header>
-    <router-view class="main-view"/>
+    <template v-if="user">
+      <router-view class="main-view"/>
+      <v-dialog
+        v-model="preview"
+        :fullscreen="true"
+        :header="false"
+        :footer="false"
+      >
+        <json-content :content="sections"/>
+      </v-dialog>
+    </template>
+    <div
+      v-else
+      class="main-view not-login"
+    >
+      <el-button
+        type="primary"
+        round
+        @click="$channel.$emit('sign-in')"
+      >
+        继续操作前请先登录
+      </el-button>
+    </div>
   </div>
 </template>
 
 <script>
+  import JsonContent from '~/components/jsonEditor/JsonContent'
+
   export default {
     name: 'WriteLayout',
+    components: {
+      JsonContent
+    },
     data () {
       return {
-        submitting: false
+        submitting: false,
+        preview: false
       }
     },
     computed: {
@@ -161,6 +194,14 @@
       },
       user () {
         return this.$store.state.user
+      },
+      sections () {
+        return this.$store.state.editor.sections
+      },
+      published () {
+        return this.$store.state.editor.resource
+          ? !!this.$store.state.editor.resource.published_at
+          : false
       }
     },
     mounted() {
@@ -176,7 +217,7 @@
         this.$channel.$emit('write-save')
       },
       emitPreview () {
-        this.$channel.$emit('write-preview')
+        this.preview = true
       },
       emitDestroy () {
         this.$channel.$emit('write-destroy')

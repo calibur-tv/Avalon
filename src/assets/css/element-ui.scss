@@ -39,6 +39,10 @@ $--color-primary: $color-blue-normal !default;
       content: none;
     }
   }
+
+  .el-loading-mask {
+    position: fixed;
+  }
 }
 
 $--font-path: '../../../node_modules/element-ui/lib/theme-chalk/fonts';

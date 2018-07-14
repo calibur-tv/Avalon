@@ -17,6 +17,12 @@
       top: 23px;
     }
 
+    .up-btn {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
+
     .show-area {
       background-color: $color-gray-normal;
       border: 1px solid transparent;
@@ -102,6 +108,14 @@
       size="mini"
       circle
       @click="emitDelete"
+    />
+    <el-button
+      v-if="selected && index"
+      class="up-btn"
+      icon="el-icon-arrow-up"
+      size="mini"
+      circle
+      @click="emitSort"
     />
     <div
       class="show-area"
@@ -200,6 +214,9 @@
       },
       emitDelete () {
         this.$emit('delete', { index: this.index })
+      },
+      emitSort () {
+        this.$emit('sort', { index: this.index })
       }
     }
   }

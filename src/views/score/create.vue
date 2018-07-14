@@ -3,6 +3,10 @@
     .bangumi-search {
       margin-bottom: 20px;
     }
+    
+    .el-icon-question {
+      cursor: pointer;
+    }
 
     .star-row {
       margin-bottom: 20px;
@@ -24,6 +28,17 @@
         }
       }
     }
+
+    .el-alert {
+      margin-bottom: 20px;
+      margin-top: -20px;
+
+      p {
+        margin-bottom: 5px;
+        font-size: 13px;
+        line-height: 18px;
+      }
+    }
   }
 </style>
 
@@ -32,11 +47,18 @@
     <h3 class="sub-title">选择番剧</h3>
     <bangumi-search
       v-model="bangumiId"
+      :disabled="disabled"
       placeholder="选择要评价的番剧"
       class="bangumi-search"
       @search="handleBangumiSearch"
     />
-    <h3 class="sub-title">各项分值</h3>
+    <h3 class="sub-title">
+      各项分值
+      <i
+        class="el-icon-question"
+        @click="openTips = !openTips"
+      />
+    </h3>
     <div class="star-row">
       <div
         v-for="(item, index) in columns"
@@ -53,6 +75,27 @@
         />
       </div>
     </div>
+    <el-alert
+      v-if="openTips"
+      title=""
+      type="info"
+    >
+      <p>漫评系统简介：</p>
+      <p>站长本人只能算是一个中度的动漫爱好者，对历史的动漫评分体系并没有做过深刻的研究，并且文学功底很差，因此实现的这个评分系统并不一定完美，如果你有好的意见可以通过QQ群联系到我向我反馈。</p>
+      <p>评分系统由十个维度组成，每个维度最低0分，最高10分，因此总分是100分，然后除以 10 之后，得出在页面展示的「10分制」总分。</p>
+      <p>在选取哪十个维度时，并无法做到完全的深思熟虑，因此可能会存在一些不合理的地方，还请大家见谅！</p>
+      <p><strong>笑点</strong>：这部作品是否让你开怀大笑了呢？虽然这个维度对「悲剧作品」不怎么友好，但有一部分喜剧它的核心其实源于悲剧。</p>
+      <p><strong>泪点</strong>：这部作品让你泪腺崩坏了吗？同样的，虽然这个维度对「喜剧作品」不怎么友好，但也存在一些笑着笑着忽然催人泪下的作品？</p>
+      <p><strong>燃点</strong>：这个不需要多余的解释，成为神话吧，少年！</p>
+      <p><strong>萌点</strong>：em.....大家现在对萌系的东西都很喜爱，所以就单独拿出来做了一个分类，如果这部作品中有可爱的角色，就给它加分吧！</p>
+      <p><strong>音乐</strong>：音乐包括：OP、ED、BGM、声优，是一个综合性的分类。</p>
+      <p><strong>画面</strong>：画面包括：静态的人物、建筑、风景的设计与精度，还包括动态的画面连贯性、帧率、特效等。</p>
+      <p><strong>情节</strong>：好的作品情节总是跌宕起伏、扑朔里面，基本猜不到下一步会发展成什么样子，并且叙事手法、伏笔运用都非常的精妙。</p>
+      <p><strong>人设</strong>：一些动漫角色的存在甚至成为了我们的人生信条、憧憬的方向、美的标准，或是恶的纯粹、超强的头脑、强大的意志力等，是作品的灵魂。</p>
+      <p><strong>内涵</strong>：一部好的作品，它的题材源于现实，而又高于现实，或用动漫的手法来映射现实，对人生的思考具有一定的价值。</p>
+      <p><strong>风格</strong>：有时候画质不是约好就越美，有些美具有一种艺术感，这种美可能是画面，可能是叙事手法，可能是背景音乐。</p>
+      <p>最后，一般情况下不存在0分的作品，如果你认为一部作品是0分，那就请放过它吧；也不存在满分的作品，如果你认为一部作品达到了满分，可能是你的阅片量还太少，需要再接再厉，(๑•̀ㅂ•́)و✧！</p>
+    </el-alert>
     <h3 class="sub-title">写下心得</h3>
     <json-editor @submit="beforeSubmit"/>
   </div>
@@ -64,6 +107,15 @@
 
   export default {
     name: 'ScoreCreate',
+    async asyncData ({ store, route, ctx }) {
+      const id = route.params.id;
+      if (id) {
+        await store.dispatch('editor/getData', {
+          api: new Api(ctx),
+          id
+        })
+      }
+    },
     components: {
       JsonEditor
     },
@@ -76,11 +128,12 @@
         sound: '音乐',
         vision: '画面',
         story: '情节',
-        role: '人物',
+        role: '人设',
         express: '内涵',
         style: '风格'
       };
       return {
+        openTips: false,
         labelMap,
         columns: Object.keys(labelMap),
         bangumiId: '',
@@ -96,6 +149,29 @@
           express: 0,
           style: 0
         },
+      }
+    },
+    computed: {
+      id () {
+        return +(this.$route.params.id || 0)
+      },
+      resource () {
+        return this.$store.state.editor.resource
+      },
+      disabled () {
+        return !!this.id
+      },
+      bid () {
+        return this.$route.query.bid
+      }
+    },
+    mounted () {
+      if (this.id) {
+        this.loadEditContent()
+      }
+      if (this.bid) {
+        this.bangumiId = +this.bid;
+        this.handleBangumiSearch(this.bangumiId)
       }
     },
     methods: {
@@ -150,17 +226,28 @@
           } else {
             newId = await api.create(form)
           }
-          this.$toast.success('操作成功');
-          setTimeout(() => {
-            window.location = this.$alias.score(newId);
-          }, 1000);
+          if (richContent.publish) {
+            this.$confirm('发布成功', '提示', {
+              confirmButtonText: '点击查看',
+              cancelButtonText: '继续编辑',
+              type: 'warning'
+            }).then(() => {
+              window.location.href = this.$alias.score(newId)
+            }).catch(() => {})
+          } else {
+            this.$toast.success('操作成功');
+          }
         } catch (e) {
           this.$toast.error(e);
         } finally {
-          this.$emit('write-submit', false);
+          this.$channel.$emit('write-save-done');
+          this.$channel.$emit('write-submit', false);
         }
       },
       handleBangumiSearch (bangumiId) {
+        if (this.id) {
+          return;
+        }
         const api = new Api(this);
         api.check({
           id: bangumiId
@@ -176,6 +263,19 @@
               this.bangumiId = ''
             })
           }
+        })
+      },
+      loadEditContent () {
+        if (!this.resource) {
+          this.$toast.error('不能编辑他人的内容');
+          setTimeout(() => {
+            window.location.href = '/review/create'
+          }, 1000)
+          return
+        }
+        this.bangumiId = +this.resource.bangumi_id;
+        this.columns.forEach(key => {
+          this.form[key] = this.resource[key]
         })
       }
     }

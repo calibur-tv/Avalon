@@ -1,7 +1,7 @@
 <style lang="scss">
   #score-show {
     .score-header {
-      .delete-btn {
+      .control-btn {
         float: right;
         margin-top: 3px;
         margin-right: 15px;
@@ -78,15 +78,25 @@
         <div class="score-header">
           <div>
             <div class="total">{{ info.total }}分</div>
-            <el-button
-              v-if="deletable"
-              round
-              plain
-              type="danger"
-              class="delete-btn"
-              size="mini"
-              @click="deleteScore"
-            >删除</el-button>
+            <template v-if="isMine">
+              <el-button
+                round
+                plain
+                type="danger"
+                class="control-btn"
+                size="mini"
+                @click="deleteScore"
+              >删除</el-button>
+              <a :href="$alias.editScore(info.id)">
+                <el-button
+                  round
+                  plain
+                  type="primary"
+                  class="control-btn"
+                  size="mini"
+                >编辑</el-button>
+              </a>
+            </template>
             <div class="title">
               <h1 class="sub-title">写给《{{ bangumi.name }}》的漫评</h1>
               <div class="user">
@@ -104,14 +114,26 @@
                   />
                 </a>
                 &nbsp;·&nbsp;
-                发表于：
-                <el-tooltip
-                  :content="info.created_at"
-                  placement="top"
-                  effect="dark"
-                >
-                  <v-time v-model="info.created_at"/>
-                </el-tooltip>
+                <template v-if="info.published_at === info.updated_at">
+                  发表于：
+                  <el-tooltip
+                    :content="info.published_at"
+                    placement="top"
+                    effect="dark"
+                  >
+                    <v-time v-model="info.published_at"/>
+                  </el-tooltip>
+                </template>
+                <template v-else>
+                  编辑于：
+                  <el-tooltip
+                    :content="`发表于：${info.published_at}`"
+                    placement="top"
+                    effect="dark"
+                  >
+                    <v-time v-model="info.updated_at"/>
+                  </el-tooltip>
+                </template>
                 <template v-if="info.like_count">
                   &nbsp;·&nbsp;
                   赞：{{ info.like_count }}
@@ -228,7 +250,7 @@
         sound: '音乐',
         vision: '画面',
         story: '情节',
-        role: '人物',
+        role: '人设',
         express: '内涵',
         style: '风格'
       }
@@ -253,7 +275,7 @@
           ? this.$store.state.user.id
           : 0
       },
-      deletable () {
+      isMine () {
         return this.currentUserId === this.user.id
       }
     },

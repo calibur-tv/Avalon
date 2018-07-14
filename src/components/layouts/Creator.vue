@@ -18,7 +18,7 @@
       line-height: 60px;
       color: #FFF;
       position: absolute;
-      bottom: 140px;
+      bottom: 205px;
       right: 60px;
       pointer-events: auto;
     }
@@ -101,9 +101,11 @@
         >
           <button
             :style="mainButtonStyle"
-            class="mint-main-button iconfont icon-fatie1"
+            class="mint-main-button"
             @click="toggle"
-          />
+          >
+            <i class="el-icon-edit-outline"/>
+          </button>
         </el-tooltip>
       </div>
     </div>
