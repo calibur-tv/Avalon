@@ -8,13 +8,11 @@
   }
 
   .el-dialog {
-    box-shadow: 0 5px 25px rgba(0,0,0,.1) !important;
     border: 1px solid rgba(0,0,0,.1) !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,.1) !important;
     border-radius: 6px !important;
-    overflow: hidden;
-    transform: translateY(-50%);
-    top: 50%;
     background-color: #fff;
+    overflow: hidden;
 
     .el-dialog__header {
       display: none;
@@ -113,7 +111,6 @@
       :visible.sync="dialogVisible"
       :before-close="beforeClose"
       :fullscreen="fullscreen"
-      top="0"
     >
       <div class="v-dialog-container">
         <div
