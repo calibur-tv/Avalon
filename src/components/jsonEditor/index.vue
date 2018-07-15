@@ -9,6 +9,21 @@
       float: left;
       margin-right: 10px;
       padding-right: 15px;
+      position: relative;
+    }
+
+    .list-complete-item {
+      transition: all .5s;
+    }
+
+    .list-complete-enter,
+    .list-complete-leave-to {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .list-complete-leave-active {
+      position: absolute;
     }
 
     .editor-preview {
@@ -20,19 +35,24 @@
 
 <template>
   <div class="json-editor-main">
-    <div class="editor-tabs">
+    <transition-group
+      name="list-complete"
+      tag="div"
+      class="editor-tabs"
+    >
       <json-item
         v-for="(item, index) in sections"
-        :key="index"
+        :key="item.id"
         :item="item"
         :index="index"
         :selected="index === selectedIndex"
+        class="list-complete-item"
         @preview="handleItemPreview"
         @create="handleItemAppend"
         @delete="handleItemDelete"
         @sort="handleItemSort"
       />
-    </div>
+    </transition-group>
     <component
       :is="`${curPreview.type}-preview`"
       :item="curPreview"

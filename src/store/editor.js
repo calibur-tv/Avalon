@@ -17,8 +17,8 @@ const state = () => ({
   resource: null,
   selectedIndex: 0,
   sections: [
-    templates.txt,
-    templates.img
+    Object.assign({}, templates.txt, { id: 0 }),
+    Object.assign({}, templates.img, { id: 1 })
   ]
 });
 
@@ -28,7 +28,9 @@ const mutations = {
   },
   APPEND_SECTION (state, { type, index }) {
     const temp = templates[type];
-    const template = {};
+    const template = {
+      id: `${state.sections.length}-${Date.now()}`
+    };
     Object.keys(temp).forEach(key => {
       template[key] = temp[key]
     });
