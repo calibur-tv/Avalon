@@ -13,28 +13,13 @@ const templates = {
   }
 };
 
-/**
- * section: [
- {
-   type: 'img',
-   url: 'https://image.calibur.tv/user/1/post/0/1531326716990-ak7.gif',
-   width: 600,
-   height: 906,
-   size: 163171,
-   mime: 'image/jpeg',
-   text: 'prprpr'
- },
- {
-   type: 'txt',
-   text: '其实看fz动画入门的话，设定有所欠缺，还得要加fsn，<br>更深的设定得去游戏，抛开部分设定(圣杯战争起源，根源，魔法)，<br>fz是部相当不错的剧情番。等你了解了fate世界的设定后来对比着再看，又有新的体会'
- }
- ]
- */
-
 const state = () => ({
   resource: null,
   selectedIndex: 0,
-  sections: [templates.txt]
+  sections: [
+    Object.assign({}, templates.txt, { id: 0 }),
+    Object.assign({}, templates.img, { id: 1 })
+  ]
 });
 
 const mutations = {
@@ -43,7 +28,9 @@ const mutations = {
   },
   APPEND_SECTION (state, { type, index }) {
     const temp = templates[type];
-    const template = {};
+    const template = {
+      id: `${state.sections.length}-${Date.now()}`
+    };
     Object.keys(temp).forEach(key => {
       template[key] = temp[key]
     });
