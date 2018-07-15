@@ -2,6 +2,7 @@
   .json-item {
     margin-bottom: 30px;
     height: 102px;
+    width: 100%;
     position: relative;
 
     &.selected {

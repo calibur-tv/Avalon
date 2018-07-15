@@ -12,6 +12,10 @@
       position: relative;
     }
 
+    .list-complete-wrap {
+      position: relative;
+    }
+
     .list-complete-item {
       transition: all .5s;
     }
@@ -35,24 +39,26 @@
 
 <template>
   <div class="json-editor-main">
-    <transition-group
-      name="list-complete"
-      tag="div"
-      class="editor-tabs"
-    >
-      <json-item
-        v-for="(item, index) in sections"
-        :key="item.id"
-        :item="item"
-        :index="index"
-        :selected="index === selectedIndex"
-        class="list-complete-item"
-        @preview="handleItemPreview"
-        @create="handleItemAppend"
-        @delete="handleItemDelete"
-        @sort="handleItemSort"
-      />
-    </transition-group>
+    <div class="editor-tabs">
+      <transition-group
+        name="list-complete"
+        tag="div"
+        class="list-complete-wrap"
+      >
+        <json-item
+          v-for="(item, index) in sections"
+          :key="item.id"
+          :item="item"
+          :index="index"
+          :selected="index === selectedIndex"
+          class="list-complete-item"
+          @preview="handleItemPreview"
+          @create="handleItemAppend"
+          @delete="handleItemDelete"
+          @sort="handleItemSort"
+        />
+      </transition-group>
+    </div>
     <component
       :is="`${curPreview.type}-preview`"
       :item="curPreview"
