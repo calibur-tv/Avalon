@@ -50,7 +50,7 @@ const mutations = {
   },
   DELETE_SECTION (state, { index }) {
     state.sections.splice(index, 1);
-    state.selectedIndex = index - 1
+    state.selectedIndex = index === 0 ? 0 : index - 1
   },
   SORT_SECTION (state, { index }) {
     state.sections.splice(index - 1, 1, ...state.sections.splice(index, 1, state.sections[index - 1]));
