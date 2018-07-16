@@ -53,7 +53,7 @@
 
 <template>
   <div id="about-hello">
-    <v-banner/>
+    <v-header/>
     <div class="container">
       <div class="col-main">
         <h1>欢迎来到 calibur.tv{{ nickname ? ',' : '！' }} {{ nickname }}</h1>

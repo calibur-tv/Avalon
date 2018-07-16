@@ -132,7 +132,7 @@
 
 <template>
   <div id="trending-role">
-    <v-banner/>
+    <v-header/>
     <div class="container">
       <div class="col-aside"/>
       <div class="col-main">

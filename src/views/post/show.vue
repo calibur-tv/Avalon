@@ -186,7 +186,7 @@
 
 <template>
   <div id="post-show">
-    <v-banner/>
+    <v-header/>
     <v-layout>
       <section slot="main">
         <header>

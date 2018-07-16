@@ -1,36 +1,9 @@
 <style lang="scss">
-  $banner-height: 400px;
-
-  #bangumi-banner {
-    position: relative;
-    width: 100%;
-    height: $banner-height;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    box-shadow: inset 0 0 15px 0 rgba(0,0,0,.5);
-    margin-bottom: 35px;
-    z-index: 1;
-
-    .img {
-      width: 110%;
-      height: $banner-height;
-      margin: -$banner-height / 2 -55%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      z-index: -1;
-      @include filter-blur();
-    }
-
+  .bangumi-banner {
     .info {
       width: 60%;
       min-width: 600px;
+      margin: 120px auto 0 auto;
       color: $color-white;
 
       .title, .summary {
@@ -99,11 +72,13 @@
 </style>
 
 <template>
-  <div id="bangumi-banner">
-    <div
-      :style="{ backgroundImage: info ? `url(${$resize(info.banner, { width: 1920, mode: 0 })})` : '' }"
-      class="img bg"
-    />
+  <v-header
+    v-if="info"
+    :banner="info.banner"
+    type="mask"
+    height="400px"
+    class="bangumi-banner"
+  >
     <div class="info">
       <h1
         class="title"
@@ -125,7 +100,7 @@
       </div>
     </div>
     <v-share type="panel"/>
-  </div>
+  </v-header>
 </template>
 
 <script>

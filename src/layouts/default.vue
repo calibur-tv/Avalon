@@ -12,7 +12,6 @@
 
 <template>
   <div id="layout-default">
-    <v-header/>
     <router-view class="main-view"/>
     <v-footer/>
     <v-music/>
@@ -24,7 +23,6 @@
 </template>
 
 <script>
-  import vHeader from '~/components/layouts/Header'
   import vFooter from '~/components/layouts/Footer'
   import vMusic from '~/components/layouts/Music'
   import ImageReader from '~/components/ImageReader'
@@ -34,7 +32,6 @@
   export default {
     name: 'DefaultLayout',
     components: {
-      vHeader,
       vFooter,
       ImageReader,
       vCreator,

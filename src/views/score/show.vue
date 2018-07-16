@@ -72,7 +72,7 @@
 
 <template>
   <div id="score-show">
-    <v-banner/>
+    <v-header/>
     <v-layout v-if="info">
       <template slot="main">
         <div class="score-header">

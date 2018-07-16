@@ -1,15 +1,8 @@
 <style lang="scss">
   #user-show {
-    $banner-height: 400px;
-
-    .banner {
-      position: relative;
+    .banner-container {
       width: 100%;
-      overflow: hidden;
-      box-shadow: inset 0 0 15px 0 rgba(0,0,0,.5);
-      z-index: 3;
-      height: $banner-height;
-      margin-bottom: 40px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -17,19 +10,6 @@
       color: $color-white;
       text-shadow: 0 1px 10px gray;
       user-select: none;
-
-      .img {
-        width: 110%;
-        height: $banner-height;
-        margin: -$banner-height / 2 -55%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        z-index: -1;
-      }
 
       .file-input {
         &:before {
@@ -50,6 +30,77 @@
 
       .banner-file-input {
         display: none;
+      }
+
+      .banner-cropper-wrap {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        $selector-height: 80px;
+        .banner-select-bar {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: $selector-height;
+          background-color: rgba(0, 0, 0, .7);
+          padding: 0 50px;
+          z-index: 3;
+
+          p {
+            font-size: 18px;
+            color: $color-white;
+            float: left;
+            line-height: $selector-height;
+          }
+
+          .el-button--text {
+            color: $color-white;
+            float: right;
+            margin-top: 20px;
+            margin-right: 100px;
+          }
+        }
+
+        .submit-btn {
+          position: fixed;
+          right: 50px;
+          bottom: 24px;
+          z-index: 4;
+        }
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 2px solid hsla(0,0%,100%,.4);
+        margin: 100px auto 10px auto;
+      }
+
+      .signature, .nickname {
+        word-break: break-all;
+        word-wrap: break-word;
+        font-size: 13px;
+        line-height: 20px;
+        pointer-events: none;
+      }
+
+      .signature {
+        margin: 30px 0 20px 0;
+        max-width: 600px;
+      }
+
+      .buttons {
+        margin-top: 10px;
+        text-align: center;
+
+        >* {
+          margin: 0 5px;
+        }
       }
 
       &.my-banner {
@@ -84,77 +135,6 @@
           &:before {
             opacity: 1;
           }
-        }
-      }
-
-      .banner-cropper-wrap {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-
-        $selector-height: 80px;
-        .banner-select-bar {
-          position: fixed;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: $selector-height;
-          background-color: rgba(0, 0, 0, .7);
-          padding: 0 50px;
-
-          p {
-            font-size: 18px;
-            color: $color-white;
-            float: left;
-            line-height: $selector-height;
-          }
-
-          .el-button--text {
-            color: $color-white;
-            float: right;
-            margin-top: 20px;
-            margin-right: 100px;
-          }
-        }
-
-        .submit-btn {
-          position: fixed;
-          right: 50px;
-          bottom: 24px;
-          z-index: 1;
-        }
-      }
-
-      .avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 2px solid hsla(0,0%,100%,.4);
-        margin-bottom: 10px;
-      }
-
-      .signature, .nickname {
-        word-break: break-all;
-        word-wrap: break-word;
-        font-size: 13px;
-        line-height: 20px;
-        pointer-events: none;
-      }
-
-      .signature {
-        margin: 30px 0 20px 0;
-        max-width: 600px;
-      }
-
-      .buttons {
-        margin-top: 10px;
-        text-align: center;
-
-        >* {
-          margin: 0 5px;
         }
       }
     }
@@ -582,122 +562,124 @@
 
 <template>
   <div id="user-show">
-    <section
-      :class="{ 'my-banner': isMe }"
-      class="banner"
+    <v-header
+      :banner="user.banner"
+      type="mask"
+      height="400px"
     >
       <div
-        :style="{ backgroundImage: `url(${$resize(user.banner, { width: 1920, mode: 0 })})` }"
-        class="img bg"
-      />
-      <div
-        v-if="isMe"
-        class="banner-cropper-wrap"
+        :class="{ 'my-banner': isMe }"
+        class="banner-container"
       >
-        <template v-if="bannerSelector.showBar">
-          <image-cropper
-            :init-image="bannerSelector.image"
-            :uploading="bannerSelector.loading"
-            :auto-size="true"
-            @submit="submitBannerChange"
-          />
-          <div class="banner-select-bar">
-            <p>确认要更换主页背景图吗（拖动图片可裁剪，鼠标滚动可缩放）?</p>
-            <el-button
-              :disabled="bannerSelector.loading"
-              type="text"
-              @click="cancelBannerChange"
-            >取消</el-button>
-          </div>
-        </template>
         <div
-          v-else
-          class="banner-file-input file-input bg"
+          v-if="isMe"
+          class="banner-cropper-wrap"
         >
-          <input
-            ref="bannerInput"
-            :accept="$imageAcceptStr"
-            type="file"
-            @change="selectBanner"
-          >
-        </div>
-      </div>
-      <template v-if="isMe">
-        <div
-          :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
-          class="avatar bg file-input"
-        >
-          <input
-            ref="avatarInput"
-            :accept="$imageAcceptStr"
-            type="file"
-            @change="openAvatarModal"
-          >
-        </div>
-        <v-dialog
-          v-model="avatarCropper.showModal"
-          :footer="false"
-          width="400px"
-          title="头像裁剪"
-          class="avatar-cropper-modal"
-          @cancel="handleAvatarCropperCancel"
-        >
-          <image-cropper
-            v-if="avatarCropper.showModal"
-            :init-image="avatarCropper.src"
-            :uploading="avatarCropper.loading"
-            :width="358"
-            :height="358"
-            type="avatar"
-            @submit="handleAvatarCropperSubmit"
-          />
-        </v-dialog>
-      </template>
-      <img
-        v-else
-        :src="$resize(user.avatar, { width: 200, height: 200 })"
-        class="avatar"
-        alt="avatar"
-      >
-      <span
-        class="nickname"
-        v-text="user.nickname"
-      />
-      <div class="buttons">
-        <template v-if="isMe">
-          <el-button
-            :disabled="daySigned"
-            :loading="signDayLoading"
-            type="primary"
-            size="small"
-            @click="handleDaySign"
-          >
-            {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
-          </el-button>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            placement="bottom"
-          >
-            <div slot="content">
-              点击复制我的邀请地址
-              <br>
-              邀请小伙伴们注册赚金币
+          <template v-if="bannerSelector.showBar">
+            <image-cropper
+              :init-image="bannerSelector.image"
+              :uploading="bannerSelector.loading"
+              :auto-size="true"
+              @submit="submitBannerChange"
+            />
+            <div class="banner-select-bar">
+              <p>确认要更换主页背景图吗（拖动图片可裁剪，鼠标滚动可缩放）?</p>
+              <el-button
+                :disabled="bannerSelector.loading"
+                type="text"
+                @click="cancelBannerChange"
+              >取消</el-button>
             </div>
-            <el-button
-              ref="inviteBtn"
-              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
-              type="warning"
-              size="small"
-            >邀请码：{{ user.id }}</el-button>
-          </el-tooltip>
+          </template>
+          <div
+            v-else
+            class="banner-file-input file-input bg"
+          >
+            <input
+              ref="bannerInput"
+              :accept="$imageAcceptStr"
+              type="file"
+              @change="selectBanner"
+            >
+          </div>
+        </div>
+        <template v-if="isMe">
+          <div
+            :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
+            class="avatar bg file-input"
+          >
+            <input
+              ref="avatarInput"
+              :accept="$imageAcceptStr"
+              type="file"
+              @change="openAvatarModal"
+            >
+          </div>
+          <v-dialog
+            v-model="avatarCropper.showModal"
+            :footer="false"
+            width="400px"
+            title="头像裁剪"
+            class="avatar-cropper-modal"
+            @cancel="handleAvatarCropperCancel"
+          >
+            <image-cropper
+              v-if="avatarCropper.showModal"
+              :init-image="avatarCropper.src"
+              :uploading="avatarCropper.loading"
+              :width="358"
+              :height="358"
+              type="avatar"
+              @submit="handleAvatarCropperSubmit"
+            />
+          </v-dialog>
         </template>
+        <img
+          v-else
+          :src="$resize(user.avatar, { width: 200, height: 200 })"
+          class="avatar"
+          alt="avatar"
+        >
+        <span
+          class="nickname"
+          v-text="user.nickname"
+        />
+        <div class="buttons">
+          <template v-if="isMe">
+            <el-button
+              :disabled="daySigned"
+              :loading="signDayLoading"
+              type="primary"
+              size="small"
+              @click="handleDaySign"
+            >
+              {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
+            </el-button>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              placement="bottom"
+            >
+              <div slot="content">
+                点击复制我的邀请地址
+                <br>
+                邀请小伙伴们注册赚金币
+              </div>
+              <el-button
+                ref="inviteBtn"
+                :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
+                type="warning"
+                size="small"
+              >邀请码：{{ user.id }}</el-button>
+            </el-tooltip>
+          </template>
+        </div>
+        <p
+          class="signature"
+          v-text="user.signature"
+        />
       </div>
-      <p
-        class="signature"
-        v-text="user.signature"
-      />
-    </section>
+    </v-header>
     <div class="container">
       <div
         v-if="user.faker"
