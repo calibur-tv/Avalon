@@ -6,4 +6,10 @@ export default class extends BaseApi {
       params: { type, take, minId, seenIds, bangumiId }
     })
   }
+
+  meta ({ type }) {
+    return this.http.get('trending/meta', {
+      params: { type }
+    })
+  }
 }

@@ -6897,6 +6897,10 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-affix@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/vue-affix/-/vue-affix-0.2.4.tgz#4f599f10517cab95a2d628029f91edb83316afe7"
+
 vue-count-to@^1.0.13:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/vue-count-to/-/vue-count-to-1.0.13.tgz#3e7573ea6e64c2b2972f64e0a2ab2e23c7590ff3"

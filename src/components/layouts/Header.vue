@@ -169,7 +169,7 @@
 
     .nav-pure {
       background-color: #fff;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid $color-gray-normal;
 
       .nav-link {
         &:hover {
@@ -445,31 +445,17 @@
           >
             <span>首页</span>
           </router-link>
-          <!--
           <router-link
             :class="$style.navLink"
-            to="/"
+            to="/world"
           >
             <span>社区</span>
           </router-link>
-          -->
           <router-link
             :class="$style.navLink"
             :to="$alias.bangumiNews"
           >
             <span>番剧</span>
-          </router-link>
-          <router-link
-            :class="$style.navLink"
-            :to="$alias.postTrending('active')"
-          >
-            <span>帖子</span>
-          </router-link>
-          <router-link
-            :class="$style.navLink"
-            :to="$alias.imageTrending('active')"
-          >
-            <span>相册</span>
           </router-link>
           <router-link
             :to="$alias.roleTrending"
@@ -603,6 +589,7 @@
     <div
       v-else
       :class="$style.navShim"
+      :style="{ marginBottom }"
     />
   </div>
 </template>

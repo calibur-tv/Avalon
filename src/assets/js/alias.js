@@ -64,6 +64,10 @@ export default {
     return `/review/edit/${id}`;
   },
 
+  world(type) {
+    return `/world/${type}`
+  },
+
   createScore: '/review/create',
 
   roleTrending: '/role/trending',

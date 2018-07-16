@@ -1,6 +1,7 @@
 <style lang="scss">
   #score-create {
-    .bangumi-search {
+    .bangumi-search,
+    .title-input {
       margin-bottom: 20px;
     }
     
@@ -52,8 +53,15 @@
       class="bangumi-search"
       @search="handleBangumiSearch"
     />
+    <h3 class="sub-title">标题</h3>
+    <el-input
+      v-model.trim="title"
+      maxlength="30"
+      class="title-input"
+      placeholder="给你的文章起个好名字！"
+    />
     <h3 class="sub-title">
-      各项分值
+      评分
       <i
         class="el-icon-question"
         @click="openTips = !openTips"
@@ -96,7 +104,7 @@
       <p><strong>美感</strong>：有时候画质不是越好就越美，有些美具有一种艺术感，这种美可能是画面上的，可能是叙事的手法，可能是背景音乐。</p>
       <p>最后，一般情况下不存在0分的作品，如果你认为一部作品是0分，那就请放过它吧；也不存在满分的作品，如果你认为一部作品达到了满分，可能是你的阅片量还太少，需要再接再厉，(๑•̀ㅂ•́)و✧！</p>
     </el-alert>
-    <h3 class="sub-title">写下心得</h3>
+    <h3 class="sub-title">正文</h3>
     <json-editor @submit="beforeSubmit"/>
   </div>
 </template>
@@ -137,6 +145,7 @@
         labelMap,
         columns: Object.keys(labelMap),
         bangumiId: '',
+        title: '',
         form: {
           lol: 0,
           cry: 0,
@@ -180,6 +189,10 @@
           this.$toast.error('请先选择要评价的番剧');
           return;
         }
+        if (!this.title) {
+          this.$toast.error('标题为必填的');
+          return;
+        }
         const scores = {};
         let total = 0;
         Object.keys(this.form).forEach(key => {
@@ -213,6 +226,7 @@
         const api = new Api(this);
         try {
           const form = Object.assign({}, scores, {
+            title: this.title,
             bangumi_id: this.bangumiId,
             content: richContent.content,
             intro: richContent.desc.substring(0, 120),
@@ -279,6 +293,7 @@
           return
         }
         this.bangumiId = +this.resource.bangumi_id;
+        this.title = this.resource.title;
         this.columns.forEach(key => {
           this.form[key] = this.resource[key]
         })

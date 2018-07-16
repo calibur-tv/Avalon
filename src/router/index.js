@@ -29,6 +29,31 @@ export function createRouter() {
             component: () => import('~/views/index'),
           },
           {
+            path: 'world',
+            component: () => import('~/views/world/index'),
+            children: [
+              {
+                path: '',
+                redirect: 'post'
+              },
+              {
+                path: 'post',
+                name: 'world-post',
+                component: () => import('~/views/world/post')
+              },
+              {
+                path: 'image',
+                name: 'world-image',
+                component: () => import('~/views/world/image')
+              },
+              {
+                path: 'review',
+                name: 'world-score',
+                component: () => import('~/views/world/score')
+              }
+            ]
+          },
+          {
             path: 'bangumi/news',
             component: () => import('~/views/bangumi/news'),
           },

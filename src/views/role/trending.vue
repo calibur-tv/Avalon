@@ -4,7 +4,7 @@
       margin-left: 15px;
     }
 
-    .role {
+    .item {
       position: relative;
       margin-top: 15px;
       float: none;
@@ -144,7 +144,7 @@
           <li
             v-for="(item, index) in list"
             :key="item.id"
-            class="role"
+            class="item"
           >
             <div class="clearfix">
               <a
