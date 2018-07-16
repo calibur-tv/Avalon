@@ -88,37 +88,38 @@
           :name="index"
           :label="tab"
         >
-          <div class="col-aside"/>
-          <div class="col-main">
-            <component
-              v-if="noMore && !list.length"
-              :is="`Nothing${selectedType}`"
-            />
-            <template v-else>
+          <v-layout>
+            <template slot="main">
               <component
-                v-for="item in list"
-                :key="`${item.type}-${item.id}`"
-                :is="`Flow${item.type}`"
-                :item="item"
-                :in-common="item.type != selectedType"
+                v-if="noMore && !list.length"
+                :is="`Nothing${selectedType}`"
               />
+              <template v-else>
+                <component
+                  v-for="item in list"
+                  :key="`${item.type}-${item.id}`"
+                  :is="`Flow${item.type}`"
+                  :item="item"
+                  :in-common="item.type != selectedType"
+                />
+              </template>
+              <el-button
+                v-if="!noMore && list.length"
+                :loading="loading"
+                type="info"
+                plain
+                round
+                class="load-more-btn"
+                @click="loadMore"
+              >{{ loading ? '加载中' : '加载更多' }}</el-button>
+              <div
+                v-if="loading && !list.length"
+                class="loading-wrap"
+              >
+                <div class="el-icon-loading"/>
+              </div>
             </template>
-            <el-button
-              v-if="!noMore && list.length"
-              :loading="loading"
-              type="info"
-              plain
-              round
-              class="load-more-btn"
-              @click="loadMore"
-            >{{ loading ? '加载中' : '加载更多' }}</el-button>
-            <div
-              v-if="loading && !list.length"
-              class="loading-wrap"
-            >
-              <div class="el-icon-loading"/>
-            </div>
-          </div>
+          </v-layout>
         </el-tab-pane>
       </el-tabs>
     </div>

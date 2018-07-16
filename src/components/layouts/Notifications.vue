@@ -9,7 +9,7 @@
     text-align: left;
 
     .header {
-      height: 20px;
+      height: 5px;
       background-color: transparent;
       flex-shrink: 0;
     }
