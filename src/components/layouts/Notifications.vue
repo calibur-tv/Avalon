@@ -6,6 +6,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    text-align: left;
 
     .header {
       height: 20px;

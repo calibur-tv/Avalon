@@ -64,7 +64,7 @@
 
 <template>
   <div id="search-index">
-    <v-banner/>
+    <v-header/>
     <div class="container">
       <div class="search-panel">
         <v-search

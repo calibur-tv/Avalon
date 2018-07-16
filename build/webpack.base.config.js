@@ -25,6 +25,7 @@ module.exports = {
     alias: {
       '~': resolve('../src'),
       'env': resolve('../.env.js'),
+      'img': resolve('../src/assets/img'),
       'static': resolve('../static'),
       '@': resolve('../src/admin')
     },
@@ -71,7 +72,7 @@ module.exports = {
                 i18n: '@kazupon/vue-i18n-loader'
               },
               cssModules: {
-                localIdentName: isDev ? '[path][name]---[local]---[hash:base64:5]' : '[local]-[hash:base64:5]',
+                localIdentName: '[local]-[hash:base64:2]',
                 camelCase: true
               }
             }

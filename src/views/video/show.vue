@@ -48,7 +48,7 @@
     id="video-show"
     class="main"
   >
-    <v-banner/>
+    <v-header/>
     <div class="container">
       <nav>
         <h1

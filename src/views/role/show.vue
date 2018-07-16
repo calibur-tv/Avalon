@@ -1,7 +1,6 @@
 <style lang="scss">
   #role-show {
     .sub-title {
-      margin-top: 35px;
       margin-bottom: 20px;
 
       button {
@@ -124,7 +123,7 @@
 
 <template>
   <div id="role-show">
-    <v-banner/>
+    <v-header/>
     <div class="container">
       <aside class="col-aside">
         <div class="bangumi">

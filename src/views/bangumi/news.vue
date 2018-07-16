@@ -82,7 +82,7 @@
 
 <template>
   <div id="bangumi-news">
-    <v-banner/>
+    <v-header/>
     <v-layout>
       <template slot="main">
         <div class="breadcrumb-links">

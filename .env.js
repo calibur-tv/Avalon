@@ -14,7 +14,7 @@ const script = {
 
 const sentry = {
   token: '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
-  url: 'https://5cb53c6313e0444a88c5c8a5d253c47f@sentry.io/1119154'
+  url: 'https://c89b4ce2cfbf44e3bab148e0b7fa31df@sentry.io/1243412'
 }
 
 module.exports = {

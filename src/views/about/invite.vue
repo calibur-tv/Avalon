@@ -31,7 +31,7 @@
 
 <template>
   <div id="invite-user">
-    <v-banner/>
+    <v-header/>
     <div class="container">
       <template v-if="user">
         <h3 class="sub-title">欢迎注册 calibur.tv</h3>

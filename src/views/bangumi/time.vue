@@ -102,7 +102,7 @@
 
 <template>
   <div id="bangumi-timeline">
-    <v-banner/>
+    <v-header/>
     <v-layout>
       <template slot="main">
         <div class="breadcrumb-links">

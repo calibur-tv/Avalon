@@ -108,6 +108,7 @@
 
 <template>
   <div id="homepage">
+    <v-header type="mask"/>
     <div
       :class="{'show' : toggle}"
       :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : '' }"

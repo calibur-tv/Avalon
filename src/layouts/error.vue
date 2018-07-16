@@ -56,7 +56,6 @@
 <template>
   <div id="error-default">
     <v-header/>
-    <v-banner/>
     <div class="error-message">
       <img
         class="error-img"

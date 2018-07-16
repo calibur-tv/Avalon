@@ -2,34 +2,9 @@
   #image-show {
     $banner-height: 350px;
 
-    #image-banner {
-      position: relative;
-      width: 100%;
-      height: $banner-height;
-      margin-bottom: 35px;
-      overflow: hidden;
-      z-index: 1;
-
-      .img {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        z-index: -1;
-      }
-
-      .container {
-        background-color: transparent;
-        margin-bottom: 0;
-        height: 100%;
-      }
-
+    .image-banner {
       .panel {
-        position: absolute;
+        position: relative;
         top: 100px;
         left: 0;
         color: #fff;
@@ -164,32 +139,29 @@
     v-if="info"
     id="image-show"
   >
-    <section
+    <v-header
       v-if="info.is_cartoon"
-      id="image-banner"
+      :banner="source.url"
+      height="400px"
+      type="mask"
+      class="image-banner"
     >
-      <div
-        :style="{ backgroundImage: `url(${$resize(source.url, { width: 1920, mode: 0 })})` }"
-        class="img bg"
-      />
-      <div class="container">
-        <div class="panel">
-          <h1 class="title">《{{ info.name }}》</h1>
-          <p class="author">
-            UP：
-            <a
-              :href="$alias.user(user.zone)"
-              target="_blank"
-              v-text="user.nickname"
-            />
-            &nbsp;·&nbsp;
-            共：{{ info.image_count }}张
-          </p>
-        </div>
+      <div class="panel">
+        <h1 class="title">《{{ info.name }}》</h1>
+        <p class="author">
+          UP：
+          <a
+            :href="$alias.user(user.zone)"
+            target="_blank"
+            v-text="user.nickname"
+          />
+          &nbsp;·&nbsp;
+          共：{{ info.image_count }}张
+        </p>
       </div>
       <v-share type="panel"/>
-    </section>
-    <v-banner v-else/>
+    </v-header>
+    <v-header v-else/>
     <v-layout>
       <template slot="main">
         <nav>
