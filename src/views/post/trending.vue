@@ -11,9 +11,8 @@
 <template>
   <div id="post-trending">
     <v-header/>
-    <div class="container">
-      <div class="col-aside"/>
-      <div class="col-main">
+    <v-layout>
+      <template slot="main">
         <div class="breadcrumb-links">
           <router-link :to="$alias.postTrending('news')">最新</router-link>
           <router-link :to="$alias.postTrending('active')">动态</router-link>
@@ -35,8 +34,8 @@
           @click="loadMore"
         >{{ post.loading ? '加载中' : '加载更多' }}</el-button>
         <no-content v-if="post.nothing"/>
-      </div>
-    </div>
+      </template>
+    </v-layout>
   </div>
 </template>
 

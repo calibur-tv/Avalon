@@ -10,8 +10,10 @@
       }
     }
 
-    .col-main {
+    .layout-main {
       .intro {
+        margin-bottom: 35px;
+
         .avatar-wrap {
           float: left;
           margin-right: 25px;
@@ -81,7 +83,7 @@
       }
     }
 
-    .col-aside {
+    .layout-aside {
       .fans {
         .follower {
           margin-right: -10px;
@@ -124,59 +126,8 @@
 <template>
   <div id="role-show">
     <v-header/>
-    <div class="container">
-      <aside class="col-aside">
-        <div class="bangumi">
-          <p class="sub-title">所属番剧</p>
-          <v-bangumi-panel
-            :id="bangumi.id"
-            :name="bangumi.name"
-            :avatar="bangumi.avatar"
-            :summary="bangumi.summary"
-            :followed="bangumi.followed"
-            class="bangumi-panel"
-            @follow="handleFollowBangumiAction"
-          />
-        </div>
-        <div class="fans">
-          <p class="sub-title">应援团{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
-          <template v-if="fans.data.length">
-            <ul>
-              <li
-                v-for="user in displayFans"
-                :key="user.zone"
-                class="follower"
-              >
-                <el-tooltip
-                  :content="user.nickname"
-                  class="item"
-                  effect="dark"
-                  placement="top"
-                >
-                  <a
-                    :href="$alias.user(user.zone)"
-                    target="_blank"
-                  >
-                    <v-img
-                      :src="$resize(user.avatar, { width: 64, height: 64 })"
-                      :alt="user.zone"
-                    />
-                  </a>
-                </el-tooltip>
-              </li>
-              <button
-                v-if="role.fans_count > 6"
-                class="more-btn el-icon-more"
-                @click="openFansModal('new')"
-              />
-            </ul>
-          </template>
-          <template v-else>
-            <span>TA 还没有真正的粉丝...</span>
-          </template>
-        </div>
-      </aside>
-      <div class="col-main">
+    <v-layout>
+      <template slot="main">
         <div class="intro clearfix">
           <p class="sub-title">角色信息</p>
           <div class="avatar-wrap">
@@ -240,46 +191,97 @@
             <span v-text="role.lover.nickname"/>
           </a>
         </div>
-      </div>
-      <v-dialog
-        v-model="toggleFansListModal"
-        :footer="false"
-        :title="`${role.name} · 应援团`"
-        :scroll="fetchRoleFans"
-        :loading="loadingRoleFans"
-        :no-more="noMoreFans"
-        class="likes-modal"
+      </template>
+      <template slot="aside">
+        <div class="bangumi">
+          <p class="sub-title">所属番剧</p>
+          <v-bangumi-panel
+            :id="bangumi.id"
+            :name="bangumi.name"
+            :avatar="bangumi.avatar"
+            :summary="bangumi.summary"
+            :followed="bangumi.followed"
+            class="bangumi-panel"
+            @follow="handleFollowBangumiAction"
+          />
+        </div>
+        <div class="fans">
+          <p class="sub-title">应援团{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
+          <template v-if="fans.data.length">
+            <ul>
+              <li
+                v-for="user in displayFans"
+                :key="user.zone"
+                class="follower"
+              >
+                <el-tooltip
+                  :content="user.nickname"
+                  class="item"
+                  effect="dark"
+                  placement="top"
+                >
+                  <a
+                    :href="$alias.user(user.zone)"
+                    target="_blank"
+                  >
+                    <v-img
+                      :src="$resize(user.avatar, { width: 64, height: 64 })"
+                      :alt="user.zone"
+                    />
+                  </a>
+                </el-tooltip>
+              </li>
+              <button
+                v-if="role.fans_count > 6"
+                class="more-btn el-icon-more"
+                @click="openFansModal('new')"
+              />
+            </ul>
+          </template>
+          <template v-else>
+            <span>TA 还没有真正的粉丝...</span>
+          </template>
+        </div>
+      </template>
+    </v-layout>
+    <v-dialog
+      v-model="toggleFansListModal"
+      :footer="false"
+      :title="`${role.name} · 应援团`"
+      :scroll="fetchRoleFans"
+      :loading="loadingRoleFans"
+      :no-more="noMoreFans"
+      class="likes-modal"
+    >
+      <li
+        v-for="item in fansModalData"
+        :key="item.id"
       >
-        <li
-          v-for="item in fansModalData"
-          :key="item.id"
+        <a
+          :href="$alias.user(item.zone)"
+          class="user"
+          target="_blank"
         >
-          <a
-            :href="$alias.user(item.zone)"
-            class="user"
-            target="_blank"
+          <img
+            :src="$resize(item.avatar, { width: 80 })"
+            class="avatar"
           >
-            <img
-              :src="$resize(item.avatar, { width: 80 })"
-              class="avatar"
-            >
-            <span
-              class="nickname"
-              v-text="item.nickname"
-            />
-            <v-time
-              v-if="focusRoleSort === 'new'"
-              v-model="item.score"
-              class="score"
-            />
-            <span
-              v-else
-              class="score"
-            >{{ item.score }}个金币</span>
-          </a>
-        </li>
-      </v-dialog>
-    </div>
+          <span
+            class="nickname"
+            v-text="item.nickname"
+          />
+          <v-time
+            v-if="focusRoleSort === 'new'"
+            v-model="item.score"
+            class="score"
+          />
+          <span
+            v-else
+            class="score"
+          >{{ item.score }}个金币</span>
+        </a>
+      </li>
+    </v-dialog>
   </div>
 </template>
 

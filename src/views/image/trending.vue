@@ -1,9 +1,8 @@
 <template>
   <div id="image-trending">
     <v-header/>
-    <div class="container">
-      <div class="col-aside"/>
-      <div class="col-main">
+    <v-layout>
+      <template slot="main">
         <div class="breadcrumb-links">
           <a
             :class="{ 'router-link-active': $route.params.sort === 'news' }"
@@ -24,8 +23,8 @@
           :loading="images.loading"
           @load="loadMore"
         />
-      </div>
-    </div>
+      </template>
+    </v-layout>
   </div>
 </template>
 

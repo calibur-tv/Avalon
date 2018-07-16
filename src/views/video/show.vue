@@ -35,19 +35,15 @@
       }
     }
 
-    .col-aside {
-      .bangumi-panel {
-        float: right;
-      }
+    .bangumi-panel {
+      float: right;
+      margin-right: 10px;
     }
   }
 </style>
 
 <template>
-  <div
-    id="video-show"
-    class="main"
-  >
+  <div id="video-show">
     <v-header/>
     <div class="container">
       <nav>
@@ -123,8 +119,8 @@
           @click="handleVideoReportClick"
         >资源报错</el-button>
       </div>
-      <div class="clearfix">
-        <div class="col-aside">
+      <v-layout>
+        <template slot="aside">
           <v-bangumi-panel
             :id="bangumi.id"
             :name="bangumi.name"
@@ -134,15 +130,15 @@
             class="bangumi-panel"
             @follow="handleFollowAction"
           />
-        </div>
-        <div class="col-main">
+        </template>
+        <template slot="main">
           <comment-main
             :id="id"
             :master-id="video.user_id"
             type="video"
           />
-        </div>
-      </div>
+        </template>
+      </v-layout>
     </div>
   </div>
 </template>

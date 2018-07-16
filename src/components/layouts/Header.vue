@@ -227,7 +227,7 @@
   $header-height: 50px;
   $search-height: 32px;
 
-  #header {
+  #page-header {
     .el-badge {
       .el-badge__content {
         right: 25px;
@@ -420,7 +420,7 @@
 
 <template>
   <div
-    id="header"
+    id="page-header"
     :class="$style.header"
   >
     <div

@@ -1,128 +1,128 @@
 <style lang="scss">
   #trending-role {
-    .col-main {
-      margin-left: 30px;
+    .layout-main {
+      margin-left: 15px;
+    }
 
-      li {
+    .role {
+      position: relative;
+      margin-top: 15px;
+      float: none;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #F0F0F0;
+      }
+
+      .top {
         position: relative;
-        margin-top: 15px;
-        float: none;
+        display: block;
+        float: right;
 
-        &:not(:last-child) {
-          border-bottom: 1px solid #F0F0F0;
+        &:before {
+          content: attr(data-index);
+          line-height: 48px;
         }
+      }
 
-        .top {
-          position: relative;
+      &:first-of-type {
+        .top:before {
+          color: goldenrod;
+          font-size: 28px;
+          line-height: 44px;
+        }
+      }
+
+      &:nth-of-type(2) {
+        .top:before {
+          color: indianred;
+          font-size: 22px;
+          line-height: 44px;
+        }
+      }
+
+      &:nth-of-type(3) {
+        .top:before {
+          color: silver;
+          font-size: 16px;
+          line-height: 44px;
+        }
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+        display: block;
+        float: left;
+        overflow: hidden;
+        border-radius: 5px;
+        margin-right: 10px;
+        border: 1px solid $color-gray-normal;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .summary {
+        overflow: hidden;
+        height: 100px;
+
+        .role {
           display: block;
-          float: right;
-
-          &:before {
-            content: attr(data-index);
-            line-height: 48px;
-          }
-        }
-
-        &:first-of-type {
-          .top:before {
-            color: goldenrod;
-            font-size: 28px;
-            line-height: 44px;
-          }
-        }
-
-        &:nth-of-type(2) {
-          .top:before {
-            color: indianred;
-            font-size: 22px;
-            line-height: 44px;
-          }
-        }
-
-        &:nth-of-type(3) {
-          .top:before {
-            color: silver;
-            font-size: 16px;
-            line-height: 44px;
-          }
-        }
-
-        .avatar {
-          width: 100px;
-          height: 100px;
-          display: block;
-          float: left;
+          font-size: 14px;
+          line-height: 20px;
+          height: 60px;
           overflow: hidden;
-          border-radius: 5px;
-          margin-right: 10px;
-          border: 1px solid $color-gray-normal;
+
+          .name {
+            font-weight: bold;
+          }
+
+          .intro {
+            color: #000;
+          }
+        }
+
+        .lover {
+          height: 20px;
+          line-height: 20px;
+          vertical-align: middle;
+          font-size: 13px;
+          color: $color-text-normal;
+          margin-top: 20px;
 
           img {
-            width: 100%;
-            height: auto;
-          }
-        }
-
-        .summary {
-          overflow: hidden;
-          height: 100px;
-
-          .role {
-            display: block;
-            font-size: 14px;
-            line-height: 20px;
-            height: 60px;
-            overflow: hidden;
-
-            .name {
-              font-weight: bold;
-            }
-
-            .intro {
-              color: #000;
-            }
-          }
-
-          .lover {
+            width: 20px;
             height: 20px;
-            line-height: 20px;
+            border-radius: 15px;
             vertical-align: middle;
-            font-size: 13px;
-            color: $color-text-normal;
-            margin-top: 20px;
-
-            img {
-              width: 20px;
-              height: 20px;
-              border-radius: 15px;
-              vertical-align: middle;
-              border: 1px solid $color-gray-normal;
-              margin-left: 10px;
-            }
+            border: 1px solid $color-gray-normal;
+            margin-left: 10px;
           }
         }
+      }
 
-        .footer {
-          height: 44px;
-          line-height: 44px;
+      .footer {
+        height: 44px;
+        line-height: 44px;
 
-          .bangumi {
-            color: #999;
+        .bangumi {
+          color: #999;
+          font-size: 12px;
+          overflow: hidden;
+          margin-right: 8px;
+        }
+
+        .stats {
+          text-align: right;
+          color: #666;
+          float: right;
+
+          span {
+            margin-left: 10px;
             font-size: 12px;
-            overflow: hidden;
-            margin-right: 8px;
-          }
-
-          .stats {
-            text-align: right;
-            color: #666;
-            float: right;
-
-            span {
-              margin-left: 10px;
-              font-size: 12px;
-              margin-right: 2px;
-            }
+            margin-right: 2px;
           }
         }
       }
@@ -133,9 +133,8 @@
 <template>
   <div id="trending-role">
     <v-header/>
-    <div class="container">
-      <div class="col-aside"/>
-      <div class="col-main">
+    <v-layout>
+      <template slot="main">
         <h2 class="sub-title">偶像排行榜</h2>
         <ul
           v-infinite-scroll="loadMore"
@@ -145,6 +144,7 @@
           <li
             v-for="(item, index) in list"
             :key="item.id"
+            class="role"
           >
             <div class="clearfix">
               <a
@@ -219,8 +219,8 @@
             </div>
           </li>
         </ul>
-      </div>
-    </div>
+      </template>
+    </v-layout>
   </div>
 </template>
 
