@@ -97,6 +97,7 @@
       .buttons {
         margin-top: 10px;
         text-align: center;
+        position: relative;
 
         >* {
           margin: 0 5px;
