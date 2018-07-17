@@ -90,10 +90,6 @@ export function createRouter() {
             component: () => import('~/views/post/show'),
           },
           {
-            path: 'post/trending/:sort',
-            component: () => import('~/views/post/trending'),
-          },
-          {
             path: 'about/hello',
             name: 'hello',
             component: () => import('~/views/about/hello'),
@@ -111,11 +107,6 @@ export function createRouter() {
             path: 'role/:id(\\d+)',
             name: 'role-show',
             component: () => import('~/views/role/show'),
-          },
-          {
-            path: 'pins/trending/:sort',
-            name: 'image-trending',
-            component: () => import('~/views/image/trending'),
           },
           {
             path: 'pins/:id(\\d+)',

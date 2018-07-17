@@ -6,6 +6,7 @@
       height: 1px;
       float: left;
       margin-right: 40px;
+      margin-left: 5px;
 
       .side-bar {
         .router-link-active {

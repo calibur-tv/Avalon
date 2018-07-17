@@ -78,7 +78,7 @@
           float: left;
           margin-top: ($header-height - $logo-size) / 2 - 1;
           margin-right: 10px;
-          margin-left: 10px;
+          margin-left: 15px;
 
           img {
             width: $logo-size;
