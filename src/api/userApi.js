@@ -99,10 +99,6 @@ export default class extends BaseApi {
     });
   }
 
-  getUserAlbums() {
-    return this.http.get('user/images/albums');
-  }
-
   followRoles({ zone, page }) {
     return this.http.get(`user/${zone}/followed/role`, {
       params: { page },

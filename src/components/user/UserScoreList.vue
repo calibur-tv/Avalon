@@ -106,9 +106,8 @@
                 :href="$alias.editScore(item.id)"
                 class="href-fade-blue"
                 target="_blank"
-              >
-                写给《{{ item.bangumi.name }}》的漫评
-              </a>
+                v-text="item.title"
+              />
             </div>
           </div>
           <a

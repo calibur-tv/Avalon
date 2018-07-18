@@ -98,7 +98,10 @@
               </a>
             </template>
             <div class="title">
-              <h1 class="sub-title">写给《{{ bangumi.name }}》的漫评</h1>
+              <h1
+                class="sub-title"
+                v-text="info.title"
+              />
               <div class="user">
                 作者：
                 <a

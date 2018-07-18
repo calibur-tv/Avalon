@@ -45,11 +45,11 @@
     }
 
     .creator-btn.icon-tupian {
-      background-color: red;
+      background-color: #ec414d;
     }
 
     .score-btn {
-      background-color: #9266f9 !important;
+      background-color: #30A080 !important;
 
       a {
         width: 100%;
@@ -59,7 +59,7 @@
     }
 
     .creator-btn.icon-fankui {
-      background-color: #16c2c2;
+      background-color: RGB(60, 134, 247);
     }
   }
 </style>
@@ -83,6 +83,16 @@
       <el-tooltip
         placement="top"
         effect="dark"
+        content="发帖"
+      >
+        <button
+          class="creator-btn iconfont icon-fankui"
+          @click="handlePostClick"
+        />
+      </el-tooltip>
+      <el-tooltip
+        placement="top"
+        effect="dark"
         content="写漫评"
       >
         <button class="creator-btn score-btn">
@@ -93,16 +103,6 @@
             <i class="iconfont icon-fatie1"/>
           </a>
         </button>
-      </el-tooltip>
-      <el-tooltip
-        placement="top"
-        effect="dark"
-        content="发帖"
-      >
-        <button
-          class="creator-btn iconfont icon-fankui"
-          @click="handlePostClick"
-        />
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">

@@ -24,9 +24,13 @@ const state = () => ({
     nothing: false,
     loading: false,
   },
+  meta: null
 });
 
 const mutations = {
+  SET_META (state, data) {
+    state.meta = data
+  },
   INIT_TRENDING_TYPE(state, { type }) {
     state.type = type;
   },
@@ -85,6 +89,11 @@ const mutations = {
 };
 
 const actions = {
+  async getMeta({ commit }, { type }) {
+    const api = new Api();
+    const data = await api.meta({ type })
+    commit('SET_META', data)
+  },
   async getTrending({ state, commit }, {
     ctx, type, sort, take, bangumiId = 0, useCache = true,
   }) {

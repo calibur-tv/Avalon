@@ -163,7 +163,7 @@
   <div id="image-waterfall-flow">
     <no-ssr>
       <waterfall
-        :line-gap="212"
+        :line-gap="width + 12"
         :auto-resize="false"
       >
         <waterfall-slot
@@ -171,7 +171,7 @@
           :height="computeBoxHeight(item.source)"
           :order="index"
           :key="item.id"
-          width="200"
+          :width="width"
         >
           <div class="image">
             <a
@@ -190,7 +190,7 @@
               </el-tooltip>
               <img
                 :height="computeImageHeight(item.source)"
-                :src="$resize(item.source.url, { width: 400, mode: 2 })"
+                :src="$resize(item.source.url, { width: width * 2, mode: 2 })"
                 width="200"
               >
               <div
@@ -335,6 +335,10 @@
       loading: {
         type: Boolean,
         default: false
+      },
+      width: {
+        type: Number,
+        default: 200
       }
     },
     computed: {
@@ -347,7 +351,7 @@
         return this.computeImageHeight(image) + 106
       },
       computeImageHeight (image) {
-        return parseInt(image.height / image.width * 200, 10)
+        return parseInt(image.height / image.width * this.width, 10)
       },
       loadMore() {
         this.$emit('load')

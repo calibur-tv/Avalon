@@ -8,7 +8,7 @@
     }
 
     .header {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
 
       .created-at {
         float: right;
@@ -59,11 +59,27 @@
       }
     }
 
-    .intro {
+    .content {
       display: block;
-      font-size: 14px;
-      margin-top: 8px;
-      @include twoline(22px);
+
+      .title {
+        color: #212121;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 30px;
+        font-weight: 700;
+        transition: all .2s linear;
+      }
+
+      .intro {
+        font-size: 14px;
+        margin-top: 8px;
+        @include twoline(22px);
+      }
+
+      &:hover .title {
+        color: $color-blue-normal;
+      }
     }
 
     .footer {
@@ -97,7 +113,7 @@
         class="about"
       >
         <a
-          v-if="pageName !== 'user-show'"
+          v-if="pageName === 'bangumi-show'"
           :href="$alias.user(item.user.zone)"
           target="_blank"
         >
@@ -110,7 +126,7 @@
           />
         </a>
         <a
-          v-if="pageName !== 'bangumi-show'"
+          v-else
           :href="$alias.bangumi(item.bangumi.id)"
           target="_blank"
         >
@@ -123,17 +139,31 @@
           />
         </a>
         <el-rate
+          v-if="starCount"
           v-model="starCount"
+          disabled
+        />
+        <el-rate
+          v-else
+          v-model="noScore"
           disabled
         />
       </div>
     </div>
     <a
       :href="$alias.score(item.id)"
-      class="intro href-fade-blue"
+      class="content"
       target="_blank"
-      v-text="item.intro"
-    />
+    >
+      <div
+        class="title"
+        v-text="item.title"
+      />
+      <div
+        class="intro"
+        v-text="item.intro"
+      />
+    </a>
     <div class="footer">
       <span>
         <i class="iconfont icon-guanzhu"/>
@@ -154,6 +184,11 @@
       item: {
         required: true,
         type: Object
+      }
+    },
+     data () {
+      return {
+        noScore: 0
       }
     },
     computed: {
