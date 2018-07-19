@@ -38,10 +38,6 @@
           v-text="scope.row.user.nickname"
         />
       </el-table-column>
-      <el-table-column
-        label="贡献值"
-        prop="score"
-      />
       <el-table-column label="权限">
         <template slot-scope="scope">
           {{ scope.row.is_leader ? '大吧主' : '小吧主' }}
