@@ -29,7 +29,7 @@
         icon="delete"
         size="small"
         @click="quickDelete"
-      >一键删帖</el-button>
+      >一键删评论</el-button>
     </header>
     <el-table
       :data="list"
