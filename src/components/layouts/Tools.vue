@@ -48,6 +48,10 @@
       background-color: #ec414d;
     }
 
+    .question-btn {
+      background-color: #0084ff !important;
+    }
+
     .score-btn {
       background-color: #30A080 !important;
 
@@ -69,7 +73,9 @@
     v-show="$route.name !== 'homepage'"
     id="side-tools"
   >
-    <v-creator>
+    <v-creator
+      :offset="2.6"
+    >
       <el-tooltip
         placement="top"
         effect="dark"
@@ -102,6 +108,18 @@
           >
             <i class="iconfont icon-fatie1"/>
           </a>
+        </button>
+      </el-tooltip>
+      <el-tooltip
+        placement="top"
+        effect="dark"
+        content="提问"
+      >
+        <button
+          class="creator-btn question-btn"
+          @click="handlePostClick"
+        >
+          <i class="el-icon-question"/>
         </button>
       </el-tooltip>
     </v-creator>
