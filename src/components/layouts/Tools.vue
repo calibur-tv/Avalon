@@ -73,9 +73,7 @@
     v-show="$route.name !== 'homepage'"
     id="side-tools"
   >
-    <v-creator
-      :offset="2.6"
-    >
+    <v-creator>
       <el-tooltip
         placement="top"
         effect="dark"
@@ -110,6 +108,7 @@
           </a>
         </button>
       </el-tooltip>
+      <!--
       <el-tooltip
         placement="top"
         effect="dark"
@@ -117,11 +116,12 @@
       >
         <button
           class="creator-btn question-btn"
-          @click="handlePostClick"
+          @click="handleQuestionClick"
         >
           <i class="el-icon-question"/>
         </button>
       </el-tooltip>
+      -->
     </v-creator>
     <div class="creator-button-box">
       <el-tooltip
@@ -159,27 +159,40 @@
     >
       <create-post-form @submit="showPostModal = false"/>
     </v-dialog>
+    <v-dialog
+      v-model="showQuestionModal"
+      :footer="false"
+      title="写下你的问题"
+    >
+      <create-question-form @submit="showQuestionModal = false"/>
+    </v-dialog>
     <v-feedback v-model="showFeedModal"/>
-    <v-image/>
+    <create-image-panel/>
   </div>
 </template>
 
 <script>
   import vCreator from './Creator.vue'
-  import vFeedback from '~/components/creates/Feedback'
+  import vFeedback from '~/components/user/forms/Feedback'
   import CreatePostForm from '~/components/post/CreatePostForm'
-  import vImage from '~/components/creates/Image'
+  import CreateImagePanel from '~/components/image/CreateImagePanel'
+  import CreateQuestionForm from '~/components/question/CreateQuestionForm'
 
   export default {
     name: 'SideTools',
     components: {
-      vCreator, CreatePostForm, vFeedback, vImage
+      vCreator,
+      vFeedback,
+      CreatePostForm,
+      CreateImagePanel,
+      CreateQuestionForm
     },
     data () {
       return {
         showToTop: false,
         showPostModal: false,
-        showFeedModal: false
+        showFeedModal: false,
+        showQuestionModal: false
       }
     },
     computed: {
@@ -200,6 +213,11 @@
           ? this.showPostModal = true
           : this.$channel.$emit('sign-in')
       })
+      this.$channel.$on('show-create-question-modal', () => {
+        this.$store.state.login
+          ? this.showQuestionModal = true
+          : this.$channel.$emit('sign-in')
+      })
     },
     methods: {
       handlePostClick () {
@@ -210,13 +228,21 @@
         }
         this.showPostModal = true
       },
+      handleQuestionClick () {
+        if (!this.$store.state.login) {
+          this.$toast.info('继续操作前请先登录')
+          this.$channel.$emit('sign-in')
+          return
+        }
+        this.showQuestionModal = true
+      },
       handleImageClick () {
         if (!this.$store.state.login) {
           this.$toast.info('继续操作前请先登录')
           this.$channel.$emit('sign-in')
           return
         }
-        this.$channel.$emit('open-upload-image-modal')
+        this.$channel.$emit('show-upload-image-modal')
       },
       computeShow () {
         this.showToTop = window.scrollY > window.innerHeight

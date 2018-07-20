@@ -73,7 +73,7 @@
         }
       },
       openUploadImageModal () {
-        this.$channel.$emit('open-upload-image-modal')
+        this.$channel.$emit('show-upload-image-modal')
       }
     }
   }

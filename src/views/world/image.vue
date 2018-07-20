@@ -122,7 +122,7 @@
         this.$channel.$emit('open-feedback', { type: 3 })
       },
       openCreateImage () {
-        this.$channel.$emit('open-upload-image-modal')
+        this.$channel.$emit('show-upload-image-modal')
       },
       async loadMore () {
         try {
