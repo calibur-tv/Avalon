@@ -247,9 +247,9 @@
 </template>
 
 <script>
-  import SignInForm from '~/components/forms/SignInForm'
-  import SignUpForm from '~/components/forms/SignUpForm'
-  import ResetPasswordForm from '~/components/forms/ResetPasswordForm'
+  import SignInForm from '~/components/user/forms/SignInForm'
+  import SignUpForm from '~/components/user/forms/SignUpForm'
+  import ResetPasswordForm from '~/components/user/forms/ResetPasswordForm'
 
   export default {
     name: 'VSign',

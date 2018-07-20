@@ -69,7 +69,7 @@
 </template>
 
 <script>
-  import SignUpForm from '~/components/forms/SignUpForm'
+  import SignUpForm from '~/components/user/forms/SignUpForm'
 
   export default {
     name: 'InviteUser',

@@ -24,6 +24,8 @@
     :disabled="disabled"
     :loading="loading"
     :placeholder="placeholder"
+    :multiple="multiple"
+    :multiple-limit="limit"
     style="width: 100%"
     @visible-change="handleSelectToggle"
   >
@@ -45,8 +47,16 @@
     name: 'BangumiSearch',
     props: {
       value: {
-        type: [String, Number],
+        type: [String, Number, Array],
         default: ''
+      },
+      multiple: {
+        type: Boolean,
+        default: false
+      },
+      limit: {
+        type: Number,
+        default: 0
       },
       clear: {
         type: Boolean,

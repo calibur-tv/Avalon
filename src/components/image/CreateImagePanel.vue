@@ -85,7 +85,7 @@
       }
     },
     mounted () {
-      this.$channel.$on('open-upload-image-modal', () => {
+      this.$channel.$on('show-upload-image-modal', () => {
         this.show = true
       })
     },

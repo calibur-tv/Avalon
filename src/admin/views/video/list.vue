@@ -197,7 +197,11 @@
           this.pageState.total = data.total
           this.pageState.cur = page;
           this.pageState.max = page;
-          this.pageList = this.pageList.concat(data.list)
+          if (page === 1) {
+            this.pageList = data.list
+          } else {
+            this.pageList = this.pageList.concat(data.list)
+          }
         } catch (e) {
           this.$toast.error(e)
         } finally {
