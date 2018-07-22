@@ -26,6 +26,17 @@
         padding-left: 15px !important;
       }
     }
+
+    .el-alert {
+      margin-bottom: 25px;
+
+      p {
+        margin-bottom: 5px;
+        font-size: 13px;
+        line-height: 18px;
+        color: $color-text-normal;
+      }
+    }
   }
 </style>
 
@@ -62,6 +73,21 @@
         class="sign-wrap"
       >
         <h3>欢迎注册 calibur.tv</h3>
+        <el-alert
+          type="info"
+          title=""
+        >
+          <p>注册之后，邀请者会收到短信提示，并且获得 1 枚金币；</p>
+          <p>由于站内视频流量过大，为了降低宽带费用，先需要注册后才能看番，影响到了大家的体验，非常抱歉；</p>
+          <p>另外
+            <a
+              href="/bangumi/34"
+              target="_blank"
+              class="href-fade-blue"
+            >《进击的巨人》</a>
+            资源每周同步更新，大家不要错过。
+          </p>
+        </el-alert>
         <sign-up-form :invite-code="inviteUserId"/>
       </div>
     </div>
