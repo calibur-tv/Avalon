@@ -9,8 +9,13 @@
       text-align: center;
       font-size: 14px;
       color: $color-text-normal;
-      padding-top: 100px;
       line-height: 30px;
+      background-color: rgba(255, 255, 255, .85);
+      padding: 20px 40px;
+      width: 580px;
+      margin: 200px auto 0 auto;
+      border-radius: 10px;
+      font-weight: bold;
 
       button {
         margin-top: 10px;
@@ -53,7 +58,6 @@
     <v-header type="mask"/>
     <div class="container">
       <template v-if="user">
-        <h3 class="sub-title">欢迎注册 calibur.tv</h3>
         <p class="signed">
           你已经是注册用户了 (￣3￣)
           <br>
