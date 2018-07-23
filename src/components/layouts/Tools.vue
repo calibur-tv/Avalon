@@ -70,7 +70,7 @@
 
 <template>
   <div
-    v-show="$route.name !== 'homepage'"
+    v-show="show"
     id="side-tools"
   >
     <v-creator>
@@ -198,6 +198,9 @@
     computed: {
       isGuest () {
         return !this.$store.state.login
+      },
+      show () {
+        return ['homepage', 'invite-user'].indexOf(this.$route.name) === -1
       }
     },
     mounted () {

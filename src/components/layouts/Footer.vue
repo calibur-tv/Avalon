@@ -100,7 +100,7 @@
     },
     computed: {
       show () {
-        return this.$route.name !== 'homepage'
+        return ['homepage', 'invite-user'].indexOf(this.$route.name) === -1
       }
     },
     methods: {

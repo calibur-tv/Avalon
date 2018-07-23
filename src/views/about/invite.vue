@@ -1,5 +1,10 @@
 <style lang="scss">
   #invite-user {
+    background-image: url("https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
     .signed {
       text-align: center;
       font-size: 14px;
@@ -13,8 +18,11 @@
     }
 
     .sign-wrap {
-      width: 500px;
-      margin: 0 auto;
+      width: 580px;
+      margin: 150px auto 0 auto;
+      background-color: rgba(255, 255, 255, .85);
+      padding: 20px 40px;
+      border-radius: 10px;
 
       h3 {
         text-align: center;
@@ -42,7 +50,7 @@
 
 <template>
   <div id="invite-user">
-    <v-header/>
+    <v-header type="mask"/>
     <div class="container">
       <template v-if="user">
         <h3 class="sub-title">欢迎注册 calibur.tv</h3>
