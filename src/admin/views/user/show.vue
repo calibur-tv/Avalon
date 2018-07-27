@@ -1,6 +1,10 @@
 <style lang="scss">
   #user-show {
+    margin-bottom: 150px;
+
     .user {
+      margin-bottom: 50px;
+
       >div {
         margin-bottom: 20px;
         font-size: 16px;
@@ -126,6 +130,14 @@
           @click="addUserToTrial"
         >加入审核列表</el-button>
         <el-button
+          v-if="!showTransactions"
+          type="primary"
+          size="mini"
+          @click="getTransactions(1)"
+        >
+          查看交易记录
+        </el-button>
+        <el-button
           v-if="user.deleted_at"
           :loading="loading"
           type="success"
@@ -145,18 +157,73 @@
         </el-button>
       </div>
     </div>
+    <template v-if="showTransactions">
+      <el-table
+        :data="pageData"
+        border
+        fit
+        highlight-current-row
+      >
+        <el-table-column
+          label="id"
+          prop="id"
+        />
+        <el-table-column
+          label="类型"
+          prop="type"
+        />
+        <el-table-column label="金额">
+          <span slot-scope="scope">
+            {{ scope.row.type === '支出' ? '-' : '+' }}1
+          </span>
+        </el-table-column>
+        <el-table-column
+          label="来源"
+          prop="action"
+        />
+        <el-table-column
+          label="来源id"
+          prop="action_id"
+        />
+        <el-table-column
+          label="相关用户 id"
+          prop="about_user_id"
+        />
+        <el-table-column
+          label="相关用户手机号"
+          prop="about_user_phone"
+        />
+        <el-table-column
+          label="相关用户注册时间"
+          prop="about_user_sign_at"
+        />
+        <el-table-column
+          label="交易时间"
+          prop="created_at"
+        />
+      </el-table>
+      <v-page
+        :change="getTransactions"
+        :state="pageState"
+      />
+    </template>
   </div>
 </template>
 
 <script>
   import Api from '~/api/adminApi'
+  import pageMixin from '~/mixins/page'
 
   export default {
+    mixins: [
+      pageMixin
+    ],
     data () {
       return {
         searching: false,
         user: null,
-        loading: false
+        loading: false,
+        showTransactions: false
       }
     },
     computed: {
@@ -184,6 +251,39 @@
       }
     },
     methods: {
+      async getTransactions (page) {
+        this.showTransactions = true
+        if (page <= this.pageState.max) {
+          this.pageState.cur = page
+          return
+        }
+        if (this.pageLoading) {
+          return
+        }
+        this.pageLoading = true;
+        this.pageState.size = 20;
+        const api = new Api(this);
+        try {
+          const data = await api.getUserCoinTransactions({
+            id: this.user.id,
+            to_page: page,
+            cur_page: this.pageState.cur,
+            take: this.pageState.size
+          });
+          this.pageState.total = data.total
+          this.pageState.cur = page;
+          this.pageState.max = page;
+          if (page === 1) {
+            this.pageList = data.list
+          } else {
+            this.pageList = this.pageList.concat(data.list)
+          }
+        } catch (e) {
+          this.$toast.error(e)
+        } finally {
+          this.pageLoading = false
+        }
+      },
       async searchUserByZone (zone) {
         if (this.searching) {
           return

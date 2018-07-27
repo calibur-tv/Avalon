@@ -310,4 +310,10 @@ export default class extends BaseApi {
   passBangumi ({ id }) {
     return this.http.post('admin/trial/bangumi/pass', { id })
   }
+
+  getUserCoinTransactions ({ id, to_page, cur_page, take }) {
+    return this.http.post('admin/user/transactions', {
+      id, to_page, cur_page, take
+    })
+  }
 }
