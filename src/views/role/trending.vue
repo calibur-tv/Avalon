@@ -2,127 +2,127 @@
   #trending-role {
     .layout-main {
       margin-left: 15px;
-    }
 
-    .item {
-      position: relative;
-      margin-top: 15px;
-      float: none;
-
-      &:not(:last-child) {
-        border-bottom: 1px solid #F0F0F0;
-      }
-
-      .top {
+      .item {
         position: relative;
-        display: block;
-        float: right;
+        margin-top: 15px;
+        float: none;
 
-        &:before {
-          content: attr(data-index);
-          line-height: 48px;
+        &:not(:last-child) {
+          border-bottom: 1px solid #F0F0F0;
         }
-      }
 
-      &:first-of-type {
-        .top:before {
-          color: goldenrod;
-          font-size: 28px;
-          line-height: 44px;
-        }
-      }
-
-      &:nth-of-type(2) {
-        .top:before {
-          color: indianred;
-          font-size: 22px;
-          line-height: 44px;
-        }
-      }
-
-      &:nth-of-type(3) {
-        .top:before {
-          color: silver;
-          font-size: 16px;
-          line-height: 44px;
-        }
-      }
-
-      .avatar {
-        width: 100px;
-        height: 100px;
-        display: block;
-        float: left;
-        overflow: hidden;
-        border-radius: 5px;
-        margin-right: 10px;
-        border: 1px solid $color-gray-normal;
-
-        img {
-          width: 100%;
-          height: auto;
-        }
-      }
-
-      .summary {
-        overflow: hidden;
-        height: 100px;
-
-        .role {
+        .top {
+          position: relative;
           display: block;
-          font-size: 14px;
-          line-height: 20px;
-          height: 60px;
-          overflow: hidden;
-
-          .name {
-            font-weight: bold;
-          }
-
-          .intro {
-            color: #000;
-          }
-        }
-
-        .lover {
-          height: 20px;
-          line-height: 20px;
-          vertical-align: middle;
-          font-size: 13px;
-          color: $color-text-normal;
-          margin-top: 20px;
-
-          img {
-            width: 20px;
-            height: 20px;
-            border-radius: 15px;
-            vertical-align: middle;
-            border: 1px solid $color-gray-normal;
-            margin-left: 10px;
-          }
-        }
-      }
-
-      .footer {
-        height: 44px;
-        line-height: 44px;
-
-        .bangumi {
-          color: #999;
-          font-size: 12px;
-          overflow: hidden;
-          margin-right: 8px;
-        }
-
-        .stats {
-          text-align: right;
-          color: #666;
           float: right;
 
-          span {
-            margin-left: 10px;
+          &:before {
+            content: attr(data-index);
+            line-height: 48px;
+          }
+        }
+
+        &:first-of-type {
+          .top:before {
+            color: goldenrod;
+            font-size: 28px;
+            line-height: 44px;
+          }
+        }
+
+        &:nth-of-type(2) {
+          .top:before {
+            color: indianred;
+            font-size: 22px;
+            line-height: 44px;
+          }
+        }
+
+        &:nth-of-type(3) {
+          .top:before {
+            color: silver;
+            font-size: 16px;
+            line-height: 44px;
+          }
+        }
+
+        .avatar {
+          width: 100px;
+          height: 100px;
+          display: block;
+          float: left;
+          overflow: hidden;
+          border-radius: 5px;
+          margin-right: 10px;
+          border: 1px solid $color-gray-normal;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .summary {
+          overflow: hidden;
+          height: 100px;
+
+          .role {
+            display: block;
+            font-size: 14px;
+            line-height: 20px;
+            height: 60px;
+            overflow: hidden;
+
+            .name {
+              font-weight: bold;
+            }
+
+            .intro {
+              color: #000;
+            }
+          }
+
+          .lover {
+            height: 20px;
+            line-height: 20px;
+            vertical-align: middle;
+            font-size: 13px;
+            color: $color-text-normal;
+            margin-top: 20px;
+
+            img {
+              width: 20px;
+              height: 20px;
+              border-radius: 15px;
+              vertical-align: middle;
+              border: 1px solid $color-gray-normal;
+              margin-left: 10px;
+            }
+          }
+        }
+
+        .footer {
+          height: 44px;
+          line-height: 44px;
+
+          .bangumi {
+            color: #999;
             font-size: 12px;
-            margin-right: 2px;
+            overflow: hidden;
+            margin-right: 8px;
+          }
+
+          .stats {
+            text-align: right;
+            color: #666;
+            float: right;
+
+            span {
+              margin-left: 10px;
+              font-size: 12px;
+              margin-right: 2px;
+            }
           }
         }
       }
