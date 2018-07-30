@@ -316,4 +316,10 @@ export default class extends BaseApi {
       id, to_page, cur_page, take
     })
   }
+
+  withdrawal ({ id, money }) {
+    return this.http.post('admin/user/withdrawal', {
+      id, money
+    })
+  }
 }

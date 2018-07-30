@@ -155,6 +155,14 @@
         >
           封禁
         </el-button>
+        <el-button
+          v-if="isKing"
+          type="success"
+          size="mini"
+          @click="getMoney"
+        >
+          提现
+        </el-button>
       </div>
     </div>
     <template v-if="showTransactions">
@@ -174,7 +182,7 @@
         />
         <el-table-column label="金额">
           <span slot-scope="scope">
-            {{ scope.row.type === '支出' ? '-' : '+' }}1
+            {{ scope.row.type === '支出' ? '-' : '+' }}{{ scope.row.count }}
           </span>
         </el-table-column>
         <el-table-column
@@ -232,6 +240,9 @@
       },
       queryId () {
         return +(this.$route.query.id || 0)
+      },
+      isKing () {
+        return this.$store.state.user.id === 1
       }
     },
     watch: {
@@ -365,6 +376,35 @@
         } finally {
           this.loading = false
         }
+      },
+      getMoney () {
+        this.$prompt('输入要提现的金额', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          const data = +value;
+          if (data !== data) {
+            this.$toast.error('错误的格式');
+            return;
+          }
+          if (!/^\d+$/.test(data)) {
+            this.$toast.error('必须是整数');
+            return;
+          }
+          if (data <= 0) {
+            this.$toast.error('必须大于0');
+            return;
+          }
+          const api = new Api(this);
+          api.withdrawal({
+            id: this.user.id,
+            money: data
+          }).then(() => {
+            this.$toast.success('操作成功');
+          }).catch((e) => {
+            this.$toast.error(e);
+          })
+        }).catch(() => {});
       }
     }
   }
