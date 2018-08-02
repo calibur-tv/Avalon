@@ -1,9 +1,3 @@
-<style lang="scss">
-  #error-503 {
-
-  }
-</style>
-
 <template>
   <div id="error-503">
     <p>您访问的服务暂不可用</p>
@@ -19,7 +13,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error503'
-  }
+export default {
+  name: "Error503"
+};
 </script>

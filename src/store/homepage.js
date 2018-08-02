@@ -1,13 +1,13 @@
-import Api from '~/api/imageApi';
+import Api from "~/api/imageApi";
 
 const state = () => ({
-  banners: [],
+  banners: []
 });
 
 const mutations = {
   pushBanners(state, data) {
     state.banners = data;
-  },
+  }
 };
 
 const actions = {
@@ -17,8 +17,8 @@ const actions = {
     }
     const api = new Api(ctx);
     const data = await api.getBanners();
-    commit('pushBanners', data);
-  },
+    commit("pushBanners", data);
+  }
 };
 
 const getters = {};
@@ -28,5 +28,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
+  getters
 };

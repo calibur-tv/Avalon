@@ -1,76 +1,76 @@
 <style lang="scss">
-  #bangumi-tags {
-    .bangumis {
-      margin-left: 15px;
+#bangumi-tags {
+  .bangumis {
+    margin-left: 15px;
+  }
+
+  .tags {
+    margin-bottom: 25px;
+    margin-left: 15px;
+
+    li {
+      margin-right: 10px;
+      margin-bottom: 10px;
+      float: left;
     }
 
-    .tags {
-      margin-bottom: 25px;
-      margin-left: 15px;
+    .btn {
+      font-size: 12px;
+      background-color: $color-white;
+      border: 1px solid $color-gray-deep;
+      padding: 0 5px;
+      line-height: 22px;
+      border-radius: 4px;
 
-      li {
-        margin-right: 10px;
-        margin-bottom: 10px;
-        float: left;
-      }
-
-      .btn {
-        font-size: 12px;
-        background-color: $color-white;
-        border: 1px solid $color-gray-deep;
-        padding: 0 5px;
-        line-height: 22px;
-        border-radius: 4px;
-
-        &:hover {
-          background-color: $color-gray-deep;
-        }
-      }
-    }
-
-    .bangumi {
-      width: 100%;
-      padding: 20px 10px;
-      @extend %clearfix;
-
-      &:not(:last-child) {
-        border-bottom: 1px solid $color-gray-normal;
-      }
-
-      .avatar {
-        width: 90px;
-        height: 90px;
-        margin-right: 15px;
-        float: left;
-
-        img {
-          width: 100%;
-          height: 100%;
-          border-radius: 5px;
-        }
-      }
-
-      .content {
-        overflow: hidden;
-
-        .title {
-          font-size: 18px;
-          font-weight: bold;
-
-          &:hover {
-            text-decoration: underline;
-          }
-        }
-
-        .desc {
-          margin: 10px 0 12px 0;
-          color: $color-text-light;
-          font-size: 13px;
-          @include twoline(18px);
-        }
+      &:hover {
+        background-color: $color-gray-deep;
       }
     }
   }
+
+  .bangumi {
+    width: 100%;
+    padding: 20px 10px;
+    @extend %clearfix;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-gray-normal;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      margin-right: 15px;
+      float: left;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+      }
+    }
+
+    .content {
+      overflow: hidden;
+
+      .title {
+        font-size: 18px;
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .desc {
+        margin: 10px 0 12px 0;
+        color: $color-text-light;
+        font-size: 13px;
+        @include twoline(18px);
+      }
+    }
+  }
+}
 </style>
 
 <template>
@@ -157,73 +157,77 @@
 </template>
 
 <script>
-  export default {
-    name: 'BangumiTags',
-    head: {
-      title: '分类索引 - 番剧'
-    },
-    async asyncData ({ route, store, ctx }) {
-      const id = route.query.id
-      const arr = [store.dispatch('bangumi/getTags', { id, ctx })]
-      if (id && (
-        /^\d+$/.test(id) ||
-        (id.indexOf('-') !== -1 && id.split('-').every(item => /^\d+$/.test(item)))
-      )) {
-        arr.push(store.dispatch('bangumi/getCategory', {
+export default {
+  name: "BangumiTags",
+  head: {
+    title: "分类索引 - 番剧"
+  },
+  async asyncData({ route, store, ctx }) {
+    const id = route.query.id;
+    const arr = [store.dispatch("bangumi/getTags", { id, ctx })];
+    if (
+      id &&
+      (/^\d+$/.test(id) ||
+        (id.indexOf("-") !== -1 &&
+          id.split("-").every(item => /^\d+$/.test(item))))
+    ) {
+      arr.push(
+        store.dispatch("bangumi/getCategory", {
           id,
           ctx
-        }))
-      }
-      await Promise.all(arr)
-    },
-    data () {
-      return {
-        loading: false
-      }
-    },
-    computed: {
-      id () {
-        return this.$route.query.id
-      },
-      bangumis () {
-        return this.$store.state.bangumi.category.data
-      },
-      tags () {
-        return this.$store.state.bangumi.tags
-      },
-      notFetch () {
-        return this.loading || this.$store.state.bangumi.category.noMore
-      }
-    },
-    methods: {
-      refresh () {
-        const selected = []
-        this.tags.forEach((tag) => {
-          if (tag.selected) {
-            selected.push(tag.id)
-          }
         })
-        if (selected.length) {
-          window.location = this.$alias.bangumiTag(selected.join('-'))
+      );
+    }
+    await Promise.all(arr);
+  },
+  data() {
+    return {
+      loading: false
+    };
+  },
+  computed: {
+    id() {
+      return this.$route.query.id;
+    },
+    bangumis() {
+      return this.$store.state.bangumi.category.data;
+    },
+    tags() {
+      return this.$store.state.bangumi.tags;
+    },
+    notFetch() {
+      return this.loading || this.$store.state.bangumi.category.noMore;
+    }
+  },
+  methods: {
+    refresh() {
+      const selected = [];
+      this.tags.forEach(tag => {
+        if (tag.selected) {
+          selected.push(tag.id);
         }
-      },
-      async loadMore () {
-        if (this.notFetch) {
-          return
-        }
-        this.loading = true
+      });
+      if (selected.length) {
+        window.location = this.$alias.bangumiTag(selected.join("-"));
+      }
+    },
+    async loadMore() {
+      if (this.notFetch) {
+        return;
+      }
+      this.loading = true;
 
-        try {
-          await this.$store.dispatch('bangumi/getCategory', {
-            id: this.$route.query.id,
-            ctx: this
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
+      try {
+        await this.$store.dispatch("bangumi/getCategory", {
+          id: this.$route.query.id,
+          ctx: this
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     }
   }
+};
 </script>

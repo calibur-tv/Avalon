@@ -1,31 +1,31 @@
-import Api from '~/api/commentApi';
-import { orderBy } from 'lodash';
+import Api from "~/api/commentApi";
+import { orderBy } from "lodash";
 
 const state = () => ({
-  type: '',
-  sort: 'desc',
+  type: "",
+  sort: "desc",
   fetchId: 0,
   list: [],
   total: 0,
   noMore: false,
-  submitting: false,
+  submitting: false
 });
 
 const mutations = {
   RESET_STATE(state, { type }) {
     state = {
       type,
-      fetchId: '',
+      fetchId: "",
       list: [],
       total: 0,
       noMore: false,
-      submitting: false,
+      submitting: false
     };
   },
   INIT_FETCH_TYPE(state, { type }) {
     state.type = type;
-    if (type === 'post') {
-      state.sort = 'asc';
+    if (type === "post") {
+      state.sort = "asc";
     }
   },
   SET_MAIN_COMMENTS(state, { comments, seeReplyId }) {
@@ -34,30 +34,37 @@ const mutations = {
       state.total = comments.total;
       return;
     }
-    const formatComments = comments.list.map((item) => {
+    const formatComments = comments.list.map(item => {
       // 子评论的 key 是 comments，是个对象，有 list，noMore，total 三个 key
       const childrenCommentList = item.comments.list;
       const childrenCommentLength = childrenCommentList.length;
       // 在每个子评论对象里里维护一个 maxId，这里默认子评论是 id 增大排序的
       const childrenCommentObj = Object.assign(item.comments, {
-        maxId: childrenCommentLength ? childrenCommentList[childrenCommentLength - 1].id : 0,
+        maxId: childrenCommentLength
+          ? childrenCommentList[childrenCommentLength - 1].id
+          : 0
       });
       return Object.assign(item, {
-        comments: childrenCommentObj,
+        comments: childrenCommentObj
       });
     });
     // 更新 fetchId，如果是第一页，并且有 seeReplyId，就比较麻烦
     state.fetchId = formatComments[formatComments.length - 1].id;
     if (!state.list.length && seeReplyId) {
-      state.fetchId = formatComments.map(_ => _.id).filter(_ => _ !== parseInt(seeReplyId, 10)).pop();
+      state.fetchId = formatComments
+        .map(_ => _.id)
+        .filter(_ => _ !== parseInt(seeReplyId, 10))
+        .pop();
     }
     // 操作主评论的 fetchId
     const resIds = formatComments.map(_ => _.id);
     const originList = state.list;
     // 对服务端进行一个校准
-    const hasNew = !!resIds.filter(_ => originList.map(_ => _.id).indexOf(_) === -1).length;
+    const hasNew = !!resIds.filter(
+      _ => originList.map(_ => _.id).indexOf(_) === -1
+    ).length;
     state.list = state.list.filter(_ => resIds.indexOf(_.id) === -1);
-    state.list = orderBy(state.list.concat(formatComments), 'id', state.sort);
+    state.list = orderBy(state.list.concat(formatComments), "id", state.sort);
     state.noMore = hasNew ? comments.noMore : true;
     state.total = hasNew ? comments.total : state.list.length;
   },
@@ -74,19 +81,28 @@ const mutations = {
       return;
     }
     // 更新 maxId
-    state.list[parentIndex].comments.maxId = comments.list[comments.list.length - 1].id;
+    state.list[parentIndex].comments.maxId =
+      comments.list[comments.list.length - 1].id;
     // 返回的 ids
     const resIds = comments.list.map(_ => _.id);
     const parentCommentList = parentComment.comments.list;
     // 对服务端进行一个校准
-    const hasNew = !!resIds.filter(_ => parentCommentList.map(_ => _.id).indexOf(_) === -1).length;
-    state.list[parentIndex].comments.list = parentCommentList.filter(_ => resIds.indexOf(_.id) === -1);
-    state.list[parentIndex].comments.list = state.list[parentIndex].comments.list.concat(comments.list);
+    const hasNew = !!resIds.filter(
+      _ => parentCommentList.map(_ => _.id).indexOf(_) === -1
+    ).length;
+    state.list[parentIndex].comments.list = parentCommentList.filter(
+      _ => resIds.indexOf(_.id) === -1
+    );
+    state.list[parentIndex].comments.list = state.list[
+      parentIndex
+    ].comments.list.concat(comments.list);
     state.list[parentIndex].comments.noMore = hasNew ? comments.noMore : true;
-    state.list[parentIndex].comments.total = hasNew ? comments.total : state.list[parentIndex].comments.list.length;
+    state.list[parentIndex].comments.total = hasNew
+      ? comments.total
+      : state.list[parentIndex].comments.list.length;
   },
   CREATE_MAIN_COMMENT(state, comment) {
-    state.sort === 'asc'
+    state.sort === "asc"
       ? state.list.push(comment)
       : state.list.unshift(comment);
     state.total += 1;
@@ -108,7 +124,8 @@ const mutations = {
         parent.comments.list.forEach((item, subIndex) => {
           if (item.id === id) {
             state.list[index].comments.list.splice(subIndex, 1);
-            state.list[index].comments.total = state.list[index].comments.total - 1;
+            state.list[index].comments.total =
+              state.list[index].comments.total - 1;
           }
         });
       }
@@ -129,7 +146,9 @@ const mutations = {
           if (item.id === id) {
             const result = !state.list[index].comments[subIndex].liked;
             state.list[index].comments[subIndex].liked = result;
-            state.list[index].comments[subIndex].like_count = state.list[index].comments[subIndex].like_count + (result ? 1 : -1);
+            state.list[index].comments[subIndex].like_count =
+              state.list[index].comments[subIndex].like_count +
+              (result ? 1 : -1);
           }
         });
       }
@@ -140,26 +159,28 @@ const mutations = {
       if (item.id === id) {
         const result = !state.list[index].liked;
         state.list[index].liked = result;
-        state.list[index].like_count = state.list[index].like_count + (result ? 1 : -1);
+        state.list[index].like_count =
+          state.list[index].like_count + (result ? 1 : -1);
       }
     });
-  },
+  }
 };
 
 const actions = {
-  async getMainComments({ state, commit }, {
-    ctx, type, id, onlySeeMaster, seeReplyId,
-  }) {
+  async getMainComments(
+    { state, commit },
+    { ctx, type, id, onlySeeMaster, seeReplyId }
+  ) {
     if (state.type) {
       if (state.type === type) {
         if (state.noMore) {
           return;
         }
       } else {
-        commit('RESET_STATE', { type });
+        commit("RESET_STATE", { type });
       }
     } else {
-      commit('INIT_FETCH_TYPE', { type });
+      commit("INIT_FETCH_TYPE", { type });
     }
     const api = new Api(ctx);
     const comments = await api.getMainCommentList({
@@ -167,9 +188,9 @@ const actions = {
       id,
       onlySeeMaster,
       seeReplyId,
-      fetchId: state.fetchId,
+      fetchId: state.fetchId
     });
-    comments && commit('SET_MAIN_COMMENTS', { comments, seeReplyId });
+    comments && commit("SET_MAIN_COMMENTS", { comments, seeReplyId });
   },
   async getSubComments({ state, commit }, { ctx, type, parentId }) {
     const store = state.list.filter(_ => _.id === parentId)[0].comments;
@@ -180,64 +201,64 @@ const actions = {
     const comments = await api.getSubCommentList({
       type,
       parentId,
-      maxId: store.maxId,
+      maxId: store.maxId
     });
-    commit('SET_SUB_COMMENTS', { comments, parentId });
+    commit("SET_SUB_COMMENTS", { comments, parentId });
   },
-  async createMainComment({ commit }, {
-    ctx, images, content, type, id,
-  }) {
+  async createMainComment({ commit }, { ctx, images, content, type, id }) {
     const api = new Api(ctx);
     const comment = await api.createMainComment({
-      type, id, content, images,
+      type,
+      id,
+      content,
+      images
     });
-    commit('CREATE_MAIN_COMMENT', comment);
+    commit("CREATE_MAIN_COMMENT", comment);
     return comment;
   },
-  async createSubComment({ commit }, {
-    ctx, id, type, content, targetUserId,
-  }) {
+  async createSubComment({ commit }, { ctx, id, type, content, targetUserId }) {
     const api = new Api(ctx);
     const comment = await api.createSubComment({
-      id, type, content, targetUserId,
+      id,
+      type,
+      content,
+      targetUserId
     });
-    commit('CREATE_SUB_COMMENT', { id, comment });
+    commit("CREATE_SUB_COMMENT", { id, comment });
     return comment;
   },
-  async deleteSubComment({ commit }, {
-    ctx, id, type, parentId,
-  }) {
+  async deleteSubComment({ commit }, { ctx, id, type, parentId }) {
     const api = new Api(ctx);
     await api.deleteSubComment({
-      id, type,
+      id,
+      type
     });
-    commit('DELETE_SUB_COMMENT', { parentId, id });
+    commit("DELETE_SUB_COMMENT", { parentId, id });
   },
   async deleteMainComment({ commit }, { ctx, id, type }) {
     const api = new Api(ctx);
     await api.deleteMainComment({
-      id, type,
+      id,
+      type
     });
-    commit('DELETE_MAIN_COMMENT', { id });
+    commit("DELETE_MAIN_COMMENT", { id });
   },
-  async toggleLikeSubComment({ commit }, {
-    ctx, type, id, parentId,
-  }) {
+  async toggleLikeSubComment({ commit }, { ctx, type, id, parentId }) {
     const api = new Api(ctx);
-    commit('TOGGLE_LIKE_SUB_COMMENT', { id, parentId });
+    commit("TOGGLE_LIKE_SUB_COMMENT", { id, parentId });
     await api.toggleLikeSubComment({
       type,
-      id,
+      id
     });
   },
   async toggleLikeMainComment({ commit }, { ctx, type, id }) {
     const api = new Api(ctx);
-    commit('TOGGLE_LIKE_MAIN_COMMENT', { id });
+    commit("TOGGLE_LIKE_MAIN_COMMENT", { id });
     await api.toggleLikeMainComment({
       type,
-      id,
+      id
     });
-  },
+  }
 };
 
 const getters = {};
@@ -247,5 +268,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
+  getters
 };

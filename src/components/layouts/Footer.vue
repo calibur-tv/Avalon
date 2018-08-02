@@ -1,44 +1,43 @@
 <style lang="scss">
-  #footer {
-    width: 100%;
-    margin: 30px 0;
-    text-align: center;
-    position: relative;
-    z-index: 2;
+#footer {
+  width: 100%;
+  margin: 30px 0;
+  text-align: center;
+  position: relative;
+  z-index: 2;
 
-    .hr {
-      margin: 0 50px;
-      font-size: 14px;
-    }
-
-    .links {
-      margin-top: 10px;
-      color: #7f9eb2;
-      font-size: 13px;
-    }
+  .hr {
+    margin: 0 50px;
+    font-size: 14px;
   }
+
+  .links {
+    margin-top: 10px;
+    color: #7f9eb2;
+    font-size: 13px;
+  }
+}
 </style>
 
 <style lang="scss" module>
-  .share-tips-modal {
-    text-align: left;
+.share-tips-modal {
+  text-align: left;
 
-    .tips {
+  .tips {
+    .p {
+      margin: 25px 10px 0 10px;
+    }
 
-      .p {
-        margin: 25px 10px 0 10px;
-      }
+    .footer {
+      padding: 20px;
 
-      .footer {
-        padding: 20px;
-
-        .copy-share-btn {
-          float: right;
-          margin-left: 10px;
-        }
+      .copy-share-btn {
+        float: right;
+        margin-left: 10px;
       }
     }
   }
+}
 </style>
 
 <template>
@@ -91,32 +90,32 @@
 </template>
 
 <script>
-  export default {
-    name: 'VFooter',
-    data () {
-      return {
-        toggleShareModal: false
-      }
-    },
-    computed: {
-      show () {
-        return ['homepage', 'invite-user'].indexOf(this.$route.name) === -1
-      }
-    },
-    methods: {
-      openShareModal () {
-        this.toggleShareModal = true
-        this.$nextTick(() => {
-          const clipboard = new this.$copy(this.$refs.shareBtn.$el)
+export default {
+  name: "VFooter",
+  data() {
+    return {
+      toggleShareModal: false
+    };
+  },
+  computed: {
+    show() {
+      return ["homepage", "invite-user"].indexOf(this.$route.name) === -1;
+    }
+  },
+  methods: {
+    openShareModal() {
+      this.toggleShareModal = true;
+      this.$nextTick(() => {
+        const clipboard = new this.$copy(this.$refs.shareBtn.$el);
 
-          clipboard.on('success', e => {
-            this.$toast.success('复制成功')
-            this.toggleShareModal = false
-            clipboard.destroy()
-            e.clearSelection()
-          })
-        })
-      }
+        clipboard.on("success", e => {
+          this.$toast.success("复制成功");
+          this.toggleShareModal = false;
+          clipboard.destroy();
+          e.clearSelection();
+        });
+      });
     }
   }
+};
 </script>

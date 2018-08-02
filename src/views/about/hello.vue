@@ -1,56 +1,56 @@
 <style lang="scss">
-  #about-hello {
-    .layout-main {
-      margin-left: 15px;
+#about-hello {
+  .layout-main {
+    margin-left: 15px;
 
-      h1 {
-        margin-bottom: 16px;
-        margin-top: 16px;
-        color: #333;
-        font-size: 24px;
+    h1 {
+      margin-bottom: 16px;
+      margin-top: 16px;
+      color: #333;
+      font-size: 24px;
+    }
+
+    h3 {
+      margin-top: 15px;
+      color: #333;
+      font-size: 18px;
+      position: relative;
+      padding-left: 12px;
+      margin-bottom: 20px;
+
+      &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        background-color: $color-blue-normal;
+        border-radius: 3px;
       }
+    }
 
-      h3 {
-        margin-top: 15px;
-        color: #333;
-        font-size: 18px;
-        position: relative;
-        padding-left: 12px;
-        margin-bottom: 20px;
+    p {
+      color: #333;
+      font-size: 14px;
+      text-indent: 2em;
+      margin-top: 5px;
+      line-height: 20px;
+    }
 
-        &:before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 3px;
-          height: 100%;
-          background-color: $color-blue-normal;
-          border-radius: 3px;
-        }
-      }
+    ul {
+      margin: 10px 0 5px 25px;
 
-      p {
-        color: #333;
+      li {
+        list-style-type: disc;
         font-size: 14px;
-        text-indent: 2em;
-        margin-top: 5px;
-        line-height: 20px;
-      }
-
-      ul {
-        margin: 10px 0 5px 25px;
-
-        li {
-          list-style-type: disc;
-          font-size: 14px;
-          color: #666;
-          line-height: 25px;
-          float: none;
-        }
+        color: #666;
+        line-height: 25px;
+        float: none;
       }
     }
   }
+}
 </style>
 
 <template>
@@ -117,15 +117,15 @@
 </template>
 
 <script>
-  export default {
-    name: 'DoorHello',
-    head: {
-      title: '欢迎'
-    },
-    computed: {
-      nickname () {
-        return this.$store.state.login ? this.$store.state.user.nickname : ''
-      }
+export default {
+  name: "DoorHello",
+  head: {
+    title: "欢迎"
+  },
+  computed: {
+    nickname() {
+      return this.$store.state.login ? this.$store.state.user.nickname : "";
     }
   }
+};
 </script>

@@ -1,5 +1,4 @@
 <style lang="scss">
-
 </style>
 
 <template>
@@ -9,32 +8,16 @@
 </template>
 
 <script>
-  export default {
-    components: {
-
-    },
-    props: {
-
-    },
-    data () {
-      return {
-
-      }
-    },
-    computed: {
-
-    },
-    watch: {
-
-    },
-    created () {
-
-    },
-    mounted () {
-
-    },
-    methods: {
-
-    }
-  }
+export default {
+  components: {},
+  props: {},
+  data() {
+    return {};
+  },
+  computed: {},
+  watch: {},
+  created() {},
+  mounted() {},
+  methods: {}
+};
 </script>

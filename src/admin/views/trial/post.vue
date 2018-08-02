@@ -1,61 +1,61 @@
 <style lang="scss">
-  #trial-post {
-    header {
-      text-align: right;
-      margin-right: 15px;
-    }
+#trial-post {
+  header {
+    text-align: right;
+    margin-right: 15px;
+  }
 
-    .trial-post-item {
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid $color-gray-normal;
+  .trial-post-item {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $color-gray-normal;
 
-      .header {
-        img {
-          width: 30px;
-          height: 30px;
-          vertical-align: middle;
-          border-radius: 4px;
-          margin-right: 10px;
-        }
-      }
-
-      .body {
-        .content {
-          font-size: 13px;
-          color: $color-text-light;
-          text-indent: 45px;
-          margin-top: -15px;
-        }
-
-        .images {
-          img {
-            width: 100px;
-            height: 100px;
-            vertical-align: top;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            cursor: pointer;
-          }
-        }
-      }
-
-      .item {
-        margin-bottom: 10px;
-      }
-
-      .label {
-        font-weight: bold;
-        font-size: 14px;
-        display: inline-block;
-        width: 45px;
-      }
-
-      .el-tag {
+    .header {
+      img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        border-radius: 4px;
         margin-right: 10px;
       }
     }
+
+    .body {
+      .content {
+        font-size: 13px;
+        color: $color-text-light;
+        text-indent: 45px;
+        margin-top: -15px;
+      }
+
+      .images {
+        img {
+          width: 100px;
+          height: 100px;
+          vertical-align: top;
+          margin-right: 5px;
+          margin-bottom: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .item {
+      margin-bottom: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 14px;
+      display: inline-block;
+      width: 45px;
+    }
+
+    .el-tag {
+      margin-right: 10px;
+    }
   }
+}
 </style>
 
 <template>
@@ -173,126 +173,147 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
 
-  export default {
-    data () {
-      return {
-        list: [],
-        loading: true
-      }
-    },
-    computed: {
-      isKing () {
-        return this.$store.state.user.id === 1
-      }
-    },
-    created () {
-      this.getData()
-    },
-    methods: {
-      getData () {
-        const api = new Api(this)
-        api.getTrialPosts().then((data) => {
+export default {
+  data() {
+    return {
+      list: [],
+      loading: true
+    };
+  },
+  computed: {
+    isKing() {
+      return this.$store.state.user.id === 1;
+    }
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const api = new Api(this);
+      api
+        .getTrialPosts()
+        .then(data => {
           this.list = data;
           this.loading = false;
-        }).catch((err) => {
+        })
+        .catch(err => {
           this.$toast.error(err);
           this.loading = false;
-        })
-      },
-      openImages (images) {
-        images.forEach(item => {
-          window.open(item.src)
-        })
-      },
-      delPost (index, id) {
-        this.$confirm('确定删除吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const api = new Api(this)
-          api.deletePost({ id }).then(() => {
-            this.list.splice(index, 1);
-            this.$toast.success('操作成功')
-            this.$channel.$emit('admin-trial-do', {
-              type: 'posts'
+        });
+    },
+    openImages(images) {
+      images.forEach(item => {
+        window.open(item.src);
+      });
+    },
+    delPost(index, id) {
+      this.$confirm("确定删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          const api = new Api(this);
+          api
+            .deletePost({ id })
+            .then(() => {
+              this.list.splice(index, 1);
+              this.$toast.success("操作成功");
+              this.$channel.$emit("admin-trial-do", {
+                type: "posts"
+              });
             })
-          }).catch((e) => {
-            console.log(e);
-            this.$message.error(e);
-          });
-        }).catch(() => {});
-      },
-      passPost (index, id) {
-        const api = new Api(this);
-        api.passPost({ id }).then(() => {
+            .catch(e => {
+              console.log(e);
+              this.$message.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    passPost(index, id) {
+      const api = new Api(this);
+      api
+        .passPost({ id })
+        .then(() => {
           this.list.splice(index, 1);
-          this.$toast.success('操作成功')
-          this.$channel.$emit('admin-trial-do', {
-            type: 'posts'
-          })
-        }).catch((e) => {
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "posts"
+          });
+        })
+        .catch(e => {
           this.$message.error(e);
         });
-      },
-      deleteImage (id, src, index, subIndex) {
-        if (!src) {
-          return;
-        }
-        this.$confirm('确定删除吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+    },
+    deleteImage(id, src, index, subIndex) {
+      if (!src) {
+        return;
+      }
+      this.$confirm("确定删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           const api = new Api(this);
-          api.deletePostImage({ id, src }).then(() => {
-          }).then(() => {
-            this.list[index].images.splice(subIndex, 1);
-            this.$toast.success('操作成功');
-          }).catch((e) => {
-            console.log(e);
-            this.$message.error(e);
-          });
-        }).catch(() => {});
-      },
-      quickDelete () {
-        this.$prompt('请输入帖子id', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d+$/,
-          inputErrorMessage: '非法的id'
-        }).then(({ value }) => {
+          api
+            .deletePostImage({ id, src })
+            .then(() => {})
+            .then(() => {
+              this.list[index].images.splice(subIndex, 1);
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              console.log(e);
+              this.$message.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    quickDelete() {
+      this.$prompt("请输入帖子id", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error('非法的id');
+            this.$toast.error("非法的id");
             return;
           }
           const api = new Api(this);
-          api.deletePost({
-            id: value
-          }).then(() => {
-            this.$toast.success('操作成功');
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
-      },
-      computePostState(post) {
-        if (post.deleted_at) {
-          return '已删除'
-        }
-        if (post.user_id === post.state) {
-          return '刚发布'
-        }
-        if (post.is_nice) {
-          return '被加精'
-        }
-        if (post.top_at) {
-          return '被置顶'
-        }
-        return '未知'
+          api
+            .deletePost({
+              id: value
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    computePostState(post) {
+      if (post.deleted_at) {
+        return "已删除";
       }
+      if (post.user_id === post.state) {
+        return "刚发布";
+      }
+      if (post.is_nice) {
+        return "被加精";
+      }
+      if (post.top_at) {
+        return "被置顶";
+      }
+      return "未知";
     }
   }
+};
 </script>

@@ -135,141 +135,148 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
-  import pageMixin from '~/mixins/page'
-  import deepAssign from 'deep-assign'
+import Api from "~/api/adminApi";
+import pageMixin from "~/mixins/page";
+import deepAssign from "deep-assign";
 
-  export default {
-    mixins: [
-      pageMixin
-    ],
-    data () {
-      return {
-        bangumiId: 0,
-        showEditorModal: false,
-        editSubmitting: false,
-        editForm: {
-          id: '',
-          bangumi_id: '',
-          bname: '',
-          name: '',
-          part: '',
-          poster: '',
-          url: '',
-          resource: {
-            "video": {
-              "720": {
-                "useLyc": false,
-                "src": ""
-              },
-              "1080": {
-                "useLyc": false,
-                "src": ""
-              }
+export default {
+  mixins: [pageMixin],
+  data() {
+    return {
+      bangumiId: 0,
+      showEditorModal: false,
+      editSubmitting: false,
+      editForm: {
+        id: "",
+        bangumi_id: "",
+        bname: "",
+        name: "",
+        part: "",
+        poster: "",
+        url: "",
+        resource: {
+          video: {
+            "720": {
+              useLyc: false,
+              src: ""
             },
-            "lyric": {
-              "zh": "",
-              "en": ""
+            "1080": {
+              useLyc: false,
+              src: ""
             }
+          },
+          lyric: {
+            zh: "",
+            en: ""
           }
         }
       }
+    };
+  },
+  methods: {
+    async getData(page) {
+      if (page <= this.pageState.max) {
+        this.pageState.cur = page;
+        return;
+      }
+      if (this.pageLoading) {
+        return;
+      }
+      this.pageLoading = true;
+      this.pageState.size = 10;
+      const api = new Api(this);
+      try {
+        const data = await api.getBangumiVideoList({
+          id: this.bangumiId,
+          to_page: page,
+          cur_page: this.pageState.cur,
+          take: this.pageState.size
+        });
+        this.pageState.total = data.total;
+        this.pageState.cur = page;
+        this.pageState.max = page;
+        if (page === 1) {
+          this.pageList = data.list;
+        } else {
+          this.pageList = this.pageList.concat(data.list);
+        }
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.pageLoading = false;
+      }
     },
-    methods: {
-      async getData (page) {
-        if (page <= this.pageState.max) {
-          this.pageState.cur = page
-          return
-        }
-        if (this.pageLoading) {
-          return
-        }
-        this.pageLoading = true;
-        this.pageState.size = 10;
-        const api = new Api(this);
-        try {
-          const data = await api.getBangumiVideoList({
-            id: this.bangumiId,
-            to_page: page,
-            cur_page: this.pageState.cur,
-            take: this.pageState.size
-          });
-          this.pageState.total = data.total
-          this.pageState.cur = page;
-          this.pageState.max = page;
-          if (page === 1) {
-            this.pageList = data.list
-          } else {
-            this.pageList = this.pageList.concat(data.list)
-          }
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.pageLoading = false
-        }
-      },
-      handleBangumiSearch (id) {
-        if (this.bangumiId !== id) {
-          this.resetPageState();
-        }
-        this.bangumiId = id;
-        this.getData(1);
-      },
-      handleEditOpen (row) {
-        Object.keys(row).forEach(key => {
-          this.editForm[key] = row[key]
-        })
-        const defResource = {
-          "video": {
-            "720": {
-              "useLyc": false,
-              "src": ""
-            },
-            "1080": {
-              "useLyc": false,
-              "src": ""
-            }
+    handleBangumiSearch(id) {
+      if (this.bangumiId !== id) {
+        this.resetPageState();
+      }
+      this.bangumiId = id;
+      this.getData(1);
+    },
+    handleEditOpen(row) {
+      Object.keys(row).forEach(key => {
+        this.editForm[key] = row[key];
+      });
+      const defResource = {
+        video: {
+          "720": {
+            useLyc: false,
+            src: ""
           },
-          "lyric": {
-            "zh": "",
-            "en": ""
+          "1080": {
+            useLyc: false,
+            src: ""
           }
+        },
+        lyric: {
+          zh: "",
+          en: ""
         }
-        this.editForm.resource = row.resource ? deepAssign({}, defResource, row.resource) : Object.assign({}, defResource);
-        this.editForm.poster = this.editForm.poster.split('calibur.tv/').pop()
-        this.showEditorModal = true;
-      },
-      handleDelete (video) {
-        this.$confirm('确认要执行该操作吗?', '提示').then(() => {
+      };
+      this.editForm.resource = row.resource
+        ? deepAssign({}, defResource, row.resource)
+        : Object.assign({}, defResource);
+      this.editForm.poster = this.editForm.poster.split("calibur.tv/").pop();
+      this.showEditorModal = true;
+    },
+    handleDelete(video) {
+      this.$confirm("确认要执行该操作吗?", "提示")
+        .then(() => {
           const api = new Api(this);
-          api.videoDelete({
-            id: video.id
-          }).then(() => {
-            video.deleted_at = !video.deleted_at
-            this.$toast.success('操作成功');
-          }).catch(() => {
-            this.$toast.error('操作失败');
+          api
+            .videoDelete({
+              id: video.id
+            })
+            .then(() => {
+              video.deleted_at = !video.deleted_at;
+              this.$toast.success("操作成功");
+            })
+            .catch(() => {
+              this.$toast.error("操作失败");
+            });
+        })
+        .catch(() => {});
+    },
+    async handleEditDone() {
+      if (this.editSubmitting) {
+        return;
+      }
+      this.editSubmitting = true;
+      const api = new Api(this);
+      try {
+        await api.videoEdit(
+          Object.assign({}, this.editForm, {
+            url: this.editForm.url.split("?").shift()
           })
-        }).catch(() => {});
-      },
-      async handleEditDone () {
-        if (this.editSubmitting) {
-          return
-        }
-        this.editSubmitting = true;
-        const api = new Api(this);
-        try {
-          await api.videoEdit(Object.assign({}, this.editForm, {
-            url: this.editForm.url.split('?').shift()
-          }));
-          this.$toast.success('操作成功，页面刷新后可看到改动');
-          this.showEditorModal = false;
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.editSubmitting = false;
-        }
+        );
+        this.$toast.success("操作成功，页面刷新后可看到改动");
+        this.showEditorModal = false;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.editSubmitting = false;
       }
     }
   }
+};
 </script>

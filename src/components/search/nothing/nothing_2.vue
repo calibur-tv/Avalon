@@ -1,8 +1,3 @@
-<style lang="scss">
-  .search-nothing-bangumi {
-  }
-</style>
-
 <template>
   <div class="search-nothing-bangumi">
     <no-content/>
@@ -10,7 +5,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'SearchNothingBangumi'
-  }
+export default {
+  name: "SearchNothingBangumi"
+};
 </script>

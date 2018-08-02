@@ -1,11 +1,11 @@
-import Api from '~/api/postApi';
+import Api from "~/api/postApi";
 
 const state = () => ({
   info: {
     bangumi: null,
     user: null,
-    post: null,
-  },
+    post: null
+  }
 });
 
 const mutations = {
@@ -24,14 +24,14 @@ const mutations = {
   },
   FOLLOW_BANGUMI(state, { result }) {
     state.info.bangumi.followed = result;
-  },
+  }
 };
 
 const actions = {
   async getPost({ commit }, { id, ctx, only }) {
     const api = new Api(ctx);
     const data = await api.show({ id, only });
-    commit('SET_POST_INFO', data);
+    commit("SET_POST_INFO", data);
   },
   // eslint-disable-next-line no-empty-pattern
   async create({}, params) {
@@ -47,13 +47,13 @@ const actions = {
   async toggleLike({ commit }, { ctx, id }) {
     const api = new Api(ctx);
     const result = await api.toggleLike(id);
-    commit('TOGGLE_LIKE_POST', { result });
+    commit("TOGGLE_LIKE_POST", { result });
   },
   async toggleMark({ commit }, { ctx, id }) {
     const api = new Api(ctx);
     const result = await api.toggleMark(id);
-    commit('TOGGLE_MARK_POST', result);
-  },
+    commit("TOGGLE_MARK_POST", result);
+  }
 };
 
 const getters = {};
@@ -63,5 +63,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
+  getters
 };

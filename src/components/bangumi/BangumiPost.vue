@@ -28,64 +28,62 @@
 </template>
 
 <script>
-  import PostShowItem from '~/components/items/PostShow'
+import PostShowItem from "~/components/items/PostShow";
 
-  export default {
-    name: 'BangumiPost',
-    components: {
-      PostShowItem
+export default {
+  name: "BangumiPost",
+  components: {
+    PostShowItem
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
     },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      posts () {
-        return this.$store.state.trending.type === 'post'
-          ? this.$store.state.trending.active
-          : null
-      },
-      topPosts () {
-        return this.$store.state.bangumi.topPosts
-      },
-      postList () {
-        return this.posts
-          ? this.topPosts.concat(this.posts.list)
-          : this.topPosts
+    posts() {
+      return this.$store.state.trending.type === "post"
+        ? this.$store.state.trending.active
+        : null;
+    },
+    topPosts() {
+      return this.$store.state.bangumi.topPosts;
+    },
+    postList() {
+      return this.posts ? this.topPosts.concat(this.posts.list) : this.topPosts;
+    }
+  },
+  mounted() {
+    this.$channel.$on("bangumi-tab-switch-post", () => {
+      this.getData();
+    });
+  },
+  methods: {
+    async getData() {
+      try {
+        await this.$store.dispatch("trending/getTrending", {
+          type: "post",
+          sort: "active",
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
       }
     },
-    mounted () {
-      this.$channel.$on('bangumi-tab-switch-post', () => {
-        this.getData()
-      })
+    async loadMore() {
+      try {
+        await this.$store.dispatch("trending/loadMore", {
+          type: "post",
+          sort: "active",
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      }
     },
-    methods: {
-      async getData () {
-        try {
-          await this.$store.dispatch('trending/getTrending', {
-            type: 'post',
-            sort: 'active',
-            ctx: this,
-            bangumiId: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
-      },
-      async loadMore () {
-        try {
-          await this.$store.dispatch('trending/loadMore', {
-            type: 'post',
-            sort: 'active',
-            ctx: this,
-            bangumiId: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
-      },
-      openCreatePostModal () {
-        this.$channel.$emit('show-create-post-modal')
-      },
+    openCreatePostModal() {
+      this.$channel.$emit("show-create-post-modal");
     }
   }
+};
 </script>

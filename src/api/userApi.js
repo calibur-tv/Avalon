@@ -1,34 +1,39 @@
-import BaseApi from './_baseApi';
+import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
   getLoginUser() {
-    return this.http.post('door/user');
+    return this.http.post("door/user");
   }
 
   sendMessage({ phone_number, type, geetest }) {
-    return this.http.post('door/message', {
-      phone_number, type, geetest,
+    return this.http.post("door/message", {
+      phone_number,
+      type,
+      geetest
     });
   }
 
-  login({
-    access, secret, remember, geetest,
-  }) {
-    return this.http.post('door/login', {
-      access, secret, remember, geetest,
+  login({ access, secret, remember, geetest }) {
+    return this.http.post("door/login", {
+      access,
+      secret,
+      remember,
+      geetest
     });
   }
 
-  register({
-    access, secret, nickname, authCode, inviteCode,
-  }) {
-    return this.http.post('door/register', {
-      access, secret, nickname, authCode, inviteCode,
+  register({ access, secret, nickname, authCode, inviteCode }) {
+    return this.http.post("door/register", {
+      access,
+      secret,
+      nickname,
+      authCode,
+      inviteCode
     });
   }
 
   logout() {
-    return this.http.post('door/logout');
+    return this.http.post("door/logout");
   }
 
   getUserInfo({ zone }) {
@@ -36,72 +41,74 @@ export default class extends BaseApi {
   }
 
   settingProfile(params) {
-    return this.http.post('user/setting/profile', params);
+    return this.http.post("user/setting/profile", params);
   }
 
   followBangumis(zone) {
     return this.http.get(`user/${zone}/followed/bangumi`);
   }
 
-  followPosts({
-    type, zone, take, minId,
-  }) {
+  followPosts({ type, zone, take, minId }) {
     return this.http.get(`user/${zone}/posts/${type}`, {
-      params: { take, minId },
+      params: { take, minId }
     });
   }
 
   settingImage({ type, url }) {
-    return this.http.post('user/setting/image', { type, url });
+    return this.http.post("user/setting/image", { type, url });
   }
 
   feedback({ type, desc, ua }) {
-    return this.http.post('user/feedback', { type, desc, ua });
+    return this.http.post("user/feedback", { type, desc, ua });
   }
 
   daySign() {
-    return this.http.post('user/daySign');
+    return this.http.post("user/daySign");
   }
 
   getNotificationCount() {
-    return this.http.get('user/notification/count');
+    return this.http.get("user/notification/count");
   }
 
   getNotifications({ minId }) {
-    return this.http.get('user/notification/list', {
-      params: { minId },
+    return this.http.get("user/notification/list", {
+      params: { minId }
     });
   }
 
   readMessage(id) {
-    return this.http.post('user/notification/read', { id });
+    return this.http.post("user/notification/read", { id });
   }
 
   readAllMessage() {
-    return this.http.post('user/notification/clear');
+    return this.http.post("user/notification/clear");
   }
 
-  resetPassword({
-    method, access, authCode, secret,
-  }) {
-    return this.http.post('door/reset', {
-      method, access, authCode, secret,
+  resetPassword({ method, access, authCode, secret }) {
+    return this.http.post("door/reset", {
+      method,
+      access,
+      authCode,
+      secret
     });
   }
 
-  images({
-    zone, take, seenIds, size, tags, bangumiId, creator,
-  }) {
+  images({ zone, take, seenIds, size, tags, bangumiId, creator }) {
     return this.http.get(`user/${zone}/images/list`, {
       params: {
-        take, seenIds, size, tags, bangumiId, creator,
-      },
+        take,
+        seenIds,
+        size,
+        tags,
+        bangumiId,
+        creator
+      }
     });
   }
 
   followRoles({ zone, page }) {
     return this.http.get(`user/${zone}/followed/role`, {
-      params: { page },
+      params: { page }
     });
   }
 }

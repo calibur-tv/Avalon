@@ -1,80 +1,80 @@
 <style lang="scss">
-  .post-item {
-    .user {
-      width: 180px;
-      float: left;
+.post-item {
+  .user {
+    width: 180px;
+    float: left;
 
-      .avatar {
-        display: block;
-        margin: 34px auto 5px auto;
-        border: 1px solid $color-gray-normal;
-        @include avatar(80px);
-      }
-
-      .nickname {
-        display: block;
-        background: #fff;
-        width: 98px;
-        height: 28px;
-        line-height: 24px;
-        margin: 0 auto;
-        text-align: center;
-      }
+    .avatar {
+      display: block;
+      margin: 34px auto 5px auto;
+      border: 1px solid $color-gray-normal;
+      @include avatar(80px);
     }
 
-    .content {
-      overflow: hidden;
+    .nickname {
+      display: block;
       background: #fff;
-      border-top: 1px solid #e5e9ef;
-      padding-top: 22px;
-      margin-top: 14px;
+      width: 98px;
+      height: 28px;
+      line-height: 24px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
 
-      .main {
-        min-height: 80px;
-      }
+  .content {
+    overflow: hidden;
+    background: #fff;
+    border-top: 1px solid #e5e9ef;
+    padding-top: 22px;
+    margin-top: 14px;
 
-      .image {
-        width: 100%;
-        height: auto;
-        margin-bottom: 12px;
-        cursor: zoom-in;
-      }
+    .main {
+      min-height: 80px;
+    }
 
-      .text-package {
-        line-height: 24px;
-        padding: 2px 0;
-        font-size: 14px;
-        overflow: hidden;
-        word-wrap: break-word;
-      }
+    .image {
+      width: 100%;
+      height: auto;
+      margin-bottom: 12px;
+      cursor: zoom-in;
+    }
 
-      .likes-wrap {
-        text-align: center;
-        margin: 50px 0;
-      }
+    .text-package {
+      line-height: 24px;
+      padding: 2px 0;
+      font-size: 14px;
+      overflow: hidden;
+      word-wrap: break-word;
+    }
 
-      .footer {
-        color: #99a2aa;
-        line-height: 26px;
-        font-size: 12px;
+    .likes-wrap {
+      text-align: center;
+      margin: 50px 0;
+    }
 
-        .info-bar {
-          height: 40px;
-          line-height: 40px;
+    .footer {
+      color: #99a2aa;
+      line-height: 26px;
+      font-size: 12px;
 
-          .delete-btn,
-          .floor-count,
-          .like-btn {
-            margin-right: 20px;
-          }
+      .info-bar {
+        height: 40px;
+        line-height: 40px;
 
-          .v-share {
-            float: right;
-          }
+        .delete-btn,
+        .floor-count,
+        .like-btn {
+          margin-right: 20px;
+        }
+
+        .v-share {
+          float: right;
         }
       }
     }
   }
+}
 </style>
 
 <template>
@@ -148,86 +148,86 @@
 </template>
 
 <script>
-  import PostSubCommentList from './PostSubCommentList.vue'
+import PostSubCommentList from "./PostSubCommentList.vue";
 
-  export default {
-    name: 'PostCommentItem',
-    components: {
-      PostSubCommentList
+export default {
+  name: "PostCommentItem",
+  components: {
+    PostSubCommentList
+  },
+  props: {
+    post: {
+      required: true,
+      type: Object
     },
-    props: {
-      post: {
-        required: true,
-        type: Object
-      },
-      masterId: {
-        required: true,
-        type: Number
+    masterId: {
+      required: true,
+      type: Number
+    }
+  },
+  data() {
+    return {
+      deleting: false,
+      liking: false
+    };
+  },
+  computed: {
+    currentUserId() {
+      return this.$store.state.login ? this.$store.state.user.id : 0;
+    },
+    isMine() {
+      return this.currentUserId === this.post["from_user_id"];
+    },
+    canDelete() {
+      return this.isMine || this.currentUserId === this.masterId;
+    }
+  },
+  methods: {
+    async toggleLike() {
+      if (!this.currentUserId) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      if (this.liking) {
+        return;
+      }
+      this.liking = true;
+      try {
+        await this.$store.dispatch("comment/toggleLikeMainComment", {
+          ctx: this,
+          type: "post",
+          id: this.post.id
+        });
+      } catch (e) {
+      } finally {
+        this.liking = false;
       }
     },
-    data () {
-      return {
-        deleting: false,
-        liking: false
+    deleteComment() {
+      if (this.deleting) {
+        return;
       }
-    },
-    computed: {
-      currentUserId () {
-        return this.$store.state.login
-          ? this.$store.state.user.id
-          : 0
-      },
-      isMine () {
-        return this.currentUserId === this.post['from_user_id']
-      },
-      canDelete () {
-        return this.isMine || this.currentUserId === this.masterId
-      }
-    },
-    methods: {
-      async toggleLike () {
-        if (!this.currentUserId) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.liking) {
-          return
-        }
-        this.liking = true
-        try {
-          await this.$store.dispatch('comment/toggleLikeMainComment', {
+      this.deleting = true;
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch("comment/deleteMainComment", {
+            type: "post",
             ctx: this,
-            type: 'post',
             id: this.post.id
-          })
-        } catch (e) {
-        } finally {
-          this.liking = false
-        }
-      },
-      deleteComment () {
-        if (this.deleting) {
-          return
-        }
-        this.deleting = true
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('comment/deleteMainComment', {
-            type: 'post',
-            ctx: this,
-            id: this.post.id
-          })
-        }).catch((e) => {
-          this.deleting = false
-          if (e === 'cancel') {
-            return
-          }
-          this.$toast.error(e)
+          });
         })
-      }
+        .catch(e => {
+          this.deleting = false;
+          if (e === "cancel") {
+            return;
+          }
+          this.$toast.error(e);
+        });
     }
   }
+};
 </script>

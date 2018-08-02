@@ -1,56 +1,56 @@
 <style lang="scss">
-  #invite-user {
-    background-image: url("https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+#invite-user {
+  background-image: url("https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-    .signed {
-      text-align: center;
-      font-size: 14px;
-      color: $color-text-normal;
-      line-height: 30px;
-      background-color: rgba(255, 255, 255, .85);
-      padding: 20px 40px;
-      width: 580px;
-      margin: 200px auto 0 auto;
-      border-radius: 10px;
-      font-weight: bold;
+  .signed {
+    text-align: center;
+    font-size: 14px;
+    color: $color-text-normal;
+    line-height: 30px;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px 40px;
+    width: 580px;
+    margin: 200px auto 0 auto;
+    border-radius: 10px;
+    font-weight: bold;
 
-      button {
-        margin-top: 10px;
-      }
-    }
-
-    .sign-wrap {
-      width: 580px;
-      margin: 150px auto 0 auto;
-      background-color: rgba(255, 255, 255, .85);
-      padding: 20px 40px;
-      border-radius: 10px;
-
-      h3 {
-        text-align: center;
-        margin-top: 40px;
-        margin-bottom: 40px;
-      }
-
-      input {
-        padding-left: 15px !important;
-      }
-    }
-
-    .el-alert {
-      margin-bottom: 25px;
-
-      p {
-        margin-bottom: 5px;
-        font-size: 13px;
-        line-height: 18px;
-        color: $color-text-normal;
-      }
+    button {
+      margin-top: 10px;
     }
   }
+
+  .sign-wrap {
+    width: 580px;
+    margin: 150px auto 0 auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px 40px;
+    border-radius: 10px;
+
+    h3 {
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    input {
+      padding-left: 15px !important;
+    }
+  }
+
+  .el-alert {
+    margin-bottom: 25px;
+
+    p {
+      margin-bottom: 5px;
+      font-size: 13px;
+      line-height: 18px;
+      color: $color-text-normal;
+    }
+  }
+}
 </style>
 
 <template>
@@ -107,37 +107,37 @@
 </template>
 
 <script>
-  import SignUpForm from '~/components/user/forms/SignUpForm'
+import SignUpForm from "~/components/user/forms/SignUpForm";
 
-  export default {
-    name: 'InviteUser',
-    components: {
-      SignUpForm
+export default {
+  name: "InviteUser",
+  components: {
+    SignUpForm
+  },
+  computed: {
+    inviteUserId() {
+      return this.$route.params.id;
     },
-    computed: {
-      inviteUserId () {
-        return this.$route.params.id
-      },
-      user () {
-        return this.$store.state.user
+    user() {
+      return this.$store.state.user;
+    }
+  },
+  mounted() {
+    this.watchCopyInviteLink();
+  },
+  methods: {
+    watchCopyInviteLink() {
+      if (!this.user) {
+        return;
       }
-    },
-    mounted () {
-      this.watchCopyInviteLink()
-    },
-    methods: {
-      watchCopyInviteLink () {
-        if (!this.user) {
-          return
-        }
-        this.$nextTick(() => {
-          const clipboard = new this.$copy(this.$refs.inviteBtn.$el)
+      this.$nextTick(() => {
+        const clipboard = new this.$copy(this.$refs.inviteBtn.$el);
 
-          clipboard.on('success', () => {
-            this.$toast.success('复制成功')
-          })
-        })
-      }
+        clipboard.on("success", () => {
+          this.$toast.success("复制成功");
+        });
+      });
     }
   }
+};
 </script>

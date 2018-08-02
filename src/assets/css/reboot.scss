@@ -63,7 +63,7 @@ a {
   color: inherit;
 }
 
-input, textarea, div[contenteditable=true] {
+input, textarea, div[contenteditable="true"] {
   line-height: normal;
 }
 
@@ -76,7 +76,7 @@ input {
   }
 }
 
-label[role=checkbox], label[role=radio] {
+label[role="checkbox"], label[role="radio"] {
   cursor: pointer;
 }
 

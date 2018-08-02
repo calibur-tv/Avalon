@@ -1,187 +1,184 @@
 <style lang="scss">
-  #post-show {
-    .title-wrap {
-      height: 56px;
-      border-bottom: 1px solid #BBBDBF;
+#post-show {
+  .title-wrap {
+    height: 56px;
+    border-bottom: 1px solid #bbbdbf;
 
-      h1 {
-        font-weight: 400;
-        font-size: 16px;
-        margin-left: 20px;
-        line-height: 55px;
-        overflow: hidden;
-      }
+    h1 {
+      font-weight: 400;
+      font-size: 16px;
+      margin-left: 20px;
+      line-height: 55px;
+      overflow: hidden;
+    }
 
-      .nice_badge {
-        float: left;
-        height: 22px;
-        line-height: 20px;
-        color: #fff;
-        cursor: default;
+    .nice_badge {
+      float: left;
+      height: 22px;
+      line-height: 20px;
+      color: #fff;
+      cursor: default;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 16px 5px 0 0;
+      background-color: $color-pink-deep;
+    }
+
+    .control {
+      float: right;
+      line-height: 55px;
+      margin-left: 15px;
+
+      .floor {
         font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        padding: 1px 6px;
-        border-radius: 4px;
-        margin: 16px 5px 0 0;
-        background-color: $color-pink-deep;
+        color: #5a5e66;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .post-main {
+    .user {
+      width: 180px;
+      float: left;
+
+      .avatar {
+        display: block;
+        margin: 20px auto 5px auto;
+        border: 1px solid $color-gray-normal;
+        @include avatar(80px);
       }
 
-      .control {
-        float: right;
-        line-height: 55px;
-        margin-left: 15px;
+      .nickname {
+        display: block;
+        background: #fff;
+        width: 98px;
+        height: 28px;
+        line-height: 24px;
+        margin: 0 auto;
+        text-align: center;
+      }
+    }
 
-        .floor {
-          font-size: 12px;
-          color: #5a5e66;
+    .content {
+      background: #fff;
+      padding: 22px 0 14px;
+      border-top: 1px solid #e5e9ef;
+      overflow: hidden;
+
+      .main {
+        min-height: 80px;
+      }
+
+      .image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 12px;
+        cursor: zoom-in;
+      }
+
+      .text-area {
+        line-height: 24px;
+        padding: 2px 0;
+        font-size: 14px;
+        overflow: hidden;
+        word-wrap: break-word;
+      }
+
+      .likes-wrap {
+        text-align: center;
+        margin: 50px 0;
+      }
+
+      .footer {
+        color: #99a2aa;
+        line-height: 26px;
+        font-size: 12px;
+
+        .info-bar {
+          height: 40px;
+          line-height: 40px;
+
+          .delete-btn,
+          .floor-count,
+          .like-btn {
+            margin-right: 20px;
+          }
+
+          .v-share {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+
+  .col-aside {
+    padding: 20px;
+
+    .bangumi-panel {
+      margin-top: 30px;
+      margin-left: 30px;
+    }
+  }
+
+  .create-post-form {
+    margin-left: -50px;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  #comment-wrap {
+    .sub-comment-list-wrap {
+      background-color: #f7f8fa;
+      position: relative;
+      margin-left: 180px;
+
+      .comments {
+        padding: 4px 15px;
+
+        li {
+          display: block;
+          width: 100%;
+        }
+
+        .avatar {
+          @include avatar(32px);
+        }
+      }
+
+      .comment-reply-area {
+        padding: 0 15px 10px;
+        height: 45px;
+        line-height: 35px;
+
+        .open-comment {
+          float: right;
+          font-size: 13px;
+          margin-top: 10px;
+        }
+
+        .total {
           margin-left: 10px;
         }
       }
     }
 
-    .post-main {
-      .user {
-        width: 180px;
-        float: left;
-
-        .avatar {
-          display: block;
-          margin: 20px auto 5px auto;
-          border: 1px solid $color-gray-normal;
-          @include avatar(80px);
-        }
-
-        .nickname {
-          display: block;
-          background: #fff;
-          width: 98px;
-          height: 28px;
-          line-height: 24px;
-          margin: 0 auto;
-          text-align: center;
-        }
-      }
-
-      .content {
-        background: #fff;
-        padding: 22px 0 14px;
-        border-top: 1px solid #e5e9ef;
-        overflow: hidden;
-
-        .main {
-          min-height: 80px;
-        }
-
-        .image {
-          width: 100%;
-          height: auto;
-          margin-bottom: 12px;
-          cursor: zoom-in;
-        }
-
-        .text-area {
-          line-height: 24px;
-          padding: 2px 0;
-          font-size: 14px;
-          overflow: hidden;
-          word-wrap: break-word;
-        }
-
-        .likes-wrap {
-          text-align: center;
-          margin: 50px 0;
-        }
-
-        .footer {
-          color: #99a2aa;
-          line-height: 26px;
-          font-size: 12px;
-
-          .info-bar {
-            height: 40px;
-            line-height: 40px;
-
-            .delete-btn,
-            .floor-count,
-            .like-btn {
-              margin-right: 20px;
-            }
-
-            .v-share {
-              float: right;
-            }
-          }
-        }
-      }
-    }
-
-    .col-aside {
-      padding: 20px;
-
-      .bangumi-panel {
-        margin-top: 30px;
-        margin-left: 30px;
-      }
-    }
-
-    .create-post-form {
-      margin-left: -50px;
-
-      button {
-        width: 100%;
-      }
-    }
-
-    #comment-wrap {
-      .sub-comment-list-wrap {
-        background-color: #f7f8fa;
-        position: relative;
-        margin-left: 180px;
-
-        .sub-comment-list {
-        }
-
-        .comments {
-          padding: 4px 15px;
-
-          li {
-            display: block;
-            width: 100%;
-          }
-
-          .avatar {
-            @include avatar(32px)
-          }
-        }
-
-        .comment-reply-area {
-          padding: 0 15px 10px;
-          height: 45px;
-          line-height: 35px;
-
-          .open-comment {
-            float: right;
-            font-size: 13px;
-            margin-top: 10px;
-          }
-
-          .total {
-            margin-left: 10px;
-          }
-        }
-      }
-
-      #comment-list-footer {
-        margin-left: 180px;
-        margin-right: 5px;
-      }
-    }
-
-    .load-more-btn {
-      margin-left: 0 !important;
+    #comment-list-footer {
+      margin-left: 180px;
+      margin-right: 5px;
     }
   }
+
+  .load-more-btn {
+    margin-left: 0 !important;
+  }
+}
 </style>
 
 <template>
@@ -357,187 +354,201 @@
 </template>
 
 <script>
-  import CommentMain from '~/components/comments/CommentMain'
-  import PostCommentItem from '~/components/post/PostCommentItem'
-  import PostCommentForm from '~/components/post/PostCommentForm'
+import CommentMain from "~/components/comments/CommentMain";
+import PostCommentItem from "~/components/post/PostCommentItem";
+import PostCommentForm from "~/components/post/PostCommentForm";
 
-  export default {
-    name: 'PostShow',
-    async asyncData ({ route, store, ctx }) {
-      const only = route.query.only
-        ? parseInt(route.query.only, 10) ? 1 : 0
+export default {
+  name: "PostShow",
+  async asyncData({ route, store, ctx }) {
+    const only = route.query.only
+      ? parseInt(route.query.only, 10)
+        ? 1
         : 0
-      const id = route.params.id
-      await Promise.all([
-        store.dispatch('post/getPost', {
-          id,
-          ctx,
-          only
-        }),
-        store.dispatch('comment/getMainComments', {
-          ctx,
-          id,
-          type: 'post',
-          onlySeeMaster: only,
-          seeReplyId: route.query.reply
-        })
-      ])
-    },
-    components: {
-      CommentMain,
-      PostCommentItem,
-      PostCommentForm
-    },
-    head () {
-      return {
-        title: `${this.post.title} - 帖子`,
-        meta: [
-          { hid: 'description', name: 'description', content: this.$utils.truncate(this.post.content) },
-          { hid: 'keywords', name: 'keywords', content: `calibur,帖子,天下漫友是一家,${this.post.title},${this.bangumi.name}` }
-        ]
-      }
-    },
-    data () {
-      return {
-        loadingToggleLike: false,
-        loadingToggleMark: false
-      }
-    },
-    computed: {
-      resource () {
-        return this.$store.state.post.info
-      },
-      bangumi () {
-        return this.resource.bangumi
-      },
-      post () {
-        return this.resource.post
-      },
-      master () {
-        return this.resource.user
-      },
-      total () {
-        return this.$store.state.comment.total + 1
-      },
-      onlySeeMaster () {
-        return !!parseInt(this.$route.query.only, 10)
-      },
-      isMaster () {
-        if (!this.$store.state.login) {
-          return false
-        }
-        return this.$store.state.user.id === this.master.id
-      }
-    },
-    mounted () {
-      this.scrollToReply()
-      this.$channel.$on('get-page-bangumi-for-post-create', () => {
-        this.$channel.$emit('set-page-bangumi-for-post-create', {
-          id: this.bangumi.id,
-          name: this.bangumi.name,
-          avatar: this.bangumi.avatar
-        })
+      : 0;
+    const id = route.params.id;
+    await Promise.all([
+      store.dispatch("post/getPost", {
+        id,
+        ctx,
+        only
+      }),
+      store.dispatch("comment/getMainComments", {
+        ctx,
+        id,
+        type: "post",
+        onlySeeMaster: only,
+        seeReplyId: route.query.reply
       })
+    ]);
+  },
+  components: {
+    CommentMain,
+    PostCommentItem,
+    PostCommentForm
+  },
+  head() {
+    return {
+      title: `${this.post.title} - 帖子`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$utils.truncate(this.post.content)
+        },
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: `calibur,帖子,天下漫友是一家,${this.post.title},${
+            this.bangumi.name
+          }`
+        }
+      ]
+    };
+  },
+  data() {
+    return {
+      loadingToggleLike: false,
+      loadingToggleMark: false
+    };
+  },
+  computed: {
+    resource() {
+      return this.$store.state.post.info;
     },
-    methods: {
-      scrollToReplyForm () {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        const wrap = document.getElementById('bottom-comment-post-form')
-        if (wrap) {
-          this.$scrollToY(this.$utils.getOffsetTop(wrap), 400)
-          wrap.querySelector('textarea').focus()
-        }
-      },
-      switchOnlyMaster () {
-        window.location = this.$alias.post(this.post.id, {
-          only: this.onlySeeMaster ? 0 : 1
-        })
-      },
-      deletePost () {
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          await this.$store.dispatch('post/deletePost', {
-            ctx: this,
-            id: this.post.id
-          })
-          window.location = this.$alias.bangumi(this.bangumi.id)
-        }).catch((e) => {
-          this.$toast.error(e)
-        })
-      },
-      async toggleLike () {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.isMaster) {
-          this.$toast.info('不能赞赏自己的帖子')
-          return
-        }
-        if (this.loadingToggleLike) {
-          return
-        }
-        this.loadingToggleLike = true
-        try {
-          const result = await this.$store.dispatch('post/toggleLike', {
-            ctx: this,
-            id: this.post.id
-          })
-          if (result) {
-            this.$store.commit('USE_COIN')
-          }
-        } catch (err) {
-          this.$toast.error(err)
-        } finally {
-          this.loadingToggleLike = false
-        }
-      },
-      async toggleMark () {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.isMaster) {
-          this.$toast.info('不能收藏自己的帖子')
-          return
-        }
-        if (this.loadingToggleMark) {
-          return
-        }
-        this.loadingToggleMark = true
-        try {
-          await this.$store.dispatch('post/toggleMark', {
-            ctx: this,
-            id: this.post.id
-          })
-        } catch (err) {
-          this.$toast.error(err)
-        } finally {
-          this.loadingToggleMark = false
-        }
-      },
-      scrollToReply () {
-        const replyId = this.$route.query.reply
-        if (!replyId) {
-          return
-        }
-        const reply = document.getElementById(`comment-${replyId}`)
-        if (!reply) {
-          return
-        }
-        this.$nextTick(() => {
-          this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400)
-        })
-      },
-      handleBangumiFollow (result) {
-        this.$store.commit('post/FOLLOW_BANGUMI', result)
+    bangumi() {
+      return this.resource.bangumi;
+    },
+    post() {
+      return this.resource.post;
+    },
+    master() {
+      return this.resource.user;
+    },
+    total() {
+      return this.$store.state.comment.total + 1;
+    },
+    onlySeeMaster() {
+      return !!parseInt(this.$route.query.only, 10);
+    },
+    isMaster() {
+      if (!this.$store.state.login) {
+        return false;
       }
+      return this.$store.state.user.id === this.master.id;
+    }
+  },
+  mounted() {
+    this.scrollToReply();
+    this.$channel.$on("get-page-bangumi-for-post-create", () => {
+      this.$channel.$emit("set-page-bangumi-for-post-create", {
+        id: this.bangumi.id,
+        name: this.bangumi.name,
+        avatar: this.bangumi.avatar
+      });
+    });
+  },
+  methods: {
+    scrollToReplyForm() {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      const wrap = document.getElementById("bottom-comment-post-form");
+      if (wrap) {
+        this.$scrollToY(this.$utils.getOffsetTop(wrap), 400);
+        wrap.querySelector("textarea").focus();
+      }
+    },
+    switchOnlyMaster() {
+      window.location = this.$alias.post(this.post.id, {
+        only: this.onlySeeMaster ? 0 : 1
+      });
+    },
+    deletePost() {
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          await this.$store.dispatch("post/deletePost", {
+            ctx: this,
+            id: this.post.id
+          });
+          window.location = this.$alias.bangumi(this.bangumi.id);
+        })
+        .catch(e => {
+          this.$toast.error(e);
+        });
+    },
+    async toggleLike() {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      if (this.isMaster) {
+        this.$toast.info("不能赞赏自己的帖子");
+        return;
+      }
+      if (this.loadingToggleLike) {
+        return;
+      }
+      this.loadingToggleLike = true;
+      try {
+        const result = await this.$store.dispatch("post/toggleLike", {
+          ctx: this,
+          id: this.post.id
+        });
+        if (result) {
+          this.$store.commit("USE_COIN");
+        }
+      } catch (err) {
+        this.$toast.error(err);
+      } finally {
+        this.loadingToggleLike = false;
+      }
+    },
+    async toggleMark() {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      if (this.isMaster) {
+        this.$toast.info("不能收藏自己的帖子");
+        return;
+      }
+      if (this.loadingToggleMark) {
+        return;
+      }
+      this.loadingToggleMark = true;
+      try {
+        await this.$store.dispatch("post/toggleMark", {
+          ctx: this,
+          id: this.post.id
+        });
+      } catch (err) {
+        this.$toast.error(err);
+      } finally {
+        this.loadingToggleMark = false;
+      }
+    },
+    scrollToReply() {
+      const replyId = this.$route.query.reply;
+      if (!replyId) {
+        return;
+      }
+      const reply = document.getElementById(`comment-${replyId}`);
+      if (!reply) {
+        return;
+      }
+      this.$nextTick(() => {
+        this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400);
+      });
+    },
+    handleBangumiFollow(result) {
+      this.$store.commit("post/FOLLOW_BANGUMI", result);
     }
   }
+};
 </script>

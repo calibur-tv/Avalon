@@ -1,9 +1,9 @@
 <style lang="scss">
-  #score-flow {
-    .img {
-      background-color: #30A080;
-    }
+#score-flow {
+  .img {
+    background-color: #30a080;
   }
+}
 </style>
 
 <template>
@@ -89,50 +89,50 @@
 </template>
 
 <script>
-  import ScoreFlow from '~/components/score/ScoreFlow'
+import ScoreFlow from "~/components/score/ScoreFlow";
 
-  export default {
-    name: 'ScoreFlowList',
-    async asyncData ({ store, ctx }) {
-      await Promise.all([
-        store.dispatch('trending/getTrending', {
-          type: 'score',
-          sort: 'active',
-          ctx
-        }),
-        store.dispatch('trending/getMeta', { type: 'score' })
-      ])
+export default {
+  name: "ScoreFlowList",
+  async asyncData({ store, ctx }) {
+    await Promise.all([
+      store.dispatch("trending/getTrending", {
+        type: "score",
+        sort: "active",
+        ctx
+      }),
+      store.dispatch("trending/getMeta", { type: "score" })
+    ]);
+  },
+  components: {
+    ScoreFlow
+  },
+  data() {
+    return {
+      showTips: false
+    };
+  },
+  computed: {
+    resource() {
+      return this.$store.state.trending.type === "score"
+        ? this.$store.state.trending.active
+        : null;
     },
-    components: {
-      ScoreFlow
-    },
-    data () {
-      return {
-        showTips: false
-      }
-    },
-    computed: {
-      resource () {
-        return this.$store.state.trending.type === 'score'
-          ? this.$store.state.trending.active
-          : null
-      },
-      meta () {
-        return this.$store.state.trending.meta
-      }
-    },
-    methods: {
-      async loadMore () {
-        try {
-          await this.$store.dispatch('trending/loadMore', {
-            type: 'score',
-            sort: 'active',
-            ctx: this
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
+    meta() {
+      return this.$store.state.trending.meta;
+    }
+  },
+  methods: {
+    async loadMore() {
+      try {
+        await this.$store.dispatch("trending/loadMore", {
+          type: "score",
+          sort: "active",
+          ctx: this
+        });
+      } catch (e) {
+        this.$toast.error(e);
       }
     }
   }
+};
 </script>

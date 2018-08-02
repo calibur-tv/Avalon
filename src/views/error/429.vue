@@ -1,9 +1,3 @@
-<style lang="scss">
-  #error-429 {
-
-  }
-</style>
-
 <template>
   <div id="error-429">
     <p>您的访问频率太高了</p>
@@ -19,7 +13,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error429'
-  }
+export default {
+  name: "Error429"
+};
 </script>

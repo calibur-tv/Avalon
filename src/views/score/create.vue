@@ -1,46 +1,46 @@
 <style lang="scss">
-  #score-create {
-    .bangumi-search,
-    .title-input {
-      margin-bottom: 20px;
-    }
-    
-    .el-icon-question {
-      cursor: pointer;
-    }
+#score-create {
+  .bangumi-search,
+  .title-input {
+    margin-bottom: 20px;
+  }
 
-    .star-row {
-      margin-bottom: 20px;
-      @extend %clearfix;
+  .el-icon-question {
+    cursor: pointer;
+  }
 
-      .star-item {
-        float: left;
-        margin-right: 75px;
-        margin-bottom: 15px;
+  .star-row {
+    margin-bottom: 20px;
+    @extend %clearfix;
 
-        &:nth-child(5n) {
-          margin-right: 0;
-        }
+    .star-item {
+      float: left;
+      margin-right: 75px;
+      margin-bottom: 15px;
 
-        .label {
-          font-size: 13px;
-          margin-bottom: 3px;
-          color: $color-text-normal;
-        }
+      &:nth-child(5n) {
+        margin-right: 0;
       }
-    }
 
-    .el-alert {
-      margin-bottom: 20px;
-      margin-top: -20px;
-
-      p {
-        margin-bottom: 5px;
+      .label {
         font-size: 13px;
-        line-height: 18px;
+        margin-bottom: 3px;
+        color: $color-text-normal;
       }
     }
   }
+
+  .el-alert {
+    margin-bottom: 20px;
+    margin-top: -20px;
+
+    p {
+      margin-bottom: 5px;
+      font-size: 13px;
+      line-height: 18px;
+    }
+  }
+}
 </style>
 
 <template>
@@ -110,194 +110,200 @@
 </template>
 
 <script>
-  import JsonEditor from '~/components/jsonEditor/index'
-  import Api from '~/api/scoreApi'
+import JsonEditor from "~/components/jsonEditor/index";
+import Api from "~/api/scoreApi";
 
-  export default {
-    name: 'ScoreCreate',
-    async asyncData ({ store, route, ctx }) {
-      const id = route.params.id;
-      if (id) {
-        await store.dispatch('editor/getData', {
-          api: new Api(ctx),
-          id
-        })
+export default {
+  name: "ScoreCreate",
+  async asyncData({ store, route, ctx }) {
+    const id = route.params.id;
+    if (id) {
+      await store.dispatch("editor/getData", {
+        api: new Api(ctx),
+        id
+      });
+    }
+  },
+  components: {
+    JsonEditor
+  },
+  data() {
+    const labelMap = {
+      lol: "笑点",
+      cry: "泪点",
+      fight: "燃点",
+      moe: "萌点",
+      sound: "音乐",
+      vision: "画面",
+      story: "情节",
+      role: "人设",
+      express: "内涵",
+      style: "美感"
+    };
+    return {
+      openTips: false,
+      labelMap,
+      columns: Object.keys(labelMap),
+      bangumiId: "",
+      title: "",
+      form: {
+        lol: 0,
+        cry: 0,
+        fight: 0,
+        moe: 0,
+        sound: 0,
+        vision: 0,
+        story: 0,
+        role: 0,
+        express: 0,
+        style: 0
       }
+    };
+  },
+  computed: {
+    id() {
+      return +(this.$route.params.id || 0);
     },
-    components: {
-      JsonEditor
+    resource() {
+      return this.$store.state.editor.resource;
     },
-    data () {
-      const labelMap = {
-        lol: '笑点',
-        cry: '泪点',
-        fight: '燃点',
-        moe: '萌点',
-        sound: '音乐',
-        vision: '画面',
-        story: '情节',
-        role: '人设',
-        express: '内涵',
-        style: '美感'
-      };
-      return {
-        openTips: false,
-        labelMap,
-        columns: Object.keys(labelMap),
-        bangumiId: '',
-        title: '',
-        form: {
-          lol: 0,
-          cry: 0,
-          fight: 0,
-          moe: 0,
-          sound: 0,
-          vision: 0,
-          story: 0,
-          role: 0,
-          express: 0,
-          style: 0
-        },
+    disabled() {
+      return !!this.id;
+    },
+    bid() {
+      return this.$route.query.bid;
+    }
+  },
+  mounted() {
+    if (this.id) {
+      this.loadEditContent();
+    }
+    if (this.bid) {
+      this.bangumiId = +this.bid;
+      this.handleBangumiSearch(this.bangumiId);
+    }
+  },
+  methods: {
+    beforeSubmit(richContent) {
+      if (!this.bangumiId) {
+        this.$toast.error("请先选择要评价的番剧");
+        return;
       }
-    },
-    computed: {
-      id () {
-        return +(this.$route.params.id || 0)
-      },
-      resource () {
-        return this.$store.state.editor.resource
-      },
-      disabled () {
-        return !!this.id
-      },
-      bid () {
-        return this.$route.query.bid
+      if (!this.title) {
+        this.$toast.error("标题为必填的");
+        return;
       }
-    },
-    mounted () {
-      if (this.id) {
-        this.loadEditContent()
+      const scores = {};
+      let total = 0;
+      Object.keys(this.form).forEach(key => {
+        const value = this.form[key];
+        scores[key] = value * 2;
+        total += value;
+      });
+      if (!total) {
+        this.$toast.error("请先选择各维度分值");
+        return;
       }
-      if (this.bid) {
-        this.bangumiId = +this.bid;
-        this.handleBangumiSearch(this.bangumiId)
+      if (total === 100) {
+        this.$toast.error("请认真考虑后再发表");
+        return;
       }
-    },
-    methods: {
-      beforeSubmit (richContent) {
-        if (!this.bangumiId) {
-          this.$toast.error('请先选择要评价的番剧');
-          return;
-        }
-        if (!this.title) {
-          this.$toast.error('标题为必填的');
-          return;
-        }
-        const scores = {};
-        let total = 0;
-        Object.keys(this.form).forEach(key => {
-          const value = this.form[key];
-          scores[key] = value * 2;
-          total += value
+      if (richContent.id) {
+        this.submit(richContent, scores);
+      } else {
+        this.$captcha({
+          success: ({ data }) => {
+            this.submit(richContent, scores, data);
+          },
+          error: e => {
+            this.$toast.error(e);
+          }
         });
-        if (!total) {
-          this.$toast.error('请先选择各维度分值');
-          return
-        }
-        if (total === 100) {
-          this.$toast.error('请认真考虑后再发表');
-          return
-        }
-        if (richContent.id) {
-          this.submit(richContent, scores)
-        } else {
-          this.$captcha({
-            success: ({ data }) => {
-              this.submit(richContent, scores, data)
-            },
-            error: (e) => {
-              this.$toast.error(e)
-            }
-          });
-        }
-      },
-      async submit (richContent, scores, geetest = {}) {
-        this.$channel.$emit('write-submit', true);
-        const api = new Api(this);
-        try {
-          const form = Object.assign({}, scores, {
-            title: this.title,
-            bangumi_id: this.bangumiId,
-            content: richContent.content,
-            intro: richContent.desc.substring(0, 120),
-            do_publish: richContent.publish,
-            geetest
-          });
-          let newId = richContent.id;
-          if (newId) {
-            form.id = newId;
-            await api.update(form)
-          } else {
-            newId = await api.create(form)
-          }
-          if (richContent.publish) {
-            this.$confirm('发布成功', '提示', {
-              confirmButtonText: '点击查看',
-              cancelButtonText: '继续编辑',
-              type: 'warning'
-            }).then(() => {
-              window.location.href = this.$alias.score(newId)
-            }).catch(() => {})
-          } else {
-            this.$toast.success('操作成功');
-            if (!richContent.id) {
-              setTimeout(() => {
-                window.location = this.$alias.editScore(newId)
-              }, 1000)
-            }
-          }
-        } catch (e) {
-          this.$toast.error(e);
-        } finally {
-          this.$channel.$emit('write-save-done');
-          this.$channel.$emit('write-submit', false);
-        }
-      },
-      handleBangumiSearch (bangumiId) {
-        if (this.id) {
-          return;
-        }
-        const api = new Api(this);
-        api.check({
-          id: bangumiId
-        }).then((id) => {
-          if (id) {
-            this.$confirm('你已经给该番剧评过分了，不能重复评分', '提示', {
-              confirmButtonText: '查看我的评分',
-              cancelButtonText: '换一个番剧',
-              type: 'warning'
-            }).then(() => {
-              window.location.href = this.$alias.score(id)
-            }).catch(() => {
-              this.bangumiId = ''
-            })
-          }
-        })
-      },
-      loadEditContent () {
-        if (!this.resource) {
-          this.$toast.error('不能编辑他人的内容');
-          setTimeout(() => {
-            window.location.href = '/review/create'
-          }, 1000)
-          return
-        }
-        this.bangumiId = +this.resource.bangumi_id;
-        this.title = this.resource.title;
-        this.columns.forEach(key => {
-          this.form[key] = this.resource[key]
-        })
       }
+    },
+    async submit(richContent, scores, geetest = {}) {
+      this.$channel.$emit("write-submit", true);
+      const api = new Api(this);
+      try {
+        const form = Object.assign({}, scores, {
+          title: this.title,
+          bangumi_id: this.bangumiId,
+          content: richContent.content,
+          intro: richContent.desc.substring(0, 120),
+          do_publish: richContent.publish,
+          geetest
+        });
+        let newId = richContent.id;
+        if (newId) {
+          form.id = newId;
+          await api.update(form);
+        } else {
+          newId = await api.create(form);
+        }
+        if (richContent.publish) {
+          this.$confirm("发布成功", "提示", {
+            confirmButtonText: "点击查看",
+            cancelButtonText: "继续编辑",
+            type: "warning"
+          })
+            .then(() => {
+              window.location.href = this.$alias.score(newId);
+            })
+            .catch(() => {});
+        } else {
+          this.$toast.success("操作成功");
+          if (!richContent.id) {
+            setTimeout(() => {
+              window.location = this.$alias.editScore(newId);
+            }, 1000);
+          }
+        }
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.$channel.$emit("write-save-done");
+        this.$channel.$emit("write-submit", false);
+      }
+    },
+    handleBangumiSearch(bangumiId) {
+      if (this.id) {
+        return;
+      }
+      const api = new Api(this);
+      api
+        .check({
+          id: bangumiId
+        })
+        .then(id => {
+          if (id) {
+            this.$confirm("你已经给该番剧评过分了，不能重复评分", "提示", {
+              confirmButtonText: "查看我的评分",
+              cancelButtonText: "换一个番剧",
+              type: "warning"
+            })
+              .then(() => {
+                window.location.href = this.$alias.score(id);
+              })
+              .catch(() => {
+                this.bangumiId = "";
+              });
+          }
+        });
+    },
+    loadEditContent() {
+      if (!this.resource) {
+        this.$toast.error("不能编辑他人的内容");
+        setTimeout(() => {
+          window.location.href = "/review/create";
+        }, 1000);
+        return;
+      }
+      this.bangumiId = +this.resource.bangumi_id;
+      this.title = this.resource.title;
+      this.columns.forEach(key => {
+        this.form[key] = this.resource[key];
+      });
     }
   }
+};
 </script>

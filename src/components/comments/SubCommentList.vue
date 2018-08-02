@@ -1,23 +1,23 @@
 <style lang="scss">
-  .sub-comment-list-wrap {
-    .view-more {
-      font-size: 12px;
-      color: $color-text-normal;
+.sub-comment-list-wrap {
+  .view-more {
+    font-size: 12px;
+    color: $color-text-normal;
 
-      .more-btn {
+    .more-btn {
+      color: $color-blue-normal;
+    }
+
+    .collapse-btn {
+      float: right;
+      color: $color-text-light;
+
+      &:hover {
         color: $color-blue-normal;
-      }
-
-      .collapse-btn {
-        float: right;
-        color: $color-text-light;
-
-        &:hover {
-          color: $color-blue-normal;
-        }
       }
     }
   }
+}
 </style>
 
 <template>
@@ -53,73 +53,73 @@
 </template>
 
 <script>
-  import SubCommentItem from './SubCommentItem.vue'
+import SubCommentItem from "./SubCommentItem.vue";
 
-  export default {
-    name: 'VSubCommentList',
-    components: {
-      SubCommentItem
+export default {
+  name: "VSubCommentList",
+  components: {
+    SubCommentItem
+  },
+  props: {
+    parentComment: {
+      required: true,
+      type: Object
     },
-    props: {
-      parentComment: {
-        required: true,
-        type: Object
-      },
-      type: {
-        required: true,
-        type: String,
-        default: ''
+    type: {
+      required: true,
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      loading: false,
+      showCollapse: false,
+      collapsed: false
+    };
+  },
+  computed: {
+    comments() {
+      return this.parentComment.comments;
+    },
+    authorId() {
+      return this.parentComment.from_user_id;
+    },
+    filterComments() {
+      if (!this.collapsed) {
+        return this.comments.list;
       }
-    },
-    data () {
-      return {
-        loading: false,
-        showCollapse: false,
-        collapsed: false
+      const data = this.comments;
+      const comments = data.list;
+      const result = comments.slice(0, 5);
+      if (comments.every(_ => _.id <= data.maxId)) {
+        return result;
       }
-    },
-    computed: {
-      comments () {
-        return this.parentComment.comments
-      },
-      authorId () {
-        return this.parentComment.from_user_id
-      },
-      filterComments () {
-        if (!this.collapsed) {
-          return this.comments.list
-        }
-        const data = this.comments
-        const comments = data.list
-        const result = comments.slice(0, 5)
-        if (comments.every(_ => _.id <= data.maxId)) {
-          return result
-        }
-        const ids = result.map(_ => _.id)
-        return result.concat(
-          comments.filter(_ => _.id > data.maxId && ids.indexOf(_.id) === -1)
-        )
+      const ids = result.map(_ => _.id);
+      return result.concat(
+        comments.filter(_ => _.id > data.maxId && ids.indexOf(_.id) === -1)
+      );
+    }
+  },
+  methods: {
+    async loadMore() {
+      if (this.loading) {
+        return;
       }
-    },
-    methods: {
-      async loadMore () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true
-        try {
-          await this.$store.dispatch('comment/getSubComments', {
-            ctx: this,
-            type: this.type,
-            parentId: this.parentComment.id
-          })
-          this.showCollapse = true
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
+      this.loading = true;
+      try {
+        await this.$store.dispatch("comment/getSubComments", {
+          ctx: this,
+          type: this.type,
+          parentId: this.parentComment.id
+        });
+        this.showCollapse = true;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     }
   }
+};
 </script>

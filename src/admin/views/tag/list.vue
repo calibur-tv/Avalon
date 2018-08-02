@@ -95,107 +95,113 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
-  import pageMixin from '~/mixins/page'
+import Api from "~/api/adminApi";
+import pageMixin from "~/mixins/page";
 
-  export default {
-    mixins: [
-      pageMixin
-    ],
-    data () {
-      return {
-        showCreateModal: false,
-        createLoading: false,
-        types: [
-          {
-            value: 'bangumi',
-            text: '番剧'
-          },
-          {
-            value: 1,
-            text: '图片类型'
-          },
-          {
-            value: 2,
-            text: '图片尺寸'
-          }
-        ],
-        selectedType: 'bangumi',
-        createForm: {
-          type: '',
-          name: ''
+export default {
+  mixins: [pageMixin],
+  data() {
+    return {
+      showCreateModal: false,
+      createLoading: false,
+      types: [
+        {
+          value: "bangumi",
+          text: "番剧"
+        },
+        {
+          value: 1,
+          text: "图片类型"
+        },
+        {
+          value: 2,
+          text: "图片尺寸"
         }
+      ],
+      selectedType: "bangumi",
+      createForm: {
+        type: "",
+        name: ""
+      }
+    };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    async getData() {
+      this.pageLoading = true;
+      const api = new Api(this);
+      try {
+        const data = await api.allTag({
+          type: this.selectedType
+        });
+        this.pageState.total = data.length;
+        this.pageState.cur = 1;
+        this.pageState.size = 20;
+        this.pageList = data;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.pageLoading = false;
       }
     },
-    created () {
-      this.getData();
+    editTagName(tag) {
+      this.$prompt("请输入新名称", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          const api = new Api(this);
+          api
+            .editTag({
+              id: tag.id,
+              name: value,
+              type: this.selectedType
+            })
+            .then(() => {
+              this.$toast.success("更新成功");
+              tag.name = value;
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
     },
-    methods: {
-      async getData () {
-        this.pageLoading = true;
-        const api = new Api(this);
-        try {
-          const data = await api.allTag({
-            type: this.selectedType
-          });
-          this.pageState.total = data.length;
-          this.pageState.cur = 1;
-          this.pageState.size = 20;
-          this.pageList = data
-        } catch (e) {
-          this.$toast.error(e);
-        } finally {
-          this.pageLoading = false;
-        }
-      },
-      editTagName (tag) {
-        this.$prompt('请输入新名称', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消'
-        }).then(({ value }) => {
-          const api = new Api(this)
-          api.editTag({
-            id: tag.id,
-            name: value,
-            type: this.selectedType
-          }).then(() => {
-            this.$toast.success('更新成功');
-            tag.name = value
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
-      },
-      handleCreateDone () {
-        const name = this.createForm.name;
-        if (!this.createForm.name) {
-          this.$toast.error('名字不能为空');
+    handleCreateDone() {
+      const name = this.createForm.name;
+      if (!this.createForm.name) {
+        this.$toast.error("名字不能为空");
+        return;
+      }
+      for (const tag of this.pageList) {
+        if (tag.name === name) {
+          this.$toast.error("标签已存在");
           return;
         }
-        for (const tag of this.pageList) {
-          if (tag.name === name) {
-            this.$toast.error('标签已存在');
-            return;
-          }
-        }
-        if (this.createLoading) {
-          return;
-        }
-        this.createLoading = true;
-        const api = new Api(this);
-        api.createTag({ name, type: this.createForm.type }).then((id) => {
+      }
+      if (this.createLoading) {
+        return;
+      }
+      this.createLoading = true;
+      const api = new Api(this);
+      api
+        .createTag({ name, type: this.createForm.type })
+        .then(id => {
           this.pageList.unshift({
             name,
             id
           });
-          this.$toast.success('操作成功');
+          this.$toast.success("操作成功");
           this.createLoading = false;
           this.showCreateModal = false;
-        }).catch((e) => {
+        })
+        .catch(e => {
           this.$toast.error(e);
           this.createLoading = false;
-        })
-      }
+        });
     }
   }
+};
 </script>

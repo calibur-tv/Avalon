@@ -1,4 +1,4 @@
-import createApi from 'create-api';
+import createApi from "create-api";
 
 export default class {
   constructor(ctx = null) {

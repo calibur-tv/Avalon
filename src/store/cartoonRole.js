@@ -1,26 +1,26 @@
-import Api from '~/api/cartoonRoleApi';
+import Api from "~/api/cartoonRoleApi";
 
 export default {
   namespaced: true,
   state: () => ({
     trending: {
       data: [],
-      noMore: false,
+      noMore: false
     },
     fans: {
       new: {
         data: [],
-        noMore: false,
+        noMore: false
       },
       hot: {
         data: [],
-        noMore: false,
-      },
+        noMore: false
+      }
     },
     info: {
       data: {},
-      bangumi: {},
-    },
+      bangumi: {}
+    }
   }),
   mutations: {
     ADD_ROLE_STATE(state, { hasStar, user }) {
@@ -48,17 +48,17 @@ export default {
         state.fans = {
           new: {
             data: [],
-            noMore: false,
+            noMore: false
           },
           hot: {
             data: [],
-            noMore: false,
-          },
+            noMore: false
+          }
         };
       }
       state.fans[sort].data = state.fans[sort].data.concat(data);
       state.fans[sort].noMore = data.length < 15;
-    },
+    }
   },
   actions: {
     async getTrending({ state, commit }) {
@@ -67,50 +67,63 @@ export default {
       }
       const api = new Api();
       const data = await api.trending({
-        seenIds: state.trending.data.length ? state.trending.data.map(item => item.id).toString() : null,
+        seenIds: state.trending.data.length
+          ? state.trending.data.map(item => item.id).toString()
+          : null
       });
-      commit('SET_TRENDING', data);
+      commit("SET_TRENDING", data);
     },
-    async getFansList({ state, commit }, {
-      bangumiId, roleId, sort, reset,
-    }) {
+    async getFansList({ state, commit }, { bangumiId, roleId, sort, reset }) {
       if (state.fans[sort].noMore && !reset) {
         return;
       }
       const api = new Api();
       const length = state.fans[sort].data.length;
-      const data = await api.fans(Object.assign({
-        sort,
-        bangumiId,
-        roleId,
-      }, sort === 'new' ? {
-        minId: reset ? null : length ? state.fans[sort].data[length - 1].id : null,
-      } : {
-        seenIds: reset ? null : length ? state.fans[sort].data.map(item => item.id).toString() : null,
-      }));
-      commit('SET_FANS_LIST', { data, reset, sort });
+      const data = await api.fans(
+        Object.assign(
+          {
+            sort,
+            bangumiId,
+            roleId
+          },
+          sort === "new"
+            ? {
+                minId: reset
+                  ? null
+                  : length
+                    ? state.fans[sort].data[length - 1].id
+                    : null
+              }
+            : {
+                seenIds: reset
+                  ? null
+                  : length
+                    ? state.fans[sort].data.map(item => item.id).toString()
+                    : null
+              }
+        )
+      );
+      commit("SET_FANS_LIST", { data, reset, sort });
     },
     async getRoleInfo({ commit }, { ctx, id }) {
       const api = new Api(ctx);
       const data = await api.show(id);
-      commit('SET_ROLE_INFO', data);
+      commit("SET_ROLE_INFO", data);
     },
-    async star({ rootState, commit }, {
-      bangumiId, roleId, ctx, hasStar,
-    }) {
+    async star({ rootState, commit }, { bangumiId, roleId, ctx, hasStar }) {
       const api = new Api(ctx);
       await api.star({ bangumiId, roleId });
       const self = rootState.user;
-      commit('ADD_ROLE_STATE', {
+      commit("ADD_ROLE_STATE", {
         hasStar,
         user: {
           id: self.id,
           zone: self.zone,
           avatar: self.avatar,
-          nickname: self.nickname,
-        },
+          nickname: self.nickname
+        }
       });
-    },
+    }
   },
-  getters: {},
+  getters: {}
 };

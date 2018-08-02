@@ -51,53 +51,62 @@
 </template>
 
 <script>
-  import Api from '~/api/cartoonRoleApi'
+import Api from "~/api/cartoonRoleApi";
 
-  export default {
-    data () {
-      return {
-        list: [],
-        loading: true
-      }
-    },
-    created () {
-      this.getData();
-    },
-    methods: {
-      getData () {
-        const api = new Api(this);
-        api.trialList().then((data) => {
-          this.list = data
-          this.loading = false
-        }).catch((err) => {
-          this.$toast.error(err);
+export default {
+  data() {
+    return {
+      list: [],
+      loading: true
+    };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const api = new Api(this);
+      api
+        .trialList()
+        .then(data => {
+          this.list = data;
           this.loading = false;
         })
-      },
-      banRole (id, bangumi_id, index) {
-        const api = new Api(this)
-        api.trialBan({ id, bangumi_id }).then(() => {
-          this.list.splice(index, 1)
-          this.$toast.success('操作成功')
-          this.$channel.$emit('admin-trial-do', {
-            type: 'role'
-          })
-        }).catch((err) => {
-          this.$toast.error(err)
+        .catch(err => {
+          this.$toast.error(err);
+          this.loading = false;
+        });
+    },
+    banRole(id, bangumi_id, index) {
+      const api = new Api(this);
+      api
+        .trialBan({ id, bangumi_id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "role"
+          });
         })
-      },
-      passRole (id, index) {
-        const api = new Api(this)
-        api.trialPass({ id }).then(() => {
-          this.list.splice(index, 1)
-          this.$toast.success('操作成功')
-          this.$channel.$emit('admin-trial-do', {
-            type: 'role'
-          })
-        }).catch((err) => {
-          this.$toast.error(err)
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    passRole(id, index) {
+      const api = new Api(this);
+      api
+        .trialPass({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "role"
+          });
         })
-      }
+        .catch(err => {
+          this.$toast.error(err);
+        });
     }
   }
+};
 </script>

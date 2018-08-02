@@ -85,109 +85,123 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
-  import BangumiApi from '~/api/bangumiApi'
+import Api from "~/api/adminApi";
+import BangumiApi from "~/api/bangumiApi";
 
-  export default {
-    data () {
-      return {
-        bangumiId: 0,
-        list: [],
-        loading: false
+export default {
+  data() {
+    return {
+      bangumiId: 0,
+      list: [],
+      loading: false
+    };
+  },
+  computed: {
+    isKing() {
+      return this.$store.state.user.id === 1;
+    }
+  },
+  methods: {
+    searchBangumiManager(id) {
+      if (id === this.bangumiId) {
+        return;
+      }
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      this.bangumiId = id;
+      this.searchManagers();
+    },
+    async searchManagers() {
+      const api = new BangumiApi(this);
+      try {
+        this.list = await api.managers({
+          bangumiId: this.bangumiId
+        });
+      } catch (err) {
+        this.$toast.error(err);
+      } finally {
+        this.loading = false;
       }
     },
-    computed: {
-      isKing () {
-        return this.$store.state.user.id === 1
+    addManager() {
+      if (!this.bangumiId) {
+        this.$toast.error("请先选择番剧");
+        return;
       }
-    },
-    methods: {
-      searchBangumiManager (id) {
-        if (id === this.bangumiId) {
-          return
-        }
-        if (this.loading) {
-          return
-        }
-        this.loading = true;
-        this.bangumiId = id;
-        this.searchManagers()
-      },
-      async searchManagers() {
-        const api = new BangumiApi(this);
-        try {
-          this.list = await api.managers({
-            bangumiId: this.bangumiId
-          })
-        } catch (err) {
-          this.$toast.error(err)
-        } finally {
-          this.loading = false
-        }
-      },
-      addManager () {
-        if (!this.bangumiId) {
-          this.$toast.error('请先选择番剧')
-          return
-        }
-        this.$prompt('请输入用户id', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d+$/,
-          inputErrorMessage: '非法的id'
-        }).then(({ value }) => {
+      this.$prompt("请输入用户id", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error('非法的id');
+            this.$toast.error("非法的id");
             return;
           }
           const api = new Api(this);
-          api.setBangumiManager({
-            bangumi_id: this.bangumiId,
-            user_id: value
-          }).then(() => {
-            this.$toast.success('操作成功');
-            window.location.reload();
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
-      },
-      removeManager (userId, index) {
-        const api = new Api(this);
-        api.removeBangumiManager({
-          bangumi_id: this.bangumiId,
-          user_id: userId
-        }).then(() => {
-          this.$toast.success('操作成功');
-          this.list.splice(index, 1)
-        }).catch((err) => {
-          this.$toast.error(err)
+          api
+            .setBangumiManager({
+              bangumi_id: this.bangumiId,
+              user_id: value
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+              window.location.reload();
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
         })
-      },
-      upgradeManager (userId, index) {
-        const api = new Api(this);
-        api.upgradeBangumiManager({
+        .catch(() => {});
+    },
+    removeManager(userId, index) {
+      const api = new Api(this);
+      api
+        .removeBangumiManager({
           bangumi_id: this.bangumiId,
           user_id: userId
-        }).then(() => {
-          this.$toast.success('操作成功');
+        })
+        .then(() => {
+          this.$toast.success("操作成功");
+          this.list.splice(index, 1);
+        })
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    upgradeManager(userId, index) {
+      const api = new Api(this);
+      api
+        .upgradeBangumiManager({
+          bangumi_id: this.bangumiId,
+          user_id: userId
+        })
+        .then(() => {
+          this.$toast.success("操作成功");
           this.list[index].is_leader = 1;
-        }).catch((err) => {
-          this.$toast.error(err)
         })
-      },
-      downgradeManager (userId, index) {
-        const api = new Api(this);
-        api.downgradeBangumiManager({
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    downgradeManager(userId, index) {
+      const api = new Api(this);
+      api
+        .downgradeBangumiManager({
           bangumi_id: this.bangumiId,
           user_id: userId
-        }).then(() => {
-          this.$toast.success('操作成功');
-          this.list[index].is_leader = 0;
-        }).catch((err) => {
-          this.$toast.error(err)
         })
-      }
+        .then(() => {
+          this.$toast.success("操作成功");
+          this.list[index].is_leader = 0;
+        })
+        .catch(err => {
+          this.$toast.error(err);
+        });
     }
   }
+};
 </script>

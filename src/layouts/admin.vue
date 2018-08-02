@@ -1,50 +1,52 @@
 <style lang="scss">
-  #app-wrapper {
-    position: relative;
+#app-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
+  @extend %clearfix;
+
+  .app-main {
     height: 100%;
-    width: 100%;
-    text-rendering: optimizeLegibility;
-    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-    @extend %clearfix;
+    padding: 20px;
 
-    .app-main {
-      height: 100%;
-      padding: 20px;
+    > * {
+      min-height: 100%;
 
-      >* {
-        min-height: 100%;
-
-        >header {
-          margin-bottom: 20px;
-        }
-
-        >footer {
-          margin-top: 20px;
-          margin-right: 30px;
-        }
+      > header {
+        margin-bottom: 20px;
       }
-    }
 
-    .drawer-bg {
-      background: #000;
-      opacity: 0.3;
-      width: 100%;
-      top: 0;
-      height: 100%;
-      position: absolute;
-      z-index: 999;
-    }
-
-    label {
-      font-weight: 700;
-    }
-
-    ul {
-      &:before, &:after {
-        content: none;
+      > footer {
+        margin-top: 20px;
+        margin-right: 30px;
       }
     }
   }
+
+  .drawer-bg {
+    background: #000;
+    opacity: 0.3;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+  }
+
+  label {
+    font-weight: 700;
+  }
+
+  ul {
+    &:before,
+    &:after {
+      content: none;
+    }
+  }
+}
 </style>
 
 <template>
@@ -63,37 +65,40 @@
 </template>
 
 <script>
-  import Navbar from '@/components/Layout/Navbar'
-  import Sidebar from '@/components/Layout/Sidebar'
-  import AppMain from '@/components/Layout/AppMain'
-  import 'moment'
-  import 'lodash'
-  import '@/filters'
-  import '@/utils/library'
+import Navbar from "@/components/Layout/Navbar";
+import Sidebar from "@/components/Layout/Sidebar";
+import AppMain from "@/components/Layout/AppMain";
+import "moment";
+import "lodash";
+import "@/filters";
+import "@/utils/library";
 
-  export default {
-    name: 'AdminLayout',
-    components: {
-      Navbar,
-      Sidebar,
-      AppMain
-    },
-    head: {
-      title: 'calibur - 控制台',
-      link: [
-        { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.1.0/css/all.css' }
-      ]
-    },
-    computed: {
-      sidebar() {
-        return this.$store.state.admin.sidebar
-      },
-      classObj() {
-        return {
-          hideSidebar: !this.sidebar.opened,
-          withoutAnimation: this.sidebar.withoutAnimation
-        }
+export default {
+  name: "AdminLayout",
+  components: {
+    Navbar,
+    Sidebar,
+    AppMain
+  },
+  head: {
+    title: "calibur - 控制台",
+    link: [
+      {
+        rel: "stylesheet",
+        href: "https://use.fontawesome.com/releases/v5.1.0/css/all.css"
       }
+    ]
+  },
+  computed: {
+    sidebar() {
+      return this.$store.state.admin.sidebar;
+    },
+    classObj() {
+      return {
+        hideSidebar: !this.sidebar.opened,
+        withoutAnimation: this.sidebar.withoutAnimation
+      };
     }
   }
+};
 </script>

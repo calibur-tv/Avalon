@@ -1,63 +1,63 @@
 <style lang="scss">
-  #admin-nav {
-    .navbar {
+#admin-nav {
+  .navbar {
+    height: 50px;
+    line-height: 50px;
+    border-radius: 0 !important;
+
+    .hamburger-container {
+      line-height: 58px;
       height: 50px;
-      line-height: 50px;
-      border-radius: 0 !important;
+      float: left;
+      padding: 0 10px;
+    }
 
-      .hamburger-container {
-        line-height: 58px;
-        height: 50px;
-        float: left;
-        padding: 0 10px;
-      }
+    .screenfull {
+      position: absolute;
+      right: 90px;
+      top: 16px;
+      color: red;
+    }
 
-      .screenfull {
-        position: absolute;
-        right: 90px;
-        top: 16px;
-        color: red;
-      }
+    .avatar-container {
+      height: 50px;
+      display: inline-block;
+      position: absolute;
+      right: 35px;
 
-      .avatar-container {
-        height: 50px;
-        display: inline-block;
-        position: absolute;
-        right: 35px;
+      .avatar-wrapper {
+        cursor: pointer;
+        margin-top: 5px;
+        position: relative;
 
-        .avatar-wrapper {
-          cursor: pointer;
-          margin-top: 5px;
-          position: relative;
+        .user-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+        }
 
-          .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-          }
-
-          .el-icon-caret-bottom {
-            position: absolute;
-            right: -20px;
-            top: 25px;
-            font-size: 12px;
-          }
+        .el-icon-caret-bottom {
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
         }
       }
     }
+  }
 
-    .todo {
-      background: #fff;
-      height: 39px;
-      border-bottom: 1px solid #d8dce5;
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);
-      padding: 5px 0 0 8px;
+  .todo {
+    background: #fff;
+    height: 39px;
+    border-bottom: 1px solid #d8dce5;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+    padding: 5px 0 0 8px;
 
-      a {
-        margin-right: 10px;
-      }
+    a {
+      margin-right: 10px;
     }
   }
+}
 </style>
 
 <template>
@@ -154,58 +154,61 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
-  import Breadcrumb from '@/components/Breadcrumb'
-  import Hamburger from '@/components/Hamburger'
+import Api from "~/api/adminApi";
+import Breadcrumb from "@/components/Breadcrumb";
+import Hamburger from "@/components/Hamburger";
 
-  export default {
-    components: {
-      Breadcrumb,
-      Hamburger
+export default {
+  components: {
+    Breadcrumb,
+    Hamburger
+  },
+  data() {
+    return {
+      todo: null
+    };
+  },
+  computed: {
+    sidebar() {
+      return this.$store.state.admin.sidebar;
     },
-    data () {
-      return {
-        todo: null
+    todoCount() {
+      let result = 0;
+      if (!this.todo) {
+        return result;
       }
-    },
-    computed: {
-      sidebar () {
-        return this.$store.state.admin.sidebar
-      },
-      todoCount () {
-        let result = 0;
-        if (!this.todo) {
-          return result
-        }
 
-        Object.keys(this.todo).forEach(key => {
-          result += this.todo[key]
-        });
+      Object.keys(this.todo).forEach(key => {
+        result += this.todo[key];
+      });
 
-        return result
-      }
-    },
-    watch: {
-      $route () {
-        this.getTodo()
-      }
-    },
-    mounted () {
+      return result;
+    }
+  },
+  watch: {
+    $route() {
       this.getTodo();
-      this.$channel.$on('admin-trial-do', ({ type }) => {
-        this.todo[type] = this.todo[type] - 1
-      })
+    }
+  },
+  mounted() {
+    this.getTodo();
+    this.$channel.$on("admin-trial-do", ({ type }) => {
+      this.todo[type] = this.todo[type] - 1;
+    });
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch("admin/ToggleSideBar");
     },
-    methods: {
-      toggleSideBar() {
-        this.$store.dispatch('admin/ToggleSideBar')
-      },
-      getTodo () {
-        const api = new Api(this)
-        api.getTodo().then((data) => {
-          this.todo = data
-        }).catch(() => {})
-      }
+    getTodo() {
+      const api = new Api(this);
+      api
+        .getTodo()
+        .then(data => {
+          this.todo = data;
+        })
+        .catch(() => {});
     }
   }
+};
 </script>

@@ -1,75 +1,77 @@
 <style lang="scss">
-  .sub-comment-item {
-    padding: 10px 0;
+.sub-comment-item {
+  padding: 10px 0;
 
-    .sub-user {
-      float: left;
+  .sub-user {
+    float: left;
 
-      .avatar {
-        margin-top: 5px;
-        margin-right: 10px;
-        @include avatar-2(24px);
+    .avatar {
+      margin-top: 5px;
+      margin-right: 10px;
+      @include avatar-2(24px);
+    }
+  }
+
+  .sub-body {
+    overflow: hidden;
+
+    .from-user {
+      color: $color-text-normal;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 18px;
+      vertical-align: middle;
+      display: inline-block;
+      margin-top: -2px;
+      margin-right: 2px;
+
+      &:hover {
+        color: $color-blue-normal;
       }
     }
 
-    .sub-body {
-      overflow: hidden;
+    .sub-text {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      padding-bottom: 4px;
+      @extend %breakWord;
 
-      .from-user {
-        color: $color-text-normal;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 18px;
-        vertical-align: middle;
-        display: inline-block;
-        margin-top: -2px;
-        margin-right: 2px;
+      .to-user {
+        color: $color-blue-normal;
+      }
+    }
+
+    .sub-extra {
+      line-height: 26px;
+      font-size: 12px;
+
+      time,
+      span,
+      button {
+        margin-right: 12px;
+        color: $color-text-light;
+      }
+
+      .reply-btn {
+        padding: 0 5px;
+        border-radius: 4px;
+        line-height: 26px;
 
         &:hover {
           color: $color-blue-normal;
+          background-color: $color-gray-normal;
         }
       }
 
-      .sub-text {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        padding-bottom: 4px;
-        @extend %breakWord;
-
-        .to-user {
+      button:hover {
+        i {
           color: $color-blue-normal;
-        }
-      }
-
-      .sub-extra {
-        line-height: 26px;
-        font-size: 12px;
-
-        time, span, button {
-          margin-right: 12px;
-          color: $color-text-light;
-        }
-
-        .reply-btn {
-          padding: 0 5px;
-          border-radius: 4px;
-          line-height: 26px;
-
-          &:hover {
-            color: $color-blue-normal;
-            background-color: $color-gray-normal;
-          }
-        }
-
-        button:hover {
-          i {
-            color: $color-blue-normal;
-          }
         }
       }
     }
   }
+}
 </style>
 
 <template>
@@ -135,79 +137,79 @@
 </template>
 
 <script>
-  import CommentReplyForm from './CommentReplyForm'
+import CommentReplyForm from "./CommentReplyForm";
 
-  export default {
-    name: 'VSubCommentItem',
-    components: {
-      CommentReplyForm
+export default {
+  name: "VSubCommentItem",
+  components: {
+    CommentReplyForm
+  },
+  props: {
+    comment: {
+      required: true,
+      type: Object
     },
-    props: {
-      comment: {
-        required: true,
-        type: Object
-      },
-      parentUserId: {
-        required: true,
-        type: Number
-      },
-      type: {
-        required: true,
-        type: String,
-        default: ''
+    parentUserId: {
+      required: true,
+      type: Number
+    },
+    type: {
+      required: true,
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      showReplyArea: false,
+      deleting: false
+    };
+  },
+  computed: {
+    currentUserId() {
+      return this.$store.state.login ? this.$store.state.user.id : 0;
+    },
+    isMine() {
+      return this.currentUserId === this.comment.from_user_id;
+    },
+    canDelete() {
+      return this.isMine || this.currentUserId === this.parentUserId;
+    }
+  },
+  methods: {
+    openReplyForm() {
+      if (!this.currentUserId) {
+        this.$channel.$emit("sign-in");
+        return;
       }
+      this.showReplyArea = !this.showReplyArea;
     },
-    data () {
-      return {
-        showReplyArea: false,
-        deleting: false
+    deleteComment() {
+      if (this.deleting) {
+        return;
       }
-    },
-    computed: {
-      currentUserId () {
-        return this.$store.state.login
-          ? this.$store.state.user.id
-          : 0
-      },
-      isMine () {
-        return this.currentUserId === this.comment.from_user_id
-      },
-      canDelete () {
-        return this.isMine || this.currentUserId === this.parentUserId
-      }
-    },
-    methods: {
-      openReplyForm () {
-        if (!this.currentUserId) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        this.showReplyArea = !this.showReplyArea
-      },
-      deleteComment () {
-        if (this.deleting) {
-          return
-        }
-        this.deleting = true
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('comment/deleteSubComment', {
+      this.deleting = true;
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch("comment/deleteSubComment", {
             ctx: this,
             type: this.type,
             id: this.comment.id,
             parentId: this.comment.parent_id
-          })
-        }).catch((e) => {
-          this.deleting = false
-          if (e === 'cancel') {
-            return
-          }
-          this.$toast.error(e)
+          });
         })
-      }
+        .catch(e => {
+          this.deleting = false;
+          if (e === "cancel") {
+            return;
+          }
+          this.$toast.error(e);
+        });
     }
   }
+};
 </script>

@@ -1,94 +1,96 @@
 <style lang="scss">
-  #bangumi-role {
-    .role {
-      float: none;
+#bangumi-role {
+  .role {
+    float: none;
+    display: block;
+    position: relative;
+    padding-bottom: 15px;
+    margin-top: 15px;
+    margin-right: 30px;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
       display: block;
-      position: relative;
-      padding-bottom: 15px;
-      margin-top: 15px;
-      margin-right: 30px;
+      float: left;
+      overflow: hidden;
+      border-radius: 5px;
+      margin-right: 10px;
+      border: 1px solid $color-gray-normal;
 
-      &:not(:last-child) {
-        border-bottom: 1px solid #F0F0F0;
-      }
-
-      .avatar {
-        width: 100px;
-        height: 100px;
-        display: block;
-        float: left;
-        overflow: hidden;
-        border-radius: 5px;
-        margin-right: 10px;
-        border: 1px solid $color-gray-normal;
-
-        img {
-          width: 100%;
-          height: auto;
-        }
-      }
-
-      .summary {
-        overflow: hidden;
-
-        .info {
-          display: block;
-          font-size: 14px;
-          line-height: 20px;
-          height: 60px;
-          overflow: hidden;
-
-          .name {
-            font-weight: bold;
-          }
-
-          .intro {
-            color: #000;
-          }
-        }
-
-        .star, .edit {
-          float: right;
-          margin-top: 14px;
-          border-radius: 14px;
-          margin-left: 10px;
-        }
-      }
-
-      .footer {
-        margin-top: 10px;
-        height: 30px;
-        line-height: 30px;
-        vertical-align: middle;
-        color: $color-text-normal;
-        text-align: right;
-
-        img {
-          width: 20px;
-          height: 20px;
-          border-radius: 15px;
-          vertical-align: middle;
-          border: 1px solid $color-gray-normal;
-          margin-left: 2px;
-          margin-top: -3px;
-        }
-
-        a, button {
-          font-size: 12px;
-          color: $color-text-normal;
-        }
-
-        span {
-          font-size: 12px;
-        }
+      img {
+        width: 100%;
+        height: auto;
       }
     }
 
-    .load-more-roles {
-      margin-top: 30px;
-      text-align: center;
+    .summary {
+      overflow: hidden;
+
+      .info {
+        display: block;
+        font-size: 14px;
+        line-height: 20px;
+        height: 60px;
+        overflow: hidden;
+
+        .name {
+          font-weight: bold;
+        }
+
+        .intro {
+          color: #000;
+        }
+      }
+
+      .star,
+      .edit {
+        float: right;
+        margin-top: 14px;
+        border-radius: 14px;
+        margin-left: 10px;
+      }
+    }
+
+    .footer {
+      margin-top: 10px;
+      height: 30px;
+      line-height: 30px;
+      vertical-align: middle;
+      color: $color-text-normal;
+      text-align: right;
+
+      img {
+        width: 20px;
+        height: 20px;
+        border-radius: 15px;
+        vertical-align: middle;
+        border: 1px solid $color-gray-normal;
+        margin-left: 2px;
+        margin-top: -3px;
+      }
+
+      a,
+      button {
+        font-size: 12px;
+        color: $color-text-normal;
+      }
+
+      span {
+        font-size: 12px;
+      }
     }
   }
+
+  .load-more-roles {
+    margin-top: 30px;
+    text-align: center;
+  }
+}
 </style>
 
 <template>
@@ -256,131 +258,131 @@
 </template>
 
 <script>
-  import uploadMixin from '~/mixins/upload'
-  import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
+import uploadMixin from "~/mixins/upload";
+import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
 
-  export default {
-    name: 'BangumiRole',
-    components: {
-      CreateRoleForm
+export default {
+  name: "BangumiRole",
+  components: {
+    CreateRoleForm
+  },
+  mixins: [uploadMixin],
+  data() {
+    return {
+      state: {
+        loading: false,
+        fetched: false
+      },
+      openRolesModal: false,
+      loadingRoleFans: false,
+      focusRoleSort: "new",
+      showEditModal: false,
+      currentRole: null
+    };
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
     },
-    mixins: [
-      uploadMixin
-    ],
-    data () {
-      return {
-        state: {
-          loading: false,
-          fetched: false
-        },
-        openRolesModal: false,
-        loadingRoleFans: false,
-        focusRoleSort: 'new',
-        showEditModal: false,
-        currentRole: null,
+    roles() {
+      return this.$store.state.bangumi.roles;
+    },
+    currentRoleFans() {
+      return this.$store.state.cartoonRole.fans[this.focusRoleSort];
+    }
+  },
+  mounted() {
+    this.$channel.$on("bangumi-tab-switch-role", () => {
+      if (!this.state.fetched) {
+        this.getData();
+      }
+    });
+  },
+  methods: {
+    async getData() {
+      if (this.state.loading) {
+        return;
+      }
+      this.state.loading = true;
+
+      try {
+        await this.$store.dispatch("bangumi/getRoles", {
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.state.loading = false;
+        this.state.fetched = true;
       }
     },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      roles () {
-        return this.$store.state.bangumi.roles
-      },
-      currentRoleFans () {
-        return this.$store.state.cartoonRole.fans[this.focusRoleSort]
-      },
-    },
-    mounted () {
-      this.$channel.$on('bangumi-tab-switch-role', () => {
-        if (!this.state.fetched) {
-          this.getData()
-        }
-      })
-    },
-    methods: {
-      async getData () {
-        if (this.state.loading) {
-          return
-        }
-        this.state.loading = true
-
-        try {
-          await this.$store.dispatch('bangumi/getRoles', {
-            ctx: this,
-            bangumiId: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.state.loading = false
-          this.state.fetched = true
-        }
-      },
-      async fetchCurrentRoleFans (reset = false) {
-        if (this.loadingRoleFans) {
-          return
-        }
-        this.loadingRoleFans = true
-        try {
-          await this.$store.dispatch('cartoonRole/getFansList', {
-            ctx: this,
-            bangumiId: this.info.id,
-            roleId: this.currentRole.id,
-            sort: this.focusRoleSort,
-            reset
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingRoleFans = false
-        }
-      },
-      showRoleDetail (role, sort) {
-        this.currentRole = role
-        this.openRolesModal = true
-        this.focusRoleSort = sort
-        this.fetchCurrentRoleFans(true)
-      },
-      async handleStarRole (role) {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (!this.$store.state.user.coin) {
-          this.$toast.error('金币不足')
-          return
-        }
-        try {
-          await this.$store.dispatch('bangumi/starRole', {
-            bangumiId: this.info.id,
-            roleId: role.id,
-            ctx: this,
-            hasStar: role.has_star
-          })
-          this.$store.commit('USE_COIN')
-          this.$toast.success(`+${role.has_star}s`)
-        } catch (e) {
-          this.$toast.error(e)
-        }
-      },
-      openFeedback () {
-        this.$channel.$emit('open-feedback', {
-          type: 6,
-          desc: `我想要为《${this.info.name}》的 ? 应援`
-        })
-      },
-      showEditRoleModal (role) {
-        this.currentRole = role
-        this.uploadConfig.max = 1
-        this.uploadConfig.pathPrefix = `bangumi/${this.info.id}/role/${role.id}/avatar`
-        this.showEditModal = true
-      },
-      cartoonRoleEditSuccess () {
-        this.$toast.success('编辑成功，刷新网页后可查看')
-        this.showEditModal = false
-        this.currentRole = null
+    async fetchCurrentRoleFans(reset = false) {
+      if (this.loadingRoleFans) {
+        return;
       }
+      this.loadingRoleFans = true;
+      try {
+        await this.$store.dispatch("cartoonRole/getFansList", {
+          ctx: this,
+          bangumiId: this.info.id,
+          roleId: this.currentRole.id,
+          sort: this.focusRoleSort,
+          reset
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingRoleFans = false;
+      }
+    },
+    showRoleDetail(role, sort) {
+      this.currentRole = role;
+      this.openRolesModal = true;
+      this.focusRoleSort = sort;
+      this.fetchCurrentRoleFans(true);
+    },
+    async handleStarRole(role) {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      if (!this.$store.state.user.coin) {
+        this.$toast.error("金币不足");
+        return;
+      }
+      try {
+        await this.$store.dispatch("bangumi/starRole", {
+          bangumiId: this.info.id,
+          roleId: role.id,
+          ctx: this,
+          hasStar: role.has_star
+        });
+        this.$store.commit("USE_COIN");
+        this.$toast.success(`+${role.has_star}s`);
+      } catch (e) {
+        this.$toast.error(e);
+      }
+    },
+    openFeedback() {
+      this.$channel.$emit("open-feedback", {
+        type: 6,
+        desc: `我想要为《${this.info.name}》的 ? 应援`
+      });
+    },
+    showEditRoleModal(role) {
+      this.currentRole = role;
+      this.uploadConfig.max = 1;
+      this.uploadConfig.pathPrefix = `bangumi/${this.info.id}/role/${
+        role.id
+      }/avatar`;
+      this.showEditModal = true;
+    },
+    cartoonRoleEditSuccess() {
+      this.$toast.success("编辑成功，刷新网页后可查看");
+      this.showEditModal = false;
+      this.currentRole = null;
     }
   }
+};
 </script>

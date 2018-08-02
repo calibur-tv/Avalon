@@ -1,137 +1,137 @@
 <style lang="scss">
-  #image-show {
-    $banner-height: 350px;
+#image-show {
+  $banner-height: 350px;
 
-    .image-banner {
-      .panel {
-        position: relative;
-        top: 100px;
-        left: 0;
-        color: #fff;
-        min-width: 260px;
-        max-width: 500px;
-        background-color: rgba(30,30,34,.8);
-        padding: 20px;
-
-        h1 {
-          font-size: 32px;
-          font-weight: 300;
-          line-height: 48px;
-        }
-
-        p {
-          margin-top: 5px;
-          line-height: 20px;
-        }
-      }
-
-      .follow {
-        position: absolute;
-        right: 20%;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      .v-share {
-        position: absolute;
-        right: 40px;
-        bottom: 10px;
-      }
-    }
-
-    nav {
-      margin-bottom: 20px;
-
-      .breadcrumb {
-        overflow: hidden;
-      }
-
-      .edit-area {
-        float: right;
-      }
-    }
-
-    .images-wrap {
-      margin-bottom: 20px;
-
-      .image-package {
-        position: relative;
-
-        .sort-btn {
-          position: absolute;
-          right: 20px;
-          width: 50px;
-          height: 50px;
-          font-size: 30px;
-          text-align: center;
-          line-height: 50px;
-          background-color: rgba(0, 0, 0, .3);
-          color: #fff;
-          opacity: 0;
-          transition: .4s;
-          box-shadow: 0 0 1pc 1px rgba(255, 255, 255, 0.2);
-
-          &:hover {
-            background-color: rgba(0, 0, 0, .6);
-          }
-        }
-
-        .delete-btn {
-          left: 20px;
-          top: 20px;
-          right: auto;
-        }
-
-        .to-prev {
-          top: 20px;
-        }
-
-        .to-next {
-          bottom: 20px;
-        }
-
-        &:hover {
-          .sort-btn {
-            opacity: 1;
-          }
-        }
-      }
-    }
-
-    .album-footer {
-      min-height: 260px;
+  .image-banner {
+    .panel {
       position: relative;
+      top: 100px;
+      left: 0;
+      color: #fff;
+      min-width: 260px;
+      max-width: 500px;
+      background-color: rgba(30, 30, 34, 0.8);
+      padding: 20px;
 
-      .publish-time {
-        font-size: 14px;
-        color: #8590a6;
+      h1 {
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 48px;
       }
 
-      .v-parts {
-        margin-top: 20px;
-      }
-
-      .like-panel {
-        text-align: center;
-        margin-bottom: 20px;
-        margin-top: 50px;
-      }
-
-      .bangumi-panel {
-        position: absolute;
-        right: 0;
-        top: 0;
+      p {
+        margin-top: 5px;
+        line-height: 20px;
       }
     }
 
-    .no-image {
-      text-align: center;
-      margin-top: 30px;
-      margin-bottom: 20px;
-      color: $color-text-normal;
-      font-size: 13px;
+    .follow {
+      position: absolute;
+      right: 20%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .v-share {
+      position: absolute;
+      right: 40px;
+      bottom: 10px;
     }
   }
+
+  nav {
+    margin-bottom: 20px;
+
+    .breadcrumb {
+      overflow: hidden;
+    }
+
+    .edit-area {
+      float: right;
+    }
+  }
+
+  .images-wrap {
+    margin-bottom: 20px;
+
+    .image-package {
+      position: relative;
+
+      .sort-btn {
+        position: absolute;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        line-height: 50px;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        opacity: 0;
+        transition: 0.4s;
+        box-shadow: 0 0 1pc 1px rgba(255, 255, 255, 0.2);
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      .delete-btn {
+        left: 20px;
+        top: 20px;
+        right: auto;
+      }
+
+      .to-prev {
+        top: 20px;
+      }
+
+      .to-next {
+        bottom: 20px;
+      }
+
+      &:hover {
+        .sort-btn {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .album-footer {
+    min-height: 260px;
+    position: relative;
+
+    .publish-time {
+      font-size: 14px;
+      color: #8590a6;
+    }
+
+    .v-parts {
+      margin-top: 20px;
+    }
+
+    .like-panel {
+      text-align: center;
+      margin-bottom: 20px;
+      margin-top: 50px;
+    }
+
+    .bangumi-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .no-image {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: $color-text-normal;
+    font-size: 13px;
+  }
+}
 </style>
 
 <template>
@@ -363,202 +363,214 @@
 </template>
 
 <script>
-  import Api from '~/api/imageApi'
-  import vParts from '~/components/lists/Parts'
-  import CommentMain from '~/components/comments/CommentMain'
-  import EditAlbumForm from '~/components/image/EditAlbumForm'
-  import EditImageForm from '~/components/image/EditImageForm'
+import Api from "~/api/imageApi";
+import vParts from "~/components/lists/Parts";
+import CommentMain from "~/components/comments/CommentMain";
+import EditAlbumForm from "~/components/image/EditAlbumForm";
+import EditImageForm from "~/components/image/EditImageForm";
 
-  export default {
-    name: 'ImageShow',
-    async asyncData({ store, route, ctx }) {
-      const id = route.params.id
-      await Promise.all([
-        store.dispatch('image/show', { ctx, id }),
-        store.dispatch('comment/getMainComments', {
-          ctx,
-          id,
-          type: 'image',
-          seeReplyId: route.query.reply
+export default {
+  name: "ImageShow",
+  async asyncData({ store, route, ctx }) {
+    const id = route.params.id;
+    await Promise.all([
+      store.dispatch("image/show", { ctx, id }),
+      store.dispatch("comment/getMainComments", {
+        ctx,
+        id,
+        type: "image",
+        seeReplyId: route.query.reply
+      })
+    ]);
+  },
+  components: {
+    vParts,
+    CommentMain,
+    EditAlbumForm,
+    EditImageForm
+  },
+  data() {
+    return {
+      loadingFollowAlbum: false,
+      loadingEditImages: false,
+      showAllPart: false,
+      openEditModal: false
+    };
+  },
+  computed: {
+    id() {
+      return +this.$route.params.id;
+    },
+    info() {
+      return this.$store.state.image.show;
+    },
+    user() {
+      return this.info.user;
+    },
+    source() {
+      return this.info.source;
+    },
+    images() {
+      return this.info.images;
+    },
+    bangumi() {
+      return this.info.bangumi;
+    },
+    cartoon() {
+      return [];
+    },
+    likeAlbumBtnText() {
+      const text = this.info.is_creator
+        ? this.info.liked
+          ? "已赞赏"
+          : "赞赏"
+        : this.info.liked
+          ? "已喜欢"
+          : "喜欢";
+
+      return this.info.like_count ? `${text}(${this.info.like_count})` : text;
+    },
+    isMine() {
+      return this.$store.state.login
+        ? this.user.id === this.$store.state.user.id
+        : false;
+    },
+    editable() {
+      return this.$store.state.login
+        ? this.info.is_cartoon
+          ? this.bangumi.is_master
+          : this.user.id === this.$store.state.user.id
+        : false;
+    },
+    albumType() {
+      if (!this.info.is_album) {
+        return "图片";
+      }
+      if (this.info.is_cartoon) {
+        return "漫画";
+      }
+      return "相册";
+    }
+  },
+  methods: {
+    handleFollowAction(result) {
+      this.$store.commit("image/SHOW_FOLLOW_BANGUMI", { result });
+    },
+    async handleAlbumLike() {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      if (this.isMine) {
+        this.$toast.info("不能为自己的相册点赞");
+        return;
+      }
+      if (this.loadingFollowAlbum) {
+        return;
+      }
+      this.loadingFollowAlbum = true;
+      if (this.info.is_creator && !this.info.liked) {
+        this.$confirm("原创相册点赞需要金币, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
-      ])
-    },
-    components: {
-      vParts,
-      CommentMain,
-      EditAlbumForm,
-      EditImageForm
-    },
-    data () {
-      return {
-        loadingFollowAlbum: false,
-        loadingEditImages: false,
-        showAllPart: false,
-        openEditModal: false
-      }
-    },
-    computed: {
-      id () {
-        return +this.$route.params.id
-      },
-      info () {
-        return this.$store.state.image.show
-      },
-      user () {
-        return this.info.user
-      },
-      source () {
-        return this.info.source
-      },
-      images () {
-        return this.info.images
-      },
-      bangumi () {
-        return this.info.bangumi
-      },
-      cartoon () {
-        return []
-      },
-      likeAlbumBtnText () {
-        const text = this.info.is_creator
-          ? this.info.liked ? '已赞赏' : '赞赏'
-          : this.info.liked ? '已喜欢' : '喜欢'
-
-        return this.info.like_count ? `${text}(${this.info.like_count})` : text
-      },
-      isMine () {
-        return this.$store.state.login
-          ? this.user.id === this.$store.state.user.id
-          : false
-      },
-      editable() {
-        return this.$store.state.login
-          ? this.info.is_cartoon
-            ? this.bangumi.is_master
-            : this.user.id === this.$store.state.user.id
-          : false
-      },
-      albumType () {
-        if (!this.info.is_album) {
-          return '图片'
-        }
-        if (this.info.is_cartoon)
-        {
-          return '漫画'
-        }
-        return '相册'
-      }
-    },
-    methods: {
-      handleFollowAction (result) {
-        this.$store.commit('image/SHOW_FOLLOW_BANGUMI', { result })
-      },
-      async handleAlbumLike () {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.isMine) {
-          this.$toast.info('不能为自己的相册点赞')
-          return
-        }
-        if (this.loadingFollowAlbum) {
-          return
-        }
-        this.loadingFollowAlbum = true
-        if (this.info.is_creator && !this.info.liked) {
-          this.$confirm('原创相册点赞需要金币, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.submitLikeRequest()
-          }).catch(() => {})
-          return
-        }
-        this.submitLikeRequest()
-      },
-      async submitLikeRequest () {
-        const api = new Api(this)
-        try {
-          const result = await api.toggleLike({
-            id: this.id
+          .then(() => {
+            this.submitLikeRequest();
           })
-          this.$store.commit('image/SHOW_TOGGLE_LIKE', { result })
-          this.$toast.success('操作成功')
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingFollowAlbum = false
-        }
-      },
-      async handleSortBtnClick (index, toNext) {
-        if (this.loadingEditImages) {
-          this.$toast.error('正在操作，请稍候...')
-          return
-        }
-        this.loadingEditImages = true
-        try {
-          await this.$store.dispatch('image/sortAlbumImage', {
-            prev: toNext ? index : index - 1,
-            next: toNext ? index + 1 : index,
-            ctx: this,
-            id: this.id
-          });
-          this.$toast.success('操作成功')
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingEditImages = false
-        }
-      },
-      handleImageDelete (index) {
-        if (this.loadingEditImages) {
-          this.$toast.error('正在操作，请稍候...')
-          return
-        }
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          this.loadingEditImages = true
+          .catch(() => {});
+        return;
+      }
+      this.submitLikeRequest();
+    },
+    async submitLikeRequest() {
+      const api = new Api(this);
+      try {
+        const result = await api.toggleLike({
+          id: this.id
+        });
+        this.$store.commit("image/SHOW_TOGGLE_LIKE", { result });
+        this.$toast.success("操作成功");
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingFollowAlbum = false;
+      }
+    },
+    async handleSortBtnClick(index, toNext) {
+      if (this.loadingEditImages) {
+        this.$toast.error("正在操作，请稍候...");
+        return;
+      }
+      this.loadingEditImages = true;
+      try {
+        await this.$store.dispatch("image/sortAlbumImage", {
+          prev: toNext ? index : index - 1,
+          next: toNext ? index + 1 : index,
+          ctx: this,
+          id: this.id
+        });
+        this.$toast.success("操作成功");
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingEditImages = false;
+      }
+    },
+    handleImageDelete(index) {
+      if (this.loadingEditImages) {
+        this.$toast.error("正在操作，请稍候...");
+        return;
+      }
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          this.loadingEditImages = true;
           try {
-            await this.$store.dispatch('image/deleteAlbumImage', {
+            await this.$store.dispatch("image/deleteAlbumImage", {
               index,
               ctx: this,
               id: this.id
             });
-            this.$toast.success('操作成功');
+            this.$toast.success("操作成功");
           } catch (e) {
-            this.$toast.error(e)
+            this.$toast.error(e);
           } finally {
-            this.loadingEditImages = false
+            this.loadingEditImages = false;
           }
-        }).catch((e) => {})
-      },
-      handleDeleteAlbum () {
-        this.$prompt(`请输入${this.albumType}的名字`, '删除确认', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消'
-        }).then(({ value }) => {
+        })
+        .catch(e => {});
+    },
+    handleDeleteAlbum() {
+      this.$prompt(`请输入${this.albumType}的名字`, "删除确认", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
           if (value !== this.info.name) {
-            this.$toast.error('名字不对');
+            this.$toast.error("名字不对");
             return;
           }
           const api = new Api(this);
-          api.deleteAlbum({
-            id: this.info.id
-          }).then(() => {
-            this.$toast.success('操作成功');
-            setTimeout(() => {
-              window.location.reload()
-            }, 1000)
-          }).catch((err) => {
-            this.$toast.error(err);
-          })
-        }).catch(() => {})
-      }
+          api
+            .deleteAlbum({
+              id: this.info.id
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            })
+            .catch(err => {
+              this.$toast.error(err);
+            });
+        })
+        .catch(() => {});
     }
   }
+};
 </script>

@@ -1,9 +1,3 @@
-<style lang="scss">
-  #error-400 {
-
-  }
-</style>
-
 <template>
   <div id="error-400">
     <p>您发送的请求参数校验不通过</p>
@@ -19,7 +13,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error400'
-  }
+export default {
+  name: "Error400"
+};
 </script>

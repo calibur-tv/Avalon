@@ -1,9 +1,9 @@
 <style lang="scss">
-  #post-flow {
-    .img {
-      background-color: RGB(60, 134, 247);
-    }
+#post-flow {
+  .img {
+    background-color: RGB(60, 134, 247);
   }
+}
 </style>
 
 <template>
@@ -92,53 +92,53 @@
 </template>
 
 <script>
-  import PostShowItem from '~/components/items/PostShow'
+import PostShowItem from "~/components/items/PostShow";
 
-  export default {
-    name: 'PostFlowList',
-    async asyncData ({ store, ctx }) {
-      await Promise.all([
-        store.dispatch('trending/getTrending', {
-          type: 'post',
-          sort: 'active',
-          ctx
-        }),
-        store.dispatch('trending/getMeta', { type: 'post' })
-      ])
+export default {
+  name: "PostFlowList",
+  async asyncData({ store, ctx }) {
+    await Promise.all([
+      store.dispatch("trending/getTrending", {
+        type: "post",
+        sort: "active",
+        ctx
+      }),
+      store.dispatch("trending/getMeta", { type: "post" })
+    ]);
+  },
+  components: {
+    PostShowItem
+  },
+  data() {
+    return {
+      showTips: false
+    };
+  },
+  computed: {
+    resource() {
+      return this.$store.state.trending.type === "post"
+        ? this.$store.state.trending.active
+        : null;
     },
-    components: {
-      PostShowItem
+    meta() {
+      return this.$store.state.trending.meta;
+    }
+  },
+  methods: {
+    openCreatePost() {
+      this.$channel.$emit("show-create-post-modal");
     },
-    data () {
-      return {
-        showTips: false
-      }
-    },
-    computed: {
-      resource () {
-        return this.$store.state.trending.type === 'post'
-          ? this.$store.state.trending.active
-          : null
-      },
-      meta () {
-        return this.$store.state.trending.meta
-      }
-    },
-    methods: {
-      openCreatePost () {
-        this.$channel.$emit('show-create-post-modal')
-      },
-      async loadMore () {
-        try {
-          await this.$store.dispatch('trending/loadMore', {
-            type: 'post',
-            sort: 'active',
-            ctx: this
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
+    async loadMore() {
+      try {
+        await this.$store.dispatch("trending/loadMore", {
+          type: "post",
+          sort: "active",
+          ctx: this
+        });
+      } catch (e) {
+        this.$toast.error(e);
       }
     }
   }
+};
 </script>

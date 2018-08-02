@@ -1,31 +1,31 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import UserApi from '~/api/userApi';
-import homepage from './homepage';
-import bangumi from './bangumi';
-import video from './video';
-import users from './users';
-import image from './image';
-import post from './post';
-import cartoonRole from './cartoonRole';
-import trending from './trending';
-import comment from './comment';
-import search from './search';
-import admin from './admin';
-import score from './score';
-import editor from './editor'
+import Vue from "vue";
+import Vuex from "vuex";
+import UserApi from "~/api/userApi";
+import homepage from "./homepage";
+import bangumi from "./bangumi";
+import video from "./video";
+import users from "./users";
+import image from "./image";
+import post from "./post";
+import cartoonRole from "./cartoonRole";
+import trending from "./trending";
+import comment from "./comment";
+import search from "./search";
+import admin from "./admin";
+import score from "./score";
+import editor from "./editor";
 
-import ImageApi from '~/api/imageApi';
+import ImageApi from "~/api/imageApi";
 
 Vue.use(Vuex);
 
 export function createStore() {
   return new Vuex.Store({
-    strict: process.env.NODE_ENV !== 'production',
+    strict: process.env.NODE_ENV !== "production",
     state: () => ({
       user: null,
       login: false,
-      banner: 'banner/2.jpg',
+      banner: "banner/2.jpg"
     }),
     mutations: {
       SET_USER(state, user) {
@@ -33,7 +33,7 @@ export function createStore() {
         state.login = true;
       },
       SET_USER_INFO(state, data) {
-        Object.keys(data).forEach((key) => {
+        Object.keys(data).forEach(key => {
           state.user[key] = data[key];
         });
       },
@@ -41,22 +41,22 @@ export function createStore() {
         state.user.coin && state.user.coin--;
       },
       UPDATE_USER_INFO(state, { key, value }) {
-        state.user[key] = value
-      },
+        state.user[key] = value;
+      }
     },
     actions: {
       async initAuth({ commit }, { ctx, must, admin }) {
         const cookie = ctx.header.cookie;
-        const throwError = (code) => {
+        const throwError = code => {
           const error = new Error();
           error.code = code || 401;
           throw error;
         };
         if (cookie) {
-          let token = '';
-          cookie.split('; ').forEach((item) => {
-            const temp = item.split('=');
-            if (temp[0] === 'JWT-TOKEN') {
+          let token = "";
+          cookie.split("; ").forEach(item => {
+            const temp = item.split("=");
+            if (temp[0] === "JWT-TOKEN") {
               token = temp[1];
             }
           });
@@ -68,13 +68,21 @@ export function createStore() {
                 if (admin && !user.is_admin) {
                   return throwError(403);
                 }
-                commit('SET_USER', user);
-              } else if (must) { return throwError(); }
+                commit("SET_USER", user);
+              } else if (must) {
+                return throwError();
+              }
             } catch (e) {
-              if (must) { return throwError(e.code); }
+              if (must) {
+                return throwError(e.code);
+              }
             }
-          } else if (must) { return throwError(); }
-        } else if (must) { return throwError(); }
+          } else if (must) {
+            return throwError();
+          }
+        } else if (must) {
+          return throwError();
+        }
       },
       async getUpToken({ state, commit }, ctx) {
         if (!state.user) {
@@ -83,10 +91,10 @@ export function createStore() {
         if (state.user.uptoken.expiredAt <= parseInt(Date.now() / 1000, 10)) {
           const api = new ImageApi(ctx);
           const data = await api.getUpToken();
-          commit('UPDATE_USER_INFO', {
-            key: 'uptoken',
+          commit("UPDATE_USER_INFO", {
+            key: "uptoken",
             value: data
-          })
+          });
         }
       },
       async getNotification({ state, commit }, ctx) {
@@ -95,11 +103,11 @@ export function createStore() {
         }
         const api = new UserApi(ctx);
         const data = await api.getNotificationCount();
-        commit('UPDATE_USER_INFO', {
-          key: 'notification',
+        commit("UPDATE_USER_INFO", {
+          key: "notification",
           value: data
-        })
-      },
+        });
+      }
     },
     getters: {},
     modules: {
@@ -116,6 +124,6 @@ export function createStore() {
       search,
       score,
       editor
-    },
+    }
   });
 }

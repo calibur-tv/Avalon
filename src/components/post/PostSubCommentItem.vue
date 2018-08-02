@@ -1,38 +1,38 @@
 <style lang="scss">
-  .post-sub-comment-item {
-    padding-top: 15px;
-    line-height: 20px;
-    color: #99a2aa;
+.post-sub-comment-item {
+  padding-top: 15px;
+  line-height: 20px;
+  color: #99a2aa;
 
-    .comment-content {
-      font-size: 14px;
-      color: #222;
-      word-break: break-all;
-    }
+  .comment-content {
+    font-size: 14px;
+    color: #222;
+    word-break: break-all;
+  }
 
-    .avatar {
-      margin-right: 10px;
-      vertical-align: middle;
-      display: inline-block;
-      @include avatar-2(32px)
-    }
+  .avatar {
+    margin-right: 10px;
+    vertical-align: middle;
+    display: inline-block;
+    @include avatar-2(32px);
+  }
 
-    .reply-area {
-      text-align: right;
-      line-height: 13px;
-      font-size: 12px;
+  .reply-area {
+    text-align: right;
+    line-height: 13px;
+    font-size: 12px;
 
-      button {
-        margin-left: 5px;
-      }
-    }
-
-    .comment-reply-form {
-      margin-top: 10px;
-      padding: 15px 0 15px 5px;
-      height: 58px;
+    button {
+      margin-left: 5px;
     }
   }
+
+  .comment-reply-form {
+    margin-top: 10px;
+    padding: 15px 0 15px 5px;
+    height: 58px;
+  }
+}
 </style>
 
 <template>
@@ -90,70 +90,70 @@
 </template>
 
 <script>
-  import CommentReplyForm from '~/components/comments/CommentReplyForm'
+import CommentReplyForm from "~/components/comments/CommentReplyForm";
 
-  export default {
-    name: 'PostSubCommentItem',
-    components: {
-      CommentReplyForm
+export default {
+  name: "PostSubCommentItem",
+  components: {
+    CommentReplyForm
+  },
+  props: {
+    comment: {
+      required: true,
+      type: Object
     },
-    props: {
-      comment: {
-        required: true,
-        type: Object
-      },
-      parentUserId: {
-        required: true,
-        type: Number
+    parentUserId: {
+      required: true,
+      type: Number
+    }
+  },
+  data() {
+    return {
+      showReplyArea: false,
+      deleting: false
+    };
+  },
+  computed: {
+    currentUserId() {
+      return this.$store.state.login ? this.$store.state.user.id : 0;
+    },
+    isMine() {
+      return this.currentUserId === this.comment.from_user_id;
+    },
+    canDelete() {
+      return this.isMine || this.currentUserId === this.parentUserId;
+    }
+  },
+  methods: {
+    toggleCommentArea() {
+      this.showReplyArea = !this.showReplyArea;
+    },
+    deleteComment() {
+      if (this.deleting) {
+        return;
       }
-    },
-    data () {
-      return {
-        showReplyArea: false,
-        deleting: false
-      }
-    },
-    computed: {
-      currentUserId () {
-        return this.$store.state.login
-          ? this.$store.state.user.id
-          : 0
-      },
-      isMine () {
-        return this.currentUserId === this.comment.from_user_id
-      },
-      canDelete () {
-        return this.isMine || this.currentUserId === this.parentUserId
-      }
-    },
-    methods: {
-      toggleCommentArea () {
-        this.showReplyArea = !this.showReplyArea
-      },
-      deleteComment () {
-        if (this.deleting) {
-          return
-        }
-        this.deleting = true
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('comment/deleteSubComment', {
-            type: 'post',
+      this.deleting = true;
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch("comment/deleteSubComment", {
+            type: "post",
             ctx: this,
             id: this.comment.id,
             parentId: this.comment.parent_id
-          })
-        }).catch((e) => {
-          this.deleting = false
-          if (e === 'cancel') {
-            return
-          }
-          this.$toast.error(e)
+          });
         })
-      }
+        .catch(e => {
+          this.deleting = false;
+          if (e === "cancel") {
+            return;
+          }
+          this.$toast.error(e);
+        });
     }
   }
+};
 </script>

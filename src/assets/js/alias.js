@@ -1,15 +1,15 @@
 export default {
-  index: '/',
+  index: "/",
 
   __query(str, obj) {
     if (!obj) {
       return str;
     }
-    let query = '?';
-    Object.keys(obj).forEach((item) => {
+    let query = "?";
+    Object.keys(obj).forEach(item => {
       query += `${item}=${obj[item]}&`;
     });
-    return `${str.split('?').shift()}${query.substring(0, query.length - 1)}`;
+    return `${str.split("?").shift()}${query.substring(0, query.length - 1)}`;
   },
 
   url(url, query) {
@@ -33,7 +33,7 @@ export default {
   },
 
   image(id) {
-    return `/pins/${id}`
+    return `/pins/${id}`;
   },
 
   post(id, query) {
@@ -41,12 +41,12 @@ export default {
   },
 
   bangumiTag(id) {
-    return id ? `/bangumi/tags?id=${id}` : '/bangumi/tags';
+    return id ? `/bangumi/tags?id=${id}` : "/bangumi/tags";
   },
 
-  bangumiNews: '/bangumi/news',
+  bangumiNews: "/bangumi/news",
 
-  bangumiTimeline: '/bangumi/timeline',
+  bangumiTimeline: "/bangumi/timeline",
 
   postTrending(sort) {
     return `/post/trending/${sort}`;
@@ -65,10 +65,10 @@ export default {
   },
 
   world(type) {
-    return `/world/${type}`
+    return `/world/${type}`;
   },
 
-  createScore: '/review/create',
+  createScore: "/review/create",
 
-  roleTrending: '/role/trending',
+  roleTrending: "/role/trending"
 };

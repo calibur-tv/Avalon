@@ -1,4 +1,4 @@
-import BaseApi from './_baseApi';
+import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
   getShow(id) {
@@ -6,8 +6,8 @@ export default class extends BaseApi {
   }
 
   playing(id) {
-    return this.http.post('video/playing', {
-      id,
+    return this.http.post("video/playing", {
+      id
     });
   }
 }

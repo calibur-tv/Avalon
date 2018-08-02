@@ -1,69 +1,69 @@
 <style lang="scss">
-  #bangumi-score {
-    #bangumi-score-panel {
-
-      .bangumi-score-wrap {
-        border-right: 1px solid $color-gray-normal;
-      }
-
-      .bangumi-score-total {
-        padding-left: 80px;
-
-        .intro {
-          margin-bottom: 15px;
-
-          .total {
-            float: left;
-            font-size: 28px;
-            line-height: 56px;
-            margin-right: 15px;
-          }
-
-          .rate {
-            overflow: hidden;
-            padding-top: 10px;
-
-            span {
-              font-size: 12px;
-              color: $color-text-normal;
-            }
-          }
-        }
-
-        .ladder {
-          width: 200px;
-
-          .label, .percent {
-            margin-right: 10px;
-            font-size: 13px;
-            line-height: 14px;
-            color: $color-text-normal;
-            vertical-align: middle;
-          }
-
-          .score {
-            display: inline-block;
-            height: 10px;
-            background-color: rgb(247, 186, 42);
-            margin-right: 5px;
-            border-radius: 3px;
-            vertical-align: middle;
-          }
-        }
-      }
+#bangumi-score {
+  #bangumi-score-panel {
+    .bangumi-score-wrap {
+      border-right: 1px solid $color-gray-normal;
     }
 
-    #score-list {
-      width: 720px;
-      margin-top: 30px;
+    .bangumi-score-total {
+      padding-left: 80px;
 
-      .sub-title {
-        button {
-          float: right;
+      .intro {
+        margin-bottom: 15px;
+
+        .total {
+          float: left;
+          font-size: 28px;
+          line-height: 56px;
+          margin-right: 15px;
+        }
+
+        .rate {
+          overflow: hidden;
+          padding-top: 10px;
+
+          span {
+            font-size: 12px;
+            color: $color-text-normal;
+          }
+        }
+      }
+
+      .ladder {
+        width: 200px;
+
+        .label,
+        .percent {
+          margin-right: 10px;
+          font-size: 13px;
+          line-height: 14px;
+          color: $color-text-normal;
+          vertical-align: middle;
+        }
+
+        .score {
+          display: inline-block;
+          height: 10px;
+          background-color: rgb(247, 186, 42);
+          margin-right: 5px;
+          border-radius: 3px;
+          vertical-align: middle;
         }
       }
     }
   }
+
+  #score-list {
+    width: 720px;
+    margin-top: 30px;
+
+    .sub-title {
+      button {
+        float: right;
+      }
+    }
+  }
+}
 </style>
 
 <template>
@@ -168,83 +168,83 @@
 </template>
 
 <script>
-  import ScoreApi from '~/api/scoreApi'
-  import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
-  import ScoreFlow from '~/components/score/ScoreFlow'
+import ScoreApi from "~/api/scoreApi";
+import BangumiScoreChart from "~/components/bangumi/charts/BangumiScoreChart";
+import ScoreFlow from "~/components/score/ScoreFlow";
 
-  export default {
-    name: 'BangumiScore',
-    components: {
-      BangumiScoreChart,
-      ScoreFlow
+export default {
+  name: "BangumiScore",
+  components: {
+    BangumiScoreChart,
+    ScoreFlow
+  },
+  data() {
+    return {
+      loading: false,
+      bangumiScore: null
+    };
+  },
+  computed: {
+    totalRate() {
+      return this.bangumiScore.total / 20;
     },
-    data () {
-      return {
-        loading: false,
-        bangumiScore: null
+    totalScore() {
+      return this.bangumiScore.total / 10;
+    },
+    info() {
+      return this.$store.state.bangumi.info;
+    },
+    scores() {
+      return this.$store.state.trending.type === "score"
+        ? this.$store.state.trending.active
+        : null;
+    }
+  },
+  mounted() {
+    this.$channel.$on("bangumi-tab-switch-score", () => {
+      this.getData();
+      this.getScore();
+    });
+  },
+  methods: {
+    async getData() {
+      try {
+        await this.$store.dispatch("trending/getTrending", {
+          type: "score",
+          sort: "active",
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
       }
     },
-    computed: {
-      totalRate () {
-        return this.bangumiScore.total / 20
-      },
-      totalScore () {
-        return this.bangumiScore.total / 10
-      },
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      scores () {
-        return this.$store.state.trending.type === 'score'
-          ? this.$store.state.trending.active
-          : null
-      },
+    async loadMore() {
+      try {
+        await this.$store.dispatch("trending/loadMore", {
+          type: "score",
+          sort: "active",
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      }
     },
-    mounted () {
-      this.$channel.$on('bangumi-tab-switch-score', () => {
-        this.getData()
-        this.getScore()
-      })
-    },
-    methods: {
-      async getData () {
-        try {
-          await this.$store.dispatch('trending/getTrending', {
-            type: 'score',
-            sort: 'active',
-            ctx: this,
-            bangumiId: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
-      },
-      async loadMore () {
-        try {
-          await this.$store.dispatch('trending/loadMore', {
-            type: 'score',
-            sort: 'active',
-            ctx: this,
-            bangumiId: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
-      },
-      async getScore () {
-        if (this.loading || this.bangumiScore) {
-          return
-        }
-        this.loading = true;
-        const api = new ScoreApi(this);
-        try {
-          this.bangumiScore = await api.bangumiScore(this.info.id)
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
+    async getScore() {
+      if (this.loading || this.bangumiScore) {
+        return;
+      }
+      this.loading = true;
+      const api = new ScoreApi(this);
+      try {
+        this.bangumiScore = await api.bangumiScore(this.info.id);
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     }
   }
+};
 </script>

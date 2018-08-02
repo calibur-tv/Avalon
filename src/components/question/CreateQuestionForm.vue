@@ -1,16 +1,17 @@
 <style lang="scss">
-  #create-question-form {
-    .el-upload--picture-card, .el-upload-list__item {
-      width: 72px !important;
-      height: 72px !important;
-      line-height: 80px !important;
-    }
-
-    .el-upload-list,
-    .el-upload--picture-card {
-      float: left;
-    }
+#create-question-form {
+  .el-upload--picture-card,
+  .el-upload-list__item {
+    width: 72px !important;
+    height: 72px !important;
+    line-height: 80px !important;
   }
+
+  .el-upload-list,
+  .el-upload--picture-card {
+    float: left;
+  }
+}
 </style>
 
 <template>
@@ -84,138 +85,134 @@
 </template>
 
 <script>
-  import uploadMixin from '~/mixins/upload'
-  import Api from '~/api/questionApi'
+import uploadMixin from "~/mixins/upload";
+import Api from "~/api/questionApi";
 
-  export default {
-    name: 'CreateQuestionForm',
-    mixins: [
-      uploadMixin
-    ],
-    data () {
-      const validateTitle = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请输入问题标题'));
-        }
-        if (value.length > 30) {
-          callback(new Error('标题最多 30 个字'));
-        }
-        callback();
-      };
-      const validateTag = (rule, value, callback) => {
-        if (!value.length) {
-          callback(new Error('至少选择一个相关番剧'));
-        }
-        if (value.length > 5) {
-          callback(new Error('最多 5 个话题'));
-        }
-        callback();
-      };
-      return {
-        form: {
-          title: '',
-          tags: [],
-          content: '',
-        },
-        rules: {
-          title: [
-            { validator: validateTitle, trigger: 'change' }
-          ],
-          tags: [
-            { validator: validateTag, trigger: 'submit' }
-          ]
-        },
-        images: [],
-        exceed: 15,
-        submitting: false
-      };
-    },
-    mounted () {
-      this.getUpToken();
-    },
-    methods: {
-      beforeUpload (file) {
-        this.uploadConfig.max = 3
-        this.uploadConfig.pathPrefix = `user/${this.$store.state.user.id}/question`
-        return this.beforeImageUpload(file)
-      },
-      handleError (err, file) {
-        console.log(err)
-        this.images.forEach((item, index) => {
-          if (item.id === file.uid) {
-            this.images.splice(index, 1)
-          }
-        })
-        this.$toast.error(`图片：${file.name} 上传失败`)
-      },
-      handleRemove (file) {
-        this.images.forEach((item, index) => {
-          if (item.id === file.uid) {
-            this.images.splice(index, 1)
-          }
-        })
-      },
-      handleExceed () {
-        this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
-      },
-      handleSuccess (res, file) {
-        this.images.push({
-          id: file.uid,
-          img: res.data
-        })
-      },
-      submit() {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            if (this.submitting) {
-              return
-            }
-            this.submitting = true;
-            this.$captcha({
-              success: async ({ data }) => {
-                const api = new Api(this);
-                try {
-                  await api.createQuestion({
-                    title: this.form.title,
-                    tags: this.form.tags,
-                    intro: this.form.content.substring(0, 120),
-                    content: this.$utils.convertPureTextToRich(this.form.content),
-                    images: this.images.map(item => {
-                      return {
-                        width: item.img.width,
-                        height: item.img.height,
-                        size: item.img.size,
-                        type: item.img.type,
-                        url: item.img.key
-                      }
-                    }),
-                    geetest: data,
-                    ctx: this
-                  })
-                  this.images = [];
-                  this.$refs.form.resetFields();
-                  this.$emit('submit');
-                  this.$toast.success('提交成功！');
-                  window.location = this.$alias.question(id);
-                  this.submitting = false
-                } catch (err) {
-                  this.$toast.error(err);
-                  this.submitting = false
-                }
-              },
-              error: (e) => {
-                this.submitting = false;
-                this.$toast.error(e)
-              },
-              close: () => {
-                this.submitting = false
-              }
-            })
-          } else {
-            return false;
-          }
-        });
+export default {
+  name: "CreateQuestionForm",
+  mixins: [uploadMixin],
+  data() {
+    const validateTitle = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入问题标题"));
       }
+      if (value.length > 30) {
+        callback(new Error("标题最多 30 个字"));
+      }
+      callback();
+    };
+    const validateTag = (rule, value, callback) => {
+      if (!value.length) {
+        callback(new Error("至少选择一个相关番剧"));
+      }
+      if (value.length > 5) {
+        callback(new Error("最多 5 个话题"));
+      }
+      callback();
+    };
+    return {
+      form: {
+        title: "",
+        tags: [],
+        content: ""
+      },
+      rules: {
+        title: [{ validator: validateTitle, trigger: "change" }],
+        tags: [{ validator: validateTag, trigger: "submit" }]
+      },
+      images: [],
+      exceed: 15,
+      submitting: false
+    };
+  },
+  mounted() {
+    this.getUpToken();
+  },
+  methods: {
+    beforeUpload(file) {
+      this.uploadConfig.max = 3;
+      this.uploadConfig.pathPrefix = `user/${
+        this.$store.state.user.id
+      }/question`;
+      return this.beforeImageUpload(file);
+    },
+    handleError(err, file) {
+      console.log(err);
+      this.images.forEach((item, index) => {
+        if (item.id === file.uid) {
+          this.images.splice(index, 1);
+        }
+      });
+      this.$toast.error(`图片：${file.name} 上传失败`);
+    },
+    handleRemove(file) {
+      this.images.forEach((item, index) => {
+        if (item.id === file.uid) {
+          this.images.splice(index, 1);
+        }
+      });
+    },
+    handleExceed() {
+      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`);
+    },
+    handleSuccess(res, file) {
+      this.images.push({
+        id: file.uid,
+        img: res.data
+      });
+    },
+    submit() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          if (this.submitting) {
+            return;
+          }
+          this.submitting = true;
+          this.$captcha({
+            success: async ({ data }) => {
+              const api = new Api(this);
+              try {
+                await api.createQuestion({
+                  title: this.form.title,
+                  tags: this.form.tags,
+                  intro: this.form.content.substring(0, 120),
+                  content: this.$utils.convertPureTextToRich(this.form.content),
+                  images: this.images.map(item => {
+                    return {
+                      width: item.img.width,
+                      height: item.img.height,
+                      size: item.img.size,
+                      type: item.img.type,
+                      url: item.img.key
+                    };
+                  }),
+                  geetest: data,
+                  ctx: this
+                });
+                this.images = [];
+                this.$refs.form.resetFields();
+                this.$emit("submit");
+                this.$toast.success("提交成功！");
+                window.location = this.$alias.question(id);
+                this.submitting = false;
+              } catch (err) {
+                this.$toast.error(err);
+                this.submitting = false;
+              }
+            },
+            error: e => {
+              this.submitting = false;
+              this.$toast.error(e);
+            },
+            close: () => {
+              this.submitting = false;
+            }
+          });
+        } else {
+          return false;
+        }
+      });
     }
   }
+};
 </script>

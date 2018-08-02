@@ -1,6 +1,6 @@
-import { createApp } from '~/app.js';
+import { createApp } from "~/app.js";
 
-export default (ssrContext) => {
+export default ssrContext => {
   const { app, router, store } = createApp();
   const meta = app.$meta();
 
@@ -20,23 +20,29 @@ export default (ssrContext) => {
       const mustAdmin = routeMatched.some(record => record.meta.isAdmin);
       try {
         if (mustAuth || mustAdmin) {
-          await store.dispatch('initAuth', {
+          await store.dispatch("initAuth", {
             ctx,
             must: true,
             admin: mustAdmin
           });
         }
-        const matched = matchedComponents.map(({ asyncData }) => asyncData && asyncData({
-          ctx,
-          store,
-          route: router.currentRoute,
-        }));
+        const matched = matchedComponents.map(
+          ({ asyncData }) =>
+            asyncData &&
+            asyncData({
+              ctx,
+              store,
+              route: router.currentRoute
+            })
+        );
         if (useAuth) {
-          matched.unshift(store.dispatch('initAuth', {
-            ctx,
-            must: false,
-            admin: false
-          }));
+          matched.unshift(
+            store.dispatch("initAuth", {
+              ctx,
+              must: false,
+              admin: false
+            })
+          );
         }
         await Promise.all(matched);
         ssrContext.state = store.state;

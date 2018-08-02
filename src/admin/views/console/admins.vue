@@ -43,68 +43,79 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
 
-  export default {
-    data () {
-      return {
-        list: [],
-        loading: true
-      }
-    },
-    computed: {
-      isKing () {
-        return this.$store.state.user.id === 1
-      }
-    },
-    created () {
-      this.getData();
-    },
-    methods: {
-      getData () {
-        const api = new Api(this);
-        api.getAdminList().then((data) => {
+export default {
+  data() {
+    return {
+      list: [],
+      loading: true
+    };
+  },
+  computed: {
+    isKing() {
+      return this.$store.state.user.id === 1;
+    }
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const api = new Api(this);
+      api
+        .getAdminList()
+        .then(data => {
           this.list = data;
           this.loading = false;
-        }).catch((e) => {
+        })
+        .catch(e => {
           this.$toast.error(e);
           this.loading = false;
-        })
-      },
-      removeFromAdmin (index, id) {
-        if (this.id === 1) {
-          return;
-        }
-        const api = new Api(this);
-        api.removeAdmin({ id }).then(() => {
-          this.$toast.success('操作成功');
+        });
+    },
+    removeFromAdmin(index, id) {
+      if (this.id === 1) {
+        return;
+      }
+      const api = new Api(this);
+      api
+        .removeAdmin({ id })
+        .then(() => {
+          this.$toast.success("操作成功");
           this.list.splice(index, 1);
-        }).catch((e) => {
-          this.$toast.error(e);
         })
-      },
-      addAdmin () {
-        this.$prompt('请输入用户id', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d+$/,
-          inputErrorMessage: '非法的id'
-        }).then(({ value }) => {
+        .catch(e => {
+          this.$toast.error(e);
+        });
+    },
+    addAdmin() {
+      this.$prompt("请输入用户id", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error('非法的id');
+            this.$toast.error("非法的id");
             return;
           }
           const api = new Api(this);
-          api.addAdmin({
-            id: value
-          }).then(() => {
-            this.$toast.success('操作成功');
-            window.location.reload()
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
-      }
+          api
+            .addAdmin({
+              id: value
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+              window.location.reload();
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
     }
   }
+};
 </script>

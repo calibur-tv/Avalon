@@ -1,59 +1,59 @@
 <style lang="scss">
-  #bangumi-video {
-    $video-item-width: 255px;
-    $video-item-margin: 15px;
-    $video-item-height: 70px;
+#bangumi-video {
+  $video-item-width: 255px;
+  $video-item-margin: 15px;
+  $video-item-height: 70px;
 
-    .video-item {
-      margin: 0 $video-item-margin 15px 0;
-      float: left;
+  .video-item {
+    margin: 0 $video-item-margin 15px 0;
+    float: left;
 
-      a {
-        display: block;
-        position: relative;
+    a {
+      display: block;
+      position: relative;
+    }
+
+    figure {
+      width: $video-item-width - $video-item-margin;
+      height: $video-item-height;
+      background-color: $color-gray-normal;
+      cursor: pointer;
+      border-radius: 3px;
+      overflow: hidden;
+
+      &:hover p {
+        color: $color-blue-normal;
       }
 
-      figure {
-        width: $video-item-width - $video-item-margin;
-        height: $video-item-height;
-        background-color: $color-gray-normal;
+      img {
+        width: 110px;
+        height: 100%;
         cursor: pointer;
-        border-radius: 3px;
-        overflow: hidden;
+        margin-right: 12px;
+      }
 
-        &:hover p {
-          color: $color-blue-normal;
+      figcaption {
+        padding-left: 122px;
+        padding-right: 12px;
+
+        .part {
+          display: block;
+          color: $color-text-deep;
+          font-size: 12px;
+          line-height: 14px;
+          margin-top: 6px;
+          margin-bottom: 5px;
         }
 
-        img {
-          width: 110px;
-          height: 100%;
-          cursor: pointer;
-          margin-right: 12px;
-        }
-
-        figcaption {
-          padding-left: 122px;
-          padding-right: 12px;
-
-          .part {
-            display: block;
-            color: $color-text-deep;
-            font-size: 12px;
-            line-height: 14px;
-            margin-top: 6px;
-            margin-bottom: 5px;
-          }
-
-          .name {
-            font-size: 12px;
-            color: $color-text-normal;
-            @include twoline(14px);
-          }
+        .name {
+          font-size: 12px;
+          color: $color-text-normal;
+          @include twoline(14px);
         }
       }
     }
   }
+}
 </style>
 
 <template>
@@ -136,56 +136,56 @@
 </template>
 
 <script>
-  export default {
-    name: 'BangumiVideo',
-    data () {
-      return {
-        state: {
-          loading: false,
-          fetched: false,
-        },
+export default {
+  name: "BangumiVideo",
+  data() {
+    return {
+      state: {
+        loading: false,
+        fetched: false
+      }
+    };
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
+    },
+    videos() {
+      return this.$store.state.bangumi.videos;
+    }
+  },
+  mounted() {
+    this.$channel.$on("bangumi-tab-switch-video", () => {
+      if (!this.state.fetched) {
+        this.getData();
+      }
+    });
+  },
+  methods: {
+    async getData() {
+      if (this.state.loading) {
+        return;
+      }
+      this.state.loading = true;
+
+      try {
+        await this.$store.dispatch("bangumi/getVideos", {
+          ctx: this,
+          id: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.state.loading = false;
+        this.state.fetched = true;
       }
     },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      videos () {
-        return this.$store.state.bangumi.videos
-      },
-    },
-    mounted () {
-      this.$channel.$on('bangumi-tab-switch-video', () => {
-        if (!this.state.fetched) {
-          this.getData()
-        }
-      })
-    },
-    methods: {
-      async getData () {
-        if (this.state.loading) {
-          return
-        }
-        this.state.loading = true
-
-        try {
-          await this.$store.dispatch('bangumi/getVideos', {
-            ctx: this,
-            id: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.state.loading = false
-          this.state.fetched = true
-        }
-      },
-      openFeedback () {
-        this.$channel.$emit('open-feedback', {
-          type: 5,
-          desc: `我想看《${this.info.name}》的视频第 ? 集`
-        })
-      },
+    openFeedback() {
+      this.$channel.$emit("open-feedback", {
+        type: 5,
+        desc: `我想看《${this.info.name}》的视频第 ? 集`
+      });
     }
   }
+};
 </script>

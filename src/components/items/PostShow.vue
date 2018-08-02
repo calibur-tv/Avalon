@@ -1,180 +1,181 @@
 <style lang="scss">
-  .post-show-item {
-    float: none;
-    padding: 10px 10px 10px 65px;
+.post-show-item {
+  float: none;
+  padding: 10px 10px 10px 65px;
+  position: relative;
+
+  &:not(:last-child) {
+    border-bottom: 1px dotted #e4e6eb;
+  }
+
+  .header {
     position: relative;
+    height: 32px;
 
-    &:not(:last-child) {
-      border-bottom: 1px dotted #e4e6eb;
-    }
-
-    .header {
-      position: relative;
-      height: 32px;
-
-      .bangumi-avatar {
-        display: block;
-        float: left;
-        margin-right: 10px;
-        margin-top: 4px;
-
-        img {
-          display: block;
-          width: 24px;
-          height: 24px;
-        }
-      }
-
-      .user-avatar {
-        display: block;
-        float: left;
-        margin-right: 7px;
-
-        img {
-          display: block;
-          border: 1px solid #F0F0F0;
-          @include avatar(32px);
-        }
-      }
-
-      .title {
-        font-size: 14px;
-        line-height: 32px;
-        display: inline-block;
-      }
-
-      .time {
-        float: right;
-        display: block;
-        line-height: 32px;
-        color: #999;
-        font-size: 12px;
-        margin-left: 10px;
-      }
-
-      .top_badge, .nice_badge {
-        float: left;
-        height: 22px;
-        line-height: 20px;
-        color: #fff;
-        cursor: default;
-        font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        padding: 1px 6px;
-        border-radius: 4px;
-        margin: 5px 5px 0 0;
-      }
-
-      .top_badge {
-        background-color: $color-blue-normal;
-      }
-
-      .nice_badge {
-        background-color: $color-pink-deep;
-      }
-    }
-
-    .content {
-      margin-top: 3px;
-      color: #666;
-      font-size: 12px;
-      @include twoline(22px);
-
-      &.min-height {
-        min-height: 44px;
-      }
-
-      a {
-        font-size: 12px;
-        line-height: 22px;
-        color: #262626;
-        font-weight: 600;
-      }
-    }
-
-    .images {
-      height: 90px;
-      overflow: hidden;
-      margin-top: 10px;
-      margin-bottom: 15px;
-
-      .image-box {
-        margin-right: 10px;
-        height: 100%;
-        position: relative;
-        float: left;
-        cursor: zoom-in;
-
-        &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background-color: #fff;
-          opacity: 0;
-        }
-
-        &:hover {
-          &:after {
-            opacity: 0.1;
-          }
-        }
-
-        img {
-          height: 100%;
-          width: auto;
-        }
-      }
-    }
-
-    .counter {
-      position: absolute;
-      left: 0;
-      top: 12px;
-      width: 50px;
-      height: 30px;
-      line-height: 26px;
-      font-size: 12px;
-      text-align: center;
-      background-color: RGB(247, 247, 247);
+    .bangumi-avatar {
       display: block;
-      border: 1px solid #e4e6eb;
-      border-radius: 3px;
+      float: left;
+      margin-right: 10px;
+      margin-top: 4px;
+
+      img {
+        display: block;
+        width: 24px;
+        height: 24px;
+      }
     }
 
-    .footer {
-      text-align: right;
-      font-size: 13px;
-      color: $color-text-light;
+    .user-avatar {
+      display: block;
+      float: left;
+      margin-right: 7px;
 
-      .done {
-        color: $color-blue-normal;
+      img {
+        display: block;
+        border: 1px solid #f0f0f0;
+        @include avatar(32px);
+      }
+    }
+
+    .title {
+      font-size: 14px;
+      line-height: 32px;
+      display: inline-block;
+    }
+
+    .time {
+      float: right;
+      display: block;
+      line-height: 32px;
+      color: #999;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    .top_badge,
+    .nice_badge {
+      float: left;
+      height: 22px;
+      line-height: 20px;
+      color: #fff;
+      cursor: default;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 5px 5px 0 0;
+    }
+
+    .top_badge {
+      background-color: $color-blue-normal;
+    }
+
+    .nice_badge {
+      background-color: $color-pink-deep;
+    }
+  }
+
+  .content {
+    margin-top: 3px;
+    color: #666;
+    font-size: 12px;
+    @include twoline(22px);
+
+    &.min-height {
+      min-height: 44px;
+    }
+
+    a {
+      font-size: 12px;
+      line-height: 22px;
+      color: #262626;
+      font-weight: 600;
+    }
+  }
+
+  .images {
+    height: 90px;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 15px;
+
+    .image-box {
+      margin-right: 10px;
+      height: 100%;
+      position: relative;
+      float: left;
+      cursor: zoom-in;
+
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        opacity: 0;
       }
 
-      .v-share {
-        display: inline-block;
-
-        .share-btn {
-          color: $color-text-light;
-          font-size: 12px;
+      &:hover {
+        &:after {
+          opacity: 0.1;
         }
       }
 
-      span {
-        margin-left: 15px;
-        line-height: 20px;
-        font-size: 12px;
-      }
-
-      i {
-        line-height: 20px;
-        font-size: 12px;
+      img {
+        height: 100%;
+        width: auto;
       }
     }
   }
+
+  .counter {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 50px;
+    height: 30px;
+    line-height: 26px;
+    font-size: 12px;
+    text-align: center;
+    background-color: RGB(247, 247, 247);
+    display: block;
+    border: 1px solid #e4e6eb;
+    border-radius: 3px;
+  }
+
+  .footer {
+    text-align: right;
+    font-size: 13px;
+    color: $color-text-light;
+
+    .done {
+      color: $color-blue-normal;
+    }
+
+    .v-share {
+      display: inline-block;
+
+      .share-btn {
+        color: $color-text-light;
+        font-size: 12px;
+      }
+    }
+
+    span {
+      margin-left: 15px;
+      line-height: 20px;
+      font-size: 12px;
+    }
+
+    i {
+      line-height: 20px;
+      font-size: 12px;
+    }
+  }
+}
 </style>
 
 <template>
@@ -311,18 +312,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'PostShowItem',
-    props: {
-      item: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      bangumiPage () {
-        return this.$route.name === 'bangumi-show'
-      }
+export default {
+  name: "PostShowItem",
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    bangumiPage() {
+      return this.$route.name === "bangumi-show";
     }
   }
+};
 </script>

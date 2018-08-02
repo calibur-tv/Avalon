@@ -1,74 +1,75 @@
 <style lang="scss">
-  .bangumi-banner {
-    .info {
-      width: 60%;
-      min-width: 600px;
-      margin: 120px auto 0 auto;
-      color: $color-white;
+.bangumi-banner {
+  .info {
+    width: 60%;
+    min-width: 600px;
+    margin: 120px auto 0 auto;
+    color: $color-white;
 
-      .title, .summary {
-        text-shadow: 0 1px 10px gray;
-      }
+    .title,
+    .summary {
+      text-shadow: 0 1px 10px gray;
+    }
 
-      .title {
-        text-align: center;
-        font-size: 24px;
-        font-weight: 700;
-      }
+    .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+    }
 
-      .summary {
-        word-break: break-all;
-        word-wrap: break-word;
-        text-indent: 2em;
-        font-size: 13px;
-        line-height: 20px;
-        margin: 40px 0 20px 0;
-      }
+    .summary {
+      word-break: break-all;
+      word-wrap: break-word;
+      text-indent: 2em;
+      font-size: 13px;
+      line-height: 20px;
+      margin: 40px 0 20px 0;
+    }
 
-      .console {
-        text-align: center;
+    .console {
+      text-align: center;
 
-        .follow {
-          padding: 10px 30px;
-          height: 40px;
-          font-size: 15px;
-          border-radius: 40px;
-          border: 1px solid;
-          color: $color-white;
+      .follow {
+        padding: 10px 30px;
+        height: 40px;
+        font-size: 15px;
+        border-radius: 40px;
+        border: 1px solid;
+        color: $color-white;
 
-          &.is-followed {
-            background-color: transparent;
-            border-color: $color-white;
-            text-shadow: 0 1px 10px gray;
+        &.is-followed {
+          background-color: transparent;
+          border-color: $color-white;
+          text-shadow: 0 1px 10px gray;
 
-            &:hover {
-              background-color: rgba(#fff, .25);
-            }
+          &:hover {
+            background-color: rgba(#fff, 0.25);
           }
+        }
 
-          &.not-follow {
-            background-color: $color-pink-deep;
-            border-color: $color-pink-deep;
+        &.not-follow {
+          background-color: $color-pink-deep;
+          border-color: $color-pink-deep;
 
-            &:hover {
-              border-color: $color-pink-normal;
-              background-color: $color-pink-normal;
-            }
+          &:hover {
+            border-color: $color-pink-normal;
+            background-color: $color-pink-normal;
           }
+        }
 
-          i {
-            margin-right: 5px;
-          }
+        i {
+          margin-right: 5px;
         }
       }
     }
-
-    .v-share {
-      position: absolute;
-      right: 40px;
-      bottom: 10px;
-    }
   }
+
+  .v-share {
+    position: absolute;
+    right: 40px;
+    bottom: 10px;
+  }
+}
 </style>
 
 <template>
@@ -104,48 +105,44 @@
 </template>
 
 <script>
-  export default {
-    name: 'BangumiBanner',
-    components: {
-
+export default {
+  name: "BangumiBanner",
+  components: {},
+  props: {},
+  data() {
+    return {
+      loadingFollow: false
+    };
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
     },
-    props: {
-
-    },
-    data () {
-      return {
-        loadingFollow: false
+    id() {
+      return this.$route.params.id;
+    }
+  },
+  methods: {
+    async follow() {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
       }
-    },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      id () {
-        return this.$route.params.id
-      },
-    },
-    methods: {
-      async follow () {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.loadingFollow) {
-          return
-        }
-        this.loadingFollow = true
-        try {
-          await this.$store.dispatch('bangumi/follow', {
-            ctx: this,
-            id: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingFollow = false
-        }
-      },
+      if (this.loadingFollow) {
+        return;
+      }
+      this.loadingFollow = true;
+      try {
+        await this.$store.dispatch("bangumi/follow", {
+          ctx: this,
+          id: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingFollow = false;
+      }
     }
   }
+};
 </script>

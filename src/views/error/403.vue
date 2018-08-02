@@ -1,9 +1,3 @@
-<style lang="scss">
-  #error-403 {
-
-  }
-</style>
-
 <template>
   <div id="error-403">
     <p>您没有足够的操作权限</p>
@@ -19,7 +13,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error403'
-  }
+export default {
+  name: "Error403"
+};
 </script>
