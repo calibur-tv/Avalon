@@ -11,45 +11,40 @@
     a {
       display: block;
       position: relative;
-    }
-
-    figure {
-      width: $video-item-width - $video-item-margin;
+      width: $video-item-width;
       height: $video-item-height;
-      background-color: $color-gray-normal;
-      cursor: pointer;
       border-radius: 3px;
+      background-color: $color-gray-normal;
       overflow: hidden;
 
-      &:hover p {
+      &:hover .part {
         color: $color-blue-normal;
       }
+    }
 
-      img {
-        width: 110px;
-        height: 100%;
-        cursor: pointer;
-        margin-right: 12px;
+    .poster {
+      width: 110px;
+      height: 100%;
+      margin-right: 12px;
+      float: left;
+    }
+
+    .intro {
+      padding-right: 12px;
+
+      .part {
+        display: block;
+        color: $color-text-deep;
+        font-size: 12px;
+        line-height: 14px;
+        margin-top: 6px;
+        margin-bottom: 5px;
       }
 
-      figcaption {
-        padding-left: 122px;
-        padding-right: 12px;
-
-        .part {
-          display: block;
-          color: $color-text-deep;
-          font-size: 12px;
-          line-height: 14px;
-          margin-top: 6px;
-          margin-bottom: 5px;
-        }
-
-        .name {
-          font-size: 12px;
-          color: $color-text-normal;
-          @include twoline(14px);
-        }
+      .name {
+        font-size: 12px;
+        color: $color-text-normal;
+        @include twoline(14px);
       }
     }
   }
@@ -78,20 +73,18 @@
                 :href="$alias.video(video.id)"
                 target="_blank"
               >
-                <figure>
-                  <v-img
-                    :alt="video.name"
-                    :src="$resize(video.poster, { width: 192, height: 120 })"
-                    class="bg"
+                <v-img
+                  :alt="video.name"
+                  :src="$resize(video.poster, { width: 192, height: 120 })"
+                  class="poster"
+                />
+                <div class="intro">
+                  <p class="part oneline">第{{ video.part - season.base }}话</p>
+                  <span
+                    class="name"
+                    v-text="video.name"
                   />
-                  <figcaption class="abs">
-                    <p class="part oneline">第{{ video.part - season.base }}话</p>
-                    <span
-                      class="name"
-                      v-text="video.name"
-                    />
-                  </figcaption>
-                </figure>
+                </div>
               </a>
             </li>
           </ul>
@@ -107,20 +100,18 @@
             :href="$alias.video(video.id)"
             target="_blank"
           >
-            <figure>
-              <v-img
-                :alt="video.name"
-                :src="$resize(video.poster, { width: 192, height: 120 })"
-                class="bg"
+            <v-img
+              :alt="video.name"
+              :src="$resize(video.poster, { width: 192, height: 120 })"
+              class="poster"
+            />
+            <div class="intro">
+              <p class="part oneline">第{{ video.part }}话</p>
+              <span
+                class="name"
+                v-text="video.name"
               />
-              <figcaption class="abs">
-                <p class="part oneline">第{{ video.part }}话</p>
-                <span
-                  class="name"
-                  v-text="video.name"
-                />
-              </figcaption>
-            </figure>
+            </div>
           </a>
         </li>
       </ul>
