@@ -5,6 +5,14 @@
     margin-bottom: 20px;
   }
 
+  .is-creator-wrap {
+    margin-bottom: 20px;
+
+    .el-switch {
+      margin-left: 22px;
+    }
+  }
+
   .el-icon-question {
     cursor: pointer;
   }
@@ -45,7 +53,7 @@
 
 <template>
   <div id="score-create">
-    <h3 class="sub-title">选择番剧</h3>
+    <h3 class="sub-title">番剧</h3>
     <bangumi-search
       v-model="bangumiId"
       :disabled="disabled"
@@ -60,6 +68,18 @@
       class="title-input"
       placeholder="给你的文章起个好名字！"
     />
+    <div
+      v-if="!id"
+      class="is-creator-wrap"
+    >
+      <h3 class="sub-title">原创</h3>
+      <el-tooltip
+        content="如果这是你的原创作品，请勾选该选项"
+        placement="top"
+      >
+        <el-switch v-model="is_creator"/>
+      </el-tooltip>
+    </div>
     <h3 class="sub-title">
       评分
       <i
@@ -146,6 +166,7 @@ export default {
       columns: Object.keys(labelMap),
       bangumiId: "",
       title: "",
+      is_creator: true,
       form: {
         lol: 0,
         cry: 0,
@@ -231,7 +252,8 @@ export default {
           content: richContent.content,
           intro: richContent.desc.substring(0, 120),
           do_publish: richContent.publish,
-          geetest
+          geetest,
+          is_creator: this.is_creator
         });
         let newId = richContent.id;
         if (newId) {
@@ -300,6 +322,7 @@ export default {
       }
       this.bangumiId = +this.resource.bangumi_id;
       this.title = this.resource.title;
+      this.is_creator = this.resource.is_creator;
       this.columns.forEach(key => {
         this.form[key] = this.resource[key];
       });

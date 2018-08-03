@@ -53,7 +53,8 @@
     }
 
     .top_badge,
-    .nice_badge {
+    .nice_badge,
+    .creator_badge {
       float: left;
       height: 22px;
       line-height: 20px;
@@ -65,6 +66,7 @@
       padding: 1px 6px;
       border-radius: 4px;
       margin: 5px 5px 0 0;
+      user-select: none;
     }
 
     .top_badge {
@@ -73,6 +75,10 @@
 
     .nice_badge {
       background-color: $color-pink-deep;
+    }
+
+    .creator_badge {
+      background-color: goldenrod;
     }
   }
 
@@ -241,6 +247,10 @@
         v-if="item.is_nice"
         class="nice_badge"
       >精</div>
+      <div
+        v-if="item.is_creator"
+        class="creator_badge"
+      >原创</div>
       <a
         :href="$alias.post(item.id)"
         class="title oneline href-fade-blue"

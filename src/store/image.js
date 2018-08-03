@@ -13,6 +13,12 @@ export default {
     albums: []
   }),
   mutations: {
+    SOCIAL_TOGGLE(state, { key, value }) {
+      state.show[`${key}ed`.replace("ee", "e")] = value;
+      state.show[`${key}_count`] = value
+        ? state.show[`${key}_count`] + 1
+        : state.show[`${key}_count`] - 1;
+    },
     SET_USER_IMAGES(state, data) {
       state.users.list = state.users.list.concat(data.list);
       state.users.noMore = data.noMore;

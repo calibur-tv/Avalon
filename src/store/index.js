@@ -1,21 +1,21 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import UserApi from "~/api/userApi";
+import ImageApi from "~/api/imageApi";
 import homepage from "./homepage";
 import bangumi from "./bangumi";
 import video from "./video";
 import users from "./users";
 import image from "./image";
 import post from "./post";
-import cartoonRole from "./cartoonRole";
-import trending from "./trending";
+import flow from "./flow";
 import comment from "./comment";
 import search from "./search";
 import admin from "./admin";
 import score from "./score";
 import editor from "./editor";
-
-import ImageApi from "~/api/imageApi";
+import world from "./flow";
+import cartoonRole from "./cartoonRole";
 
 Vue.use(Vuex);
 
@@ -119,11 +119,12 @@ export function createStore() {
       image,
       post,
       cartoonRole,
-      trending,
+      flow,
       comment,
       search,
       score,
-      editor
+      editor,
+      world
     }
   });
 }

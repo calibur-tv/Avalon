@@ -40,8 +40,8 @@ export default {
       state.info = data;
     },
     SET_TRENDING(state, data) {
-      state.trending.data = state.trending.data.concat(data);
-      state.trending.noMore = data.length < 15;
+      state.flow.data = state.flow.data.concat(data);
+      state.flow.noMore = data.length < 15;
     },
     SET_FANS_LIST(state, { data, reset, sort }) {
       if (reset) {
@@ -62,13 +62,13 @@ export default {
   },
   actions: {
     async getTrending({ state, commit }) {
-      if (state.trending.noMore) {
+      if (state.flow.noMore) {
         return;
       }
       const api = new Api();
       const data = await api.trending({
-        seenIds: state.trending.data.length
-          ? state.trending.data.map(item => item.id).toString()
+        seenIds: state.flow.data.length
+          ? state.flow.data.map(item => item.id).toString()
           : null
       });
       commit("SET_TRENDING", data);

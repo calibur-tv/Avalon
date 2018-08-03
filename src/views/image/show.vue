@@ -111,12 +111,6 @@
       margin-top: 20px;
     }
 
-    .like-panel {
-      text-align: center;
-      margin-bottom: 20px;
-      margin-top: 50px;
-    }
-
     .bangumi-panel {
       position: absolute;
       right: 0;
@@ -312,32 +306,19 @@
               {{ item.part }}：{{ item.name }}
             </span>
           </v-parts>
-          <div
-            v-if="info.image_count"
-            class="like-panel"
-          >
-            <el-button
-              v-if="info.liked"
-              :type="info.is_creator ? 'warning' : 'danger'"
-              :loading="loadingFollowAlbum"
-              round
-              plain
-              @click="handleAlbumLike"
-            >
-              <i class="iconfont icon-guanzhu"/>
-              {{ likeAlbumBtnText }}
-            </el-button>
-            <el-button
-              v-else
-              :type="info.is_creator ? 'warning' : 'danger'"
-              :loading="loadingFollowAlbum"
-              round
-              @click="handleAlbumLike"
-            >
-              <i class="iconfont icon-guanzhu"/>
-              {{ likeAlbumBtnText }}
-            </el-button>
-          </div>
+          <social-panel
+            :id="info.id"
+            :is-creator="info.is_creator"
+            :user-id="info.user_id"
+            :liked="info.liked"
+            :marked="info.marked"
+            :rewarded="info.rewarded"
+            :reward-count="info.reward_count"
+            :like-count="info.like_count"
+            :mark-count="info.mark_count"
+            :users="info.is_creator ? info.reward_users : info.like_users"
+            type="image"
+          />
         </div>
         <comment-main
           v-if="info.image_count || info.is_cartoon"
@@ -368,6 +349,7 @@ import vParts from "~/components/lists/Parts";
 import CommentMain from "~/components/comments/CommentMain";
 import EditAlbumForm from "~/components/image/EditAlbumForm";
 import EditImageForm from "~/components/image/EditImageForm";
+import SocialPanel from "~/components/common/SocialPanel";
 
 export default {
   name: "ImageShow",
@@ -387,7 +369,8 @@ export default {
     vParts,
     CommentMain,
     EditAlbumForm,
-    EditImageForm
+    EditImageForm,
+    SocialPanel
   },
   data() {
     return {

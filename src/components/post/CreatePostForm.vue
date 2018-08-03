@@ -64,6 +64,17 @@
         <i class="el-icon-question"/>
       </el-tooltip>
     </el-form-item>
+    <el-form-item label="原创">
+      <el-switch v-model="forms.is_creator"/>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="如果帖子是转载的，请不要勾选"
+        placement="top"
+      >
+        <i class="el-icon-question"/>
+      </el-tooltip>
+    </el-form-item>
     <el-form-item label="图片">
       <el-upload
         ref="uploader"
@@ -111,7 +122,8 @@ export default {
       forms: {
         title: "",
         bangumiId: "",
-        content: ""
+        content: "",
+        is_creator: false
       },
       rules: {
         title: [
@@ -207,7 +219,8 @@ export default {
                   ),
                   images: this.formatImages,
                   geetest: data,
-                  ctx: this
+                  ctx: this,
+                  is_creator: this.forms.is_creator
                 });
                 this.images = [];
                 this.$refs.forms.resetFields();

@@ -7,7 +7,7 @@
       :list="images.list"
       :no-more="images.noMore"
       :loading="images.loading"
-      @load="loadMore"
+      @load="getData"
     />
     <no-content v-if="images.noMore && !images.total">
       <el-button
@@ -32,9 +32,7 @@ export default {
       return this.$store.state.bangumi.info;
     },
     images() {
-      return this.$store.state.trending.type === "image"
-        ? this.$store.state.trending.active
-        : null;
+      return this.$store.state.flow.image.active;
     }
   },
   mounted() {
@@ -45,19 +43,7 @@ export default {
   methods: {
     async getData() {
       try {
-        await this.$store.dispatch("trending/getTrending", {
-          type: "image",
-          sort: "active",
-          ctx: this,
-          bangumiId: this.info.id
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
-    },
-    async loadMore() {
-      try {
-        await this.$store.dispatch("trending/loadMore", {
+        await this.$store.dispatch("flow/getData", {
           type: "image",
           sort: "active",
           ctx: this,

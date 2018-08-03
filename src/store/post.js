@@ -9,6 +9,12 @@ const state = () => ({
 });
 
 const mutations = {
+  SOCIAL_TOGGLE(state, { key, value }) {
+    state.info.post[`${key}ed`.replace("ee", "e")] = value;
+    state.info.post[`${key}_count`] = value
+      ? state.info.post[`${key}_count`] + 1
+      : state.info.post[`${key}_count`] - 1;
+  },
   SET_POST_INFO(state, data) {
     state.info.bangumi = data.bangumi;
     state.info.user = data.user;
@@ -33,13 +39,10 @@ const actions = {
     const data = await api.show({ id, only });
     commit("SET_POST_INFO", data);
   },
-  // eslint-disable-next-line no-empty-pattern
   async create({}, params) {
     const api = new Api(params.ctx);
-    const id = await api.create(params);
-    return id;
+    return await api.create(params);
   },
-  // eslint-disable-next-line no-empty-pattern
   async deletePost({}, { ctx, id }) {
     const api = new Api(ctx);
     await api.deletePost(id);

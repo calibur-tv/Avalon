@@ -12,7 +12,8 @@
       overflow: hidden;
     }
 
-    .nice_badge {
+    .nice_badge,
+    .creator_badge {
       float: left;
       height: 22px;
       line-height: 20px;
@@ -24,7 +25,14 @@
       padding: 1px 6px;
       border-radius: 4px;
       margin: 16px 5px 0 0;
+    }
+
+    .nice_badge {
       background-color: $color-pink-deep;
+    }
+
+    .creator_badge {
+      background-color: goldenrod;
     }
 
     .control {
@@ -86,11 +94,6 @@
         font-size: 14px;
         overflow: hidden;
         word-wrap: break-word;
-      }
-
-      .likes-wrap {
-        text-align: center;
-        margin: 50px 0;
       }
 
       .footer {
@@ -211,6 +214,10 @@
               v-if="post.is_nice"
               class="nice_badge"
             >精</div>
+            <div
+              v-if="post.is_creator"
+              class="creator_badge"
+            >原创</div>
             <h1
               class="oneline"
               v-text="post.title"
@@ -259,50 +266,19 @@
                 class="text-area"
                 v-html="post.content"
               />
-              <div class="likes-wrap">
-                <el-button
-                  v-if="post.liked"
-                  :loading="loadingToggleLike"
-                  round
-                  plain
-                  type="danger"
-                  @click="toggleLike"
-                >
-                  <i class="iconfont icon-guanzhu"/>
-                  已喜欢({{ post.like_count }})
-                </el-button>
-                <el-button
-                  v-else
-                  :loading="loadingToggleLike"
-                  round
-                  type="danger"
-                  @click="toggleLike"
-                >
-                  <i class="iconfont icon-guanzhu"/>
-                  喜欢{{ post.like_count ? `(${post.like_count})` : '' }}
-                </el-button>
-                <el-button
-                  v-if="post.marked"
-                  :loading="loadingToggleMark"
-                  round
-                  plain
-                  type="warning"
-                  @click="toggleMark"
-                >
-                  <i class="iconfont icon-buoumaotubiao44"/>
-                  已收藏({{ post.mark_count }})
-                </el-button>
-                <el-button
-                  v-else
-                  :loading="loadingToggleMark"
-                  round
-                  type="warning"
-                  @click="toggleMark"
-                >
-                  <i class="iconfont icon-buoumaotubiao44"/>
-                  收藏{{ post.mark_count ? `(${post.mark_count})` : '' }}
-                </el-button>
-              </div>
+              <social-panel
+                :id="post.id"
+                :is-creator="post.is_creator"
+                :user-id="post.user_id"
+                :liked="post.liked"
+                :marked="post.marked"
+                :rewarded="post.rewarded"
+                :reward-count="post.reward_count"
+                :like-count="post.like_count"
+                :mark-count="post.mark_count"
+                :users="post.is_creator ? post.reward_users : post.like_users"
+                type="post"
+              />
               <div class="footer">
                 <div class="info-bar">
                   <span class="floor-count">1楼</span>
@@ -357,6 +333,7 @@
 import CommentMain from "~/components/comments/CommentMain";
 import PostCommentItem from "~/components/post/PostCommentItem";
 import PostCommentForm from "~/components/post/PostCommentForm";
+import SocialPanel from "~/components/common/SocialPanel";
 
 export default {
   name: "PostShow",
@@ -385,7 +362,8 @@ export default {
   components: {
     CommentMain,
     PostCommentItem,
-    PostCommentForm
+    PostCommentForm,
+    SocialPanel
   },
   head() {
     return {

@@ -63,11 +63,6 @@
       sans-serif;
     @extend %breakWord;
   }
-
-  .score-footer {
-    text-align: center;
-    margin-bottom: 50px;
-  }
 }
 </style>
 
@@ -176,29 +171,19 @@
         <div class="score-body">
           <json-content :content="info.content"/>
         </div>
-        <div class="score-footer">
-          <el-button
-            v-if="info.liked"
-            :loading="loadingToggleLike"
-            round
-            plain
-            type="danger"
-            @click="toggleLike"
-          >
-            <i class="iconfont icon-guanzhu"/>
-            已喜欢({{ info.like_count }})
-          </el-button>
-          <el-button
-            v-else
-            :loading="loadingToggleLike"
-            round
-            type="danger"
-            @click="toggleLike"
-          >
-            <i class="iconfont icon-guanzhu"/>
-            喜欢{{ info.like_count ? `(${info.like_count})` : '' }}
-          </el-button>
-        </div>
+        <social-panel
+          :id="info.id"
+          :is-creator="info.is_creator"
+          :user-id="user.id"
+          :liked="info.liked"
+          :marked="info.marked"
+          :rewarded="info.rewarded"
+          :reward-count="info.reward_count"
+          :like-count="info.like_count"
+          :mark-count="info.mark_count"
+          :users="info.is_creator ? info.reward_users : info.like_users"
+          type="score"
+        />
         <comment-main
           :id="info.id"
           :master-id="user.id"
@@ -224,6 +209,7 @@ import ToggleApi from "~/api/toggleApi";
 import ScoreApi from "~/api/scoreApi";
 import CommentMain from "~/components/comments/CommentMain";
 import JsonContent from "~/components/jsonEditor/JsonContent";
+import SocialPanel from "~/components/common/SocialPanel";
 
 export default {
   name: "ScoreShow",
@@ -243,7 +229,8 @@ export default {
   },
   components: {
     CommentMain,
-    JsonContent
+    JsonContent,
+    SocialPanel
   },
   data() {
     const labelMap = {

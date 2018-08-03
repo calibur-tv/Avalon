@@ -14,7 +14,7 @@
         class="load-more-btn"
         type="info"
         plain
-        @click="loadMore"
+        @click="getData"
       >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
       <no-content v-if="posts.noMore && !posts.total && !topPosts.length">
         <el-button
@@ -40,9 +40,7 @@ export default {
       return this.$store.state.bangumi.info;
     },
     posts() {
-      return this.$store.state.trending.type === "post"
-        ? this.$store.state.trending.active
-        : null;
+      return this.$store.state.flow.post.active;
     },
     topPosts() {
       return this.$store.state.bangumi.topPosts;
@@ -59,19 +57,7 @@ export default {
   methods: {
     async getData() {
       try {
-        await this.$store.dispatch("trending/getTrending", {
-          type: "post",
-          sort: "active",
-          ctx: this,
-          bangumiId: this.info.id
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
-    },
-    async loadMore() {
-      try {
-        await this.$store.dispatch("trending/loadMore", {
+        await this.$store.dispatch("flow/getData", {
           type: "post",
           sort: "active",
           ctx: this,

@@ -98,12 +98,12 @@ export default {
   name: "PostFlowList",
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("trending/getTrending", {
+      store.dispatch("world/getData", {
         type: "post",
         sort: "active",
         ctx
       }),
-      store.dispatch("trending/getMeta", { type: "post" })
+      store.dispatch("world/getMeta", { type: "post" })
     ]);
   },
   components: {
@@ -116,12 +116,10 @@ export default {
   },
   computed: {
     resource() {
-      return this.$store.state.trending.type === "post"
-        ? this.$store.state.trending.active
-        : null;
+      return this.$store.state.world.post.active;
     },
     meta() {
-      return this.$store.state.trending.meta;
+      return this.$store.state.world.post.meta;
     }
   },
   methods: {
@@ -130,7 +128,7 @@ export default {
     },
     async loadMore() {
       try {
-        await this.$store.dispatch("trending/loadMore", {
+        await this.$store.dispatch("world/getData", {
           type: "post",
           sort: "active",
           ctx: this

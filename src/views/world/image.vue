@@ -91,12 +91,12 @@ export default {
   name: "ImageFlowList",
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("trending/getTrending", {
+      store.dispatch("world/getData", {
         type: "image",
         sort: "active",
         ctx
       }),
-      store.dispatch("trending/getMeta", { type: "image" })
+      store.dispatch("world/getMeta", { type: "image" })
     ]);
   },
   components: {
@@ -109,12 +109,10 @@ export default {
   },
   computed: {
     resource() {
-      return this.$store.state.trending.type === "image"
-        ? this.$store.state.trending.active
-        : null;
+      return this.$store.state.world.image.active;
     },
     meta() {
-      return this.$store.state.trending.meta;
+      return this.$store.state.world.image.meta;
     }
   },
   methods: {
@@ -126,7 +124,7 @@ export default {
     },
     async loadMore() {
       try {
-        await this.$store.dispatch("trending/loadMore", {
+        await this.$store.dispatch("world/getData", {
           type: "image",
           sort: "active",
           ctx: this

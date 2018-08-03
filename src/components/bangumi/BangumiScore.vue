@@ -161,7 +161,7 @@
         class="load-more-btn"
         type="info"
         plain
-        @click="loadMore"
+        @click="getData"
       >{{ scores.loading ? '加载中' : '加载更多' }}</el-button>
     </div>
   </div>
@@ -195,9 +195,7 @@ export default {
       return this.$store.state.bangumi.info;
     },
     scores() {
-      return this.$store.state.trending.type === "score"
-        ? this.$store.state.trending.active
-        : null;
+      return this.$store.state.flow.score.active;
     }
   },
   mounted() {
@@ -209,19 +207,7 @@ export default {
   methods: {
     async getData() {
       try {
-        await this.$store.dispatch("trending/getTrending", {
-          type: "score",
-          sort: "active",
-          ctx: this,
-          bangumiId: this.info.id
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
-    },
-    async loadMore() {
-      try {
-        await this.$store.dispatch("trending/loadMore", {
+        await this.$store.dispatch("flow/getData", {
           type: "score",
           sort: "active",
           ctx: this,

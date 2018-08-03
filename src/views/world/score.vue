@@ -95,12 +95,12 @@ export default {
   name: "ScoreFlowList",
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("trending/getTrending", {
+      store.dispatch("world/getData", {
         type: "score",
         sort: "active",
         ctx
       }),
-      store.dispatch("trending/getMeta", { type: "score" })
+      store.dispatch("world/getMeta", { type: "score" })
     ]);
   },
   components: {
@@ -113,18 +113,16 @@ export default {
   },
   computed: {
     resource() {
-      return this.$store.state.trending.type === "score"
-        ? this.$store.state.trending.active
-        : null;
+      return this.$store.state.world.score.active;
     },
     meta() {
-      return this.$store.state.trending.meta;
+      return this.$store.state.world.score.meta;
     }
   },
   methods: {
     async loadMore() {
       try {
-        await this.$store.dispatch("trending/loadMore", {
+        await this.$store.dispatch("world/getData", {
           type: "score",
           sort: "active",
           ctx: this

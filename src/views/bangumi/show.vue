@@ -77,7 +77,7 @@ export default {
     await Promise.all([
       store.dispatch("bangumi/getBangumi", { ctx, id }),
       store.dispatch("bangumi/getTopPosts", { ctx, id }),
-      store.dispatch("trending/getTrending", {
+      store.dispatch("flow/getData", {
         type: "post",
         sort: "active",
         bangumiId: id,
