@@ -65,29 +65,23 @@
       :class="$style.summary"
       v-text="summary"
     />
-    <el-button
-      v-if="followed"
-      :loading="loadingFollow"
-      type="danger"
-      size="mini"
-      plain
-      @click="handleFollow"
-    >已关注</el-button>
-    <el-button
-      v-else
-      :loading="loadingFollow"
-      type="danger"
-      size="mini"
-      @click="handleFollow"
-    >关注</el-button>
+    <follow-button
+      :id="id"
+      :followed="followed"
+      type="bangumi"
+      @submit="handleFollow"
+    />
   </div>
 </template>
 
 <script>
-import Api from "~/api/bangumiApi";
+import FollowButton from "~/components/common/FollowButton";
 
 export default {
   name: "VBangumiPanel",
+  components: {
+    FollowButton
+  },
   props: {
     id: {
       required: true,
@@ -110,30 +104,9 @@ export default {
       type: Boolean
     }
   },
-  data() {
-    return {
-      loadingFollow: false
-    };
-  },
   methods: {
-    async handleFollow() {
-      if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
-      }
-      if (this.loadingFollow) {
-        return;
-      }
-      this.loadingFollow = true;
-      try {
-        const api = new Api(this);
-        const result = await api.follow(this.id);
-        this.$emit("follow", result);
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loadingFollow = false;
-      }
+    handleFollow(result) {
+      this.$emit("follow", result);
     }
   }
 };

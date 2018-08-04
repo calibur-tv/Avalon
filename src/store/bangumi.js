@@ -71,21 +71,9 @@ const mutations = {
       }
     });
   },
-  SET_FOLLOW(state, { followed, self }) {
-    if (!state.info) {
-      return;
-    }
-    state.info.followed = followed;
-    followed ? state.info.count_like++ : state.info.count_like--;
-    if (followed) {
-      state.info.followers.unshift(self);
-    } else {
-      state.info.followers.forEach((user, index) => {
-        if (user.zone === self.zone) {
-          state.info.followers.splice(index, 1);
-        }
-      });
-    }
+  SET_FOLLOW(state, { result }) {
+    state.info.followed = result;
+    result ? state.info.count_like++ : state.info.count_like--;
   },
   SET_RELEASED(state, data) {
     state.released = data;

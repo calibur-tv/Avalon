@@ -29,18 +29,12 @@
     .console {
       text-align: center;
 
-      .follow {
-        padding: 10px 30px;
-        height: 40px;
-        font-size: 15px;
-        border-radius: 40px;
-        border: 1px solid;
-        color: $color-white;
-
+      .follow-button {
         &.is-followed {
           background-color: transparent;
           border-color: $color-white;
           text-shadow: 0 1px 10px gray;
+          color: #fff;
 
           &:hover {
             background-color: rgba(#fff, 0.25);
@@ -90,14 +84,13 @@
         v-text="info.summary"
       />
       <div class="console">
-        <button
-          :class="[ info.followed ? 'is-followed' : 'not-follow' ]"
-          class="follow"
-          @click="follow"
-        >
-          <i class="iconfont icon-guanzhu"/>
-          {{ info.followed ? '已关注' : '关注' }}
-        </button>
+        <follow-button
+          :id="info.id"
+          :classes="info.followed ? 'is-followed' : 'not-follow'"
+          :followed="info.followed"
+          type="bangumi"
+          @submit="handleFollowAction"
+        />
       </div>
     </div>
     <v-share type="panel"/>
@@ -105,10 +98,13 @@
 </template>
 
 <script>
+import FollowButton from "~/components/common/FollowButton";
+
 export default {
   name: "BangumiBanner",
-  components: {},
-  props: {},
+  components: {
+    FollowButton
+  },
   data() {
     return {
       loadingFollow: false
@@ -117,31 +113,11 @@ export default {
   computed: {
     info() {
       return this.$store.state.bangumi.info;
-    },
-    id() {
-      return this.$route.params.id;
     }
   },
   methods: {
-    async follow() {
-      if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
-      }
-      if (this.loadingFollow) {
-        return;
-      }
-      this.loadingFollow = true;
-      try {
-        await this.$store.dispatch("bangumi/follow", {
-          ctx: this,
-          id: this.info.id
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loadingFollow = false;
-      }
+    handleFollowAction(result) {
+      this.$store.commit("bangumi/SET_FOLLOW", { result });
     }
   }
 };
