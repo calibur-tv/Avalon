@@ -269,7 +269,7 @@
               <social-panel
                 :id="post.id"
                 :is-creator="post.is_creator"
-                :user-id="post.user_id"
+                :user-id="master.id"
                 :liked="post.liked"
                 :marked="post.marked"
                 :rewarded="post.rewarded"

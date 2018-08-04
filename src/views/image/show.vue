@@ -309,7 +309,7 @@
           <social-panel
             :id="info.id"
             :is-creator="info.is_creator"
-            :user-id="info.user_id"
+            :user-id="user.id"
             :liked="info.liked"
             :marked="info.marked"
             :rewarded="info.rewarded"
@@ -401,17 +401,6 @@ export default {
     },
     cartoon() {
       return [];
-    },
-    likeAlbumBtnText() {
-      const text = this.info.is_creator
-        ? this.info.liked
-          ? "已赞赏"
-          : "赞赏"
-        : this.info.liked
-          ? "已喜欢"
-          : "喜欢";
-
-      return this.info.like_count ? `${text}(${this.info.like_count})` : text;
     },
     isMine() {
       return this.$store.state.login
