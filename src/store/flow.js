@@ -60,6 +60,45 @@ const actions = {
     const data = await api.meta({ type });
     commit("SET_META", { data, type });
   },
+  async initData(
+    { state, commit },
+    { ctx, sort, type, take = 10, bangumiId = 0, refresh = false }
+  ) {
+    if (bangumiId !== state[type].bangumiId || refresh) {
+      commit("RESET_STATE", { type });
+    }
+    if (state[type][sort].list.length || state[type][sort].loading) {
+      return;
+    }
+    commit("SET_LOADING", { type, sort });
+    let data;
+    const list = state[type][sort].list;
+    const api = new Api(ctx);
+    if (sort === "news") {
+      data = await api.fetch({
+        sort,
+        type,
+        take,
+        seenIds: "",
+        minId: refresh ? 0 : list.length ? list[list.length - 1].id : 0,
+        bangumiId
+      });
+    } else {
+      data = await api.fetch({
+        sort,
+        type,
+        take,
+        minId: 0,
+        seenIds: refresh
+          ? ""
+          : list.length
+            ? list.map(_ => _.id).toString()
+            : "",
+        bangumiId
+      });
+    }
+    commit("PUSH_STATE", { data, type, sort, bangumiId, refresh });
+  },
   async getData(
     { state, commit },
     { ctx, sort, type, take = 10, bangumiId = 0, refresh = false }

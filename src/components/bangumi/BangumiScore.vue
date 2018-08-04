@@ -200,11 +200,23 @@ export default {
   },
   mounted() {
     this.$channel.$on("bangumi-tab-switch-score", () => {
-      this.getData();
+      this.initData();
       this.getScore();
     });
   },
   methods: {
+    async initData() {
+      try {
+        await this.$store.dispatch("flow/initData", {
+          type: "score",
+          sort: "active",
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      }
+    },
     async getData() {
       try {
         await this.$store.dispatch("flow/getData", {
