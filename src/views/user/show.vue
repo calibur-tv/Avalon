@@ -187,39 +187,32 @@
       a {
         display: block;
         position: relative;
-      }
-
-      figure {
-        width: $video-item-width - $video-item-margin;
+        width: $video-item-width;
         height: $video-item-height;
-        background-color: $color-gray-normal;
-        cursor: pointer;
         border-radius: 3px;
+        background-color: $color-gray-normal;
         overflow: hidden;
 
-        &:hover p {
+        &:hover .name {
           color: $color-blue-normal;
         }
+      }
 
-        img {
-          width: $video-item-height;
-          height: 100%;
-          cursor: pointer;
-          margin-right: 12px;
-        }
+      .poster {
+        width: $video-item-height;
+        height: $video-item-height;
+        margin-right: 12px;
+        float: left;
+      }
 
-        figcaption {
-          padding-left: $video-item-height + 12px;
-          padding-right: 12px;
+      .intro {
+        padding-right: 12px;
 
-          p {
-            display: block;
-            color: $color-text-deep;
-            font-size: 12px;
-            margin-top: 6px;
-            margin-bottom: 5px;
-            @include twoline(14px);
-          }
+        .name {
+          font-size: 12px;
+          color: $color-text-normal;
+          margin-top: 6px;
+          margin-bottom: 5px;
         }
       }
     }
@@ -710,19 +703,17 @@
                 :href="$alias.bangumi(item.id)"
                 target="_blank"
               >
-                <figure>
-                  <v-img
-                    :alt="item.name"
-                    :src="$resize(item.avatar, { width: 160, height: 160 })"
-                    class="bg"
+                <v-img
+                  :alt="item.name"
+                  :src="$resize(item.avatar, { width: 160, height: 160 })"
+                  class="poster"
+                />
+                <figcaption class="intro">
+                  <p
+                    class="name"
+                    v-text="item.name"
                   />
-                  <figcaption class="abs">
-                    <p
-                      class="name"
-                      v-text="item.name"
-                    />
-                  </figcaption>
-                </figure>
+                </figcaption>
               </a>
             </li>
           </ul>
