@@ -246,7 +246,7 @@ export default {
             await api.settingProfile({
               nickname: this.nickname,
               signature: this.signature,
-              birthday: this.birthday,
+              birthday: new Date(this.birthday).getTime() / 1000,
               birth_secret: this.birthSecret,
               sex_secret: this.sexSecret,
               sex: this.sex
