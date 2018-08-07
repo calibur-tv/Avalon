@@ -966,7 +966,7 @@
           />
         </el-tab-pane>
         <el-tab-pane label="漫评">
-          <user-score-list :user-id="user.id"/>
+          <user-score-list :zone="zone"/>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">

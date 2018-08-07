@@ -132,8 +132,8 @@ export default {
     ScoreFlow
   },
   props: {
-    userId: {
-      type: Number,
+    zone: {
+      type: String,
       required: true
     }
   },
@@ -157,7 +157,7 @@ export default {
   computed: {
     isMine() {
       return this.$store.state.login
-        ? this.$store.state.user.id === this.userId
+        ? this.$store.state.user.zone === this.zone
         : false;
     }
   },
@@ -183,7 +183,7 @@ export default {
       const api = new Api(this);
       try {
         const data = await api.getUsersScore({
-          user_id: this.userId,
+          zone: this.zone,
           page: this.page,
           take: this.take
         });
