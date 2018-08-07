@@ -13,99 +13,89 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      source: {
-        type: Object,
-        required: true
-      },
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      size: {
-        type: String,
-        default: '400px'
-      }
+export default {
+  props: {
+    source: {
+      type: Object,
+      required: true
     },
-    data () {
-      const labelMap = {
-        total: '总分',
-        lol: '笑点',
-        cry: '泪点',
-        fight: '燃点',
-        moe: '萌点',
-        sound: '音乐',
-        vision: '画面',
-        story: '情节',
-        role: '人设',
-        express: '内涵',
-        style: '美感'
-      }
-      const dimension = 'total';
-      const columns = Object.keys(labelMap);
-      const metrics = columns.filter(_ => _ !== dimension);
-      const indicator = metrics.map(_ => {
-        return {
-          name: labelMap[_],
-          max: 10
-        }
-      });
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      type: String,
+      default: "400px"
+    }
+  },
+  data() {
+    const labelMap = {
+      total: "总分",
+      lol: "笑点",
+      cry: "泪点",
+      fight: "燃点",
+      moe: "萌点",
+      sound: "音乐",
+      vision: "画面",
+      story: "情节",
+      role: "人设",
+      express: "内涵",
+      style: "美感"
+    };
+    const dimension = "total";
+    const columns = Object.keys(labelMap);
+    const metrics = columns.filter(_ => _ !== dimension);
+    const indicator = metrics.map(_ => {
       return {
-        chartExtend: {
-          radar: {
-            indicator,
-            shape: 'polygon',
-            splitArea: {
-              show: false
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: '##ccd0d7',
-                type: 'dotted'
-              }
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: '#ccd0d7',
-                type: 'dotted'
-              }
-            },
-            silent: false,
-            splitNumber: 10
+        name: labelMap[_],
+        max: 10
+      };
+    });
+    return {
+      chartExtend: {
+        radar: {
+          indicator,
+          shape: "polygon",
+          splitArea: {
+            show: false
           },
-          series: {
-            areaStyle: { normal: {} },
-            label: {
-              normal: {
-                show: true,
-              }
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: "##ccd0d7",
+              type: "dotted"
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#ccd0d7",
+              type: "dotted"
+            }
+          },
+          silent: false,
+          splitNumber: 10
+        },
+        series: {
+          areaStyle: { normal: {} },
+          label: {
+            normal: {
+              show: true
             }
           }
-        },
-        chartSettings: { labelMap, dimension, metrics },
-        chartData: {
-          columns,
-          rows: [this.source]
         }
+      },
+      chartSettings: { labelMap, dimension, metrics },
+      chartData: {
+        columns,
+        rows: [this.source]
       }
-    },
-    computed: {
-
-    },
-    watch: {
-
-    },
-    created () {
-
-    },
-    mounted () {
-
-    },
-    methods: {
-
-    }
-  }
+    };
+  },
+  computed: {},
+  watch: {},
+  created() {},
+  mounted() {},
+  methods: {}
+};
 </script>

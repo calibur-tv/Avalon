@@ -1,33 +1,37 @@
 <style lang="scss">
-  #user-show {
-    .user {
-      >div {
-        margin-bottom: 20px;
-        font-size: 16px;
-      }
+#user-show {
+  margin-bottom: 150px;
 
-      .label {
-        font-weight: bold;
-        display: inline-block;
-        text-align: right;
-        width: 80px;
-      }
+  .user {
+    margin-bottom: 50px;
 
-      img {
-        vertical-align: top;
-      }
+    > div {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
 
-      .avatar {
-        width: 150px;
-        height: 150px;
-      }
+    .label {
+      font-weight: bold;
+      display: inline-block;
+      text-align: right;
+      width: 80px;
+    }
 
-      .banner {
-        height: 200px;
-        width: auto;
-      }
+    img {
+      vertical-align: top;
+    }
+
+    .avatar {
+      width: 150px;
+      height: 150px;
+    }
+
+    .banner {
+      height: 200px;
+      width: auto;
     }
   }
+}
 </style>
 
 <template>
@@ -126,6 +130,14 @@
           @click="addUserToTrial"
         >加入审核列表</el-button>
         <el-button
+          v-if="!showTransactions"
+          type="primary"
+          size="mini"
+          @click="getTransactions(1)"
+        >
+          查看交易记录
+        </el-button>
+        <el-button
           v-if="user.deleted_at"
           :loading="loading"
           type="success"
@@ -143,129 +155,260 @@
         >
           封禁
         </el-button>
+        <el-button
+          v-if="isKing"
+          type="success"
+          size="mini"
+          @click="getMoney"
+        >
+          提现
+        </el-button>
       </div>
     </div>
+    <template v-if="showTransactions">
+      <el-table
+        :data="pageData"
+        border
+        fit
+        highlight-current-row
+      >
+        <el-table-column
+          label="id"
+          prop="id"
+        />
+        <el-table-column
+          label="类型"
+          prop="type"
+        />
+        <el-table-column label="金额">
+          <span slot-scope="scope">
+            {{ scope.row.type === '支出' ? '-' : '+' }}{{ scope.row.count }}
+          </span>
+        </el-table-column>
+        <el-table-column
+          label="来源"
+          prop="action"
+        />
+        <el-table-column
+          label="来源id"
+          prop="action_id"
+        />
+        <el-table-column
+          label="相关用户 id"
+          prop="about_user_id"
+        />
+        <el-table-column
+          label="相关用户手机号"
+          prop="about_user_phone"
+        />
+        <el-table-column
+          label="相关用户注册时间"
+          prop="about_user_sign_at"
+        />
+        <el-table-column
+          label="交易时间"
+          prop="created_at"
+        />
+      </el-table>
+      <v-page
+        :change="getTransactions"
+        :state="pageState"
+      />
+    </template>
   </div>
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
+import pageMixin from "~/mixins/page";
 
-  export default {
-    data () {
-      return {
-        searching: false,
-        user: null,
-        loading: false
-      }
+export default {
+  mixins: [pageMixin],
+  data() {
+    return {
+      searching: false,
+      user: null,
+      loading: false,
+      showTransactions: false
+    };
+  },
+  computed: {
+    queryZone() {
+      return this.$route.query.zone || "";
     },
-    computed: {
-      queryZone () {
-        return this.$route.query.zone || ''
-      },
-      queryId () {
-        return +(this.$route.query.id || 0)
-      }
+    queryId() {
+      return +(this.$route.query.id || 0);
     },
-    watch: {
-      $route () {
-        this.user = null
-        if (this.queryZone) {
-          this.searchUserByZone(this.queryZone)
-        }
-      }
-    },
-    created () {
+    isKing() {
+      return this.$store.state.user.id === 1;
+    }
+  },
+  watch: {
+    $route() {
+      this.user = null;
       if (this.queryZone) {
-        this.searchUserByZone(this.queryZone)
-      }
-      if (this.queryId) {
-        this.searchUserById(this.queryId)
-      }
-    },
-    methods: {
-      async searchUserByZone (zone) {
-        if (this.searching) {
-          return
-        }
-        this.searching = true;
-        const api = new Api(this);
-        try {
-          this.user = await api.searchUser({ zone })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.searching = false;
-        }
-      },
-      async searchUserById (id) {
-        if (this.searching) {
-          return
-        }
-        this.searching = true;
-        const api = new Api(this);
-        try {
-          this.user = await api.searchUser({ id })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.searching = false;
-        }
-      },
-      async addUserToTrial () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true;
-        const api = new Api(this);
-        try {
-          await api.addUserToTrial({
-            id: this.user.id
-          });
-          this.$toast.success('操作成功');
-          this.user.state = 1
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
-      },
-      async recover () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true;
-        const api = new Api(this);
-        try {
-          await api.recoverUser({
-            id: this.user.id
-          })
-          this.$toast.success('操作成功');
-          this.user.deleted_at = null
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
-      },
-      async block () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true;
-        const api = new Api(this);
-        try {
-          await api.blockUser({
-            id: this.user.id
-          })
-          this.$toast.success('操作成功');
-          this.user.deleted_at = Date.now()
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
+        this.searchUserByZone(this.queryZone);
       }
     }
+  },
+  created() {
+    if (this.queryZone) {
+      this.searchUserByZone(this.queryZone);
+    }
+    if (this.queryId) {
+      this.searchUserById(this.queryId);
+    }
+  },
+  methods: {
+    async getTransactions(page) {
+      this.showTransactions = true;
+      if (page <= this.pageState.max) {
+        this.pageState.cur = page;
+        return;
+      }
+      if (this.pageLoading) {
+        return;
+      }
+      this.pageLoading = true;
+      this.pageState.size = 20;
+      const api = new Api(this);
+      try {
+        const data = await api.getUserCoinTransactions({
+          id: this.user.id,
+          to_page: page,
+          cur_page: this.pageState.cur,
+          take: this.pageState.size
+        });
+        this.pageState.total = data.total;
+        this.pageState.cur = page;
+        this.pageState.max = page;
+        if (page === 1) {
+          this.pageList = data.list;
+        } else {
+          this.pageList = this.pageList.concat(data.list);
+        }
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.pageLoading = false;
+      }
+    },
+    async searchUserByZone(zone) {
+      if (this.searching) {
+        return;
+      }
+      this.searching = true;
+      const api = new Api(this);
+      try {
+        this.user = await api.searchUser({ zone });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.searching = false;
+      }
+    },
+    async searchUserById(id) {
+      if (this.searching) {
+        return;
+      }
+      this.searching = true;
+      const api = new Api(this);
+      try {
+        this.user = await api.searchUser({ id });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.searching = false;
+      }
+    },
+    async addUserToTrial() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      const api = new Api(this);
+      try {
+        await api.addUserToTrial({
+          id: this.user.id
+        });
+        this.$toast.success("操作成功");
+        this.user.state = 1;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async recover() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      const api = new Api(this);
+      try {
+        await api.recoverUser({
+          id: this.user.id
+        });
+        this.$toast.success("操作成功");
+        this.user.deleted_at = null;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async block() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      const api = new Api(this);
+      try {
+        await api.blockUser({
+          id: this.user.id
+        });
+        this.$toast.success("操作成功");
+        this.user.deleted_at = Date.now();
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    getMoney() {
+      this.$prompt("输入要提现的金额", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          const data = +value;
+          if (data !== data) {
+            this.$toast.error("错误的格式");
+            return;
+          }
+          if (!/^\d+$/.test(data)) {
+            this.$toast.error("必须是整数");
+            return;
+          }
+          if (data <= 0) {
+            this.$toast.error("必须大于0");
+            return;
+          }
+          const api = new Api(this);
+          api
+            .withdrawal({
+              id: this.user.id,
+              money: data
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
+    }
   }
+};
 </script>

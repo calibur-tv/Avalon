@@ -43,17 +43,17 @@ export default class {
       return {
         length: 0,
         start() {
-          throw new Error('This TimeRanges object is empty');
+          throw new Error("This TimeRanges object is empty");
         },
         end() {
-          throw new Error('This TimeRanges object is empty');
-        },
+          throw new Error("This TimeRanges object is empty");
+        }
       };
     }
     return {
       length: ranges.length,
-      start: this.getRange.bind(null, 'start', 0, ranges),
-      end: this.getRange.bind(null, 'end', 1, ranges),
+      start: this.getRange.bind(null, "start", 0, ranges),
+      end: this.getRange.bind(null, "end", 1, ranges)
     };
   }
 
@@ -63,8 +63,10 @@ export default class {
   }
 
   rangeCheck(fnName, index, maxIndex) {
-    if (typeof index !== 'number' || index < 0 || index > maxIndex) {
-      throw new Error(`Failed to execute '${fnName}' on 'TimeRanges': The index provided (${index}) is non-numeric or out of bounds (0-${maxIndex}).`);
+    if (typeof index !== "number" || index < 0 || index > maxIndex) {
+      throw new Error(
+        `Failed to execute '${fnName}' on 'TimeRanges': The index provided (${index}) is non-numeric or out of bounds (0-${maxIndex}).`
+      );
     }
   }
 }

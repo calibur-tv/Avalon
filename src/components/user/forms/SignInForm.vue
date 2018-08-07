@@ -1,29 +1,29 @@
 <style lang="scss">
-  .sign-in-form {
-    .sign-in-opt {
-      margin-bottom: 10px;
-      margin-top: -12px;
+.sign-in-form {
+  .sign-in-opt {
+    margin-bottom: 10px;
+    margin-top: -12px;
 
-      .opt-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    .submit-btn {
-      width: 100%;
-    }
-
-    .others {
+    .opt-container {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      margin-top: 15px;
     }
   }
+
+  .submit-btn {
+    width: 100%;
+  }
+
+  .others {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+}
 </style>
 
 <template>
@@ -78,103 +78,104 @@
 </template>
 
 <script>
-  import UserApi from '~/api/userApi'
+import UserApi from "~/api/userApi";
 
-  export default {
-    name: 'SignInForm',
-    data () {
-      const validateAccess = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请填写手机号'))
-        }
-        if (value.length !== 11) {
-          return callback(new Error('请填写11位手机号'))
-        }
-        callback()
+export default {
+  name: "SignInForm",
+  data() {
+    const validateAccess = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请填写手机号"));
       }
-      const validateSecret = (rule, value, callback) => {
-        if (value === '') {
-          return callback(new Error('请填写登录密码'))
-        }
-        if (value.length < 6) {
-          return callback(new Error('密码不能小于6位'))
-        }
-        if (value.length > 16) {
-          return callback(new Error('密码不能大于16位'))
-        }
-        if (!/^[a-z0-9]+$/i.test(value)) {
-          return callback(new Error('密码只能是英文和数字'))
-        }
-        callback()
+      if (value.length !== 11) {
+        return callback(new Error("请填写11位手机号"));
       }
-      return {
-        form: {
-          access: '',
-          secret: '',
-          remember: true
-        },
-        rule: {
-          access: [
-            { validator: validateAccess, trigger: 'blur' }
-          ],
-          secret: [
-            { validator: validateSecret, trigger: 'blur' }
-          ]
-        },
-        loading: false
+      callback();
+    };
+    const validateSecret = (rule, value, callback) => {
+      if (value === "") {
+        return callback(new Error("请填写登录密码"));
       }
-    },
-    methods: {
-      submitForm () {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            this.login()
-          } else {
-            return false
-          }
-        })
+      if (value.length < 6) {
+        return callback(new Error("密码不能小于6位"));
+      }
+      if (value.length > 16) {
+        return callback(new Error("密码不能大于16位"));
+      }
+      if (!/^[a-z0-9]+$/i.test(value)) {
+        return callback(new Error("密码只能是英文和数字"));
+      }
+      callback();
+    };
+    return {
+      form: {
+        access: "",
+        secret: "",
+        remember: true
       },
-      login () {
-        if (this.loading) {
-          return
+      rule: {
+        access: [{ validator: validateAccess, trigger: "blur" }],
+        secret: [{ validator: validateSecret, trigger: "blur" }]
+      },
+      loading: false
+    };
+  },
+  methods: {
+    submitForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.login();
+        } else {
+          return false;
         }
-        this.loading = true
-        this.$captcha({
-          success: ({ data }) => {
-            const api = new UserApi()
-            api.login({
+      });
+    },
+    login() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      this.$captcha({
+        success: ({ data }) => {
+          const api = new UserApi();
+          api
+            .login({
               access: this.form.access,
               secret: this.form.secret,
               remember: this.form.remember,
               geetest: data
-            }).then((token) => {
-              this.$cookie.set('JWT-TOKEN', token, { expires: this.form.remember ? 365 : 1 })
-              window.location.reload()
-            }).catch((err) => {
-              this.$toast.error(err)
-              this.loading = false
             })
-          },
-          close: () => {
-            this.loading = false
-          },
-          error: (err) => {
-            this.loading = false
-            this.$toast.error(err)
-          }
-        })
-      },
-      showReset () {
-        this.$emit('to-reset')
-        this.$refs.form.resetFields()
-      },
-      showRegister () {
-        this.$emit('to-register')
-        this.$refs.form.resetFields()
-      },
-      showOAuth () {
-        this.$toast.info('暂未开放第三方登录')
-      }
+            .then(token => {
+              this.$cookie.set("JWT-TOKEN", token, {
+                expires: this.form.remember ? 365 : 1
+              });
+              window.location.reload();
+            })
+            .catch(err => {
+              this.$toast.error(err);
+              this.loading = false;
+            });
+        },
+        close: () => {
+          this.loading = false;
+        },
+        error: err => {
+          this.loading = false;
+          this.$toast.error(err);
+        }
+      });
+    },
+    showReset() {
+      this.$emit("to-reset");
+      this.$refs.form.resetFields();
+    },
+    showRegister() {
+      this.$emit("to-register");
+      this.$refs.form.resetFields();
+    },
+    showOAuth() {
+      this.$toast.info("暂未开放第三方登录");
     }
   }
+};
 </script>

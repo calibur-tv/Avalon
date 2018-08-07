@@ -46,44 +46,42 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
-  import pageMixin from '~/mixins/page'
+import Api from "~/api/adminApi";
+import pageMixin from "~/mixins/page";
 
-  export default {
-    mixins: [
-      pageMixin
-    ],
-    created () {
-      this.getData(1);
-    },
-    methods: {
-      async getData (page) {
-        if (page <= this.pageState.max) {
-          this.pageState.cur = page
-          return
-        }
-        if (this.pageLoading) {
-          return
-        }
-        this.pageLoading = true;
-        this.pageState.size = 20;
-        const api = new Api(this);
-        try {
-          const data = await api.getTrendingVideo({
-            to_page: page,
-            cur_page: this.pageState.cur,
-            take: this.pageState.size
-          })
-          this.pageState.total = data.total
-          this.pageState.cur = page
-          this.pageState.max = page
-          this.pageList = this.pageList.concat(data.list)
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.pageLoading = false
-        }
-      },
+export default {
+  mixins: [pageMixin],
+  created() {
+    this.getData(1);
+  },
+  methods: {
+    async getData(page) {
+      if (page <= this.pageState.max) {
+        this.pageState.cur = page;
+        return;
+      }
+      if (this.pageLoading) {
+        return;
+      }
+      this.pageLoading = true;
+      this.pageState.size = 20;
+      const api = new Api(this);
+      try {
+        const data = await api.getTrendingVideo({
+          to_page: page,
+          cur_page: this.pageState.cur,
+          take: this.pageState.size
+        });
+        this.pageState.total = data.total;
+        this.pageState.cur = page;
+        this.pageState.max = page;
+        this.pageList = this.pageList.concat(data.list);
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.pageLoading = false;
+      }
     }
   }
+};
 </script>

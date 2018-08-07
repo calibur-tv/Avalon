@@ -1,77 +1,77 @@
-import axios from 'axios'
+import axios from "axios";
 
 class Http {
-  constructor (ctx) {
+  constructor(ctx) {
     this.instance = axios.create({
       baseURL: process.env.API_HOST,
       headers: {
-        Accept: 'application/x.api.latest+json',
+        Accept: "application/x.api.latest+json",
         Authorization: `Bearer ${this.getAuthToken(ctx)}`
       },
       timeout: 10000
-    })
+    });
   }
 
-  async get (url, data) {
+  async get(url, data) {
     try {
       const res = await this.instance.get(url, {
         params: data && data.params ? data.params : {}
-      })
-      return res.data.data
+      });
+      return res.data.data;
     } catch (e) {
-      const code = e.response ? e.response.status : 500
+      const code = e.response ? e.response.status : 500;
       if (code === 401) {
-        return null
+        return null;
       }
-      e.code = code
-      throw e
+      e.code = code;
+      throw e;
     }
   }
 
-  async post (url, data) {
+  async post(url, data) {
     try {
-      const res = await this.instance.post(url, data)
-      const newToken = res.headers.authorization
+      const res = await this.instance.post(url, data);
+      const newToken = res.headers.authorization;
       if (newToken) {
         return Object.assign(res.data.data, {
-          token: newToken.split('Bearer ').pop()
-        })
+          token: newToken.split("Bearer ").pop()
+        });
       }
-      return res.data.data
+      return res.data.data;
     } catch (e) {
-      const code = e.response ? e.response.status : 500
+      const code = e.response ? e.response.status : 500;
       if (code === 401) {
-        return null
+        return null;
       }
-      e.code = code
-      throw e
+      e.code = code;
+      throw e;
     }
   }
 
-  getAuthToken (ctx) {
+  getAuthToken(ctx) {
     if (!ctx) {
-      return ''
+      return "";
     }
-    let token = ''
+    let token = "";
     if (ctx.header) {
-      const cookie = ctx.header.cookie
+      const cookie = ctx.header.cookie;
       if (cookie) {
-        cookie.split('; ').forEach(item => {
-          const temp = item.split('=')
-          if (temp[0] === 'JWT-TOKEN') {
-            token = temp[1]
+        cookie.split("; ").forEach(item => {
+          const temp = item.split("=");
+          if (temp[0] === "JWT-TOKEN") {
+            token = temp[1];
           }
-        })
+        });
       }
     } else if (ctx.$state) {
       // TODO
     } else {
-      token = ctx
+      token = ctx;
     }
-    return token
+    return token;
   }
 }
 
-export default (ctx) => {
-  return new Http(ctx)
-}
+export default ctx => {
+  return new Http(ctx);
+};

@@ -1,31 +1,31 @@
 <style lang="scss">
-  .image-preview {
-    .body {
-      .el-input {
-        margin-top: 20px;
-        margin-bottom: 50px;
-        padding: 0 50px;
-      }
-
-      .el-input__inner {
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        text-align: center;
-      }
-
-      .uploader {
-        margin: 50px auto;
-        width: 360px;
-      }
+.image-preview {
+  .body {
+    .el-input {
+      margin-top: 20px;
+      margin-bottom: 50px;
+      padding: 0 50px;
     }
 
-    .footer {
-      text-align: right;
-      line-height: $preview-footer-height;
-      height: $preview-footer-height;
+    .el-input__inner {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      text-align: center;
+    }
+
+    .uploader {
+      margin: 50px auto;
+      width: 360px;
     }
   }
+
+  .footer {
+    text-align: right;
+    line-height: $preview-footer-height;
+    height: $preview-footer-height;
+  }
+}
 </style>
 
 <template>
@@ -86,62 +86,62 @@
 </template>
 
 <script>
-  import uploadMixin from '~/mixins/upload'
+import uploadMixin from "~/mixins/upload";
 
-  export default {
-    name: 'ImgPreview',
-    mixins: [uploadMixin],
-    props: {
-      item: {
-        required: true,
-        type: Object
-      }
-    },
-    data () {
-      return {
-        saving: false
-      }
-    },
-    computed: {
-      desc: {
-        get () {
-          return this.item.text
-        },
-        set (value) {
-          this.$store.commit('editor/UPDATE_SECTION_TEXT', { value })
-        }
-      }
-    },
-    mounted () {
-      this.$channel.$on('write-save-done', () => {
-        this.saving = false
-      });
-      this.getUpToken();
-    },
-    methods: {
-      handleImageUploadSuccess (res) {
-        this.$store.commit('editor/UPDATE_SECTION_IMAGE', {
-          url: res.data.key,
-          width: res.data.width,
-          height: res.data.height,
-          size: res.data.size,
-          mime: res.data.type
-        });
-        this.$toast.success('上传成功');
+export default {
+  name: "ImgPreview",
+  mixins: [uploadMixin],
+  props: {
+    item: {
+      required: true,
+      type: Object
+    }
+  },
+  data() {
+    return {
+      saving: false
+    };
+  },
+  computed: {
+    desc: {
+      get() {
+        return this.item.text;
       },
-      beforeUpload(file) {
-        this.getUpToken();
-        this.uploadConfig.max = 5;
-        this.uploadConfig.pathPrefix = `user/${this.$store.state.user.id}/create`;
-        return this.beforeImageUpload(file)
-      },
-      emitSave () {
-        if (!this.item.url) {
-          return
-        }
-        this.$channel.$emit('write-save');
-        this.saving = true
+      set(value) {
+        this.$store.commit("editor/UPDATE_SECTION_TEXT", { value });
       }
     }
+  },
+  mounted() {
+    this.$channel.$on("write-save-done", () => {
+      this.saving = false;
+    });
+    this.getUpToken();
+  },
+  methods: {
+    handleImageUploadSuccess(res) {
+      this.$store.commit("editor/UPDATE_SECTION_IMAGE", {
+        url: res.data.key,
+        width: res.data.width,
+        height: res.data.height,
+        size: res.data.size,
+        mime: res.data.type
+      });
+      this.$toast.success("上传成功");
+    },
+    beforeUpload(file) {
+      this.getUpToken();
+      this.uploadConfig.max = 5;
+      this.uploadConfig.pathPrefix = `user/${this.$store.state.user.id}/create`;
+      return this.beforeImageUpload(file);
+    },
+    emitSave() {
+      if (!this.item.url) {
+        return;
+      }
+      this.$channel.$emit("write-save");
+      this.saving = true;
+    }
   }
+};
 </script>

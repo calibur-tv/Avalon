@@ -1,83 +1,83 @@
 <style lang="scss">
-  #bangumi-news {
-    $time-size: 30px;
-    .sub-title {
-      margin-left: $time-size / 2;
-    }
+#bangumi-news {
+  $time-size: 30px;
+  .sub-title {
+    margin-left: $time-size / 2;
+  }
 
-    .el-tabs {
-      padding-left: $time-size / 2;
+  .el-tabs {
+    padding-left: $time-size / 2;
 
-      .el-tabs__nav {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        text-align: center;
+    .el-tabs__nav {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      text-align: center;
 
-        .el-tabs__item {
-          flex: 1;
-        }
+      .el-tabs__item {
+        flex: 1;
       }
     }
+  }
 
-    .bangumi {
-      width: 195px;
-      margin: 0 10px 20px 0;
+  .bangumi {
+    width: 195px;
+    margin: 0 10px 20px 0;
+    float: left;
+
+    .avatar {
+      width: 65px;
+      height: 65px;
+      display: block;
       float: left;
+      margin-right: 8px;
 
-      .avatar {
-        width: 65px;
-        height: 65px;
-        display: block;
-        float: left;
-        margin-right: 8px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+      }
+    }
 
-        img {
-          width: 100%;
-          height: 100%;
-          border-radius: 5px;
-        }
+    .intro {
+      overflow: hidden;
+      font-size: 12px;
+
+      .name {
+        height: 37px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        @include twoline(16px);
       }
 
-      .intro {
-        overflow: hidden;
-        font-size: 12px;
+      span {
+        color: $color-text-light;
+        line-height: 18px;
 
-        .name {
-          height: 37px;
-          margin-top: 5px;
-          margin-bottom: 5px;
-          @include twoline(16px);
-        }
+        .part {
+          border-radius: 9px;
+          color: $color-white;
+          text-align: center;
+          padding: 0 4px;
+          height: 18px;
+          min-width: 36px;
+          max-width: 50px;
+          margin-left: 5px;
+          display: inline-block;
+          vertical-align: top;
 
-        span {
-          color: $color-text-light;
-          line-height: 18px;
+          &.new {
+            background-color: $color-pink-normal;
+          }
 
-          .part {
-            border-radius: 9px;
-            color: $color-white;
-            text-align: center;
-            padding: 0 4px;
-            height: 18px;
-            min-width: 36px;
-            max-width: 50px;
-            margin-left: 5px;
-            display: inline-block;
-            vertical-align: top;
-
-            &.new {
-              background-color: $color-pink-normal;
-            }
-
-            &.old {
-              background-color: $color-dark-light;
-            }
+          &.old {
+            background-color: $color-dark-light;
           }
         }
       }
     }
   }
+}
 </style>
 
 <template>
@@ -158,39 +158,39 @@
 </template>
 
 <script>
-  const weeklys = ['最新', '一', '二', '三', '四', '五', '六', '日']
+const weeklys = ["最新", "一", "二", "三", "四", "五", "六", "日"];
 
-  export default {
-    name: 'BangumiNews',
-    head: {
-      title: '新番放送 - 番剧'
-    },
-    async asyncData ({ store, ctx }) {
-      await store.dispatch('bangumi/getReleased', ctx)
-    },
-    data () {
-      return {
-        showtime: weeklys,
-        thisWeek: weeklys[new Date().getDay() || 7]
-      }
-    },
-    computed: {
-      released () {
-        return this.$store.state.bangumi.released
-      }
-    },
-    mounted () {
-      if (this.$route.query.from === 'search') {
-        this.$toast.info('您搜索的资源未被收录')
-      }
-    },
-    methods: {
-      openFeedbackForResource () {
-        this.$channel.$emit('open-feedback', {
-          type: 5,
-          desc: '我想看新番：'
-        })
-      }
+export default {
+  name: "BangumiNews",
+  head: {
+    title: "新番放送 - 番剧"
+  },
+  async asyncData({ store, ctx }) {
+    await store.dispatch("bangumi/getReleased", ctx);
+  },
+  data() {
+    return {
+      showtime: weeklys,
+      thisWeek: weeklys[new Date().getDay() || 7]
+    };
+  },
+  computed: {
+    released() {
+      return this.$store.state.bangumi.released;
+    }
+  },
+  mounted() {
+    if (this.$route.query.from === "search") {
+      this.$toast.info("您搜索的资源未被收录");
+    }
+  },
+  methods: {
+    openFeedbackForResource() {
+      this.$channel.$emit("open-feedback", {
+        type: 5,
+        desc: "我想看新番："
+      });
     }
   }
+};
 </script>

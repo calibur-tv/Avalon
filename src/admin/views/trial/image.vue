@@ -1,18 +1,18 @@
 <style lang="scss">
-  #trial-image {
-    header {
-      text-align: right;
-      margin-right: 30px;
-    }
-
-    .image {
-      margin-bottom: 20px;
-    }
-
-    .name {
-      margin-bottom: 10px;
-    }
+#trial-image {
+  header {
+    text-align: right;
+    margin-right: 30px;
   }
+
+  .image {
+    margin-bottom: 20px;
+  }
+
+  .name {
+    margin-bottom: 10px;
+  }
+}
 </style>
 
 <template>
@@ -82,114 +82,135 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
 
-  export default {
-    data () {
-      return {
-        list: [],
-        loading: true
-      }
-    },
-    computed: {
-      isKing () {
-        return this.$store.state.user.id === 1
-      }
-    },
-    created () {
-      this.getData();
-    },
-    methods: {
-      getData () {
-        const api = new Api(this);
-        api.getTrialImages().then((data) => {
+export default {
+  data() {
+    return {
+      list: [],
+      loading: true
+    };
+  },
+  computed: {
+    isKing() {
+      return this.$store.state.user.id === 1;
+    }
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const api = new Api(this);
+      api
+        .getTrialImages()
+        .then(data => {
           this.list = data;
           this.loading = false;
-        }).catch((e) => {
+        })
+        .catch(e => {
           this.$toast.error(e);
           this.loading = false;
-        })
-      },
-      deleteImage (image, index) {
-        this.$confirm('确定要删除吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+        });
+    },
+    deleteImage(image, index) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           const api = new Api(this);
-          api.deleteImage({
-            id: image.id,
-            type: image.bangumi_id ? 'album' : 'image'
-          }).then(() => {
-            this.list.splice(index, 1);
-            this.$channel.$emit('admin-trial-do', {
-              type: 'images'
+          api
+            .deleteImage({
+              id: image.id,
+              type: image.bangumi_id ? "album" : "image"
             })
-          }).catch((e) => {
-            console.log(e);
-            this.$message.error(e);
-          });
-        }).catch(() => {});
-      },
-      passImage (image, index) {
-        const api = new Api(this);
-        api.passImage({
+            .then(() => {
+              this.list.splice(index, 1);
+              this.$channel.$emit("admin-trial-do", {
+                type: "images"
+              });
+            })
+            .catch(e => {
+              console.log(e);
+              this.$message.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    passImage(image, index) {
+      const api = new Api(this);
+      api
+        .passImage({
           id: image.id,
-          type: image.bangumi_id ? 'album' : 'image'
-        }).then(() => {
+          type: image.bangumi_id ? "album" : "image"
+        })
+        .then(() => {
           this.list.splice(index, 1);
-          this.$channel.$emit('admin-trial-do', {
-            type: 'images'
-          })
-        }).catch((e) => {
+          this.$channel.$emit("admin-trial-do", {
+            type: "images"
+          });
+        })
+        .catch(e => {
           console.log(e);
           this.$message.error(e);
         });
-      },
-      quickDeleteAlbum () {
-        this.$prompt('请输入相册id', '删除相册', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d+$/,
-          inputErrorMessage: '非法的id'
-        }).then(({ value }) => {
+    },
+    quickDeleteAlbum() {
+      this.$prompt("请输入相册id", "删除相册", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error('非法的id');
+            this.$toast.error("非法的id");
             return;
           }
           const api = new Api(this);
-          api.deleteImage({
-            id: value,
-            type: 'album'
-          }).then(() => {
-            this.$toast.success('操作成功');
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
-      },
-      quickDeleteImage () {
-        this.$prompt('请输入图片id', '删除图片', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d+$/,
-          inputErrorMessage: '非法的id'
-        }).then(({ value }) => {
+          api
+            .deleteImage({
+              id: value,
+              type: "album"
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    quickDeleteImage() {
+      this.$prompt("请输入图片id", "删除图片", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error('非法的id');
+            this.$toast.error("非法的id");
             return;
           }
           const api = new Api(this);
-          api.deleteImage({
-            id: value,
-            type: 'image'
-          }).then(() => {
-            this.$toast.success('操作成功');
-          }).catch((e) => {
-            this.$toast.error(e);
-          })
-        }).catch(() => {});
-      }
+          api
+            .deleteImage({
+              id: value,
+              type: "image"
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
     }
   }
+};
 </script>

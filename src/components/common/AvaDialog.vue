@@ -1,36 +1,36 @@
 <style lang="scss">
-  .avatar-dialog-wrap {
-    .user-face {
-      margin: 0 -5px;
-      display: inline-block;
-      vertical-align: middle;
+.avatar-dialog-wrap {
+  .user-face {
+    margin: 0 -5px;
+    display: inline-block;
+    vertical-align: middle;
 
-      img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 3px solid #fff;
-      }
-
-      a {
-        display: block;
-      }
-    }
-
-    .el-icon-more {
+    img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      color: #fff;
       border: 3px solid #fff;
-      background-color: $color-gray-normal;
-      margin-left: -5px;
+    }
 
-      &:hover {
-        background-color: $color-gray-deep;
-      }
+    a {
+      display: block;
     }
   }
+
+  .el-icon-more {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    border: 3px solid #fff;
+    background-color: $color-gray-normal;
+    margin-left: -5px;
+
+    &:hover {
+      background-color: $color-gray-deep;
+    }
+  }
+}
 </style>
 
 <template>
@@ -99,43 +99,43 @@
 </template>
 
 <script>
-  export default {
-    name: 'AvaDialog',
-    props: {
-      users: {
-        required: true,
-        type: Array
-      },
-      fetch: {
-        required: true,
-        type: Function
-      },
-      displayCount: {
-        type: Number,
-        default: 7
-      },
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      noMore: {
-        type: Boolean,
-        default: false
-      },
-      title: {
-        type: String,
-        default: '用户列表'
-      }
+export default {
+  name: "AvaDialog",
+  props: {
+    users: {
+      required: true,
+      type: Array
     },
-    data () {
-      return {
-        showDialog: false
-      }
+    fetch: {
+      required: true,
+      type: Function
     },
-    computed: {
-      displayUsers () {
-        return this.users.slice(0, this.displayCount)
-      },
+    displayCount: {
+      type: Number,
+      default: 7
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    noMore: {
+      type: Boolean,
+      default: false
+    },
+    title: {
+      type: String,
+      default: "用户列表"
+    }
+  },
+  data() {
+    return {
+      showDialog: false
+    };
+  },
+  computed: {
+    displayUsers() {
+      return this.users.slice(0, this.displayCount);
     }
   }
+};
 </script>

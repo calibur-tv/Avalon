@@ -1,35 +1,36 @@
-const path = require('path')
-const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CompressionPlugin = require('compression-webpack-plugin')
-const resolve = file => path.resolve(__dirname, file)
-const isProd = process.env.NODE_ENV === 'production'
-const isDev = process.env.NODE_ENV === 'development'
-const cdn = require('../.env').cdn
-const staticFilePrefix = require('../qiniu.json').key_prefix
+const path = require("path");
+const webpack = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const resolve = file => path.resolve(__dirname, file);
+const isProd = process.env.NODE_ENV === "production";
+const isDev = process.env.NODE_ENV === "development";
+const cdn = require("../.env").cdn;
+const staticFilePrefix = require("../qiniu.json").key_prefix;
 // const SentryPlugin = require('./webpack.sentry.plugin.js')
 // const SentryConfig = require('./sentry.config.js')
-const now = new Date().getTime()
+const now = new Date().getTime();
+const StyleLintPlugin = require("stylelint-webpack-plugin");
 
 module.exports = {
   cache: true,
-  devtool: isProd ? false : 'sourcemap',
+  devtool: isProd ? false : "sourcemap",
   output: {
-    path: resolve('../dist'),
-    publicPath: isProd ? `${cdn.static}${staticFilePrefix}` : '/dist/',
-    filename: isDev ? '[name].js' : '[name].[chunkhash].js'
+    path: resolve("../dist"),
+    publicPath: isProd ? `${cdn.static}${staticFilePrefix}` : "/dist/",
+    filename: isDev ? "[name].js" : "[name].[chunkhash].js"
   },
   resolve: {
     alias: {
-      '~': resolve('../src'),
-      'env': resolve('../.env.js'),
-      'img': resolve('../src/assets/img'),
-      'static': resolve('../static'),
-      '@': resolve('../src/admin')
+      "~": resolve("../src"),
+      env: resolve("../.env.js"),
+      img: resolve("../src/assets/img"),
+      static: resolve("../static"),
+      "@": resolve("../src/admin")
     },
-    extensions: ['.js', '.vue', '.scss', '.css']
+    extensions: [".js", ".vue", ".scss", ".css"]
   },
   module: {
     noParse: /es6-promise\.js$/,
@@ -38,41 +39,41 @@ module.exports = {
         test: /\.vue$/,
         use: [
           {
-            loader: 'vue-loader',
+            loader: "vue-loader",
             options: {
               extractCSS: !isDev,
               preserveWhitespace: false,
               postcss: [
-                require('autoprefixer')({
-                  browsers: [
-                    'last 3 versions'
-                  ]
+                require("autoprefixer")({
+                  browsers: ["last 3 versions"]
                 })
               ],
               loaders: {
                 scss: [
-                  'vue-style-loader',
+                  "vue-style-loader",
                   {
-                    loader: 'css-loader',
-                    options: isDev ? {} : {
-                      minimize: true
-                    }
+                    loader: "css-loader",
+                    options: isDev
+                      ? {}
+                      : {
+                          minimize: true
+                        }
                   },
-                  'sass-loader',
+                  "sass-loader",
                   {
-                    loader: 'sass-resources-loader',
+                    loader: "sass-resources-loader",
                     options: {
                       resources: [
-                        resolve('../src/assets/css/variables.scss'),
-                        resolve('../src/assets/css/mixins.scss')
+                        resolve("../src/assets/css/variables.scss"),
+                        resolve("../src/assets/css/mixins.scss")
                       ]
                     }
                   }
                 ],
-                i18n: '@kazupon/vue-i18n-loader'
+                i18n: "@kazupon/vue-i18n-loader"
               },
               cssModules: {
-                localIdentName: '[local]-[hash:base64:2]',
+                localIdentName: "[local]-[hash:base64:2]",
                 camelCase: true
               }
             }
@@ -81,55 +82,57 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url-loader',
+        loader: "url-loader",
         options: {
           limit: 1024,
-          name: '[path][name].[hash:8].[ext]'
+          name: "[path][name].[hash:8].[ext]"
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'file-loader',
+        loader: "file-loader",
         query: {
           limit: 1024,
-          name: '[name].[hash:8].[ext]'
+          name: "[name].[hash:8].[ext]"
         }
       },
       {
         test: /\.(scss|css)$/,
         use: isDev
-          ? ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+          ? ["vue-style-loader", "css-loader", "postcss-loader", "sass-loader"]
           : ExtractTextPlugin.extract({
-            fallback: 'vue-style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  minimize: true,
-                  importLoaders: 2
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  config: {
-                    path: './postcss.config.js'
+              fallback: "vue-style-loader",
+              use: [
+                {
+                  loader: "css-loader",
+                  options: {
+                    minimize: true,
+                    importLoaders: 2
                   }
-                }
-              }, 'sass-loader']
-          })
+                },
+                {
+                  loader: "postcss-loader",
+                  options: {
+                    config: {
+                      path: "./postcss.config.js"
+                    }
+                  }
+                },
+                "sass-loader"
+              ]
+            })
       },
       {
         test: /\.(js|vue)$/,
         use: {
-          loader: 'eslint-loader',
+          loader: "eslint-loader",
           options: {
-            enforce: 'pre',
+            enforce: "pre",
             cacheDirectory: true
           }
         },
@@ -139,21 +142,28 @@ module.exports = {
   },
   performance: {
     maxEntrypointSize: 300000,
-    hints: isProd ? 'warning' : false
+    hints: isProd ? "warning" : false
   },
-  plugins: (function () {
+  plugins: (function() {
     let pluginArr = [
-      new webpack.ProvidePlugin({
-      }),
+      new webpack.ProvidePlugin({}),
       new webpack.DefinePlugin({
-        'process.env': {
+        "process.env": {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-          RELEASE: JSON.stringify(now || 'dev'),
-          API_HOST: JSON.stringify(process.env.API_HOST || 'https://api.calibur.tv/')
+          RELEASE: JSON.stringify(now || "dev"),
+          API_HOST: JSON.stringify(
+            process.env.API_HOST || "https://api.calibur.tv/"
+          )
         }
       }),
-      new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(zh-cn)$/)
-    ]
+      new webpack.ContextReplacementPlugin(
+        /moment[\\\/]locale$/,
+        /^\.\/(zh-cn)$/
+      ),
+      new StyleLintPlugin({
+        files: ["**/*.vue"]
+      })
+    ];
 
     if (isProd) {
     }
@@ -161,24 +171,22 @@ module.exports = {
     if (!isDev) {
       pluginArr = pluginArr.concat([
         new UglifyJsPlugin(),
-        new CopyWebpackPlugin([
-          { from: resolve('../static') }
-        ]),
+        new CopyWebpackPlugin([{ from: resolve("../static") }]),
         new ExtractTextPlugin({
-          filename: 'common.[contenthash].css',
+          filename: "common.[contenthash].css",
           allChunks: true
         }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new CompressionPlugin({
-          asset: '[path].gz[query]',
-          algorithm: 'gzip',
+          asset: "[path].gz[query]",
+          algorithm: "gzip",
           test: /\.js$|\.css$/,
           threshold: 10240,
           minRatio: 0.8
         })
-      ])
+      ]);
     }
 
-    return pluginArr
-  }())
-}
+    return pluginArr;
+  })()
+};

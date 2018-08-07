@@ -1,162 +1,170 @@
 <style lang="scss">
-  #image-waterfall-flow {
-    .vue-waterfall {
-      width: 848px;
-    }
+#image-waterfall-flow {
+  .vue-waterfall {
+    width: 848px;
+  }
 
-    .vue-waterfall-slot {
-      padding-right: 12px;
-      padding-bottom: 12px;
-      margin-left: 3px;
-      margin-top: 3px;
-    }
+  .vue-waterfall-slot {
+    padding-right: 12px;
+    padding-bottom: 12px;
+    margin-left: 3px;
+    margin-top: 3px;
+  }
 
-    .image {
-      width: 100%;
+  .image {
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: #fafafa;
+
+    .image-box {
+      position: relative;
       overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,.2);
-      background-color: #FAFAFA;
+      display: block;
 
-      .image-box {
-        position: relative;
-        overflow: hidden;
-        display: block;
+      &.album-box:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        opacity: 0.3;
+        background-color: transparent;
+        background-image: linear-gradient(
+          transparent,
+          rgba(0, 0, 0, 0.1) 20%,
+          rgba(0, 0, 0, 0.2) 35%,
+          rgba(0, 0, 0, 0.6) 65%,
+          rgba(0, 0, 0, 0.9)
+        );
+      }
 
-        &.album-box:after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 50px;
-          opacity: .3;
-          background-color: transparent;
-          background-image: linear-gradient(transparent,rgba(0,0,0,.1) 20%,rgba(0,0,0,.2) 35%,rgba(0,0,0,.6) 65%,rgba(0,0,0,.9));
-        }
+      .is-creator {
+        font-size: 20px;
+        position: absolute;
+        left: 5px;
+        top: 2px;
+        z-index: 1;
+        color: #ffcf00;
+      }
 
-        .is-creator {
+      .is-album {
+        position: absolute;
+        left: 7px;
+        bottom: 4px;
+        z-index: 1;
+        color: #fff;
+        line-height: 20px;
+
+        i {
           font-size: 20px;
-          position: absolute;
-          left: 5px;
-          top: 2px;
-          z-index: 1;
-          color: #ffcf00;
+          vertical-align: middle;
         }
 
-        .is-album {
-          position: absolute;
-          left: 7px;
-          bottom: 4px;
-          z-index: 1;
-          color: #fff;
-          line-height: 20px;
-
-          i {
-            font-size: 20px;
-            vertical-align: middle;
-          }
-
-          .image-count {
-            margin-left: 5px;
-            font-size: 14px;
-            vertical-align: middle;
-          }
-        }
-
-        img {
-          display: block;
-          transition: .3s;
-          transform-origin: center;
-        }
-
-        &:hover {
-          img {
-            transform: scale(1.1);
-          }
+        .image-count {
+          margin-left: 5px;
+          font-size: 14px;
+          vertical-align: middle;
         }
       }
 
-      .intro {
-        height: 55px;
-        padding: 5px 15px;
-        background-color: #fff;
+      img {
+        display: block;
+        transition: 0.3s;
+        transform-origin: center;
+      }
 
-        .name, .social {
-          height: 20px;
-          font-size: 12px;
-          line-height: 20px;
+      &:hover {
+        img {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .intro {
+      height: 55px;
+      padding: 5px 15px;
+      background-color: #fff;
+
+      .name,
+      .social {
+        height: 20px;
+        font-size: 12px;
+        line-height: 20px;
+      }
+
+      .social {
+        color: $color-text-light;
+        margin-top: 5px;
+
+        span {
+          margin-right: 10px;
         }
 
-        .social {
-          color: $color-text-light;
-          margin-top: 5px;
+        .done {
+          color: $color-pink-deep;
+        }
+      }
+    }
+
+    .about {
+      height: 51px;
+      padding: 10px 15px;
+      border-top: 1px solid #f2f2f2;
+
+      .user-avatar {
+        @include avatar-2(30px);
+      }
+
+      .bangumi-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+      }
+
+      .user-avatar,
+      .bangumi-avatar {
+        display: block;
+        margin-right: 10px;
+        overflow: hidden;
+        float: left;
+      }
+
+      .main-name {
+        line-height: 30px;
+        font-size: 12px;
+        word-wrap: break-word;
+        color: $color-text-normal;
+      }
+
+      .info {
+        overflow: hidden;
+        font-size: 12px;
+        line-height: 15px;
+
+        .main-info {
+          margin-bottom: 2px;
 
           span {
-            margin-right: 10px;
-          }
-
-          .done {
-            color: $color-pink-deep;
+            color: $color-text-light;
+            float: left;
           }
         }
-      }
 
-      .about {
-        height: 51px;
-        padding: 10px 15px;
-        border-top: 1px solid #F2F2F2;
-
-        .user-avatar {
-          @include avatar-2(30px);
-        }
-
-        .bangumi-avatar {
-          width: 30px;
-          height: 30px;
-          border-radius: 4px;
-        }
-
-        .user-avatar, .bangumi-avatar {
-          display: block;
-          margin-right: 10px;
-          overflow: hidden;
-          float: left;
-        }
-
-        .main-name {
-          line-height: 30px;
-          font-size: 12px;
-          word-wrap: break-word;
+        a {
           color: $color-text-normal;
-        }
-
-        .info {
-          overflow: hidden;
-          font-size: 12px;
-          line-height: 15px;
-
-          .main-info {
-            margin-bottom: 2px;
-
-            span {
-              color: $color-text-light;
-              float: left;
-            }
-          }
-
-          a {
-            color: $color-text-normal;
-            display: block;
-          }
+          display: block;
         }
       }
-    }
-
-    .load-more-btn {
-      margin-top: 20px;
-      width: 100%;
     }
   }
+
+  .load-more-btn {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
 </style>
 
 <template>
@@ -306,56 +314,56 @@
 </template>
 
 <script>
-  export default {
-    name: 'ImageWaterfallFlow',
-    components: {
-      'waterfall': () => {
-        if (typeof window === 'undefined') {
-          return import('~/assets/js/empty')
-        }
-        return import('vue-waterfall/lib/waterfall')
-      },
-      'waterfall-slot': () => {
-        if (typeof window === 'undefined') {
-          return import('~/assets/js/empty')
-        }
-        return import('vue-waterfall/lib/waterfall-slot')
+export default {
+  name: "ImageWaterfallFlow",
+  components: {
+    waterfall: () => {
+      if (typeof window === "undefined") {
+        return import("~/assets/js/empty");
       }
+      return import("vue-waterfall/lib/waterfall");
     },
-    props: {
-      list: {
-        required: true,
-        type: Array,
-        default: () => []
-      },
-      noMore: {
-        type: Boolean,
-        default: false
-      },
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      width: {
-        type: Number,
-        default: 200
+    "waterfall-slot": () => {
+      if (typeof window === "undefined") {
+        return import("~/assets/js/empty");
       }
+      return import("vue-waterfall/lib/waterfall-slot");
+    }
+  },
+  props: {
+    list: {
+      required: true,
+      type: Array,
+      default: () => []
     },
-    computed: {
-      page () {
-        return this.$route.name
-      },
+    noMore: {
+      type: Boolean,
+      default: false
     },
-    methods: {
-      computeBoxHeight (image) {
-        return this.computeImageHeight(image) + 106
-      },
-      computeImageHeight (image) {
-        return parseInt(image.height / image.width * this.width, 10)
-      },
-      loadMore() {
-        this.$emit('load')
-      }
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    width: {
+      type: Number,
+      default: 200
+    }
+  },
+  computed: {
+    page() {
+      return this.$route.name;
+    }
+  },
+  methods: {
+    computeBoxHeight(image) {
+      return this.computeImageHeight(image) + 106;
+    },
+    computeImageHeight(image) {
+      return parseInt((image.height / image.width) * this.width, 10);
+    },
+    loadMore() {
+      this.$emit("load");
     }
   }
+};
 </script>

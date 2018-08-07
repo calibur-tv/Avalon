@@ -1,9 +1,9 @@
 export default {
-  name: 'no-ssr',
-  props: ['placeholder'],
+  name: "no-ssr",
+  props: ["placeholder"],
   data() {
     return {
-      canRender: false,
+      canRender: false
     };
   },
   mounted() {
@@ -12,21 +12,21 @@ export default {
   render(h) {
     if (this.canRender) {
       if (
-        process.env.NODE_ENV === 'development' &&
+        process.env.NODE_ENV === "development" &&
         this.$slots.default &&
         this.$slots.default.length > 1
       ) {
-        throw new Error('<no-ssr> You cannot use multiple child components');
+        throw new Error("<no-ssr> You cannot use multiple child components");
       }
       return this.$slots.default && this.$slots.default[0];
     }
 
     return h(
-      'div',
+      "div",
       {
-        class: ['no-ssr-placeholder'],
+        class: ["no-ssr-placeholder"]
       },
-      this.$slots.placeholder || this.placeholder,
+      this.$slots.placeholder || this.placeholder
     );
-  },
+  }
 };

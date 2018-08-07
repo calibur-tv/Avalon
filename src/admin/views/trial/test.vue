@@ -1,35 +1,35 @@
 <style lang="scss">
-  #trial-test {
-    .title {
-      margin-bottom: 20px;
-      color: $color-text-normal;
+#trial-test {
+  .title {
+    margin-bottom: 20px;
+    color: $color-text-normal;
 
-      .label {
-        font-weight: bold;
-        font-size: 20px;
-        color: $color-text-deep;
-      }
-    }
-
-    .result {
-      margin-top: 20px;
-      margin-left: 5px;
-
-      >div {
-        margin-top: 10px;
-      }
-
-      .label {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-
-      p {
-        margin-top: 5px;
-        font-size: 13px;
-      }
+    .label {
+      font-weight: bold;
+      font-size: 20px;
+      color: $color-text-deep;
     }
   }
+
+  .result {
+    margin-top: 20px;
+    margin-left: 5px;
+
+    > div {
+      margin-top: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    p {
+      margin-top: 5px;
+      font-size: 13px;
+    }
+  }
+}
 </style>
 
 <template>
@@ -135,72 +135,71 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
 
-  export default {
-    data () {
-      return {
-        imageUrl: '',
-        content: '',
-        testing: false,
-        imageResult: null,
-        textResult: null
+export default {
+  data() {
+    return {
+      imageUrl: "",
+      content: "",
+      testing: false,
+      imageResult: null,
+      textResult: null
+    };
+  },
+  methods: {
+    async imageTest() {
+      if (!this.imageUrl) {
+        return;
+      }
+      if (!/^http(|s):\/\//.test(this.imageUrl)) {
+        return;
+      }
+      if (this.testing) {
+        return;
+      }
+      this.testing = true;
+      this.imageResult = null;
+      const api = new Api(this);
+      try {
+        this.imageResult = await api.trialTestImage({
+          url: this.imageUrl.split("?")[0]
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.testing = false;
       }
     },
-    methods: {
-      async imageTest () {
-        if (!this.imageUrl) {
-          return
-        }
-        if (!/^http(|s):\/\//.test(this.imageUrl)) {
-          return
-        }
-        if (this.testing) {
-          return
-        }
-        this.testing = true
-        this.imageResult = null
-        const api = new Api(this)
-        try {
-          this.imageResult = await api.trialTestImage({
-            url: this.imageUrl.split('?')[0]
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.testing = false
-        }
-      },
-      async textTest () {
-        if (!this.content) {
-          return
-        }
-        if (this.testing) {
-          return
-        }
-        this.testing = true
-        this.textResult = null
-        const api = new Api(this)
-        try {
-          this.textResult = await api.trialTestText({
-            text: this.content
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.testing = false
-        }
-      },
-      computedDaddyDetail (detail) {
-        if (!Array.isArray(detail))
-        {
-          return []
-        }
-        if (!detail.length) {
-          return []
-        }
-        return detail.map(item => item.value.name)
+    async textTest() {
+      if (!this.content) {
+        return;
       }
+      if (this.testing) {
+        return;
+      }
+      this.testing = true;
+      this.textResult = null;
+      const api = new Api(this);
+      try {
+        this.textResult = await api.trialTestText({
+          text: this.content
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.testing = false;
+      }
+    },
+    computedDaddyDetail(detail) {
+      if (!Array.isArray(detail)) {
+        return [];
+      }
+      if (!detail.length) {
+        return [];
+      }
+      return detail.map(item => item.value.name);
     }
   }
+};
 </script>

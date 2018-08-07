@@ -1,18 +1,18 @@
 <style lang="scss">
-  .image-cropper-wrap {
+.image-cropper-wrap {
+  width: 100%;
+  height: 100%;
+
+  .croppa-container {
+    background-color: transparent;
     width: 100%;
     height: 100%;
 
-    .croppa-container {
-      background-color: transparent;
-      width: 100%;
-      height: 100%;
-
-      canvas {
-        transition: none;
-      }
+    canvas {
+      transition: none;
     }
   }
+}
 </style>
 
 <template>
@@ -45,70 +45,70 @@
 </template>
 
 <script>
-  import Croppa from 'vue-croppa'
-  import 'vue-croppa/dist/vue-croppa.css'
+import Croppa from "vue-croppa";
+import "vue-croppa/dist/vue-croppa.css";
 
-  export default {
-    name: 'ImageCropper',
-    components: {
-      'croppa': Croppa.component
+export default {
+  name: "ImageCropper",
+  components: {
+    croppa: Croppa.component
+  },
+  props: {
+    width: {
+      type: Number,
+      default: 200
     },
-    props: {
-      width: {
-        type: Number,
-        default: 200
-      },
-      height: {
-        type: Number,
-        default: 200
-      },
-      autoSize: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      sizeLimit: {
-        type: Number,
-        default: 0
-      },
-      initImage: {
-        type: String,
-        default: ''
-      },
-      type: {
-        type: String,
-        default: 'normal',
-        validator: val => ~['avatar', 'normal'].indexOf(val)
-      },
-      uploading: {
-        type: Boolean,
-        default: false
+    height: {
+      type: Number,
+      default: 200
+    },
+    autoSize: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    sizeLimit: {
+      type: Number,
+      default: 0
+    },
+    initImage: {
+      type: String,
+      default: ""
+    },
+    type: {
+      type: String,
+      default: "normal",
+      validator: val => ~["avatar", "normal"].indexOf(val)
+    },
+    uploading: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      croppa: {}
+    };
+  },
+  methods: {
+    onInit() {
+      if (this.type === "avatar") {
+        this.croppa.addClipPlugin(function(ctx, x, y, w, h) {
+          ctx.beginPath();
+          ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true);
+          ctx.closePath();
+        });
       }
     },
-    data () {
-      return {
-        croppa: {}
-      }
-    },
-    methods: {
-      onInit() {
-        if (this.type === 'avatar') {
-          this.croppa.addClipPlugin(function (ctx, x, y, w, h) {
-            ctx.beginPath()
-            ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
-            ctx.closePath()
-          })
-        }
-      },
-      async generateImage () {
-        const blob = await this.croppa.promisedBlob()
-        const formData = new FormData()
-        formData.append('file', blob)
-        this.$emit('submit', formData)
-      }
+    async generateImage() {
+      const blob = await this.croppa.promisedBlob();
+      const formData = new FormData();
+      formData.append("file", blob);
+      this.$emit("submit", formData);
     }
   }
+};
 </script>

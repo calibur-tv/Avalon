@@ -1,33 +1,34 @@
 <style lang="scss">
-  #comment-wrap {
-    font-family: Microsoft Yahei,Tahoma,Helvetica,Arial,\\5B8B\4F53,sans-serif;
+#comment-wrap {
+  font-family: Microsoft Yahei, Tahoma, Helvetica, Arial, \\5b8b\4f53,
+    sans-serif;
 
-    .sub-title {
-      margin-bottom: 30px;
-    }
+  .sub-title {
+    margin-bottom: 30px;
+  }
 
-    #comment-list-wrap {
-      padding-top: 20px;
-    }
+  #comment-list-wrap {
+    padding-top: 20px;
+  }
 
-    .load-more-btn {
-      margin-left: 85px;
+  .load-more-btn {
+    margin-left: 85px;
 
-      button {
-        width: 100%;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-    }
-
-    .no-content {
-      text-align: center;
-      margin-top: 50px;
-      margin-bottom: 30px;
-      font-size: 12px;
-      color: #99a2aa;
+    button {
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
   }
+
+  .no-content {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-size: 12px;
+    color: #99a2aa;
+  }
+}
 </style>
 
 <template>
@@ -93,76 +94,76 @@
 </template>
 
 <script>
-  import CommentItem from './CommentItem'
-  import CommentCreateForm from './CommentCreateForm'
+import CommentItem from "./CommentItem";
+import CommentCreateForm from "./CommentCreateForm";
 
-  export default {
-    name: 'VCommentMain',
-    components: {
-      CommentCreateForm,
-      CommentItem
+export default {
+  name: "VCommentMain",
+  components: {
+    CommentCreateForm,
+    CommentItem
+  },
+  props: {
+    id: {
+      required: true,
+      type: [Number, String]
     },
-    props: {
-      id: {
-        required: true,
-        type: [Number, String]
-      },
-      type: {
-        required: true,
-        type: String,
-        validator: val => ~['post', 'video', 'image', 'score'].indexOf(val)
-      },
-      onlySeeMaster: {
-        type: Boolean,
-        default: false
-      },
-      masterId: {
-        type: [Number, String],
-        required: true
-      },
-      emptyText: {
-        type: String,
-        default: '暂无评论，快来抢沙发吧╮(￣▽￣)╭！'
+    type: {
+      required: true,
+      type: String,
+      validator: val => ~["post", "video", "image", "score"].indexOf(val)
+    },
+    onlySeeMaster: {
+      type: Boolean,
+      default: false
+    },
+    masterId: {
+      type: [Number, String],
+      required: true
+    },
+    emptyText: {
+      type: String,
+      default: "暂无评论，快来抢沙发吧╮(￣▽￣)╭！"
+    }
+  },
+  data() {
+    return {
+      loading: false
+    };
+  },
+  computed: {
+    store() {
+      return this.$store.state.comment;
+    },
+    list() {
+      return this.store.list;
+    },
+    noMore() {
+      return this.store.noMore;
+    },
+    total() {
+      return this.store.total;
+    }
+  },
+  methods: {
+    async loadMore() {
+      if (this.loading) {
+        return;
       }
-    },
-    data () {
-      return {
-        loading: false
-      }
-    },
-    computed: {
-      store () {
-        return this.$store.state.comment
-      },
-      list () {
-        return this.store.list
-      },
-      noMore () {
-        return this.store.noMore
-      },
-      total () {
-        return this.store.total
-      }
-    },
-    methods: {
-      async loadMore () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true
-        try {
-          await this.$store.dispatch('comment/getMainComments', {
-            ctx: this,
-            type: this.type,
-            id: this.id,
-            onlySeeMaster: this.onlySeeMaster ? 1 : 0
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
+      this.loading = true;
+      try {
+        await this.$store.dispatch("comment/getMainComments", {
+          ctx: this,
+          type: this.type,
+          id: this.id,
+          onlySeeMaster: this.onlySeeMaster ? 1 : 0
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     }
   }
+};
 </script>

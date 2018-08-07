@@ -1,15 +1,15 @@
 <style lang="scss" scoped>
-  .app-breadcrumb.el-breadcrumb {
-    display: inline-block;
-    font-size: 14px;
-    line-height: 50px;
-    margin-left: 10px;
+.app-breadcrumb.el-breadcrumb {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 50px;
+  margin-left: 10px;
 
-    .no-redirect {
-      color: #97a8be;
-      cursor: text;
-    }
+  .no-redirect {
+    color: #97a8be;
+    cursor: text;
   }
+}
 </style>
 
 <template>
@@ -41,29 +41,31 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        levelList: null
+export default {
+  data() {
+    return {
+      levelList: null
+    };
+  },
+  watch: {
+    $route() {
+      this.getBreadcrumb();
+    }
+  },
+  beforeMount() {
+    this.getBreadcrumb();
+  },
+  methods: {
+    getBreadcrumb() {
+      let matched = this.$route.matched.filter(item => item.name);
+      const first = matched[0];
+      if (first && first.name !== "dashboard") {
+        matched = [{ path: "/dashboard", meta: { title: "首页" } }].concat(
+          matched
+        );
       }
-    },
-    watch: {
-      $route() {
-        this.getBreadcrumb()
-      }
-    },
-    beforeMount() {
-      this.getBreadcrumb()
-    },
-    methods: {
-      getBreadcrumb() {
-        let matched = this.$route.matched.filter(item => item.name)
-        const first = matched[0]
-        if (first && first.name !== 'dashboard') {
-          matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
-        }
-        this.levelList = matched
-      }
+      this.levelList = matched;
     }
   }
+};
 </script>

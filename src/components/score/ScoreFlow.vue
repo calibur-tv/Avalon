@@ -1,99 +1,99 @@
 <style lang="scss">
-  .score-flow {
-    padding-bottom: 15px;
-    padding-top: 20px;
+.score-flow {
+  padding-bottom: 15px;
+  padding-top: 20px;
 
-    &:not(:last-child) {
-      border-bottom: 1px solid #f4f5f7;
+  &:not(:last-child) {
+    border-bottom: 1px solid #f4f5f7;
+  }
+
+  .header {
+    margin-bottom: 10px;
+
+    .created-at {
+      float: right;
+      color: #99a2aa;
+      font-size: 12px;
+      line-height: 30px;
     }
 
-    .header {
-      margin-bottom: 10px;
+    .about {
+      overflow: hidden;
 
-      .created-at {
-        float: right;
-        color: #99a2aa;
-        font-size: 12px;
-        line-height: 30px;
-      }
-
-      .about {
-        overflow: hidden;
-
-        .user-avatar,
-        .bangumi-avatar {
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 13px;
-        }
-
-        .user-avatar {
-          @include avatar-2(30px);
-        }
-
-        .bangumi-avatar {
-          width: 30px;
-          height: 30px;
-
-          img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            border-radius: 3px;
-            border: 1px solid #e5e9ef;
-          }
-        }
-
-        .name {
-          line-height: 30px;
-          font-size: 12px;
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 20px;
-        }
-      }
-
-      .el-rate {
+      .user-avatar,
+      .bangumi-avatar {
         display: inline-block;
         vertical-align: middle;
+        margin-right: 13px;
       }
-    }
 
-    .content {
-      display: block;
+      .user-avatar {
+        @include avatar-2(30px);
+      }
 
-      .title {
-        color: #212121;
-        cursor: pointer;
-        font-size: 16px;
+      .bangumi-avatar {
+        width: 30px;
+        height: 30px;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          border-radius: 3px;
+          border: 1px solid #e5e9ef;
+        }
+      }
+
+      .name {
         line-height: 30px;
-        font-weight: 700;
-        transition: all .2s linear;
-      }
-
-      .intro {
-        font-size: 14px;
-        margin-top: 8px;
-        @include twoline(22px);
-      }
-
-      &:hover .title {
-        color: $color-blue-normal;
+        font-size: 12px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 20px;
       }
     }
 
-    .footer {
-      margin-top: 16px;
-      line-height: 16px;
-      font-size: 13px;
-      color: #99a2aa;
-
-      span {
-        width: 80px;
-        display: inline-block;
-      }
+    .el-rate {
+      display: inline-block;
+      vertical-align: middle;
     }
   }
+
+  .content {
+    display: block;
+
+    .title {
+      color: #212121;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 30px;
+      font-weight: 700;
+      transition: all 0.2s linear;
+    }
+
+    .intro {
+      font-size: 14px;
+      margin-top: 8px;
+      @include twoline(22px);
+    }
+
+    &:hover .title {
+      color: $color-blue-normal;
+    }
+  }
+
+  .footer {
+    margin-top: 16px;
+    line-height: 16px;
+    font-size: 13px;
+    color: #99a2aa;
+
+    span {
+      width: 80px;
+      display: inline-block;
+    }
+  }
+}
 </style>
 
 <template>
@@ -178,26 +178,26 @@
 </template>
 
 <script>
-  export default {
-    name: 'ScoreFlow',
-    props: {
-      item: {
-        required: true,
-        type: Object
-      }
+export default {
+  name: "ScoreFlow",
+  props: {
+    item: {
+      required: true,
+      type: Object
+    }
+  },
+  data() {
+    return {
+      noScore: 0
+    };
+  },
+  computed: {
+    pageName() {
+      return this.$route.name;
     },
-     data () {
-      return {
-        noScore: 0
-      }
-    },
-    computed: {
-      pageName () {
-        return this.$route.name
-      },
-      starCount () {
-        return this.item.total / 2
-      }
+    starCount() {
+      return this.item.total / 2;
     }
   }
+};
 </script>

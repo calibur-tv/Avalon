@@ -1,25 +1,23 @@
-import BaseApi from './_baseApi';
+import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
-  like ({ type, id }) {
-    return this.http.post('toggle/like', { type, id })
+  users({ type, id, page, take }) {
+    return this.http.get(`toggle/${type}/users`, { id, page, take });
   }
 
-  reward ({ type, id }) {
-    return this.http.post('toggle/reward', { type, id })
+  like({ type, id }) {
+    return this.http.post("toggle/like", { type, id });
   }
 
-  follow ({ type, id }) {
-    return this.http.post('toggle/follow', { type, id })
+  reward({ type, id }) {
+    return this.http.post("toggle/reward", { type, id });
   }
 
-  mark ({ type, id }) {
-    return this.http.post('toggle/mark', { type, id })
+  follow({ type, id }) {
+    return this.http.post("toggle/follow", { type, id });
   }
 
-  check ({ type, id }) {
-    return this.http.get('toggle/check', {
-      params: { type, id }
-    })
+  mark({ type, id }) {
+    return this.http.post("toggle/mark", { type, id });
   }
 }

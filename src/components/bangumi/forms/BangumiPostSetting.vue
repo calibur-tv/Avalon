@@ -1,17 +1,17 @@
 <style lang="scss">
-  #bangumi-post-setting {
-    padding-left: 20px;
-    border-left: 5px solid $color-gray-deep;
+#bangumi-post-setting {
+  padding-left: 20px;
+  border-left: 5px solid $color-gray-deep;
 
-    .item {
-      margin-bottom: 20px;
+  .item {
+    margin-bottom: 20px;
 
-      p {
-        margin-bottom: 5px;
-        font-weight: bold;
-      }
+    p {
+      margin-bottom: 5px;
+      font-weight: bold;
     }
   }
+}
 </style>
 
 <template>
@@ -100,140 +100,150 @@
 </template>
 
 <script>
-  import Api from '~/api/postApi'
+import Api from "~/api/postApi";
 
-  export default {
-    name: 'BangumiPostSetting',
-    data () {
-      return {
-        set_nice_url: '',
-        del_nice_url: '',
-        set_top_url: '',
-        del_top_url: '',
-        loading: false
+export default {
+  name: "BangumiPostSetting",
+  data() {
+    return {
+      set_nice_url: "",
+      del_nice_url: "",
+      set_top_url: "",
+      del_top_url: "",
+      loading: false
+    };
+  },
+  methods: {
+    setNice() {
+      if (!this.set_nice_url) {
+        return;
       }
-    },
-    methods: {
-      setNice() {
-        if (!this.set_nice_url) {
-          return
-        }
-        const id = this.getPostIdFromUrl(this.set_nice_url);
-        if (!id) {
-          this.$toast.error('请输入合法链接')
-          return
-        }
-        this.$confirm('确定要加精吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
+      const id = this.getPostIdFromUrl(this.set_nice_url);
+      if (!id) {
+        this.$toast.error("请输入合法链接");
+        return;
+      }
+      this.$confirm("确定要加精吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
           if (this.loading) {
-            return
-          }
-          this.loading = true
-          const api = new Api(this)
-          try {
-            await api.setNice({ id })
-            this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
-          } finally {
-            this.loading = false
-          }
-        }).catch(() => {})
-      },
-      setTop() {
-        if (!this.set_top_url) {
-          return
-        }
-        const id = this.getPostIdFromUrl(this.set_top_url);
-        if (!id) {
-          this.$toast.error('请输入合法链接')
-          return
-        }
-        this.$confirm('确定要置顶吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          if (this.loading) {
-            return
-          }
-          this.loading = true
-          const api = new Api(this)
-          try {
-            await api.setTop({ id })
-            this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
-          } finally {
-            this.loading = false
-          }
-        }).catch(() => {})
-      },
-      removeNice() {
-        if (!this.del_nice_url) {
-          return
-        }
-        const id = this.getPostIdFromUrl(this.del_nice_url);
-        if (!id) {
-          this.$toast.error('请输入合法链接')
-          return
-        }
-        this.$confirm('确定要取消精吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          if (this.loading) {
-            return
-          }
-          this.loading = true
-          const api = new Api(this)
-          try {
-            await api.removeNice({ id })
-            this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
-          } finally {
-            this.loading = false
-          }
-        }).catch(() => {})
-      },
-      removeTop() {
-        if (!this.del_top_url) {
-          return
-        }
-        const id = this.getPostIdFromUrl(this.del_top_url);
-        if (!id) {
-          this.$toast.error('请输入合法链接')
-          return
-        }
-        this.$confirm('确定要取消置顶吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          if (this.loading) {
-            return
+            return;
           }
           this.loading = true;
           const api = new Api(this);
           try {
-            await api.removeTop({ id })
-            this.$toast.success('设置成功')
+            await api.setNice({ id });
+            this.$toast.success("设置成功");
           } catch (err) {
-            this.$toast.error(err)
+            this.$toast.error(err);
           } finally {
-            this.loading = false
+            this.loading = false;
           }
-        }).catch(() => {})
-      },
-      getPostIdFromUrl(url) {
-        const matched = url.split('?')[0].match(/^http(|s):\/\/(m|www).calibur.tv\/post\/(\d+)$/)
-        return matched ? +matched[3] : 0
+        })
+        .catch(() => {});
+    },
+    setTop() {
+      if (!this.set_top_url) {
+        return;
       }
+      const id = this.getPostIdFromUrl(this.set_top_url);
+      if (!id) {
+        this.$toast.error("请输入合法链接");
+        return;
+      }
+      this.$confirm("确定要置顶吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          if (this.loading) {
+            return;
+          }
+          this.loading = true;
+          const api = new Api(this);
+          try {
+            await api.setTop({ id });
+            this.$toast.success("设置成功");
+          } catch (err) {
+            this.$toast.error(err);
+          } finally {
+            this.loading = false;
+          }
+        })
+        .catch(() => {});
+    },
+    removeNice() {
+      if (!this.del_nice_url) {
+        return;
+      }
+      const id = this.getPostIdFromUrl(this.del_nice_url);
+      if (!id) {
+        this.$toast.error("请输入合法链接");
+        return;
+      }
+      this.$confirm("确定要取消精吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          if (this.loading) {
+            return;
+          }
+          this.loading = true;
+          const api = new Api(this);
+          try {
+            await api.removeNice({ id });
+            this.$toast.success("设置成功");
+          } catch (err) {
+            this.$toast.error(err);
+          } finally {
+            this.loading = false;
+          }
+        })
+        .catch(() => {});
+    },
+    removeTop() {
+      if (!this.del_top_url) {
+        return;
+      }
+      const id = this.getPostIdFromUrl(this.del_top_url);
+      if (!id) {
+        this.$toast.error("请输入合法链接");
+        return;
+      }
+      this.$confirm("确定要取消置顶吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          if (this.loading) {
+            return;
+          }
+          this.loading = true;
+          const api = new Api(this);
+          try {
+            await api.removeTop({ id });
+            this.$toast.success("设置成功");
+          } catch (err) {
+            this.$toast.error(err);
+          } finally {
+            this.loading = false;
+          }
+        })
+        .catch(() => {});
+    },
+    getPostIdFromUrl(url) {
+      const matched = url
+        .split("?")[0]
+        .match(/^http(|s):\/\/(m|www).calibur.tv\/post\/(\d+)$/);
+      return matched ? +matched[3] : 0;
     }
   }
+};
 </script>

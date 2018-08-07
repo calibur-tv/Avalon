@@ -3,24 +3,24 @@
 </template>
 
 <script>
-  export default {
-    name: 'SvgIcon',
-    props: {
-      iconClass: {
-        type: String,
-        required: true
-      },
-      className: {
-        type: String,
-        default: ''
-      }
+export default {
+  name: "SvgIcon",
+  props: {
+    iconClass: {
+      type: String,
+      required: true
     },
-    computed: {
-      computeClass () {
-        return this.iconClass.replace( /[A-Z]/g, i => {
-          return '-' + i.toLowerCase();
-        })
-      }
+    className: {
+      type: String,
+      default: ""
+    }
+  },
+  computed: {
+    computeClass() {
+      return this.iconClass.replace(/[A-Z]/g, i => {
+        return "-" + i.toLowerCase();
+      });
     }
   }
+};
 </script>

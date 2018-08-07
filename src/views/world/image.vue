@@ -1,9 +1,9 @@
 <style lang="scss">
-  #image-flow {
-    .img {
-      background-color: #ec414d;
-    }
+#image-flow {
+  .img {
+    background-color: #ec414d;
   }
+}
 </style>
 
 <template>
@@ -85,56 +85,54 @@
 </template>
 
 <script>
-  import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
+import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
 
-  export default {
-    name: 'ImageFlowList',
-    async asyncData ({ store, ctx }) {
-      await Promise.all([
-        store.dispatch('trending/getTrending', {
-          type: 'image',
-          sort: 'active',
-          ctx
-        }),
-        store.dispatch('trending/getMeta', { type: 'image' })
-      ])
+export default {
+  name: "ImageFlowList",
+  async asyncData({ store, ctx }) {
+    await Promise.all([
+      store.dispatch("world/getData", {
+        type: "image",
+        sort: "active",
+        ctx
+      }),
+      store.dispatch("world/getMeta", { type: "image" })
+    ]);
+  },
+  components: {
+    ImageWaterfallFlow
+  },
+  data() {
+    return {
+      showTips: false
+    };
+  },
+  computed: {
+    resource() {
+      return this.$store.state.world.image.active;
     },
-    components: {
-      ImageWaterfallFlow
+    meta() {
+      return this.$store.state.world.image.meta;
+    }
+  },
+  methods: {
+    openFeedback() {
+      this.$channel.$emit("open-feedback", { type: 3 });
     },
-    data () {
-      return {
-        showTips: false
-      }
+    openCreateImage() {
+      this.$channel.$emit("show-upload-image-modal");
     },
-    computed: {
-      resource () {
-        return this.$store.state.trending.type === 'image'
-          ? this.$store.state.trending.active
-          : null
-      },
-      meta () {
-        return this.$store.state.trending.meta
-      }
-    },
-    methods: {
-      openFeedback () {
-        this.$channel.$emit('open-feedback', { type: 3 })
-      },
-      openCreateImage () {
-        this.$channel.$emit('show-upload-image-modal')
-      },
-      async loadMore () {
-        try {
-          await this.$store.dispatch('trending/loadMore', {
-            type: 'image',
-            sort: 'active',
-            ctx: this
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        }
+    async loadMore() {
+      try {
+        await this.$store.dispatch("world/getData", {
+          type: "image",
+          sort: "active",
+          ctx: this
+        });
+      } catch (e) {
+        this.$toast.error(e);
       }
     }
   }
+};
 </script>

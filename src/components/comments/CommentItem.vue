@@ -1,86 +1,87 @@
 <style lang="scss">
-  .def-comment-item {
-    @extend %clearfix;
+.def-comment-item {
+  @extend %clearfix;
 
-    .user {
-      float: left;
-      width: 85px;
+  .user {
+    float: left;
+    width: 85px;
 
-      .avatar {
-        margin: 24px 0 0 5px;
-        @include avatar-2(48px);
-      }
-    }
-    
-    .body {
-      overflow: hidden;
-      padding: 22px 0 14px;
-      border-top: 1px solid $color-gray-normal;
-
-      .header {
-        margin-bottom: 4px;
-
-        .href-fade-blue {
-          font-size: 12px;
-          font-weight: 700;
-          line-height: 18px;
-        }
-      }
-
-      .content {
-        line-height: 20px;
-        padding: 2px 0;
-        font-size: 14px;
-        @extend %breakWord;
-      }
-
-      .footer {
-        line-height: 26px;
-        font-size: 12px;
-
-        .floor-count, time {
-          margin-right: 20px;
-          color: $color-text-light;
-        }
-
-        button {
-          margin-right: 12px;
-          color: $color-text-light;
-        }
-
-        i {
-          margin-right: 5px;
-          font-size: 14px;
-        }
-
-        .ic-liked {
-          color: $color-blue-normal;
-        }
-
-        button:hover {
-          i {
-            color: $color-blue-normal;
-          }
-        }
-
-        .reply-btn {
-          padding: 0 5px;
-          border-radius: 4px;
-          line-height: 26px;
-
-          &:hover {
-            color: $color-blue-normal;
-            background-color: $color-gray-normal;
-          }
-        }
-      }
-
-      .comment-reply-form {
-        margin-top: 15px;
-        margin-bottom: 5px;
-      }
+    .avatar {
+      margin: 24px 0 0 5px;
+      @include avatar-2(48px);
     }
   }
+
+  .body {
+    overflow: hidden;
+    padding: 22px 0 14px;
+    border-top: 1px solid $color-gray-normal;
+
+    .header {
+      margin-bottom: 4px;
+
+      .href-fade-blue {
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 18px;
+      }
+    }
+
+    .content {
+      line-height: 20px;
+      padding: 2px 0;
+      font-size: 14px;
+      @extend %breakWord;
+    }
+
+    .footer {
+      line-height: 26px;
+      font-size: 12px;
+
+      .floor-count,
+      time {
+        margin-right: 20px;
+        color: $color-text-light;
+      }
+
+      button {
+        margin-right: 12px;
+        color: $color-text-light;
+      }
+
+      i {
+        margin-right: 5px;
+        font-size: 14px;
+      }
+
+      .ic-liked {
+        color: $color-blue-normal;
+      }
+
+      button:hover {
+        i {
+          color: $color-blue-normal;
+        }
+      }
+
+      .reply-btn {
+        padding: 0 5px;
+        border-radius: 4px;
+        line-height: 26px;
+
+        &:hover {
+          color: $color-blue-normal;
+          background-color: $color-gray-normal;
+        }
+      }
+    }
+
+    .comment-reply-form {
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+  }
+}
 </style>
 
 <template>
@@ -163,104 +164,104 @@
 </template>
 
 <script>
-  import SubCommentList from './SubCommentList.vue'
-  import CommentReplyForm from './CommentReplyForm'
+import SubCommentList from "./SubCommentList.vue";
+import CommentReplyForm from "./CommentReplyForm";
 
-  export default {
-    name: 'VCommentItem',
-    components: {
-      SubCommentList,
-      CommentReplyForm
+export default {
+  name: "VCommentItem",
+  components: {
+    SubCommentList,
+    CommentReplyForm
+  },
+  props: {
+    comment: {
+      required: true,
+      type: Object
     },
-    props: {
-      comment: {
-        required: true,
-        type: Object
-      },
-      masterId: {
-        required: true,
-        type: [Number, String]
-      },
-      type: {
-        required: true,
-        type: String,
-        default: ''
+    masterId: {
+      required: true,
+      type: [Number, String]
+    },
+    type: {
+      required: true,
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      deleting: false,
+      liking: false,
+      showReplyArea: false
+    };
+  },
+  computed: {
+    currentUserId() {
+      return this.$store.state.login ? this.$store.state.user.id : 0;
+    },
+    authorId() {
+      return this.comment.from_user_id;
+    },
+    isMine() {
+      return this.currentUserId === this.authorId;
+    },
+    canDelete() {
+      return this.isMine || this.currentUserId === this.masterId;
+    }
+  },
+  methods: {
+    async toggleLike() {
+      if (!this.currentUserId) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      if (this.liking) {
+        return;
+      }
+      this.liking = true;
+      try {
+        await this.$store.dispatch("comment/toggleLikeMainComment", {
+          ctx: this,
+          type: this.type,
+          id: this.comment.id
+        });
+      } catch (e) {
+      } finally {
+        this.liking = false;
       }
     },
-    data () {
-      return {
-        deleting: false,
-        liking: false,
-        showReplyArea: false
+    deleteComment() {
+      if (this.deleting) {
+        return;
       }
-    },
-    computed: {
-      currentUserId () {
-        return this.$store.state.login
-          ? this.$store.state.user.id
-          : 0
-      },
-      authorId () {
-        return this.comment.from_user_id
-      },
-      isMine () {
-        return this.currentUserId === this.authorId
-      },
-      canDelete () {
-        return this.isMine || this.currentUserId === this.masterId
-      }
-    },
-    methods: {
-      async toggleLike () {
-        if (!this.currentUserId) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.liking) {
-          return
-        }
-        this.liking = true
-        try {
-          await this.$store.dispatch('comment/toggleLikeMainComment', {
+      this.deleting = true;
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch("comment/deleteMainComment", {
             ctx: this,
             type: this.type,
             id: this.comment.id
-          })
-        } catch (e) {
-        } finally {
-          this.liking = false
-        }
-      },
-      deleteComment () {
-        if (this.deleting) {
-          return
-        }
-        this.deleting = true
-        this.$confirm('删除后无法找回, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('comment/deleteMainComment', {
-            ctx: this,
-            type: this.type,
-            id: this.comment.id
-          })
-        }).catch((e) => {
-          this.deleting = false
-          if (e === 'cancel') {
-            return
-          }
-          this.$toast.error(e)
+          });
         })
-      },
-      replyComment () {
-        if (!this.currentUserId) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        this.showReplyArea = !this.showReplyArea
+        .catch(e => {
+          this.deleting = false;
+          if (e === "cancel") {
+            return;
+          }
+          this.$toast.error(e);
+        });
+    },
+    replyComment() {
+      if (!this.currentUserId) {
+        this.$channel.$emit("sign-in");
+        return;
       }
+      this.showReplyArea = !this.showReplyArea;
     }
   }
+};
 </script>

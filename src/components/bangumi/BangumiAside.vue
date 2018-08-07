@@ -1,36 +1,36 @@
 <style lang="scss">
-  #bangumi-aside {
-    >div {
-      margin-bottom: 20px;
-    }
-
-    .no-one {
-      color: $color-text-normal;
-    }
-
-    #bangumi-tags {
-      li {
-        margin-right: 10px;
-        margin-bottom: 10px;
-        float: left;
-      }
-    }
+#bangumi-aside {
+  > div {
+    margin-bottom: 20px;
   }
 
-  .request-become-master-modal {
-    p {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      line-height: 20px;
-    }
-    ul {
-      margin-left: 25px;
-    }
+  .no-one {
+    color: $color-text-normal;
+  }
+
+  #bangumi-tags {
     li {
-      list-style-type: disc;
-      line-height: 20px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      float: left;
     }
   }
+}
+
+.request-become-master-modal {
+  p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 20px;
+  }
+  ul {
+    margin-left: 25px;
+  }
+  li {
+    list-style-type: disc;
+    line-height: 20px;
+  }
+}
 </style>
 
 <template>
@@ -109,57 +109,57 @@
 </template>
 
 <script>
-  export default {
-    name: 'BangumiAside',
-    data () {
-      return {
-        loadingFollowers: false,
-        openRequestMasterModal: false
-      }
+export default {
+  name: "BangumiAside",
+  data() {
+    return {
+      loadingFollowers: false,
+      openRequestMasterModal: false
+    };
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
     },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      tags () {
-        return this.info.tags
-      },
-      followers () {
-        return this.info.followers
-      },
-      noMoreFollowers () {
-        return this.info.noMoreFollowers
-      },
-      managers () {
-        if (!this.info.managers.length) {
-          return []
-        }
-        return this.info.managers.map(_ => {
-          return _.user
+    tags() {
+      return this.info.tags;
+    },
+    followers() {
+      return this.info.followers;
+    },
+    noMoreFollowers() {
+      return this.info.noMoreFollowers;
+    },
+    managers() {
+      if (!this.info.managers.length) {
+        return [];
+      }
+      return this.info.managers.map(_ => {
+        return _.user;
+      });
+    }
+  },
+  methods: {
+    async fetchMoreFollowers() {
+      if (this.loadingFollowers || this.noMoreFollowers) {
+        return;
+      }
+      this.loadingFollowers = true;
+      try {
+        await this.$store.dispatch("bangumi/getFollowers", {
+          ctx: this,
+          bangumiId: this.info.id,
+          take: 10
         });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingFollowers = false;
       }
     },
-    methods: {
-      async fetchMoreFollowers () {
-        if (this.loadingFollowers || this.noMoreFollowers) {
-          return
-        }
-        this.loadingFollowers = true
-        try {
-          await this.$store.dispatch('bangumi/getFollowers', {
-            ctx: this,
-            bangumiId: this.info.id,
-            take: 10
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingFollowers = false
-        }
-      },
-      fetchMoreManagers () {
-        // 现在最多5个，没有分页
-      }
+    fetchMoreManagers() {
+      // 现在最多5个，没有分页
     }
   }
+};
 </script>

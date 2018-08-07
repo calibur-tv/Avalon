@@ -1,4 +1,4 @@
-import Api from '~/api/imageApi';
+import Api from "~/api/imageApi";
 
 export default {
   namespaced: true,
@@ -8,25 +8,31 @@ export default {
       list: [],
       page: 0,
       total: 0,
-      noMore: false,
+      noMore: false
     },
-    albums: [],
+    albums: []
   }),
   mutations: {
+    SOCIAL_TOGGLE(state, { key, value }) {
+      state.show[`${key}ed`.replace("ee", "e")] = value;
+      state.show[`${key}_count`] = value
+        ? state.show[`${key}_count`] + 1
+        : state.show[`${key}_count`] - 1;
+    },
     SET_USER_IMAGES(state, data) {
-      state.users.list = state.users.list.concat(data.list)
-      state.users.noMore = data.noMore
-      state.users.total = data.total
-      state.users.page = state.users.page + 1
+      state.users.list = state.users.list.concat(data.list);
+      state.users.noMore = data.noMore;
+      state.users.total = data.total;
+      state.users.page = state.users.page + 1;
     },
     SET_IMAGE_INFO(state, data) {
-      state.show = data
+      state.show = data;
     },
     SHOW_TOGGLE_LIKE(state, { result }) {
-      state.show.liked = result
+      state.show.liked = result;
     },
     SHOW_FOLLOW_BANGUMI(state, { result }) {
-      state.show.bangumi.followed = result
+      state.show.bangumi.followed = result;
     },
     DELETE_ALBUM_IMAGE(state, { index }) {
       state.show.images.splice(index, 1);
@@ -37,47 +43,45 @@ export default {
     },
     SET_USER_IMAGE_ALBUMS(state, data) {
       state.albums = data;
-    },
+    }
   },
   actions: {
     async show({ commit }, { id, ctx }) {
-      const api = new Api(ctx)
-      const data = await api.show({ id })
-      commit('SET_IMAGE_INFO', data)
+      const api = new Api(ctx);
+      const data = await api.show({ id });
+      commit("SET_IMAGE_INFO", data);
     },
     async users({ state, commit }, { zone, ctx }) {
-      const api = new Api(ctx)
+      const api = new Api(ctx);
       const data = await api.users({
         zone,
         page: state.users.page
       });
-      commit('SET_USER_IMAGES', data)
+      commit("SET_USER_IMAGES", data);
     },
     async userAlbum({ state, commit }, { ctx }) {
       if (state.albums.length) {
-        return
+        return;
       }
       const api = new Api(ctx);
       const data = await api.getUserAlbums();
-      commit('SET_USER_IMAGE_ALBUMS', data);
+      commit("SET_USER_IMAGE_ALBUMS", data);
     },
-    async sortAlbumImage({ state, commit }, {
-      prev, next, ctx, id,
-    }) {
+    async sortAlbumImage({ state, commit }, { prev, next, ctx, id }) {
       let imageArr = state.show.images.map(_ => _);
       imageArr.splice(prev, 1, ...imageArr.splice(next, 1, imageArr[prev]));
       const result = imageArr.map(_ => _.id).toString();
       const api = new Api(ctx);
       await api.sortAlbum({ id, result });
-      commit('SORT_ALBUM_IMAGE', imageArr);
+      commit("SORT_ALBUM_IMAGE", imageArr);
     },
     async deleteAlbumImage({ state, commit }, { index, ctx, id }) {
       let idsArr = state.show.images.map(_ => _.id);
       const imageId = idsArr.splice(index, 1)[0];
       const api = new Api(ctx);
       await api.deleteAlbumImage({ id, result: idsArr.toString(), imageId });
-      commit('DELETE_ALBUM_IMAGE', { index });
-    },
+      commit("DELETE_ALBUM_IMAGE", { index });
+    }
   },
-  getters: {},
+  getters: {}
 };

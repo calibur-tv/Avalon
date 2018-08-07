@@ -1,123 +1,125 @@
 <style lang="scss">
-  $menuBg :#304156;
-  $subMenuBg: #1f2d3d;
-  $menuHover: #001528;
-  // 主体区域
-  .main-container {
-    height: 100%;
-    transition: margin-left .28s;
-    margin-left: 180px;
+$menuBg: #304156;
+$subMenuBg: #1f2d3d;
+$menuHover: #001528;
+/* 主体区域 */
+.main-container {
+  height: 100%;
+  transition: margin-left 0.28s;
+  margin-left: 180px;
+}
+/* 侧边栏 */
+.sidebar-container {
+  transition: width 0.28s;
+  width: 180px !important;
+  height: 100%;
+  position: fixed;
+  font-size: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1001;
+  overflow: hidden;
+
+  /* reset element-ui css */
+  .horizontal-collapse-transition {
+    transition: 0s width ease-in-out, 0s padding-left ease-in-out,
+      0s padding-right ease-in-out;
   }
-  // 侧边栏
-  .sidebar-container {
-    transition: width 0.28s;
-    width: 180px !important;
+
+  .scrollbar-wrapper {
+    height: calc(100% + 15px);
+
+    .el-scrollbar__view {
+      height: 100%;
+    }
+  }
+  .is-horizontal {
+    display: none;
+  }
+
+  a {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .fas {
+    margin-right: 16px;
+    width: 18px;
+  }
+
+  .el-menu {
+    border: none;
     height: 100%;
-    position: fixed;
-    font-size: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
+    width: 100% !important;
+  }
+
+  & .nest-menu .el-submenu > .el-submenu__title,
+  & .el-submenu .el-menu-item {
+    min-width: 180px !important;
+    background-color: $subMenuBg !important;
+
+    &:hover {
+      background-color: $menuHover !important;
+    }
+  }
+
+  .router-link-active {
+    span,
+    i {
+      color: rgb(64, 158, 255);
+    }
+  }
+
+  .el-menu--collapse .el-menu .el-submenu {
+    min-width: 180px !important;
+  }
+}
+
+.hideSidebar {
+  .sidebar-container {
+    width: 36px !important;
+  }
+
+  .main-container {
+    margin-left: 36px;
+  }
+
+  .submenu-title-noDropdown {
+    padding-left: 10px !important;
+    position: relative;
+
+    .el-tooltip {
+      padding: 0 10px !important;
+    }
+  }
+  .el-submenu {
     overflow: hidden;
 
-    //reset element-ui css
-    .horizontal-collapse-transition {
-      transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
-    }
-
-    .scrollbar-wrapper {
-      height: calc(100% + 15px);
-
-      .el-scrollbar__view {
-        height: 100%;
-      }
-    }
-    .is-horizontal {
-      display: none;
-    }
-
-    a {
-      display: inline-block;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .fas {
-      margin-right: 16px;
-      width: 18px;
-    }
-
-    .el-menu {
-      border: none;
-      height: 100%;
-      width: 100% !important;
-    }
-
-    & .nest-menu .el-submenu>.el-submenu__title,
-    & .el-submenu .el-menu-item {
-      min-width: 180px !important;
-      background-color: $subMenuBg !important;
-
-      &:hover {
-        background-color: $menuHover !important;
-      }
-    }
-
-    .router-link-active {
-      span, i {
-        color: rgb(64, 158, 255);
-      }
-    }
-
-    .el-menu--collapse .el-menu .el-submenu {
-      min-width: 180px !important;
-    }
-  }
-
-  .hideSidebar {
-    .sidebar-container {
-      width: 36px !important;
-    }
-
-    .main-container {
-      margin-left: 36px;
-    }
-
-    .submenu-title-noDropdown {
+    & > .el-submenu__title {
       padding-left: 10px !important;
-      position: relative;
 
-      .el-tooltip {
-        padding: 0 10px !important;
+      .el-submenu__icon-arrow {
+        display: none;
       }
     }
+  }
+
+  .el-menu--collapse {
     .el-submenu {
-      overflow: hidden;
-
-      &>.el-submenu__title {
-        padding-left: 10px !important;
-
-        .el-submenu__icon-arrow {
-          display: none;
-        }
-      }
-    }
-
-    .el-menu--collapse {
-      .el-submenu {
-        &>.el-submenu__title {
-          &>span {
-            height: 0;
-            width: 0;
-            overflow: hidden;
-            visibility: hidden;
-            display: inline-block;
-          }
+      & > .el-submenu__title {
+        & > span {
+          height: 0;
+          width: 0;
+          overflow: hidden;
+          visibility: hidden;
+          display: inline-block;
         }
       }
     }
   }
+}
 </style>
 
 <template>
@@ -137,20 +139,21 @@
 </template>
 
 <script>
-  import SidebarItem from './SidebarItem'
+import SidebarItem from "./SidebarItem";
 
-  export default {
-    components: { SidebarItem },
-    computed: {
-      sidebar() {
-        return this.$store.state.admin.sidebar
-      },
-      routes() {
-        return this.$router.options.routes.filter(_ => _.path === '/admin')[0].children
-      },
-      isCollapse() {
-        return !this.sidebar.opened
-      }
+export default {
+  components: { SidebarItem },
+  computed: {
+    sidebar() {
+      return this.$store.state.admin.sidebar;
+    },
+    routes() {
+      return this.$router.options.routes.filter(_ => _.path === "/admin")[0]
+        .children;
+    },
+    isCollapse() {
+      return !this.sidebar.opened;
     }
   }
+};
 </script>

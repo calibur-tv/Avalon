@@ -1,33 +1,34 @@
 <style lang="scss">
-  .default-layout {
-    margin-left: auto;
-    margin-right: auto;
-    @extend %clearfix;
+.default-layout {
+  margin-left: auto;
+  margin-right: auto;
+  @extend %clearfix;
 
-    .layout-main, .layout-aside {
-      padding-left: 15px;
-      padding-right: 15px;
-    }
+  .layout-main,
+  .layout-aside {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .layout-main {
+    margin-bottom: 30px;
+  }
+
+  @media (min-width: 1120px) {
+    width: 1160px;
 
     .layout-main {
-      margin-bottom: 30px;
+      width: 75%;
+      margin-bottom: 0;
+      float: left;
     }
 
-    @media (min-width: 1120px) {
-      width: 1160px;
-
-      .layout-main {
-        width: 75%;
-        margin-bottom: 0;
-        float: left;
-      }
-
-      .layout-aside {
-        width: 25%;
-        overflow: hidden;
-      }
+    .layout-aside {
+      width: 25%;
+      overflow: hidden;
     }
   }
+}
 </style>
 
 <template>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'VLayout'
-  }
+export default {
+  name: "VLayout"
+};
 </script>

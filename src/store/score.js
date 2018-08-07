@@ -1,19 +1,27 @@
-import Api from '~/api/scoreApi';
+import Api from "~/api/scoreApi";
 
 const state = () => ({
   show: null
 });
 
 const mutations = {
-  SET_SHOW (state, data) {
-    state.show = data
+  SOCIAL_TOGGLE(state, { key, value }) {
+    state.show[`${key}ed`.replace("ee", "e")] = value;
+    state.show[`${key}_count`] = value
+      ? state.show[`${key}_count`] + 1
+      : state.show[`${key}_count`] - 1;
   },
-  FOLLOW_BANGUMI (state, result) {
-    state.show.bangumi.followed = result
+  SET_SHOW(state, data) {
+    state.show = data;
   },
-  LIKE_SCORE (state, result) {
-    state.show.liked = result
-    state.show.like_count = result ? state.show.like_count + 1 : state.show.like_count - 1
+  FOLLOW_BANGUMI(state, result) {
+    state.show.bangumi.followed = result;
+  },
+  LIKE_SCORE(state, result) {
+    state.show.liked = result;
+    state.show.like_count = result
+      ? state.show.like_count + 1
+      : state.show.like_count - 1;
   }
 };
 
@@ -21,7 +29,7 @@ const actions = {
   async getShow({ commit }, { ctx, id }) {
     const api = new Api(ctx);
     const data = await api.show({ id });
-    commit('SET_SHOW', data)
+    commit("SET_SHOW", data);
   }
 };
 
@@ -32,5 +40,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
+  getters
 };

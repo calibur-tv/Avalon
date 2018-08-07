@@ -27,52 +27,52 @@
 </template>
 
 <script>
-  import Api from '~/api/imageApi'
+import Api from "~/api/imageApi";
 
-  export default {
-    name: 'EditImageForm',
-    props: {
-      image: {
-        type: Object,
-        required: true
+export default {
+  name: "EditImageForm",
+  props: {
+    image: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      submitting: false,
+      form: {
+        bangumi_id: this.image.bangumi_id,
+        name: this.image.name
       }
-    },
-    data () {
-      return {
-        submitting: false,
-        form: {
-          bangumi_id: this.image.bangumi_id,
-          name: this.image.name
-        }
+    };
+  },
+  methods: {
+    async submit() {
+      if (this.form.name.length > 30) {
+        this.$toast.error("名字最长 30 个字");
+        return;
       }
-    },
-    methods: {
-      async submit () {
-        if (this.form.name.length > 30) {
-          this.$toast.error('名字最长 30 个字')
-          return
-        }
-        if (this.submitting) {
-          return
-        }
-        this.submitting = false
-        const api = new Api(this);
-        try {
-          await api.editSingleImage({
-            id: this.image.id,
-            name: this.form.name,
-            bangumi_id: this.form.bangumi_id
-          });
-          this.$toast.success('操作成功');
-          setTimeout(() => {
-            window.location.reload()
-          }, 1000)
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.submitting = false
-        }
+      if (this.submitting) {
+        return;
+      }
+      this.submitting = false;
+      const api = new Api(this);
+      try {
+        await api.editSingleImage({
+          id: this.image.id,
+          name: this.form.name,
+          bangumi_id: this.form.bangumi_id
+        });
+        this.$toast.success("操作成功");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.submitting = false;
       }
     }
   }
+};
 </script>

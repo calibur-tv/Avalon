@@ -1,59 +1,54 @@
 <style lang="scss">
-  #bangumi-video {
-    $video-item-width: 255px;
-    $video-item-margin: 15px;
-    $video-item-height: 70px;
+#bangumi-video {
+  $video-item-width: 255px;
+  $video-item-margin: 15px;
+  $video-item-height: 70px;
 
-    .video-item {
-      margin: 0 $video-item-margin 15px 0;
+  .video-item {
+    margin: 0 $video-item-margin 15px 0;
+    float: left;
+
+    a {
+      display: block;
+      position: relative;
+      width: $video-item-width;
+      height: $video-item-height;
+      border-radius: 3px;
+      background-color: $color-gray-normal;
+      overflow: hidden;
+
+      &:hover .part {
+        color: $color-blue-normal;
+      }
+    }
+
+    .poster {
+      width: 110px;
+      height: 100%;
+      margin-right: 12px;
       float: left;
+    }
 
-      a {
+    .intro {
+      padding-right: 12px;
+
+      .part {
         display: block;
-        position: relative;
+        color: $color-text-deep;
+        font-size: 12px;
+        line-height: 14px;
+        margin-top: 6px;
+        margin-bottom: 5px;
       }
 
-      figure {
-        width: $video-item-width - $video-item-margin;
-        height: $video-item-height;
-        background-color: $color-gray-normal;
-        cursor: pointer;
-        border-radius: 3px;
-        overflow: hidden;
-
-        &:hover p {
-          color: $color-blue-normal;
-        }
-
-        img {
-          width: 110px;
-          height: 100%;
-          cursor: pointer;
-          margin-right: 12px;
-        }
-
-        figcaption {
-          padding-left: 122px;
-          padding-right: 12px;
-
-          .part {
-            display: block;
-            color: $color-text-deep;
-            font-size: 12px;
-            line-height: 14px;
-            margin-top: 6px;
-            margin-bottom: 5px;
-          }
-
-          .name {
-            font-size: 12px;
-            color: $color-text-normal;
-            @include twoline(14px);
-          }
-        }
+      .name {
+        font-size: 12px;
+        color: $color-text-normal;
+        @include twoline(14px);
       }
     }
   }
+}
 </style>
 
 <template>
@@ -78,20 +73,18 @@
                 :href="$alias.video(video.id)"
                 target="_blank"
               >
-                <figure>
-                  <v-img
-                    :alt="video.name"
-                    :src="$resize(video.poster, { width: 192, height: 120 })"
-                    class="bg"
+                <v-img
+                  :alt="video.name"
+                  :src="$resize(video.poster, { width: 192, height: 120 })"
+                  class="poster"
+                />
+                <div class="intro">
+                  <p class="part oneline">第{{ video.part - season.base }}话</p>
+                  <span
+                    class="name"
+                    v-text="video.name"
                   />
-                  <figcaption class="abs">
-                    <p class="part oneline">第{{ video.part - season.base }}话</p>
-                    <span
-                      class="name"
-                      v-text="video.name"
-                    />
-                  </figcaption>
-                </figure>
+                </div>
               </a>
             </li>
           </ul>
@@ -107,20 +100,18 @@
             :href="$alias.video(video.id)"
             target="_blank"
           >
-            <figure>
-              <v-img
-                :alt="video.name"
-                :src="$resize(video.poster, { width: 192, height: 120 })"
-                class="bg"
+            <v-img
+              :alt="video.name"
+              :src="$resize(video.poster, { width: 192, height: 120 })"
+              class="poster"
+            />
+            <div class="intro">
+              <p class="part oneline">第{{ video.part }}话</p>
+              <span
+                class="name"
+                v-text="video.name"
               />
-              <figcaption class="abs">
-                <p class="part oneline">第{{ video.part }}话</p>
-                <span
-                  class="name"
-                  v-text="video.name"
-                />
-              </figcaption>
-            </figure>
+            </div>
           </a>
         </li>
       </ul>
@@ -136,56 +127,56 @@
 </template>
 
 <script>
-  export default {
-    name: 'BangumiVideo',
-    data () {
-      return {
-        state: {
-          loading: false,
-          fetched: false,
-        },
+export default {
+  name: "BangumiVideo",
+  data() {
+    return {
+      state: {
+        loading: false,
+        fetched: false
+      }
+    };
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
+    },
+    videos() {
+      return this.$store.state.bangumi.videos;
+    }
+  },
+  mounted() {
+    this.$channel.$on("bangumi-tab-switch-video", () => {
+      if (!this.state.fetched) {
+        this.getData();
+      }
+    });
+  },
+  methods: {
+    async getData() {
+      if (this.state.loading) {
+        return;
+      }
+      this.state.loading = true;
+
+      try {
+        await this.$store.dispatch("bangumi/getVideos", {
+          ctx: this,
+          id: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.state.loading = false;
+        this.state.fetched = true;
       }
     },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-      videos () {
-        return this.$store.state.bangumi.videos
-      },
-    },
-    mounted () {
-      this.$channel.$on('bangumi-tab-switch-video', () => {
-        if (!this.state.fetched) {
-          this.getData()
-        }
-      })
-    },
-    methods: {
-      async getData () {
-        if (this.state.loading) {
-          return
-        }
-        this.state.loading = true
-
-        try {
-          await this.$store.dispatch('bangumi/getVideos', {
-            ctx: this,
-            id: this.info.id
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.state.loading = false
-          this.state.fetched = true
-        }
-      },
-      openFeedback () {
-        this.$channel.$emit('open-feedback', {
-          type: 5,
-          desc: `我想看《${this.info.name}》的视频第 ? 集`
-        })
-      },
+    openFeedback() {
+      this.$channel.$emit("open-feedback", {
+        type: 5,
+        desc: `我想看《${this.info.name}》的视频第 ? 集`
+      });
     }
   }
+};
 </script>

@@ -1,25 +1,25 @@
 <style lang="scss">
-  #trial-user {
-    .avatar {
-      width: 100px;
-      height: 100px;
-    }
+#trial-user {
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
 
-    .banner img {
-      height: 100px;
-      width: auto;
-    }
+  .banner img {
+    height: 100px;
+    width: auto;
+  }
 
-    .control {
-      margin-left: -5px;
-      margin-bottom: 20px;
-      text-align: center;
+  .control {
+    margin-left: -5px;
+    margin-bottom: 20px;
+    text-align: center;
 
-      a {
-        margin: 0 10px;
-      }
+    a {
+      margin: 0 10px;
     }
   }
+}
 </style>
 
 <template>
@@ -116,74 +116,90 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
 
-  export default {
-    data () {
-      return {
-        list: [],
-        loading: true
-      }
-    },
-    created () {
-      this.getData()
-    },
-    methods: {
-      getData () {
-        const api = new Api(this)
-        api.getTrialUsers().then((data) => {
-          this.list = data
-          this.loading = false
-        }).catch((err) => {
-          this.$toast.error(err)
-          this.loading = false
+export default {
+  data() {
+    return {
+      list: [],
+      loading: true
+    };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const api = new Api(this);
+      api
+        .getTrialUsers()
+        .then(data => {
+          this.list = data;
+          this.loading = false;
         })
-      },
-      passUser (index, id) {
-        const api = new Api(this);
-        api.passUser({ id }).then(() => {
+        .catch(err => {
+          this.$toast.error(err);
+          this.loading = false;
+        });
+    },
+    passUser(index, id) {
+      const api = new Api(this);
+      api
+        .passUser({ id })
+        .then(() => {
           this.list.splice(index, 1);
-          this.$channel.$emit('admin-trial-do', {
-            type: 'users'
-          })
-        }).catch((e) => {
+          this.$channel.$emit("admin-trial-do", {
+            type: "users"
+          });
+        })
+        .catch(e => {
           console.log(e);
           this.$toast.error(e);
         });
-      },
-      delUser (index, id) {
-        this.$confirm('确定吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+    },
+    delUser(index, id) {
+      this.$confirm("确定吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           const api = new Api(this);
-          api.blockUser({ id }).then(() => {
-            this.list.splice(index, 1);
-            this.$channel.$emit('admin-trial-do', {
-              type: 'users'
+          api
+            .blockUser({ id })
+            .then(() => {
+              this.list.splice(index, 1);
+              this.$channel.$emit("admin-trial-do", {
+                type: "users"
+              });
             })
-          }).catch((e) => {
-            console.log(e);
-            this.$toast.error(e);
-          });
-        }).catch(() => {});
-      },
-      delSomething (index, id, value, key) {
-        this.$confirm('确定吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+            .catch(e => {
+              console.log(e);
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    delSomething(index, id, value, key) {
+      this.$confirm("确定吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           const api = new Api(this);
-          api.deleteUserInfo({ id, key, value }).then(() => {
-            this.list[index][key] = value;
-          }).catch((e) => {
-            console.log(e);
-            this.$toast.error(e);
-          });
-        }).catch(() => {});
-      },
+          api
+            .deleteUserInfo({ id, key, value })
+            .then(() => {
+              this.list[index][key] = value;
+            })
+            .catch(e => {
+              console.log(e);
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
     }
   }
+};
 </script>

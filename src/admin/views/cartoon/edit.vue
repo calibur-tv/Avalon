@@ -109,110 +109,108 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
-  import uploadMixin from '~/mixins/upload'
+import Api from "~/api/adminApi";
+import uploadMixin from "~/mixins/upload";
 
-  export default {
-    mixins: [
-      uploadMixin
-    ],
-    data () {
-      return {
-        loading: false,
-        toggleEditModal: false,
-        editingItem: null,
-        loadingSubmit: false,
-        loadingCreate: false,
-        list: []
+export default {
+  mixins: [uploadMixin],
+  data() {
+    return {
+      loading: false,
+      toggleEditModal: false,
+      editingItem: null,
+      loadingSubmit: false,
+      loadingCreate: false,
+      list: []
+    };
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
+    }
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    async getData() {
+      const api = new Api(this);
+      try {
+        this.list = await api.cartoonDetail({
+          id: this.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     },
-    computed: {
-      id () {
-        return this.$route.params.id
+    beginEditItem(item) {
+      this.editingItem = {
+        id: item.id,
+        name: item.name,
+        url: item.url.split("image.calibur.tv/").pop(),
+        bangumi_id: item.bangumi_id
+      };
+      this.getUpToken();
+      this.uploadConfig.pathPrefix = `bangumi/${this.id}/cartoon/${item.id}`;
+      this.toggleEditModal = true;
+    },
+    move(index, toNext) {
+      const prev = toNext ? index : index - 1;
+      const next = toNext ? index + 1 : index;
+      this.list.splice(prev, 1, ...this.list.splice(next, 1, this.list[prev]));
+    },
+    toTop(index) {
+      const move = this.list.splice(index, 1);
+      this.list = move.concat(this.list);
+    },
+    async submitForm() {
+      if (this.loadingSubmit) {
+        return;
+      }
+      this.loadingSubmit = true;
+      const api = new Api(this);
+      try {
+        await api.cartoonSort({
+          id: this.id,
+          cartoon: this.list.map(_ => _.id).toString()
+        });
+        this.$toast.success("更新成功");
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingSubmit = true;
       }
     },
-    created() {
-      this.getData();
-    },
-    methods: {
-      async getData () {
-        const api = new Api(this);
-        try {
-          this.list = await api.cartoonDetail({
-            id: this.id
-          });
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
-      },
-      beginEditItem (item) {
-        this.editingItem = {
-          id: item.id,
-          name: item.name,
-          url: item.url.split('image.calibur.tv/').pop(),
-          bangumi_id: item.bangumi_id
-        };
-        this.getUpToken();
-        this.uploadConfig.pathPrefix = `bangumi/${this.id}/cartoon/${item.id}`;
-        this.toggleEditModal = true
-      },
-      move (index, toNext) {
-        const prev = toNext ? index : index - 1;
-        const next = toNext ? index + 1 : index;
-        this.list.splice(prev, 1, ...this.list.splice(next, 1, this.list[prev]))
-      },
-      toTop (index) {
-        const move = this.list.splice(index, 1)
-        this.list = move.concat(this.list)
-      },
-      async submitForm () {
-        if (this.loadingSubmit) {
-          return
-        }
-        this.loadingSubmit = true
-        const api = new Api(this)
-        try {
-          await api.cartoonSort({
-            id: this.id,
-            cartoon: this.list.map(_ => _.id).toString()
-          })
-          this.$toast.success('更新成功')
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingSubmit = true
-        }
-      },
-      async submitCartoonEdit () {
-        if (this.loadingCreate) {
-          return
-        }
-        this.loadingCreate = true;
-        const api = new Api(this);
-        try {
-          api.cartoonEdit({
-            id: this.editingItem.id,
-            name: this.editingItem.name,
-            url: this.editingItem.url
-          });
-          this.toggleEditModal = false;
-          this.$toast.success('更新成功');
-          this.list.forEach((item, index) => {
-            if (item.id === this.editingItem.id) {
-              this.list[index].name = this.editingItem.name
-              this.list[index].url = this.editingItem.url
-            }
-          });
-        } catch (e) {
-          this.$toast.error(e);
-        }
-      },
-      handleUpUploadSuccess (res) {
-        this.$toast.success('上传成功');
-        this.editingItem.url = res.data.key;
+    async submitCartoonEdit() {
+      if (this.loadingCreate) {
+        return;
       }
+      this.loadingCreate = true;
+      const api = new Api(this);
+      try {
+        api.cartoonEdit({
+          id: this.editingItem.id,
+          name: this.editingItem.name,
+          url: this.editingItem.url
+        });
+        this.toggleEditModal = false;
+        this.$toast.success("更新成功");
+        this.list.forEach((item, index) => {
+          if (item.id === this.editingItem.id) {
+            this.list[index].name = this.editingItem.name;
+            this.list[index].url = this.editingItem.url;
+          }
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      }
+    },
+    handleUpUploadSuccess(res) {
+      this.$toast.success("上传成功");
+      this.editingItem.url = res.data.key;
     }
   }
+};
 </script>

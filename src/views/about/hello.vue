@@ -1,56 +1,56 @@
 <style lang="scss">
-  #about-hello {
-    .layout-main {
-      margin-left: 15px;
+#about-hello {
+  .layout-main {
+    margin-left: 15px;
 
-      h1 {
-        margin-bottom: 16px;
-        margin-top: 16px;
-        color: #333;
-        font-size: 24px;
+    h1 {
+      margin-bottom: 16px;
+      margin-top: 16px;
+      color: #333;
+      font-size: 24px;
+    }
+
+    h3 {
+      margin-top: 15px;
+      color: #333;
+      font-size: 18px;
+      position: relative;
+      padding-left: 12px;
+      margin-bottom: 20px;
+
+      &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        background-color: $color-blue-normal;
+        border-radius: 3px;
       }
+    }
 
-      h3 {
-        margin-top: 15px;
-        color: #333;
-        font-size: 18px;
-        position: relative;
-        padding-left: 12px;
-        margin-bottom: 20px;
+    p {
+      color: #333;
+      font-size: 14px;
+      text-indent: 2em;
+      margin-top: 5px;
+      line-height: 20px;
+    }
 
-        &:before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 3px;
-          height: 100%;
-          background-color: $color-blue-normal;
-          border-radius: 3px;
-        }
-      }
+    ul {
+      margin: 10px 0 5px 25px;
 
-      p {
-        color: #333;
+      li {
+        list-style-type: disc;
         font-size: 14px;
-        text-indent: 2em;
-        margin-top: 5px;
-        line-height: 20px;
-      }
-
-      ul {
-        margin: 10px 0 5px 25px;
-
-        li {
-          list-style-type: disc;
-          font-size: 14px;
-          color: #666;
-          line-height: 25px;
-          float: none;
-        }
+        color: #666;
+        line-height: 25px;
+        float: none;
       }
     }
   }
+}
 </style>
 
 <template>
@@ -100,10 +100,16 @@
           <li>网站图片必须与动漫相关，cosplay、手绘、原画等都可以</li>
           <li>目前用户无法上传漫画类别的相册，如果需要开通漫画权限，请联系网站管理员</li>
         </ul>
+        <h3>漫评系统：</h3>
+        <p>calibur.tv 有可以说最全面的番剧评分系统，可以方便大家对评价自己喜欢的番剧</p>
+        <ul>
+          <li>漫评是从多个维度出发，既给了大家表达的方向，也给了漫评一个基本的框架</li>
+          <li>不同的番剧在各自的维度发挥优势，有利于在未来根据大家对番剧的评价来推荐你喜欢的内容</li>
+        </ul>
         <h3>交流反馈：</h3>
         <p>由于个人能力有限，网站可能会有很多不足之处，希望大家可以帮助完善</p>
         <ul>
-          <li>交流与反馈QQ群：<strong>106402736（已满）</strong>、<strong>806818950</strong></li>
+          <li>交流与反馈QQ群：<strong>106402736</strong></li>
           <li>提现QQ群：<strong>718529809</strong>，进群请填写自己的邀请码，审核通过后方可提现</li>
           <li>其它官方交流与合作请加QQ：414927352</li>
         </ul>
@@ -117,15 +123,15 @@
 </template>
 
 <script>
-  export default {
-    name: 'DoorHello',
-    head: {
-      title: '欢迎'
-    },
-    computed: {
-      nickname () {
-        return this.$store.state.login ? this.$store.state.user.nickname : ''
-      }
+export default {
+  name: "DoorHello",
+  head: {
+    title: "欢迎"
+  },
+  computed: {
+    nickname() {
+      return this.$store.state.login ? this.$store.state.user.nickname : "";
     }
   }
+};
 </script>

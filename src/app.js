@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import App from './app.vue';
-import { sync } from 'vuex-router-sync';
-import { createStore } from '~/store';
-import { createRouter } from '~/router';
-import 'normalize.css/normalize.css';
-import '~/assets/css/global';
-import '~/utils';
+import Vue from "vue";
+import App from "./app.vue";
+import { sync } from "vuex-router-sync";
+import { createStore } from "~/store";
+import { createRouter } from "~/router";
+import "~/assets/css/global";
+import "~/utils";
+import "normalize.css";
 
 export function createApp() {
   const router = createRouter();
@@ -16,7 +16,7 @@ export function createApp() {
   const app = new Vue({
     router,
     store,
-    render: h => h(App),
+    render: h => h(App)
   });
 
   return { app, router, store };

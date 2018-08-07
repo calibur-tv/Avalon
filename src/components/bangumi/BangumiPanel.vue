@@ -1,47 +1,47 @@
 <style lang="scss" module>
-  .bangumi-panel {
-    position: relative;
-    width: 206px;
-    height: 258px;
-    border-radius: 4px;
-    font-size: 14px;
-    box-shadow: 0 8px 18px rgba(0,0,0,.06);
-    margin-bottom: 20px;
-    text-align: center;
+.bangumi-panel {
+  position: relative;
+  width: 206px;
+  height: 258px;
+  border-radius: 4px;
+  font-size: 14px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+  text-align: center;
 
-    .avatar {
-      margin: 0 auto 8px;
-      padding-top: 20px;
-      overflow: hidden;
-      width: 90px;
-      height: 90px;
-      display: block;
-      box-sizing: content-box;
+  .avatar {
+    margin: 0 auto 8px;
+    padding-top: 20px;
+    overflow: hidden;
+    width: 90px;
+    height: 90px;
+    display: block;
+    box-sizing: content-box;
 
-      img {
-        width: 100%;
-        height: auto;
-      }
-    }
-
-    .name {
-      margin: 16px 16px 7px;
-      color: #333;
-      font-size: 16px;
-      font-weight: 600;
-      @include twoline(18px);
-    }
-
-    .summary {
-      margin: 0 auto 10px;
-      max-width: 180px;
-      @include twoline(16px);
-    }
-
-    button {
-      margin-top: 5px;
+    img {
+      width: 100%;
+      height: auto;
     }
   }
+
+  .name {
+    margin: 16px 16px 7px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    @include twoline(18px);
+  }
+
+  .summary {
+    margin: 0 auto 10px;
+    max-width: 180px;
+    @include twoline(16px);
+  }
+
+  button {
+    margin-top: 5px;
+  }
+}
 </style>
 
 <template>
@@ -65,76 +65,49 @@
       :class="$style.summary"
       v-text="summary"
     />
-    <el-button
-      v-if="followed"
-      :loading="loadingFollow"
-      type="danger"
-      size="mini"
-      plain
-      @click="handleFollow"
-    >已关注</el-button>
-    <el-button
-      v-else
-      :loading="loadingFollow"
-      type="danger"
-      size="mini"
-      @click="handleFollow"
-    >关注</el-button>
+    <follow-button
+      :id="id"
+      :followed="followed"
+      type="bangumi"
+      @submit="handleFollow"
+    />
   </div>
 </template>
 
 <script>
-  import Api from '~/api/bangumiApi'
+import FollowButton from "~/components/common/FollowButton";
 
-  export default {
-    name: 'VBangumiPanel',
-    props: {
-      id: {
-        required: true,
-        type: Number
-      },
-      avatar: {
-        required: true,
-        type: String
-      },
-      name: {
-        required: true,
-        type: String
-      },
-      summary: {
-        required: true,
-        type: String
-      },
-      followed: {
-        required: true,
-        type: Boolean
-      }
+export default {
+  name: "VBangumiPanel",
+  components: {
+    FollowButton
+  },
+  props: {
+    id: {
+      required: true,
+      type: Number
     },
-    data () {
-      return {
-        loadingFollow: false
-      }
+    avatar: {
+      required: true,
+      type: String
     },
-    methods: {
-      async handleFollow () {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.loadingFollow) {
-          return
-        }
-        this.loadingFollow = true
-        try {
-          const api = new Api(this)
-          const result = await api.follow(this.id)
-          this.$emit('follow', result)
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingFollow = false
-        }
-      }
+    name: {
+      required: true,
+      type: String
+    },
+    summary: {
+      required: true,
+      type: String
+    },
+    followed: {
+      required: true,
+      type: Boolean
+    }
+  },
+  methods: {
+    handleFollow(result) {
+      this.$emit("follow", result);
     }
   }
+};
 </script>

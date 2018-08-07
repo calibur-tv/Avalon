@@ -1,8 +1,3 @@
-<style lang="scss">
-  .search-nothing-video {
-  }
-</style>
-
 <template>
   <div class="search-nothing-video">
     <no-content/>
@@ -10,7 +5,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'SearchNothingVideo'
-  }
+export default {
+  name: "SearchNothingVideo"
+};
 </script>

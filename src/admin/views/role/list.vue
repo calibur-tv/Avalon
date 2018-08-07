@@ -1,15 +1,15 @@
 <style lang="scss">
-  #role-list {
-    .avatar {
-      img {
-        width: 60px;
-        height: 60px;
-        vertical-align: middle;
-        margin-left: 2px;
-        margin-right: 10px;
-      }
+#role-list {
+  .avatar {
+    img {
+      width: 60px;
+      height: 60px;
+      vertical-align: middle;
+      margin-left: 2px;
+      margin-right: 10px;
     }
   }
+}
 </style>
 
 <template>
@@ -69,39 +69,39 @@
 </template>
 
 <script>
-  import Api from '~/api/bangumiApi'
+import Api from "~/api/bangumiApi";
 
-  export default {
-    data () {
-      return {
-        bangumiId: 0,
-        list: [],
-        loading: false
+export default {
+  data() {
+    return {
+      bangumiId: 0,
+      list: [],
+      loading: false
+    };
+  },
+  methods: {
+    async getData() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      const api = new Api();
+      try {
+        this.list = await api.roles({
+          bangumiId: this.bangumiId
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     },
-    methods: {
-      async getData () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true;
-        const api = new Api();
-        try {
-          this.list = await api.roles({
-            bangumiId: this.bangumiId
-          });
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
-      },
-      handleBangumiSearch (id) {
-        if (this.bangumiId !== id) {
-          this.bangumiId = id;
-          this.getData();
-        }
+    handleBangumiSearch(id) {
+      if (this.bangumiId !== id) {
+        this.bangumiId = id;
+        this.getData();
       }
     }
   }
+};
 </script>

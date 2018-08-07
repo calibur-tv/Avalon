@@ -1,88 +1,91 @@
 <style lang="scss">
-  $layout-width: 900px;
+$layout-width: 900px;
 
-  #layout-write {
-    min-height: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+#layout-write {
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    >header {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 60px;
-      background-color: #fff;
-      border-bottom: 1px solid rgba(0,0,0,.08);
-      z-index: 999;
+  > header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    z-index: 999;
 
-      .header-container {
-        width: $layout-width;
-        margin: 10px auto 0 auto;
-      }
-
-      .logo {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        vertical-align: middle;
-      }
-
-      .slogan {
-        display: inline-block;
-        vertical-align: middle;
-
-        p {
-          line-height: 20px;
-        }
-      }
-
-      button {
-        float: right;
-        margin-top: 4px;
-        margin-left: 15px;
-
-        &.success {
-          &:hover, &:focus {
-            border-color: #67c23a;
-            color: #67c23a;
-          }
-        }
-
-        &.warning {
-          &:hover, &:focus {
-            border-color: #e6a23c;
-            color: #e6a23c;
-          }
-        }
-
-        &.danger {
-          &:hover, &:focus {
-            border-color: #f56c6c;
-            color: #f56c6c;
-          }
-        }
-      }
-
-      .avatar {
-        @include avatar-2(32px);
-      }
-    }
-
-    .main-view {
-      flex-grow: 1;
-      height: 100%;
+    .header-container {
       width: $layout-width;
-      margin: 0 auto;
-      padding-top: 100px;
+      margin: 10px auto 0 auto;
     }
 
-    .not-login {
-      text-align: center;
-      margin-top: 30vh;
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .slogan {
+      display: inline-block;
+      vertical-align: middle;
+
+      p {
+        line-height: 20px;
+      }
+    }
+
+    button {
+      float: right;
+      margin-top: 4px;
+      margin-left: 15px;
+
+      &.success {
+        &:hover,
+        &:focus {
+          border-color: #67c23a;
+          color: #67c23a;
+        }
+      }
+
+      &.warning {
+        &:hover,
+        &:focus {
+          border-color: #e6a23c;
+          color: #e6a23c;
+        }
+      }
+
+      &.danger {
+        &:hover,
+        &:focus {
+          border-color: #f56c6c;
+          color: #f56c6c;
+        }
+      }
+    }
+
+    .avatar {
+      @include avatar-2(32px);
     }
   }
+
+  .main-view {
+    flex-grow: 1;
+    height: 100%;
+    width: $layout-width;
+    margin: 0 auto;
+    padding-top: 100px;
+  }
+
+  .not-login {
+    text-align: center;
+    margin-top: 30vh;
+  }
+}
 </style>
 
 <template>
@@ -175,53 +178,53 @@
 </template>
 
 <script>
-  import JsonContent from '~/components/jsonEditor/JsonContent'
+import JsonContent from "~/components/jsonEditor/JsonContent";
 
-  export default {
-    name: 'WriteLayout',
-    components: {
-      JsonContent
+export default {
+  name: "WriteLayout",
+  components: {
+    JsonContent
+  },
+  data() {
+    return {
+      submitting: false,
+      preview: false
+    };
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
     },
-    data () {
-      return {
-        submitting: false,
-        preview: false
-      }
+    user() {
+      return this.$store.state.user;
     },
-    computed: {
-      id () {
-        return this.$route.params.id
-      },
-      user () {
-        return this.$store.state.user
-      },
-      sections () {
-        return this.$store.state.editor.sections
-      },
-      published () {
-        return this.$store.state.editor.resource
-          ? !!this.$store.state.editor.resource.published_at
-          : false
-      }
+    sections() {
+      return this.$store.state.editor.sections;
     },
-    mounted() {
-      this.$channel.$on('write-submit', (result) => {
-        this.submitting = result
-      })
+    published() {
+      return this.$store.state.editor.resource
+        ? !!this.$store.state.editor.resource.published_at
+        : false;
+    }
+  },
+  mounted() {
+    this.$channel.$on("write-submit", result => {
+      this.submitting = result;
+    });
+  },
+  methods: {
+    emitPublish() {
+      this.$channel.$emit("write-publish");
     },
-    methods: {
-      emitPublish () {
-        this.$channel.$emit('write-publish')
-      },
-      emitSave () {
-        this.$channel.$emit('write-save')
-      },
-      emitPreview () {
-        this.preview = true
-      },
-      emitDestroy () {
-        this.$channel.$emit('write-destroy')
-      }
+    emitSave() {
+      this.$channel.$emit("write-save");
+    },
+    emitPreview() {
+      this.preview = true;
+    },
+    emitDestroy() {
+      this.$channel.$emit("write-destroy");
     }
   }
+};
 </script>

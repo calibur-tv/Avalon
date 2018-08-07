@@ -1,28 +1,28 @@
 <style lang="scss">
-  .user-setting-form {
-    .el-icon-question {
-      color: $color-gray-deep;
-      margin-left: 10px;
-      margin-top: 13px;
-      float: right;
-    }
+.user-setting-form {
+  .el-icon-question {
+    color: $color-gray-deep;
+    margin-left: 10px;
+    margin-top: 13px;
+    float: right;
+  }
 
-    .el-switch {
-      float: right;
-      margin-top: 10px;
-    }
+  .el-switch {
+    float: right;
+    margin-top: 10px;
+  }
 
-    .el-alert {
-      margin-bottom: 20px;
+  .el-alert {
+    margin-bottom: 20px;
 
-      p {
-        font-size: 13px;
-        line-height: 20px;
-        margin-left: 3px;
-        margin-top: 3px;
-      }
+    p {
+      font-size: 13px;
+      line-height: 20px;
+      margin-left: 3px;
+      margin-top: 3px;
     }
   }
+}
 </style>
 
 <template>
@@ -119,155 +119,149 @@
 </template>
 
 <script>
-  import Api from '~/api/userApi'
+import Api from "~/api/userApi";
 
-  export default {
-    name: 'UserSettingForm',
-    data () {
-      const validateNickname = (rule, value, callback) => {
-        const length = value.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
-        if (!length) {
-          callback(new Error('昵称不能为空'))
-        } else if (length < 2) {
-          callback(new Error('昵称至少为2个字符'))
-        } else if (length > 14) {
-          callback(new Error('昵称不能超过14个字符'))
-        }
-        callback()
+export default {
+  name: "UserSettingForm",
+  data() {
+    const validateNickname = (rule, value, callback) => {
+      const length = value.replace(/([\u4e00-\u9fa5])/g, "aa").trim().length;
+      if (!length) {
+        callback(new Error("昵称不能为空"));
+      } else if (length < 2) {
+        callback(new Error("昵称至少为2个字符"));
+      } else if (length > 14) {
+        callback(new Error("昵称不能超过14个字符"));
       }
-      const validateSignature = (rule, value, callback) => {
-        if (value.length > 150) {
-          callback(new Error('签名最多 150 个字'))
-        }
-        callback()
+      callback();
+    };
+    const validateSignature = (rule, value, callback) => {
+      if (value.length > 150) {
+        callback(new Error("签名最多 150 个字"));
       }
-      const validateBirthday = (rule, value, callback) => {
-        const setTs = new Date(value).getTime();
-        const curTs = Date.now();
-        if (setTs >= curTs) {
-          callback(new Error('。。。'))
-        } else if (curTs - setTs < 315360000000) {
-          callback(new Error('你应该大于10岁了吧...?'));
-        } else if (curTs - setTs > 1576800000000) {
-          callback(new Error('你应该小于50岁的吧...?'))
-        }
-        callback()
-      };
-      return {
-        submitting: false,
-        rule: {
-          nickname: [
-            { validator: validateNickname, trigger: 'submit' }
-          ],
-          signature: [
-            { validator: validateSignature, trigger: 'submit' }
-          ],
-          birthday: [
-            { validator: validateBirthday, trigger: 'submit' }
-          ]
-        }
+      callback();
+    };
+    const validateBirthday = (rule, value, callback) => {
+      const setTs = new Date(value).getTime();
+      const curTs = Date.now();
+      if (setTs >= curTs) {
+        callback(new Error("。。。"));
+      } else if (curTs - setTs < 315360000000) {
+        callback(new Error("你应该大于10岁了吧...?"));
+      } else if (curTs - setTs > 1576800000000) {
+        callback(new Error("你应该小于50岁的吧...?"));
+      }
+      callback();
+    };
+    return {
+      submitting: false,
+      rule: {
+        nickname: [{ validator: validateNickname, trigger: "submit" }],
+        signature: [{ validator: validateSignature, trigger: "submit" }],
+        birthday: [{ validator: validateBirthday, trigger: "submit" }]
+      }
+    };
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    nickname: {
+      get() {
+        return this.user.nickname;
+      },
+      set(value) {
+        this.$store.commit("UPDATE_USER_INFO", {
+          key: "nickname",
+          value
+        });
       }
     },
-    computed: {
-      user () {
-        return this.$store.state.user
+    birthday: {
+      get() {
+        return this.user.birthday;
       },
-      nickname: {
-        get () {
-          return this.user.nickname
-        },
-        set (value) {
-          this.$store.commit('UPDATE_USER_INFO', {
-            key: 'nickname',
-            value
-          })
-        }
-      },
-      birthday: {
-        get () {
-          return this.user.birthday
-        },
-        set (value) {
-          this.$store.commit('UPDATE_USER_INFO', {
-            key: 'birthday',
-            value
-          })
-        }
-      },
-      birthSecret: {
-        get () {
-          return this.user.birthSecret
-        },
-        set (value) {
-          this.$store.commit('UPDATE_USER_INFO', {
-            key: 'birthSecret',
-            value
-          })
-        }
-      },
-      sex: {
-        get () {
-          return this.user.sex
-        },
-        set (value) {
-          this.$store.commit('UPDATE_USER_INFO', {
-            key: 'sex',
-            value
-          })
-        }
-      },
-      sexSecret: {
-        get () {
-          return this.user.sexSecret
-        },
-        set (value) {
-          this.$store.commit('UPDATE_USER_INFO', {
-            key: 'sexSecret',
-            value
-          })
-        }
-      },
-      signature: {
-        get () {
-          return this.user.signature
-        },
-        set (value) {
-          this.$store.commit('UPDATE_USER_INFO', {
-            key: 'signature',
-            value
-          })
-        }
+      set(value) {
+        this.$store.commit("UPDATE_USER_INFO", {
+          key: "birthday",
+          value
+        });
       }
     },
-    methods: {
-      submit () {
-        this.$refs.form.validate(async (valid) => {
-          if (valid) {
-            if (this.submitting) {
-              return
-            }
-            this.submitting = true;
-            const api = new Api(this);
-            try {
-              await api.settingProfile({
-                nickname: this.nickname,
-                signature: this.signature,
-                birthday: this.birthday,
-                birth_secret: this.birthSecret,
-                sex_secret: this.sexSecret,
-                sex: this.sex
-              })
-              this.$toast.success('设置成功')
-            } catch (err) {
-              this.$toast.error(err)
-            } finally {
-              this.submitting = false;
-            }
-          } else {
-            return false
-          }
-        })
+    birthSecret: {
+      get() {
+        return this.user.birthSecret;
+      },
+      set(value) {
+        this.$store.commit("UPDATE_USER_INFO", {
+          key: "birthSecret",
+          value
+        });
+      }
+    },
+    sex: {
+      get() {
+        return this.user.sex;
+      },
+      set(value) {
+        this.$store.commit("UPDATE_USER_INFO", {
+          key: "sex",
+          value
+        });
+      }
+    },
+    sexSecret: {
+      get() {
+        return this.user.sexSecret;
+      },
+      set(value) {
+        this.$store.commit("UPDATE_USER_INFO", {
+          key: "sexSecret",
+          value
+        });
+      }
+    },
+    signature: {
+      get() {
+        return this.user.signature;
+      },
+      set(value) {
+        this.$store.commit("UPDATE_USER_INFO", {
+          key: "signature",
+          value
+        });
       }
     }
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          if (this.submitting) {
+            return;
+          }
+          this.submitting = true;
+          const api = new Api(this);
+          try {
+            await api.settingProfile({
+              nickname: this.nickname,
+              signature: this.signature,
+              birthday: new Date(this.birthday).getTime() / 1000,
+              birth_secret: this.birthSecret,
+              sex_secret: this.sexSecret,
+              sex: this.sex
+            });
+            this.$toast.success("设置成功");
+          } catch (err) {
+            this.$toast.error(err);
+          } finally {
+            this.submitting = false;
+          }
+        } else {
+          return false;
+        }
+      });
+    }
   }
+};
 </script>

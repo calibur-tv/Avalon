@@ -1,16 +1,16 @@
 <style lang="scss">
-  #video-create {
-    .video-preview {
-      float: left;
-      margin-right: 10px;
-      margin-bottom: 10px;
+#video-create {
+  .video-preview {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
 
-      .image {
-        width: 300px;
-        height: 225px;
-      }
+    .image {
+      width: 300px;
+      height: 225px;
     }
   }
+}
 </style>
 
 <template>
@@ -312,210 +312,222 @@
 </template>
 
 <script>
-  import Api from '~/api/adminApi'
+import Api from "~/api/adminApi";
 
-  export default {
-    data () {
-      return {
-        validatePart: (rule, value, callback) => {
-          if (value.length !== 2) {
-            callback(new Error('集数格式不对'))
-          } else if (value[0] < 1) {
-            callback(new Error('集数不能小于1'))
-          } else if (value[0] > value[1]) {
-            callback(new Error('集数必须是正确的区间'))
-          } else {
-            callback()
-          }
-        },
-        options: ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'],
-        videoFormat: ['mp4', 'flv', 'Mp4', 'Flv'],
-        form: {
-          bangumiId: '',
-          parts: [1, 1],
-          prefix: '',
-          suffix: 'jpg',
-          format: 'mp4',
-          names: '',
-          videos: '',
-          uploaded: false,
-          titles: [],
-          urls: [],
-          posters: [],
-          haveSelfResource: true
-        },
-        saver: {
-          bangumi: false,
-          prefix: false,
-          suffix: false,
-          format: false,
-          videos: false,
-          parts: false,
-          names: false
-        },
-        list: {},
-        saving: false
-      }
-    },
-    methods: {
-      validateAndSaveBangumiId () {
-        this.$refs.form.validateField('bangumiId', (error) => {
-          if (!error) {
-            this.saver.bangumi = true
-          }
-        })
-      },
-      validateAndSavePrefix () {
-        this.$refs.form.validateField('prefix', (error) => {
-          if (!error) {
-            this.saver.prefix = true
-          }
-        })
-      },
-      validateAndSaveParts () {
-        this.$refs.form.validateField('parts', (error) => {
-          if (!error) {
-            this.saver.parts = true
-          }
-        })
-      },
-      handleSaverFormat () {
-        this.saver.format = true;
-      },
-      handleSaverSuffix () {
-        const arr = [];
-        const parts = this.form.parts;
-        const suffix = this.form.suffix;
-        for (let i= parts[0]; i <= parts[1]; i++) {
-          arr.push(`bangumi/${this.form.prefix}/poster/${i}.${suffix}`)
-        }
-        this.form.posters = arr;
-        this.saver.suffix = true;
-      },
-      validateAndSaveNames () {
-        const names = this.form.names;
-        if (!names) {
-          this.$toast.error('标题不能为空');
-          return;
-        }
-        const parts = this.form.parts;
-        const length = parts[1] - parts[0] + 1;
-        const titles = names.split('\n')
-        const result = [];
-        if (titles.length !== length) {
-          this.$toast.error('标题个数不对');
-          return;
-        }
-        let goOut = false;
-        titles.forEach(title => {
-          if (!title || title.length > 30) {
-            goOut = true;
-          }
-          result.push(title.trim())
-        });
-        if (goOut) {
-          this.$toast.error('每一个标题都不能为空，且不能超过30字');
-          return;
-        }
-        this.form.titles = result
-        this.saver.names = true;
-      },
-      validateAndSaveUrls () {
-        const videos = this.form.videos;
-        if (!videos) {
-          if (this.form.haveSelfResource) {
-            this.saver.videos = true
-          } else {
-            this.$toast.error('资源链接不能为空');
-          }
-          return
-        }
-        const parts = this.form.parts;
-        const length = parts[1] - parts[0] + 1;
-        const arr = videos.split('\n')
-        if (this.form.haveSelfResource) {
-          if (arr.length > length) {
-            this.$toast.error('外链视频的个数大于视频的总数');
-            return;
-          }
+export default {
+  data() {
+    return {
+      validatePart: (rule, value, callback) => {
+        if (value.length !== 2) {
+          callback(new Error("集数格式不对"));
+        } else if (value[0] < 1) {
+          callback(new Error("集数不能小于1"));
+        } else if (value[0] > value[1]) {
+          callback(new Error("集数必须是正确的区间"));
         } else {
-          if (arr.length !== length) {
-            this.$toast.error('资源个数');
-            return;
-          }
+          callback();
         }
-        let goOut = false;
-        const result = [];
-        arr.forEach(video => {
-          if (video && !(video.startsWith('http://') || video.startsWith('https://'))) {
-            goOut = true;
-          }
-          result.push(video.trim().split('?').shift());
-        })
-        if (goOut) {
-          this.$toast.error('存在不合法的链接');
+      },
+      options: ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"],
+      videoFormat: ["mp4", "flv", "Mp4", "Flv"],
+      form: {
+        bangumiId: "",
+        parts: [1, 1],
+        prefix: "",
+        suffix: "jpg",
+        format: "mp4",
+        names: "",
+        videos: "",
+        uploaded: false,
+        titles: [],
+        urls: [],
+        posters: [],
+        haveSelfResource: true
+      },
+      saver: {
+        bangumi: false,
+        prefix: false,
+        suffix: false,
+        format: false,
+        videos: false,
+        parts: false,
+        names: false
+      },
+      list: {},
+      saving: false
+    };
+  },
+  methods: {
+    validateAndSaveBangumiId() {
+      this.$refs.form.validateField("bangumiId", error => {
+        if (!error) {
+          this.saver.bangumi = true;
+        }
+      });
+    },
+    validateAndSavePrefix() {
+      this.$refs.form.validateField("prefix", error => {
+        if (!error) {
+          this.saver.prefix = true;
+        }
+      });
+    },
+    validateAndSaveParts() {
+      this.$refs.form.validateField("parts", error => {
+        if (!error) {
+          this.saver.parts = true;
+        }
+      });
+    },
+    handleSaverFormat() {
+      this.saver.format = true;
+    },
+    handleSaverSuffix() {
+      const arr = [];
+      const parts = this.form.parts;
+      const suffix = this.form.suffix;
+      for (let i = parts[0]; i <= parts[1]; i++) {
+        arr.push(`bangumi/${this.form.prefix}/poster/${i}.${suffix}`);
+      }
+      this.form.posters = arr;
+      this.saver.suffix = true;
+    },
+    validateAndSaveNames() {
+      const names = this.form.names;
+      if (!names) {
+        this.$toast.error("标题不能为空");
+        return;
+      }
+      const parts = this.form.parts;
+      const length = parts[1] - parts[0] + 1;
+      const titles = names.split("\n");
+      const result = [];
+      if (titles.length !== length) {
+        this.$toast.error("标题个数不对");
+        return;
+      }
+      let goOut = false;
+      titles.forEach(title => {
+        if (!title || title.length > 30) {
+          goOut = true;
+        }
+        result.push(title.trim());
+      });
+      if (goOut) {
+        this.$toast.error("每一个标题都不能为空，且不能超过30字");
+        return;
+      }
+      this.form.titles = result;
+      this.saver.names = true;
+    },
+    validateAndSaveUrls() {
+      const videos = this.form.videos;
+      if (!videos) {
+        if (this.form.haveSelfResource) {
+          this.saver.videos = true;
+        } else {
+          this.$toast.error("资源链接不能为空");
+        }
+        return;
+      }
+      const parts = this.form.parts;
+      const length = parts[1] - parts[0] + 1;
+      const arr = videos.split("\n");
+      if (this.form.haveSelfResource) {
+        if (arr.length > length) {
+          this.$toast.error("外链视频的个数大于视频的总数");
           return;
         }
-        this.form.urls = result;
-        this.saver.videos = true;
-      },
-      resetForm() {
-        this.saver = {
-          bangumi: false,
-          prefix: false,
-          suffix: false,
-          videos: false,
-          format: false,
-          parts: false,
-          names: false
+      } else {
+        if (arr.length !== length) {
+          this.$toast.error("资源个数");
+          return;
         }
-      },
-      async submitForm() {
-        if (this.saving) {
-          return
+      }
+      let goOut = false;
+      const result = [];
+      arr.forEach(video => {
+        if (
+          video &&
+          !(video.startsWith("http://") || video.startsWith("https://"))
+        ) {
+          goOut = true;
         }
-        this.saving = true;
-        const arr = [];
-        const begin = this.form.parts[0];
-        for (let i = begin; i <= this.form.parts[1]; i++) {
-          const idx = [i - begin];
-          arr.push({
-            bangumiId: this.form.bangumiId,
-            part: i,
-            name: this.form.titles[idx],
-            url: this.form.urls[idx] || '',
-            poster: this.form.posters[idx],
-            resource: this.form.haveSelfResource ? {
-              "video": {
-                "720": {
-                  "useLyc": false,
-                  "src": `bangumi/${this.form.prefix}/video/720/${i}.${this.form.format}`
+        result.push(
+          video
+            .trim()
+            .split("?")
+            .shift()
+        );
+      });
+      if (goOut) {
+        this.$toast.error("存在不合法的链接");
+        return;
+      }
+      this.form.urls = result;
+      this.saver.videos = true;
+    },
+    resetForm() {
+      this.saver = {
+        bangumi: false,
+        prefix: false,
+        suffix: false,
+        videos: false,
+        format: false,
+        parts: false,
+        names: false
+      };
+    },
+    async submitForm() {
+      if (this.saving) {
+        return;
+      }
+      this.saving = true;
+      const arr = [];
+      const begin = this.form.parts[0];
+      for (let i = begin; i <= this.form.parts[1]; i++) {
+        const idx = [i - begin];
+        arr.push({
+          bangumiId: this.form.bangumiId,
+          part: i,
+          name: this.form.titles[idx],
+          url: this.form.urls[idx] || "",
+          poster: this.form.posters[idx],
+          resource: this.form.haveSelfResource
+            ? {
+                video: {
+                  "720": {
+                    useLyc: false,
+                    src: `bangumi/${this.form.prefix}/video/720/${i}.${
+                      this.form.format
+                    }`
+                  },
+                  "1080": {
+                    useLyc: false,
+                    src: ""
+                  }
                 },
-                "1080": {
-                  "useLyc": false,
-                  "src": ""
+                lyric: {
+                  zh: "",
+                  en: ""
                 }
-              },
-              "lyric": {
-                "zh": "",
-                "en": ""
               }
-            } : null
-          })
-        }
-        const api = new Api(this)
-        try {
-          await api.videoSave(arr);
-          this.$toast.success('操作成功');
-          this.$refs.form.resetFields();
-          this.resetForm();
-        } catch (e) {
-          console.log(e);
-          this.$toast.error('保存失败，请联系管理员');
-        } finally {
-          this.saving = false;
-        }
+            : null
+        });
+      }
+      const api = new Api(this);
+      try {
+        await api.videoSave(arr);
+        this.$toast.success("操作成功");
+        this.$refs.form.resetFields();
+        this.resetForm();
+      } catch (e) {
+        console.log(e);
+        this.$toast.error("保存失败，请联系管理员");
+      } finally {
+        this.saving = false;
       }
     }
   }
+};
 </script>

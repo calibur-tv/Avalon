@@ -1,8 +1,7 @@
 <style lang="scss">
-  #trending-role {
-    .layout-main {
-      margin-left: 15px;
-    }
+#trending-role {
+  .layout-main {
+    margin-left: 15px;
 
     .item {
       position: relative;
@@ -10,7 +9,7 @@
       float: none;
 
       &:not(:last-child) {
-        border-bottom: 1px solid #F0F0F0;
+        border-bottom: 1px solid #f0f0f0;
       }
 
       .top {
@@ -128,6 +127,7 @@
       }
     }
   }
+}
 </style>
 
 <template>
@@ -225,41 +225,45 @@
 </template>
 
 <script>
-  export default {
-    name: 'TrendingRole',
-    async asyncData ({ store }) {
-      await store.dispatch('cartoonRole/getTrending')
+export default {
+  name: "TrendingRole",
+  async asyncData({ store }) {
+    await store.dispatch("cartoonRole/getTrending");
+  },
+  head: {
+    title: "角色排行榜"
+  },
+  data() {
+    return {
+      loading: false
+    };
+  },
+  computed: {
+    list() {
+      return this.$utils.orderBy(
+        this.$store.state.cartoonRole.trending.data,
+        "star_count",
+        "desc"
+      );
     },
-    head: {
-      title: '角色排行榜'
-    },
-    data () {
-      return {
-        loading: false
+    notFetch() {
+      return this.loading || this.$store.state.cartoonRole.trending.noMore;
+    }
+  },
+  methods: {
+    async loadMore() {
+      if (this.loading) {
+        return;
       }
-    },
-    computed: {
-      list () {
-        return this.$utils.orderBy(this.$store.state.cartoonRole.trending.data, 'star_count', 'desc')
-      },
-      notFetch () {
-        return this.loading || this.$store.state.cartoonRole.trending.noMore
-      }
-    },
-    methods: {
-      async loadMore () {
-        if (this.loading) {
-          return
-        }
-        this.loading = true
-        try {
-          await this.$store.dispatch('cartoonRole/getTrending')
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loading = false
-        }
+      this.loading = true;
+      try {
+        await this.$store.dispatch("cartoonRole/getTrending");
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     }
   }
+};
 </script>

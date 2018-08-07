@@ -1,14 +1,14 @@
 <style lang="scss">
-  #bangumi-setting {
-    .avatar {
-      width: 100px;
-      height: 100px;
-    }
-
-    .el-alert {
-      margin-bottom: 15px;
-    }
+#bangumi-setting {
+  .avatar {
+    width: 100px;
+    height: 100px;
   }
+
+  .el-alert {
+    margin-bottom: 15px;
+  }
+}
 </style>
 
 <template>
@@ -83,43 +83,42 @@
 </template>
 
 <script>
-  import BangumiEditForm from '~/components/bangumi/forms/BangumiEditForm'
-  import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
-  import BangumiPostSetting from '~/components/bangumi/forms/BangumiPostSetting'
-  import UploadImageForm from '~/components/image/UploadImageForm'
-  import CreateAlbumForm from '~/components/image/CreateAlbumForm'
+import BangumiEditForm from "~/components/bangumi/forms/BangumiEditForm";
+import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
+import BangumiPostSetting from "~/components/bangumi/forms/BangumiPostSetting";
+import UploadImageForm from "~/components/image/UploadImageForm";
+import CreateAlbumForm from "~/components/image/CreateAlbumForm";
 
-  export default {
-    name: 'BangumiSetting'
-    ,
-    components: {
-      BangumiEditForm,
-      CreateRoleForm,
-      BangumiPostSetting,
-      UploadImageForm,
-      CreateAlbumForm
-    },
-    data () {
-      return {
-        activeName: '0',
-        showPanel: false,
-        createdAlbum: null
-      }
-    },
-    computed: {
-      info () {
-        return this.$store.state.bangumi.info
-      },
-    },
-    mounted () {
-      this.$channel.$on('bangumi-tab-switch-setting', () => {
-        this.showPanel = true
-      })
-    },
-    methods: {
-      handleAlbumCreated (album) {
-        this.createdAlbum = album;
-      }
+export default {
+  name: "BangumiSetting",
+  components: {
+    BangumiEditForm,
+    CreateRoleForm,
+    BangumiPostSetting,
+    UploadImageForm,
+    CreateAlbumForm
+  },
+  data() {
+    return {
+      activeName: "0",
+      showPanel: false,
+      createdAlbum: null
+    };
+  },
+  computed: {
+    info() {
+      return this.$store.state.bangumi.info;
+    }
+  },
+  mounted() {
+    this.$channel.$on("bangumi-tab-switch-setting", () => {
+      this.showPanel = true;
+    });
+  },
+  methods: {
+    handleAlbumCreated(album) {
+      this.createdAlbum = album;
     }
   }
+};
 </script>

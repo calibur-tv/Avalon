@@ -1,24 +1,24 @@
 <style lang="scss">
-  #trial-score {
-    .el-card {
-      margin-bottom: 30px;
+#trial-score {
+  .el-card {
+    margin-bottom: 30px;
 
-      img {
-        max-width: 100%;
-      }
+    img {
+      max-width: 100%;
+    }
 
-      .control {
-        padding: 15px;
-        background-color: $color-gray-light;
-      }
+    .control {
+      padding: 15px;
+      background-color: $color-gray-light;
+    }
 
-      .json-content-txt-parser {
-        margin-left: 15px;
-        margin-right: 15px;
-        margin-top: 15px;
-      }
+    .json-content-txt-parser {
+      margin-left: 15px;
+      margin-right: 15px;
+      margin-top: 15px;
     }
   }
+}
 </style>
 
 <template>
@@ -63,57 +63,66 @@
 </template>
 
 <script>
-  import Api from '~/api/scoreApi'
-  import JsonContent from '~/components/jsonEditor/JsonContent'
+import Api from "~/api/scoreApi";
+import JsonContent from "~/components/jsonEditor/JsonContent";
 
-  export default {
-    components: {
-      JsonContent
-    },
-    data () {
-      return {
-        list: [],
-        loading: true
-      }
-    },
-    created () {
-      this.getData();
-    },
-    methods: {
-      getData () {
-        const api = new Api(this);
-        api.trials().then((data) => {
-          this.list = data
-          this.loading = false
-        }).catch((err) => {
-          this.$toast.error(err);
+export default {
+  components: {
+    JsonContent
+  },
+  data() {
+    return {
+      list: [],
+      loading: true
+    };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const api = new Api(this);
+      api
+        .trials()
+        .then(data => {
+          this.list = data;
           this.loading = false;
         })
-      },
-      ban (id, index) {
-        const api = new Api(this)
-        api.ban({ id }).then(() => {
-          this.list.splice(index, 1)
-          this.$toast.success('操作成功')
-          this.$channel.$emit('admin-trial-do', {
-            type: 'score'
-          })
-        }).catch((err) => {
-          this.$toast.error(err)
+        .catch(err => {
+          this.$toast.error(err);
+          this.loading = false;
+        });
+    },
+    ban(id, index) {
+      const api = new Api(this);
+      api
+        .ban({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "score"
+          });
         })
-      },
-      pass (id, index) {
-        const api = new Api(this)
-        api.pass({ id }).then(() => {
-          this.list.splice(index, 1)
-          this.$toast.success('操作成功')
-          this.$channel.$emit('admin-trial-do', {
-            type: 'score'
-          })
-        }).catch((err) => {
-          this.$toast.error(err)
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    pass(id, index) {
+      const api = new Api(this);
+      api
+        .pass({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "score"
+          });
         })
-      }
+        .catch(err => {
+          this.$toast.error(err);
+        });
     }
   }
+};
 </script>

@@ -1,9 +1,3 @@
-<style lang="scss">
-  #error-500 {
-
-  }
-</style>
-
 <template>
   <div id="error-500">
     <p>您访问的页面出现了错误</p>
@@ -19,7 +13,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error500'
-  }
+export default {
+  name: "Error500"
+};
 </script>

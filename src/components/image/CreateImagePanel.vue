@@ -27,74 +27,74 @@
 </template>
 
 <script>
-  import UploadImageForm from '~/components/image/UploadImageForm'
-  import CreateAlbumForm from '~/components/image/CreateAlbumForm'
+import UploadImageForm from "~/components/image/UploadImageForm";
+import CreateAlbumForm from "~/components/image/CreateAlbumForm";
 
-  export default {
-    name: 'UploadImageModal',
-    components: {
-      UploadImageForm,
-      CreateAlbumForm
-    },
-    data () {
-      return {
-        selectedAlbumId: '',
-        createdAlbum: [],
-        uploadHeaders: {
-          token: ''
-        },
-        bangumiRoles: {},
-        bangumis: [],
-        options: [],
-        roles: [],
-        loadingUserBangumiFetch: false,
-        loadingUploadTypeFetch: false,
-        loadingUserAlbumFetch: false,
-        show: false,
-        submitting: false,
-        form: {
-          bangumiId: '',
-          size: '',
-          tags: '',
-          roleId: '',
-          albumId: '',
-          creator: false,
-          images: []
-        },
-        albumForm: {
-          name: '',
-          bangumiId: '',
-          poster: [],
-          isCartoon: false,
-          creator: false
-        },
-        action: '上传图片',
-        exceed: 10,
-        pendingUpload: 0
-      }
-    },
-    computed: {
-      albums () {
-        return this.$store.state.image.albums
+export default {
+  name: "UploadImageModal",
+  components: {
+    UploadImageForm,
+    CreateAlbumForm
+  },
+  data() {
+    return {
+      selectedAlbumId: "",
+      createdAlbum: [],
+      uploadHeaders: {
+        token: ""
       },
-      user () {
-        return this.$store.state.user
+      bangumiRoles: {},
+      bangumis: [],
+      options: [],
+      roles: [],
+      loadingUserBangumiFetch: false,
+      loadingUploadTypeFetch: false,
+      loadingUserAlbumFetch: false,
+      show: false,
+      submitting: false,
+      form: {
+        bangumiId: "",
+        size: "",
+        tags: "",
+        roleId: "",
+        albumId: "",
+        creator: false,
+        images: []
       },
-      zone () {
-        return this.user.zone
-      }
+      albumForm: {
+        name: "",
+        bangumiId: "",
+        poster: [],
+        isCartoon: false,
+        creator: false
+      },
+      action: "上传图片",
+      exceed: 10,
+      pendingUpload: 0
+    };
+  },
+  computed: {
+    albums() {
+      return this.$store.state.image.albums;
     },
-    mounted () {
-      this.$channel.$on('show-upload-image-modal', () => {
-        this.show = true
-      })
+    user() {
+      return this.$store.state.user;
     },
-    methods: {
-      handleAlbumCreated (album) {
-        this.createdAlbum.unshift(album);
-        this.selectedAlbumId = album.id;
-        this.action = '上传图片'
-      }
+    zone() {
+      return this.user.zone;
+    }
+  },
+  mounted() {
+    this.$channel.$on("show-upload-image-modal", () => {
+      this.show = true;
+    });
+  },
+  methods: {
+    handleAlbumCreated(album) {
+      this.createdAlbum.unshift(album);
+      this.selectedAlbumId = album.id;
+      this.action = "上传图片";
     }
   }
+};
 </script>

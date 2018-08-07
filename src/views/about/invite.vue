@@ -1,40 +1,63 @@
 <style lang="scss">
-  #invite-user {
-    .signed {
-      text-align: center;
-      font-size: 14px;
-      color: $color-text-normal;
-      padding-top: 100px;
-      line-height: 30px;
+#invite-user {
+  background-image: url("https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-      button {
-        margin-top: 10px;
-      }
-    }
+  .signed {
+    text-align: center;
+    font-size: 14px;
+    color: $color-text-normal;
+    line-height: 30px;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px 40px;
+    width: 580px;
+    margin: 200px auto 0 auto;
+    border-radius: 10px;
+    font-weight: bold;
 
-    .sign-wrap {
-      width: 500px;
-      margin: 0 auto;
-
-      h3 {
-        text-align: center;
-        margin-top: 40px;
-        margin-bottom: 40px;
-      }
-
-      input {
-        padding-left: 15px !important;
-      }
+    button {
+      margin-top: 10px;
     }
   }
+
+  .sign-wrap {
+    width: 580px;
+    margin: 150px auto 0 auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px 40px;
+    border-radius: 10px;
+
+    h3 {
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    input {
+      padding-left: 15px !important;
+    }
+  }
+
+  .el-alert {
+    margin-bottom: 25px;
+
+    p {
+      margin-bottom: 5px;
+      font-size: 13px;
+      line-height: 18px;
+      color: $color-text-normal;
+    }
+  }
+}
 </style>
 
 <template>
   <div id="invite-user">
-    <v-header/>
+    <v-header type="mask"/>
     <div class="container">
       <template v-if="user">
-        <h3 class="sub-title">欢迎注册 calibur.tv</h3>
         <p class="signed">
           你已经是注册用户了 (￣3￣)
           <br>
@@ -62,6 +85,21 @@
         class="sign-wrap"
       >
         <h3>欢迎注册 calibur.tv</h3>
+        <el-alert
+          type="info"
+          title=""
+        >
+          <p>注册之后，邀请者会收到短信提示，并且获得 1 枚金币；</p>
+          <p>由于站内视频流量过大，为了降低宽带费用，先需要注册后才能看番，影响到了大家的体验，非常抱歉；</p>
+          <p>另外
+            <a
+              href="/bangumi/34"
+              target="_blank"
+              class="href-fade-blue"
+            >《进击的巨人》</a>
+            资源每周同步更新，大家不要错过。
+          </p>
+        </el-alert>
         <sign-up-form :invite-code="inviteUserId"/>
       </div>
     </div>
@@ -69,37 +107,37 @@
 </template>
 
 <script>
-  import SignUpForm from '~/components/user/forms/SignUpForm'
+import SignUpForm from "~/components/user/forms/SignUpForm";
 
-  export default {
-    name: 'InviteUser',
-    components: {
-      SignUpForm
+export default {
+  name: "InviteUser",
+  components: {
+    SignUpForm
+  },
+  computed: {
+    inviteUserId() {
+      return this.$route.params.id;
     },
-    computed: {
-      inviteUserId () {
-        return this.$route.params.id
-      },
-      user () {
-        return this.$store.state.user
+    user() {
+      return this.$store.state.user;
+    }
+  },
+  mounted() {
+    this.watchCopyInviteLink();
+  },
+  methods: {
+    watchCopyInviteLink() {
+      if (!this.user) {
+        return;
       }
-    },
-    mounted () {
-      this.watchCopyInviteLink()
-    },
-    methods: {
-      watchCopyInviteLink () {
-        if (!this.user) {
-          return
-        }
-        this.$nextTick(() => {
-          const clipboard = new this.$copy(this.$refs.inviteBtn.$el)
+      this.$nextTick(() => {
+        const clipboard = new this.$copy(this.$refs.inviteBtn.$el);
 
-          clipboard.on('success', () => {
-            this.$toast.success('复制成功')
-          })
-        })
-      }
+        clipboard.on("success", () => {
+          this.$toast.success("复制成功");
+        });
+      });
     }
   }
+};
 </script>

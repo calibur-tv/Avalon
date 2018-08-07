@@ -1,22 +1,22 @@
 <style lang="scss" scoped>
-  .preview-poster {
-    height: 100px;
-    width: 500px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background-position: center right;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
+.preview-poster {
+  height: 100px;
+  width: 500px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-position: center right;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
-  .el-icon-question {
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 20px;
-    vertical-align: middle;
-    color: $color-gray-deep;
-  }
+.el-icon-question {
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  vertical-align: middle;
+  color: $color-gray-deep;
+}
 </style>
 
 <template>
@@ -107,128 +107,121 @@
 </template>
 
 <script>
-  import uploadMixin from '~/mixins/upload'
-  import ImageApi from '~/api/imageApi'
+import uploadMixin from "~/mixins/upload";
+import ImageApi from "~/api/imageApi";
 
-  export default {
-    name: 'CreateAlbumForm',
-    mixins: [
-      uploadMixin
-    ],
-    props: {
-      bangumiId: {
-        type: [Number, String],
-        default: ''
+export default {
+  name: "CreateAlbumForm",
+  mixins: [uploadMixin],
+  props: {
+    bangumiId: {
+      type: [Number, String],
+      default: ""
+    },
+    isCartoon: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    const validateName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请先填名字"));
+      }
+      if (value.length > 30) {
+        return callback(new Error("名字最长 30 个字"));
+      }
+      callback();
+    };
+    const validateBangumi = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请选择一个相关的番剧"));
+      }
+      callback();
+    };
+    const validatePart = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("漫画的集数是必填的"));
+      }
+      callback();
+    };
+    const validatePoster = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请给相册选择一个封面"));
+      }
+      callback();
+    };
+    return {
+      submitting: false,
+      form: {
+        name: "",
+        bangumi_id: this.bangumiId,
+        is_cartoon: this.isCartoon,
+        is_creator: false,
+        part: 0,
+        poster: null
       },
-      isCartoon: {
-        type: Boolean,
-        default: false
+      rule: {
+        name: [{ validator: validateName, trigger: "submit" }],
+        bangumi_id: [{ validator: validateBangumi, trigger: "submit" }],
+        part: [{ validator: validatePart, trigger: "submit" }],
+        poster: [{ validator: validatePoster, trigger: "submit" }]
       }
-    },
-    data() {
-      const validateName = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请先填名字'));
-        }
-        if (value.length > 30) {
-          return callback(new Error('名字最长 30 个字'));
-        }
-        callback();
-      };
-      const validateBangumi = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请选择一个相关的番剧'));
-        }
-        callback();
-      };
-      const validatePart = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('漫画的集数是必填的'));
-        }
-        callback();
-      };
-      const validatePoster = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请给相册选择一个封面'));
-        }
-        callback();
-      };
-      return {
-        submitting: false,
-        form: {
-          name: '',
-          bangumi_id: this.bangumiId,
-          is_cartoon: this.isCartoon,
-          is_creator: false,
-          part: 0,
-          poster: null
-        },
-        rule: {
-          name: [
-            { validator: validateName, trigger: 'submit' }
-          ],
-          bangumi_id: [
-            { validator: validateBangumi, trigger: 'submit' }
-          ],
-          part: [
-            { validator: validatePart, trigger: 'submit' }
-          ],
-          poster: [
-            { validator: validatePoster, trigger: 'submit' }
-          ]
-        }
-      };
-    },
-    computed: {
-      currentUserId () {
-        return this.$store.state.user.id
-      }
-    },
-    mounted() {
-      this.getUpToken();
-    },
-    methods: {
-      submit() {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            if (this.submitting) {
-              return
-            }
-            this.submitting = true;
-            const api = new ImageApi(this);
-            api.createAlbum(Object.assign({}, this.form, this.form.poster)).then((data) => {
+    };
+  },
+  computed: {
+    currentUserId() {
+      return this.$store.state.user.id;
+    }
+  },
+  mounted() {
+    this.getUpToken();
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          if (this.submitting) {
+            return;
+          }
+          this.submitting = true;
+          const api = new ImageApi(this);
+          api
+            .createAlbum(Object.assign({}, this.form, this.form.poster))
+            .then(data => {
               this.$refs.form.resetFields();
               this.$refs.upload.clearFiles();
-              this.$toast.success('创建成功');
+              this.$toast.success("创建成功");
               this.submitting = false;
-              this.$emit('success', data);
-            }).catch((err) => {
+              this.$emit("success", data);
+            })
+            .catch(err => {
               this.$toast.error(err);
               this.submitting = false;
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      beforePosterUpload(file) {
-        this.uploadConfig.max = 3;
-        this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`
-        return this.beforeImageUpload(file);
-      },
-      handleAlbumUploadSuccess (res) {
-        this.form.poster = {
-          url: res.data.key,
-          width: res.data.width,
-          height: res.data.height,
-          size: res.data.size,
-          type: res.data.type
+            });
+        } else {
+          return false;
         }
-        this.$toast.success('封面上传成功');
-      },
-      handlePosterRemove () {
-        this.form.poster = null
-      }
+      });
+    },
+    beforePosterUpload(file) {
+      this.uploadConfig.max = 3;
+      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`;
+      return this.beforeImageUpload(file);
+    },
+    handleAlbumUploadSuccess(res) {
+      this.form.poster = {
+        url: res.data.key,
+        width: res.data.width,
+        height: res.data.height,
+        size: res.data.size,
+        type: res.data.type
+      };
+      this.$toast.success("封面上传成功");
+    },
+    handlePosterRemove() {
+      this.form.poster = null;
     }
   }
+};
 </script>

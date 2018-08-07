@@ -1,24 +1,25 @@
 <style lang="scss">
-  .create-post-form {
-    .el-upload--picture-card, .el-upload-list__item {
-      width: 72px !important;
-      height: 72px !important;
-      line-height: 80px !important;
-    }
-
-    .el-upload-list,
-    .el-upload--picture-card {
-      float: left;
-    }
-
-    .el-icon-question {
-      margin-left: 10px;
-      cursor: pointer;
-      font-size: 20px;
-      vertical-align: middle;
-      color: $color-gray-deep;
-    }
+.create-post-form {
+  .el-upload--picture-card,
+  .el-upload-list__item {
+    width: 72px !important;
+    height: 72px !important;
+    line-height: 80px !important;
   }
+
+  .el-upload-list,
+  .el-upload--picture-card {
+    float: left;
+  }
+
+  .el-icon-question {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    vertical-align: middle;
+    color: $color-gray-deep;
+  }
+}
 </style>
 
 <template>
@@ -58,6 +59,17 @@
         class="item"
         effect="dark"
         content="只能选择你已关注的番剧"
+        placement="top"
+      >
+        <i class="el-icon-question"/>
+      </el-tooltip>
+    </el-form-item>
+    <el-form-item label="原创">
+      <el-switch v-model="forms.is_creator"/>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="如果帖子是转载的，请不要勾选"
         placement="top"
       >
         <i class="el-icon-question"/>
@@ -103,206 +115,232 @@
 </template>
 
 <script>
-  export default {
-    name: 'CreatePostForm',
-    data () {
-      return {
-        forms: {
-          title: '',
-          bangumiId: '',
-          content: ''
-        },
-        rules: {
-          title: [
-            { required: true, max: 40, message: '请输入帖子标题，最多40字', trigger: 'submit' }
-          ],
-          bangumiId: [
-            { type: 'number', required: true, message: '请选择相应番剧', trigger: 'change' }
-          ],
-          content: [
-            { required: true, max: 1000, message: '内容不能为空，且不超过1000字', trigger: 'submit' }
-          ]
-        },
-        uploadHeaders: {
-          token: ''
-        },
-        images: [],
-        exceed: 6,
-        appendBangumi: [],
-        loadingFetchBangumi: false,
-        submitting: false
+export default {
+  name: "CreatePostForm",
+  data() {
+    return {
+      forms: {
+        title: "",
+        bangumiId: "",
+        content: "",
+        is_creator: false
+      },
+      rules: {
+        title: [
+          {
+            required: true,
+            max: 40,
+            message: "请输入帖子标题，最多40字",
+            trigger: "submit"
+          }
+        ],
+        bangumiId: [
+          {
+            type: "number",
+            required: true,
+            message: "请选择相应番剧",
+            trigger: "change"
+          }
+        ],
+        content: [
+          {
+            required: true,
+            max: 1000,
+            message: "内容不能为空，且不超过1000字",
+            trigger: "submit"
+          }
+        ]
+      },
+      uploadHeaders: {
+        token: ""
+      },
+      images: [],
+      exceed: 6,
+      appendBangumi: [],
+      loadingFetchBangumi: false,
+      submitting: false
+    };
+  },
+  computed: {
+    postId() {
+      return this.$route.name === "post-show"
+        ? parseInt(this.$route.params.id, 10)
+        : 0;
+    },
+    bangumiId() {
+      return this.$route.name === "bangumi-show"
+        ? parseInt(this.$route.params.id, 10)
+        : 0;
+    },
+    formatImages() {
+      return this.images.map(item => item.img);
+    },
+    bangumis() {
+      return this.$store.state.users.self.followBangumi;
+    },
+    optionBangumis() {
+      return this.appendBangumi.concat(this.bangumis);
+    }
+  },
+  mounted() {
+    this.getUserFollowedBangumis();
+    this.$channel.$on("set-page-bangumi-for-post-create", data => {
+      this.saveBangumiAndSelected(data);
+    });
+    if (this.$store.state.login) {
+      this.getUpToken();
+    }
+  },
+  beforeDestroy() {
+    this.$channel.$off("set-page-bangumi-for-post-create");
+  },
+  methods: {
+    submit() {
+      if (!this.$store.state.login) {
+        this.$toast.info("继续操作前请先登录");
+        this.$channel.$emit("sign-in");
+        return;
       }
-    },
-    computed: {
-      postId () {
-        return this.$route.name === 'post-show' ? parseInt(this.$route.params.id, 10) : 0
-      },
-      bangumiId () {
-        return this.$route.name === 'bangumi-show' ? parseInt(this.$route.params.id, 10) : 0
-      },
-      formatImages () {
-        return this.images.map(item => item.img)
-      },
-      bangumis () {
-        return this.$store.state.users.self.followBangumi
-      },
-      optionBangumis () {
-        return this.appendBangumi.concat(this.bangumis)
+      if (this.submitting) {
+        return;
       }
-    },
-    mounted () {
-      this.getUserFollowedBangumis()
-      this.$channel.$on('set-page-bangumi-for-post-create', (data) => {
-        this.saveBangumiAndSelected(data)
-      })
-      if (this.$store.state.login) {
-        this.getUpToken()
-      }
-    },
-    beforeDestroy () {
-      this.$channel.$off('set-page-bangumi-for-post-create')
-    },
-    methods: {
-      submit () {
-        if (!this.$store.state.login) {
-          this.$toast.info('继续操作前请先登录')
-          this.$channel.$emit('sign-in')
-          return
-        }
-        if (this.submitting) {
-          return
-        }
-        this.submitting = true
-        this.$refs.forms.validate((valid) => {
-          if (valid) {
-            this.$captcha({
-              success: async ({ data }) => {
-                try {
-                  const id = await this.$store.dispatch('post/create', {
-                    title: this.forms.title,
-                    bangumiId: this.forms.bangumiId,
-                    desc: this.forms.content.substring(0, 120),
-                    content: this.$utils.convertPureTextToRich(this.forms.content),
-                    images: this.formatImages,
-                    geetest: data,
-                    ctx: this
-                  })
-                  this.images = []
-                  this.$refs.forms.resetFields()
-                  this.$emit('submit')
-                  this.$toast.success('发布成功！')
-                  window.location = this.$alias.post(id)
-                  this.submitting = false
-                } catch (err) {
-                  this.$toast.error(err)
-                  this.submitting = false
-                }
-              },
-              error: (e) => {
-                this.submitting = false
-                this.$toast.error(e)
-              },
-              close: () => {
-                this.submitting = false
+      this.submitting = true;
+      this.$refs.forms.validate(valid => {
+        if (valid) {
+          this.$captcha({
+            success: async ({ data }) => {
+              try {
+                const id = await this.$store.dispatch("post/create", {
+                  title: this.forms.title,
+                  bangumiId: this.forms.bangumiId,
+                  desc: this.forms.content.substring(0, 120),
+                  content: this.$utils.convertPureTextToRich(
+                    this.forms.content
+                  ),
+                  images: this.formatImages,
+                  geetest: data,
+                  ctx: this,
+                  is_creator: this.forms.is_creator
+                });
+                this.images = [];
+                this.$refs.forms.resetFields();
+                this.$emit("submit");
+                this.$toast.success("发布成功！");
+                window.location = this.$alias.post(id);
+                this.submitting = false;
+              } catch (err) {
+                this.$toast.error(err);
+                this.submitting = false;
               }
-            })
-          } else {
-            this.submitting = false
-            return false
-          }
-        })
-      },
-      async getUserFollowedBangumis () {
-        if (this.bangumiId) {
-          this.forms.bangumiId = this.bangumiId
+            },
+            error: e => {
+              this.submitting = false;
+              this.$toast.error(e);
+            },
+            close: () => {
+              this.submitting = false;
+            }
+          });
+        } else {
+          this.submitting = false;
+          return false;
         }
-        if (this.bangumis.length) {
-          this.$nextTick(() => {
-            this.$channel.$emit('get-page-bangumi-for-post-create')
-          })
-          return
-        }
-        if (this.loadingFetchBangumi) {
-          return
-        }
-        this.loadingFetchBangumi = true
-        try {
-          await this.$store.dispatch('users/getFollowBangumis', {
-            zone: this.$store.state.user.zone,
-            self: true
-          })
-        } catch (e) {
-          this.$toast.error(e)
-        } finally {
-          this.loadingFetchBangumi = false
-          this.$channel.$emit('get-page-bangumi-for-post-create')
-        }
-      },
-      handleError (err, file) {
-        console.log(err)
-        this.images.forEach((item, index) => {
-          if (item.id === file.uid) {
-            this.images.splice(index, 1)
-          }
-        })
-        this.$toast.error(`图片：${file.name} 上传失败`)
-      },
-      handleRemove (file) {
-        this.images.forEach((item, index) => {
-          if (item.id === file.uid) {
-            this.images.splice(index, 1)
-          }
-        })
-      },
-      handleSuccess (res, file) {
-        this.images.push({
-          id: file.uid,
-          img: res.data
-        })
-      },
-      handleExceed () {
-        this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
-      },
-      beforeUpload (file) {
-        if (!this.$store.state.login) {
-          this.$channel.$emit('sign-in')
-          return
-        }
-        const isFormat = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(file.type) !== -1
-        const isLt2M = file.size / 1024 / 1024 < 3
-
-        if (!isFormat) {
-          this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
-          return false
-        }
-        if (!isLt2M) {
-          this.$toast.error('图片大小不能超过 3MB!')
-          return false
-        }
-
-        this.uploadHeaders.key = this.$utils.createFileName({
-          userId: this.$store.state.user.id,
-          type: 'post',
-          id: this.postId || 0,
-          file
-        })
-        return true
-      },
-      async getUpToken () {
-        try {
-          await this.$store.dispatch('getUpToken', this)
-          this.uploadHeaders.token = this.$store.state.user.uptoken.upToken
-        } catch (e) {
-          this.$toast.error(e)
-        }
-      },
-      saveBangumiAndSelected (data) {
-        this.forms.bangumiId = data.id
-        if (this.optionBangumis.some(_ => _.id === data.id)) {
-          return
-        }
-        this.appendBangumi.push(data)
+      });
+    },
+    async getUserFollowedBangumis() {
+      if (this.bangumiId) {
+        this.forms.bangumiId = this.bangumiId;
       }
+      if (this.bangumis.length) {
+        this.$nextTick(() => {
+          this.$channel.$emit("get-page-bangumi-for-post-create");
+        });
+        return;
+      }
+      if (this.loadingFetchBangumi) {
+        return;
+      }
+      this.loadingFetchBangumi = true;
+      try {
+        await this.$store.dispatch("users/getFollowBangumis", {
+          zone: this.$store.state.user.zone,
+          self: true
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingFetchBangumi = false;
+        this.$channel.$emit("get-page-bangumi-for-post-create");
+      }
+    },
+    handleError(err, file) {
+      console.log(err);
+      this.images.forEach((item, index) => {
+        if (item.id === file.uid) {
+          this.images.splice(index, 1);
+        }
+      });
+      this.$toast.error(`图片：${file.name} 上传失败`);
+    },
+    handleRemove(file) {
+      this.images.forEach((item, index) => {
+        if (item.id === file.uid) {
+          this.images.splice(index, 1);
+        }
+      });
+    },
+    handleSuccess(res, file) {
+      this.images.push({
+        id: file.uid,
+        img: res.data
+      });
+    },
+    handleExceed() {
+      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`);
+    },
+    beforeUpload(file) {
+      if (!this.$store.state.login) {
+        this.$channel.$emit("sign-in");
+        return;
+      }
+      const isFormat =
+        ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
+          file.type
+        ) !== -1;
+      const isLt2M = file.size / 1024 / 1024 < 3;
+
+      if (!isFormat) {
+        this.$toast.error("仅支持 jpg / jpeg / png / gif 格式的图片");
+        return false;
+      }
+      if (!isLt2M) {
+        this.$toast.error("图片大小不能超过 3MB!");
+        return false;
+      }
+
+      this.uploadHeaders.key = this.$utils.createFileName({
+        userId: this.$store.state.user.id,
+        type: "post",
+        id: this.postId || 0,
+        file
+      });
+      return true;
+    },
+    async getUpToken() {
+      try {
+        await this.$store.dispatch("getUpToken", this);
+        this.uploadHeaders.token = this.$store.state.user.uptoken.upToken;
+      } catch (e) {
+        this.$toast.error(e);
+      }
+    },
+    saveBangumiAndSelected(data) {
+      this.forms.bangumiId = data.id;
+      if (this.optionBangumis.some(_ => _.id === data.id)) {
+        return;
+      }
+      this.appendBangumi.push(data);
     }
   }
+};
 </script>

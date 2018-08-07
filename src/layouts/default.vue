@@ -1,13 +1,13 @@
 <style lang="scss">
-  #layout-default {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
+#layout-default {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    >.main-view {
-      flex-grow: 1;
-    }
+  > .main-view {
+    flex-grow: 1;
   }
+}
 </style>
 
 <template>
@@ -23,20 +23,20 @@
 </template>
 
 <script>
-  import vFooter from '~/components/layouts/Footer'
-  import vMusic from '~/components/layouts/Music'
-  import ImageReader from '~/components/ImageReader'
-  import vCreator from '~/components/layouts/Creator'
-  import SideTools from '~/components/layouts/Tools'
+import vFooter from "~/components/layouts/Footer";
+import vMusic from "~/components/layouts/Music";
+import ImageReader from "~/components/ImageReader";
+import vCreator from "~/components/layouts/Creator";
+import SideTools from "~/components/layouts/Tools";
 
-  export default {
-    name: 'DefaultLayout',
-    components: {
-      vFooter,
-      ImageReader,
-      vCreator,
-      SideTools,
-      vMusic
-    }
+export default {
+  name: "DefaultLayout",
+  components: {
+    vFooter,
+    ImageReader,
+    vCreator,
+    SideTools,
+    vMusic
   }
+};
 </script>

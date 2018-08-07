@@ -1,17 +1,17 @@
 <style lang="scss">
-  .reset-password-form {
-    .submit-btn {
-      width: 100%;
-    }
-
-    .others {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 15px;
-    }
+.reset-password-form {
+  .submit-btn {
+    width: 100%;
   }
+
+  .others {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+}
 </style>
 
 <template>
@@ -60,160 +60,156 @@
 </template>
 
 <script>
-  import UserApi from '~/api/userApi'
+import UserApi from "~/api/userApi";
 
-  export default {
-    name: 'ResetPasswordForm',
-    data () {
-      const validateAccess = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请填写手机号'))
-        }
-        if (value.length !== 11) {
-          return callback(new Error('请填写11位手机号'))
-        }
-        callback()
+export default {
+  name: "ResetPasswordForm",
+  data() {
+    const validateAccess = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请填写手机号"));
       }
-      const validateSecret = (rule, value, callback) => {
-        if (value === '') {
-          return callback(new Error('请填写登录密码'))
-        }
-        if (value.length < 6) {
-          return callback(new Error('密码不能小于6位'))
-        }
-        if (value.length > 16) {
-          return callback(new Error('密码不能大于16位'))
-        }
-        if (!/^[a-z0-9]+$/i.test(value)) {
-          return callback(new Error('密码只能是英文和数字'))
-        }
-        callback()
+      if (value.length !== 11) {
+        return callback(new Error("请填写11位手机号"));
       }
-      return {
-        form: {
-          access: '',
-          secret: '',
-          authCode: ''
-        },
-        rule: {
-          access: [
-            { validator: validateAccess, trigger: 'blur' }
-          ],
-          secret: [
-            { validator: validateSecret, trigger: 'blur' }
-          ]
-        },
-        step: 0,
-        timeout: 0
+      callback();
+    };
+    const validateSecret = (rule, value, callback) => {
+      if (value === "") {
+        return callback(new Error("请填写登录密码"));
       }
-    },
-    computed: {
-      submitBtnText () {
-        if (this.step === 0) {
-          return '立即重置'
-        } else if (this.step === 1) {
-          return '提交中...'
-        } else if (this.step === 2) {
-          return '短信已发送'
-        } else if (this.step === 3) {
-          return '已重置'
-        }
+      if (value.length < 6) {
+        return callback(new Error("密码不能小于6位"));
+      }
+      if (value.length > 16) {
+        return callback(new Error("密码不能大于16位"));
+      }
+      if (!/^[a-z0-9]+$/i.test(value)) {
+        return callback(new Error("密码只能是英文和数字"));
+      }
+      callback();
+    };
+    return {
+      form: {
+        access: "",
+        secret: "",
+        authCode: ""
       },
-      submitBtnLoading () {
-        return this.step === 1 || this.step === 3
+      rule: {
+        access: [{ validator: validateAccess, trigger: "blur" }],
+        secret: [{ validator: validateSecret, trigger: "blur" }]
       },
-      submitBtnDisabled () {
-        return (
-            this.timeout !== 0 && this.step === 0
-          ) || this.step === 3
+      step: 0,
+      timeout: 0
+    };
+  },
+  computed: {
+    submitBtnText() {
+      if (this.step === 0) {
+        return "立即重置";
+      } else if (this.step === 1) {
+        return "提交中...";
+      } else if (this.step === 2) {
+        return "短信已发送";
+      } else if (this.step === 3) {
+        return "已重置";
       }
     },
-    methods: {
-      submitForm () {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            if (this.step === 0) {
-              this.getResetAuthCode()
-            }
-            if (this.step === 2) {
-              this.openConfirmModal()
-            }
-          } else {
-            return false
+    submitBtnLoading() {
+      return this.step === 1 || this.step === 3;
+    },
+    submitBtnDisabled() {
+      return (this.timeout !== 0 && this.step === 0) || this.step === 3;
+    }
+  },
+  methods: {
+    submitForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          if (this.step === 0) {
+            this.getResetAuthCode();
           }
-        })
-      },
-      getResetAuthCode () {
-        this.step = 1
-        this.$captcha({
-          success: async ({ data }) => {
-            const api = new UserApi()
-            try {
-              await api.sendMessage({
-                type: 'forgot_password',
-                phone_number: this.form.access,
-                geetest: data
-              })
-              this.step = 2
-              this.openConfirmModal()
-            } catch (err) {
-              this.$toast.error(err)
-              this.step = 0
-            } finally {
-              this.timeout = 60
-              const timer = setInterval(() => {
-                if (!--this.timeout) {
-                  this.step = 0
-                  clearInterval(timer)
-                }
-              }, 1000)
-            }
-          },
-          close: () => {
-            this.step = 0
-          },
-          error: (err) => {
-            this.step = 0
-            this.$toast.error(err)
+          if (this.step === 2) {
+            this.openConfirmModal();
           }
-        })
-      },
-      openConfirmModal () {
-        this.$prompt('请输入收到的验证码', '短信已发送', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d{6}$/,
-          inputErrorMessage: '验证码格式不正确'
-        }).then(({ value }) => {
-          this.form.authCode = value
-          this.step = 3
-          this.signReset()
-        }).catch(() => {})
-      },
-      async signReset () {
-        const api = new UserApi()
-        try {
-          const res = await api.resetPassword({
-            access: this.form.access,
-            authCode: this.form.authCode,
-            secret: this.form.secret
-          })
-          this.$toast.success(res)
-          this.showLogin()
-        } catch (err) {
-          this.$toast.error(err)
-        } finally {
-          this.step = 0
+        } else {
+          return false;
         }
-      },
-      showLogin () {
-        this.$emit('to-login')
-        this.$refs.form.resetFields()
-      },
-      showRegister () {
-        this.$emit('to-register')
-        this.$refs.form.resetFields()
+      });
+    },
+    getResetAuthCode() {
+      this.step = 1;
+      this.$captcha({
+        success: async ({ data }) => {
+          const api = new UserApi();
+          try {
+            await api.sendMessage({
+              type: "forgot_password",
+              phone_number: this.form.access,
+              geetest: data
+            });
+            this.step = 2;
+            this.openConfirmModal();
+          } catch (err) {
+            this.$toast.error(err);
+            this.step = 0;
+          } finally {
+            this.timeout = 60;
+            const timer = setInterval(() => {
+              if (!--this.timeout) {
+                this.step = 0;
+                clearInterval(timer);
+              }
+            }, 1000);
+          }
+        },
+        close: () => {
+          this.step = 0;
+        },
+        error: err => {
+          this.step = 0;
+          this.$toast.error(err);
+        }
+      });
+    },
+    openConfirmModal() {
+      this.$prompt("请输入收到的验证码", "短信已发送", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d{6}$/,
+        inputErrorMessage: "验证码格式不正确"
+      })
+        .then(({ value }) => {
+          this.form.authCode = value;
+          this.step = 3;
+          this.signReset();
+        })
+        .catch(() => {});
+    },
+    async signReset() {
+      const api = new UserApi();
+      try {
+        const res = await api.resetPassword({
+          access: this.form.access,
+          authCode: this.form.authCode,
+          secret: this.form.secret
+        });
+        this.$toast.success(res);
+        this.showLogin();
+      } catch (err) {
+        this.$toast.error(err);
+      } finally {
+        this.step = 0;
       }
+    },
+    showLogin() {
+      this.$emit("to-login");
+      this.$refs.form.resetFields();
+    },
+    showRegister() {
+      this.$emit("to-register");
+      this.$refs.form.resetFields();
     }
   }
+};
 </script>

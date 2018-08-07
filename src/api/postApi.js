@@ -1,41 +1,47 @@
-import BaseApi from './_baseApi';
+import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
-  create({
-    title, bangumiId, content, images, desc, geetest,
-  }) {
-    return this.http.post('post/create', {
-      title, bangumiId, content, images, desc, geetest,
+  create({ title, bangumiId, content, images, desc, geetest, is_creator }) {
+    return this.http.post("post/create", {
+      title,
+      bangumiId,
+      content,
+      images,
+      desc,
+      geetest,
+      is_creator
     });
   }
 
-  show({
-    id, page, take, only, replyId,
-  }) {
+  show({ id, page, take, only, replyId }) {
     return this.http.get(`post/${id}/show`, {
       params: {
-        page, take, only, replyId,
-      },
+        page,
+        take,
+        only,
+        replyId
+      }
     });
   }
 
-  reply({
-    postId, images, content, geetest,
-  }) {
+  reply({ postId, images, content, geetest }) {
     return this.http.post(`post/${postId}/reply`, {
-      images, content, geetest,
+      images,
+      content,
+      geetest
     });
   }
 
   comment({ postId, content, targetUserId }) {
     return this.http.post(`post/${postId}/comment`, {
-      content, targetUserId,
+      content,
+      targetUserId
     });
   }
 
   comments({ postId, page }) {
     return this.http.get(`post/${postId}/comments`, {
-      params: { page },
+      params: { page }
     });
   }
 
@@ -55,19 +61,19 @@ export default class extends BaseApi {
     return this.http.post(`post/${id}/toggleMark`);
   }
 
-  setTop ({ id }) {
-    return this.http.post('post/manager/top/set', { id })
+  setTop({ id }) {
+    return this.http.post("post/manager/top/set", { id });
   }
 
-  removeTop ({ id }) {
-    return this.http.post('post/manager/top/remove', { id })
+  removeTop({ id }) {
+    return this.http.post("post/manager/top/remove", { id });
   }
 
-  setNice ({ id }) {
-    return this.http.post('post/manager/nice/set', { id })
+  setNice({ id }) {
+    return this.http.post("post/manager/nice/set", { id });
   }
 
-  removeNice ({ id }) {
-    return this.http.post('post/manager/nice/remove', { id })
+  removeNice({ id }) {
+    return this.http.post("post/manager/nice/remove", { id });
   }
 }

@@ -1,8 +1,3 @@
-<style lang="scss">
-  .search-nothing-post {
-  }
-</style>
-
 <template>
   <div class="search-nothing-post">
     <no-content/>
@@ -10,7 +5,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'SearchNothingPost'
-  }
+export default {
+  name: "SearchNothingPost"
+};
 </script>

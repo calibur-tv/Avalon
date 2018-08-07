@@ -1,55 +1,55 @@
 <style lang="scss">
-  .search-item-user {
-    position: relative;
-    padding: 20px 0;
-    border-bottom: 1px solid $color-gray-normal;
-    @extend %clearfix;
+.search-item-user {
+  position: relative;
+  padding: 20px 0;
+  border-bottom: 1px solid $color-gray-normal;
+  @extend %clearfix;
 
-    .avatar {
-      float: left;
-      margin-right: 12px;
-      @include avatar-2(90px)
+  .avatar {
+    float: left;
+    margin-right: 12px;
+    @include avatar-2(90px);
+  }
+
+  .intro {
+    overflow: hidden;
+
+    .head {
+      margin-bottom: 12px;
+
+      .badge {
+        display: inline-block;
+        height: 22px;
+        padding: 0 10px;
+        border: 1px solid #979797;
+        color: #979797;
+        text-align: center;
+        line-height: 22px;
+        border-radius: 100px;
+        margin-right: 12px;
+        font-size: 12px;
+      }
+
+      .nickname {
+        color: #222;
+        font-size: 16px;
+        margin-right: 14px;
+        font-weight: 700;
+        line-height: 21px;
+
+        &:hover {
+          color: $color-blue-light;
+        }
+      }
     }
 
-    .intro {
-      overflow: hidden;
-
-      .head {
-        margin-bottom: 12px;
-
-        .badge {
-          display: inline-block;
-          height: 22px;
-          padding: 0 10px;
-          border: 1px solid #979797;
-          color: #979797;
-          text-align: center;
-          line-height: 22px;
-          border-radius: 100px;
-          margin-right: 12px;
-          font-size: 12px;
-        }
-
-        .nickname {
-          color: #222;
-          font-size: 16px;
-          margin-right: 14px;
-          font-weight: 700;
-          line-height: 21px;
-
-          &:hover {
-            color: $color-blue-light;
-          }
-        }
-      }
-
-      .signature {
-        font-size: 12px;
-        color: #6d757a;
-        @include twoline(16px)
-      }
+    .signature {
+      font-size: 12px;
+      color: #6d757a;
+      @include twoline(16px);
     }
   }
+}
 </style>
 
 <template>
@@ -86,18 +86,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'SearchItemUser',
-    props: {
-      item: {
-        required: true,
-        type: Object
-      },
-      inCommon: {
-        required: true,
-        type: Boolean,
-        default: false
-      }
+export default {
+  name: "SearchItemUser",
+  props: {
+    item: {
+      required: true,
+      type: Object
+    },
+    inCommon: {
+      required: true,
+      type: Boolean,
+      default: false
     }
   }
+};
 </script>

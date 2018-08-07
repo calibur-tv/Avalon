@@ -73,25 +73,25 @@
 </template>
 
 <script>
-  export default {
-    name: 'SidebarItem',
-    props: {
-      routes: {
-        type: Array,
-        default: () => []
-      },
-      isNest: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  name: "SidebarItem",
+  props: {
+    routes: {
+      type: Array,
+      default: () => []
     },
-    methods: {
-      hasOneShowingChildren(children) {
-        const showingChildren = children.filter(item => {
-          return !item.hidden
-        })
-        return showingChildren.length === 1;
-      }
+    isNest: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    hasOneShowingChildren(children) {
+      const showingChildren = children.filter(item => {
+        return !item.hidden;
+      });
+      return showingChildren.length === 1;
     }
   }
+};
 </script>

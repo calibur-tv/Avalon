@@ -1,25 +1,25 @@
-import Vue from 'vue';
-import env from 'env';
-import Alias from '~/assets/js/alias';
-import Utils from '~/assets/js/utils';
-import ImageLazy from '~/assets/js/imagelazy';
-import NoSSR from '~/assets/js/nossr';
-import Time from '~/assets/js/timeago';
-import BangumiPanel from '~/components/bangumi/BangumiPanel';
-import NoContent from '~/components/NoContent';
-import Hr from '~/components/common/Hr';
-import Header from '~/components/layouts/Header';
-import Share from '~/components/common/Share';
-import Dialog from '~/components/common/Dialog';
-import Layout from '~/components/layouts/Layout';
-import AvaDialog from '~/components/common/AvaDialog';
-import BangumiSearch from '~/components/search/BangumiSearch'
-import ElementUI from 'element-ui';
-import '~/assets/css/element-ui.scss';
-import VCharts from 'v-charts';
-import Affix from '~/components/common/Affix';
+import Vue from "vue";
+import env from "env";
+import Alias from "~/assets/js/alias";
+import Utils from "~/assets/js/utils";
+import ImageLazy from "~/assets/js/imagelazy";
+import NoSSR from "~/assets/js/nossr";
+import Time from "~/assets/js/timeago";
+import BangumiPanel from "~/components/bangumi/BangumiPanel";
+import NoContent from "~/components/NoContent";
+import Hr from "~/components/common/Hr";
+import Header from "~/components/layouts/Header";
+import Share from "~/components/common/Share";
+import Dialog from "~/components/common/Dialog";
+import Layout from "~/components/layouts/Layout";
+import AvaDialog from "~/components/common/AvaDialog";
+import BangumiSearch from "~/components/search/BangumiSearch";
+import ElementUI from "element-ui";
+import "~/assets/css/element-ui.scss";
+import VCharts from "v-charts";
+import Affix from "~/components/common/Affix";
 
-import { InfiniteScroll } from 'mint-ui';
+import { InfiniteScroll } from "mint-ui";
 
 Vue.use(VCharts);
 Vue.use(ElementUI);
@@ -49,11 +49,12 @@ Vue.use({
 
     Vue.prototype.$alias = Alias;
 
-    Vue.prototype.$imageAcceptStr = 'image/png, image/jpeg, image/jpg, image/x-png, image/gif';
+    Vue.prototype.$imageAcceptStr =
+      "image/png, image/jpeg, image/jpg, image/x-png, image/gif";
 
     Vue.prototype.$resize = (url, options = {}) => {
       if (!url) {
-        return '';
+        return "";
       }
 
       if (/imageMogr2/.test(url)) {
@@ -69,10 +70,11 @@ Vue.use({
           return window.supportWebP;
         }
 
-        const elem = document.createElement('canvas');
+        const elem = document.createElement("canvas");
 
-        if (elem.getContext && elem.getContext('2d')) {
-          const support = elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+        if (elem.getContext && elem.getContext("2d")) {
+          const support =
+            elem.toDataURL("image/webp").indexOf("data:image/webp") === 0;
           window.supportWebP = support;
           return support;
         }
@@ -80,10 +82,13 @@ Vue.use({
         return false;
       };
 
-      const format = canUseWebP() ? '/format/webp' : '';
+      const format = canUseWebP() ? "/format/webp" : "";
       const mode = options.mode === undefined ? 1 : options.mode;
 
-      if ((mode === 1 && !options.width) || (!options.width && !options.height)) {
+      if (
+        (mode === 1 && !options.width) ||
+        (!options.width && !options.height)
+      ) {
         return `${link}?imageMogr2/auto-orient/strip${format}`;
       }
 
@@ -92,15 +97,17 @@ Vue.use({
 
       if (mode === 1) {
         width = `/w/${options.width}`;
-        height = options.height ? `/h/${options.height}` : `/h/${options.width}`;
+        height = options.height
+          ? `/h/${options.height}`
+          : `/h/${options.width}`;
       } else {
-        width = options.width ? `/w/${options.width}` : '';
-        height = options.height ? `/h/${options.height}` : '';
+        width = options.width ? `/w/${options.width}` : "";
+        height = options.height ? `/h/${options.height}` : "";
       }
 
       return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`;
     };
-  },
+  }
 });
 
 Vue.mixin({
@@ -114,6 +121,6 @@ Vue.mixin({
       }
 
       return height / width;
-    },
-  },
+    }
+  }
 });

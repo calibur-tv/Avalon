@@ -1,9 +1,3 @@
-<style lang="scss">
-  #error-404 {
-
-  }
-</style>
-
 <template>
   <div id="error-404">
     <p>您查找的页面不存在</p>
@@ -19,7 +13,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error404'
-  }
+export default {
+  name: "Error404"
+};
 </script>

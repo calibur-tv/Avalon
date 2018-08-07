@@ -1,82 +1,82 @@
 <style lang="scss">
-  .search-item-post {
-    position: relative;
-    padding: 20px 0;
-    border-bottom: 1px solid $color-gray-normal;
-    @extend %clearfix;
+.search-item-post {
+  position: relative;
+  padding: 20px 0;
+  border-bottom: 1px solid $color-gray-normal;
+  @extend %clearfix;
 
-    .head {
-      margin-bottom: 12px;
+  .head {
+    margin-bottom: 12px;
 
-      .badge {
-        display: inline-block;
-        height: 22px;
-        padding: 0 10px;
-        border: 1px solid #979797;
-        color: #979797;
-        text-align: center;
-        line-height: 22px;
-        border-radius: 100px;
-        margin-right: 12px;
-        font-size: 12px;
-      }
-
-      .title {
-        color: #222;
-        font-size: 16px;
-        margin-right: 14px;
-        font-weight: 700;
-        line-height: 21px;
-
-        &:hover {
-          color: $color-blue-light;
-        }
-      }
-    }
-
-    .desc {
+    .badge {
+      display: inline-block;
+      height: 22px;
+      padding: 0 10px;
+      border: 1px solid #979797;
+      color: #979797;
+      text-align: center;
+      line-height: 22px;
+      border-radius: 100px;
+      margin-right: 12px;
       font-size: 12px;
-      color: $color-text-normal;
-      @include twoline(16px)
     }
 
-    .images {
-      height: 90px;
-      overflow: hidden;
-      margin-top: 10px;
-      margin-bottom: 15px;
+    .title {
+      color: #222;
+      font-size: 16px;
+      margin-right: 14px;
+      font-weight: 700;
+      line-height: 21px;
 
-      .image-box {
-        margin-right: 10px;
-        height: 100%;
-        position: relative;
-        float: left;
-        cursor: zoom-in;
-
-        &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background-color: #fff;
-          opacity: 0;
-        }
-
-        &:hover {
-          &:after {
-            opacity: 0.1;
-          }
-        }
-
-        img {
-          height: 100%;
-          width: auto;
-        }
+      &:hover {
+        color: $color-blue-light;
       }
     }
   }
+
+  .desc {
+    font-size: 12px;
+    color: $color-text-normal;
+    @include twoline(16px);
+  }
+
+  .images {
+    height: 90px;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 15px;
+
+    .image-box {
+      margin-right: 10px;
+      height: 100%;
+      position: relative;
+      float: left;
+      cursor: zoom-in;
+
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        opacity: 0;
+      }
+
+      &:hover {
+        &:after {
+          opacity: 0.1;
+        }
+      }
+
+      img {
+        height: 100%;
+        width: auto;
+      }
+    }
+  }
+}
 </style>
 
 <template>
@@ -119,18 +119,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'SearchItemPost',
-    props: {
-      item: {
-        required: true,
-        type: Object
-      },
-      inCommon: {
-        type: Boolean,
-        required: true,
-        default: false
-      }
+export default {
+  name: "SearchItemPost",
+  props: {
+    item: {
+      required: true,
+      type: Object
+    },
+    inCommon: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   }
+};
 </script>

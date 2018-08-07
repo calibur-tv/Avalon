@@ -1,7 +1,4 @@
-import {
-  orderBy,
-  throttle,
-} from 'lodash';
+import { orderBy, throttle } from "lodash";
 
 export default {
   shortenNumber(num) {
@@ -9,7 +6,10 @@ export default {
   },
 
   camelize(string, uppercaseFirstLetter = true) {
-    const camelizeString = string.replace(/(?:^|[-])(\w)/g, (_, c) => (c ? c.toUpperCase() : ''));
+    const camelizeString = string.replace(
+      /(?:^|[-])(\w)/g,
+      (_, c) => (c ? c.toUpperCase() : "")
+    );
     if (uppercaseFirstLetter) {
       return camelizeString;
     }
@@ -19,7 +19,7 @@ export default {
   setStyle(element, styleName, value) {
     if (!element || !styleName) return;
 
-    if (typeof styleName === 'object') {
+    if (typeof styleName === "object") {
       for (const prop in styleName) {
         if (styleName.hasOwnProperty(prop)) {
           this.setStyle(element, prop, styleName[prop]);
@@ -27,8 +27,10 @@ export default {
       }
     } else {
       styleName = this.camelize(styleName, false); // eslint-disable-line no-param-reassign
-      if (styleName === 'opacity' && Number(document.documentMode) < 9) {
-        element.style.filter = isNaN(value) ? '' : `alpha(opacity=${value * 100})`;
+      if (styleName === "opacity" && Number(document.documentMode) < 9) {
+        element.style.filter = isNaN(value)
+          ? ""
+          : `alpha(opacity=${value * 100})`;
       } else {
         element.style[styleName] = value;
       }
@@ -44,19 +46,25 @@ export default {
       ? time.toString().length === 13
         ? parseInt((time - 0) / 1000, 10)
         : time * 1000
-      : time.replace(/-/g, '/');
+      : time.replace(/-/g, "/");
     const date = new Date(formatTime);
-    return `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).substr(-2)}-${(`0${date.getDate()}`).substr(-2)} ${(`0${date.getHours()}`).substr(-2)}:${(`0${date.getMinutes()}`).substr(-2)}:${(`0${date.getSeconds()}`).substr(-2)}`;
+    return `${date.getFullYear()}-${`0${date.getMonth() + 1}`.substr(
+      -2
+    )}-${`0${date.getDate()}`.substr(-2)} ${`0${date.getHours()}`.substr(
+      -2
+    )}:${`0${date.getMinutes()}`.substr(-2)}:${`0${date.getSeconds()}`.substr(
+      -2
+    )}`;
   },
 
-  truncate(str = '', len = 200, startIndex = 0) {
+  truncate(str = "", len = 200, startIndex = 0) {
     return str.substring(startIndex, len);
   },
 
-  createFileName({
-    userId, type, id, file,
-  }) {
-    return `user/${userId}/${type}/${id}/${new Date().getTime()}-${Math.random().toString(36).substring(3, 6)}.${file.type.split('/').pop()}`;
+  createFileName({ userId, type, id, file }) {
+    return `user/${userId}/${type}/${id}/${new Date().getTime()}-${Math.random()
+      .toString(36)
+      .substring(3, 6)}.${file.type.split("/").pop()}`;
   },
 
   getOffsetTop(elem) {
@@ -65,21 +73,21 @@ export default {
       if (!isNaN(elem.offsetTop)) {
         offsetTop += elem.offsetTop;
       }
-    } while (elem = elem.offsetParent); // eslint-disable-line no-cond-assign
+    } while ((elem = elem.offsetParent)); // eslint-disable-line no-cond-assign
     return offsetTop;
   },
 
   convertPureTextToRich(content) {
-    while (content.match('\n\n\n') !== null) {
-      content = content.replace(/\n\n\n/g, '\n\n')
+    while (content.match("\n\n\n") !== null) {
+      content = content.replace(/\n\n\n/g, "\n\n");
     }
-    content = content.split('\n')
+    content = content.split("\n");
 
-    const res = []
+    const res = [];
     content.forEach(item => {
-      res.push(item ? `<p>${item}</p>` : '<p><br/></p>')
-    })
+      res.push(item ? `<p>${item}</p>` : "<p><br/></p>");
+    });
 
-    return res.join('')
+    return res.join("");
   }
 };

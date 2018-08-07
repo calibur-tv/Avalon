@@ -1,5 +1,5 @@
-import Api from '~/api/bangumiApi';
-import CartoonRoleApi from '~/api/cartoonRoleApi';
+import Api from "~/api/bangumiApi";
+import CartoonRoleApi from "~/api/cartoonRoleApi";
 
 const state = () => ({
   follows: null,
@@ -7,13 +7,13 @@ const state = () => ({
   timeline: {
     data: [],
     year: new Date().getFullYear(),
-    noMore: false,
+    noMore: false
   },
   category: {
     data: [],
     noMore: false,
     page: 0,
-    take: 10,
+    take: 10
   },
   tags: [],
   info: null,
@@ -22,27 +22,27 @@ const state = () => ({
     data: [],
     total: 0,
     take: 10,
-    type: 'new',
-    noMore: false,
+    type: "new",
+    noMore: false
   },
   videos: {
     list: [],
     total: 0,
     has_season: false,
-    fetched: false,
+    fetched: false
   },
   roles: {
     id: 0,
     data: [],
-    noMore: false,
+    noMore: false
   },
   cartoon: {
     page: 0,
     take: 12,
-    sort: 'desc',
+    sort: "desc",
     total: 0,
     list: [],
-    noMore: false,
+    noMore: false
   },
   topPosts: []
 });
@@ -71,21 +71,9 @@ const mutations = {
       }
     });
   },
-  SET_FOLLOW(state, { followed, self }) {
-    if (!state.info) {
-      return;
-    }
-    state.info.followed = followed;
-    followed ? state.info.count_like++ : state.info.count_like--;
-    if (followed) {
-      state.info.followers.unshift(self);
-    } else {
-      state.info.followers.forEach((user, index) => {
-        if (user.zone === self.zone) {
-          state.info.followers.splice(index, 1);
-        }
-      });
-    }
+  SET_FOLLOW(state, { result }) {
+    state.info.followed = result;
+    result ? state.info.count_like++ : state.info.count_like--;
   },
   SET_RELEASED(state, data) {
     state.released = data;
@@ -97,9 +85,11 @@ const mutations = {
     state.timeline.noMore = data.noMore;
   },
   SET_TAGS(state, { tags, id }) {
-    const ids = id ? id.split('-') : undefined;
+    const ids = id ? id.split("-") : undefined;
     tags.forEach((tag, index) => {
-      tags[index].selected = ids ? ids.indexOf(tag.id.toString()) !== -1 : false;
+      tags[index].selected = ids
+        ? ids.indexOf(tag.id.toString()) !== -1
+        : false;
     });
     state.tags = tags;
   },
@@ -112,20 +102,22 @@ const mutations = {
     const posts = state.posts.data.concat(data);
     state.posts.data = posts;
     state.posts.total = total;
-    state.posts.noMore = posts.length >= total || data.length < state.posts.take;
+    state.posts.noMore =
+      posts.length >= total || data.length < state.posts.take;
   },
-  SET_TOP_POST (state, data) {
-    state.topPosts = data
+  SET_TOP_POST(state, data) {
+    state.topPosts = data;
   },
   SET_IMAGES(state, { data, total }) {
     const images = state.images.data.concat(data);
     state.images.data = images;
     state.images.total = total;
-    state.images.noMore = images.length >= total || data.length < state.images.take;
+    state.images.noMore =
+      images.length >= total || data.length < state.images.take;
   },
   SET_BANGUMI(state, data) {
     state.info = Object.assign(data, {
-      noMoreFollowers: data.followers.length < 10,
+      noMoreFollowers: data.followers.length < 10
     });
   },
   SET_VIDEOS(state, data) {
@@ -133,7 +125,7 @@ const mutations = {
       list: data.videos,
       total: data.total,
       has_season: data.has_season,
-      fetched: true,
+      fetched: true
     };
   },
   SET_BANGUMI_FOLLOWERS(state, data) {
@@ -142,7 +134,7 @@ const mutations = {
     state.followersPage += 1;
   },
   SET_BANGUMI_INFO(state, { key, value }) {
-    state.info[key] = value
+    state.info[key] = value;
   },
   SET_BANGUMI_CARTOON(state, data) {
     state.cartoon.list = state.cartoon.list.concat(data.list);
@@ -151,8 +143,8 @@ const mutations = {
     state.cartoon.page = state.cartoon.page + 1;
   },
   REVERSE_CARTOON(state, { sort }) {
-    state.cartoon.list = state.cartoon.list.reverse()
-    state.cartoon.sort = sort
+    state.cartoon.list = state.cartoon.list.reverse();
+    state.cartoon.sort = sort;
   },
   RESET_CARTOON(state, { sort }) {
     state.cartoon = {
@@ -161,8 +153,8 @@ const mutations = {
       sort,
       total: 0,
       list: [],
-      noMore: false,
-    }
+      noMore: false
+    };
   }
 };
 
@@ -173,29 +165,29 @@ const actions = {
     }
     const api = new Api(ctx);
     const tags = await api.tags();
-    commit('SET_TAGS', { tags, id });
+    commit("SET_TAGS", { tags, id });
   },
   async getBangumi({ commit }, { ctx, id }) {
     const api = new Api(ctx);
     const data = await api.show(id);
-    commit('SET_BANGUMI', data);
+    commit("SET_BANGUMI", data);
   },
   async getVideos({ commit }, { id, ctx }) {
     const api = new Api(ctx);
     const data = await api.videos(id);
-    commit('SET_VIDEOS', data);
+    commit("SET_VIDEOS", data);
   },
   async follow({ commit, rootState }, { ctx, id }) {
     const api = new Api(ctx);
     const followed = await api.follow(id);
-    commit('SET_FOLLOW', {
+    commit("SET_FOLLOW", {
       followed,
       self: {
         id: rootState.user.id,
         zone: rootState.user.zone,
         avatar: rootState.user.avatar,
-        nickname: rootState.user.nickname,
-      },
+        nickname: rootState.user.nickname
+      }
     });
     return followed;
   },
@@ -205,7 +197,7 @@ const actions = {
     }
     const api = new Api(ctx);
     const data = await api.released();
-    commit('SET_RELEASED', data);
+    commit("SET_RELEASED", data);
   },
   async getTimeline({ state, commit }, ctx) {
     if (state.timeline.noMore) {
@@ -214,18 +206,18 @@ const actions = {
     const api = new Api(ctx);
     const data = await api.timeline({
       year: state.timeline.year,
-      take: state.timeline.take,
+      take: state.timeline.take
     });
-    commit('SET_TIMELINE', data);
+    commit("SET_TIMELINE", data);
   },
   async getCategory({ state, commit }, { id, ctx }) {
     const api = new Api(ctx);
     const data = await api.category({
       id,
       page: state.category.page,
-      take: state.category.take,
+      take: state.category.take
     });
-    commit('SET_CATEGORY', data);
+    commit("SET_CATEGORY", data);
   },
   async getPosts({ state, commit }, { id, ctx }) {
     const api = new Api(ctx);
@@ -233,11 +225,13 @@ const actions = {
       id,
       take: state.posts.take,
       type: state.posts.type,
-      minId: state.posts.data.length ? state.posts.data[state.posts.data.length - 1].id : 0,
+      minId: state.posts.data.length
+        ? state.posts.data[state.posts.data.length - 1].id
+        : 0
     });
-    commit('SET_POSTS', {
+    commit("SET_POSTS", {
       data: data.list,
-      total: data.total,
+      total: data.total
     });
   },
   async getRoles({ state, commit }, { bangumiId, ctx }) {
@@ -246,16 +240,14 @@ const actions = {
     }
     const api = new Api(ctx);
     const data = await api.roles({ bangumiId });
-    commit('SET_ROLES', { data, bangumiId });
+    commit("SET_ROLES", { data, bangumiId });
     return data;
   },
-  async starRole({ commit }, {
-    bangumiId, roleId, ctx, hasStar,
-  }) {
+  async starRole({ commit }, { bangumiId, roleId, ctx, hasStar }) {
     const api = new CartoonRoleApi(ctx);
     try {
       await api.star({ bangumiId, roleId });
-      commit('ADD_ROLE_STATE', { roleId, hasStar });
+      commit("ADD_ROLE_STATE", { roleId, hasStar });
     } catch (e) {}
   },
   async getFollowers({ state, commit }, { ctx, bangumiId, take }) {
@@ -263,9 +255,9 @@ const actions = {
     const data = await api.followers({
       take,
       bangumiId,
-      page: state.followersPage,
+      page: state.followersPage
     });
-    commit('SET_BANGUMI_FOLLOWERS', data);
+    commit("SET_BANGUMI_FOLLOWERS", data);
   },
   async getCartoons({ state, commit }, { ctx, bangumiId }) {
     const api = new Api(ctx);
@@ -275,14 +267,14 @@ const actions = {
       take: state.cartoon.take,
       sort: state.cartoon.sort
     });
-    data && commit('SET_BANGUMI_CARTOON', data);
+    data && commit("SET_BANGUMI_CARTOON", data);
   },
   async changeCartoonSort({ state, commit }, { ctx, bangumiId, sort }) {
     if (state.cartoon.noMore) {
-      commit('REVERSE_CARTOON', { sort });
-      return
+      commit("REVERSE_CARTOON", { sort });
+      return;
     }
-    commit('RESET_CARTOON', { sort });
+    commit("RESET_CARTOON", { sort });
     const api = new Api(ctx);
     const data = await api.cartoon({
       take: state.cartoon.take,
@@ -290,12 +282,12 @@ const actions = {
       bangumiId,
       sort
     });
-    data && commit('SET_BANGUMI_CARTOON', data);
+    data && commit("SET_BANGUMI_CARTOON", data);
   },
   async getTopPosts({ commit }, { ctx, id }) {
     const api = new Api(ctx);
-    const data = await api.getTopPosts({ id })
-    commit('SET_TOP_POST', data)
+    const data = await api.getTopPosts({ id });
+    commit("SET_TOP_POST", data);
   }
 };
 
@@ -306,5 +298,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
+  getters
 };
