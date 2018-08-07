@@ -157,10 +157,6 @@
     font-size: 13px;
     color: $color-text-light;
 
-    .done {
-      color: $color-blue-normal;
-    }
-
     .v-share {
       display: inline-block;
 
@@ -305,17 +301,21 @@
         :desc="item.desc"
         type="button"
       />
-      <span :class="{ 'done': item.marked }">
+      <span>
         <i class="iconfont icon-buoumaotubiao44"/>
         收藏数&nbsp;({{ item.mark_count }})
       </span>
-      <span :class="{ 'done': item.liked }">
+      <span v-if="item.is_creator">
+        <i class="iconfont icon-guanzhu"/>
+        投食数&nbsp;({{ item.reward_count }})
+      </span>
+      <span v-else>
         <i class="iconfont icon-guanzhu"/>
         喜欢数&nbsp;({{ item.like_count }})
       </span>
       <span>
         <i class="iconfont icon-ai-eye"/>
-        阅读数&nbsp;({{ item.view_count }})
+        评论数&nbsp;({{ item.comment_count }})
       </span>
     </div>
   </li>
