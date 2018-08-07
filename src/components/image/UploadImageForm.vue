@@ -27,50 +27,6 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
-
-.choice-album-item {
-  .meta {
-    float: right;
-    height: 24px;
-    margin-top: 5px;
-    width: 24px;
-    line-height: 24px;
-    font-size: 12px;
-    border-radius: 3px;
-    text-align: center;
-    color: #fff;
-    margin-left: 10px;
-  }
-
-  .image-count {
-    background-color: $color-gray-deep;
-  }
-
-  .is-creator {
-    background-color: gold;
-  }
-
-  .is-cartoon {
-    background-color: $color-pink-deep;
-  }
-
-  .info {
-    overflow: hidden;
-
-    img {
-      width: 24px;
-      height: 24px;
-      border-radius: 3px;
-      margin-right: 5px;
-      margin-top: -2px;
-      vertical-align: middle;
-    }
-
-    span {
-      font-size: 14px;
-    }
-  }
-}
 </style>
 
 <template>
@@ -96,39 +52,11 @@
         label="相册"
         prop="album_id"
       >
-        <el-select
+        <image-album-select
           v-model="form.album_id"
-          :filterable="true"
-          :clearable="true"
-          :loading="fetchingAlbum"
-          style="width: 100%"
+          :append="appendAlbums"
           placeholder="【批量上传】选择要上传图片的相册"
-        >
-          <el-option
-            v-for="item in selectionAlbum"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-            class="choice-album-item"
-          >
-            <div
-              class="image-count meta"
-              v-text="item.image_count"
-            />
-            <div
-              v-if="item.is_creator"
-              class="is-creator meta"
-            >创</div>
-            <div
-              v-if="item.is_cartoon"
-              class="is-cartoon meta"
-            >漫</div>
-            <div class="info">
-              <img :src="$resize(item.poster, { width: 48 })">
-              <span v-text="item.name"/>
-            </div>
-          </el-option>
-        </el-select>
+        />
       </el-form-item>
       <el-form-item
         v-if="!form.album_id"
@@ -242,9 +170,13 @@
 <script>
 import uploadMixin from "~/mixins/upload";
 import ImageApi from "~/api/imageApi";
+import ImageAlbumSelect from "./ImageAlbumSelect";
 
 export default {
   name: "UploadImageForm",
+  components: {
+    ImageAlbumSelect
+  },
   mixins: [uploadMixin],
   props: {
     appendAlbums: {
@@ -301,36 +233,14 @@ export default {
     };
   },
   computed: {
-    albums() {
-      return this.$store.state.image.albums;
-    },
-    selectionAlbum() {
-      return this.appendAlbums.concat(this.albums);
-    },
     currentUserId() {
       return this.$store.state.user.id;
     }
   },
   mounted() {
     this.getUpToken();
-    if (!this.selectionAlbum.length) {
-      this.getUserAlbum();
-    }
   },
   methods: {
-    async getUserAlbum() {
-      if (this.fetchingAlbum) {
-        return;
-      }
-      this.fetchingAlbum = true;
-      try {
-        await this.$store.dispatch("image/userAlbum", {
-          ctx: this
-        });
-      } finally {
-        this.fetchingAlbum = false;
-      }
-    },
     beforeSingleImageUpload(file) {
       this.uploadConfig.max = 5;
       this.uploadConfig.pathPrefix = `user/${this.currentUserId}/image`;

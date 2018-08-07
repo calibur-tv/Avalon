@@ -85,12 +85,17 @@
   .footer {
     margin-top: 16px;
     line-height: 16px;
-    font-size: 13px;
     color: #99a2aa;
 
     span {
-      width: 80px;
-      display: inline-block;
+      margin-right: 15px;
+      line-height: 20px;
+      font-size: 12px;
+    }
+
+    i {
+      line-height: 20px;
+      font-size: 12px;
     }
   }
 }
@@ -166,12 +171,20 @@
     </a>
     <div class="footer">
       <span>
+        <i class="iconfont icon-buoumaotubiao44"/>
+        收藏数&nbsp;({{ item.mark_count }})
+      </span>
+      <span v-if="item.is_creator">
         <i class="iconfont icon-guanzhu"/>
-        {{ item.like_count }}
+        投食数&nbsp;({{ item.reward_count }})
+      </span>
+      <span v-else>
+        <i class="iconfont icon-guanzhu"/>
+        喜欢数&nbsp;({{ item.like_count }})
       </span>
       <span>
-        <i class="iconfont icon-pinglun1"/>
-        {{ item.comment_count }}
+        <i class="iconfont icon-ai-eye"/>
+        评论数&nbsp;({{ item.comment_count }})
       </span>
     </div>
   </div>

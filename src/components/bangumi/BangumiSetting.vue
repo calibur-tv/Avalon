@@ -59,6 +59,12 @@
             <div>2：下面的上传按钮可以一次最多上传 <strong>51</strong> 张图片，当然你也可以在其它地方上传，但其它地方一次能够上传的更少</div>
             <div>3：上传完成之后，可以在漫画页面排序和删除多余的图片</div>
           </el-alert>
+          <el-alert
+            title=""
+            type="success"
+          >
+            当前选中漫画：{{ createdAlbum.name }}
+          </el-alert>
           <upload-image-form
             :selected-album-id="createdAlbum.id"
             :selected-bangumi-id="info.id"
@@ -69,9 +75,40 @@
         <template v-else>
           <el-alert
             type="info"
-            title="请先创建一个相册，填写相应的漫画信息"
-          />
+            title=""
+          >
+            请先创建一个相册，填写相应的漫画信息，或&nbsp;
+            <el-button
+              type="primary"
+              size="mini"
+              plain
+              round
+              @click="showSelectAlbum = !showSelectAlbum"
+            >
+              选择已有漫画
+            </el-button>
+            ，进行续传
+          </el-alert>
+          <el-row v-if="showSelectAlbum">
+            <el-col :span="20">
+              <image-album-select
+                @success="setSelectedAlbum"
+              />
+            </el-col>
+            <el-col
+              :span="3"
+              :offset="1"
+            >
+              <el-button
+                type="primary"
+                @click="createdAlbum = selectedAlbum"
+              >
+                确认
+              </el-button>
+            </el-col>
+          </el-row>
           <create-album-form
+            v-else
             :bangumi-id="info.id"
             :is-cartoon="true"
             @success="handleAlbumCreated"
@@ -88,6 +125,7 @@ import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
 import BangumiPostSetting from "~/components/bangumi/forms/BangumiPostSetting";
 import UploadImageForm from "~/components/image/UploadImageForm";
 import CreateAlbumForm from "~/components/image/CreateAlbumForm";
+import ImageAlbumSelect from "~/components/image/ImageAlbumSelect";
 
 export default {
   name: "BangumiSetting",
@@ -96,13 +134,16 @@ export default {
     CreateRoleForm,
     BangumiPostSetting,
     UploadImageForm,
-    CreateAlbumForm
+    CreateAlbumForm,
+    ImageAlbumSelect
   },
   data() {
     return {
       activeName: "0",
       showPanel: false,
-      createdAlbum: null
+      showSelectAlbum: false,
+      createdAlbum: null,
+      selectedAlbum: null
     };
   },
   computed: {
@@ -116,6 +157,9 @@ export default {
     });
   },
   methods: {
+    setSelectedAlbum(album) {
+      this.selectedAlbum = album;
+    },
     handleAlbumCreated(album) {
       this.createdAlbum = album;
     }
