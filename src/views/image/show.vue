@@ -228,38 +228,18 @@
                 mode="2"
               />
               <template v-if="editable">
-                <el-tooltip
-                  placement="top"
-                  effect="dark"
-                  content="删除"
-                >
-                  <button
-                    class="sort-btn delete-btn el-icon-close"
-                    @click="handleImageDelete(idx)"
-                  />
-                </el-tooltip>
-                <el-tooltip
-                  placement="right"
-                  effect="dark"
-                  content="上移"
-                >
-                  <button
-                    v-if="idx"
-                    class="sort-btn to-prev el-icon-caret-top"
-                    @click="handleSortBtnClick(idx, false)"
-                  />
-                </el-tooltip>
-                <el-tooltip
-                  placement="right"
-                  effect="dark"
-                  content="下移"
-                >
-                  <button
-                    v-if="idx !== images.length - 1"
-                    class="sort-btn to-next el-icon-caret-bottom"
-                    @click="handleSortBtnClick(idx, true)"
-                  />
-                </el-tooltip>
+                <button
+                  class="sort-btn delete-btn el-icon-close"
+                  @click="handleImageDelete(idx)"
+                />
+                <button
+                  class="sort-btn to-prev el-icon-caret-top"
+                  @click="handleSortBtnClick(idx, false)"
+                />
+                <button
+                  class="sort-btn to-next el-icon-caret-bottom"
+                  @click="handleSortBtnClick(idx, true)"
+                />
               </template>
             </div>
           </template>
