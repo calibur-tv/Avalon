@@ -92,6 +92,7 @@
           <el-row v-if="showSelectAlbum">
             <el-col :span="20">
               <image-album-select
+                :filter="imageAlbumFilter"
                 @success="setSelectedAlbum"
               />
             </el-col>
@@ -162,6 +163,9 @@ export default {
     },
     handleAlbumCreated(album) {
       this.createdAlbum = album;
+    },
+    imageAlbumFilter(images) {
+      return images.filter(_ => _.is_cartoon && _.bangumi_id === this.info.id);
     }
   }
 };
