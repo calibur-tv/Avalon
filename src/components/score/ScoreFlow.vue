@@ -183,7 +183,7 @@
         喜欢数&nbsp;({{ item.like_count }})
       </span>
       <span>
-        <i class="iconfont icon-ai-eye"/>
+        <i class="iconfont icon-pinglun1"/>
         评论数&nbsp;({{ item.comment_count }})
       </span>
     </div>

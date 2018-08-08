@@ -253,7 +253,12 @@ export default {
   },
   computed: {
     info() {
-      return this.$store.state.score.show;
+      const result = {};
+      Object.keys(this.$store.state.score.show).forEach(key => {
+        const value = this.$store.state.score.show[key];
+        result[key] = this.columns.indexOf(key) !== -1 ? +value : value;
+      });
+      return result;
     },
     bangumi() {
       return this.info.bangumi;
