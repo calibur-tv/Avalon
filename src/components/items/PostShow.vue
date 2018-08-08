@@ -184,7 +184,7 @@
   <li class="post-show-item">
     <div class="header clearfix">
       <el-tooltip
-        v-if="bangumiPage"
+        v-if="item.user"
         :content="item.user.nickname"
         effect="dark"
         placement="top"
@@ -202,7 +202,7 @@
         </a>
       </el-tooltip>
       <el-tooltip
-        v-else
+        v-else-if="item.bangumi"
         :content="item.bangumi.name"
         effect="dark"
         placement="top"
@@ -255,13 +255,7 @@
       />
     </div>
     <p
-      v-if="bangumiPage"
-      :class="{ 'min-height': !item.images.length }"
-      class="content"
-      v-text="item.desc"
-    />
-    <p
-      v-else
+      v-if="item.user"
       :class="{ 'min-height': !item.images.length }"
       class="content"
     >
@@ -272,6 +266,12 @@
       :
       {{ item.desc }}
     </p>
+    <p
+      v-else
+      :class="{ 'min-height': !item.images.length }"
+      class="content"
+      v-text="item.desc"
+    />
     <div
       v-if="item.images.length"
       class="images clearfix"
@@ -328,11 +328,6 @@ export default {
     item: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    bangumiPage() {
-      return this.$route.name === "bangumi-show";
     }
   }
 };

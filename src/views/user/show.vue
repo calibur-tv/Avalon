@@ -221,130 +221,7 @@
       margin-top: 10px;
 
       &.posts-of-mine {
-        li {
-          float: none;
-          padding: 10px;
-          position: relative;
-
-          &:not(:last-child) {
-            border-bottom: 1px dotted #e4e6eb;
-          }
-
-          .header {
-            position: relative;
-            height: 32px;
-
-            .avatar {
-              display: block;
-              float: right;
-              margin-top: 4px;
-              position: relative;
-              z-index: 1;
-
-              img {
-                display: block;
-                width: 24px;
-                height: 24px;
-              }
-            }
-
-            .title {
-              font-size: 14px;
-              line-height: 32px;
-              overflow: hidden;
-            }
-
-            .time {
-              float: right;
-              display: block;
-              line-height: 32px;
-              color: #999;
-              font-size: 12px;
-              position: relative;
-              z-index: 1;
-              margin-right: 12px;
-            }
-          }
-
-          .content {
-            margin-top: 3px;
-            color: #666;
-            font-size: 12px;
-            @include twoline(22px);
-          }
-
-          .images {
-            height: 90px;
-            overflow: hidden;
-            margin-top: 10px;
-            margin-bottom: 15px;
-
-            .image-box {
-              margin-right: 10px;
-              height: 100%;
-              position: relative;
-              float: left;
-              cursor: zoom-in;
-
-              &:after {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: #fff;
-                opacity: 0;
-              }
-
-              &:hover {
-                &:after {
-                  opacity: 0.1;
-                }
-              }
-
-              img {
-                height: 100%;
-                width: auto;
-              }
-            }
-          }
-
-          .footer {
-            margin: 8px 0;
-
-            span {
-              line-height: 12px;
-              color: #919499;
-              font-size: 12px;
-              margin-right: 10px;
-              float: right;
-            }
-          }
-        }
-
-        .top_badge,
-        .nice_badge {
-          float: left;
-          height: 22px;
-          line-height: 20px;
-          color: #fff;
-          cursor: default;
-          font-size: 12px;
-          font-weight: bold;
-          text-align: center;
-          padding: 1px 6px;
-          border-radius: 4px;
-          margin: 5px 5px 0 0;
-        }
-
-        .top_badge {
-          background-color: $color-blue-normal;
-        }
-
-        .nice_badge {
-          background-color: $color-pink-deep;
-        }
+        margin-left: 10px;
       }
 
       &.posts-of-reply {
@@ -730,73 +607,11 @@
           </el-radio-group>
           <template v-if="postListType === 'mine'">
             <ul class="posts posts-of-mine">
-              <li
+              <post-show
                 v-for="item in posts.data"
                 :key="item.id"
-              >
-                <div class="header clearfix">
-                  <el-tooltip
-                    :content="item.bangumi.name"
-                    effect="dark"
-                    placement="top"
-                  >
-                    <a
-                      :href="$alias.bangumi(item.bangumi.id)"
-                      class="avatar"
-                      target="_blank"
-                    >
-                      <img
-                        :src="item.bangumi.avatar"
-                        width="32"
-                        height="32"
-                      >
-                    </a>
-                  </el-tooltip>
-                  <div
-                    v-if="item.top_at"
-                    class="top_badge"
-                  >置顶</div>
-                  <div
-                    v-if="item.is_nice"
-                    class="nice_badge"
-                  >精</div>
-                  <a
-                    :href="$alias.post(item.id)"
-                    class="title oneline href-fade-blue"
-                    target="_blank"
-                    v-text="item.title"
-                  />
-                  <span class="time">
-                    发表于: <v-time v-model="item.created_at"/>
-                  </span>
-                </div>
-                <p
-                  class="content"
-                  v-text="item.desc"
-                />
-                <div
-                  v-if="item.images.length"
-                  class="images clearfix"
-                >
-                  <div
-                    v-for="(image, index) in item.images"
-                    :key="index"
-                    class="image-box"
-                    @click="$previewImages(item.images, index)"
-                  >
-                    <v-img
-                      :src="image.url"
-                      height="90"
-                      mode="2"
-                    />
-                  </div>
-                </div>
-                <div class="footer clearfix">
-                  <span>查看: {{ item.view_count }}</span>
-                  <span>喜欢: {{ item.like_count }}</span>
-                  <span>回复: {{ item.comment_count }}</span>
-                </div>
-              </li>
+                :item="item"
+              />
             </ul>
             <el-button
               v-if="!posts.noMore"
@@ -985,6 +800,7 @@ import ImageCropper from "~/components/common/ImageCropper";
 import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
 import UserSettingForm from "~/components/user/forms/UserSettingForm";
 import UserScoreList from "~/components/user/UserScoreList";
+import PostShow from "~/components/items/PostShow";
 
 export default {
   name: "UserShow",
@@ -1028,7 +844,8 @@ export default {
     ImageCropper,
     ImageWaterfallFlow,
     UserSettingForm,
-    UserScoreList
+    UserScoreList,
+    PostShow
   },
   data() {
     return {

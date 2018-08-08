@@ -2,7 +2,7 @@
 .bangumi-panel {
   position: relative;
   width: 206px;
-  height: 258px;
+  height: 270px;
   border-radius: 4px;
   font-size: 14px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
