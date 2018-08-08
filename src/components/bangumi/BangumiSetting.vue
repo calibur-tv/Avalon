@@ -92,7 +92,6 @@
           <el-row v-if="showSelectAlbum">
             <el-col :span="20">
               <image-album-select
-                :filter="imageAlbumFilter"
                 @success="setSelectedAlbum"
               />
             </el-col>
