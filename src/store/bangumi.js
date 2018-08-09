@@ -58,19 +58,6 @@ const mutations = {
     tag.selected = !tag.selected;
     state.tags[index] = tag;
   },
-  ADD_ROLE_STATE(state, { roleId, hasStar }) {
-    state.roles.data.forEach((item, index) => {
-      if (item.id === roleId) {
-        if (hasStar) {
-          state.roles.data[index].has_star++;
-        } else {
-          state.roles.data[index].has_star = 1;
-          state.roles.data[index].fans_count++;
-        }
-        state.roles.data[index].star_count++;
-      }
-    });
-  },
   SET_FOLLOW(state, { result }) {
     state.info.followed = result;
     result ? state.info.count_like++ : state.info.count_like--;
@@ -242,13 +229,6 @@ const actions = {
     const data = await api.roles({ bangumiId });
     commit("SET_ROLES", { data, bangumiId });
     return data;
-  },
-  async starRole({ commit }, { bangumiId, roleId, ctx, hasStar }) {
-    const api = new CartoonRoleApi(ctx);
-    try {
-      await api.star({ bangumiId, roleId });
-      commit("ADD_ROLE_STATE", { roleId, hasStar });
-    } catch (e) {}
   },
   async getFollowers({ state, commit }, { ctx, bangumiId, take }) {
     const api = new Api(ctx);
