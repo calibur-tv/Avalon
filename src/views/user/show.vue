@@ -765,11 +765,20 @@
         </el-tab-pane>
         <el-tab-pane label="相册">
           <image-waterfall-flow
+            v-if="images.list.length"
             :list="images.list"
             :no-more="images.noMore"
             :loading="images.loading"
             @load="getUserImages(false)"
           />
+          <no-content v-else>
+            <el-button
+              v-if="isMe"
+              type="primary"
+              round
+              @click="openUploadImageModal"
+            >上传你的第一张图片</el-button>
+          </no-content>
         </el-tab-pane>
         <el-tab-pane label="漫评">
           <user-score-list :zone="zone"/>
@@ -1154,6 +1163,9 @@ export default {
           this.$toast.success("复制成功");
         });
       });
+    },
+    openUploadImageModal() {
+      this.$channel.$emit("show-upload-image-modal");
     }
   }
 };

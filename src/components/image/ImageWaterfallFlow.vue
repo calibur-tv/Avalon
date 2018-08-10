@@ -242,7 +242,10 @@
                   target="_blank"
                   class="bangumi-avatar"
                 >
-                  <img :src="$resize(item.bangumi.avatar, { width: 60 })">
+                  <v-img
+                    :src="item.bangumi.avatar"
+                    size="30"
+                  />
                 </a>
                 <div class="info">
                   <a
