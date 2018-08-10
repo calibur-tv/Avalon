@@ -28,20 +28,12 @@
       }
 
       .user-avatar {
-        @include avatar-2(30px);
+        @extend %avatar;
       }
 
       .bangumi-avatar {
-        width: 30px;
-        height: 30px;
-
-        img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          border-radius: 3px;
-          border: 1px solid #e5e9ef;
-        }
+        border-radius: 3px;
+        border: 1px solid #e5e9ef;
       }
 
       .name {
@@ -122,9 +114,11 @@
           :href="$alias.user(item.user.zone)"
           target="_blank"
         >
-          <div class="user-avatar">
-            <img :src="$resize(item.user.avatar, { width: 60 })">
-          </div>
+          <v-img
+            :src="item.user.avatar"
+            size="30"
+            class="user-avatar"
+          />
           <span
             class="name href-fade-blue"
             v-text="item.user.nickname"
@@ -135,9 +129,11 @@
           :href="$alias.bangumi(item.bangumi.id)"
           target="_blank"
         >
-          <div class="bangumi-avatar">
-            <img :src="$resize(item.bangumi.avatar, { width: 60 })">
-          </div>
+          <v-img
+            :src="item.bangumi.avatar"
+            size="30"
+            class="bangumi-avatar"
+          />
           <span
             class="name href-fade-blue"
             v-text="item.bangumi.name"

@@ -48,19 +48,11 @@
       }
 
       .avatar {
-        width: 100px;
-        height: 100px;
-        display: block;
         float: left;
         overflow: hidden;
         border-radius: 5px;
         margin-right: 10px;
         border: 1px solid $color-gray-normal;
-
-        img {
-          width: 100%;
-          height: auto;
-        }
       }
 
       .summary {
@@ -91,13 +83,11 @@
           color: $color-text-normal;
           margin-top: 20px;
 
-          img {
-            width: 20px;
-            height: 20px;
-            border-radius: 15px;
+          .image {
+            display: inline-block;
             vertical-align: middle;
-            border: 1px solid $color-gray-normal;
             margin-left: 10px;
+            @extend %avatar;
           }
         }
       }
@@ -154,8 +144,7 @@
               >
                 <v-img
                   :src="item.avatar"
-                  width="90"
-                  height="90"
+                  size="98"
                 />
               </a>
               <div class="summary">
@@ -183,8 +172,8 @@
                     <span v-text="item.lover.nickname"/>
                     <v-img
                       :src="item.lover.avatar"
-                      width="20"
-                      height="20"
+                      size="20"
+                      class="image"
                     />
                   </a>
                 </div>

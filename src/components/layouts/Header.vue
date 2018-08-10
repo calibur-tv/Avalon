@@ -527,11 +527,11 @@ $search-height: 32px;
                 :href="$alias.user(user.zone)"
                 class="el-dropdown-link"
               >
-                <img
-                  :src="$resize(user.avatar, { width: 72, height: 72 })"
-                  :alt="user.nickname"
+                <v-img
+                  :src="user.avatar"
                   :class="$style.avatar"
-                >
+                  size="34"
+                />
               </a>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>

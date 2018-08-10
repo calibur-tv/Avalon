@@ -204,6 +204,44 @@
         @success="cartoonRoleEditSuccess"
       />
     </v-dialog>
+    <v-dialog
+      v-model="toggleFansListModal"
+      :footer="false"
+      :title="`${role.name} · 应援团`"
+      :scroll="fetchRoleFans"
+      :loading="loadingRoleFans"
+      :no-more="noMoreFans"
+      class="likes-modal"
+    >
+      <li
+        v-for="item in fansModalData"
+        :key="item.id"
+      >
+        <a
+          :href="$alias.user(item.zone)"
+          class="user"
+          target="_blank"
+        >
+          <img
+            :src="$resize(item.avatar, { width: 80 })"
+            class="avatar"
+          >
+          <span
+            class="nickname"
+            v-text="item.nickname"
+          />
+          <v-time
+            v-if="focusRoleSort === 'new'"
+            v-model="item.score"
+            class="score"
+          />
+          <span
+            v-else
+            class="score"
+          >{{ item.score }}个金币</span>
+        </a>
+      </li>
+    </v-dialog>
   </div>
 </template>
 

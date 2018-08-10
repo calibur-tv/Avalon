@@ -51,7 +51,6 @@
       height: 100%;
       position: relative;
       float: left;
-      cursor: zoom-in;
 
       &:after {
         content: "";
@@ -105,13 +104,11 @@
         v-for="(image, index) in item.images"
         :key="index"
         class="image-box"
-        @click="$previewImages(item.images, index)"
       >
         <v-img
           :src="image.url"
-          :aspect="$computeImageAspect(image)"
+          width="auto"
           height="90"
-          mode="2"
         />
       </div>
     </div>

@@ -114,12 +114,10 @@
       border-top: 1px solid #f2f2f2;
 
       .user-avatar {
-        @include avatar-2(30px);
+        @extend %avatar;
       }
 
       .bangumi-avatar {
-        width: 30px;
-        height: 30px;
         border-radius: 4px;
       }
 
@@ -196,11 +194,12 @@
               >
                 <i class="is-creator iconfont icon-huangguan"/>
               </el-tooltip>
-              <img
+              <v-img
+                :src="item.source.url"
                 :height="computeImageHeight(item.source)"
-                :src="$resize(item.source.url, { width: width * 2, mode: 2 })"
+                :lazy="false"
                 width="200"
-              >
+              />
               <div
                 v-if="item.is_album"
                 class="is-album"
@@ -260,7 +259,10 @@
                   target="_blank"
                   class="user-avatar"
                 >
-                  <img :src="$resize(item.user.avatar, { width: 60 })">
+                  <v-img
+                    :src="item.user.avatar"
+                    size="30"
+                  />
                 </a>
                 <a
                   :href="$alias.user(item.user.zone)"
@@ -275,7 +277,10 @@
                   target="_blank"
                   class="bangumi-avatar"
                 >
-                  <img :src="$resize(item.bangumi.avatar, { width: 60 })">
+                  <v-img
+                    :src="item.bangumi.avatar"
+                    size="30"
+                  />
                 </a>
                 <div class="info">
                   <p class="main-info">

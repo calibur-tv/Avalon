@@ -28,7 +28,7 @@
         margin-right: 10px;
         display: inline-block;
         vertical-align: middle;
-        @include avatar-2(30px);
+        @extend %avatar;
       }
     }
 
@@ -104,9 +104,11 @@
                   :href="$alias.user(user.zone)"
                   target="_blank"
                 >
-                  <div class="avatar">
-                    <img :src="$resize(user.avatar, { width: 60 })">
-                  </div>
+                  <v-img
+                    :src="user.avatar"
+                    size="30"
+                    class="avatar"
+                  />
                   <span
                     class="name"
                     v-text="user.nickname"

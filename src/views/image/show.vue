@@ -222,10 +222,10 @@
             >
               <v-img
                 :src="img.url"
-                :aspect="$computeImageAspect(img)"
+                :width="img.width"
+                :height="img.height"
+                :full="true"
                 class="image"
-                width="500"
-                mode="2"
               />
               <template v-if="editable">
                 <button
@@ -249,10 +249,10 @@
           >
             <v-img
               :src="source.url"
-              :aspect="$computeImageAspect(source)"
+              :width="source.width"
+              :height="source.height"
+              :full="true"
               class="image"
-              width="500"
-              mode="2"
             />
           </div>
         </div>

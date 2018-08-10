@@ -6,7 +6,7 @@
   .avatar {
     float: left;
     margin: 7px 32px 0 5px;
-    @include avatar-2(48px);
+    @extend %avatar;
   }
 
   .main-area {
@@ -56,9 +56,11 @@
 
 <template>
   <div class="create-comment-form">
-    <div class="avatar">
-      <img :src="$resize(userAvatar, { width: 96 })">
-    </div>
+    <v-img
+      :src="userAvatar"
+      size="48"
+      class="avatar"
+    />
     <div class="main-area">
       <button
         class="submit-btn"

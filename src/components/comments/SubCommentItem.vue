@@ -8,7 +8,7 @@
     .avatar {
       margin-top: 5px;
       margin-right: 10px;
-      @include avatar-2(24px);
+      @extend %avatar;
     }
   }
 
@@ -82,10 +82,10 @@
           :href="$alias.user(comment.from_user_zone)"
           target="_blank"
         >
-          <img
-            :src="$resize(comment.from_user_avatar, { width: 50 })"
-            :alt="comment.from_user_name"
-          >
+          <v-img
+            :src="comment.from_user_avatar"
+            size="24"
+          />
         </a>
       </div>
     </div>

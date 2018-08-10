@@ -256,12 +256,6 @@
               margin-top: 4px;
               position: relative;
               z-index: 1;
-
-              img {
-                display: block;
-                width: 24px;
-                height: 24px;
-              }
             }
           }
 
@@ -298,7 +292,6 @@
               height: 100%;
               position: relative;
               float: left;
-              cursor: zoom-in;
 
               &:after {
                 content: "";
@@ -581,8 +574,9 @@
                 target="_blank"
               >
                 <v-img
-                  :alt="item.name"
-                  :src="$resize(item.avatar, { width: 160, height: 160 })"
+                  :src="item.avatar"
+                  :lazy="false"
+                  size="70"
                   class="poster"
                 />
                 <figcaption class="intro">
@@ -648,8 +642,7 @@
                     >
                       <v-img
                         :src="item.bangumi.avatar"
-                        width="32"
-                        height="32"
+                        size="24"
                       />
                     </a>
                   </el-tooltip>
@@ -671,12 +664,11 @@
                       v-for="(image, index) in item.post.images"
                       :key="index"
                       class="image-box"
-                      @click="$previewImages(item.post.images, index)"
                     >
                       <v-img
                         :src="image.url"
+                        width="auto"
                         height="90"
-                        mode="2"
                       />
                     </div>
                   </div>
@@ -694,12 +686,11 @@
                       v-for="(image, index) in item.images"
                       :key="index"
                       class="image-box"
-                      @click="$previewImages(item.images, index)"
                     >
                       <v-img
                         :src="image.url"
+                        width="auto"
                         height="90"
-                        mode="2"
                       />
                     </div>
                   </div>

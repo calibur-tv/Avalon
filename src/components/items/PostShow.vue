@@ -17,24 +17,13 @@
       float: left;
       margin-right: 10px;
       margin-top: 4px;
-
-      img {
-        display: block;
-        width: 24px;
-        height: 24px;
-      }
     }
 
     .user-avatar {
       display: block;
       float: left;
       margin-right: 7px;
-
-      img {
-        display: block;
-        border: 1px solid #f0f0f0;
-        @include avatar(32px);
-      }
+      @extend %avatar;
     }
 
     .title {
@@ -111,7 +100,6 @@
       height: 100%;
       position: relative;
       float: left;
-      cursor: zoom-in;
 
       &:after {
         content: "";
@@ -196,8 +184,7 @@
         >
           <v-img
             :src="item.user.avatar"
-            width="32"
-            height="32"
+            size="32"
           />
         </a>
       </el-tooltip>
@@ -213,9 +200,8 @@
           target="_blank"
         >
           <v-img
-            :src="item.bangumi.avatar"
-            width="32"
-            height="32"
+            :src="item.user.avatar"
+            size="24"
           />
         </a>
       </el-tooltip>
@@ -280,13 +266,11 @@
         v-for="(image, index) in item.images"
         :key="index"
         class="image-box"
-        @click="$previewImages(item.images, index)"
       >
         <v-img
           :src="image.url"
-          :aspect="$computeImageAspect(image)"
+          width="auto"
           height="90"
-          mode="2"
         />
       </div>
     </div>

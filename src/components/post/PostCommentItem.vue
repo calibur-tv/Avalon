@@ -1,5 +1,5 @@
 <style lang="scss">
-.post-item {
+.post-comment-item {
   .user {
     width: 180px;
     float: left;
@@ -7,8 +7,7 @@
     .avatar {
       display: block;
       margin: 34px auto 5px auto;
-      border: 1px solid $color-gray-normal;
-      @include avatar(80px);
+      @extend %avatar;
     }
 
     .nickname {
@@ -34,10 +33,7 @@
     }
 
     .image {
-      width: 100%;
-      height: auto;
       margin-bottom: 12px;
-      cursor: zoom-in;
     }
 
     .text-package {
@@ -80,7 +76,7 @@
 <template>
   <div
     :id="`comment-${post.id}`"
-    class="post-item"
+    class="post-comment-item"
   >
     <div class="user">
       <a
@@ -89,8 +85,7 @@
       >
         <v-img
           :src="post.from_user_avatar"
-          :width="80"
-          :height="80"
+          size="80"
           class="avatar"
         />
       </a>
@@ -107,16 +102,13 @@
           v-for="(img, idx) in post.images"
           :key="idx"
           class="image-package"
-          @click="$previewImages(post.images, idx)"
         >
           <v-img
             :src="img.url"
-            :source="img"
+            :width="img.width"
+            :height="img.height"
             :full="true"
-            :aspect="$computeImageAspect(img)"
             class="image"
-            width="550"
-            mode="2"
           />
         </div>
         <div
