@@ -4,7 +4,7 @@
     margin-bottom: 20px;
 
     button {
-      vertical-align: middle;
+      vertical-align: top;
       padding: 5px 15px;
       margin-left: 10px;
     }
@@ -36,6 +36,7 @@
         .name {
           font-size: 42px;
           margin-bottom: 10px;
+          margin-top: 0;
         }
 
         .summary {
@@ -81,44 +82,6 @@
       }
     }
   }
-
-  .layout-aside {
-    .fans {
-      .follower {
-        margin-right: -10px;
-        float: left;
-
-        a {
-          overflow: hidden;
-          border-radius: 50%;
-          display: inline-block;
-          width: 40px;
-          height: 40px;
-        }
-
-        img {
-          width: 100%;
-          height: 100%;
-          display: block;
-          border: 3px solid #fff;
-          border-radius: 50%;
-        }
-      }
-
-      .more-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: $color-gray-normal;
-        color: #fff;
-        border: 3px solid #fff;
-
-        &:hover {
-          background-color: $color-gray-deep;
-        }
-      }
-    }
-  }
 }
 </style>
 
@@ -128,7 +91,15 @@
     <v-layout>
       <template slot="main">
         <div class="intro clearfix">
-          <p class="sub-title">角色信息</p>
+          <p class="sub-title">
+            角色信息
+            <el-button
+              v-if="bangumi.is_master"
+              size="mini"
+              round
+              @click="showEditRoleModal"
+            >编辑</el-button>
+          </p>
           <div class="avatar-wrap">
             <img
               :src="$resize(role.avatar, { width: 200 })"
@@ -206,37 +177,15 @@
         </div>
         <div class="fans">
           <p class="sub-title">应援团{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
-          <template v-if="fans.data.length">
-            <ul>
-              <li
-                v-for="user in displayFans"
-                :key="user.zone"
-                class="follower"
-              >
-                <el-tooltip
-                  :content="user.nickname"
-                  class="item"
-                  effect="dark"
-                  placement="top"
-                >
-                  <a
-                    :href="$alias.user(user.zone)"
-                    target="_blank"
-                  >
-                    <v-img
-                      :src="$resize(user.avatar, { width: 64, height: 64 })"
-                      :alt="user.zone"
-                    />
-                  </a>
-                </el-tooltip>
-              </li>
-              <button
-                v-if="role.fans_count > 6"
-                class="more-btn el-icon-more"
-                @click="openFansModal('new')"
-              />
-            </ul>
-          </template>
+          <ava-dialog
+            v-if="role.fans_count"
+            :users="fansModalData"
+            :fetch="fetchRoleFans"
+            :title="`《${role.name}》应援团`"
+            :loading="loadingRoleFans"
+            :no-more="noMoreFans"
+            :display-count="6"
+          />
           <template v-else>
             <span>TA 还没有真正的粉丝...</span>
           </template>
@@ -244,47 +193,24 @@
       </template>
     </v-layout>
     <v-dialog
-      v-model="toggleFansListModal"
+      v-if="bangumi.is_master"
+      v-model="showEditModal"
+      :title="`编辑 - ${role.name}`"
       :footer="false"
-      :title="`${role.name} · 应援团`"
-      :scroll="fetchRoleFans"
-      :loading="loadingRoleFans"
-      :no-more="noMoreFans"
-      class="likes-modal"
     >
-      <li
-        v-for="item in fansModalData"
-        :key="item.id"
-      >
-        <a
-          :href="$alias.user(item.zone)"
-          class="user"
-          target="_blank"
-        >
-          <img
-            :src="$resize(item.avatar, { width: 80 })"
-            class="avatar"
-          >
-          <span
-            class="nickname"
-            v-text="item.nickname"
-          />
-          <v-time
-            v-if="focusRoleSort === 'new'"
-            v-model="item.score"
-            class="score"
-          />
-          <span
-            v-else
-            class="score"
-          >{{ item.score }}个金币</span>
-        </a>
-      </li>
+      <create-role-form
+        :role="role"
+        :bangumi-id="bangumi.id"
+        @success="cartoonRoleEditSuccess"
+      />
     </v-dialog>
   </div>
 </template>
 
 <script>
+import uploadMixin from "~/mixins/upload";
+import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
+
 export default {
   name: "RoleShow",
   async asyncData({ store, route, ctx }) {
@@ -313,11 +239,15 @@ export default {
       ]
     };
   },
+  components: {
+    CreateRoleForm
+  },
+  mixins: [uploadMixin],
   data() {
     return {
       toggleFansListModal: false,
-      loadingRoleImageFetch: false,
       loadingRoleFans: false,
+      showEditModal: false,
       focusRoleSort: "new"
     };
   },
@@ -403,6 +333,18 @@ export default {
       this.focusRoleSort = sort;
       this.toggleFansListModal = true;
       this.fetchRoleFans(true);
+    },
+    cartoonRoleEditSuccess() {
+      this.$toast.success("编辑成功");
+      this.showEditModal = false;
+      window.location.reload();
+    },
+    showEditRoleModal() {
+      this.uploadConfig.max = 1;
+      this.uploadConfig.pathPrefix = `bangumi/${this.bangumi.id}/role/${
+        this.role.id
+      }/avatar`;
+      this.showEditModal = true;
     }
   }
 };

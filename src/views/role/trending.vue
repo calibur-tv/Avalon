@@ -171,18 +171,18 @@
                   <span class="intro">：{{ item.intro }}</span>
                 </a>
                 <div
-                  v-if="item.lover_id"
+                  v-if="item.lover"
                   class="lover"
                 >
                   <span>守护者：</span>
                   <a
-                    :href="$alias.user(item.lover_zone)"
+                    :href="$alias.user(item.lover.zone)"
                     class="fr"
                     target="_blank"
                   >
-                    <span v-text="item.lover_nickname"/>
+                    <span v-text="item.lover.nickname"/>
                     <v-img
-                      :src="item.lover_avatar"
+                      :src="item.lover.avatar"
                       width="20"
                       height="20"
                     />
@@ -210,10 +210,10 @@
                   />
                 </div>
                 <a
-                  :href="$alias.bangumi(item.bangumi_id)"
+                  :href="$alias.bangumi(item.bangumi.id)"
                   class="bangumi"
                   target="_blank"
-                  v-text="item.bangumi_name"
+                  v-text="item.bangumi.name"
                 />
               </div>
             </div>
@@ -227,41 +227,37 @@
 <script>
 export default {
   name: "TrendingRole",
-  async asyncData({ store }) {
-    await store.dispatch("cartoonRole/getTrending");
+  async asyncData({ store, ctx }) {
+    await store.dispatch("world/initData", {
+      type: "role",
+      sort: "hot",
+      ctx
+    });
   },
   head: {
     title: "角色排行榜"
   },
-  data() {
-    return {
-      loading: false
-    };
-  },
   computed: {
+    resource() {
+      return this.$store.state.world.role.hot;
+    },
     list() {
-      return this.$utils.orderBy(
-        this.$store.state.cartoonRole.trending.data,
-        "star_count",
-        "desc"
-      );
+      return this.$utils.orderBy(this.resource.list, "star_count", "desc");
     },
     notFetch() {
-      return this.loading || this.$store.state.cartoonRole.trending.noMore;
+      return this.resource.loading || this.resource.noMore;
     }
   },
   methods: {
     async loadMore() {
-      if (this.loading) {
-        return;
-      }
-      this.loading = true;
       try {
-        await this.$store.dispatch("cartoonRole/getTrending");
+        await this.$store.dispatch("world/getData", {
+          type: "role",
+          sort: "hot",
+          ctx: this
+        });
       } catch (e) {
         this.$toast.error(e);
-      } finally {
-        this.loading = false;
       }
     }
   }

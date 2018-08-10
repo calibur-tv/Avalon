@@ -3,10 +3,6 @@ import Api from "~/api/cartoonRoleApi";
 export default {
   namespaced: true,
   state: () => ({
-    trending: {
-      data: [],
-      noMore: false
-    },
     fans: {
       new: {
         data: [],
@@ -39,10 +35,6 @@ export default {
     SET_ROLE_INFO(state, data) {
       state.info = data;
     },
-    SET_TRENDING(state, data) {
-      state.trending.data = state.trending.data.concat(data);
-      state.trending.noMore = data.length < 15;
-    },
     SET_FANS_LIST(state, { data, reset, sort }) {
       if (reset) {
         state.fans = {
@@ -61,18 +53,6 @@ export default {
     }
   },
   actions: {
-    async getTrending({ state, commit }) {
-      if (state.trending.noMore) {
-        return;
-      }
-      const api = new Api();
-      const data = await api.trending({
-        seenIds: state.trending.data.length
-          ? state.trending.data.map(item => item.id).toString()
-          : null
-      });
-      commit("SET_TRENDING", data);
-    },
     async getFansList({ state, commit }, { bangumiId, roleId, sort, reset }) {
       if (state.fans[sort].noMore && !reset) {
         return;

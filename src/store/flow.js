@@ -30,7 +30,8 @@ const trendingFlowStore = {
 const state = () => ({
   post: merge({}, trendingFlowStore),
   image: merge({}, trendingFlowStore),
-  score: merge({}, trendingFlowStore)
+  score: merge({}, trendingFlowStore),
+  role: merge({}, trendingFlowStore)
 });
 
 const mutations = {

@@ -47,41 +47,33 @@
         }
       }
 
-      .star,
-      .edit {
-        float: right;
-        margin-top: 14px;
-        border-radius: 14px;
-        margin-left: 10px;
-      }
-    }
-
-    .footer {
-      margin-top: 10px;
-      height: 30px;
-      line-height: 30px;
-      vertical-align: middle;
-      color: $color-text-normal;
-      text-align: right;
-
-      img {
-        width: 20px;
-        height: 20px;
-        border-radius: 15px;
+      .footer {
+        margin-top: 10px;
+        height: 30px;
+        line-height: 30px;
         vertical-align: middle;
-        border: 1px solid $color-gray-normal;
-        margin-left: 2px;
-        margin-top: -3px;
-      }
-
-      a,
-      button {
-        font-size: 12px;
         color: $color-text-normal;
-      }
+        text-align: right;
 
-      span {
-        font-size: 12px;
+        img {
+          width: 20px;
+          height: 20px;
+          border-radius: 15px;
+          vertical-align: middle;
+          border: 1px solid $color-gray-normal;
+          margin-left: 2px;
+          margin-top: -3px;
+        }
+
+        a,
+        button {
+          font-size: 12px;
+          color: $color-text-normal;
+        }
+
+        span {
+          font-size: 12px;
+        }
       }
     }
   }
@@ -97,7 +89,7 @@
   <div id="bangumi-role">
     <ul>
       <li
-        v-for="item in roles.data"
+        v-for="item in roles"
         :key="item.id"
         class="role"
       >
@@ -125,68 +117,54 @@
               />
               <span class="intro">：{{ item.intro }}</span>
             </a>
-            <el-button
-              type="warning"
-              class="star"
-              size="mini"
-              plain
-              @click="handleStarRole(item)"
-            >为TA应援</el-button>
-            <el-button
-              v-if="info.is_master"
-              class="edit"
-              size="mini"
-              plain
-              @click="showEditRoleModal(item)"
-            >编辑偶像</el-button>
-          </div>
-        </div>
-        <div
-          v-if="item.fans_count"
-          class="footer"
-        >
-          <span>
-            粉丝:
-            {{ $utils.shortenNumber(item.fans_count) }}
-          </span>
-          ·
-          <span>
-            金币:
-            {{ $utils.shortenNumber(item.star_count) }}
-          </span>
-          ·
-          <span v-if="item.lover">
-            守护者:
-            <a
-              :href="$alias.user(item.lover.zone)"
-              target="_blank"
+            <div
+              v-if="item.fans_count"
+              class="footer"
             >
-              {{ item.lover.nickname }}
-              <v-img
-                :src="item.lover.avatar"
-                width="20"
-                height="20"
-              />
-            </a>
-          </span>
-          ·
-          <button @click="showRoleDetail(item, 'new')">最新应援</button>
-          ·
-          <button @click="showRoleDetail(item, 'hot')">最多应援</button>
+              <span>
+                粉丝:
+                {{ $utils.shortenNumber(item.fans_count) }}
+              </span>
+              ·
+              <span>
+                金币:
+                {{ $utils.shortenNumber(item.star_count) }}
+              </span>
+              ·
+              <span v-if="item.lover">
+                守护者:
+                <a
+                  :href="$alias.user(item.lover.zone)"
+                  target="_blank"
+                >
+                  {{ item.lover.nickname }}
+                  <v-img
+                    :src="item.lover.avatar"
+                    width="20"
+                    height="20"
+                  />
+                </a>
+              </span>
+              ·
+              <button @click="showRoleDetail(item, 'new')">最新应援</button>
+              ·
+              <button @click="showRoleDetail(item, 'hot')">最多应援</button>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
     <el-button
-      v-if="!roles.noMore"
-      :loading="state.loading"
+      v-if="!resource.noMore"
+      :loading="resource.loading"
       class="load-more-btn"
       type="info"
       plain
       @click="getData"
-    >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
-    <template v-if="roles.noMore">
+    >{{ resource.loading ? '加载中' : '加载更多' }}</el-button>
+    <template v-if="resource.noMore">
       <div
-        v-if="roles.data.length"
+        v-if="roles.length"
         class="load-more-roles"
       >
         <el-button
@@ -242,41 +220,17 @@
         </a>
       </li>
     </v-dialog>
-    <v-dialog
-      v-if="currentRole"
-      v-model="showEditModal"
-      :title="`编辑 - ${currentRole.name}`"
-      :footer="false"
-    >
-      <create-role-form
-        :role="currentRole"
-        :bangumi-id="info.id"
-        @success="cartoonRoleEditSuccess"
-      />
-    </v-dialog>
   </div>
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
-import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
-
 export default {
   name: "BangumiRole",
-  components: {
-    CreateRoleForm
-  },
-  mixins: [uploadMixin],
   data() {
     return {
-      state: {
-        loading: false,
-        fetched: false
-      },
       openRolesModal: false,
       loadingRoleFans: false,
       focusRoleSort: "new",
-      showEditModal: false,
       currentRole: null
     };
   },
@@ -284,8 +238,11 @@ export default {
     info() {
       return this.$store.state.bangumi.info;
     },
+    resource() {
+      return this.$store.state.flow.role.hot;
+    },
     roles() {
-      return this.$store.state.bangumi.roles;
+      return this.$utils.orderBy(this.resource.list, "star_count", "desc");
     },
     currentRoleFans() {
       return this.$store.state.cartoonRole.fans[this.focusRoleSort];
@@ -293,28 +250,32 @@ export default {
   },
   mounted() {
     this.$channel.$on("bangumi-tab-switch-role", () => {
-      if (!this.state.fetched) {
-        this.getData();
-      }
+      this.initData();
     });
   },
   methods: {
-    async getData() {
-      if (this.state.loading) {
-        return;
-      }
-      this.state.loading = true;
-
+    async initData() {
       try {
-        await this.$store.dispatch("bangumi/getRoles", {
+        await this.$store.dispatch("flow/initData", {
+          type: "role",
+          sort: "hot",
           ctx: this,
           bangumiId: this.info.id
         });
       } catch (e) {
         this.$toast.error(e);
-      } finally {
-        this.state.loading = false;
-        this.state.fetched = true;
+      }
+    },
+    async getData() {
+      try {
+        await this.$store.dispatch("flow/getData", {
+          type: "role",
+          sort: "hot",
+          ctx: this,
+          bangumiId: this.info.id
+        });
+      } catch (e) {
+        this.$toast.error(e);
       }
     },
     async fetchCurrentRoleFans(reset = false) {
@@ -342,46 +303,11 @@ export default {
       this.focusRoleSort = sort;
       this.fetchCurrentRoleFans(true);
     },
-    async handleStarRole(role) {
-      if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
-      }
-      if (!this.$store.state.user.coin) {
-        this.$toast.error("金币不足");
-        return;
-      }
-      try {
-        await this.$store.dispatch("bangumi/starRole", {
-          bangumiId: this.info.id,
-          roleId: role.id,
-          ctx: this,
-          hasStar: role.has_star
-        });
-        this.$store.commit("USE_COIN");
-        this.$toast.success(`+${role.has_star}s`);
-      } catch (e) {
-        this.$toast.error(e);
-      }
-    },
     openFeedback() {
       this.$channel.$emit("open-feedback", {
         type: 6,
         desc: `我想要为《${this.info.name}》的 ? 应援`
       });
-    },
-    showEditRoleModal(role) {
-      this.currentRole = role;
-      this.uploadConfig.max = 1;
-      this.uploadConfig.pathPrefix = `bangumi/${this.info.id}/role/${
-        role.id
-      }/avatar`;
-      this.showEditModal = true;
-    },
-    cartoonRoleEditSuccess() {
-      this.$toast.success("编辑成功，刷新网页后可查看");
-      this.showEditModal = false;
-      this.currentRole = null;
     }
   }
 };
