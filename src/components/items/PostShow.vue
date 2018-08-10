@@ -200,7 +200,7 @@
           target="_blank"
         >
           <v-img
-            :src="item.user.avatar"
+            :src="item.bangumi.avatar"
             size="24"
           />
         </a>
