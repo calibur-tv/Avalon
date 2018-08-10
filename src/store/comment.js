@@ -30,7 +30,7 @@ const mutations = {
     }
   },
   SET_MAIN_COMMENTS(state, { comments, seeReplyId, id }) {
-    state.id = id;
+    state.id = +id;
     if (!comments.list.length) {
       state.noMore = comments.noMore;
       state.total = comments.total;
@@ -175,7 +175,7 @@ const actions = {
   ) {
     if (state.type) {
       if (state.type === type) {
-        if (state.id !== id) {
+        if (state.id !== +id) {
           commit("RESET_STATE", { type });
         } else if (state.noMore) {
           return;
