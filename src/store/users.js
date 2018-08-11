@@ -109,21 +109,25 @@ const mutations = {
       take: 10,
       mine: {
         data: [],
+        page: 0,
         noMore: false,
         loading: false
       },
       reply: {
         data: [],
+        page: 0,
         noMore: false,
         loading: false
       },
       like: {
         data: [],
+        page: 0,
         noMore: false,
         loading: false
       },
       mark: {
         data: [],
+        page: 0,
         noMore: false,
         loading: false
       }
