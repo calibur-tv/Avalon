@@ -7,21 +7,25 @@ const state = () => ({
     take: 10,
     mine: {
       data: [],
+      page: 0,
       noMore: false,
       loading: false
     },
     reply: {
       data: [],
+      page: 0,
       noMore: false,
       loading: false
     },
     like: {
       data: [],
+      page: 0,
       noMore: false,
       loading: false
     },
     mark: {
       data: [],
+      page: 0,
       noMore: false,
       loading: false
     }
@@ -69,7 +73,8 @@ const mutations = {
     state.posts[type] = {
       data: state.posts[type].data.concat(data.list),
       noMore: data.noMore,
-      loading: false
+      loading: false,
+      page: state.posts[type].page + 1
     };
   },
   SET_FOLLOW_POST_STATE(state, { type }) {
@@ -158,14 +163,12 @@ const actions = {
       return;
     }
     commit("SET_FOLLOW_POST_STATE", { type });
-    const list = state.posts[type].data;
-    const length = list.length;
     const api = new Api();
     const data = await api.followPosts({
       type,
       zone,
       take: state.posts.take,
-      minId: length ? list[length - 1].id : 0
+      page: state.posts[type].page
     });
     data && commit("SET_FOLLOW_POST_DATA", { type, data, zone });
   },
