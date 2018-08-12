@@ -6,10 +6,12 @@ export default {
     fans: {
       new: {
         data: [],
+        total: 0,
         noMore: false
       },
       hot: {
         data: [],
+        total: 0,
         noMore: false
       }
     },
@@ -48,8 +50,9 @@ export default {
           }
         };
       }
-      state.fans[sort].data = state.fans[sort].data.concat(data);
-      state.fans[sort].noMore = data.length < 15;
+      state.fans[sort].data = state.fans[sort].data.concat(data["list"]);
+      state.fans[sort].noMore = data["noMore"];
+      state.fans[sort].total = data["total"];
     }
   },
   actions: {
@@ -69,17 +72,17 @@ export default {
           sort === "new"
             ? {
                 minId: reset
-                  ? null
+                  ? 0
                   : length
                     ? state.fans[sort].data[length - 1].id
-                    : null
+                    : 0
               }
             : {
                 seenIds: reset
-                  ? null
+                  ? ""
                   : length
                     ? state.fans[sort].data.map(item => item.id).toString()
-                    : null
+                    : ""
               }
         )
       );
