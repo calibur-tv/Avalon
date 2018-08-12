@@ -1,9 +1,9 @@
 import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
-  fetch({ sort, type, take, minId, seenIds, bangumiId }) {
-    return this.http.get(`trending/${sort}`, {
-      params: { type, take, minId, seenIds, bangumiId }
+  fetch({ sort, type, take, minId, seenIds, bangumiId, userZone }) {
+    return this.http.get("flowlist", {
+      params: { sort, type, take, minId, seenIds, bangumiId, userZone }
     });
   }
 

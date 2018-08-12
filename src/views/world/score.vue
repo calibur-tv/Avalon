@@ -65,34 +65,15 @@
         </el-alert>
       </div>
     </div>
-    <div
-      v-if="resource"
-      class="flowlist"
-    >
-      <ul>
-        <score-flow
-          v-for="item in resource.list"
-          :key="item.id"
-          :item="item"
-        />
-      </ul>
-      <el-button
-        v-if="!resource.noMore"
-        :loading="resource.loading"
-        class="load-more-btn"
-        type="info"
-        plain
-        @click="loadMore"
-      >{{ resource.loading ? '加载中' : '加载更多' }}</el-button>
-    </div>
+    <score-flow-list/>
   </div>
 </template>
 
 <script>
-import ScoreFlow from "~/components/score/ScoreFlow";
+import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
 
 export default {
-  name: "ScoreFlowList",
+  name: "ScoreWorld",
   async asyncData({ store, ctx }) {
     await Promise.all([
       store.dispatch("world/getData", {
@@ -104,7 +85,7 @@ export default {
     ]);
   },
   components: {
-    ScoreFlow
+    ScoreFlowList
   },
   data() {
     return {
@@ -112,24 +93,8 @@ export default {
     };
   },
   computed: {
-    resource() {
-      return this.$store.state.world.score.active;
-    },
     meta() {
       return this.$store.state.world.score.meta;
-    }
-  },
-  methods: {
-    async loadMore() {
-      try {
-        await this.$store.dispatch("world/getData", {
-          type: "score",
-          sort: "active",
-          ctx: this
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
     }
   }
 };

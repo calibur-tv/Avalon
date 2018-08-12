@@ -217,145 +217,6 @@
       }
     }
 
-    .posts {
-      margin-top: 10px;
-
-      &.posts-of-mine {
-        margin-left: 10px;
-      }
-
-      &.posts-of-reply {
-        li {
-          float: none;
-          padding: 10px;
-          position: relative;
-
-          &:not(:last-child) {
-            border-bottom: 1px dotted #e4e6eb;
-          }
-
-          .header {
-            position: relative;
-            height: 32px;
-            line-height: 32px;
-
-            .time {
-              float: right;
-              display: block;
-              line-height: 32px;
-              color: #999;
-              font-size: 12px;
-              position: relative;
-              z-index: 1;
-              margin-right: 12px;
-            }
-
-            .avatar {
-              display: block;
-              float: right;
-              margin-top: 4px;
-              position: relative;
-              z-index: 1;
-            }
-          }
-
-          .origin {
-            background-color: $color-gray-normal;
-            padding: 10px 20px;
-            margin: 10px 0;
-            border-radius: 5px;
-          }
-
-          .reply {
-            border-left: 5px solid $color-gray-normal;
-            padding: 0 20px;
-            margin: 10px 0;
-          }
-
-          .content {
-            margin-top: 3px;
-            color: #666;
-            font-size: 12px;
-            line-height: 22px;
-            max-height: 44px;
-            overflow: hidden;
-          }
-
-          .images {
-            height: 90px;
-            overflow: hidden;
-            margin-top: 10px;
-            margin-bottom: 15px;
-
-            .image-box {
-              margin-right: 10px;
-              height: 100%;
-              position: relative;
-              float: left;
-
-              &:after {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: #fff;
-                opacity: 0;
-              }
-
-              &:hover {
-                &:after {
-                  opacity: 0.1;
-                }
-              }
-
-              img {
-                height: 100%;
-                width: auto;
-              }
-            }
-          }
-        }
-      }
-
-      &.posts-of-like {
-        li {
-          float: none;
-          position: relative;
-
-          &:not(:last-child) {
-            border-bottom: 1px dotted #e4e6eb;
-          }
-
-          .title {
-            font-size: 14px;
-            line-height: 32px;
-            display: block;
-            padding: 10px;
-          }
-        }
-      }
-
-      &.posts-of-mark {
-        li {
-          float: none;
-          position: relative;
-
-          &:not(:last-child) {
-            border-bottom: 1px dotted #e4e6eb;
-          }
-
-          .title {
-            font-size: 14px;
-            line-height: 32px;
-            display: block;
-            padding: 10px;
-          }
-        }
-      }
-    }
-
     .cartoon-role {
       li {
         margin-bottom: 15px;
@@ -591,197 +452,16 @@
           <no-content v-else/>
         </el-tab-pane>
         <el-tab-pane label="帖子">
-          <el-radio-group
-            v-model="postTab"
-            size="mini"
-            @change="handlePostTabClick"
-          >
-            <el-radio-button label="发表"/>
-            <el-radio-button label="回复"/>
-          </el-radio-group>
-          <template v-if="postListType === 'mine'">
-            <ul class="posts posts-of-mine">
-              <post-show
-                v-for="item in posts.data"
-                :key="item.id"
-                :item="item"
-              />
-            </ul>
-            <el-button
-              v-if="!posts.noMore"
-              :loading="posts.loading"
-              class="load-more-btn"
-              type="info"
-              plain
-              @click="getUserPosts(false)"
-            >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
-          </template>
-          <template v-else-if="postListType === 'reply'">
-            <ul class="posts posts-of-reply">
-              <li
-                v-for="item in posts.data"
-                :key="item.id"
-              >
-                <div class="header clearfix">
-                  回复：
-                  <a
-                    :href="$alias.post(item.post.id)"
-                    class="href-fade-blue"
-                    target="_blank"
-                    v-text="item.post.title"
-                  />
-                  <el-tooltip
-                    :content="item.bangumi.name"
-                    effect="dark"
-                    placement="top"
-                  >
-                    <a
-                      :href="$alias.bangumi(item.bangumi.id)"
-                      class="avatar"
-                      target="_blank"
-                    >
-                      <v-img
-                        :src="item.bangumi.avatar"
-                        size="24"
-                      />
-                    </a>
-                  </el-tooltip>
-                  <v-time
-                    v-model="item.created_at"
-                    class="time"
-                  />
-                </div>
-                <div class="origin">
-                  <div
-                    class="content"
-                    v-html="item.post.content"
-                  />
-                  <div
-                    v-if="item.post.images.length"
-                    class="images clearfix"
-                  >
-                    <div
-                      v-for="(image, index) in item.post.images"
-                      :key="index"
-                      class="image-box"
-                    >
-                      <v-img
-                        :src="image.url"
-                        width="auto"
-                        height="90"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="reply">
-                  <div
-                    class="content"
-                    v-html="item.content"
-                  />
-                  <div
-                    v-if="item.images.length"
-                    class="images clearfix"
-                  >
-                    <div
-                      v-for="(image, index) in item.images"
-                      :key="index"
-                      class="image-box"
-                    >
-                      <v-img
-                        :src="image.url"
-                        width="auto"
-                        height="90"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            <el-button
-              v-if="!posts.noMore"
-              :loading="posts.loading"
-              class="load-more-btn"
-              type="info"
-              plain
-              @click="getUserPosts(false)"
-            >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
-          </template>
-          <no-content v-if="posts.noMore && !posts.data.length"/>
+          <user-post :zone="zone"/>
         </el-tab-pane>
         <el-tab-pane label="偶像">
-          <div
-            v-if="roles.data.length"
-            class="cartoon-role"
-          >
-            <ul>
-              <li
-                v-for="item in roles.data"
-                :key="item.id"
-                class="clearfix"
-              >
-                <a
-                  :href="$alias.cartoonRole(item.id)"
-                  target="_blank"
-                >
-                  <img :src="$resize(item.avatar, { width: 168 })">
-                </a>
-                <div class="text">
-                  <a
-                    :href="$alias.cartoonRole(item.id)"
-                    target="_blank"
-                  >
-                    <h4 v-text="item.name"/>
-                    <p
-                      class="intro"
-                      v-text="item.intro"
-                    />
-                  </a>
-                  <div class="meta">
-                    <span>粉丝: {{ item.fans_count }}</span>
-                    ·
-                    <span>金币: {{ item.star_count }}</span>
-                    ·
-                    <span>贡献: {{ item.has_star }}</span>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            <el-button
-              v-if="!roles.noMore"
-              :loading="loadingFetchUserRoles"
-              class="load-more-btn"
-              plain
-              type="info"
-              @click="getUserRoles(false)"
-            >{{ loadingFetchUserRoles ? '加载中' : '加载更多' }}</el-button>
-          </div>
-          <no-content v-else-if="roles.noMore">
-            <a
-              v-if="isMe"
-              :href="$alias.roleTrending"
-              target="_blank"
-            >查看角色列表</a>
-          </no-content>
+          <cartoon-role-flow-list :user-zone="zone"/>
         </el-tab-pane>
         <el-tab-pane label="相册">
-          <image-waterfall-flow
-            v-if="images.list.length"
-            :list="images.list"
-            :no-more="images.noMore"
-            :loading="images.loading"
-            @load="getUserImages(false)"
-          />
-          <no-content v-else>
-            <el-button
-              v-if="isMe"
-              type="primary"
-              round
-              @click="openUploadImageModal"
-            >上传你的第一张图片</el-button>
-          </no-content>
+          <image-flow-list :user-zone="zone"/>
         </el-tab-pane>
         <el-tab-pane label="漫评">
-          <user-score-list :zone="zone"/>
+          <user-score :zone="zone"/>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
@@ -799,8 +479,10 @@ import ImageApi from "~/api/imageApi";
 import ImageCropper from "~/components/common/ImageCropper";
 import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
 import UserSettingForm from "~/components/user/forms/UserSettingForm";
-import UserScoreList from "~/components/user/UserScoreList";
-import PostShow from "~/components/items/PostShow";
+import ImageFlowList from "~/components/flow/list/ImageFlowList";
+import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
+import UserScore from "~/components/user/UserScore";
+import UserPost from "~/components/user/UserPost";
 
 export default {
   name: "UserShow",
@@ -843,9 +525,11 @@ export default {
   components: {
     ImageCropper,
     ImageWaterfallFlow,
+    CartoonRoleFlowList,
     UserSettingForm,
-    UserScoreList,
-    PostShow
+    UserScore,
+    UserPost,
+    ImageFlowList
   },
   data() {
     return {
@@ -865,9 +549,7 @@ export default {
       },
       postTab: "发表",
       signDayLoading: false,
-      loadingUserImageFetch: false,
-      loadingUserBangumiFetch: false,
-      loadingFetchUserRoles: false
+      loadingUserBangumiFetch: false
     };
   },
   computed: {
@@ -886,33 +568,11 @@ export default {
     bangumis() {
       return this.$store.state.users.list[this.zone].bangumis;
     },
-    postListType() {
-      const type = this.postTab;
-      if (type === "发表") {
-        return "mine";
-      } else if (type === "回复") {
-        return "reply";
-      } else if (type === "喜欢") {
-        return "like";
-      } else if (type === "收藏") {
-        return "mark";
-      }
-      return "mine";
-    },
-    posts() {
-      return this.$store.state.users.posts[this.postListType];
-    },
-    images() {
-      return this.$store.state.image.users;
-    },
     daySigned() {
       return this.self.daySign;
     },
     coinCount() {
       return this.self.coin;
-    },
-    roles() {
-      return this.$store.state.users.roles;
     }
   },
   mounted() {
@@ -925,15 +585,12 @@ export default {
           this.$channel.$emit("user-tab-switch-bangumi");
           break;
         case "帖子":
-          this.getUserPosts(true);
           this.$channel.$emit("user-tab-switch-post");
           break;
         case "偶像":
-          this.getUserRoles(true);
           this.$channel.$emit("user-tab-switch-role");
           break;
         case "相册":
-          this.getUserImages(true);
           this.$channel.$emit("user-tab-switch-image");
           break;
         case "漫评":
@@ -942,75 +599,6 @@ export default {
         case "设置":
           this.$channel.$emit("user-tab-switch-setting");
           break;
-      }
-    },
-    handlePostTabClick() {
-      this.getUserPosts(true);
-    },
-    async getUserBangumis() {
-      if (this.bangumis.length) {
-        return;
-      }
-      if (this.loadingUserBangumiFetch) {
-        return;
-      }
-      this.loadingUserBangumiFetch = true;
-      try {
-        await this.$store.dispatch("users/getFollowBangumis", {
-          ctx: this,
-          zone: this.zone
-        });
-      } finally {
-        this.loadingUserBangumiFetch = false;
-      }
-    },
-    getUserPosts(isFirstRequest) {
-      if (
-        isFirstRequest &&
-        this.$store.state.users.posts[this.postListType].data.length
-      ) {
-        return;
-      }
-      this.$store.dispatch("users/getFollowPosts", {
-        type: this.postListType,
-        zone: this.user.zone
-      });
-    },
-    async getUserImages(isFirstRequest) {
-      if (isFirstRequest && this.images.list.length) {
-        return;
-      }
-      if (this.loadingUserImageFetch) {
-        return;
-      }
-      this.loadingUserImageFetch = true;
-      try {
-        await this.$store.dispatch("image/users", {
-          zone: this.user.zone,
-          ctx: this,
-          force: isFirstRequest
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loadingUserImageFetch = false;
-      }
-    },
-    async getUserRoles(isFirstRequest = false) {
-      if (this.loadingFetchUserRoles) {
-        return;
-      }
-      this.loadingFetchUserRoles = true;
-      try {
-        await this.$store.dispatch("users/getFollowRoles", {
-          ctx: this,
-          zone: this.user.zone,
-          reset: isFirstRequest
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loadingFetchUserRoles = false;
       }
     },
     openAvatarModal(e) {

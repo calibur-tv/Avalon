@@ -24,7 +24,7 @@
         @tab-click="handleTabClick"
       >
         <el-tab-pane label="帖子">
-          <bangumi-post/>
+          <post-flow-list :bangumi-id="id"/>
         </el-tab-pane>
         <el-tab-pane
           v-if="info.has_video"
@@ -39,10 +39,13 @@
           <bangumi-cartoon/>
         </el-tab-pane>
         <el-tab-pane label="偶像">
-          <bangumi-role/>
+          <cartoon-role-flow-list
+            :bangumi-id="id"
+            :bangumi-name="info.name"
+          />
         </el-tab-pane>
         <el-tab-pane label="相册">
-          <bangumi-image/>
+          <image-flow-list :bangumi-id="id"/>
         </el-tab-pane>
         <el-tab-pane label="漫评">
           <bangumi-score/>
@@ -62,13 +65,13 @@
 <script>
 import BangumiBanner from "~/components/bangumi/BangumiBanner";
 import BangumiAside from "~/components/bangumi/BangumiAside";
-import BangumiPost from "~/components/bangumi/BangumiPost";
+import PostFlowList from "~/components/flow/list/PostFlowList";
 import BangumiVideo from "~/components/bangumi/BangumiVideo";
 import BangumiCartoon from "~/components/bangumi/BangumiCartoon";
-import BangumiRole from "~/components/bangumi/BangumiRole";
-import BangumiImage from "~/components/bangumi/BangumiImage";
+import ImageFlowList from "~/components/flow/list/ImageFlowList";
 import BangumiScore from "~/components/bangumi/BangumiScore";
 import BangumiSetting from "~/components/bangumi/BangumiSetting";
+import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
 
 export default {
   name: "BangumiShow",
@@ -88,11 +91,11 @@ export default {
   components: {
     BangumiBanner,
     BangumiAside,
-    BangumiPost,
+    PostFlowList,
     BangumiVideo,
     BangumiCartoon,
-    BangumiRole,
-    BangumiImage,
+    CartoonRoleFlowList,
+    ImageFlowList,
     BangumiScore,
     BangumiSetting
   },
@@ -123,9 +126,6 @@ export default {
         avatar: this.info.avatar
       });
     });
-    setTimeout(() => {
-      document.getElementById("tab-1").click();
-    }, 1000);
   },
   methods: {
     handleTabClick(tab) {

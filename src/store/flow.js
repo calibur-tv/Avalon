@@ -3,6 +3,7 @@ import { merge } from "lodash";
 
 const trendingFlowStore = {
   bangumiId: 0,
+  userZone: "",
   news: {
     list: [],
     total: 0,
@@ -41,7 +42,7 @@ const mutations = {
   RESET_STATE(state, { type }) {
     state[type] = merge({}, trendingFlowStore);
   },
-  PUSH_STATE(state, { data, type, sort, bangumiId, refresh }) {
+  PUSH_STATE(state, { data, type, sort, bangumiId, userZone, refresh }) {
     const list = refresh ? data.list : state[type][sort].list.concat(data.list);
     state[type][sort].list = list;
     state[type][sort].total = data.total;
@@ -49,6 +50,7 @@ const mutations = {
     state[type][sort].nothing = !list.length;
     state[type][sort].loading = false;
     state[type].bangumiId = bangumiId;
+    state[type].userZone = userZone;
   },
   SET_LOADING(state, { type, sort }) {
     state[type][sort].loading = true;
@@ -63,9 +65,21 @@ const actions = {
   },
   async initData(
     { state, commit },
-    { ctx, sort, type, take = 10, bangumiId = 0, refresh = false }
+    {
+      ctx,
+      sort,
+      type,
+      take = 10,
+      bangumiId = 0,
+      userZone = "",
+      refresh = false
+    }
   ) {
-    if (bangumiId !== state[type].bangumiId || refresh) {
+    if (
+      bangumiId !== state[type].bangumiId ||
+      userZone !== state[type].userZone ||
+      refresh
+    ) {
       commit("RESET_STATE", { type });
     }
     if (state[type][sort].list.length || state[type][sort].loading) {
@@ -82,7 +96,8 @@ const actions = {
         take,
         seenIds: "",
         minId: refresh ? 0 : list.length ? list[list.length - 1].id : 0,
-        bangumiId
+        bangumiId,
+        userZone
       });
     } else {
       data = await api.fetch({
@@ -95,16 +110,28 @@ const actions = {
           : list.length
             ? list.map(_ => _.id).toString()
             : "",
-        bangumiId
+        bangumiId,
+        userZone
       });
     }
-    commit("PUSH_STATE", { data, type, sort, bangumiId, refresh });
+    commit("PUSH_STATE", { data, type, sort, bangumiId, userZone, refresh });
   },
   async getData(
     { state, commit },
-    { ctx, sort, type, take = 10, bangumiId = 0, refresh = false }
+    {
+      ctx,
+      sort,
+      type,
+      take = 10,
+      bangumiId = 0,
+      userZone = "",
+      refresh = false
+    }
   ) {
-    if (bangumiId !== state[type].bangumiId) {
+    if (
+      bangumiId !== state[type].bangumiId ||
+      userZone !== state[type].userZone
+    ) {
       commit("RESET_STATE", { type });
     }
     if ((state[type][sort].noMore && !refresh) || state[type][sort].loading) {
@@ -121,7 +148,8 @@ const actions = {
         take,
         seenIds: "",
         minId: refresh ? 0 : list.length ? list[list.length - 1].id : 0,
-        bangumiId
+        bangumiId,
+        userZone
       });
     } else {
       data = await api.fetch({
@@ -134,10 +162,11 @@ const actions = {
           : list.length
             ? list.map(_ => _.id).toString()
             : "",
-        bangumiId
+        bangumiId,
+        userZone
       });
     }
-    commit("PUSH_STATE", { data, type, sort, bangumiId, refresh });
+    commit("PUSH_STATE", { data, type, sort, bangumiId, userZone, refresh });
   }
 };
 
