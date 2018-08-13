@@ -91,7 +91,7 @@
       </div>
       <ul v-else>
         <li
-          v-for="video in videos.list"
+          v-for="video in videos.list[0].data"
           :key="video.id"
           class="video-item"
         >

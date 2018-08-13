@@ -16,33 +16,41 @@
     v-if="source"
     id="cartoon-role-flow-list"
   >
-    <ul>
-      <cartoon-role-flow-item
-        v-for="(item, index) in roles"
-        :index="index"
-        :key="item.id"
-        :item="item"
-        :bangumi-id="bangumiId"
-        :user-zone="userZone"
-      />
-    </ul>
-    <el-button
-      v-if="!source.noMore"
-      :loading="source.loading"
-      class="load-more-btn"
-      type="info"
-      plain
-      @click="loadMore"
-    >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
-    <no-content v-if="userZone && !source.list.length && !source.loading && source.noMore">
+    <template>
+      <ul>
+        <cartoon-role-flow-item
+          v-for="(item, index) in roles"
+          :index="index"
+          :key="item.id"
+          :item="item"
+          :bangumi-id="bangumiId"
+          :user-zone="userZone"
+        />
+      </ul>
+      <el-button
+        v-if="!source.noMore"
+        :loading="source.loading"
+        class="load-more-btn"
+        type="info"
+        plain
+        @click="loadMore"
+      >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
+    </template>
+    <no-content v-if="source.nothing">
       <a
         v-if="isMe"
         :href="$alias.roleTrending"
         target="_blank"
       >查看角色列表</a>
+      <el-button
+        v-if="bangumiId"
+        type="primary"
+        round
+        @click="openFeedback"
+      >没有你喜欢的角色？</el-button>
     </no-content>
     <div
-      v-if="bangumiId && source.noMore"
+      v-if="bangumiId && source.noMore && !source.nothing"
       class="load-more-roles"
     >
       <el-button
@@ -55,7 +63,7 @@
 </template>
 
 <script>
-import flowMixin from "~/mixins/flow";
+import flowMixin from "./_flowListMixin";
 import CartoonRoleFlowItem from "../item/CartoonRoleFlowItem";
 
 export default {
@@ -64,12 +72,6 @@ export default {
     CartoonRoleFlowItem
   },
   mixins: [flowMixin],
-  props: {
-    bangumiName: {
-      type: String,
-      default: ""
-    }
-  },
   data() {
     return {
       flowType: "role"

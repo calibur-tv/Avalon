@@ -7,6 +7,10 @@ export default {
     userZone: {
       type: String,
       default: ""
+    },
+    bangumiName: {
+      type: String,
+      default: ""
     }
   },
   computed: {
@@ -48,6 +52,14 @@ export default {
     },
     source() {
       return this.$store.state[this.fetchStore][this.flowType][this.fetchSort];
+    },
+    showNoContentTips() {
+      return this.bangumiId || this.isMe;
+    },
+    isMe() {
+      return this.$store.state.user.login
+        ? this.$store.state.user.zone === this.userZone
+        : false;
     }
   },
   methods: {

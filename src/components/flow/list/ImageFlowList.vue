@@ -13,20 +13,19 @@
       :width="190"
       @load="loadMore"
     />
-    <no-content v-if="!source.list.length && !source.loading && source.noMore">
+    <no-content v-if="source.nothing">
       <el-button
-        v-if="showTips"
+        v-if="showNoContentTips"
         type="primary"
         round
         @click="openUploadImageModal"
-      >上传第一张图片</el-button>
+      >{{ userZone ? '上传第一张图片' : '上传《' + bangumiName + '》的第一张图片' }}</el-button>
     </no-content>
   </div>
 </template>
 
 <script>
-import flowMixin from "~/mixins/flow";
-import PostFlowItem from "../item/PostFlowItem";
+import flowMixin from "./_flowListMixin";
 import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
 
 export default {
@@ -40,19 +39,9 @@ export default {
       flowType: "image"
     };
   },
-  computed: {
-    showTips() {
-      if (this.bangumiId) {
-        return true;
-      }
-      if (
-        this.userZone &&
-        this.$store.state.user.login &&
-        this.$store.state.user.zone === this.userZone
-      ) {
-        return true;
-      }
-      return false;
+  methods: {
+    openUploadImageModal() {
+      this.$channel.$emit("show-upload-image-modal");
     }
   }
 };

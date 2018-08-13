@@ -20,11 +20,19 @@
       plain
       @click="loadMore"
     >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
+    <no-content v-if="source.nothing">
+      <el-button
+        v-if="showNoContentTips"
+        type="primary"
+        round
+        @click="openUploadImageModal"
+      >{{ userZone ? '发表第一篇帖子' : '发表《' + bangumiName + '》的第一篇帖子' }}</el-button>
+    </no-content>
   </div>
 </template>
 
 <script>
-import flowMixin from "~/mixins/flow";
+import flowMixin from "./_flowListMixin";
 import PostFlowItem from "../item/PostFlowItem";
 
 export default {
@@ -49,6 +57,11 @@ export default {
       return this.source
         ? this.topPosts.concat(this.source.list)
         : this.topPosts;
+    }
+  },
+  methods: {
+    openUploadImageModal() {
+      this.$channel.$emit("show-create-post-modal");
     }
   }
 };

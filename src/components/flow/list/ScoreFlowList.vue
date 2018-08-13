@@ -20,11 +20,23 @@
       plain
       @click="loadMore"
     >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
+    <no-content v-if="source.nothing && !bangumiId">
+      <a
+        v-if="isMe"
+        :href="$alias.createScore"
+        target="_blank"
+      >
+        <el-button
+          type="primary"
+          round
+        >发表第一篇漫评</el-button>
+      </a>
+    </no-content>
   </div>
 </template>
 
 <script>
-import flowMixin from "~/mixins/flow";
+import flowMixin from "./_flowListMixin";
 import ScoreFlowItem from "../item/ScoreFlowItem";
 
 export default {

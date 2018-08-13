@@ -24,7 +24,10 @@
         @tab-click="handleTabClick"
       >
         <el-tab-pane label="帖子">
-          <post-flow-list :bangumi-id="id"/>
+          <post-flow-list
+            :bangumi-id="id"
+            :bangumi-name="info.name"
+          />
         </el-tab-pane>
         <el-tab-pane
           v-if="info.has_video"
@@ -45,7 +48,10 @@
           />
         </el-tab-pane>
         <el-tab-pane label="相册">
-          <image-flow-list :bangumi-id="id"/>
+          <image-flow-list
+            :bangumi-id="id"
+            :bangumi-name="info.name"
+          />
         </el-tab-pane>
         <el-tab-pane label="漫评">
           <bangumi-score/>

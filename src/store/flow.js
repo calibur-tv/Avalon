@@ -49,7 +49,7 @@ const mutations = {
     state[type][sort].noMore = data.noMore;
     state[type][sort].nothing = !list.length;
     state[type][sort].loading = false;
-    state[type].bangumiId = bangumiId;
+    state[type].bangumiId = +bangumiId;
     state[type].userZone = userZone;
   },
   SET_LOADING(state, { type, sort }) {
@@ -76,13 +76,17 @@ const actions = {
     }
   ) {
     if (
-      bangumiId !== state[type].bangumiId ||
+      +bangumiId !== state[type].bangumiId ||
       userZone !== state[type].userZone ||
       refresh
     ) {
       commit("RESET_STATE", { type });
     }
-    if (state[type][sort].list.length || state[type][sort].loading) {
+    if (
+      state[type][sort].list.length ||
+      state[type][sort].loading ||
+      state[type][sort].nothing
+    ) {
       return;
     }
     commit("SET_LOADING", { type, sort });
@@ -129,7 +133,7 @@ const actions = {
     }
   ) {
     if (
-      bangumiId !== state[type].bangumiId ||
+      +bangumiId !== state[type].bangumiId ||
       userZone !== state[type].userZone
     ) {
       commit("RESET_STATE", { type });

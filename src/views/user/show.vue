@@ -272,6 +272,10 @@
   .user-setting-form {
     width: 750px;
   }
+
+  #no-content {
+    margin-top: 25px;
+  }
 }
 </style>
 

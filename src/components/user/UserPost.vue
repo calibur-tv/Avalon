@@ -4,6 +4,10 @@
 
   .posts-of-mine {
     margin-left: 10px;
+
+    #no-content {
+      margin-left: -10px;
+    }
   }
 
   .posts-of-reply {
@@ -214,6 +218,7 @@
         plain
         @click="getUserPosts(false)"
       >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
+      <no-content v-if="!posts.data.length && posts.noMore"/>
     </div>
   </div>
 </template>
