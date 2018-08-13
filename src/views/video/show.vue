@@ -210,7 +210,7 @@ export default {
     },
     videos() {
       if (!this.season) {
-        return this.list;
+        return this.list[0].data;
       }
       let result = [];
       this.list.forEach(videos => {
