@@ -234,27 +234,10 @@ export default {
       return nextId ? this.$alias.video(nextId) : "";
     },
     useOtherSiteSource() {
-      if (this.bangumi.others_site_video) {
-        return true;
-      }
-      const resource = this.video.resource;
-      if (!resource) {
-        return true;
-      }
-      return !(
-        (resource.video[720] && resource.video[720].src) ||
-        (resource.video[1080] && resource.video[1080].src)
-      );
+      return this.video.other_site;
     },
     computeVideoSrc() {
-      const video = this.video;
-      return this.useOtherSiteSource
-        ? video.url
-        : video.resource
-          ? (video.resource.video[720] && video.resource.video[720].src) ||
-            (video.resource.video[1080] && video.resource.video[1080].src) ||
-            video.url
-          : video.url;
+      return this.video.src;
     }
   },
   mounted() {
