@@ -6,6 +6,7 @@ const trendingFlowStore = {
   userZone: "",
   news: {
     list: [],
+    page: 0,
     total: 0,
     noMore: false,
     nothing: false,
@@ -13,6 +14,7 @@ const trendingFlowStore = {
   },
   active: {
     list: [],
+    page: 0,
     total: 0,
     noMore: false,
     nothing: false,
@@ -20,6 +22,7 @@ const trendingFlowStore = {
   },
   hot: {
     list: [],
+    page: 0,
     total: 0,
     noMore: false,
     nothing: false,
@@ -48,6 +51,7 @@ const mutations = {
     state[type][sort].total = data.total;
     state[type][sort].noMore = data.noMore;
     state[type][sort].nothing = !list.length;
+    state[type][sort].page = state[type][sort].page + 1;
     state[type][sort].loading = false;
     state[type].bangumiId = +bangumiId;
     state[type].userZone = userZone;
@@ -91,13 +95,15 @@ const actions = {
     }
     commit("SET_LOADING", { type, sort });
     let data;
-    const list = state[type][sort].list;
+    const source = state[type][sort];
+    const list = source.list;
     const api = new Api(ctx);
     if (sort === "news") {
       data = await api.fetch({
         sort,
         type,
         take,
+        page: source.page,
         seenIds: "",
         minId: refresh ? 0 : list.length ? list[list.length - 1].id : 0,
         bangumiId,
@@ -108,6 +114,7 @@ const actions = {
         sort,
         type,
         take,
+        page: source.page,
         minId: 0,
         seenIds: refresh
           ? ""
@@ -143,13 +150,15 @@ const actions = {
     }
     commit("SET_LOADING", { type, sort });
     let data;
-    const list = state[type][sort].list;
+    const source = state[type][sort];
+    const list = source.list;
     const api = new Api(ctx);
     if (sort === "news") {
       data = await api.fetch({
         sort,
         type,
         take,
+        page: source.page,
         seenIds: "",
         minId: refresh ? 0 : list.length ? list[list.length - 1].id : 0,
         bangumiId,
@@ -160,6 +169,7 @@ const actions = {
         sort,
         type,
         take,
+        page: source.page,
         minId: 0,
         seenIds: refresh
           ? ""
