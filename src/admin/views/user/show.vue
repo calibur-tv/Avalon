@@ -193,10 +193,14 @@
           label="来源id"
           prop="action_id"
         />
-        <el-table-column
-          label="相关用户 id"
-          prop="about_user_id"
-        />
+        <el-table-column label="相关用户 id">
+          <a
+            slot-scope="scope"
+            :href="`/admin/user/show?id=${scope.row.about_user_id}`"
+            target="_blank"
+            v-text="scope.row.about_user_id"
+          />
+        </el-table-column>
         <el-table-column
           label="相关用户手机号"
           prop="about_user_phone"
