@@ -109,12 +109,18 @@
 </template>
 
 <script>
+import Api from "~/api/toggleApi";
+
 export default {
   name: "BangumiAside",
   data() {
     return {
       loadingFollowers: false,
-      openRequestMasterModal: false
+      openRequestMasterModal: false,
+      noMoreFollowers: false,
+      page: 1,
+      take: 10,
+      list: []
     };
   },
   computed: {
@@ -125,10 +131,7 @@ export default {
       return this.info.tags;
     },
     followers() {
-      return this.info.followers;
-    },
-    noMoreFollowers() {
-      return this.info.noMoreFollowers;
+      return this.info.followers.concat(this.list);
     },
     managers() {
       if (!this.info.managers.length) {
@@ -139,18 +142,27 @@ export default {
       });
     }
   },
+  mounted() {
+    this.noMoreFollowers = this.followers.length < this.take;
+  },
   methods: {
     async fetchMoreFollowers() {
       if (this.loadingFollowers || this.noMoreFollowers) {
         return;
       }
       this.loadingFollowers = true;
+      const api = new Api(this);
       try {
-        await this.$store.dispatch("bangumi/getFollowers", {
-          ctx: this,
-          bangumiId: this.info.id,
-          take: 10
+        const result = await api.users({
+          id: this.info.id,
+          page: this.page,
+          take: this.take,
+          type: "follow",
+          model: "bangumi"
         });
+        this.list = this.list.concat(result.list);
+        this.noMoreFollowers = result.noMore;
+        this.page++;
       } catch (e) {
         this.$toast.error(e);
       } finally {
