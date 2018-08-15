@@ -1,9 +1,9 @@
 import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
-  users({ type, id, page, take, model }) {
+  users({ type, id, last_id, take, model }) {
     return this.http.get(`toggle/${type}/users`, {
-      params: { id, page, take, model }
+      params: { id, last_id, take, model }
     });
   }
 

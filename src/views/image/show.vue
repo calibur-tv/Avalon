@@ -140,18 +140,20 @@
       type="mask"
       class="image-banner"
     >
-      <div class="panel">
-        <h1 class="title">《{{ info.name }}》</h1>
-        <p class="author">
-          UP：
-          <a
-            :href="$alias.user(user.zone)"
-            target="_blank"
-            v-text="user.nickname"
-          />
-          &nbsp;·&nbsp;
-          共：{{ info.image_count }}张
-        </p>
+      <div class="container">
+        <div class="panel">
+          <h1 class="title">《{{ info.name }}》</h1>
+          <p class="author">
+            UP：
+            <a
+              :href="$alias.user(user.zone)"
+              target="_blank"
+              v-text="user.nickname"
+            />
+            &nbsp;·&nbsp;
+            共：{{ info.image_count }}张
+          </p>
+        </div>
       </div>
       <v-share type="panel"/>
     </v-header>
@@ -293,10 +295,9 @@
             :liked="info.liked"
             :marked="info.marked"
             :rewarded="info.rewarded"
-            :reward-count="info.reward_count"
-            :like-count="info.like_count"
-            :mark-count="info.mark_count"
-            :users="info.is_creator ? info.reward_users : info.like_users"
+            :like-users="info.like_users"
+            :reward-users="info.reward_users"
+            :mark-users="info.mark_users"
             type="image"
           />
         </div>

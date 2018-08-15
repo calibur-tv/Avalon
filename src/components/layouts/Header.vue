@@ -5,6 +5,11 @@ $avatar-height: 36px;
 .header {
   position: relative;
 
+  .nav-link {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei",
+      "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+  }
+
   .nav {
     left: 0;
     top: 0;

@@ -25,7 +25,7 @@
         @click="toggleReward"
       >
         <i class="iconfont icon-guanzhu"/>
-        {{ rewarded ? '已投食' : '投食' }}{{ rewardCount ? `&nbsp;&nbsp;|&nbsp;&nbsp;${rewardCount}` : '' }}
+        {{ rewarded ? '已投食' : '投食' }}{{ rewardUsers.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${rewardUsers.total}` : '' }}
       </el-button>
       <el-button
         v-else
@@ -36,7 +36,7 @@
         @click="toggleLike"
       >
         <i class="iconfont icon-guanzhu"/>
-        {{ liked ? '已喜欢' : '喜欢' }}{{ likeCount ? `&nbsp;&nbsp;|&nbsp;&nbsp;${likeCount}` : '' }}
+        {{ liked ? '已喜欢' : '喜欢' }}{{ likeUsers.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${likeUsers.total}` : '' }}
       </el-button>
       <el-button
         :class="{ 'is-plain': marked }"
@@ -46,16 +46,25 @@
         @click="toggleMark"
       >
         <i class="iconfont icon-buoumaotubiao44"/>
-        {{ marked ? '已收藏' : '收藏' }}{{ markCount ? `&nbsp;&nbsp;|&nbsp;&nbsp;${markCount}` : '' }}
+        {{ marked ? '已收藏' : '收藏' }}{{ markUsers.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${markUsers.total}` : '' }}
       </el-button>
     </div>
     <div class="users">
       <ava-dialog
-        v-if="isCreator ? rewardCount : likeCount"
-        :users="computedUsers"
-        :fetch="fetchUsers"
+        v-if="isCreator"
+        :users="rewardUsers.list"
+        :no-more="rewardUsers.noMore"
         :loading="loadingUsers"
-        :no-more="noMoreUsers"
+        :fetch="fetchUsers"
+        title="投食的人"
+      />
+      <ava-dialog
+        v-else
+        :users="likeUsers.list"
+        :no-more="likeUsers.noMore"
+        :loading="loadingUsers"
+        :fetch="fetchUsers"
+        title="喜欢的人"
       />
     </div>
   </div>
@@ -96,22 +105,17 @@ export default {
       type: String,
       validator: val => ~["post", "video", "image", "score"].indexOf(val)
     },
-    users: {
+    likeUsers: {
       required: true,
-      type: Array,
-      default: () => []
+      type: Object
     },
-    likeCount: {
-      type: Number,
-      default: 0
+    rewardUsers: {
+      required: true,
+      type: Object
     },
-    markCount: {
-      type: Number,
-      default: 0
-    },
-    rewardCount: {
-      type: Number,
-      default: 0
+    markUsers: {
+      required: true,
+      type: Object
     }
   },
   data() {
@@ -119,10 +123,7 @@ export default {
       loadingUsers: false,
       loadingReward: false,
       loadingLike: false,
-      loadingMark: false,
-      loadedUsers: [],
-      page: 1,
-      take: 15
+      loadingMark: false
     };
   },
   computed: {
@@ -131,15 +132,6 @@ export default {
     },
     isMine() {
       return this.userId === this.currentUserId;
-    },
-    computedUsers() {
-      return this.users.concat(this.loadedUsers);
-    },
-    noMoreUsers() {
-      if (this.isCreator) {
-        return this.computedUsers.length >= this.rewardCount;
-      }
-      return this.computedUsers.length >= this.likeCount;
     }
   },
   methods: {
@@ -209,9 +201,6 @@ export default {
           id: this.id,
           type: this.type
         });
-        if (result) {
-          this.$store.commit("USE_COIN");
-        }
         this.$store.commit(`${this.type}/SOCIAL_TOGGLE`, {
           key: "like",
           value: result
@@ -242,9 +231,6 @@ export default {
           id: this.id,
           type: this.type
         });
-        if (result) {
-          this.$store.commit("USE_COIN");
-        }
         this.$store.commit(`${this.type}/SOCIAL_TOGGLE`, {
           key: "mark",
           value: result
@@ -256,20 +242,24 @@ export default {
         this.loadingMark = false;
       }
     },
-    fetchUsers() {
-      if (this.loadingUsers || this.noMoreUsers) {
+    async fetchUsers() {
+      if (this.loadingUsers) {
         return;
       }
       this.loadingUsers = true;
       const api = new Api(this);
+      const type = this.isCreator ? "reward" : "like";
       try {
-        const result = api.users({
-          page: this.page,
+        const result = await api.users({
+          id: this.id,
+          type,
+          model: this.type,
           take: this.take,
-          type: this.type,
-          id: this.id
+          last_id: this.isCreator
+            ? this.rewardUsers.list[this.rewardUsers.list.length - 1].id
+            : this.likeUsers.list[this.likeUsers.list.length - 1].id
         });
-        this.loadedUsers = this.loadedUsers.concat(result.list);
+        this.$store.commit(`${this.type}/FETCH_SOCIAL_USERS`, { type, result });
       } catch (e) {
         this.$toast.error(e);
       } finally {

@@ -13,6 +13,12 @@ export default {
     albums: []
   }),
   mutations: {
+    FETCH_SOCIAL_USERS(state, { type, result }) {
+      const prefix = state.show[`${type}_users`];
+      state.show[`${type}_users`].list = prefix.list.concat(result.list);
+      state.show[`${type}_users`].total = result.total;
+      state.show[`${type}_users`].noMore = result.noMore;
+    },
     SOCIAL_TOGGLE(state, { key, value }) {
       state.show[`${key}ed`.replace("ee", "e")] = value;
       state.show[`${key}_count`] = value

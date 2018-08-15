@@ -1,8 +1,5 @@
 <style lang="scss">
 #comment-wrap {
-  font-family: Microsoft Yahei, Tahoma, Helvetica, Arial, \\5b8b\4f53,
-    sans-serif;
-
   .sub-title {
     margin-bottom: 30px;
   }

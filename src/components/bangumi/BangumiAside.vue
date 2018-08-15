@@ -56,14 +56,14 @@
       </ul>
     </div>
     <div id="bangumi-followers">
-      <h2 class="sub-title">关注的人{{ info.count_like ? `（${info.count_like}）` : '' }}</h2>
+      <h2 class="sub-title">关注的人{{ followers.total ? `（${followers.total}）` : '' }}</h2>
       <ava-dialog
-        v-if="info.count_like"
-        :users="followers"
+        v-if="followers.total"
+        :users="followers.list"
         :fetch="fetchMoreFollowers"
         :title="`《${info.name}》的关注者们`"
         :loading="loadingFollowers"
-        :no-more="noMoreFollowers"
+        :no-more="followers.noMore"
       />
       <span
         v-else
@@ -73,8 +73,8 @@
     <div id="bangumi-managers">
       <h2 class="sub-title">吧主</h2>
       <ava-dialog
-        v-if="managers.length"
-        :users="managers"
+        v-if="managers.total"
+        :users="managerUsers"
         :fetch="fetchMoreManagers"
         :title="`《${info.name}》的吧主们`"
         :loading="false"
@@ -116,11 +116,7 @@ export default {
   data() {
     return {
       loadingFollowers: false,
-      openRequestMasterModal: false,
-      noMoreFollowers: false,
-      page: 1,
-      take: 10,
-      list: []
+      openRequestMasterModal: false
     };
   },
   computed: {
@@ -131,38 +127,37 @@ export default {
       return this.info.tags;
     },
     followers() {
-      return this.info.followers.concat(this.list);
+      return this.info.follow_users;
     },
     managers() {
-      if (!this.info.managers.length) {
+      return this.info.manager_users;
+    },
+    managerUsers() {
+      if (!this.managers.total) {
         return [];
       }
-      return this.info.managers.map(_ => {
+      return this.managers.list.map(_ => {
         return _.user;
       });
     }
   },
-  mounted() {
-    this.noMoreFollowers = this.followers.length < this.take;
-  },
   methods: {
     async fetchMoreFollowers() {
-      if (this.loadingFollowers || this.noMoreFollowers) {
+      if (this.loadingFollowers) {
         return;
       }
       this.loadingFollowers = true;
       const api = new Api(this);
+      const type = "follow";
       try {
         const result = await api.users({
           id: this.info.id,
-          page: this.page,
           take: this.take,
-          type: "follow",
-          model: "bangumi"
+          last_id: this.followers.list[this.followers.list.length - 1].id,
+          model: "bangumi",
+          type
         });
-        this.list = this.list.concat(result.list);
-        this.noMoreFollowers = result.noMore;
-        this.page++;
+        this.$store.commit("bangumi/FETCH_SOCIAL_USERS", { type, result });
       } catch (e) {
         this.$toast.error(e);
       } finally {

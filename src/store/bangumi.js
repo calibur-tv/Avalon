@@ -1,5 +1,4 @@
 import Api from "~/api/bangumiApi";
-import CartoonRoleApi from "~/api/cartoonRoleApi";
 
 const state = () => ({
   follows: null,
@@ -47,6 +46,12 @@ const state = () => ({
 });
 
 const mutations = {
+  FETCH_SOCIAL_USERS(state, { type, result }) {
+    const prefix = state.info[`${type}_users`];
+    state.info[`${type}_users`].list = prefix.list.concat(result.list);
+    state.info[`${type}_users`].total = result.total;
+    state.info[`${type}_users`].noMore = result.noMore;
+  },
   SET_ROLES(state, { data, bangumiId }) {
     state.roles.data = state.roles.data.concat(data);
     state.roles.noMore = true;
@@ -59,7 +64,7 @@ const mutations = {
   },
   SET_FOLLOW(state, { result }) {
     state.info.followed = result;
-    result ? state.info.count_like++ : state.info.count_like--;
+    result ? state.info.follow_users.total++ : state.info.follow_users.total--;
   },
   SET_RELEASED(state, data) {
     state.released = data;

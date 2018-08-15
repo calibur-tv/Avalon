@@ -9,6 +9,12 @@ const state = () => ({
 });
 
 const mutations = {
+  FETCH_SOCIAL_USERS(state, { type, result }) {
+    const prefix = state.info.post[`${type}_users`];
+    state.info.post[`${type}_users`].list = prefix.list.concat(result.list);
+    state.info.post[`${type}_users`].total = result.total;
+    state.info.post[`${type}_users`].noMore = result.noMore;
+  },
   SOCIAL_TOGGLE(state, { key, value }) {
     state.info.post[`${key}ed`.replace("ee", "e")] = value;
     state.info.post[`${key}_count`] = value

@@ -29,6 +29,7 @@
 
     div {
       padding: 15px 0;
+      word-break: break-all;
     }
 
     &:not(:first-child) {

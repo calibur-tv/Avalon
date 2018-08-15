@@ -267,10 +267,9 @@
                 :liked="post.liked"
                 :marked="post.marked"
                 :rewarded="post.rewarded"
-                :reward-count="post.reward_count"
-                :like-count="post.like_count"
-                :mark-count="post.mark_count"
-                :users="post.is_creator ? post.reward_users : post.like_users"
+                :reward-users="post.reward_users"
+                :like-users="post.like_users"
+                :mark-users="post.mark_users"
                 type="post"
               />
               <div class="footer">

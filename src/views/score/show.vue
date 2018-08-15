@@ -59,8 +59,6 @@
     font-size: 16px;
     color: #222;
     line-height: 30px;
-    font-family: Microsoft Yahei, Tahoma, Helvetica, Arial, \\5b8b\4f53,
-      sans-serif;
     @extend %breakWord;
   }
 }
@@ -180,10 +178,9 @@
           :liked="info.liked"
           :marked="info.marked"
           :rewarded="info.rewarded"
-          :reward-count="info.reward_count"
-          :like-count="info.like_count"
-          :mark-count="info.mark_count"
-          :users="info.is_creator ? info.reward_users : info.like_users"
+          :reward-users="info.reward_users"
+          :mark-users="info.mark_users"
+          :like-users="info.like_users"
           type="score"
         />
         <comment-main
