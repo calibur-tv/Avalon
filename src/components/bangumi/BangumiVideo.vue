@@ -23,8 +23,6 @@
     }
 
     .poster {
-      width: 110px;
-      height: 100%;
       margin-right: 12px;
       float: left;
     }
@@ -74,8 +72,9 @@
                 target="_blank"
               >
                 <v-img
-                  :alt="video.name"
-                  :src="$resize(video.poster, { width: 192, height: 120 })"
+                  :src="video.poster"
+                  width="110"
+                  height="70"
                   class="poster"
                 />
                 <div class="intro">
@@ -92,7 +91,7 @@
       </div>
       <ul v-else>
         <li
-          v-for="video in videos.list"
+          v-for="video in videos.list[0].data"
           :key="video.id"
           class="video-item"
         >
@@ -101,8 +100,9 @@
             target="_blank"
           >
             <v-img
-              :alt="video.name"
-              :src="$resize(video.poster, { width: 192, height: 120 })"
+              :src="video.poster"
+              width="110"
+              height="70"
               class="poster"
             />
             <div class="intro">

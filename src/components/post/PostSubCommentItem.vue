@@ -14,7 +14,7 @@
     margin-right: 10px;
     vertical-align: middle;
     display: inline-block;
-    @include avatar-2(32px);
+    @extend %avatar;
   }
 
   .reply-area {
@@ -44,8 +44,7 @@
     >
       <v-img
         :src="comment.from_user_avatar"
-        width="32"
-        height="32"
+        size="30"
       />
     </a>
     <a

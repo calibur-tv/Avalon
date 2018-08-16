@@ -89,7 +89,13 @@
             v-text="user.nickname"
           />
           <v-time
+            v-if="user.created_at"
             v-model="user.created_at"
+            class="score"
+          />
+          <v-time
+            v-else-if="user.score"
+            v-model="user.score"
             class="score"
           />
         </a>

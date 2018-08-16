@@ -8,7 +8,7 @@
   .avatar {
     float: left;
     margin-right: 12px;
-    @include avatar-2(90px);
+    @extend %avatar;
   }
 
   .intro {
@@ -59,10 +59,10 @@
       target="_blank"
       class="avatar"
     >
-      <img
-        :src="$resize(item.avatar, { width: 180 })"
-        :alt="item.nickname"
-      >
+      <v-img
+        :src="item.avatar"
+        size="90"
+      />
     </a>
     <div class="intro">
       <div class="head">

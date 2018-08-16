@@ -82,10 +82,7 @@
       }
 
       .image {
-        width: 100%;
-        height: auto;
         margin-bottom: 12px;
-        cursor: zoom-in;
       }
 
       .text-area {
@@ -233,8 +230,7 @@
               >
                 <v-img
                   :src="master.avatar"
-                  :width="80"
-                  :height="80"
+                  size="80"
                   class="avatar"
                 />
               </a>
@@ -254,11 +250,9 @@
               >
                 <v-img
                   :src="img.url"
-                  :source="img"
+                  :width="img.width"
+                  :height="img.height"
                   :full="true"
-                  :aspect="$computeImageAspect(img)"
-                  width="550"
-                  mode="2"
                   class="image"
                 />
               </div>
@@ -273,10 +267,9 @@
                 :liked="post.liked"
                 :marked="post.marked"
                 :rewarded="post.rewarded"
-                :reward-count="post.reward_count"
-                :like-count="post.like_count"
-                :mark-count="post.mark_count"
-                :users="post.is_creator ? post.reward_users : post.like_users"
+                :reward-users="post.reward_users"
+                :like-users="post.like_users"
+                :mark-users="post.mark_users"
                 type="post"
               />
               <div class="footer">

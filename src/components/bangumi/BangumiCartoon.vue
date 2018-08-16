@@ -121,7 +121,7 @@
         margin-right: 10px;
         overflow: hidden;
         float: left;
-        @include avatar-2(30px);
+        @extend %avatar;
       }
 
       .main-name {
@@ -205,7 +205,10 @@
               target="_blank"
               class="user-avatar"
             >
-              <img :src="$resize(item.user.avatar, { width: 60 })">
+              <v-img
+                :src="item.user.avatar"
+                size="30"
+              />
             </a>
             <a
               :href="$alias.user(item.user.zone)"

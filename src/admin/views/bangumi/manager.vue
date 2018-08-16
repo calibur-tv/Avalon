@@ -87,6 +87,7 @@
 <script>
 import Api from "~/api/adminApi";
 import BangumiApi from "~/api/bangumiApi";
+import ToggleApi from "~/api/toggleApi";
 
 export default {
   data() {
@@ -114,11 +115,14 @@ export default {
       this.searchManagers();
     },
     async searchManagers() {
-      const api = new BangumiApi(this);
+      const api = new ToggleApi(this);
       try {
-        this.list = await api.managers({
-          bangumiId: this.bangumiId
+        const data = await api.users({
+          type: "contributors",
+          model: "bangumi",
+          id: this.bangumiId
         });
+        this.list = data.list;
       } catch (err) {
         this.$toast.error(err);
       } finally {

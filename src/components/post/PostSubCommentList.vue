@@ -161,7 +161,7 @@ export default {
         await this.$store.dispatch("comment/getSubComments", {
           ctx: this,
           type: "post",
-          parentId: this.parentId
+          id: this.parentId
         });
       } catch (e) {
         this.$toast.error(e);

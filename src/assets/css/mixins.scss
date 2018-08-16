@@ -12,6 +12,12 @@
   }
 }
 
+%avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #e5e9ef;
+}
+
 @mixin iconfont($size: 16px) {
   font-family: "iconfont" !important;
   font-size: $size;
@@ -24,19 +30,6 @@
   width: $size;
   height: $size;
   border-radius: $size / 2;
-}
-
-@mixin avatar-2($size) {
-  width: $size;
-  height: $size;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: $size / 2;
-    border: 1px solid #e5e9ef;
-  }
 }
 
 @mixin twoline($line-height) {

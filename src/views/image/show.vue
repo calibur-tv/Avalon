@@ -140,18 +140,20 @@
       type="mask"
       class="image-banner"
     >
-      <div class="panel">
-        <h1 class="title">《{{ info.name }}》</h1>
-        <p class="author">
-          UP：
-          <a
-            :href="$alias.user(user.zone)"
-            target="_blank"
-            v-text="user.nickname"
-          />
-          &nbsp;·&nbsp;
-          共：{{ info.image_count }}张
-        </p>
+      <div class="container">
+        <div class="panel">
+          <h1 class="title">《{{ info.name }}》</h1>
+          <p class="author">
+            UP：
+            <a
+              :href="$alias.user(user.zone)"
+              target="_blank"
+              v-text="user.nickname"
+            />
+            &nbsp;·&nbsp;
+            共：{{ info.image_count }}张
+          </p>
+        </div>
       </div>
       <v-share type="panel"/>
     </v-header>
@@ -222,44 +224,24 @@
             >
               <v-img
                 :src="img.url"
-                :aspect="$computeImageAspect(img)"
+                :width="img.width"
+                :height="img.height"
+                :full="true"
                 class="image"
-                width="500"
-                mode="2"
               />
               <template v-if="editable">
-                <el-tooltip
-                  placement="top"
-                  effect="dark"
-                  content="删除"
-                >
-                  <button
-                    class="sort-btn delete-btn el-icon-close"
-                    @click="handleImageDelete(idx)"
-                  />
-                </el-tooltip>
-                <el-tooltip
-                  placement="right"
-                  effect="dark"
-                  content="上移"
-                >
-                  <button
-                    v-if="idx"
-                    class="sort-btn to-prev el-icon-caret-top"
-                    @click="handleSortBtnClick(idx, false)"
-                  />
-                </el-tooltip>
-                <el-tooltip
-                  placement="right"
-                  effect="dark"
-                  content="下移"
-                >
-                  <button
-                    v-if="idx !== images.length - 1"
-                    class="sort-btn to-next el-icon-caret-bottom"
-                    @click="handleSortBtnClick(idx, true)"
-                  />
-                </el-tooltip>
+                <button
+                  class="sort-btn delete-btn el-icon-close"
+                  @click="handleImageDelete(idx)"
+                />
+                <button
+                  class="sort-btn to-prev el-icon-caret-top"
+                  @click="handleSortBtnClick(idx, false)"
+                />
+                <button
+                  class="sort-btn to-next el-icon-caret-bottom"
+                  @click="handleSortBtnClick(idx, true)"
+                />
               </template>
             </div>
           </template>
@@ -269,10 +251,10 @@
           >
             <v-img
               :src="source.url"
-              :aspect="$computeImageAspect(source)"
+              :width="source.width"
+              :height="source.height"
+              :full="true"
               class="image"
-              width="500"
-              mode="2"
             />
           </div>
         </div>
@@ -313,10 +295,9 @@
             :liked="info.liked"
             :marked="info.marked"
             :rewarded="info.rewarded"
-            :reward-count="info.reward_count"
-            :like-count="info.like_count"
-            :mark-count="info.mark_count"
-            :users="info.is_creator ? info.reward_users : info.like_users"
+            :like-users="info.like_users"
+            :reward-users="info.reward_users"
+            :mark-users="info.mark_users"
             type="image"
           />
         </div>

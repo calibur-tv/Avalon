@@ -2,7 +2,6 @@ import Vue from "vue";
 import env from "env";
 import Alias from "~/assets/js/alias";
 import Utils from "~/assets/js/utils";
-import ImageLazy from "~/assets/js/imagelazy";
 import NoSSR from "~/assets/js/nossr";
 import Time from "~/assets/js/timeago";
 import BangumiPanel from "~/components/bangumi/BangumiPanel";
@@ -18,18 +17,19 @@ import ElementUI from "element-ui";
 import "~/assets/css/element-ui.scss";
 import VCharts from "v-charts";
 import Affix from "~/components/common/Affix";
+import ImageLazyLoad from "~/components/common/ImageLazyLoad";
 
 import { InfiniteScroll } from "mint-ui";
 
 Vue.use(VCharts);
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
+Vue.use(ImageLazyLoad, {});
 Vue.component(Header.name, Header);
 Vue.component(Affix.name, Affix);
 Vue.component(BangumiSearch.name, BangumiSearch);
 Vue.component(Layout.name, Layout);
 Vue.component(AvaDialog.name, AvaDialog);
-Vue.component(ImageLazy.name, ImageLazy);
 Vue.component(Share.name, Share);
 Vue.component(NoSSR.name, NoSSR);
 Vue.component(Time.name, Time);

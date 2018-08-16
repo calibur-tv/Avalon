@@ -68,34 +68,15 @@
         </el-alert>
       </div>
     </div>
-    <div
-      v-if="resource"
-      class="flowlist"
-    >
-      <ul>
-        <post-show-item
-          v-for="item in resource.list"
-          :key="item.id"
-          :item="item"
-        />
-      </ul>
-      <el-button
-        v-if="!resource.noMore"
-        :loading="resource.loading"
-        class="load-more-btn"
-        plain
-        type="info"
-        @click="loadMore"
-      >{{ resource.loading ? '加载中' : '加载更多' }}</el-button>
-    </div>
+    <post-flow-list/>
   </div>
 </template>
 
 <script>
-import PostShowItem from "~/components/items/PostShow";
+import PostFlowList from "~/components/flow/list/PostFlowList";
 
 export default {
-  name: "PostFlowList",
+  name: "PostWorld",
   async asyncData({ store, ctx }) {
     await Promise.all([
       store.dispatch("world/getData", {
@@ -107,7 +88,7 @@ export default {
     ]);
   },
   components: {
-    PostShowItem
+    PostFlowList
   },
   data() {
     return {
@@ -115,9 +96,6 @@ export default {
     };
   },
   computed: {
-    resource() {
-      return this.$store.state.world.post.active;
-    },
     meta() {
       return this.$store.state.world.post.meta;
     }
@@ -125,17 +103,6 @@ export default {
   methods: {
     openCreatePost() {
       this.$channel.$emit("show-create-post-modal");
-    },
-    async loadMore() {
-      try {
-        await this.$store.dispatch("world/getData", {
-          type: "post",
-          sort: "active",
-          ctx: this
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
     }
   }
 };

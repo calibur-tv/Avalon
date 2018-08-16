@@ -186,7 +186,12 @@ export default {
       return +(this.$route.params.id || 0);
     },
     resource() {
-      return this.$store.state.editor.resource;
+      const result = {};
+      Object.keys(this.$store.state.editor.resource).forEach(key => {
+        const value = this.$store.state.editor.resource[key];
+        result[key] = this.columns.indexOf(key) !== -1 ? +value : value;
+      });
+      return result;
     },
     disabled() {
       return !!this.id;

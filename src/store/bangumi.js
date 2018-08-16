@@ -1,5 +1,4 @@
 import Api from "~/api/bangumiApi";
-import CartoonRoleApi from "~/api/cartoonRoleApi";
 
 const state = () => ({
   follows: null,
@@ -17,7 +16,6 @@ const state = () => ({
   },
   tags: [],
   info: null,
-  followersPage: 1,
   posts: {
     data: [],
     total: 0,
@@ -48,6 +46,12 @@ const state = () => ({
 });
 
 const mutations = {
+  FETCH_SOCIAL_USERS(state, { type, result }) {
+    const prefix = state.info[`${type}_users`];
+    state.info[`${type}_users`].list = prefix.list.concat(result.list);
+    state.info[`${type}_users`].total = result.total;
+    state.info[`${type}_users`].noMore = result.noMore;
+  },
   SET_ROLES(state, { data, bangumiId }) {
     state.roles.data = state.roles.data.concat(data);
     state.roles.noMore = true;
@@ -58,22 +62,9 @@ const mutations = {
     tag.selected = !tag.selected;
     state.tags[index] = tag;
   },
-  ADD_ROLE_STATE(state, { roleId, hasStar }) {
-    state.roles.data.forEach((item, index) => {
-      if (item.id === roleId) {
-        if (hasStar) {
-          state.roles.data[index].has_star++;
-        } else {
-          state.roles.data[index].has_star = 1;
-          state.roles.data[index].fans_count++;
-        }
-        state.roles.data[index].star_count++;
-      }
-    });
-  },
   SET_FOLLOW(state, { result }) {
     state.info.followed = result;
-    result ? state.info.count_like++ : state.info.count_like--;
+    result ? state.info.follow_users.total++ : state.info.follow_users.total--;
   },
   SET_RELEASED(state, data) {
     state.released = data;
@@ -116,9 +107,7 @@ const mutations = {
       images.length >= total || data.length < state.images.take;
   },
   SET_BANGUMI(state, data) {
-    state.info = Object.assign(data, {
-      noMoreFollowers: data.followers.length < 10
-    });
+    state.info = data;
   },
   SET_VIDEOS(state, data) {
     state.videos = {
@@ -127,11 +116,6 @@ const mutations = {
       has_season: data.has_season,
       fetched: true
     };
-  },
-  SET_BANGUMI_FOLLOWERS(state, data) {
-    state.info.followers = state.info.followers.concat(data.list);
-    state.info.noMoreFollowers = data.noMore;
-    state.followersPage += 1;
   },
   SET_BANGUMI_INFO(state, { key, value }) {
     state.info[key] = value;
@@ -242,22 +226,6 @@ const actions = {
     const data = await api.roles({ bangumiId });
     commit("SET_ROLES", { data, bangumiId });
     return data;
-  },
-  async starRole({ commit }, { bangumiId, roleId, ctx, hasStar }) {
-    const api = new CartoonRoleApi(ctx);
-    try {
-      await api.star({ bangumiId, roleId });
-      commit("ADD_ROLE_STATE", { roleId, hasStar });
-    } catch (e) {}
-  },
-  async getFollowers({ state, commit }, { ctx, bangumiId, take }) {
-    const api = new Api(ctx);
-    const data = await api.followers({
-      take,
-      bangumiId,
-      page: state.followersPage
-    });
-    commit("SET_BANGUMI_FOLLOWERS", data);
   },
   async getCartoons({ state, commit }, { ctx, bangumiId }) {
     const api = new Api(ctx);

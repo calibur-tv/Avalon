@@ -18,7 +18,6 @@ $textarea-padding-right: 15px;
       width: 100%;
       font-weight: 400;
       font-size: 16px;
-      font-family: inherit;
       line-height: 30px;
       letter-spacing: 0;
       border-radius: 4px;

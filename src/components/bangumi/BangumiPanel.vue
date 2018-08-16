@@ -2,26 +2,17 @@
 .bangumi-panel {
   position: relative;
   width: 206px;
-  height: 258px;
+  height: 270px;
   border-radius: 4px;
   font-size: 14px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
   margin-bottom: 20px;
   text-align: center;
+  padding-top: 20px;
 
   .avatar {
-    margin: 0 auto 8px;
-    padding-top: 20px;
-    overflow: hidden;
-    width: 90px;
-    height: 90px;
-    display: block;
-    box-sizing: content-box;
-
-    img {
-      width: 100%;
-      height: auto;
-    }
+    margin: 0 auto 8px auto;
+    border-radius: 4px;
   }
 
   .name {
@@ -47,12 +38,13 @@
 <template>
   <div :class="$style.bangumiPanel">
     <a
-      :class="$style.avatar"
       :href="$alias.bangumi(id)"
       target="_blank"
     >
       <v-img
-        :src="$resize(avatar, { width: 180 })"
+        :class="$style.avatar"
+        :src="avatar"
+        size="90"
       />
     </a>
     <a

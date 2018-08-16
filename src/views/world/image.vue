@@ -69,26 +69,15 @@
         </el-alert>
       </div>
     </div>
-    <div
-      v-if="resource"
-      class="flowlist"
-    >
-      <image-waterfall-flow
-        :list="resource.list"
-        :no-more="resource.noMore"
-        :loading="resource.loading"
-        :width="190"
-        @load="loadMore"
-      />
-    </div>
+    <image-flow-list/>
   </div>
 </template>
 
 <script>
-import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
+import ImageFlowList from "~/components/flow/list/ImageFlowList";
 
 export default {
-  name: "ImageFlowList",
+  name: "ImageWorld",
   async asyncData({ store, ctx }) {
     await Promise.all([
       store.dispatch("world/getData", {
@@ -100,7 +89,7 @@ export default {
     ]);
   },
   components: {
-    ImageWaterfallFlow
+    ImageFlowList
   },
   data() {
     return {
@@ -108,9 +97,6 @@ export default {
     };
   },
   computed: {
-    resource() {
-      return this.$store.state.world.image.active;
-    },
     meta() {
       return this.$store.state.world.image.meta;
     }
@@ -121,17 +107,6 @@ export default {
     },
     openCreateImage() {
       this.$channel.$emit("show-upload-image-modal");
-    },
-    async loadMore() {
-      try {
-        await this.$store.dispatch("world/getData", {
-          type: "image",
-          sort: "active",
-          ctx: this
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
     }
   }
 };

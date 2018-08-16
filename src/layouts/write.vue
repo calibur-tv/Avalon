@@ -69,7 +69,7 @@ $layout-width: 900px;
     }
 
     .avatar {
-      @include avatar-2(32px);
+      @extend %avatar;
     }
   }
 
@@ -111,7 +111,10 @@ $layout-width: 900px;
             effect="dark"
           >
             <button class="avatar">
-              <img :src="$resize(user.avatar, { width: 60 })">
+              <v-img
+                :src="user.avatar"
+                size="30"
+              />
             </button>
           </el-tooltip>
           <el-button

@@ -118,17 +118,6 @@
         </div>
       </el-col>
     </el-row>
-    <no-content v-else-if="!loading">
-      <a
-        :href="`${$alias.createScore}?bid=${info.id}`"
-        target="_blank"
-      >
-        <el-button
-          type="primary"
-          round
-        >写下《{{ info.name }}》的第一篇漫评</el-button>
-      </a>
-    </no-content>
     <div
       v-if="scores && scores.total"
       id="score-list"
@@ -150,33 +139,24 @@
           </el-button>
         </a>
       </h3>
-      <score-flow
-        v-for="item in scores.list"
-        :key="item.id"
-        :item="item"
-      />
-      <el-button
-        v-if="!scores.noMore"
-        :loading="scores.loading"
-        class="load-more-btn"
-        type="info"
-        plain
-        @click="getData"
-      >{{ scores.loading ? '加载中' : '加载更多' }}</el-button>
     </div>
+    <score-flow-list
+      :bangumi-id="info.id"
+      :bangumi-name="info.name"
+    />
   </div>
 </template>
 
 <script>
 import ScoreApi from "~/api/scoreApi";
 import BangumiScoreChart from "~/components/bangumi/charts/BangumiScoreChart";
-import ScoreFlow from "~/components/score/ScoreFlow";
+import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
 
 export default {
   name: "BangumiScore",
   components: {
     BangumiScoreChart,
-    ScoreFlow
+    ScoreFlowList
   },
   data() {
     return {
@@ -200,35 +180,10 @@ export default {
   },
   mounted() {
     this.$channel.$on("bangumi-tab-switch-score", () => {
-      this.initData();
       this.getScore();
     });
   },
   methods: {
-    async initData() {
-      try {
-        await this.$store.dispatch("flow/initData", {
-          type: "score",
-          sort: "active",
-          ctx: this,
-          bangumiId: this.info.id
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
-    },
-    async getData() {
-      try {
-        await this.$store.dispatch("flow/getData", {
-          type: "score",
-          sort: "active",
-          ctx: this,
-          bangumiId: this.info.id
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      }
-    },
     async getScore() {
       if (this.loading || this.bangumiScore) {
         return;

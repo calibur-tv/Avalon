@@ -8,19 +8,20 @@ const state = () => ({
   list: [],
   total: 0,
   noMore: false,
-  submitting: false
+  submitting: false,
+  id: 0
 });
 
 const mutations = {
   RESET_STATE(state, { type }) {
-    state = {
-      type,
-      fetchId: "",
-      list: [],
-      total: 0,
-      noMore: false,
-      submitting: false
-    };
+    state.type = type;
+    state.sort = type === "post" ? "asc" : "desc";
+    state.fetchId = 0;
+    state.list = [];
+    state.total = 0;
+    state.noMore = false;
+    state.submitting = false;
+    state.id = 0;
   },
   INIT_FETCH_TYPE(state, { type }) {
     state.type = type;
@@ -28,7 +29,8 @@ const mutations = {
       state.sort = "asc";
     }
   },
-  SET_MAIN_COMMENTS(state, { comments, seeReplyId }) {
+  SET_MAIN_COMMENTS(state, { comments, seeReplyId, id }) {
+    state.id = +id;
     if (!comments.list.length) {
       state.noMore = comments.noMore;
       state.total = comments.total;
@@ -68,11 +70,11 @@ const mutations = {
     state.noMore = hasNew ? comments.noMore : true;
     state.total = hasNew ? comments.total : state.list.length;
   },
-  SET_SUB_COMMENTS(state, { comments, parentId }) {
+  SET_SUB_COMMENTS(state, { comments, id }) {
     let parentComment = null;
     let parentIndex = 0;
     state.list.forEach((item, index) => {
-      if (item.id === parentId) {
+      if (item.id === id) {
         parentComment = item;
         parentIndex = index;
       }
@@ -105,7 +107,7 @@ const mutations = {
     state.sort === "asc"
       ? state.list.push(comment)
       : state.list.unshift(comment);
-    state.total += 1;
+    state.total = state.total + 1;
   },
   CREATE_SUB_COMMENT(state, { id, comment }) {
     state.list.forEach((item, index) => {
@@ -135,7 +137,7 @@ const mutations = {
     state.list.forEach((item, index) => {
       if (item.id === id) {
         state.list.splice(index, 1);
-        state.total -= 1;
+        state.total = state.total - 1;
       }
     });
   },
@@ -173,7 +175,9 @@ const actions = {
   ) {
     if (state.type) {
       if (state.type === type) {
-        if (state.noMore) {
+        if (state.id !== +id) {
+          commit("RESET_STATE", { type });
+        } else if (state.noMore) {
           return;
         }
       } else {
@@ -190,20 +194,20 @@ const actions = {
       seeReplyId,
       fetchId: state.fetchId
     });
-    comments && commit("SET_MAIN_COMMENTS", { comments, seeReplyId });
+    comments && commit("SET_MAIN_COMMENTS", { comments, seeReplyId, id });
   },
-  async getSubComments({ state, commit }, { ctx, type, parentId }) {
-    const store = state.list.filter(_ => _.id === parentId)[0].comments;
+  async getSubComments({ state, commit }, { ctx, type, id }) {
+    const store = state.list.filter(_ => _.id === id)[0].comments;
     if (store.noMore) {
       return;
     }
     const api = new Api(ctx);
     const comments = await api.getSubCommentList({
       type,
-      parentId,
+      id,
       maxId: store.maxId
     });
-    commit("SET_SUB_COMMENTS", { comments, parentId });
+    commit("SET_SUB_COMMENTS", { comments, id });
   },
   async createMainComment({ commit }, { ctx, images, content, type, id }) {
     const api = new Api(ctx);

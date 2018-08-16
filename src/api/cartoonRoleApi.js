@@ -7,12 +7,12 @@ export default class extends BaseApi {
     });
   }
 
-  star({ bangumiId, roleId }) {
-    return this.http.post(`/bangumi/${bangumiId}/role/${roleId}/star`);
+  star({ roleId }) {
+    return this.http.post(`/cartoon_role/${roleId}/star`);
   }
 
-  fans({ bangumiId, roleId, seenIds, minId, sort }) {
-    return this.http.get(`/bangumi/${bangumiId}/role/${roleId}/fans`, {
+  fans({ roleId, seenIds, minId, sort }) {
+    return this.http.get(`/cartoon_role/${roleId}/fans`, {
       params: { seenIds, minId, sort }
     });
   }

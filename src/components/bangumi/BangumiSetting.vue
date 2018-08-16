@@ -162,6 +162,9 @@ export default {
     },
     handleAlbumCreated(album) {
       this.createdAlbum = album;
+    },
+    imageAlbumFilter(images) {
+      return images.filter(_ => _.is_cartoon && _.bangumi_id === this.info.id);
     }
   }
 };

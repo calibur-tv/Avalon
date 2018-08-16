@@ -43,6 +43,10 @@
         </template>
       </el-table-column>
     </el-table>
+    <v-page
+      :state="pageState"
+      :change="handlePageChange"
+    />
   </div>
 </template>
 

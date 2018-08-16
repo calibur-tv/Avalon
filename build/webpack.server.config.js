@@ -8,7 +8,7 @@ const resolve = file => path.resolve(__dirname, file);
 
 module.exports = merge(base, {
   target: "node",
-  devtool: "#source-map",
+  devtool: false,
   entry: resolve("../src/entry/entry-server.js"),
   output: {
     filename: "server-bundle.js",

@@ -2,41 +2,60 @@ import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
   getMainCommentList({ type, id, fetchId, onlySeeMaster, seeReplyId }) {
-    return this.http.get(`${type}/comment/${id}/main/list`, {
-      params: { fetchId, onlySeeMaster, seeReplyId }
+    return this.http.get("comment/main/list", {
+      params: { fetchId, onlySeeMaster, seeReplyId, type, id }
     });
   }
 
-  getSubCommentList({ type, parentId, maxId }) {
-    return this.http.get(`${type}/comment/${parentId}/sub/list`, {
-      params: { maxId }
+  getSubCommentList({ type, id, maxId }) {
+    return this.http.get("comment/sub/list", {
+      params: { maxId, type, id }
     });
   }
 
   createMainComment({ type, id, content, images }) {
-    return this.http.post(`${type}/comment/${id}/create`, { content, images });
+    return this.http.post("comment/main/create", {
+      content,
+      images,
+      type,
+      id
+    });
   }
 
   createSubComment({ type, id, content, targetUserId }) {
-    return this.http.post(`${type}/comment/${id}/reply`, {
+    return this.http.post("comment/main/reply", {
+      targetUserId,
       content,
-      targetUserId
+      type,
+      id
     });
   }
 
   deleteSubComment({ type, id }) {
-    return this.http.post(`${type}/comment/delete/sub/${id}`);
+    return this.http.post("comment/sub/delete", {
+      type,
+      id
+    });
   }
 
   deleteMainComment({ type, id }) {
-    return this.http.post(`${type}/comment/delete/main/${id}`);
+    return this.http.post("comment/main/delete", {
+      type,
+      id
+    });
   }
 
   toggleLikeMainComment({ type, id }) {
-    return this.http.post(`${type}/comment/main/toggleLike/${id}`);
+    return this.http.post("comment/main/toggleLike", {
+      type,
+      id
+    });
   }
 
   toggleLikeSubComment({ type, id }) {
-    return this.http.post(`${type}/comment/sub/toggleLike/${id}`);
+    return this.http.post("comment/sub/toggleLike", {
+      type,
+      id
+    });
   }
 }

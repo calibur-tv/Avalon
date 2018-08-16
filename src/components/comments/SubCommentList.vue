@@ -111,7 +111,7 @@ export default {
         await this.$store.dispatch("comment/getSubComments", {
           ctx: this,
           type: this.type,
-          parentId: this.parentComment.id
+          id: this.parentComment.id
         });
         this.showCollapse = true;
       } catch (e) {

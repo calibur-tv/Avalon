@@ -38,16 +38,10 @@
     }
 
     .avatar {
-      width: 90px;
-      height: 90px;
       margin-right: 15px;
+      border-radius: 5px;
+      overflow: hidden;
       float: left;
-
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 5px;
-      }
     }
 
     .content {
@@ -130,9 +124,8 @@
                 class="avatar"
               >
                 <v-img
-                  :title="item.name"
-                  :alt="item.name"
-                  :src="$resize(item.avatar, { width: 180 })"
+                  :src="item.avatar"
+                  size="90"
                 />
               </a>
               <div class="content">

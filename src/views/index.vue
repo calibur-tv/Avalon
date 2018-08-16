@@ -126,8 +126,8 @@
         class="slogan bg"
       />
       <v-search
-        :placeholder="'搜索二次元的一切'"
         :autofocus="true"
+        placeholder="搜索二次元的一切"
       >
         <i
           slot="submit-btn"

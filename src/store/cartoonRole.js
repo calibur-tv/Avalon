@@ -3,17 +3,15 @@ import Api from "~/api/cartoonRoleApi";
 export default {
   namespaced: true,
   state: () => ({
-    trending: {
-      data: [],
-      noMore: false
-    },
     fans: {
       new: {
         data: [],
+        total: 0,
         noMore: false
       },
       hot: {
         data: [],
+        total: 0,
         noMore: false
       }
     },
@@ -39,10 +37,6 @@ export default {
     SET_ROLE_INFO(state, data) {
       state.info = data;
     },
-    SET_TRENDING(state, data) {
-      state.trending.data = state.trending.data.concat(data);
-      state.trending.noMore = data.length < 15;
-    },
     SET_FANS_LIST(state, { data, reset, sort }) {
       if (reset) {
         state.fans = {
@@ -56,23 +50,12 @@ export default {
           }
         };
       }
-      state.fans[sort].data = state.fans[sort].data.concat(data);
-      state.fans[sort].noMore = data.length < 15;
+      state.fans[sort].data = state.fans[sort].data.concat(data["list"]);
+      state.fans[sort].noMore = data["noMore"];
+      state.fans[sort].total = data["total"];
     }
   },
   actions: {
-    async getTrending({ state, commit }) {
-      if (state.trending.noMore) {
-        return;
-      }
-      const api = new Api();
-      const data = await api.trending({
-        seenIds: state.trending.data.length
-          ? state.trending.data.map(item => item.id).toString()
-          : null
-      });
-      commit("SET_TRENDING", data);
-    },
     async getFansList({ state, commit }, { bangumiId, roleId, sort, reset }) {
       if (state.fans[sort].noMore && !reset) {
         return;
@@ -89,17 +72,17 @@ export default {
           sort === "new"
             ? {
                 minId: reset
-                  ? null
+                  ? 0
                   : length
                     ? state.fans[sort].data[length - 1].id
-                    : null
+                    : 0
               }
             : {
                 seenIds: reset
-                  ? null
+                  ? ""
                   : length
                     ? state.fans[sort].data.map(item => item.id).toString()
-                    : null
+                    : ""
               }
         )
       );

@@ -3,9 +3,6 @@
   position: relative;
   height: 100%;
   width: 100%;
-  text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
-    Microsoft YaHei, Arial, sans-serif;
   @extend %clearfix;
 
   .app-main {

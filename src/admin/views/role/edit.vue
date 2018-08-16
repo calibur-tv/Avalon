@@ -200,25 +200,6 @@ export default {
         this.loading = false;
       }
     },
-    beforeAvatarUpload(file) {
-      const isFormat = file.type === "image/jpeg" || file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 1;
-
-      if (!isFormat) {
-        this.$toast.error("上传头像图片只能是 JPG 或 PNG 格式!");
-      }
-      if (!isLt2M) {
-        this.$toast.error("上传头像图片大小不能超过 1MB!");
-      }
-      if (isFormat && isLt2M) {
-        this.$toast.info("上传中，请稍候...");
-      }
-
-      this.uploadHeaders.key = `bangumi/role/${new Date().getTime()}-${Math.random()
-        .toString(36)
-        .substring(3, 6)}.${file.type.split("/").pop()}`;
-      return isFormat && isLt2M;
-    },
     handleAvatarSuccess(res) {
       this.$toast.success("上传成功");
       this.form.avatar = res.data.key;
@@ -242,6 +223,7 @@ export default {
               this.$refs.form.resetFields();
             }
             this.$toast.success("操作成功");
+            this.uploadConfig.pathPrefix = `bangumi/role/`;
             setTimeout(() => {
               window.open(this.$alias.cartoonRole(jumpId));
             }, 2000);
