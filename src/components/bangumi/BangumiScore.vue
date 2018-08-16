@@ -118,17 +118,6 @@
         </div>
       </el-col>
     </el-row>
-    <no-content v-else-if="!loading">
-      <a
-        :href="`${$alias.createScore}?bid=${info.id}`"
-        target="_blank"
-      >
-        <el-button
-          type="primary"
-          round
-        >写下《{{ info.name }}》的第一篇漫评</el-button>
-      </a>
-    </no-content>
     <div
       v-if="scores && scores.total"
       id="score-list"
@@ -151,7 +140,10 @@
         </a>
       </h3>
     </div>
-    <score-flow-list :bangumi-id="info.id"/>
+    <score-flow-list
+      :bangumi-id="info.id"
+      :bangumi-name="info.name"
+    />
   </div>
 </template>
 

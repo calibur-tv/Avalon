@@ -197,8 +197,8 @@
               <v-img
                 :src="item.source.url"
                 :height="computeImageHeight(item.source)"
+                :width="width"
                 :lazy="false"
-                width="200"
               />
               <div
                 v-if="item.is_album"
@@ -349,6 +349,14 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    bangumiId: {
+      type: Number,
+      default: 0
+    },
+    userZone: {
+      type: String,
+      default: ""
     },
     width: {
       type: Number,

@@ -83,11 +83,6 @@ export default {
         return this.source.list;
       }
       return this.$utils.orderBy(this.source.list, "star_count", "desc");
-    },
-    isMe() {
-      return this.$store.state.login
-        ? this.userZone === this.$store.state.user.zone
-        : false;
     }
   },
   methods: {

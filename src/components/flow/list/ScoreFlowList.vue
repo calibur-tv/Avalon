@@ -20,9 +20,19 @@
       plain
       @click="loadMore"
     >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
-    <no-content v-if="source.nothing && !bangumiId">
+    <no-content v-if="source.nothing">
       <a
-        v-if="isMe"
+        v-if="bangumiId"
+        :href="`${$alias.createScore}?bid=${bangumiId}`"
+        target="_blank"
+      >
+        <el-button
+          type="primary"
+          round
+        >写下《{{ bangumiName }}》的第一篇漫评</el-button>
+      </a>
+      <a
+        v-else-if="isMe"
         :href="$alias.createScore"
         target="_blank"
       >

@@ -139,11 +139,11 @@ export default {
         case "帖子":
           this.$channel.$emit("bangumi-tab-switch-post");
           break;
-        case "漫画":
-          this.$channel.$emit("bangumi-tab-switch-cartoon");
-          break;
         case "视频":
           this.$channel.$emit("bangumi-tab-switch-video");
+          break;
+        case "漫画":
+          this.$channel.$emit("bangumi-tab-switch-cartoon");
           break;
         case "偶像":
           this.$channel.$emit("bangumi-tab-switch-role");
