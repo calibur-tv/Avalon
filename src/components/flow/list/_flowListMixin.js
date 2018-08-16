@@ -57,7 +57,7 @@ export default {
       return this.bangumiId || this.isMe;
     },
     isMe() {
-      return this.$store.state.user.login
+      return this.$store.state.login
         ? this.$store.state.user.zone === this.userZone
         : false;
     }
