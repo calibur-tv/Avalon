@@ -25,7 +25,7 @@
         v-if="showNoContentTips"
         type="primary"
         round
-        @click="openUploadImageModal"
+        @click="openCreatePostModal"
       >{{ userZone ? '发表第一篇帖子' : '发表《' + bangumiName + '》的第一篇帖子' }}</el-button>
     </no-content>
   </div>
@@ -60,7 +60,7 @@ export default {
     }
   },
   methods: {
-    openUploadImageModal() {
+    openCreatePostModal() {
       this.$channel.$emit("show-create-post-modal");
     }
   }
