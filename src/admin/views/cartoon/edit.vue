@@ -76,6 +76,7 @@
             :before-upload="beforeImageUpload"
             :on-success="handleUpUploadSuccess"
             :action="imageUploadAction"
+            :accept="imageUploadAccept"
           >
             <el-button
               type="primary"

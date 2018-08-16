@@ -21,6 +21,7 @@
       <el-upload
         :data="uploadHeaders"
         :action="imageUploadAction"
+        :accept="imageUploadAccept"
         :on-error="handleImageUploadError"
         :before-upload="beforeAvatarUpload"
         :on-success="handleAvatarSuccess"
@@ -33,6 +34,7 @@
       <el-upload
         :data="uploadHeaders"
         :action="imageUploadAction"
+        :accept="imageUploadAccept"
         :on-error="handleImageUploadError"
         :before-upload="beforeBannerUpload"
         :on-success="handleBannerSuccess"

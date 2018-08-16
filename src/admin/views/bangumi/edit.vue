@@ -134,6 +134,7 @@
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
                 :action="imageUploadAction"
+                :accept="imageUploadAccept"
               >
                 <el-button type="text">
                   <i class="el-icon-plus"/>
@@ -188,6 +189,7 @@
                 :on-success="handleBannerSuccess"
                 :before-upload="beforeBannerUpload"
                 :action="imageUploadAction"
+                :accept="imageUploadAccept"
               >
                 <el-button type="text">
                   <i class="el-icon-plus"/>

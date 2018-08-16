@@ -64,6 +64,7 @@
               :on-error="handleImageUploadError"
               :before-upload="beforeImageUpload"
               :action="imageUploadAction"
+              :accept="imageUploadAccept"
             >
               <el-button type="text">
                 <i class="el-icon-plus"/>

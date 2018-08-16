@@ -40,13 +40,14 @@
       <el-upload
         ref="uploader"
         :data="uploadHeaders"
-        :on-error="handleError"
+        :action="imageUploadAction"
+        :accept="imageUploadAccept"
+        :on-error="handleImageUploadError"
         :on-remove="handleRemove"
         :on-success="handleSuccess"
         :on-exceed="handleExceed"
         :limit="exceed"
         :before-upload="beforeUpload"
-        action="https://upload.qiniup.com"
         multiple
         list-type="picture-card"
       >
@@ -65,8 +66,11 @@
 </template>
 
 <script>
+import uploadMixin from "~/mixins/upload";
+
 export default {
   name: "PostCommentForm",
+  mixins: [uploadMixin],
   props: {
     id: {
       type: Number,
@@ -88,9 +92,6 @@ export default {
             trigger: "submit"
           }
         ]
-      },
-      uploadHeaders: {
-        token: ""
       },
       images: [],
       exceed: 5
@@ -170,10 +171,6 @@ export default {
         }
       });
     },
-    handleError(err, file) {
-      console.log(err);
-      this.$toast.error(`图片：${file.name} 上传失败`);
-    },
     handleRemove(file) {
       this.images.forEach((item, index) => {
         if (item.id === file.uid) {
@@ -196,37 +193,14 @@ export default {
         return;
       }
 
-      const isFormat =
-        ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
-          file.type
-        ) !== -1;
-      const isLt2M = file.size / 1024 / 1024 < 5;
-
-      if (!isFormat) {
-        this.$toast.error("仅支持 jpg / jpeg / png / gif 格式的图片");
-        return false;
-      }
-      if (!isLt2M) {
-        this.$toast.error("图片大小不能超过 5MB!");
-        return false;
-      }
-
-      this.uploadHeaders.key = this.$utils.createFileName({
+      this.uploadConfig.max = 5;
+      this.uploadConfig.params = {
         userId: this.$store.state.user.id,
-        id: this.postId,
-        type: "post",
-        file
-      });
+        id: this.id,
+        type: "post"
+      };
 
-      return true;
-    },
-    async getUpToken() {
-      try {
-        await this.$store.dispatch("getUpToken", this);
-        this.uploadHeaders.token = this.$store.state.user.uptoken.upToken;
-      } catch (e) {
-        this.$toast.error(e);
-      }
+      return this.beforeImageUpload(file);
     }
   }
 };

@@ -113,7 +113,7 @@ import Api from "~/api/scoreApi";
 import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
 
 export default {
-  name: "UserScore",
+  name: "UserScoreFlowList",
   components: {
     ScoreFlowList
   },

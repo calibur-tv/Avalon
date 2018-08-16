@@ -27,7 +27,7 @@
     ref="forms"
     :model="forms"
     :rules="rules"
-    label-width="50px"
+    label-width="70px"
     class="create-post-form"
   >
     <el-form-item
@@ -79,13 +79,14 @@
       <el-upload
         ref="uploader"
         :data="uploadHeaders"
+        :action="imageUploadAction"
+        :accept="imageUploadAccept"
         :on-error="handleError"
         :on-remove="handleRemove"
         :on-success="handleSuccess"
         :on-exceed="handleExceed"
         :limit="exceed"
         :before-upload="beforeUpload"
-        action="https://upload.qiniup.com"
         multiple
         list-type="picture-card"
       >
@@ -115,8 +116,11 @@
 </template>
 
 <script>
+import uploadMixin from "~/mixins/upload";
+
 export default {
   name: "CreatePostForm",
+  mixins: [uploadMixin],
   data() {
     return {
       forms: {
@@ -151,9 +155,6 @@ export default {
           }
         ]
       },
-      uploadHeaders: {
-        token: ""
-      },
       images: [],
       exceed: 6,
       appendBangumi: [],
@@ -162,11 +163,6 @@ export default {
     };
   },
   computed: {
-    postId() {
-      return this.$route.name === "post-show"
-        ? parseInt(this.$route.params.id, 10)
-        : 0;
-    },
     bangumiId() {
       return this.$route.name === "bangumi-show"
         ? parseInt(this.$route.params.id, 10)
@@ -303,36 +299,15 @@ export default {
         this.$channel.$emit("sign-in");
         return;
       }
-      const isFormat =
-        ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
-          file.type
-        ) !== -1;
-      const isLt2M = file.size / 1024 / 1024 < 3;
 
-      if (!isFormat) {
-        this.$toast.error("仅支持 jpg / jpeg / png / gif 格式的图片");
-        return false;
-      }
-      if (!isLt2M) {
-        this.$toast.error("图片大小不能超过 3MB!");
-        return false;
-      }
-
-      this.uploadHeaders.key = this.$utils.createFileName({
+      this.uploadConfig.max = 5;
+      this.uploadConfig.params = {
         userId: this.$store.state.user.id,
-        type: "post",
-        id: this.postId || 0,
-        file
-      });
-      return true;
-    },
-    async getUpToken() {
-      try {
-        await this.$store.dispatch("getUpToken", this);
-        this.uploadHeaders.token = this.$store.state.user.uptoken.upToken;
-      } catch (e) {
-        this.$toast.error(e);
-      }
+        id: 0,
+        type: "post"
+      };
+
+      return this.beforeImageUpload(file);
     },
     saveBangumiAndSelected(data) {
       this.forms.bangumiId = data.id;
