@@ -98,7 +98,7 @@
             :name="tab"
             :label="tab"
           >
-            <ul v-if="released[index] && released[index].length">
+            <ul v-if="released && released[index] && released[index].length">
               <li
                 v-for="item in released[index]"
                 :key="item.id"
@@ -158,7 +158,7 @@
 </template>
 
 <script>
-const weeklys = ["最新", "一", "二", "三", "四", "五", "六", "日"];
+const weekly = ["最新", "一", "二", "三", "四", "五", "六", "日"];
 
 export default {
   name: "BangumiNews",
@@ -170,18 +170,13 @@ export default {
   },
   data() {
     return {
-      showtime: weeklys,
-      thisWeek: weeklys[new Date().getDay() || 7]
+      showtime: weekly,
+      thisWeek: weekly[new Date().getDay() || 7]
     };
   },
   computed: {
     released() {
       return this.$store.state.bangumi.released;
-    }
-  },
-  mounted() {
-    if (this.$route.query.from === "search") {
-      this.$toast.info("您搜索的资源未被收录");
     }
   },
   methods: {

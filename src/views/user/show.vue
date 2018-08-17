@@ -607,6 +607,10 @@ export default {
     },
     openAvatarModal(e) {
       const file = e.target.files[0];
+      if (!file) {
+        this.$toast.error("请先选择一张图片");
+        return;
+      }
       if (
         ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
           file.type
@@ -665,6 +669,10 @@ export default {
     },
     selectBanner(e) {
       const file = e.target.files[0];
+      if (!file) {
+        this.$toast.error("请先选择一张图片");
+        return;
+      }
       if (
         ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
           file.type

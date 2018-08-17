@@ -27,7 +27,10 @@
           </div>
           <div class="summary">
             <h2 class="title">漫评</h2>
-            <div class="extra">共 <strong v-text="meta.collection"/> 个番剧&nbsp;·&nbsp;收获了 <strong v-text="meta.total"/> 条漫评</div>
+            <div
+              v-if="meta"
+              class="extra"
+            >共 <strong v-text="meta.collection"/> 个番剧&nbsp;·&nbsp;收获了 <strong v-text="meta.total"/> 条漫评</div>
             <el-button
               type="text"
               size="mini"

@@ -23,7 +23,10 @@
           </div>
           <div class="summary">
             <h2 class="title">相册</h2>
-            <div class="extra">共 <strong v-text="meta.collection"/> 个画册&nbsp;·&nbsp;上传了 <strong v-text="meta.total"/> 张图片</div>
+            <div
+              v-if="meta"
+              class="extra"
+            >共 <strong v-text="meta.collection"/> 个画册&nbsp;·&nbsp;上传了 <strong v-text="meta.total"/> 张图片</div>
             <el-button
               type="text"
               size="mini"

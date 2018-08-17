@@ -3,6 +3,7 @@
   width: 100%;
   height: 100%;
   z-index: 0;
+  background-color: $color-black;
 
   .banner {
     position: absolute;
@@ -10,7 +11,6 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: $color-black;
     z-index: -1;
     opacity: 0;
     transition: opacity 1s ease-in-out;
@@ -110,11 +110,13 @@
   <div id="homepage">
     <v-header type="mask"/>
     <div
+      v-if="banner1"
       :class="{'show' : toggle}"
       :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : '' }"
       class="banner bg"
     />
     <div
+      v-if="banner2"
       :class="{'show' : !toggle}"
       :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"
       class="banner bg"
@@ -122,7 +124,7 @@
     <div class="index-panel">
       <div
         :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/slogan.png')})` }"
-        :class="{ 'invert' : curBanner.gray > 165 }"
+        :class="{ 'invert' : curBanner && curBanner.gray > 165 }"
         class="slogan bg"
       />
       <v-search
@@ -135,7 +137,10 @@
         />
       </v-search>
     </div>
-    <div class="banner-card">
+    <div
+      v-if="curBanner"
+      class="banner-card"
+    >
       <router-link
         v-if="curBanner.user_id"
         :to="$alias.user(curBanner.user_zone)"
@@ -193,7 +198,7 @@ export default {
       toggle: true,
       index: 0,
       options: {
-        width: 1920,
+        width: 2048,
         height: 0,
         mode: 0
       }
@@ -201,7 +206,7 @@ export default {
   },
   computed: {
     banners() {
-      return this.$store.state.homepage.banners;
+      return this.$store.state.homepage.banners || [];
     },
     curBanner() {
       return this.toggle ? this.banner1 : this.banner2;
@@ -222,6 +227,9 @@ export default {
   methods: {
     loopBanner() {
       this.timer = setInterval(() => {
+        if (!this.banners) {
+          return;
+        }
         this.index =
           1 + this.index === this.banners.length ? 0 : this.index + 1;
         const data = this.banners[this.index];
