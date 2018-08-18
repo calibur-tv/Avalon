@@ -208,6 +208,17 @@ $avatar-height: 36px;
     background-size: 100%;
     padding-top: $header-height;
     z-index: 0;
+
+    .calibur {
+      width: 500px;
+      height: 63px;
+      background-position: center left;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-image: url("https://image.calibur.tv/banner/3-1.png?imageMogr2/auto-orient/strip");
+      margin-top: 30px;
+      margin-left: 5px;
+    }
   }
 
   .mask-banner {
@@ -580,6 +591,9 @@ $search-height: 32px;
       :style="[ { height, marginBottom }, bannerImage ]"
       :class="$style.normalBanner"
     >
+      <div class="container">
+        <div :class="$style.calibur"/>
+      </div>
       <slot/>
     </div>
     <template v-else-if="type === 'mask'">
@@ -628,7 +642,7 @@ export default {
     },
     height: {
       type: String,
-      default: "180px"
+      default: "200px"
     },
     marginBottom: {
       type: String,
@@ -637,7 +651,7 @@ export default {
   },
   data() {
     return {
-      defaultBanner: "https://image.calibur.tv/banner/2.jpg",
+      defaultBanner: "https://image.calibur.tv/banner/3.png",
       scrollFlag: false,
       showNotification: false,
       searchFocus: false
