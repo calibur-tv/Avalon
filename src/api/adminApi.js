@@ -213,14 +213,6 @@ export default class extends BaseApi {
     return this.http.post("admin/user/add_to_trial", { id });
   }
 
-  blockUser({ id }) {
-    return this.http.post("admin/user/block", { id });
-  }
-
-  recoverUser({ id }) {
-    return this.http.post("admin/user/recover", { id });
-  }
-
   getUserFeedback() {
     return this.http.get("admin/user/feedback/list");
   }
@@ -281,12 +273,20 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/user/pass", { id });
   }
 
+  blockUser({ id }) {
+    return this.http.post("admin/trial/user/ban", { id });
+  }
+
+  recoverUser({ id }) {
+    return this.http.post("admin/trial/user/recover", { id });
+  }
+
   getTrialPosts() {
     return this.http.get("admin/trial/post/list");
   }
 
   deletePost({ id }) {
-    return this.http.post("admin/trial/post/delete", { id });
+    return this.http.post("admin/trial/post/ban", { id });
   }
 
   passPost({ id }) {
@@ -302,7 +302,7 @@ export default class extends BaseApi {
   }
 
   deleteImage({ id, type }) {
-    return this.http.post("admin/trial/image/delete", { id, type });
+    return this.http.post("admin/trial/image/ban", { id, type });
   }
 
   passImage({ id, type }) {
@@ -318,7 +318,7 @@ export default class extends BaseApi {
   }
 
   deleteComment({ id, type }) {
-    return this.http.post("admin/trial/comment/delete", { id, type });
+    return this.http.post("admin/trial/comment/ban", { id, type });
   }
 
   getTrialBangumis() {

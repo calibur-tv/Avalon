@@ -164,6 +164,10 @@ export function createRouter() {
             component: () => import("~/views/error/404")
           },
           {
+            path: "423",
+            component: () => import("~/views/error/423")
+          },
+          {
             path: "429",
             component: () => import("~/views/error/429")
           },
