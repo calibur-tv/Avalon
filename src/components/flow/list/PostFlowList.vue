@@ -20,7 +20,7 @@
       plain
       @click="loadMore"
     >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
-    <no-content v-if="source.nothing">
+    <no-content v-if="source.nothing && !postList.length">
       <el-button
         v-if="showNoContentTips"
         type="primary"
