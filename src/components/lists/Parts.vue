@@ -169,7 +169,11 @@ export default {
       });
     },
     computePage() {
-      this.take = Math.floor(this.$el.offsetWidth / (this.maxWidth + 8)) * 2;
+      try {
+        this.take = Math.floor(this.$el.offsetWidth / (this.maxWidth + 8)) * 2;
+      } catch (e) {
+        this.take = 5;
+      }
       this.list.forEach((item, index) => {
         if (item.id === this.id) {
           this.part = index + 1;

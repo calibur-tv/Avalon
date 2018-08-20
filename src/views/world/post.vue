@@ -23,7 +23,10 @@
           </div>
           <div class="summary">
             <h2 class="title">帖吧</h2>
-            <div class="extra">共 <strong v-text="meta.collection"/> 个吧&nbsp;·&nbsp;发表了 <strong v-text="meta.total"/> 条帖子</div>
+            <div
+              v-if="meta"
+              class="extra"
+            >共 <strong v-text="meta.collection"/> 个吧&nbsp;·&nbsp;发表了 <strong v-text="meta.total"/> 条帖子</div>
             <el-button
               type="text"
               size="mini"

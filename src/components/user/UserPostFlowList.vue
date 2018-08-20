@@ -227,7 +227,7 @@
 import PostFlowList from "~/components/flow/list/PostFlowList";
 
 export default {
-  name: "UserPost",
+  name: "UserPostFlowList",
   components: {
     PostFlowList
   },

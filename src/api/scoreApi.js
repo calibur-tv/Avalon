@@ -47,11 +47,11 @@ export default class extends BaseApi {
     return this.http.get("admin/trial/score/list");
   }
 
-  ban(id) {
+  ban({ id }) {
     return this.http.post("admin/trial/score/ban", { id });
   }
 
-  pass(id) {
+  pass({ id }) {
     return this.http.post("admin/trial/score/pass", { id });
   }
 }

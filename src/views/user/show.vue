@@ -456,7 +456,7 @@
           <no-content v-else/>
         </el-tab-pane>
         <el-tab-pane label="帖子">
-          <user-post :zone="zone"/>
+          <user-post-flow-list :zone="zone"/>
         </el-tab-pane>
         <el-tab-pane label="偶像">
           <cartoon-role-flow-list :user-zone="zone"/>
@@ -465,7 +465,7 @@
           <image-flow-list :user-zone="zone"/>
         </el-tab-pane>
         <el-tab-pane label="漫评">
-          <user-score :zone="zone"/>
+          <user-score-flow-list :zone="zone"/>
         </el-tab-pane>
         <template v-if="isMe">
           <el-tab-pane label="设置">
@@ -485,8 +485,8 @@ import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
 import UserSettingForm from "~/components/user/forms/UserSettingForm";
 import ImageFlowList from "~/components/flow/list/ImageFlowList";
 import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
-import UserScore from "~/components/user/UserScore";
-import UserPost from "~/components/user/UserPost";
+import UserScoreFlowList from "~/components/user/UserScoreFlowList";
+import UserPostFlowList from "~/components/user/UserPostFlowList";
 
 export default {
   name: "UserShow",
@@ -531,8 +531,8 @@ export default {
     ImageWaterfallFlow,
     CartoonRoleFlowList,
     UserSettingForm,
-    UserScore,
-    UserPost,
+    UserScoreFlowList,
+    UserPostFlowList,
     ImageFlowList
   },
   data() {
@@ -607,6 +607,10 @@ export default {
     },
     openAvatarModal(e) {
       const file = e.target.files[0];
+      if (!file) {
+        this.$toast.error("请先选择一张图片");
+        return;
+      }
       if (
         ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
           file.type
@@ -665,6 +669,10 @@ export default {
     },
     selectBanner(e) {
       const file = e.target.files[0];
+      if (!file) {
+        this.$toast.error("请先选择一张图片");
+        return;
+      }
       if (
         ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
           file.type

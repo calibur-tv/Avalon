@@ -8,6 +8,7 @@
     overflow: hidden;
     position: relative;
     min-height: 30px;
+    padding-right: 60px;
 
     .season-title {
       padding-bottom: 10px;
@@ -16,12 +17,12 @@
   }
 
   .video-placeholder {
-    height: 600px;
+    height: 560px;
     background-color: #000;
   }
 
   .video-info {
-    margin-top: 70px;
+    margin-top: 60px;
     margin-bottom: 20px;
 
     .v-share {
@@ -33,11 +34,6 @@
       margin-right: 15px;
       margin-top: 2px;
     }
-  }
-
-  .bangumi-panel {
-    float: right;
-    margin-right: 10px;
   }
 }
 </style>
@@ -63,7 +59,10 @@
           第{{ video.part }}话&nbsp;{{ video.name }}
         </h1>
       </nav>
-      <div id="video-metas">
+      <div
+        id="video-metas"
+        class="container"
+      >
         <template v-if="season && showAll">
           <div
             v-for="(items, idx) in list"
@@ -99,27 +98,34 @@
           </template>
         </v-part>
       </div>
-      <no-ssr class="video-placeholder">
-        <v-video
-          :source="computeVideoSrc"
-          :other-src="useOtherSiteSource"
-          :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-          :poster="$resize(video.poster)"
-          :next="nextPartVideo"
-          @playing="handlePlaying"
-        />
-      </no-ssr>
-      <div class="video-info">
-        <v-share type="panel"/>
-        <el-button
-          type="warning"
-          size="medium"
-          class="video-report"
-          round
-          @click="handleVideoReportClick"
-        >资源报错</el-button>
-      </div>
       <v-layout>
+        <template slot="main">
+          <no-ssr class="video-placeholder">
+            <v-video
+              :source="computeVideoSrc"
+              :other-src="useOtherSiteSource"
+              :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+              :poster="$resize(video.poster)"
+              :next="nextPartVideo"
+              @playing="handlePlaying"
+            />
+          </no-ssr>
+          <div class="video-info">
+            <v-share type="panel"/>
+            <el-button
+              type="warning"
+              size="medium"
+              class="video-report"
+              round
+              @click="handleVideoReportClick"
+            >资源报错</el-button>
+          </div>
+          <comment-main
+            :id="id"
+            :master-id="video.user_id"
+            type="video"
+          />
+        </template>
         <template slot="aside">
           <v-bangumi-panel
             :id="bangumi.id"
@@ -129,13 +135,6 @@
             :followed="bangumi.followed"
             class="bangumi-panel"
             @follow="handleFollowAction"
-          />
-        </template>
-        <template slot="main">
-          <comment-main
-            :id="id"
-            :master-id="video.user_id"
-            type="video"
           />
         </template>
       </v-layout>
