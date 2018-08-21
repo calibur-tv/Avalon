@@ -151,10 +151,34 @@ import CommentMain from "~/components/comments/CommentMain";
 export default {
   name: "VideoShow",
   head() {
-    return {
-      title: `${this.bangumi.name} : 第${this.video.part}话 ${
+    let resultPart = this.video.part;
+    let season = "";
+    let title = "";
+    if (this.season) {
+      this.list.forEach((videos, index) => {
+        videos.data.forEach(video => {
+          if (video.id === this.video.id) {
+            resultPart = video.part - videos.base;
+            season = this.season.name[index];
+          }
+        });
+      });
+    }
+    if (season) {
+      if (season === this.video.name) {
+        title = `${this.bangumi.name} : ${season} - 视频`;
+      } else {
+        title = `${this.bangumi.name} : ${season} : 第${resultPart}话 ${
+          this.video.name
+        } - 视频`;
+      }
+    } else {
+      title = `${this.bangumi.name} : 第${resultPart}话 ${
         this.video.name
-      } - 视频`,
+      } - 视频`;
+    }
+    return {
+      title,
       meta: [
         {
           hid: "description",
