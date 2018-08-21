@@ -107,6 +107,7 @@
               :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
               :poster="$resize(video.poster)"
               :next="nextPartVideo"
+              :is-guest="isGuest"
               @playing="handlePlaying"
             />
           </no-ssr>
@@ -221,6 +222,9 @@ export default {
   computed: {
     id() {
       return parseInt(this.$route.params.id, 10);
+    },
+    isGuest() {
+      return this.bangumi.id !== 34 && !this.$store.state.login;
     },
     videoPackage() {
       return this.$store.state.video;
