@@ -1,11 +1,11 @@
 <template>
-  <div class="search-nothing-mixin">
+  <div class="search-nothing-score">
     <no-content/>
   </div>
 </template>
 
 <script>
 export default {
-  name: "SearchNothingMixin"
+  name: "SearchNothingScore"
 };
 </script>

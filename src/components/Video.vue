@@ -246,6 +246,10 @@ export default {
     debug: {
       type: Boolean,
       default: false
+    },
+    isGuest: {
+      required: true,
+      type: Boolean
     }
   },
   data() {
@@ -257,9 +261,6 @@ export default {
     };
   },
   computed: {
-    isGuest() {
-      return !this.$store.state.login;
-    },
     isFlv() {
       return (
         this.source
