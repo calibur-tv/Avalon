@@ -183,7 +183,7 @@
           金币:
           {{ $utils.shortenNumber(item.star_count) }}
         </span>
-        <template v-if="!bangumiId">
+        <template v-if="!bangumiId && index !== -1">
           <span>排名:</span>
           <span
             :data-index="item.fans_count ? index + 1 : '无'"
@@ -218,8 +218,8 @@ export default {
       type: String
     },
     index: {
-      required: true,
-      type: Number
+      type: Number,
+      default: -1
     }
   }
 };
