@@ -59,7 +59,7 @@ export default {
       this.set(q);
       this.$router.push({
         name: "search-index",
-        query: { q, type: 0 }
+        query: { q, type: "all" }
       });
     },
     set(q) {
