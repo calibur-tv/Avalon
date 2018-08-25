@@ -75,7 +75,7 @@
           type="info"
           plain
           round
-          @click="loadMore"
+          @click="loadMore(false)"
         >{{ loading ? '加载中...' : '加载更多' }}</el-button>
       </div>
       <!-- 主列表的底部 -->
