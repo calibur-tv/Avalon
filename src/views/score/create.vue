@@ -210,6 +210,31 @@ export default {
     }
   },
   methods: {
+    handleBangumiSearch(bangumiId) {
+      if (this.id) {
+        return;
+      }
+      const api = new Api(this);
+      api
+        .check({
+          id: bangumiId
+        })
+        .then(id => {
+          if (id) {
+            this.$confirm("你已经给该番剧评过分了，不能重复评分", "提示", {
+              confirmButtonText: "查看我的评分",
+              cancelButtonText: "换一个番剧",
+              type: "warning"
+            })
+              .then(() => {
+                window.location.href = this.$alias.score(id);
+              })
+              .catch(() => {
+                this.bangumiId = "";
+              });
+          }
+        });
+    },
     beforeSubmit(richContent) {
       if (!this.bangumiId) {
         this.$toast.error("请先选择要评价的番剧");
@@ -291,31 +316,6 @@ export default {
         this.$channel.$emit("write-save-done");
         this.$channel.$emit("write-submit", false);
       }
-    },
-    handleBangumiSearch(bangumiId) {
-      if (this.id) {
-        return;
-      }
-      const api = new Api(this);
-      api
-        .check({
-          id: bangumiId
-        })
-        .then(id => {
-          if (id) {
-            this.$confirm("你已经给该番剧评过分了，不能重复评分", "提示", {
-              confirmButtonText: "查看我的评分",
-              cancelButtonText: "换一个番剧",
-              type: "warning"
-            })
-              .then(() => {
-                window.location.href = this.$alias.score(id);
-              })
-              .catch(() => {
-                this.bangumiId = "";
-              });
-          }
-        });
     },
     loadEditContent() {
       if (!this.resource) {

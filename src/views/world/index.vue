@@ -129,6 +129,11 @@
                 漫评
               </router-link>
             </li>
+            <li>
+              <router-link :to="$alias.world('qaq')">
+                问答
+              </router-link>
+            </li>
           </ul>
         </v-affix>
       </div>

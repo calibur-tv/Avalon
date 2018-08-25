@@ -108,7 +108,6 @@
           </a>
         </button>
       </el-tooltip>
-      <!--
       <el-tooltip
         placement="top"
         effect="dark"
@@ -121,7 +120,6 @@
           <i class="el-icon-question"/>
         </button>
       </el-tooltip>
-      -->
     </v-creator>
     <div class="creator-button-box">
       <el-tooltip

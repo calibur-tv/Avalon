@@ -68,6 +68,14 @@ export default {
     return `/world/${type}`;
   },
 
+  question(id) {
+    return `/qaq/${id}`;
+  },
+
+  answer(id) {
+    return `/soga/${id}`;
+  },
+
   createScore: "/review/create",
 
   roleTrending: "/role/trending"

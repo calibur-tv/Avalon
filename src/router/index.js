@@ -50,6 +50,11 @@ export function createRouter() {
                 path: "review",
                 name: "world-score",
                 component: () => import("~/views/world/score")
+              },
+              {
+                path: "qaq",
+                name: "world-question",
+                component: () => import("~/views/world/question")
               }
             ]
           },
@@ -112,6 +117,16 @@ export function createRouter() {
             path: "pins/:id(\\d+)",
             name: "image-show",
             component: () => import("~/views/image/show")
+          },
+          {
+            path: "qaq/:id(\\d+)",
+            name: "question-show",
+            component: () => import("~/views/question/show")
+          },
+          {
+            path: "soga/:id(\\d+)",
+            name: "answer-show",
+            component: () => import("~/views/answer/show")
           },
           {
             path: "review/:id(\\d+)",

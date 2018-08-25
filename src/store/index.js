@@ -16,6 +16,7 @@ import score from "./score";
 import editor from "./editor";
 import world from "./flow";
 import cartoonRole from "./cartoonRole";
+import question from "./question";
 
 Vue.use(Vuex);
 
@@ -124,7 +125,8 @@ export function createStore() {
       search,
       score,
       editor,
-      world
+      world,
+      question
     }
   });
 }

@@ -269,7 +269,11 @@ export default {
   },
   mounted() {
     this.containerWidth = this.$el.parentNode.offsetWidth;
-    if (!this.lazy || utils.checkInView(this.$el)) {
+    if (
+      !this.lazy ||
+      window.__closeImageLazy__ ||
+      utils.checkInView(this.$el)
+    ) {
       this.loadImageResource();
     } else {
       this.bindLazyEvent();
