@@ -108,7 +108,8 @@ export default {
     type: {
       required: true,
       type: String,
-      validator: val => ~["post", "video", "image", "score"].indexOf(val)
+      validator: val =>
+        ~["post", "video", "image", "score", "question", "answer"].indexOf(val)
     },
     onlySeeMaster: {
       type: Boolean,
@@ -121,6 +122,10 @@ export default {
     emptyText: {
       type: String,
       default: "暂无评论，快来抢沙发吧╮(￣▽￣)╭！"
+    },
+    auto: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -142,8 +147,15 @@ export default {
       return this.store.total;
     }
   },
+  mounted() {
+    if (this.auto) {
+      this.$channel.$on(`fire-load-comment-${this.type}-${this.id}`, () => {
+        this.loadMore(true);
+      });
+    }
+  },
   methods: {
-    async loadMore() {
+    async loadMore(firstRequest = false) {
       if (this.loading) {
         return;
       }
@@ -153,7 +165,8 @@ export default {
           ctx: this,
           type: this.type,
           id: this.id,
-          onlySeeMaster: this.onlySeeMaster ? 1 : 0
+          onlySeeMaster: this.onlySeeMaster ? 1 : 0,
+          firstRequest
         });
       } catch (e) {
         this.$toast.error(e);

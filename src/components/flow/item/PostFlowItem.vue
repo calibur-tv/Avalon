@@ -280,7 +280,7 @@
     />
     <div class="footer">
       <v-share
-        :url="`/post/${item.id}`"
+        :url="$alias.post(item.id)"
         :title="item.title"
         :desc="item.desc"
         type="button"

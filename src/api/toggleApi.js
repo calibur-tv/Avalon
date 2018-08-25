@@ -22,4 +22,8 @@ export default class extends BaseApi {
   mark({ type, id }) {
     return this.http.post("toggle/mark", { type, id });
   }
+
+  vote({ type, id, is_agree }) {
+    return this.http.post("toggle/vote", { type, id, is_agree });
+  }
 }

@@ -129,7 +129,7 @@ export default {
   props: {
     offset: {
       type: Number, // 扇面偏移角，默认是四分之π，配合默认方向lt
-      default: Math.PI / 4
+      default: Math.PI / 5
     },
     direction: {
       type: String,

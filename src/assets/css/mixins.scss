@@ -30,6 +30,7 @@
   width: $size;
   height: $size;
   border-radius: $size / 2;
+  overflow: hidden;
 }
 
 @mixin twoline($line-height) {
