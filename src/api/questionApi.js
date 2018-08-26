@@ -42,6 +42,10 @@ export default class extends BaseApi {
     return this.http.get(`question/soga/${id}/resource`);
   }
 
+  deleteAnswer({ id }) {
+    return this.http.post(`question/soga/${id}/delete`);
+  }
+
   updateAnswer({
     question_id,
     do_publish,

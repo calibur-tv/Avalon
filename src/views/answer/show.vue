@@ -26,31 +26,43 @@
     />
     <question-panel/>
     <v-layout>
-      <div
-        v-if="answer"
-        slot="main"
-        class="answer"
-      >
-        <a
-          :href="$alias.question(qaq.id)"
-          target="_blank"
+      <template slot="main">
+        <div
+          v-if="answer"
+          class="answer"
         >
-          <el-button
-            v-if="qaq.answer_count > 1"
-            class="read-all-btn"
-          >查看全部 {{ qaq.answer_count }} 个回答</el-button>
-        </a>
-        <answer-flow-item :item="answer"/>
-        <a
-          :href="$alias.question(qaq.id)"
-          target="_blank"
-        >
-          <el-button
-            v-if="qaq.answer_count > 1"
-            class="read-all-btn"
-          >查看全部 {{ qaq.answer_count }} 个回答</el-button>
-        </a>
-      </div>
+          <a
+            :href="$alias.question(qaq.id)"
+            target="_blank"
+          >
+            <el-button
+              v-if="qaq.answer_count > 1"
+              class="read-all-btn"
+            >查看全部 {{ qaq.answer_count }} 个回答</el-button>
+          </a>
+          <answer-flow-item :item="answer"/>
+          <a
+            :href="$alias.question(qaq.id)"
+            target="_blank"
+          >
+            <el-button
+              v-if="qaq.answer_count > 1"
+              class="read-all-btn"
+            >查看全部 {{ qaq.answer_count }} 个回答</el-button>
+          </a>
+        </div>
+        <no-content v-else>
+          <a
+            v-if="qaq.answer_count"
+            :href="$alias.question(qaq.id)"
+          >
+            <el-button
+              type="primary"
+              round
+            >这个答案在审核中或已被删除，查看其它答案</el-button>
+          </a>
+        </no-content>
+      </template>
     </v-layout>
   </div>
 </template>
@@ -70,9 +82,6 @@ export default {
   components: {
     QuestionPanel,
     AnswerFlowItem
-  },
-  data() {
-    return {};
   },
   computed: {
     id() {

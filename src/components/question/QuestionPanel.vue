@@ -63,7 +63,7 @@
       }
 
       .el-button--text,
-      .v-share {
+      .share-btn {
         color: $color-text-normal !important;
       }
 
@@ -166,29 +166,56 @@
             @submit="toggleFollowQAQ"
           />
           <template v-if="qaq.my_answer">
-            <a
-              v-if="qaq.my_answer.published_at"
-              :href="$alias.answer(qaq.my_answer.id)"
-              target="_blank"
-            >
+            <template v-if="answerPage">
               <el-button
+                v-if="isMyAnswer"
                 plain
                 size="medium"
+                type="primary"
+                @click="editMyAnswer"
               >
-                <i class="el-icon-view"/>
-                查看回答
+                <i class="el-icon-edit"/>
+                编辑回答
               </el-button>
-            </a>
-            <el-button
-              v-else
-              plain
-              size="medium"
-              type="primary"
-              @click="editMyAnswer"
-            >
-              <i class="el-icon-edit"/>
-              编辑回答
-            </el-button>
+              <a
+                v-else-if="qaq.my_answer.published_at"
+                :href="$alias.answer(qaq.my_answer.id)"
+                target="_blank"
+              >
+                <el-button
+                  plain
+                  size="medium"
+                >
+                  <i class="el-icon-view"/>
+                  查看回答
+                </el-button>
+              </a>
+            </template>
+            <template v-else>
+              <a
+                v-if="qaq.my_answer.published_at"
+                :href="$alias.answer(qaq.my_answer.id)"
+                target="_blank"
+              >
+                <el-button
+                  plain
+                  size="medium"
+                >
+                  <i class="el-icon-view"/>
+                  查看回答
+                </el-button>
+              </a>
+              <el-button
+                v-else
+                plain
+                size="medium"
+                type="primary"
+                @click="editMyAnswer"
+              >
+                <i class="el-icon-edit"/>
+                编辑回答
+              </el-button>
+            </template>
           </template>
           <el-button
             v-else
@@ -311,10 +338,36 @@ export default {
     },
     followers() {
       return this.qaq.follow_users;
+    },
+    answerPage() {
+      return this.$route.name === "answer-show";
+    },
+    answer() {
+      return this.$store.state.question.answer;
+    },
+    isGuest() {
+      return !this.$store.state.login;
+    },
+    isMyAnswer() {
+      if (this.isGuest || !this.answerPage) {
+        return false;
+      }
+      return this.answer.user.id === this.$store.state.user.id;
+    },
+    isMyQAQ() {
+      if (this.isGuest || this.answerPage) {
+        return false;
+      }
+      return this.qaq.user.id === this.$store.state.user.id;
     }
   },
   created() {
     this.collapsed = this.qaq.intro || this.qaq.images.length;
+  },
+  mounted() {
+    this.$channel.$on("open-write-answer-dialog", () => {
+      this.showCreateAnswerForm = true;
+    });
   },
   methods: {
     async fetchMoreFollowers() {

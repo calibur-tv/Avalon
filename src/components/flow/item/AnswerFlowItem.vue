@@ -36,11 +36,15 @@
     }
   }
 
-  .vote-info {
+  .answer-meta {
     font-size: 14px;
     line-height: 20px;
     margin-bottom: 10px;
     color: #8590a6;
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 
   .answer-footer {
@@ -57,7 +61,7 @@
     }
 
     .el-button--text,
-    .v-share {
+    .share-btn {
       color: $color-text-normal !important;
     }
 
@@ -99,9 +103,36 @@
     </header>
     <div
       v-if="item.vote_count"
-      class="vote-info"
+      class="answer-meta"
     >
-      {{ item.vote_count }} 赞同了该回答
+      <a
+        v-if="item.source_url"
+        :href="item.source_url"
+        target="_blank"
+      >
+        原文链接
+      </a>
+      &nbsp;·&nbsp;
+      <span v-if="item.created_at === item.published_at">
+        发布于
+        <v-time
+          v-model="item.created_at"
+        />
+      </span>
+      <span v-else>
+        编辑于
+        <el-tooltip
+          :content="`发布于：${item.created_at}`"
+          placement="top"
+          effect="dark"
+        >
+          <v-time v-model="item.published_at"/>
+        </el-tooltip>
+      </span>
+      &nbsp;·&nbsp;
+      <span>
+        {{ item.vote_count }} 赞同了该回答
+      </span>
     </div>
     <main class="answer-content">
       <json-content :content="item.content"/>
@@ -141,6 +172,15 @@
         :desc="item.intro"
         type="button"
       />
+      <el-button
+        v-if="isMine"
+        type="text"
+        size="medium"
+        @click="deleteAnswer"
+      >
+        <i class="el-icon-delete"/>
+        删除
+      </el-button>
     </footer>
     <v-dialog
       v-model="showCommentModal"
@@ -165,6 +205,7 @@ import JsonContent from "~/components/jsonEditor/JsonContent";
 import VoteButton from "~/components/common/VoteButton";
 import CommentMain from "~/components/comments/CommentMain";
 import SocialPanel from "~/components/common/SocialPanel";
+import Api from "~/api/questionApi";
 
 export default {
   name: "AnswerFlowItem",
@@ -188,11 +229,13 @@ export default {
   computed: {
     qaq() {
       return this.$store.state.question.qaq;
+    },
+    isMine() {
+      return this.$store.state.login
+        ? this.$store.state.user.id === this.item.user.id
+        : false;
     }
   },
-  watch: {},
-  created() {},
-  mounted() {},
   methods: {
     handleVoted(result) {
       this.$store.commit("flow/TOGGLE_STATE", {
@@ -215,6 +258,25 @@ export default {
       this.$nextTick(() => {
         this.$channel.$emit(`fire-load-comment-answer-${this.item.id}`);
       });
+    },
+    deleteAnswer() {
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          const api = new Api(this);
+          try {
+            await api.deleteAnswer({
+              id: this.item.id
+            });
+            window.location.reload();
+          } catch (e) {
+            this.$toast.error(e);
+          }
+        })
+        .catch(() => {});
     }
   }
 };
