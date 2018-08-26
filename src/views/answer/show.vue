@@ -93,10 +93,6 @@ export default {
     answer() {
       return this.$store.state.question.answer;
     }
-  },
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  }
 };
 </script>

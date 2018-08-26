@@ -105,14 +105,15 @@
       v-if="item.vote_count"
       class="answer-meta"
     >
-      <a
-        v-if="item.source_url"
-        :href="item.source_url"
-        target="_blank"
-      >
-        原文链接
-      </a>
-      &nbsp;·&nbsp;
+      <span v-if="item.source_url">
+        <a
+          :href="item.source_url"
+          target="_blank"
+        >
+          原文链接
+        </a>
+        &nbsp;·&nbsp;
+      </span>
       <span v-if="item.created_at === item.published_at">
         发布于
         <v-time
@@ -172,15 +173,24 @@
         :desc="item.intro"
         type="button"
       />
-      <el-button
-        v-if="isMine"
-        type="text"
-        size="medium"
-        @click="deleteAnswer"
-      >
-        <i class="el-icon-delete"/>
-        删除
-      </el-button>
+      <template v-if="isMine">
+        <el-button
+          type="text"
+          size="medium"
+          @click="$channel.$emit('open-write-answer-dialog', true)"
+        >
+          <i class="el-icon-edit"/>
+          编辑
+        </el-button>
+        <el-button
+          type="text"
+          size="medium"
+          @click="deleteAnswer"
+        >
+          <i class="el-icon-delete"/>
+          删除
+        </el-button>
+      </template>
     </footer>
     <v-dialog
       v-model="showCommentModal"

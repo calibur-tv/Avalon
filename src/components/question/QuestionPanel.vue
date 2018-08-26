@@ -365,8 +365,12 @@ export default {
     this.collapsed = this.qaq.intro || this.qaq.images.length;
   },
   mounted() {
-    this.$channel.$on("open-write-answer-dialog", () => {
-      this.showCreateAnswerForm = true;
+    this.$channel.$on("open-write-answer-dialog", (isEdit = false) => {
+      if (isEdit) {
+        this.editMyAnswer();
+      } else {
+        this.showCreateAnswerForm = true;
+      }
     });
   },
   methods: {
