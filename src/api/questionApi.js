@@ -64,4 +64,28 @@ export default class extends BaseApi {
       intro
     });
   }
+
+  answerTrials() {
+    return this.http.get("admin/trial/answer/list");
+  }
+
+  answerBan({ id }) {
+    return this.http.post("admin/trial/answer/ban", { id });
+  }
+
+  answerPass({ id }) {
+    return this.http.post("admin/trial/answer/pass", { id });
+  }
+
+  questionTrials() {
+    return this.http.get("admin/trial/question/list");
+  }
+
+  questionBan({ id }) {
+    return this.http.post("admin/trial/question/ban", { id });
+  }
+
+  questionPass({ id }) {
+    return this.http.post("admin/trial/question/pass", { id });
+  }
 }

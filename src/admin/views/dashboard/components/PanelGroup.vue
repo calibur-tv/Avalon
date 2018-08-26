@@ -146,7 +146,7 @@
           <svg-icon icon-class="comments"/>
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">回复</div>
+          <div class="card-panel-text">评论</div>
           <count-to
             :start-val="0"
             :end-val="stats.comment"
@@ -171,6 +171,90 @@
           <count-to
             :start-val="0"
             :end-val="stats.image"
+            :duration="3600"
+            class="card-panel-num"
+          />
+        </div>
+      </div>
+    </el-col>
+    <el-col
+      :xs="12"
+      :sm="12"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-message">
+          <svg-icon icon-class="edit"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">漫评</div>
+          <count-to
+            :start-val="0"
+            :end-val="stats.score"
+            :duration="3000"
+            class="card-panel-num"
+          />
+        </div>
+      </div>
+    </el-col>
+    <el-col
+      :xs="12"
+      :sm="12"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-message">
+          <svg-icon icon-class="edit"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">提问</div>
+          <count-to
+            :start-val="0"
+            :end-val="stats.question"
+            :duration="3000"
+            class="card-panel-num"
+          />
+        </div>
+      </div>
+    </el-col>
+    <el-col
+      :xs="12"
+      :sm="12"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-message">
+          <svg-icon icon-class="edit"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">回答</div>
+          <count-to
+            :start-val="0"
+            :end-val="stats.answer"
+            :duration="3000"
+            class="card-panel-num"
+          />
+        </div>
+      </div>
+    </el-col>
+    <el-col
+      :xs="12"
+      :sm="12"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-shoppingCard">
+          <svg-icon icon-class="images"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">相册</div>
+          <count-to
+            :start-val="0"
+            :end-val="stats.image_album"
             :duration="3600"
             class="card-panel-num"
           />

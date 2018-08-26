@@ -410,6 +410,18 @@ export function createRouter() {
                 name: "trial-score",
                 meta: { title: "漫评审核", icon: "coffee" },
                 component: () => import("@/views/trial/score")
+              },
+              {
+                path: "question",
+                name: "trial-question",
+                meta: { title: "提问审核", icon: "coffee" },
+                component: () => import("@/views/trial/question")
+              },
+              {
+                path: "answer",
+                name: "trial-answer",
+                meta: { title: "回答审核", icon: "coffee" },
+                component: () => import("@/views/trial/answer")
               }
             ]
           },
