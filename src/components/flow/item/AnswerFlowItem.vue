@@ -262,6 +262,7 @@ export default {
         key: "voted",
         value: result.result
       });
+      this.$store.commit("question/TOGGLE_VOTE", result);
     },
     loadAnswerComment() {
       this.showCommentModal = true;

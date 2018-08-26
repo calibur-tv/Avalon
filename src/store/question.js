@@ -32,6 +32,13 @@ const mutations = {
         }
       });
     }
+  },
+  TOGGLE_VOTE(state, data) {
+    if (!state.answer) {
+      return;
+    }
+    state.answer.vote_count = data.total;
+    state.answer.voted = data.result;
   }
 };
 
