@@ -117,6 +117,14 @@ export default {
     markUsers: {
       required: true,
       type: Object
+    },
+    userCommitPath: {
+      type: String,
+      default: ""
+    },
+    socialCommitPath: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -251,20 +259,14 @@ export default {
             ? this.rewardUsers.list[this.rewardUsers.list.length - 1].id
             : this.likeUsers.list[this.likeUsers.list.length - 1].id
         });
-        if (this.type === "answer") {
-          this.$store.commit("flow/FETCH_SOCIAL_USERS", {
+        this.$store.commit(
+          this.userCommitPath || `${this.type}/FETCH_SOCIAL_USERS`,
+          {
             id: this.id,
-            type: "answer",
-            sort: "active",
-            fetchType: type,
-            result
-          });
-        } else {
-          this.$store.commit(`${this.type}/FETCH_SOCIAL_USERS`, {
             type,
             result
-          });
-        }
+          }
+        );
       } catch (e) {
         this.$toast.error(e);
       } finally {
@@ -274,23 +276,8 @@ export default {
     commitResult(key, value) {
       const user = this.$store.state.user;
       const type = this.type;
-      if (type === "answer") {
-        this.$store.commit("flow/SOCIAL_TOGGLE", {
-          id: this.id,
-          key,
-          value,
-          type: "answer",
-          sort: "active",
-          user: {
-            id: user.id,
-            zone: user.zone,
-            nickname: user.nickname,
-            avatar: user.avatar
-          }
-        });
-        return;
-      }
-      this.$store.commit(`${type}/SOCIAL_TOGGLE`, {
+      this.$store.commit(this.socialCommitPath || `${type}/SOCIAL_TOGGLE`, {
+        id: this.id,
         key,
         value,
         user: {

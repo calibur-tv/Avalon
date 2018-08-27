@@ -1,5 +1,5 @@
 <style lang="scss">
-#trial-score {
+#trial-answer {
   header {
     text-align: right;
     margin-right: 15px;
@@ -29,7 +29,7 @@
 <template>
   <div
     v-loading="loading"
-    id="trial-score"
+    id="trial-answer"
   >
     <header v-if="isKing">
       <el-button
@@ -37,7 +37,7 @@
         icon="delete"
         size="small"
         @click="quickDelete"
-      >一键删漫评</el-button>
+      >一键删回答</el-button>
     </header>
     <el-col
       v-for="(item, index) in list"
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import Api from "~/api/scoreApi";
+import Api from "~/api/questionApi";
 import JsonContent from "~/components/jsonEditor/JsonContent";
 
 export default {
@@ -101,7 +101,7 @@ export default {
     getData() {
       const api = new Api(this);
       api
-        .trials()
+        .answerTrials()
         .then(data => {
           this.list = data;
           this.loading = false;
@@ -114,12 +114,12 @@ export default {
     ban(id, index) {
       const api = new Api(this);
       api
-        .ban({ id })
+        .answerBan({ id })
         .then(() => {
           this.list.splice(index, 1);
           this.$toast.success("操作成功");
           this.$channel.$emit("admin-trial-do", {
-            type: "score"
+            type: "answer"
           });
         })
         .catch(err => {
@@ -129,12 +129,12 @@ export default {
     pass(id, index) {
       const api = new Api(this);
       api
-        .pass({ id })
+        .answerPass({ id })
         .then(() => {
           this.list.splice(index, 1);
           this.$toast.success("操作成功");
           this.$channel.$emit("admin-trial-do", {
-            type: "score"
+            type: "answer"
           });
         })
         .catch(err => {
@@ -142,7 +142,7 @@ export default {
         });
     },
     quickDelete() {
-      this.$prompt("请输入漫评id", "提示", {
+      this.$prompt("请输入回答id", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /^\d+$/,
@@ -155,7 +155,7 @@ export default {
           }
           const api = new Api(this);
           api
-            .ban({
+            .answerBan({
               id: value
             })
             .then(() => {

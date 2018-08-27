@@ -36,8 +36,7 @@ const state = () => ({
   image: merge({}, trendingFlowStore),
   score: merge({}, trendingFlowStore),
   role: merge({}, trendingFlowStore),
-  question: merge({}, trendingFlowStore),
-  answer: merge({}, trendingFlowStore)
+  question: merge({}, trendingFlowStore)
 });
 
 const mutations = {
@@ -46,68 +45,6 @@ const mutations = {
   },
   RESET_STATE(state, { type }) {
     state[type] = merge({}, trendingFlowStore);
-  },
-  FETCH_SOCIAL_USERS(state, { id, type, sort, fetchType, result }) {
-    const list = state[type][sort].list;
-    let actionIndex = -1;
-    list.forEach((item, index) => {
-      if (item.id === id) {
-        actionIndex = index;
-      }
-    });
-    if (actionIndex === -1) {
-      return;
-    }
-    const prefix = state[type][sort].list[actionIndex][`${fetchType}_users`];
-    state[type][sort].list[actionIndex][
-      `${fetchType}_users`
-    ].list = prefix.list.concat(result.list);
-    state[type][sort].list[actionIndex][`${fetchType}_users`].total =
-      result.total;
-    state[type][sort].list[actionIndex][`${fetchType}_users`].noMore =
-      result.noMore;
-  },
-  TOGGLE_STATE(state, { type, sort, id, key, value }) {
-    const list = state[type][sort].list;
-    let actionIndex = -1;
-    list.forEach((item, index) => {
-      if (item.id === id) {
-        actionIndex = index;
-      }
-    });
-    if (actionIndex === -1) {
-      return;
-    }
-    state[type][sort].list[actionIndex][key] = value;
-  },
-  SOCIAL_TOGGLE(state, { id, type, sort, key, value, user }) {
-    const list = state[type][sort].list;
-    let actionIndex = -1;
-    list.forEach((item, index) => {
-      if (item.id === id) {
-        actionIndex = index;
-      }
-    });
-    if (actionIndex === -1) {
-      return;
-    }
-    state[type][sort].list[actionIndex][`${key}ed`.replace("ee", "e")] = value;
-    if (value) {
-      state[type][sort].list[actionIndex][`${key}_users`].total++;
-      state[type][sort].list[actionIndex][`${key}_users`].list.unshift(user);
-    } else {
-      state[type][sort].list[actionIndex][`${key}_users`].total--;
-      state[type][sort].list[actionIndex][`${key}_users`].list.forEach(
-        (item, index) => {
-          if (item.id === user.id) {
-            state[type][sort].list[actionIndex][`${key}_users`].list.splice(
-              index,
-              1
-            );
-          }
-        }
-      );
-    }
   },
   PUSH_STATE(state, { data, type, sort, bangumiId, userZone, refresh }) {
     const list = refresh ? data.list : state[type][sort].list.concat(data.list);

@@ -53,7 +53,7 @@
           <el-button
             type="primary"
             round
-            @click="showCreateAnswerForm = true"
+            @click="$channel.$emit('open-write-answer-dialog')"
           >开始写第一个回答</el-button>
         </no-content>
       </template>
@@ -74,10 +74,8 @@ export default {
         id,
         ctx
       }),
-      store.dispatch("flow/getData", {
-        type: "answer",
-        sort: "active",
-        bangumiId: id,
+      store.dispatch("question/getAnswers", {
+        questionId: id,
         ctx
       })
     ]);

@@ -42,6 +42,10 @@ export default class extends BaseApi {
     return this.http.get(`question/soga/${id}/resource`);
   }
 
+  deleteAnswer({ id }) {
+    return this.http.post(`question/soga/${id}/delete`);
+  }
+
   updateAnswer({
     question_id,
     do_publish,
@@ -59,5 +63,29 @@ export default class extends BaseApi {
       content,
       intro
     });
+  }
+
+  answerTrials() {
+    return this.http.get("admin/trial/answer/list");
+  }
+
+  answerBan({ id }) {
+    return this.http.post("admin/trial/answer/ban", { id });
+  }
+
+  answerPass({ id }) {
+    return this.http.post("admin/trial/answer/pass", { id });
+  }
+
+  questionTrials() {
+    return this.http.get("admin/trial/question/list");
+  }
+
+  questionBan({ id }) {
+    return this.http.post("admin/trial/question/ban", { id });
+  }
+
+  questionPass({ id }) {
+    return this.http.post("admin/trial/question/pass", { id });
   }
 }

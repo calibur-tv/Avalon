@@ -36,6 +36,7 @@
       <comment-create-form
         :id="id"
         :type="type"
+        @submit="$emit('create-main-comment')"
       />
     </slot>
     <!-- 主列表的 list -->
@@ -58,6 +59,7 @@
             :comment="comment"
             :type="type"
             :master-id="masterId"
+            @delete="$emit('delete-main-comment')"
           />
         </slot>
       </div>
@@ -84,6 +86,7 @@
           v-if="list.length >= 10"
           :id="id"
           :type="type"
+          @submit="$emit('create-main-comment')"
         />
       </slot>
     </div>

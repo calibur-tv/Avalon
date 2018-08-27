@@ -36,11 +36,15 @@
     }
   }
 
-  .vote-info {
+  .answer-meta {
     font-size: 14px;
     line-height: 20px;
     margin-bottom: 10px;
     color: #8590a6;
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 
   .answer-footer {
@@ -57,7 +61,7 @@
     }
 
     .el-button--text,
-    .v-share {
+    .share-btn {
       color: $color-text-normal !important;
     }
 
@@ -99,9 +103,37 @@
     </header>
     <div
       v-if="item.vote_count"
-      class="vote-info"
+      class="answer-meta"
     >
-      {{ item.vote_count }} 赞同了该回答
+      <span v-if="item.source_url">
+        <a
+          :href="item.source_url"
+          target="_blank"
+        >
+          原文链接
+        </a>
+        &nbsp;·&nbsp;
+      </span>
+      <span v-if="item.created_at === item.published_at">
+        发布于
+        <v-time
+          v-model="item.created_at"
+        />
+      </span>
+      <span v-else>
+        编辑于
+        <el-tooltip
+          :content="`发布于：${item.created_at}`"
+          placement="top"
+          effect="dark"
+        >
+          <v-time v-model="item.published_at"/>
+        </el-tooltip>
+      </span>
+      &nbsp;·&nbsp;
+      <span>
+        {{ item.vote_count }} 赞同了该回答
+      </span>
     </div>
     <main class="answer-content">
       <json-content :content="item.content"/>
@@ -116,6 +148,8 @@
         :like-users="item.like_users"
         :mark-users="item.mark_users"
         type="answer"
+        social-commit-path="question/ANSWER_SOCIAL_TOGGLE"
+        user-commit-path="question/FETCH_ANSWER_SOCIAL_USERS"
       />
     </main>
     <footer class="answer-footer">
@@ -141,6 +175,24 @@
         :desc="item.intro"
         type="button"
       />
+      <template v-if="isMine">
+        <el-button
+          type="text"
+          size="medium"
+          @click="$channel.$emit('open-write-answer-dialog', true)"
+        >
+          <i class="el-icon-edit"/>
+          编辑
+        </el-button>
+        <el-button
+          type="text"
+          size="medium"
+          @click="deleteAnswer"
+        >
+          <i class="el-icon-delete"/>
+          删除
+        </el-button>
+      </template>
     </footer>
     <v-dialog
       v-model="showCommentModal"
@@ -155,6 +207,8 @@
         :auto="true"
         empty-text="还没有评论"
         type="answer"
+        @delete-main-comment="handleCommentChange(-1)"
+        @create-main-comment="handleCommentChange(1)"
       />
     </v-dialog>
   </div>
@@ -165,6 +219,7 @@ import JsonContent from "~/components/jsonEditor/JsonContent";
 import VoteButton from "~/components/common/VoteButton";
 import CommentMain from "~/components/comments/CommentMain";
 import SocialPanel from "~/components/common/SocialPanel";
+import Api from "~/api/questionApi";
 
 export default {
   name: "AnswerFlowItem",
@@ -188,32 +243,50 @@ export default {
   computed: {
     qaq() {
       return this.$store.state.question.qaq;
+    },
+    isMine() {
+      return this.$store.state.login
+        ? this.$store.state.user.id === this.item.user.id
+        : false;
     }
   },
-  watch: {},
-  created() {},
-  mounted() {},
   methods: {
     handleVoted(result) {
-      this.$store.commit("flow/TOGGLE_STATE", {
+      this.$store.commit("question/TOGGLE_ANSWER_VOTE", {
         id: this.item.id,
-        type: "answer",
-        sort: "active",
-        key: "vote_count",
-        value: result.total
-      });
-      this.$store.commit("flow/TOGGLE_STATE", {
-        id: this.item.id,
-        type: "answer",
-        sort: "active",
-        key: "voted",
-        value: result.result
+        data: result
       });
     },
     loadAnswerComment() {
       this.showCommentModal = true;
       this.$nextTick(() => {
         this.$channel.$emit(`fire-load-comment-answer-${this.item.id}`);
+      });
+    },
+    deleteAnswer() {
+      this.$confirm("删除后无法找回, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          const api = new Api(this);
+          try {
+            await api.deleteAnswer({
+              id: this.item.id
+            });
+            window.location.reload();
+          } catch (e) {
+            this.$toast.error(e);
+          }
+        })
+        .catch(() => {});
+    },
+    handleCommentChange(count) {
+      this.$store.commit("question/COMMENT_CHANGE_COUNT", {
+        id: this.item.id,
+        key: "answer",
+        value: count
       });
     }
   }
