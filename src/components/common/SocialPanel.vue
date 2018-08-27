@@ -288,6 +288,16 @@ export default {
             avatar: user.avatar
           }
         });
+        this.$store.commit("question/ANSWER_SOCIAL_TOGGLE", {
+          key,
+          value,
+          user: {
+            id: user.id,
+            zone: user.zone,
+            nickname: user.nickname,
+            avatar: user.avatar
+          }
+        });
         return;
       }
       this.$store.commit(`${type}/SOCIAL_TOGGLE`, {

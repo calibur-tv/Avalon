@@ -159,6 +159,7 @@ export default {
             dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600);
           }, 400);
         }
+        this.$emit("submit");
       } catch (e) {
         this.$toast.error(e);
       } finally {

@@ -264,6 +264,8 @@
             :auto="true"
             empty-text="还没有评论"
             type="question"
+            @delete-main-comment="handleCommentChange(-1)"
+            @create-main-comment="handleCommentChange(1)"
           />
         </v-dialog>
       </div>
@@ -429,6 +431,12 @@ export default {
     collapsedQAQ() {
       this.collapsed = true;
       window.scrollTo(0, 0);
+    },
+    handleCommentChange(count) {
+      this.$store.commit("question/COMMENT_CHANGE", {
+        key: "qaq",
+        value: count
+      });
     }
   }
 };

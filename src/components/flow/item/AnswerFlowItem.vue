@@ -205,6 +205,8 @@
         :auto="true"
         empty-text="还没有评论"
         type="answer"
+        @delete-main-comment="handleCommentChange(-1)"
+        @create-main-comment="handleCommentChange(1)"
       />
     </v-dialog>
   </div>
@@ -288,6 +290,18 @@ export default {
           }
         })
         .catch(() => {});
+    },
+    handleCommentChange(count) {
+      this.$store.commit("question/COMMENT_CHANGE", {
+        key: "answer",
+        value: count
+      });
+      this.$store.commit("flow/TOGGLE_STATE", {
+        id: this.item.id,
+        type: "answer",
+        sort: "active",
+        value: count
+      });
     }
   }
 };

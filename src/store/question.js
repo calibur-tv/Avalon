@@ -13,6 +13,23 @@ const mutations = {
     state.qaq = data.question;
     state.answer = data.answer;
   },
+  ANSWER_SOCIAL_TOGGLE(state, { key, value, user }) {
+    if (!state.answer) {
+      return;
+    }
+    state.answer[`${key}ed`.replace("ee", "e")] = value;
+    if (value) {
+      state.answer[`${key}_users`].total++;
+      state.answer[`${key}_users`].list.unshift(user);
+    } else {
+      state.answer[`${key}_users`].total--;
+      state.answer[`${key}_users`].list.forEach((item, index) => {
+        if (item.id === user.id) {
+          state.answer[`${key}_users`].list.splice(index, 1);
+        }
+      });
+    }
+  },
   FETCH_QAQ_SOCIAL_USERS(state, { type, result }) {
     const prefix = state.qaq[`${type}_users`];
     state.qaq[`${type}_users`].list = prefix.list.concat(result.list);
@@ -39,6 +56,12 @@ const mutations = {
     }
     state.answer.vote_count = data.total;
     state.answer.voted = data.result;
+  },
+  COMMENT_CHANGE(state, { key, value }) {
+    if (!state[key]) {
+      return;
+    }
+    state[key].comment_count = state[key].comment_count + value;
   }
 };
 
