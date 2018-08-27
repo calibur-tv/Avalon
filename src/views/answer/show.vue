@@ -91,7 +91,7 @@ export default {
       return this.$store.state.question.qaq;
     },
     answer() {
-      return this.$store.state.question.answer;
+      return this.$store.state.question.answers.list[0];
     }
   }
 };

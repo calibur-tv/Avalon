@@ -345,7 +345,7 @@ export default {
       return this.$route.name === "answer-show";
     },
     answer() {
-      return this.$store.state.question.answer;
+      return this.$store.state.question.answers.list[0];
     },
     isGuest() {
       return !this.$store.state.login;
@@ -433,7 +433,8 @@ export default {
       window.scrollTo(0, 0);
     },
     handleCommentChange(count) {
-      this.$store.commit("question/COMMENT_CHANGE", {
+      this.$store.commit("question/COMMENT_CHANGE_COUNT", {
+        id: this.id,
         key: "qaq",
         value: count
       });

@@ -27,15 +27,14 @@
     </ul>
     <el-button
       v-if="!source.noMore"
-      :loading="source.loading"
+      :loading="loading"
       class="load-more-btn"
       @click="loadMore"
-    >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
+    >{{ loading ? '加载中' : '加载更多' }}</el-button>
   </div>
 </template>
 
 <script>
-import flowMixin from "./_flowListMixin";
 import AnswerFlowItem from "../item/AnswerFlowItem";
 
 export default {
@@ -43,11 +42,44 @@ export default {
   components: {
     AnswerFlowItem
   },
-  mixins: [flowMixin],
+  props: {
+    bangumiId: {
+      type: Number,
+      default: 0
+    },
+    userZone: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
-      flowType: "answer"
+      loading: false
     };
+  },
+  computed: {
+    source() {
+      return this.$store.state.question.answers;
+    }
+  },
+  methods: {
+    async loadMore() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      try {
+        await this.$store.dispatch("question/getAnswers", {
+          ctx: this,
+          userZone: this.userZone,
+          questionId: this.bangumiId
+        });
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
+      }
+    }
   }
 };
 </script>

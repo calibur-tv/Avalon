@@ -148,6 +148,8 @@
         :like-users="item.like_users"
         :mark-users="item.mark_users"
         type="answer"
+        social-commit-path="question/ANSWER_SOCIAL_TOGGLE"
+        user-commit-path="question/FETCH_ANSWER_SOCIAL_USERS"
       />
     </main>
     <footer class="answer-footer">
@@ -250,21 +252,10 @@ export default {
   },
   methods: {
     handleVoted(result) {
-      this.$store.commit("flow/TOGGLE_STATE", {
+      this.$store.commit("question/TOGGLE_ANSWER_VOTE", {
         id: this.item.id,
-        type: "answer",
-        sort: "active",
-        key: "vote_count",
-        value: result.total
+        data: result
       });
-      this.$store.commit("flow/TOGGLE_STATE", {
-        id: this.item.id,
-        type: "answer",
-        sort: "active",
-        key: "voted",
-        value: result.result
-      });
-      this.$store.commit("question/TOGGLE_VOTE", result);
     },
     loadAnswerComment() {
       this.showCommentModal = true;
@@ -292,14 +283,9 @@ export default {
         .catch(() => {});
     },
     handleCommentChange(count) {
-      this.$store.commit("question/COMMENT_CHANGE", {
-        key: "answer",
-        value: count
-      });
-      this.$store.commit("flow/TOGGLE_STATE", {
+      this.$store.commit("question/COMMENT_CHANGE_COUNT", {
         id: this.item.id,
-        type: "answer",
-        sort: "active",
+        key: "answer",
         value: count
       });
     }

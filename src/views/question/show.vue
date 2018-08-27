@@ -74,10 +74,8 @@ export default {
         id,
         ctx
       }),
-      store.dispatch("flow/getData", {
-        type: "answer",
-        sort: "active",
-        bangumiId: id,
+      store.dispatch("question/getAnswers", {
+        questionId: id,
         ctx
       })
     ]);
