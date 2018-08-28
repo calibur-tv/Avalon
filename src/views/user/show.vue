@@ -458,16 +458,22 @@
         <el-tab-pane label="帖子">
           <user-post-flow-list :zone="zone"/>
         </el-tab-pane>
-        <el-tab-pane label="偶像">
-          <cartoon-role-flow-list :user-zone="zone"/>
-        </el-tab-pane>
         <el-tab-pane label="相册">
           <image-flow-list :user-zone="zone"/>
         </el-tab-pane>
         <el-tab-pane label="漫评">
-          <user-score-flow-list :zone="zone"/>
+          <score-flow-list :user-zone="zone"/>
+        </el-tab-pane>
+        <el-tab-pane label="问答">
+          <user-qa-flow-list :user-zone="zone"/>
+        </el-tab-pane>
+        <el-tab-pane label="偶像">
+          <cartoon-role-flow-list :user-zone="zone"/>
         </el-tab-pane>
         <template v-if="isMe">
+          <el-tab-pane label="草稿">
+            <user-draft-list :user-zone="zone"/>
+          </el-tab-pane>
           <el-tab-pane label="设置">
             <user-setting-form/>
           </el-tab-pane>
@@ -485,8 +491,10 @@ import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
 import UserSettingForm from "~/components/user/forms/UserSettingForm";
 import ImageFlowList from "~/components/flow/list/ImageFlowList";
 import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
-import UserScoreFlowList from "~/components/user/UserScoreFlowList";
 import UserPostFlowList from "~/components/user/UserPostFlowList";
+import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
+import UserDraftList from "~/components/user/UserDraftList";
+import UserQaFlowList from "~/components/user/UserQaFlowList";
 
 export default {
   name: "UserShow",
@@ -531,9 +539,11 @@ export default {
     ImageWaterfallFlow,
     CartoonRoleFlowList,
     UserSettingForm,
-    UserScoreFlowList,
     UserPostFlowList,
-    ImageFlowList
+    ImageFlowList,
+    ScoreFlowList,
+    UserDraftList,
+    UserQaFlowList
   },
   data() {
     return {
@@ -599,6 +609,12 @@ export default {
           break;
         case "漫评":
           this.$channel.$emit("user-tab-switch-score");
+          break;
+        case "问答":
+          this.$channel.$emit("user-tab-switch-question");
+          break;
+        case "草稿":
+          this.$channel.$emit("user-tab-switch-draft");
           break;
         case "设置":
           this.$channel.$emit("user-tab-switch-setting");

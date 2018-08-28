@@ -298,7 +298,7 @@
       :title="qaq.title"
       :question-id="id"
       :answer-id="qaq.my_answer ? qaq.my_answer.id : 0"
-      :published="false"
+      :published="qaq.my_answer ? !!qaq.published_at : false"
     />
   </div>
 </template>

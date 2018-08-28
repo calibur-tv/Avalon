@@ -5,36 +5,12 @@ const state = () => ({
   posts: {
     zone: "",
     take: 10,
-    mine: {
-      data: [],
-      page: 0,
-      noMore: false,
-      loading: false
-    },
     reply: {
       data: [],
       page: 0,
       noMore: false,
       loading: false
-    },
-    like: {
-      data: [],
-      page: 0,
-      noMore: false,
-      loading: false
-    },
-    mark: {
-      data: [],
-      page: 0,
-      noMore: false,
-      loading: false
     }
-  },
-  roles: {
-    zone: "",
-    data: [],
-    page: 0,
-    noMore: false
   },
   notifications: {
     checked: 0,
@@ -49,12 +25,6 @@ const state = () => ({
 });
 
 const mutations = {
-  SET_USER_ROLES(state, { data, zone }) {
-    state.roles.zone = zone;
-    state.roles.data = state.roles.data.concat(data.list);
-    state.roles.noMore = data.noMore;
-    state.roles.page++;
-  },
   SET_USER_INFO(state, { data, zone }) {
     state.list[zone] = state.list[zone]
       ? Object.assign(state.list[zone], data)
@@ -210,20 +180,6 @@ const actions = {
     const api = new Api(ctx);
     await api.readAllMessage();
     commit("READ_ALL_NOTIFICATION");
-  },
-  async getFollowRoles({ state, commit }, { ctx, zone, reset }) {
-    if (reset && state.roles.data.length) {
-      return;
-    }
-    if (state.roles.noMore) {
-      return;
-    }
-    const api = new Api(ctx);
-    const data = await api.followRoles({
-      zone,
-      page: state.roles.page
-    });
-    data && commit("SET_USER_ROLES", { data, zone });
   }
 };
 

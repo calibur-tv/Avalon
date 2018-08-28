@@ -21,25 +21,21 @@
       @click="loadMore"
     >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
     <no-content v-if="source.nothing">
-      <a
+      <el-button
         v-if="bangumiId"
-        :href="`${$alias.createScore}?bid=${bangumiId}`"
-        target="_blank"
-      >
-        <el-button
-          type="primary"
-          round
-        >写下《{{ bangumiName }}》的第一篇漫评</el-button>
-      </a>
+        type="primary"
+        round
+        @click="openCreateQAQModal"
+      >我有《{{ bangumiName }}》的一些疑问</el-button>
       <a
         v-else-if="isMe"
-        :href="$alias.createScore"
+        :href="$alias.world('qaq')"
         target="_blank"
       >
         <el-button
           type="primary"
           round
-        >发表第一篇漫评</el-button>
+        >查看问题列表</el-button>
       </a>
     </no-content>
   </div>
@@ -59,6 +55,11 @@ export default {
     return {
       flowType: "question"
     };
+  },
+  methods: {
+    openCreateQAQModal() {
+      this.$channel.$emit("show-create-question-modal");
+    }
   }
 };
 </script>
