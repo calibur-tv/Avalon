@@ -18,6 +18,12 @@ const mutations = {
   SET_QAQ(state, data) {
     state.qaq = data;
   },
+  EDIT_ANSWER(state, { id }) {
+    state.qaq.my_answer = {
+      id,
+      published_at: null
+    };
+  },
   SET_ANSWER(state, data) {
     state.qaq = data.question;
     state.answers.list = [data.answer];

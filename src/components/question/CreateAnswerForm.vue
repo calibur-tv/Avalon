@@ -208,6 +208,7 @@ export default {
           window.location.href = this.$alias.answer(this.id);
         } else {
           this.$toast.success("编辑成功！");
+          this.$store.commit("question/EDIT_ANSWER", { id: this.id });
           this.closeEditor();
         }
       } catch (e) {
