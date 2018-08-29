@@ -8,6 +8,14 @@
   .el-card {
     margin-bottom: 30px;
 
+    .title {
+      padding: 15px;
+      display: block;
+      font-weight: bold;
+      font-size: 15px;
+      border-bottom: 1px solid $color-gray-normal;
+    }
+
     img {
       max-width: 100%;
     }
@@ -46,6 +54,12 @@
       :offset="1"
     >
       <el-card :body-style="{ padding: '0px' }">
+        <a
+          :href="$alias.score(item.id)"
+          class="title"
+          target="_blank"
+          v-text="item.title"
+        />
         <json-content :content="item.content"/>
         <div class="control">
           <div class="bottom clearfix">
