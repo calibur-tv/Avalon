@@ -95,7 +95,7 @@ router.get("*", async ctx => {
   ctx.set("Cache-Control", "max-age=0, private");
   ctx.set(
     "Content-Security-Policy",
-    `script-src 'self' *.calibur.tv hm.baidu.com *.geetest.com zz.bdstatic.com push.zhanzhang.baidu.com ;`
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval' *.calibur.tv hm.baidu.com *.geetest.com zz.bdstatic.com push.zhanzhang.baidu.com ;`
   );
 
   try {
