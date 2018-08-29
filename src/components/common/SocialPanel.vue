@@ -103,7 +103,8 @@ export default {
     type: {
       required: true,
       type: String,
-      validator: val => ~["post", "video", "image", "score"].indexOf(val)
+      validator: val =>
+        ~["post", "video", "image", "score", "answer"].indexOf(val)
     },
     likeUsers: {
       required: true,
@@ -116,6 +117,14 @@ export default {
     markUsers: {
       required: true,
       type: Object
+    },
+    userCommitPath: {
+      type: String,
+      default: ""
+    },
+    socialCommitPath: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -161,7 +170,6 @@ export default {
           }
           this.loadingReward = true;
           const api = new Api(this);
-          const user = this.$store.state.user;
           try {
             const result = await api.reward({
               id: this.id,
@@ -170,16 +178,7 @@ export default {
             if (result) {
               this.$store.commit("USE_COIN");
             }
-            this.$store.commit(`${this.type}/SOCIAL_TOGGLE`, {
-              key: "reward",
-              value: result,
-              user: {
-                id: user.id,
-                zone: user.zone,
-                nickname: user.nickname,
-                avatar: user.avatar
-              }
-            });
+            this.commitResult("reward", result);
             this.$toast.success("操作成功");
           } catch (e) {
             this.$toast.error(e);
@@ -203,22 +202,12 @@ export default {
       }
       this.loadingLike = true;
       const api = new Api(this);
-      const user = this.$store.state.user;
       try {
         const result = await api.like({
           id: this.id,
           type: this.type
         });
-        this.$store.commit(`${this.type}/SOCIAL_TOGGLE`, {
-          key: "like",
-          value: result,
-          user: {
-            id: user.id,
-            zone: user.zone,
-            nickname: user.nickname,
-            avatar: user.avatar
-          }
-        });
+        this.commitResult("like", result);
         this.$toast.success("操作成功");
       } catch (e) {
         this.$toast.error(e);
@@ -240,22 +229,12 @@ export default {
       }
       this.loadingMark = true;
       const api = new Api(this);
-      const user = this.$store.state.user;
       try {
         const result = await api.mark({
           id: this.id,
           type: this.type
         });
-        this.$store.commit(`${this.type}/SOCIAL_TOGGLE`, {
-          key: "mark",
-          value: result,
-          user: {
-            id: user.id,
-            zone: user.zone,
-            nickname: user.nickname,
-            avatar: user.avatar
-          }
-        });
+        this.commitResult("mark", result);
         this.$toast.success("操作成功");
       } catch (e) {
         this.$toast.error(e);
@@ -280,12 +259,34 @@ export default {
             ? this.rewardUsers.list[this.rewardUsers.list.length - 1].id
             : this.likeUsers.list[this.likeUsers.list.length - 1].id
         });
-        this.$store.commit(`${this.type}/FETCH_SOCIAL_USERS`, { type, result });
+        this.$store.commit(
+          this.userCommitPath || `${this.type}/FETCH_SOCIAL_USERS`,
+          {
+            id: this.id,
+            type,
+            result
+          }
+        );
       } catch (e) {
         this.$toast.error(e);
       } finally {
         this.loadingUsers = false;
       }
+    },
+    commitResult(key, value) {
+      const user = this.$store.state.user;
+      const type = this.type;
+      this.$store.commit(this.socialCommitPath || `${type}/SOCIAL_TOGGLE`, {
+        id: this.id,
+        key,
+        value,
+        user: {
+          id: user.id,
+          zone: user.zone,
+          nickname: user.nickname,
+          avatar: user.avatar
+        }
+      });
     }
   }
 };

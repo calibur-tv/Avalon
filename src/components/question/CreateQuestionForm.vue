@@ -121,7 +121,7 @@ export default {
         tags: [{ validator: validateTag, trigger: "submit" }]
       },
       images: [],
-      exceed: 15,
+      exceed: 7,
       submitting: false
     };
   },
@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     beforeUpload(file) {
-      this.uploadConfig.max = 3;
+      this.uploadConfig.max = 5;
       this.uploadConfig.pathPrefix = `user/${
         this.$store.state.user.id
       }/question`;
@@ -172,7 +172,7 @@ export default {
             success: async ({ data }) => {
               const api = new Api(this);
               try {
-                await api.createQuestion({
+                const id = await api.createQuestion({
                   title: this.form.title,
                   tags: this.form.tags,
                   intro: this.form.content.substring(0, 120),
@@ -186,8 +186,7 @@ export default {
                       url: item.img.key
                     };
                   }),
-                  geetest: data,
-                  ctx: this
+                  geetest: data
                 });
                 this.images = [];
                 this.$refs.form.resetFields();

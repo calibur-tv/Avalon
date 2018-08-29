@@ -205,7 +205,7 @@ export default {
       });
     },
     beforePosterUpload(file) {
-      this.uploadConfig.max = 3;
+      this.uploadConfig.max = 10;
       this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`;
       return this.beforeImageUpload(file);
     },

@@ -56,6 +56,12 @@
         <el-tab-pane label="漫评">
           <bangumi-score/>
         </el-tab-pane>
+        <el-tab-pane label="问答">
+          <question-flow-list
+            :bangumi-id="id"
+            :bangumi-name="info.name"
+          />
+        </el-tab-pane>
         <el-tab-pane
           v-if="info.is_master"
           label="设置"
@@ -78,6 +84,7 @@ import ImageFlowList from "~/components/flow/list/ImageFlowList";
 import BangumiScore from "~/components/bangumi/BangumiScore";
 import BangumiSetting from "~/components/bangumi/BangumiSetting";
 import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
+import QuestionFlowList from "~/components/flow/list/QuestionFlowList";
 
 export default {
   name: "BangumiShow",
@@ -103,6 +110,7 @@ export default {
     CartoonRoleFlowList,
     ImageFlowList,
     BangumiScore,
+    QuestionFlowList,
     BangumiSetting
   },
   head() {
@@ -153,6 +161,9 @@ export default {
           break;
         case "漫评":
           this.$channel.$emit("bangumi-tab-switch-score");
+          break;
+        case "问答":
+          this.$channel.$emit("bangumi-tab-switch-question");
           break;
         case "设置":
           this.$channel.$emit("bangumi-tab-switch-setting");

@@ -1,12 +1,14 @@
 import Api from "~/api/searchApi";
 
 const tabs = {
-  0: "综合",
-  1: "用户",
-  2: "番剧",
-  // 3: '视频',
-  4: "帖子",
-  5: "偶像"
+  all: "综合",
+  bangumi: "番剧",
+  video: "视频",
+  post: "帖子",
+  score: "漫评",
+  role: "偶像",
+  user: "用户"
+  // image: "相册",
 };
 
 const state = () => ({

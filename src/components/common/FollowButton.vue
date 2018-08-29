@@ -11,13 +11,14 @@
     :loading="loading"
     :class="classes"
     :plain="followed"
-    type="danger"
+    :type="theme"
+    :round="round"
+    :size="size"
     class="follow-button"
-    round
     @click="toggleFollow"
   >
     <i class="iconfont icon-guanzhu"/>
-    {{ followed ? '已关注' : '关注' }}
+    {{ followed ? followedText : unFollowText }}
   </el-button>
 </template>
 
@@ -25,6 +26,7 @@
 import Api from "~/api/toggleApi";
 
 export default {
+  name: "FollowButton",
   props: {
     type: {
       required: true,
@@ -40,6 +42,26 @@ export default {
       type: Boolean
     },
     classes: {
+      type: String,
+      default: ""
+    },
+    theme: {
+      type: String,
+      default: "danger"
+    },
+    round: {
+      type: Boolean,
+      default: true
+    },
+    followedText: {
+      type: String,
+      default: "已关注"
+    },
+    unFollowText: {
+      type: String,
+      default: "关注"
+    },
+    size: {
       type: String,
       default: ""
     }

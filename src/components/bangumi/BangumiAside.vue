@@ -152,7 +152,7 @@ export default {
       try {
         const result = await api.users({
           id: this.info.id,
-          take: this.take,
+          take: 15,
           last_id: this.followers.list[this.followers.list.length - 1].id,
           model: "bangumi",
           type

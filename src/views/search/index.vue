@@ -92,13 +92,13 @@
             <template slot="main">
               <component
                 v-if="noMore && !list.length"
-                :is="`Nothing${selectedType}`"
+                :is="`nothing-${selectedType}`"
               />
               <template v-else>
                 <component
                   v-for="item in list"
                   :key="`${item.type}-${item.id}`"
-                  :is="`Flow${item.type}`"
+                  :is="`${item.type}-item`"
                   :item="item"
                   :in-common="item.type != selectedType"
                 />
@@ -128,17 +128,19 @@
 
 <script>
 import vSearch from "~/components/search/Input";
-import Flow1 from "~/components/search/flows/flow_1";
-import Flow2 from "~/components/search/flows/flow_2";
-import Flow3 from "~/components/search/flows/flow_3";
-import Flow4 from "~/components/search/flows/flow_4";
-import Flow5 from "~/components/search/flows/flow_5";
-import Nothing0 from "~/components/search/nothing/nothing_0";
-import Nothing1 from "~/components/search/nothing/nothing_1";
-import Nothing2 from "~/components/search/nothing/nothing_2";
-import Nothing3 from "~/components/search/nothing/nothing_3";
-import Nothing4 from "~/components/search/nothing/nothing_4";
-import Nothing5 from "~/components/search/nothing/nothing_5";
+import UserItem from "~/components/search/flows/UserItem";
+import BangumiItem from "~/components/search/flows/BangumiItem";
+import VideoItem from "~/components/search/flows/VideoItem";
+import PostItem from "~/components/flow/item/PostFlowItem";
+import RoleItem from "~/components/flow/item/CartoonRoleFlowItem";
+import ScoreItem from "~/components/flow/item/ScoreFlowItem";
+import NothingAll from "~/components/search/nothing/NothingAll";
+import NothingUser from "~/components/search/nothing/NothingUser";
+import NothingBangumi from "~/components/search/nothing/NothingBangumi";
+import NothingVideo from "~/components/search/nothing/NothingVideo";
+import NothingPost from "~/components/search/nothing/NothingPost";
+import NothingRole from "~/components/search/nothing/NothingRole";
+import NothingScore from "~/components/search/nothing/NothingScore";
 
 export default {
   name: "SearchIndex",
@@ -152,17 +154,19 @@ export default {
   },
   components: {
     vSearch,
-    Flow1,
-    Flow2,
-    Flow3,
-    Flow4,
-    Flow5,
-    Nothing0,
-    Nothing1,
-    Nothing2,
-    Nothing3,
-    Nothing4,
-    Nothing5
+    UserItem,
+    BangumiItem,
+    VideoItem,
+    PostItem,
+    RoleItem,
+    ScoreItem,
+    NothingAll,
+    NothingUser,
+    NothingBangumi,
+    NothingVideo,
+    NothingPost,
+    NothingRole,
+    NothingScore
   },
   data() {
     return {

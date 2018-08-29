@@ -76,8 +76,8 @@ export default {
       default: ""
     },
     type: {
-      type: [String, Number],
-      default: 0
+      type: String,
+      default: "all"
     }
   },
   data() {

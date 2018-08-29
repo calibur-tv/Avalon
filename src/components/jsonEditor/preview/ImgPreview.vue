@@ -79,6 +79,7 @@
         size="small"
         type="primary"
         round
+        class="save-btn"
         @click="emitSave"
       >保存</el-button>
     </div>

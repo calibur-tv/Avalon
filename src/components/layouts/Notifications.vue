@@ -46,6 +46,7 @@
   a {
     color: $color-blue-normal;
     font-size: 13px;
+    margin: 0 3px;
   }
 
   .footer {
@@ -80,72 +81,10 @@
           :class="{ 'checked': item.checked }"
           @click="readMsg(item.id)"
         >
-          <div>
-            <!-- 我的主题帖被回复了 -->
-            <template v-if="item.type === 1">
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                v-text="item.user.nickname"
-              />
-              回复了你的帖子
-              <a
-                :href="item.data.link"
-                target="_blank"
-                v-text="item.data.title"
-              />
-            </template>
-            <!-- 我的楼层贴被评论 / 回复了 -->
-            <template v-else-if="item.type === 2">
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                v-text="item.user.nickname"
-              />
-              评论了你在帖子
-              <a
-                :href="item.data.link"
-                target="_blank"
-                v-text="item.data.title"
-              />
-              下的内容
-            </template>
-            <template v-else-if="item.type === 3">
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                v-text="item.user.nickname"
-              />
-              喜欢了你的帖子
-              <a
-                :href="item.data.link"
-                target="_blank"
-                v-text="item.data.title"
-              />
-            </template>
-            <template v-else-if="item.type === 4">
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                v-text="item.user.nickname"
-              />
-              赞了你在帖子
-              <a
-                :href="item.data.link"
-                target="_blank"
-                v-text="item.data.title"
-              />
-              下的回复
-            </template>
-            <template v-else-if="item.type === 5">
-              <a
-                :href="$alias.user(item.user.zone)"
-                target="_blank"
-                v-text="item.user.nickname"
-              />
-              喜欢了你上传的图片
-            </template>
-          </div>
+          <div
+            @click.prevent="handleMessageClick($event, item)"
+            v-html="item.message"
+          />
         </li>
       </ul>
     </div>
@@ -165,7 +104,7 @@ export default {
   },
   computed: {
     list() {
-      return this.$store.state.users.notifications.data;
+      return this.$store.state.users.notifications.list;
     },
     notFetch() {
       return this.loading || this.$store.state.users.notifications.noMore;
@@ -206,6 +145,13 @@ export default {
         return;
       }
       this.$store.dispatch("users/readAllMessage", this);
+    },
+    handleMessageClick(evt, msg) {
+      if (/user/.test(evt.target.classList)) {
+        window.open(this.$alias.user(msg.user.zone));
+        return;
+      }
+      window.open(msg.link);
     }
   }
 };

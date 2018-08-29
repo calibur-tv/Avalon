@@ -261,9 +261,11 @@ export default {
   mounted() {
     this.$watch("value", val => {
       this.dialogVisible = val;
+      window.__closeImageLazy__ = val;
     });
     this.$watch("dialogVisible", val => {
       this.$emit("input", val);
+      window.__closeImageLazy__ = val;
       if (val) {
         document.getElementById("app").classList.add("v-dialog-mask");
       } else {

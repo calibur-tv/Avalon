@@ -245,6 +245,7 @@ export default {
             type: this.type,
             id: this.comment.id
           });
+          this.$emit("delete");
         })
         .catch(e => {
           this.deleting = false;

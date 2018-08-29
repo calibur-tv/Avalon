@@ -149,6 +149,24 @@
           size="mini"
         >漫评审核：{{ todo.score }}</el-button>
       </router-link>
+      <router-link
+        v-if="todo.question"
+        to="/admin/trial/question"
+      >
+        <el-button
+          type="danger"
+          size="mini"
+        >提问审核：{{ todo.question }}</el-button>
+      </router-link>
+      <router-link
+        v-if="todo.answer"
+        to="/admin/trial/answer"
+      >
+        <el-button
+          type="danger"
+          size="mini"
+        >回答审核：{{ todo.answer }}</el-button>
+      </router-link>
     </div>
   </nav>
 </template>

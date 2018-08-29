@@ -171,19 +171,36 @@ const mutations = {
 const actions = {
   async getMainComments(
     { state, commit },
-    { ctx, type, id, onlySeeMaster, seeReplyId }
+    { ctx, type, id, onlySeeMaster, seeReplyId, firstRequest }
   ) {
+    // 如果已经请求过数据了
     if (state.type) {
+      // 如果这次和上一次的 type 相同
       if (state.type === type) {
         if (state.id !== +id) {
+          // 如果两个 id 不相同，重置 store
           commit("RESET_STATE", { type });
-        } else if (state.noMore) {
-          return;
+        } else {
+          // 如果两个 id 相同
+          if (state.noMore) {
+            // 如果没有更多数据，return
+            return;
+          }
+          if (state.list.length && firstRequest) {
+            // 如果有更多数据，但只请求第一页，return
+            return;
+          }
+          if (firstRequest) {
+            // 如果没有更多数据，并且请求第一页，重置 store（因为已经请求过了）
+            commit("RESET_STATE", { type });
+          }
         }
       } else {
+        // 如果两次请求的 type 不同，重置 store
         commit("RESET_STATE", { type });
       }
     } else {
+      // 如果没请求过数据，初始化 type
       commit("INIT_FETCH_TYPE", { type });
     }
     const api = new Api(ctx);

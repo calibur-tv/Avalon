@@ -310,7 +310,7 @@ export default {
         percentage: 0,
         status: "uploading"
       });
-      this.uploadConfig.max = 5;
+      this.uploadConfig.max = 10;
       this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album/${
         this.form.album_id
       }/image`;

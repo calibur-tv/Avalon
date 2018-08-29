@@ -10,7 +10,7 @@
       ref="forms"
       :model="forms"
       :rules="rules"
-      label-width="50px"
+      label-width="55px"
     >
       <el-form-item
         label="类型"

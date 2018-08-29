@@ -153,10 +153,13 @@ export default {
           this.$refs.uploader.clearFiles();
         }
         this.$toast.success("评论成功");
-        setTimeout(() => {
-          const dom = document.getElementById(`comment-${newComment.id}`);
-          dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600);
-        }, 400);
+        if (!window.__closeImageLazy__) {
+          setTimeout(() => {
+            const dom = document.getElementById(`comment-${newComment.id}`);
+            dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600);
+          }, 400);
+        }
+        this.$emit("submit");
       } catch (e) {
         this.$toast.error(e);
       } finally {

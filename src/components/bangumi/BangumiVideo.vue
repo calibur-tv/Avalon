@@ -51,7 +51,7 @@
 
 <template>
   <div id="bangumi-video">
-    <section v-if="videos.list.length">
+    <section v-if="videos.total">
       <div v-if="videos.has_season">
         <div
           v-for="season in videos.list"

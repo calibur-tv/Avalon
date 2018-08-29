@@ -35,7 +35,8 @@ const state = () => ({
   post: merge({}, trendingFlowStore),
   image: merge({}, trendingFlowStore),
   score: merge({}, trendingFlowStore),
-  role: merge({}, trendingFlowStore)
+  role: merge({}, trendingFlowStore),
+  question: merge({}, trendingFlowStore)
 });
 
 const mutations = {
@@ -191,5 +192,6 @@ export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
+  template: trendingFlowStore
 };

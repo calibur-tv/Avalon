@@ -19,7 +19,7 @@ const mutations = {
     state.info.post[`${key}ed`.replace("ee", "e")] = value;
     if (value) {
       state.info.post[`${key}_users`].total++;
-      state.info.post[`${key}_users`].list.push(user);
+      state.info.post[`${key}_users`].list.unshift(user);
     } else {
       state.info.post[`${key}_users`].total--;
       state.info.post[`${key}_users`].list.forEach((item, index) => {

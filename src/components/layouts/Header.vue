@@ -541,6 +541,7 @@ $search-height: 32px;
             >
               <a
                 :href="$alias.user(user.zone)"
+                target="_blank"
                 class="el-dropdown-link"
               >
                 <v-img

@@ -15,7 +15,7 @@ const mutations = {
     state.show[`${key}ed`.replace("ee", "e")] = value;
     if (value) {
       state.show[`${key}_users`].total++;
-      state.show[`${key}_users`].list.push(user);
+      state.show[`${key}_users`].list.unshift(user);
     } else {
       state.show[`${key}_users`].total--;
       state.show[`${key}_users`].list.forEach((item, index) => {
