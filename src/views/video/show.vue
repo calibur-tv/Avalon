@@ -209,7 +209,7 @@ export default {
         ctx,
         id,
         type: "video",
-        seeReplyId: route.query.reply
+        seeReplyId: route.query["comment-id"]
       })
     ]);
   },

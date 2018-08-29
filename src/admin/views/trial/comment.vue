@@ -51,10 +51,10 @@
             >
               <a
                 v-if="item.type === 'txt'"
-                :href="computeCommentLink(item)"
+                :href="computeCommentLink(scope.row)"
                 target="_blank"
               >
-                <el-tag v-if="computeCommentLink(item) !== 'javascript:;'">可以查看</el-tag>
+                <el-tag v-if="computeCommentLink(scope.row) !== 'javascript:;'">可以查看</el-tag>
                 <el-tag
                   v-else
                   type="danger"
