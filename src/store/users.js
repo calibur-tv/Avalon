@@ -2,16 +2,6 @@ import Api from "~/api/userApi";
 
 const state = () => ({
   list: {},
-  posts: {
-    zone: "",
-    take: 10,
-    reply: {
-      data: [],
-      page: 0,
-      noMore: false,
-      loading: false
-    }
-  },
   notifications: {
     checked: 0,
     take: 10,
@@ -39,18 +29,6 @@ const mutations = {
       state.self[key] = value;
     }
   },
-  SET_FOLLOW_POST_DATA(state, { data, type, zone }) {
-    state.posts.zone = zone;
-    state.posts[type] = {
-      data: state.posts[type].data.concat(data.list),
-      noMore: data.noMore,
-      loading: false,
-      page: state.posts[type].page + 1
-    };
-  },
-  SET_FOLLOW_POST_STATE(state, { type }) {
-    state.posts[type].loading = true;
-  },
   SET_NOTIFICATIONS(state, data) {
     state.notifications.list = state.notifications.list.concat(data.list);
     state.notifications.total = data.total;
@@ -70,36 +48,6 @@ const mutations = {
       state.notifications.list[index].checked = true;
     });
     state.notifications.checked = 88888888;
-  },
-  CLEAR_FOLLOW_POST(state) {
-    state.posts = {
-      zone: "",
-      take: 10,
-      mine: {
-        data: [],
-        page: 0,
-        noMore: false,
-        loading: false
-      },
-      reply: {
-        data: [],
-        page: 0,
-        noMore: false,
-        loading: false
-      },
-      like: {
-        data: [],
-        page: 0,
-        noMore: false,
-        loading: false
-      },
-      mark: {
-        data: [],
-        page: 0,
-        noMore: false,
-        loading: false
-      }
-    };
   }
 };
 
@@ -126,23 +74,6 @@ const actions = {
       });
     }
     return data;
-  },
-  async getFollowPosts({ state, commit }, { type, zone }) {
-    if (state.posts.zone !== zone) {
-      commit("CLEAR_FOLLOW_POST");
-    }
-    if (state.posts[type].noMore || state.posts[type].loading) {
-      return;
-    }
-    commit("SET_FOLLOW_POST_STATE", { type });
-    const api = new Api();
-    const data = await api.followPosts({
-      type,
-      zone,
-      take: state.posts.take,
-      page: state.posts[type].page
-    });
-    data && commit("SET_FOLLOW_POST_DATA", { type, data, zone });
   },
   async daySign({ rootState }, { ctx }) {
     if (rootState.user.signed) {

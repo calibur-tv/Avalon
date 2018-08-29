@@ -116,7 +116,7 @@
     <el-radio-group
       v-model="tab"
       size="mini"
-      @change="handlePostTabClick"
+      @change="handleTabSwitch"
     >
       <el-radio-button label="发表"/>
       <el-radio-button label="回复"/>
@@ -132,7 +132,7 @@
     >
       <ul>
         <li
-          v-for="item in posts.data"
+          v-for="item in list"
           :key="item.id"
         >
           <div class="header clearfix">
@@ -211,20 +211,21 @@
         </li>
       </ul>
       <el-button
-        v-if="!posts.noMore"
-        :loading="posts.loading"
+        v-if="!noMore"
+        :loading="loading"
         class="load-more-btn"
         type="info"
         plain
         @click="getUserPosts(false)"
-      >{{ posts.loading ? '加载中' : '加载更多' }}</el-button>
-      <no-content v-if="!posts.data.length && posts.noMore"/>
+      >{{ loading ? '加载中' : '加载更多' }}</el-button>
+      <no-content v-if="!list.length && noMore"/>
     </div>
   </div>
 </template>
 
 <script>
 import PostFlowList from "~/components/flow/list/PostFlowList";
+import Api from "~/api/userApi";
 
 export default {
   name: "UserPostFlowList",
@@ -240,29 +241,44 @@ export default {
   data() {
     return {
       tab: "发表",
-      postListType: "reply"
+      postListType: "reply",
+      list: [],
+      loading: false,
+      fetched: false,
+      noMore: false,
+      page: 0
     };
   },
-  computed: {
-    posts() {
-      return this.$store.state.users.posts[this.postListType];
-    }
-  },
   methods: {
-    handlePostTabClick() {
-      this.getUserPosts(true);
+    handleTabSwitch(label) {
+      if (label === "回复") {
+        this.getUserPosts(true);
+      }
     },
-    getUserPosts(isFirstRequest) {
-      if (
-        isFirstRequest &&
-        this.$store.state.users.posts[this.postListType].data.length
-      ) {
+    async getUserPosts(init = false) {
+      if (init && this.fetched) {
         return;
       }
-      this.$store.dispatch("users/getFollowPosts", {
-        type: this.postListType,
-        zone: this.zone
-      });
+      if (this.loading || this.noMore) {
+        return;
+      }
+      this.loading = true;
+      const api = new Api(this);
+      try {
+        const data = await api.replyPosts({
+          take: 10,
+          page: this.page,
+          zone: this.zone
+        });
+        this.fetched = true;
+        this.list = this.list.concat(data.list);
+        this.noMore = data.noMore;
+        this.page++;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
+      }
     }
   }
 };

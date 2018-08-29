@@ -48,8 +48,8 @@ export default class extends BaseApi {
     return this.http.get(`user/${zone}/followed/bangumi`);
   }
 
-  followPosts({ type, zone, take, page }) {
-    return this.http.get(`user/${zone}/posts/${type}`, {
+  replyPosts({ zone, take, page }) {
+    return this.http.get(`user/${zone}/posts/reply`, {
       params: { take, page }
     });
   }
@@ -103,12 +103,6 @@ export default class extends BaseApi {
         bangumiId,
         creator
       }
-    });
-  }
-
-  followRoles({ zone, page }) {
-    return this.http.get(`user/${zone}/followed/role`, {
-      params: { page }
     });
   }
 }
