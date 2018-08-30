@@ -11,6 +11,10 @@
 
   .name {
     margin-bottom: 10px;
+
+    a {
+      margin-right: 8px;
+    }
   }
 }
 </style>
@@ -50,11 +54,18 @@
             <img :src="$resize(image.url, { width: 300, mode: 2 })">
           </a>
           <div style="padding: 14px;">
-            <p
-              v-if="image.name"
-              class="name"
-              v-text="image.name"
-            />
+            <div class="name">
+              <a
+                :href="computeAlbumHref(image)"
+                target="_blank"
+              >
+                <el-tag>查看相册</el-tag>
+              </a>
+              <span
+                v-if="image.name"
+                v-text="image.name"
+              />
+            </div>
             <el-button
               type="success"
               size="mini"
@@ -100,6 +111,12 @@ export default {
     this.getData();
   },
   methods: {
+    computeAlbumHref(image) {
+      if (image.bangumi_id) {
+        return this.$alias.image(image.id);
+      }
+      return this.$alias.image(image.album_id);
+    },
     getData() {
       const api = new Api(this);
       api

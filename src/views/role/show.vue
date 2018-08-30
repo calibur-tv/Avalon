@@ -70,6 +70,8 @@
     }
 
     .lover {
+      margin-bottom: 25px;
+
       .user {
         .avatar {
           display: inline-block;
@@ -161,6 +163,11 @@
             <span v-text="role.lover.nickname"/>
           </a>
         </div>
+        <comment-main
+          :id="id"
+          :master-id="1"
+          type="role"
+        />
       </template>
       <template slot="aside">
         <div class="bangumi">
@@ -248,6 +255,7 @@
 <script>
 import uploadMixin from "~/mixins/upload";
 import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
+import CommentMain from "~/components/comments/CommentMain";
 
 export default {
   name: "RoleShow",
@@ -261,6 +269,12 @@ export default {
         roleId: id,
         sort: "new",
         reset: false
+      }),
+      store.dispatch("comment/getMainComments", {
+        ctx,
+        id,
+        type: "role",
+        seeReplyId: route.query["comment-id"]
       })
     ]);
   },
@@ -278,7 +292,8 @@ export default {
     };
   },
   components: {
-    CreateRoleForm
+    CreateRoleForm,
+    CommentMain
   },
   mixins: [uploadMixin],
   data() {
@@ -291,7 +306,7 @@ export default {
   },
   computed: {
     id() {
-      return this.$route.params.id;
+      return +this.$route.params.id;
     },
     info() {
       return this.$store.state.cartoonRole.info;

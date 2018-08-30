@@ -15,6 +15,10 @@
       width: auto;
     }
   }
+
+  .content {
+    margin-left: 5px;
+  }
 }
 </style>
 
@@ -45,10 +49,21 @@
               :key="index"
               :class="`comment-item-${item.type}`"
             >
-              <div
+              <a
                 v-if="item.type === 'txt'"
-                v-html="item.data"
-              />
+                :href="computeCommentLink(scope.row)"
+                target="_blank"
+              >
+                <el-tag v-if="computeCommentLink(scope.row) !== 'javascript:;'">可以查看</el-tag>
+                <el-tag
+                  v-else
+                  type="danger"
+                >不可查看</el-tag>
+                <span
+                  class="content"
+                  v-html="item.data"
+                />
+              </a>
               <a
                 v-else-if="item.type === 'img'"
                 :href="$resize(item.data.key)"
@@ -61,11 +76,21 @@
               </a>
             </div>
           </template>
-          <div
+          <a
             v-else
-            class="content"
-            v-text="scope.row.content"
-          />
+            :href="computeCommentLink(scope.row)"
+            target="_blank"
+          >
+            <el-tag v-if="computeCommentLink(scope.row) !== 'javascript:;'">可以查看</el-tag>
+            <el-tag
+              v-else
+              type="danger"
+            >不可查看</el-tag>
+            <span
+              class="content"
+              v-text="scope.row.content"
+            />
+          </a>
         </template>
       </el-table-column>
       <el-table-column
@@ -131,6 +156,18 @@ export default {
           this.$toast.error(e);
           this.loading = false;
         });
+    },
+    computeCommentLink(comment) {
+      if (+comment.modal_id === 0) {
+        return "javascript:;";
+      }
+      try {
+        return `${this.$alias[comment.type](comment.modal_id)}?comment-id=${
+          comment.id
+        }`;
+      } catch (e) {
+        return "javascript:;";
+      }
     },
     checkIsHTML(content) {
       return content.startsWith("[{");

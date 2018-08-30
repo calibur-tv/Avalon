@@ -93,6 +93,10 @@ router.get("*", async ctx => {
   ctx.set("X-Content-Type-Options", "nosniff");
   ctx.set("X-Frame-Options", "DENY");
   ctx.set("Cache-Control", "max-age=0, private");
+  ctx.set(
+    "Content-Security-Policy",
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval' *.calibur.tv hm.baidu.com *.geetest.com zz.bdstatic.com push.zhanzhang.baidu.com ;`
+  );
 
   try {
     ctx.body = await renderer.renderToString(context);

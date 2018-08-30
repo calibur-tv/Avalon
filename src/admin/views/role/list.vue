@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import Api from "~/api/bangumiApi";
+import Api from "~/api/flowApi";
 
 export default {
   data() {
@@ -87,9 +87,16 @@ export default {
       this.loading = true;
       const api = new Api();
       try {
-        this.list = await api.roles({
+        const data = await api.fetch({
+          type: "role",
+          sort: "hot",
+          take: 1000,
+          seenIds: "",
+          page: 0,
+          userZone: "",
           bangumiId: this.bangumiId
         });
+        this.list = data.list;
       } catch (e) {
         this.$toast.error(e);
       } finally {

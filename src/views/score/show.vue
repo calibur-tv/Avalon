@@ -222,7 +222,8 @@ export default {
       store.dispatch("comment/getMainComments", {
         ctx,
         id,
-        type: "score"
+        type: "score",
+        seeReplyId: route.query["comment-id"]
       })
     ]);
   },
