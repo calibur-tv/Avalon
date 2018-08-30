@@ -1,5 +1,7 @@
 <style lang="scss">
 #answer-flow-list {
+  overflow: hidden;
+
   .load-more-btn {
     width: 100%;
     background-color: #fff;

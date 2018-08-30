@@ -192,6 +192,5 @@ export default {
   state,
   actions,
   mutations,
-  getters,
-  template: trendingFlowStore
+  getters
 };

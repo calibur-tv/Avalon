@@ -54,7 +54,6 @@
   }
 
   #score-list {
-    width: 720px;
     margin-top: 30px;
 
     .sub-title {

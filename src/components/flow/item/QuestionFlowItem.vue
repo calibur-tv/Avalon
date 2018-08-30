@@ -170,6 +170,7 @@
         v-if="item.follow_count"
         class="stats"
       >
+        <i class="iconfont icon-buoumaotubiao44"/>
         {{ item.follow_count }} 人关注
       </span>
       <v-share
@@ -196,14 +197,6 @@ export default {
       required: true,
       type: Object
     }
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  }
 };
 </script>
