@@ -1,24 +1,20 @@
 import Api from "~/api/userApi";
 
 const state = () => ({
-  list: {},
+  show: null,
+  bangumis: [],
   notifications: {
     checked: 0,
     take: 10,
     list: [],
     noMore: false,
     total: 0
-  },
-  self: {
-    followBangumi: []
   }
 });
 
 const mutations = {
-  SET_USER_INFO(state, { data, zone }) {
-    state.list[zone] = state.list[zone]
-      ? Object.assign(state.list[zone], data)
-      : data;
+  SET_USER_INFO(state, data) {
+    state.show = data;
   },
   SET_SELF_INFO(state, { key, value }) {
     if (Array.isArray(state.self[key])) {
@@ -28,6 +24,9 @@ const mutations = {
     } else {
       state.self[key] = value;
     }
+  },
+  SET_USER_FOLLOW_BANGUMI(state, bangumis) {
+    state.bangumis = bangumis;
   },
   SET_NOTIFICATIONS(state, data) {
     state.notifications.list = state.notifications.list.concat(data.list);
@@ -55,24 +54,12 @@ const actions = {
   async getUser({ commit }, { ctx, zone }) {
     const api = new Api(ctx);
     const data = await api.getUserInfo({ zone });
-    commit("SET_USER_INFO", { data, zone });
+    commit("SET_USER_INFO", data);
   },
-  async getFollowBangumis({ commit }, { ctx, zone, self }) {
+  async getFollowBangumis({ commit }, { ctx, zone }) {
     const api = new Api(ctx);
     const data = await api.followBangumis(zone);
-    if (self) {
-      commit("SET_SELF_INFO", {
-        key: "followBangumi",
-        value: data
-      });
-    } else {
-      commit("SET_USER_INFO", {
-        data: {
-          bangumis: data
-        },
-        zone
-      });
-    }
+    commit("SET_USER_FOLLOW_BANGUMI", data);
     return data;
   },
   async daySign({ rootState }, { ctx }) {

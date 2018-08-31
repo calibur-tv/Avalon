@@ -172,7 +172,7 @@ export default {
       return this.images.map(item => item.img);
     },
     bangumis() {
-      return this.$store.state.users.self.followBangumi;
+      return this.$store.state.users.bangumis;
     },
     optionBangumis() {
       return this.appendBangumi.concat(this.bangumis);
@@ -259,8 +259,7 @@ export default {
       this.loadingFetchBangumi = true;
       try {
         await this.$store.dispatch("users/getFollowBangumis", {
-          zone: this.$store.state.user.zone,
-          self: true
+          zone: this.$store.state.user.zone
         });
       } catch (e) {
         this.$toast.error(e);

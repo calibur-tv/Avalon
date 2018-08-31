@@ -174,99 +174,6 @@
     .el-radio-group {
       margin-left: 10px;
     }
-
-    $video-item-width: 220px;
-    $video-item-margin: 15px;
-    $video-item-height: 70px;
-    .bangumis {
-      li {
-        margin: 0 $video-item-margin 15px 0;
-        float: left;
-      }
-
-      a {
-        display: block;
-        position: relative;
-        width: $video-item-width;
-        height: $video-item-height;
-        border-radius: 3px;
-        background-color: $color-gray-normal;
-        overflow: hidden;
-
-        &:hover .name {
-          color: $color-blue-normal;
-        }
-      }
-
-      .poster {
-        width: $video-item-height;
-        height: $video-item-height;
-        margin-right: 12px;
-        float: left;
-      }
-
-      .intro {
-        padding-right: 12px;
-
-        .name {
-          font-size: 12px;
-          color: $color-text-normal;
-          margin-top: 6px;
-          margin-bottom: 5px;
-        }
-      }
-    }
-
-    .cartoon-role {
-      li {
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px dotted #e4e6eb;
-        max-width: 800px;
-      }
-
-      img {
-        width: 84px;
-        height: 84px;
-        margin-right: 10px;
-        float: left;
-      }
-
-      .text {
-        overflow: hidden;
-
-        h4 {
-          margin-bottom: 2px;
-          line-height: 19px;
-        }
-
-        .intro {
-          height: 38px;
-          margin-bottom: 8px;
-          font-size: 13px;
-          @include twoline(20px);
-        }
-
-        .meta {
-          text-align: right;
-
-          span {
-            margin-right: 10px;
-            margin-left: 10px;
-            font-size: 13px;
-          }
-        }
-      }
-
-      .load-more-btn {
-        width: 800px;
-      }
-    }
-
-    .load-more-btn {
-      margin-top: 20px;
-      width: 100%;
-    }
   }
 
   .user-setting-form {
@@ -426,34 +333,7 @@
         @tab-click="handleTabClick"
       >
         <el-tab-pane label="番剧">
-          <ul
-            v-if="bangumis.length"
-            class="bangumis"
-          >
-            <li
-              v-for="item in bangumis"
-              :key="item.id"
-            >
-              <a
-                :href="$alias.bangumi(item.id)"
-                target="_blank"
-              >
-                <v-img
-                  :src="item.avatar"
-                  :lazy="false"
-                  size="70"
-                  class="poster"
-                />
-                <figcaption class="intro">
-                  <p
-                    class="name"
-                    v-text="item.name"
-                  />
-                </figcaption>
-              </a>
-            </li>
-          </ul>
-          <no-content v-else/>
+          <user-bangumi-flow-list/>
         </el-tab-pane>
         <el-tab-pane label="帖子">
           <user-post-flow-list :zone="zone"/>
@@ -495,6 +375,7 @@ import UserPostFlowList from "~/components/user/UserPostFlowList";
 import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
 import UserDraftList from "~/components/user/UserDraftList";
 import UserQaFlowList from "~/components/user/UserQaFlowList";
+import UserBangumiFlowList from "~/components/user/UserBangumiFlowList";
 
 export default {
   name: "UserShow",
@@ -543,7 +424,8 @@ export default {
     ImageFlowList,
     ScoreFlowList,
     UserDraftList,
-    UserQaFlowList
+    UserQaFlowList,
+    UserBangumiFlowList
   },
   data() {
     return {
@@ -561,9 +443,7 @@ export default {
         showBar: false,
         loading: false
       },
-      postTab: "发表",
-      signDayLoading: false,
-      loadingUserBangumiFetch: false
+      signDayLoading: false
     };
   },
   computed: {
@@ -577,10 +457,7 @@ export default {
       return this.$store.state.user;
     },
     user() {
-      return this.isMe ? this.self : this.$store.state.users.list[this.zone];
-    },
-    bangumis() {
-      return this.$store.state.users.list[this.zone].bangumis;
+      return this.isMe ? this.self : this.$store.state.users.show;
     },
     daySigned() {
       return this.self.daySign;
