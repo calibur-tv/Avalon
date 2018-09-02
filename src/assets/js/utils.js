@@ -75,19 +75,5 @@ export default {
       }
     } while ((elem = elem.offsetParent)); // eslint-disable-line no-cond-assign
     return offsetTop;
-  },
-
-  convertPureTextToRich(content) {
-    while (content.match("\n\n\n") !== null) {
-      content = content.replace(/\n\n\n/g, "\n\n");
-    }
-    content = content.split("\n");
-
-    const res = [];
-    content.forEach(item => {
-      res.push(item ? `<p>${item}</p>` : "<p><br/></p>");
-    });
-
-    return res.join("");
   }
 };

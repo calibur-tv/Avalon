@@ -210,9 +210,7 @@ export default {
                   title: this.forms.title,
                   bangumiId: this.forms.bangumiId,
                   desc: this.forms.content.substring(0, 120),
-                  content: this.$utils.convertPureTextToRich(
-                    this.forms.content
-                  ),
+                  content: this.forms.content,
                   images: this.formatImages,
                   geetest: data,
                   ctx: this,
