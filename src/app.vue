@@ -63,6 +63,12 @@ export default {
   },
   components: {
     vSign
+  },
+  created() {
+    if (this.$isServer) {
+      return;
+    }
+    M.vueHub = this.$channel;
   }
 };
 </script>

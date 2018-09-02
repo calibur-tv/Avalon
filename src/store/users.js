@@ -47,6 +47,11 @@ const mutations = {
       state.notifications.list[index].checked = true;
     });
     state.notifications.checked = 88888888;
+  },
+  RESET_NOTIFICATION(state) {
+    state.notifications.total = 0;
+    state.notifications.list = [];
+    state.notifications.noMore = false;
   }
 };
 

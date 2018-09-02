@@ -120,4 +120,7 @@ router.afterEach((to, from) => {
   if (!dev && !(from.name === null && from.fullPath === "/")) {
     _hmt.push(["_trackPageview", to.fullPath]); // eslint-disable-line no-undef
   }
+  if (M && M.vueHub) {
+    M.vueHub.$emit("page-switch");
+  }
 });

@@ -37,7 +37,8 @@ $placeholder-color: #ddd;
 }
 
 .lazy-full-image {
-  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
 
   .lazy-image-padding {
     width: 100%;
@@ -72,7 +73,7 @@ $placeholder-color: #ddd;
   <div
     v-if="full"
     :class="{ 'lazy-image-fade': !loaded, 'lazy-image-retry': error }"
-    :style="{ height: computeContainerHeight ? `${computeContainerHeight}px` : 'auto' }"
+    :style="lazyFullStyle"
     class="lazy-full-image"
   >
     <div
@@ -172,6 +173,14 @@ export default {
     };
   },
   computed: {
+    lazyFullStyle() {
+      return {
+        width: `${this.width}px`,
+        height: this.computeContainerHeight
+          ? `${this.computeContainerHeight}px`
+          : "auto"
+      };
+    },
     computeContainerHeight() {
       if (this.$isServer) {
         return 0;

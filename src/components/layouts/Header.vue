@@ -727,13 +727,14 @@ export default {
     }
   },
   mounted() {
-    document.addEventListener("scroll", () => {
-      this.scrollFlag =
-        window.scrollY >
-        (this.type === "mask"
-          ? this.convertBannerHeight - 100
-          : this.convertBannerHeight);
+    document.addEventListener("scroll", this.handleScroll);
+    this.$channel.$on("page-switch", () => {
+      this.resetNotification();
     });
+  },
+  beforeDestroy() {
+    this.$channel.$off("page-switch");
+    document.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
     signIn() {
@@ -752,6 +753,22 @@ export default {
       setTimeout(() => {
         this.searchFocus = false;
       }, 100);
+    },
+    handleScroll() {
+      this.scrollFlag =
+        window.scrollY >
+        (this.type === "mask"
+          ? this.convertBannerHeight - 100
+          : this.convertBannerHeight);
+    },
+    resetNotification() {
+      if (!this.isLogin) {
+        return;
+      }
+      if (!this.showNotification) {
+        this.$store.commit("users/RESET_NOTIFICATION");
+      }
+      this.$store.dispatch("getNotification", this);
     }
   }
 };
