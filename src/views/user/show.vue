@@ -544,11 +544,11 @@ export default {
         const userApi = new UserApi(this);
         await userApi.settingImage({
           type: "avatar",
-          url: result.key
+          url: result.url
         });
         this.$store.commit("UPDATE_USER_INFO", {
           key: "avatar",
-          value: `${this.$cdn.image}${result.key}`
+          value: `${this.$cdn.image}${result.url}`
         });
         this.$toast.success("头像更新成功");
       } catch (e) {
@@ -605,11 +605,11 @@ export default {
         const userApi = new UserApi(this);
         await userApi.settingImage({
           type: "banner",
-          url: result.key
+          url: result.url
         });
         this.$store.commit("UPDATE_USER_INFO", {
           key: "banner",
-          value: `${this.$cdn.image}${result.key}`
+          value: `${this.$cdn.image}${result.url}`
         });
         this.$toast.success("背景更新成功");
       } catch (e) {
