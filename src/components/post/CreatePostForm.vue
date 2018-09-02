@@ -168,9 +168,6 @@ export default {
         ? parseInt(this.$route.params.id, 10)
         : 0;
     },
-    formatImages() {
-      return this.images.map(item => item.img);
-    },
     bangumis() {
       return this.$store.state.users.bangumis;
     },
@@ -211,7 +208,7 @@ export default {
                   bangumiId: this.forms.bangumiId,
                   desc: this.forms.content.substring(0, 120),
                   content: this.forms.content,
-                  images: this.formatImages,
+                  images: this.images.map(item => item.img),
                   geetest: data,
                   ctx: this,
                   is_creator: this.forms.is_creator

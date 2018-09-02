@@ -203,7 +203,7 @@ export default {
     },
     handleAvatarSuccess(res) {
       this.$toast.success("上传成功");
-      this.form.avatar = res.data.key;
+      this.form.avatar = res.data.url;
     }
   }
 };

@@ -177,15 +177,7 @@ export default {
                   tags: this.form.tags,
                   intro: this.form.content.substring(0, 120),
                   content: this.form.content,
-                  images: this.images.map(item => {
-                    return {
-                      width: item.img.width,
-                      height: item.img.height,
-                      size: item.img.size,
-                      type: item.img.type,
-                      url: item.img.key
-                    };
-                  }),
+                  images: this.images.map(item => item.img),
                   geetest: data
                 });
                 this.images = [];

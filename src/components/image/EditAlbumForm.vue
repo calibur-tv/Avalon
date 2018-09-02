@@ -148,13 +148,7 @@ export default {
       return this.beforeImageUpload(file);
     },
     handleAlbumUploadSuccess(res) {
-      this.form.poster = {
-        url: res.data.key,
-        width: res.data.width,
-        height: res.data.height,
-        size: res.data.size,
-        type: res.data.type
-      };
+      this.form.poster = res.data;
       this.$toast.success("封面上传成功");
     },
     handlePosterRemove() {

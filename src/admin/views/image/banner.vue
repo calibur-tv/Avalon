@@ -316,7 +316,7 @@ export default {
       }
     },
     handleImageUploadSuccess(res) {
-      this.form.url = res.data.key;
+      this.form.url = res.data.url;
     }
   }
 };

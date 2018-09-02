@@ -210,7 +210,7 @@ export default {
     },
     handleUpUploadSuccess(res) {
       this.$toast.success("上传成功");
-      this.editingItem.url = res.data.key;
+      this.editingItem.url = res.data.url;
     }
   }
 };

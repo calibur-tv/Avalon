@@ -247,13 +247,7 @@ export default {
       return this.beforeImageUpload(file);
     },
     handleSingleImageUploadSuccess(res) {
-      this.form.image = {
-        url: res.data.key,
-        width: res.data.width,
-        height: res.data.height,
-        size: res.data.size,
-        type: res.data.type
-      };
+      this.form.image = res.data;
       this.$toast.success("封面上传成功");
     },
     handleSingleImageRemove() {
@@ -326,7 +320,7 @@ export default {
             height: res.data.height,
             size: res.data.size,
             type: res.data.type,
-            url: this.$resize(res.data.key, { width: 160 }),
+            url: this.$resize(res.data.url, { width: 160 }),
             status: "success"
           });
         }
