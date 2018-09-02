@@ -89,6 +89,7 @@
         </el-button>
         <el-button
           v-if="!published"
+          :loading="saving"
           plain
           size="medium"
           @click="$channel.$emit('write-save')"
@@ -96,6 +97,7 @@
           {{ id ? '更新草稿' : '存草稿' }}
         </el-button>
         <el-button
+          :loading="saving"
           size="medium"
           type="primary"
           @click="$channel.$emit('write-publish')"
@@ -172,6 +174,7 @@ export default {
       if (this.saving) {
         return;
       }
+      this.saving = true;
       if (this.id) {
         this.submit(richContent);
       } else {
@@ -181,6 +184,9 @@ export default {
           },
           error: e => {
             this.$toast.error(e);
+            this.saving = false;
+          },
+          close: () => {
             this.saving = false;
           }
         });
