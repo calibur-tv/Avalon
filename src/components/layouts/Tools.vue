@@ -150,22 +150,24 @@
         </transition>
       </el-tooltip>
     </div>
-    <v-dialog
-      v-model="showPostModal"
-      :footer="false"
-      title="发帖"
-    >
-      <create-post-form @submit="showPostModal = false"/>
-    </v-dialog>
-    <v-dialog
-      v-model="showQuestionModal"
-      :footer="false"
-      title="写下你的问题"
-    >
-      <create-question-form @submit="showQuestionModal = false"/>
-    </v-dialog>
+    <template v-if="!isGuest">
+      <v-dialog
+        v-model="showPostModal"
+        :footer="false"
+        title="发帖"
+      >
+        <create-post-form @submit="showPostModal = false"/>
+      </v-dialog>
+      <v-dialog
+        v-model="showQuestionModal"
+        :footer="false"
+        title="写下你的问题"
+      >
+        <create-question-form @submit="showQuestionModal = false"/>
+      </v-dialog>
+      <create-image-panel/>
+    </template>
     <v-feedback v-model="showFeedModal"/>
-    <create-image-panel/>
   </div>
 </template>
 

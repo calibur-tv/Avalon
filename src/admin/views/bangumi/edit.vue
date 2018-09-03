@@ -532,11 +532,11 @@ export default {
     },
     handleAvatarSuccess(res) {
       this.$toast.success("上传成功");
-      this.form.avatar = res.data.key;
+      this.form.avatar = res.data.url;
     },
     handleBannerSuccess(res) {
       this.$toast.success("上传成功");
-      this.form.banner = res.data.key;
+      this.form.banner = res.data.url;
     },
     submitForm() {
       this.$refs.form.validate(async valid => {

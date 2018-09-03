@@ -251,14 +251,14 @@ export default {
       this.$toast.success("上传成功");
       this.$store.commit("bangumi/SET_BANGUMI_INFO", {
         key: "avatar",
-        value: res.data.key
+        value: res.data.url
       });
     },
     handleBannerSuccess(res) {
       this.$toast.success("上传成功");
       this.$store.commit("bangumi/SET_BANGUMI_INFO", {
         key: "banner",
-        value: res.data.key
+        value: res.data.url
       });
     },
     handleAvatarRemove() {

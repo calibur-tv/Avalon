@@ -168,11 +168,8 @@ export default {
         ? parseInt(this.$route.params.id, 10)
         : 0;
     },
-    formatImages() {
-      return this.images.map(item => item.img);
-    },
     bangumis() {
-      return this.$store.state.users.self.followBangumi;
+      return this.$store.state.users.bangumis;
     },
     optionBangumis() {
       return this.appendBangumi.concat(this.bangumis);
@@ -210,10 +207,8 @@ export default {
                   title: this.forms.title,
                   bangumiId: this.forms.bangumiId,
                   desc: this.forms.content.substring(0, 120),
-                  content: this.$utils.convertPureTextToRich(
-                    this.forms.content
-                  ),
-                  images: this.formatImages,
+                  content: this.forms.content,
+                  images: this.images.map(item => item.img),
                   geetest: data,
                   ctx: this,
                   is_creator: this.forms.is_creator
@@ -259,8 +254,7 @@ export default {
       this.loadingFetchBangumi = true;
       try {
         await this.$store.dispatch("users/getFollowBangumis", {
-          zone: this.$store.state.user.zone,
-          self: true
+          zone: this.$store.state.user.zone
         });
       } catch (e) {
         this.$toast.error(e);

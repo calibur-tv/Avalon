@@ -122,7 +122,7 @@ export default {
   methods: {
     handleImageUploadSuccess(res) {
       this.$store.commit("editor/UPDATE_SECTION_IMAGE", {
-        url: res.data.key,
+        url: res.data.url,
         width: res.data.width,
         height: res.data.height,
         size: res.data.size,

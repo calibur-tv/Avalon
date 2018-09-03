@@ -144,6 +144,7 @@
       <router-link
         v-if="curBanner.user_id"
         :to="$alias.user(curBanner.user_zone)"
+        target="_blank"
       >
         <img
           :src="$resize(curBanner.user_avatar, { width: 80 })"
