@@ -104,7 +104,7 @@ export default {
         return;
       }
       if (this.currentUserId === this.authorId) {
-        this.$toast.error("不能给自己点赞");
+        this.$toast.error(is_agree ? "不能给自己点赞" : "不能给自己点反对");
         return;
       }
       if (this.loading) {

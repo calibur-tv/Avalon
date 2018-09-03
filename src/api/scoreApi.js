@@ -37,12 +37,6 @@ export default class extends BaseApi {
     });
   }
 
-  getUsersScore({ zone, page, take }) {
-    return this.http.get("score/users", {
-      params: { zone, page, take }
-    });
-  }
-
   trials() {
     return this.http.get("admin/trial/score/list");
   }
