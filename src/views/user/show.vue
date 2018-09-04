@@ -10,6 +10,7 @@
     color: $color-white;
     text-shadow: 0 1px 10px gray;
     user-select: none;
+    position: relative;
 
     .file-input {
       &:before {
