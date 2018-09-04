@@ -3,8 +3,6 @@ $header-height: 50px;
 $avatar-height: 36px;
 
 .header {
-  position: relative;
-
   .nav-link {
     font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei",
       "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
@@ -236,8 +234,8 @@ $avatar-height: 36px;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+      z-index: 0;
       @include filter-blur();
-      z-index: -1;
     }
   }
 }
