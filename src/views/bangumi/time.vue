@@ -105,12 +105,7 @@
           <a :href="$alias.bangumiTag()">分类索引</a>
         </div>
         <h2 class="sub-title">时间轴</h2>
-        <ul
-          v-infinite-scroll="loadMore"
-          infinite-scroll-disabled="notFetch"
-          infinite-scroll-distance="50"
-          class="collections"
-        >
+        <ul class="collections">
           <ul
             v-for="col in timeline"
             :key="col.date"
@@ -150,6 +145,12 @@
             </li>
           </ul>
         </ul>
+        <load-more-btn
+          :no-more="noMore"
+          :loading="loading"
+          :auto="true"
+          @fetch="loadMore"
+        />
       </template>
     </v-layout>
   </div>
@@ -173,8 +174,8 @@ export default {
     timeline() {
       return this.$store.state.bangumi.timeline.data;
     },
-    notFetch() {
-      return this.loading || this.$store.state.bangumi.timeline.noMore;
+    noMore() {
+      return this.$store.state.bangumi.timeline.noMore;
     }
   },
   methods: {
