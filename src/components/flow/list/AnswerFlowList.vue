@@ -27,12 +27,12 @@
         :user-zone="userZone"
       />
     </ul>
-    <el-button
-      v-if="!source.noMore"
+    <load-more-btn
+      :no-more="source.noMore"
       :loading="loading"
-      class="load-more-btn"
-      @click="loadMore"
-    >{{ loading ? '加载中' : '加载更多' }}</el-button>
+      :auto="true"
+      @fetch="loadMore"
+    />
   </div>
 </template>
 

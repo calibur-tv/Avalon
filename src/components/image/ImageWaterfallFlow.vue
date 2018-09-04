@@ -308,14 +308,12 @@
         </waterfall-slot>
       </waterfall>
     </no-ssr>
-    <el-button
-      v-if="!noMore"
+    <load-more-btn
+      :no-more="noMore"
       :loading="loading"
-      class="load-more-btn"
-      type="info"
-      plain
-      @click="loadMore"
-    >{{ loading ? '加载中' : '加载更多' }}</el-button>
+      :auto="true"
+      @fetch="loadMore"
+    />
   </div>
 </template>
 
