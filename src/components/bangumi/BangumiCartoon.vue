@@ -227,14 +227,12 @@
         @click="openFeedback"
       >求漫画</el-button>
     </no-content>
-    <el-button
-      v-if="!cartoons.noMore"
+    <load-more-btn
+      :auto="true"
+      :no-more="cartoons.noMore"
       :loading="state.loading"
-      class="load-more-btn"
-      type="info"
-      plain
-      @click="getData(false)"
-    >{{ state.loading ? '加载中' : '加载更多' }}</el-button>
+      @fetch="getData(false)"
+    />
   </div>
 </template>
 

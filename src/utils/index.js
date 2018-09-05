@@ -18,6 +18,7 @@ import "~/assets/css/element-ui.scss";
 import VCharts from "v-charts";
 import Affix from "~/components/common/Affix";
 import ImageLazyLoad from "~/components/common/ImageLazyLoad";
+import LoadMoreBtn from "~/components/common/LoadMoreBtn";
 
 import { InfiniteScroll } from "mint-ui";
 
@@ -25,6 +26,7 @@ Vue.use(VCharts);
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
 Vue.use(ImageLazyLoad, {});
+Vue.component(LoadMoreBtn.name, LoadMoreBtn);
 Vue.component(Header.name, Header);
 Vue.component(Affix.name, Affix);
 Vue.component(BangumiSearch.name, BangumiSearch);

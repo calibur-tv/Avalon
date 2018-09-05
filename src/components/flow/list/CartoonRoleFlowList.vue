@@ -16,26 +16,6 @@
     v-if="source"
     id="cartoon-role-flow-list"
   >
-    <template>
-      <ul>
-        <cartoon-role-flow-item
-          v-for="(item, index) in roles"
-          :index="index"
-          :key="item.id"
-          :item="item"
-          :bangumi-id="bangumiId"
-          :user-zone="userZone"
-        />
-      </ul>
-      <el-button
-        v-if="!source.noMore"
-        :loading="source.loading"
-        class="load-more-btn"
-        type="info"
-        plain
-        @click="loadMore"
-      >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
-    </template>
     <no-content v-if="source.nothing">
       <a
         v-if="isMe"
@@ -49,6 +29,25 @@
         @click="openFeedback"
       >没有你喜欢的角色？</el-button>
     </no-content>
+    <template v-else>
+      <ul>
+        <cartoon-role-flow-item
+          v-for="(item, index) in roles"
+          :index="index"
+          :key="item.id"
+          :item="item"
+          :bangumi-id="bangumiId"
+          :user-zone="userZone"
+        />
+      </ul>
+      <load-more-btn
+        v-if="!(source.noMore && bangumiId)"
+        :no-more="source.noMore"
+        :loading="source.loading"
+        :auto="true"
+        @fetch="loadMore"
+      />
+    </template>
     <div
       v-if="bangumiId && source.noMore && !source.nothing"
       class="load-more-roles"
@@ -67,7 +66,7 @@ import flowMixin from "./_flowListMixin";
 import CartoonRoleFlowItem from "../item/CartoonRoleFlowItem";
 
 export default {
-  name: "ScoreFlowList",
+  name: "CartoonRoleFlowList",
   components: {
     CartoonRoleFlowItem
   },

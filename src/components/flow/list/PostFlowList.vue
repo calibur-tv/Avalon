@@ -12,14 +12,12 @@
         :user-zone="userZone"
       />
     </ul>
-    <el-button
-      v-if="!source.noMore"
+    <load-more-btn
+      :no-more="source.noMore"
       :loading="source.loading"
-      class="load-more-btn"
-      type="info"
-      plain
-      @click="loadMore"
-    >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
+      :auto="true"
+      @fetch="loadMore"
+    />
     <no-content v-if="source.nothing && !postList.length">
       <el-button
         v-if="showNoContentTips"

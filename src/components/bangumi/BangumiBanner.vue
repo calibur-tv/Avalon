@@ -5,6 +5,7 @@
     min-width: 600px;
     margin: 120px auto 0 auto;
     color: $color-white;
+    position: relative;
 
     .title,
     .summary {

@@ -108,11 +108,7 @@
           class="bangumis"
         >
           <h2 class="sub-title">番剧列表</h2>
-          <ul
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="notFetch"
-            infinite-scroll-distance="200"
-          >
+          <ul>
             <li
               v-for="item in bangumis"
               :key="item.id"
@@ -142,6 +138,12 @@
               </div>
             </li>
           </ul>
+          <load-more-btn
+            :no-more="noMore"
+            :loading="loading"
+            :auto="true"
+            @fetch="loadMore"
+          />
         </div>
         <no-content v-else-if="id"/>
       </template>
@@ -188,8 +190,8 @@ export default {
     tags() {
       return this.$store.state.bangumi.tags;
     },
-    notFetch() {
-      return this.loading || this.$store.state.bangumi.category.noMore;
+    noMore() {
+      return this.$store.state.bangumi.category.noMore;
     }
   },
   methods: {

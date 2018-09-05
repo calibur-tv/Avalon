@@ -12,14 +12,6 @@
         :user-zone="userZone"
       />
     </ul>
-    <el-button
-      v-if="!source.noMore"
-      :loading="source.loading"
-      class="load-more-btn"
-      type="info"
-      plain
-      @click="loadMore"
-    >{{ source.loading ? '加载中' : '加载更多' }}</el-button>
     <no-content v-if="source.nothing">
       <a
         v-if="bangumiId"
@@ -42,6 +34,13 @@
         >发表第一篇漫评</el-button>
       </a>
     </no-content>
+    <load-more-btn
+      v-else
+      :no-more="source.noMore"
+      :loading="source.loading"
+      :auto="true"
+      @fetch="loadMore"
+    />
   </div>
 </template>
 

@@ -210,15 +210,14 @@
           </div>
         </li>
       </ul>
-      <el-button
-        v-if="!noMore"
-        :loading="loading"
-        class="load-more-btn"
-        type="info"
-        plain
-        @click="getUserPosts(false)"
-      >{{ loading ? '加载中' : '加载更多' }}</el-button>
       <no-content v-if="!list.length && noMore"/>
+      <load-more-btn
+        v-else
+        :auto="true"
+        :no-more="noMore"
+        :loading="loading"
+        @fetch="getUserPosts(false)"
+      />
     </div>
   </div>
 </template>

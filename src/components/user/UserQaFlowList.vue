@@ -24,20 +24,21 @@
       :user-zone="userZone"
     />
     <div v-else>
-      <question-flow-item
-        v-for="item in answerList"
-        :key="item.id"
-        :item="item"
-      />
-      <el-button
-        v-if="!noMoreAnswer"
+      <ul>
+        <question-flow-item
+          v-for="item in answerList"
+          :key="item.id"
+          :item="item"
+        />
+      </ul>
+      <no-content v-if="!answerList.length && noMoreAnswer"/>
+      <load-more-btn
+        v-else
+        :auto="true"
+        :no-more="noMoreAnswer"
         :loading="loadingAnswer"
-        class="load-more-btn"
-        type="info"
-        plain
-        @click="getUserAnswers(false)"
-      >{{ loadingAnswer ? '加载中' : '加载更多' }}</el-button>
-      <no-content v-if="!answerList.length && noMoreAnswer && !loadingAnswer"/>
+        @fetch="getUserAnswers(false)"
+      />
     </div>
   </div>
 </template>
