@@ -11,7 +11,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: -1;
+    z-index: 0;
     opacity: 0;
     transition: opacity 1s ease-in-out;
 
@@ -141,16 +141,16 @@
       v-if="curBanner"
       class="banner-card"
     >
-      <router-link
+      <a
         v-if="curBanner.user_id"
-        :to="$alias.user(curBanner.user_zone)"
+        :href="$alias.user(curBanner.user_zone)"
         target="_blank"
       >
         <img
           :src="$resize(curBanner.user_avatar, { width: 80 })"
           class="avatar"
         >
-      </router-link>
+      </a>
       <img
         v-else
         :src="$resize('https://image.calibur.tv/default/user-avatar', { width: 80 })"
@@ -159,18 +159,20 @@
       <div class="content">
         <p class="oneline">
           作者：
-          <router-link
+          <a
             v-if="curBanner.user_id"
-            :to="$alias.user(curBanner.user_zone)"
+            :href="$alias.user(curBanner.user_zone)"
+            target="_blank"
             v-text="curBanner.user_nickname"
           />
           <span v-else>{{ curBanner.bangumi_id ? '原画' : '未知' }}</span>
         </p>
         <p class="oneline">
           番剧：
-          <router-link
+          <a
             v-if="curBanner.bangumi_id"
-            :to="$alias.bangumi(curBanner.bangumi_id)"
+            :href="$alias.bangumi(curBanner.bangumi_id)"
+            target="_blank"
             v-text="curBanner.bangumi_name"
           />
           <span v-else>未知</span>
