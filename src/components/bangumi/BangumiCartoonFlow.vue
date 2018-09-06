@@ -1,5 +1,5 @@
 <style lang="scss">
-#bangumi-cartoon {
+#bangumi-cartoon-flow {
   .header {
     margin-bottom: 15px;
     text-align: right;
@@ -136,7 +136,7 @@
 </style>
 
 <template>
-  <div id="bangumi-cartoon">
+  <div id="bangumi-cartoon-flow">
     <template v-if="cartoons.list.length">
       <div class="header">
         <strong class="total">共 {{ cartoons.total }} 集</strong>
@@ -238,7 +238,7 @@
 
 <script>
 export default {
-  name: "BangumiCartoon",
+  name: "BangumiCartoonFlow",
   data() {
     return {
       state: {
@@ -276,13 +276,6 @@ export default {
         });
       }
     }
-  },
-  mounted() {
-    this.$channel.$on("bangumi-tab-switch-cartoon", () => {
-      if (!this.state.fetched) {
-        this.getData();
-      }
-    });
   },
   methods: {
     async getData() {

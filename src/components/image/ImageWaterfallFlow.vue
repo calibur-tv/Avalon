@@ -236,7 +236,7 @@
               </div>
             </div>
             <div class="about">
-              <template v-if="page === 'user-show'">
+              <template v-if="userZone">
                 <a
                   :href="$alias.bangumi(item.bangumi.id)"
                   target="_blank"
@@ -256,7 +256,7 @@
                   />
                 </div>
               </template>
-              <template v-else-if="page === 'bangumi-show'">
+              <template v-else-if="bangumiId">
                 <a
                   :href="$alias.user(item.user.zone)"
                   target="_blank"
@@ -359,11 +359,6 @@ export default {
     width: {
       type: Number,
       default: 200
-    }
-  },
-  computed: {
-    page() {
-      return this.$route.name;
     }
   },
   methods: {

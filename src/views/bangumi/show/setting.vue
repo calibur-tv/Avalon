@@ -12,9 +12,11 @@
 </style>
 
 <template>
-  <div id="bangumi-setting">
+  <div
+    v-if="info.is_master"
+    id="bangumi-setting"
+  >
     <el-collapse
-      v-if="showPanel"
       v-model="activeName"
       accordion
     >
@@ -140,7 +142,6 @@ export default {
   data() {
     return {
       activeName: "0",
-      showPanel: false,
       showSelectAlbum: false,
       createdAlbum: null,
       selectedAlbum: null
@@ -152,9 +153,11 @@ export default {
     }
   },
   mounted() {
-    this.$channel.$on("bangumi-tab-switch-setting", () => {
-      this.showPanel = true;
-    });
+    if (!this.info.is_master) {
+      this.$router.replace({
+        name: "bangumi-post"
+      });
+    }
   },
   methods: {
     setSelectedAlbum(album) {
@@ -162,9 +165,6 @@ export default {
     },
     handleAlbumCreated(album) {
       this.createdAlbum = album;
-    },
-    imageAlbumFilter(images) {
-      return images.filter(_ => _.is_cartoon && _.bangumi_id === this.info.id);
     }
   }
 };

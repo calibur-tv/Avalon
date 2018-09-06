@@ -1,4 +1,5 @@
 import Api from "~/api/bangumiApi";
+import ScoreApi from "~/api/scoreApi";
 
 const state = () => ({
   follows: null,
@@ -16,25 +17,15 @@ const state = () => ({
   },
   tags: [],
   info: null,
-  posts: {
-    data: [],
-    total: 0,
-    take: 10,
-    type: "new",
-    noMore: false
-  },
   videos: {
+    id: 0,
     list: [],
     total: 0,
     has_season: false,
     fetched: false
   },
-  roles: {
-    id: 0,
-    data: [],
-    noMore: false
-  },
   cartoon: {
+    id: 0,
     page: 0,
     take: 12,
     sort: "desc",
@@ -42,7 +33,9 @@ const state = () => ({
     list: [],
     noMore: false
   },
-  topPosts: []
+  topPosts: [],
+  topFetched: false,
+  score: null
 });
 
 const mutations = {
@@ -89,28 +82,16 @@ const mutations = {
     state.category.noMore = data.list.length < state.category.take;
     state.category.page++;
   },
-  SET_POSTS(state, { data, total }) {
-    const posts = state.posts.data.concat(data);
-    state.posts.data = posts;
-    state.posts.total = total;
-    state.posts.noMore =
-      posts.length >= total || data.length < state.posts.take;
-  },
   SET_TOP_POST(state, data) {
     state.topPosts = data;
+    state.topFetched = true;
   },
-  SET_IMAGES(state, { data, total }) {
-    const images = state.images.data.concat(data);
-    state.images.data = images;
-    state.images.total = total;
-    state.images.noMore =
-      images.length >= total || data.length < state.images.take;
-  },
-  SET_BANGUMI(state, data) {
+  SET_BANGUMI_DATA(state, data) {
     state.info = data;
   },
-  SET_VIDEOS(state, data) {
+  SET_VIDEOS(state, { data, id }) {
     state.videos = {
+      id,
       list: data.videos,
       total: data.total,
       has_season: data.has_season,
@@ -120,7 +101,8 @@ const mutations = {
   SET_BANGUMI_INFO(state, { key, value }) {
     state.info[key] = value;
   },
-  SET_BANGUMI_CARTOON(state, data) {
+  SET_BANGUMI_CARTOON(state, { data, bangumiId }) {
+    state.cartoon.id = bangumiId;
     state.cartoon.list = state.cartoon.list.concat(data.list);
     state.cartoon.noMore = data.noMore;
     state.cartoon.total = data.total;
@@ -132,6 +114,7 @@ const mutations = {
   },
   RESET_CARTOON(state, { sort }) {
     state.cartoon = {
+      id: 0,
       page: 0,
       take: 12,
       sort,
@@ -139,6 +122,9 @@ const mutations = {
       list: [],
       noMore: false
     };
+  },
+  SET_BANGUMI_SCORE(state, { id, data }) {
+    state.score = Object.assign({ id }, data);
   }
 };
 
@@ -151,15 +137,21 @@ const actions = {
     const tags = await api.tags();
     commit("SET_TAGS", { tags, id });
   },
-  async getBangumi({ commit }, { ctx, id }) {
+  async getBangumi({ state, commit }, { ctx, id }) {
+    if (state.info && state.info.id === +id) {
+      return;
+    }
     const api = new Api(ctx);
     const data = await api.show(id);
-    commit("SET_BANGUMI", data);
+    commit("SET_BANGUMI_DATA", data);
   },
-  async getVideos({ commit }, { id, ctx }) {
+  async getVideos({ state, commit }, { id, ctx }) {
+    if (state.videos.id && state.videos.id === id) {
+      return;
+    }
     const api = new Api(ctx);
     const data = await api.videos(id);
-    commit("SET_VIDEOS", data);
+    commit("SET_VIDEOS", { data, id });
   },
   async follow({ commit, rootState }, { ctx, id }) {
     const api = new Api(ctx);
@@ -203,31 +195,10 @@ const actions = {
     });
     commit("SET_CATEGORY", data);
   },
-  async getPosts({ state, commit }, { id, ctx }) {
-    const api = new Api(ctx);
-    const data = await api.posts({
-      id,
-      take: state.posts.take,
-      type: state.posts.type,
-      minId: state.posts.data.length
-        ? state.posts.data[state.posts.data.length - 1].id
-        : 0
-    });
-    commit("SET_POSTS", {
-      data: data.list,
-      total: data.total
-    });
-  },
-  async getRoles({ state, commit }, { bangumiId, ctx }) {
-    if (state.roles.id === bangumiId) {
-      return state.roles.data;
+  async getCartoons({ state, commit }, { ctx, bangumiId, init = false }) {
+    if (init && state.cartoon.id === bangumiId) {
+      return;
     }
-    const api = new Api(ctx);
-    const data = await api.roles({ bangumiId });
-    commit("SET_ROLES", { data, bangumiId });
-    return data;
-  },
-  async getCartoons({ state, commit }, { ctx, bangumiId }) {
     const api = new Api(ctx);
     const data = await api.cartoon({
       bangumiId,
@@ -235,7 +206,7 @@ const actions = {
       take: state.cartoon.take,
       sort: state.cartoon.sort
     });
-    data && commit("SET_BANGUMI_CARTOON", data);
+    data && commit("SET_BANGUMI_CARTOON", { data, bangumiId });
   },
   async changeCartoonSort({ state, commit }, { ctx, bangumiId, sort }) {
     if (state.cartoon.noMore) {
@@ -250,12 +221,23 @@ const actions = {
       bangumiId,
       sort
     });
-    data && commit("SET_BANGUMI_CARTOON", data);
+    data && commit("SET_BANGUMI_CARTOON", { data, bangumiId });
   },
-  async getTopPosts({ commit }, { ctx, id }) {
+  async getTopPosts({ state, commit }, { ctx, id }) {
+    if (state.topFeTched) {
+      return;
+    }
     const api = new Api(ctx);
     const data = await api.getTopPosts({ id });
     commit("SET_TOP_POST", data);
+  },
+  async getBangumiScore({ state, commit }, { ctx, id }) {
+    if (state.score && state.score.id === id) {
+      return;
+    }
+    const api = new ScoreApi(ctx);
+    const data = await api.bangumiScore(id);
+    commit("SET_BANGUMI_SCORE", { data, id });
   }
 };
 
