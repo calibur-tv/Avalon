@@ -110,7 +110,7 @@
         class="about"
       >
         <a
-          v-if="pageName === 'bangumi-show'"
+          v-if="bangumiId"
           :href="$alias.user(item.user.zone)"
           target="_blank"
         >
@@ -193,6 +193,14 @@ export default {
     item: {
       required: true,
       type: Object
+    },
+    bangumiId: {
+      type: Number,
+      default: 0
+    },
+    userZone: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -201,9 +209,6 @@ export default {
     };
   },
   computed: {
-    pageName() {
-      return this.$route.name;
-    },
     starCount() {
       return this.item.total / 2;
     }

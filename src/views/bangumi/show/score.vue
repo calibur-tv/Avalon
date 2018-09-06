@@ -77,7 +77,6 @@
       >
         <bangumi-score-chart
           :source="bangumiScore.radar"
-          :loading="loading"
           size="300px"
         />
       </el-col>
@@ -147,23 +146,31 @@
 </template>
 
 <script>
-import ScoreApi from "~/api/scoreApi";
 import BangumiScoreChart from "~/components/bangumi/charts/BangumiScoreChart";
 import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
 
 export default {
   name: "BangumiScore",
+  async asyncData({ store, route, ctx }) {
+    const id = route.params.id;
+    await Promise.all([
+      store.dispatch("bangumi/getBangumiScore", { ctx, id }),
+      store.dispatch("flow/initData", {
+        type: "score",
+        sort: "active",
+        bangumiId: id,
+        ctx
+      })
+    ]);
+  },
   components: {
     BangumiScoreChart,
     ScoreFlowList
   },
-  data() {
-    return {
-      loading: false,
-      bangumiScore: null
-    };
-  },
   computed: {
+    bangumiScore() {
+      return this.$store.state.bangumi.score;
+    },
     totalRate() {
       return this.bangumiScore.total / 20;
     },
@@ -175,27 +182,6 @@ export default {
     },
     scores() {
       return this.$store.state.flow.score.active;
-    }
-  },
-  mounted() {
-    this.$channel.$on("bangumi-tab-switch-score", () => {
-      this.getScore();
-    });
-  },
-  methods: {
-    async getScore() {
-      if (this.loading || this.bangumiScore) {
-        return;
-      }
-      this.loading = true;
-      const api = new ScoreApi(this);
-      try {
-        this.bangumiScore = await api.bangumiScore(this.info.id);
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loading = false;
-      }
     }
   }
 };

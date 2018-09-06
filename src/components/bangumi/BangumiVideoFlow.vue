@@ -1,5 +1,5 @@
 <style lang="scss">
-#bangumi-video {
+#bangumi-video-flow {
   $video-item-width: 255px;
   $video-item-margin: 15px;
   $video-item-height: 70px;
@@ -50,7 +50,7 @@
 </style>
 
 <template>
-  <div id="bangumi-video">
+  <div id="bangumi-video-flow">
     <section v-if="videos.total">
       <div v-if="videos.has_season">
         <div
@@ -128,7 +128,7 @@
 
 <script>
 export default {
-  name: "BangumiVideo",
+  name: "BangumiVideoFlow",
   data() {
     return {
       state: {
@@ -144,13 +144,6 @@ export default {
     videos() {
       return this.$store.state.bangumi.videos;
     }
-  },
-  mounted() {
-    this.$channel.$on("bangumi-tab-switch-video", () => {
-      if (!this.state.fetched) {
-        this.getData();
-      }
-    });
   },
   methods: {
     async getData() {

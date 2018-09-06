@@ -15,7 +15,22 @@ export function createRouter() {
     mode: "history",
     base: "/",
     scrollBehavior(to, from, savedPosition) {
-      return { x: 0, y: 0 };
+      // savedPosition 只有在 popstate 导航（如按浏览器的返回按钮）时可以获取。
+      if (savedPosition) {
+        return savedPosition;
+      } else {
+        let position = {};
+        // 目标页面子组件少于两个
+        if (to.matched.length < 2) {
+          // 滚动至页面顶部
+          position = { x: 0, y: 0 };
+        }
+        // 如果目标页面的url有锚点,  则滚动至锚点所在的位置
+        if (to.hash) {
+          position = { selector: to.hash };
+        }
+        return position;
+      }
     },
     routes: [
       {
@@ -77,8 +92,54 @@ export function createRouter() {
           },
           {
             path: "bangumi/:id(\\d+)",
-            name: "bangumi-show",
-            component: () => import("~/views/bangumi/show")
+            component: () => import("~/views/bangumi/show/layout"),
+            children: [
+              {
+                path: "",
+                name: "bangumi-show",
+                redirect: "post"
+              },
+              {
+                path: "post",
+                name: "bangumi-post",
+                component: () => import("~/views/bangumi/show/post")
+              },
+              {
+                path: "video",
+                name: "bangumi-video",
+                component: () => import("~/views/bangumi/show/video")
+              },
+              {
+                path: "cartoon",
+                name: "bangumi-cartoon",
+                component: () => import("~/views/bangumi/show/cartoon")
+              },
+              {
+                path: "role",
+                name: "bangumi-role",
+                component: () => import("~/views/bangumi/show/role")
+              },
+              {
+                path: "pins",
+                name: "bangumi-image",
+                component: () => import("~/views/bangumi/show/image")
+              },
+              {
+                path: "review",
+                name: "bangumi-score",
+                component: () => import("~/views/bangumi/show/score")
+              },
+              {
+                path: "qaq",
+                name: "bangumi-qaq",
+                component: () => import("~/views/bangumi/show/qaq")
+              },
+              {
+                path: "setting",
+                name: "bangumi-setting",
+                component: () => import("~/views/bangumi/show/setting")
+              }
+            ]
           },
           {
             path: "video/:id(\\d+)",
