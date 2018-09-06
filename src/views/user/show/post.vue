@@ -1,7 +1,5 @@
 <style lang="scss">
 #user-post {
-  margin-top: 10px;
-
   .posts-of-mine {
     margin-left: 10px;
 
@@ -227,15 +225,17 @@ import PostFlowList from "~/components/flow/list/PostFlowList";
 import Api from "~/api/userApi";
 
 export default {
-  name: "UserPostFlowList",
+  name: "UserPost",
+  async asyncData({ store, route, ctx }) {
+    await store.dispatch("flow/initData", {
+      type: "post",
+      sort: "news",
+      userZone: route.params.zone,
+      ctx
+    });
+  },
   components: {
     PostFlowList
-  },
-  props: {
-    zone: {
-      required: true,
-      type: String
-    }
   },
   data() {
     return {
@@ -247,6 +247,11 @@ export default {
       noMore: false,
       page: 0
     };
+  },
+  computed: {
+    zone() {
+      return this.$route.params.zone;
+    }
   },
   methods: {
     handleTabSwitch(label) {

@@ -12,12 +12,6 @@
         :user-zone="userZone"
       />
     </ul>
-    <load-more-btn
-      :no-more="source.noMore"
-      :loading="source.loading"
-      :auto="true"
-      @fetch="loadMore"
-    />
     <no-content v-if="source.nothing && !postList.length">
       <el-button
         v-if="showNoContentTips"
@@ -26,6 +20,13 @@
         @click="openCreatePostModal"
       >{{ userZone ? '发表第一篇帖子' : '发表《' + bangumiName + '》的第一篇帖子' }}</el-button>
     </no-content>
+    <load-more-btn
+      v-else
+      :no-more="source.noMore"
+      :loading="source.loading"
+      :auto="true"
+      @fetch="loadMore"
+    />
   </div>
 </template>
 

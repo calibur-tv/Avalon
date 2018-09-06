@@ -1,14 +1,31 @@
 import Api from "~/api/userApi";
+import ScoreApi from "~/api/scoreApi";
+import QuestionApi from "~/api/questionApi";
 
 const state = () => ({
   show: null,
   bangumis: [],
+  fetchedBangumiZone: "",
   notifications: {
     checked: 0,
     take: 10,
     list: [],
     noMore: false,
     total: 0
+  },
+  drafts: {
+    score: {
+      list: [],
+      total: 0,
+      noMore: false,
+      loading: false
+    },
+    answer: {
+      list: [],
+      total: 0,
+      noMore: false,
+      loading: false
+    }
   }
 });
 
@@ -25,8 +42,9 @@ const mutations = {
       state.self[key] = value;
     }
   },
-  SET_USER_FOLLOW_BANGUMI(state, bangumis) {
-    state.bangumis = bangumis;
+  SET_USER_FOLLOW_BANGUMI(state, { data, zone }) {
+    state.bangumis = data;
+    state.fetchedBangumiZone = zone;
   },
   SET_NOTIFICATIONS(state, data) {
     state.notifications.list = state.notifications.list.concat(data.list);
@@ -52,19 +70,34 @@ const mutations = {
     state.notifications.total = 0;
     state.notifications.list = [];
     state.notifications.noMore = false;
+  },
+  SET_DRAFT_LOADING(state, type) {
+    state.drafts[type].loading = true;
+  },
+  SET_USER_DRAFT(state, { data, type }) {
+    state.drafts[type].noMore = data.noMore;
+    state.drafts[type].loading = false;
+    state.drafts[type].total = data.total;
+    state.drafts[type].list = state.drafts[type].list.concat(data.list);
   }
 };
 
 const actions = {
-  async getUser({ commit }, { ctx, zone }) {
+  async getUser({ state, commit }, { ctx, zone }) {
+    if (state.show && state.show.zone === zone) {
+      return;
+    }
     const api = new Api(ctx);
     const data = await api.getUserInfo({ zone });
     commit("SET_USER_INFO", data);
   },
-  async getFollowBangumis({ commit }, { ctx, zone }) {
+  async getFollowBangumis({ state, commit }, { ctx, zone }) {
+    if (state.fetchedBangumiZone === zone) {
+      return;
+    }
     const api = new Api(ctx);
     const data = await api.followBangumis(zone);
-    commit("SET_USER_FOLLOW_BANGUMI", data);
+    commit("SET_USER_FOLLOW_BANGUMI", { data, zone });
     return data;
   },
   async daySign({ rootState }, { ctx }) {
@@ -103,6 +136,30 @@ const actions = {
     const api = new Api(ctx);
     await api.readAllMessage();
     commit("READ_ALL_NOTIFICATION");
+  },
+  async getUserDrafts({ state, commit }, { type, ctx }) {
+    if (!state.drafts[type]) {
+      return;
+    }
+    if (state.drafts[type].noMore || state.drafts[type].loading) {
+      return;
+    }
+    let api;
+    if (type === "score") {
+      api = new ScoreApi(ctx);
+    } else if (type === "answer") {
+      api = new QuestionApi(ctx);
+    }
+    commit("SET_DRAFT_LOADING", type);
+    const data = await api.drafts();
+    commit("SET_USER_DRAFT", {
+      data: {
+        list: data,
+        noMore: true,
+        total: 0
+      },
+      type
+    });
   }
 };
 

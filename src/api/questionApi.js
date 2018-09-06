@@ -89,7 +89,7 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/question/pass", { id });
   }
 
-  answerDraft() {
+  drafts() {
     return this.http.get("question/soga/drafts");
   }
 }

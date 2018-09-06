@@ -1,5 +1,5 @@
 <style lang="scss">
-#user-bangumi-flow-list {
+#user-follow-bangumi-list {
   $video-item-width: 220px;
   $video-item-margin: 15px;
   $video-item-height: 70px;
@@ -45,7 +45,7 @@
 </style>
 
 <template>
-  <div id="user-bangumi-flow-list">
+  <div id="user-follow-bangumi-list">
     <ul
       v-if="bangumis.length"
       class="bangumis"
@@ -79,20 +79,11 @@
 
 <script>
 export default {
-  name: "UserBangumiFlowList",
-  components: {},
-  props: {},
-  data() {
-    return {};
-  },
+  name: "UserFollowBangumiList",
   computed: {
     bangumis() {
       return this.$store.state.users.bangumis;
     }
-  },
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  }
 };
 </script>

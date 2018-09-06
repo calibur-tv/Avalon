@@ -41,15 +41,6 @@ export default {
       }
       return "active";
     },
-    fetchEvent() {
-      if (this.bangumiId) {
-        return `bangumi-tab-switch-${this.flowType}`;
-      }
-      if (this.userZone) {
-        return `user-tab-switch-${this.flowType}`;
-      }
-      return "";
-    },
     source() {
       return this.$store.state[this.fetchStore][this.flowType][this.fetchSort];
     },
@@ -88,14 +79,6 @@ export default {
       } catch (e) {
         this.$toast.error(e);
       }
-    }
-  },
-  mounted() {
-    if (this.fetchEvent && !this.source.list.length) {
-      this.$channel.$on(this.fetchEvent, () => {
-        this.initData();
-        this.$channel.$off(this.fetchEvent);
-      });
     }
   }
 };
