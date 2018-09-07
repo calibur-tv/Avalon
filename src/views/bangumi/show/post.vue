@@ -1,5 +1,6 @@
 <template>
   <post-flow-list
+    v-if="info"
     :bangumi-id="id"
     :bangumi-name="info.name"
   />

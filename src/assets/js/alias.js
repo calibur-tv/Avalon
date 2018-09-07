@@ -16,12 +16,12 @@ export default {
     return this.__query(url, query);
   },
 
-  user(zone) {
-    return `/user/${zone}`;
+  user(zone, path = "") {
+    return `/user/${zone}/${path}`;
   },
 
-  bangumi(id) {
-    return `/bangumi/${id}`;
+  bangumi(id, path = "") {
+    return `/bangumi/${id}/${path}`;
   },
 
   video(id) {

@@ -120,7 +120,7 @@
               </router-link>
             </li>
             <li>
-              <router-link :to="$alias.world('image')">
+              <router-link :to="$alias.world('pins')">
                 相册
               </router-link>
             </li>

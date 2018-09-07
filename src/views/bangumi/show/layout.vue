@@ -85,7 +85,7 @@ export default {
         },
         {
           label: "问答",
-          name: "bangumi-qaq",
+          name: "bangumi-question",
           show: true
         },
         {

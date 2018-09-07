@@ -139,6 +139,7 @@
       </h3>
     </div>
     <score-flow-list
+      v-if="info"
       :bangumi-id="info.id"
       :bangumi-name="info.name"
     />
@@ -168,6 +169,9 @@ export default {
     ScoreFlowList
   },
   computed: {
+    info() {
+      return this.$store.state.bangumi.info;
+    },
     bangumiScore() {
       return this.$store.state.bangumi.score;
     },
@@ -176,9 +180,6 @@ export default {
     },
     totalScore() {
       return this.bangumiScore.total / 10;
-    },
-    info() {
-      return this.$store.state.bangumi.info;
     },
     scores() {
       return this.$store.state.flow.score.active;

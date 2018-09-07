@@ -1,6 +1,7 @@
 <template>
   <cartoon-role-flow-list
-    :bangumi-id="id"
+    v-if="info"
+    :bangumi-id="info.id"
     :bangumi-name="info.name"
   />
 </template>
@@ -22,9 +23,6 @@ export default {
     CartoonRoleFlowList
   },
   computed: {
-    id() {
-      return +this.$route.params.id;
-    },
     info() {
       return this.$store.state.bangumi.info;
     }
