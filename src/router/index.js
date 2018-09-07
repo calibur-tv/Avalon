@@ -176,8 +176,8 @@ export function createRouter() {
               },
               {
                 path: "qaq",
-                name: "user-qaq",
-                component: () => import("~/views/user/show/qaq")
+                name: "user-question",
+                component: () => import("~/views/user/show/question")
               },
               {
                 path: "role",

@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import SignUpForm from "~/components/user/forms/SignUpForm";
+import SignUpForm from "~/components/user/SignUpForm";
 
 export default {
   name: "InviteUser",

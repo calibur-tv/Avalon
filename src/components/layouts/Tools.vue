@@ -173,7 +173,7 @@
 
 <script>
 import vCreator from "./Creator.vue";
-import vFeedback from "~/components/user/forms/Feedback";
+import vFeedback from "~/components/user/Feedback";
 import CreatePostForm from "~/components/post/CreatePostForm";
 import CreateImagePanel from "~/components/image/CreateImagePanel";
 import CreateQuestionForm from "~/components/question/CreateQuestionForm";

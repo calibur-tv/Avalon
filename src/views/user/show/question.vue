@@ -1,5 +1,5 @@
 <style lang="scss">
-#user-qaq {
+#user-question {
   .el-radio-group {
     margin-left: 0 !important;
     margin-top: 6px;
@@ -8,7 +8,7 @@
 </style>
 
 <template>
-  <div id="user-qaq">
+  <div id="user-question">
     <div>
       <el-radio-group
         v-model="active"
@@ -49,7 +49,7 @@ import QuestionFlowItem from "~/components/flow/item/QuestionFlowItem";
 import Api from "~/api/flowApi";
 
 export default {
-  name: "UserQAQ",
+  name: "UserQuestion",
   async asyncData({ store, route, ctx }) {
     await store.dispatch("flow/initData", {
       type: "question",
