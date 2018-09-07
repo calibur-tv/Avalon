@@ -1,5 +1,5 @@
 <style lang="scss">
-.user-setting-form {
+.user-setting {
   .el-icon-question {
     color: $color-gray-deep;
     margin-left: 10px;
@@ -32,7 +32,7 @@
     :model="user"
     :rules="rule"
     label-width="50px"
-    class="user-setting-form"
+    class="user-setting"
   >
     <el-alert
       type="info"
@@ -122,7 +122,7 @@
 import Api from "~/api/userApi";
 
 export default {
-  name: "UserSettingForm",
+  name: "UserSetting",
   data() {
     const validateNickname = (rule, value, callback) => {
       const length = value.replace(/([\u4e00-\u9fa5])/g, "aa").trim().length;
@@ -231,6 +231,18 @@ export default {
           value
         });
       }
+    },
+    isMe() {
+      return this.$store.state.login
+        ? this.user.zone === this.$store.state.user.zone
+        : false;
+    }
+  },
+  mounted() {
+    if (!this.isMe) {
+      this.$router.replace({
+        name: "user-bangumi"
+      });
     }
   },
   methods: {

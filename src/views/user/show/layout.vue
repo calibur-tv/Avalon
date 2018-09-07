@@ -163,17 +163,32 @@
       }
     }
 
-    .el-tabs__active-bar:after {
-      display: none;
-    }
+    .user-flows-wrap {
+      position: relative;
+      min-height: 320px;
 
-    .el-tabs__header {
-      width: 100px;
-      margin-right: 50px;
-    }
+      .tab-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
 
-    .el-radio-group {
-      margin-left: 10px;
+      .el-tabs__active-bar:after {
+        display: none;
+      }
+
+      .el-tabs__header {
+        width: 100px;
+        margin-right: 50px;
+      }
+
+      .el-radio-group {
+        margin-left: 10px;
+      }
+
+      .route-container {
+        margin-left: 150px;
+      }
     }
   }
 
@@ -329,37 +344,16 @@
         <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的金币也将归你所有</p>
         <p>当然，你也有权要求我们删除所有你的内容</p>
       </div>
-      <el-tabs
-        tab-position="left"
-        @tab-click="handleTabClick"
-      >
-        <el-tab-pane label="番剧">
-          <user-bangumi-flow-list/>
-        </el-tab-pane>
-        <el-tab-pane label="帖子">
-          <user-post-flow-list :zone="zone"/>
-        </el-tab-pane>
-        <el-tab-pane label="相册">
-          <image-flow-list :user-zone="zone"/>
-        </el-tab-pane>
-        <el-tab-pane label="漫评">
-          <score-flow-list :user-zone="zone"/>
-        </el-tab-pane>
-        <el-tab-pane label="问答">
-          <user-qa-flow-list :user-zone="zone"/>
-        </el-tab-pane>
-        <el-tab-pane label="偶像">
-          <cartoon-role-flow-list :user-zone="zone"/>
-        </el-tab-pane>
-        <template v-if="isMe">
-          <el-tab-pane label="草稿">
-            <user-draft-list :user-zone="zone"/>
-          </el-tab-pane>
-          <el-tab-pane label="设置">
-            <user-setting-form/>
-          </el-tab-pane>
-        </template>
-      </el-tabs>
+      <div class="user-flows-wrap">
+        <tab-container
+          :list="cards"
+          def="user-bangumi"
+          pos="left"
+        />
+        <div class="route-container">
+          <router-view/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -368,31 +362,15 @@
 import UserApi from "~/api/userApi";
 import ImageApi from "~/api/imageApi";
 import ImageCropper from "~/components/common/ImageCropper";
-import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
-import UserSettingForm from "~/components/user/forms/UserSettingForm";
-import ImageFlowList from "~/components/flow/list/ImageFlowList";
-import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
-import UserPostFlowList from "~/components/user/UserPostFlowList";
-import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
-import UserDraftList from "~/components/user/UserDraftList";
-import UserQaFlowList from "~/components/user/UserQaFlowList";
-import UserBangumiFlowList from "~/components/user/UserBangumiFlowList";
+import TabContainer from "~/components/common/TabContainer";
 
 export default {
-  name: "UserShow",
+  name: "UserShowLayout",
   async asyncData({ route, store, ctx }) {
-    const zone = route.params.zone;
-    const arr = [
-      store.dispatch("users/getUser", {
-        ctx,
-        zone
-      }),
-      store.dispatch("users/getFollowBangumis", {
-        ctx,
-        zone
-      })
-    ];
-    await Promise.all(arr);
+    await store.dispatch("users/getUser", {
+      ctx,
+      zone: route.params.zone
+    });
   },
   head() {
     if (!this.zone) {
@@ -417,16 +395,8 @@ export default {
     };
   },
   components: {
-    ImageCropper,
-    ImageWaterfallFlow,
-    CartoonRoleFlowList,
-    UserSettingForm,
-    UserPostFlowList,
-    ImageFlowList,
-    ScoreFlowList,
-    UserDraftList,
-    UserQaFlowList,
-    UserBangumiFlowList
+    TabContainer,
+    ImageCropper
   },
   data() {
     return {
@@ -465,40 +435,56 @@ export default {
     },
     coinCount() {
       return this.self.coin;
+    },
+    cards() {
+      return [
+        {
+          label: "番剧",
+          name: "user-bangumi",
+          show: true
+        },
+        {
+          label: "帖子",
+          name: "user-post",
+          show: true
+        },
+        {
+          label: "相册",
+          name: "user-image",
+          show: true
+        },
+        {
+          label: "漫评",
+          name: "user-score",
+          show: true
+        },
+        {
+          label: "问答",
+          name: "user-qaq",
+          show: true
+        },
+        {
+          label: "偶像",
+          name: "user-role",
+          show: true
+        },
+        {
+          label: "草稿",
+          name: "user-draft",
+          show: this.isMe
+        },
+        {
+          label: "设置",
+          name: "user-setting",
+          show: this.isMe
+        }
+      ].filter(_ => _.show);
     }
   },
   mounted() {
     this.watchCopyInviteLink();
   },
   methods: {
-    handleTabClick(tab) {
-      switch (tab.label) {
-        case "番剧":
-          this.$channel.$emit("user-tab-switch-bangumi");
-          break;
-        case "帖子":
-          this.$channel.$emit("user-tab-switch-post");
-          break;
-        case "偶像":
-          this.$channel.$emit("user-tab-switch-role");
-          break;
-        case "相册":
-          this.$channel.$emit("user-tab-switch-image");
-          break;
-        case "漫评":
-          this.$channel.$emit("user-tab-switch-score");
-          break;
-        case "问答":
-          this.$channel.$emit("user-tab-switch-question");
-          break;
-        case "草稿":
-          this.$channel.$emit("user-tab-switch-draft");
-          break;
-        case "设置":
-          this.$channel.$emit("user-tab-switch-setting");
-          break;
-      }
-    },
     openAvatarModal(e) {
       const file = e.target.files[0];
       if (!file) {
@@ -657,9 +643,6 @@ export default {
           this.$toast.success("复制成功");
         });
       });
-    },
-    openUploadImageModal() {
-      this.$channel.$emit("show-upload-image-modal");
     }
   }
 };

@@ -1,5 +1,5 @@
 <style lang="scss">
-#user-qa-flow-list {
+#user-qaq {
   .el-radio-group {
     margin-left: 0 !important;
     margin-top: 6px;
@@ -8,7 +8,7 @@
 </style>
 
 <template>
-  <div id="user-qa-flow-list">
+  <div id="user-qaq">
     <div>
       <el-radio-group
         v-model="active"
@@ -21,7 +21,7 @@
     </div>
     <question-flow-list
       v-if="active === '提问'"
-      :user-zone="userZone"
+      :user-zone="zone"
     />
     <div v-else>
       <ul>
@@ -49,16 +49,18 @@ import QuestionFlowItem from "~/components/flow/item/QuestionFlowItem";
 import Api from "~/api/flowApi";
 
 export default {
-  name: "UserQaFlowList",
+  name: "UserQAQ",
+  async asyncData({ store, route, ctx }) {
+    await store.dispatch("flow/initData", {
+      type: "question",
+      sort: "news",
+      userZone: route.params.zone,
+      ctx
+    });
+  },
   components: {
     QuestionFlowList,
     QuestionFlowItem
-  },
-  props: {
-    userZone: {
-      required: true,
-      type: String
-    }
   },
   data() {
     return {
@@ -69,6 +71,11 @@ export default {
       noMoreAnswer: false,
       page: 0
     };
+  },
+  computed: {
+    zone() {
+      return this.$route.params.zone;
+    }
   },
   methods: {
     handleTabSwitch(label) {
@@ -94,7 +101,7 @@ export default {
           minId: 0,
           seenIds: "",
           bangumiId: 0,
-          userZone: this.userZone
+          userZone: this.zone
         });
         this.fetchedAnswer = true;
         this.answerList = this.answerList.concat(data.list);

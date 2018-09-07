@@ -15,6 +15,7 @@
 <template>
   <el-tabs
     v-model="current"
+    :tab-position="pos"
     class="tab-container"
     @tab-click="tabClick"
   >
@@ -45,6 +46,10 @@ export default {
     def: {
       type: String,
       default: ""
+    },
+    pos: {
+      type: String,
+      default: "top"
     }
   },
   data() {
