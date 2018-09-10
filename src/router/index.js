@@ -57,7 +57,7 @@ export function createRouter() {
                 component: () => import("~/views/world/post")
               },
               {
-                path: "image",
+                path: "pins",
                 name: "world-image",
                 component: () => import("~/views/world/image")
               },
@@ -131,8 +131,8 @@ export function createRouter() {
               },
               {
                 path: "qaq",
-                name: "bangumi-qaq",
-                component: () => import("~/views/bangumi/show/qaq")
+                name: "bangumi-question",
+                component: () => import("~/views/bangumi/show/question")
               },
               {
                 path: "setting",
@@ -176,8 +176,8 @@ export function createRouter() {
               },
               {
                 path: "qaq",
-                name: "user-qaq",
-                component: () => import("~/views/user/show/qaq")
+                name: "user-question",
+                component: () => import("~/views/user/show/question")
               },
               {
                 path: "role",

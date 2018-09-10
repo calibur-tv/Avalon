@@ -400,7 +400,6 @@ export default {
   },
   data() {
     return {
-      tabActive: "bangumi",
       avatarCropper: {
         src: "",
         type: "",
@@ -460,7 +459,7 @@ export default {
         },
         {
           label: "问答",
-          name: "user-qaq",
+          name: "user-question",
           show: true
         },
         {

@@ -251,9 +251,9 @@ $input-height: 40px;
 </template>
 
 <script>
-import SignInForm from "~/components/user/forms/SignInForm";
-import SignUpForm from "~/components/user/forms/SignUpForm";
-import ResetPasswordForm from "~/components/user/forms/ResetPasswordForm";
+import SignInForm from "~/components/user/SignInForm";
+import SignUpForm from "~/components/user/SignUpForm";
+import ResetPasswordForm from "~/components/user/ResetPasswordForm";
 
 export default {
   name: "VSign",

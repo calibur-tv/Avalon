@@ -34,8 +34,9 @@ const state = () => ({
     noMore: false
   },
   topPosts: [],
-  topFetched: false,
-  score: null
+  topFetchedId: 0,
+  score: null,
+  scoreFetchId: 0
 });
 
 const mutations = {
@@ -82,9 +83,9 @@ const mutations = {
     state.category.noMore = data.list.length < state.category.take;
     state.category.page++;
   },
-  SET_TOP_POST(state, data) {
+  SET_TOP_POST(state, { data, id }) {
     state.topPosts = data;
-    state.topFetched = true;
+    state.topFetchedId = id;
   },
   SET_BANGUMI_DATA(state, data) {
     state.info = data;
@@ -124,7 +125,8 @@ const mutations = {
     };
   },
   SET_BANGUMI_SCORE(state, { id, data }) {
-    state.score = Object.assign({ id }, data);
+    state.score = data;
+    state.scoreFetchId = id;
   }
 };
 
@@ -224,15 +226,15 @@ const actions = {
     data && commit("SET_BANGUMI_CARTOON", { data, bangumiId });
   },
   async getTopPosts({ state, commit }, { ctx, id }) {
-    if (state.topFeTched) {
+    if (state.topFetchedId === id) {
       return;
     }
     const api = new Api(ctx);
     const data = await api.getTopPosts({ id });
-    commit("SET_TOP_POST", data);
+    commit("SET_TOP_POST", { data, id });
   },
   async getBangumiScore({ state, commit }, { ctx, id }) {
-    if (state.score && state.score.id === id) {
+    if (state.score && state.scoreFetchId === id) {
       return;
     }
     const api = new ScoreApi(ctx);

@@ -9,7 +9,7 @@
 import QuestionFlowList from "~/components/flow/list/QuestionFlowList";
 
 export default {
-  name: "BangumiQAQ",
+  name: "BangumiQuestion",
   async asyncData({ store, route, ctx }) {
     await store.dispatch("flow/initData", {
       type: "question",
