@@ -32,17 +32,13 @@ export default class {
           /UCArticleFinderJS/,
           "playBackgroundMusic is not defined",
           "value.hasOwnProperty is not a function",
-          "Cannot read property 'currentURL' of null",
+          "Cannot read property",
           "Unexpected end of JSON input",
-          "Cannot read property 'style' of undefined",
-          "undefined is not an object (evaluating 'Window.prototype.setTimeout.call')",
-          "null is not an object (evaluating 'conDoc.getElementsByTagName')",
-          "null is not an object (evaluating 'v.src')",
-          "null is not an object (evaluating 'window.mttLongPressVar.tagName')",
           "canvasList.forEach is not a function. (In 'canvasList.forEach', 'canvasList.forEach' is undefined)",
           /<anonymous>/,
+          "is not an object (evaluating",
           /('indexOf' of undefined|this.position.indexOf)/, // element-ui notification bug
-          /([native code]|<anonymous>)/
+          "native code"
         ]
       })
         .addPlugin(RavenVue, Vue)
