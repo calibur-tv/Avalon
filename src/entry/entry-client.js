@@ -37,19 +37,20 @@ if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__);
 }
 
-if (env === "production") {
-  Sentry({
-    url: sentry.url,
-    version: release
-  });
-}
+window.M = window.M || Object.create(null);
+
+const recorder = new Sentry({
+  url: sentry.url,
+  version: release,
+  env
+});
+recorder.init();
+M.sentry = recorder;
 
 if (!dev && typeof console !== "undefined") {
   console.log(`Release: ${release}`);
   console.log(`Environment: ${env}`);
 }
-
-window.M = window.M || Object.create(null);
 
 router.onReady(() => {
   router.beforeResolve(async (to, from, next) => {
