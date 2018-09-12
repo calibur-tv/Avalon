@@ -33,7 +33,7 @@ export default {
   },
 
   image(id) {
-    return `/pins/${id}`;
+    return `/pin/${id}`;
   },
 
   post(id, query) {
@@ -47,14 +47,6 @@ export default {
   bangumiNews: "/bangumi/news",
 
   bangumiTimeline: "/bangumi/timeline",
-
-  postTrending(sort) {
-    return `/post/trending/${sort}`;
-  },
-
-  imageTrending(sort) {
-    return `/pins/trending/${sort}`;
-  },
 
   cartoonRole(id) {
     return `/role/${id}`;
