@@ -117,7 +117,6 @@ export default {
     this.$channel.$on("write-save-done", () => {
       this.saving = false;
     });
-    this.getUpToken();
   },
   methods: {
     handleImageUploadSuccess(res) {
@@ -131,7 +130,6 @@ export default {
       this.$toast.success("上传成功");
     },
     beforeUpload(file) {
-      this.getUpToken();
       this.uploadConfig.max = 5;
       this.uploadConfig.pathPrefix = `user/${this.$store.state.user.id}/create`;
       return this.beforeImageUpload(file);

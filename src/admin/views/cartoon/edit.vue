@@ -153,7 +153,6 @@ export default {
         url: item.url.split("image.calibur.tv/").pop(),
         bangumi_id: item.bangumi_id
       };
-      this.getUpToken();
       this.uploadConfig.pathPrefix = `bangumi/${this.id}/cartoon/${item.id}`;
       this.toggleEditModal = true;
     },

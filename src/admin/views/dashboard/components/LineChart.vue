@@ -32,6 +32,14 @@
 import Api from "~/api/adminApi";
 
 export default {
+  components: {
+    VeLine: () => {
+      if (typeof window === "undefined") {
+        return import("~/assets/js/empty");
+      }
+      return import("v-charts/lib/line.common");
+    }
+  },
   data() {
     return {
       loading: true,

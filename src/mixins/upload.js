@@ -35,11 +35,13 @@ export default {
       console.log(err);
       this.$toast.error(`图片：${file.name} 上传失败`);
     },
-    beforeImageUpload(file) {
+    async beforeImageUpload(file) {
       if (!this.$store.state.login) {
         this.$channel.$emit("sign-in");
         return;
       }
+
+      await this.getUpToken();
 
       const isFormat =
         this.imageUploadAccept.split(",").indexOf(file.type) !== -1;

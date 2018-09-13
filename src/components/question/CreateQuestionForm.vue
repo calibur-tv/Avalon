@@ -125,9 +125,6 @@ export default {
       submitting: false
     };
   },
-  mounted() {
-    this.getUpToken();
-  },
   methods: {
     beforeUpload(file) {
       this.uploadConfig.max = 5;

@@ -467,13 +467,11 @@ export default {
   watch: {
     $route() {
       this.getBangumiById();
-      this.getUpToken();
     }
   },
   created() {
     this.getBangumiById();
     this.getBangumiTags();
-    this.getUpToken();
   },
   methods: {
     getBangumiById() {

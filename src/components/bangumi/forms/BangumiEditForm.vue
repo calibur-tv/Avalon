@@ -203,7 +203,6 @@ export default {
     });
     this.cache.avatar = this.avatar;
     this.cache.banner = this.banner;
-    this.getUpToken();
   },
   methods: {
     submit() {

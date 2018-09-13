@@ -263,7 +263,6 @@ export default {
       };
       this.showCreateModal = true;
       this.uploadConfig.pathPrefix = "banner";
-      this.getUpToken();
     },
     async handleBannerEditSubmit() {
       if (this.modalLoading) {

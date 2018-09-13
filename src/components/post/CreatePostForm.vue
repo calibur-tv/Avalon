@@ -180,9 +180,6 @@ export default {
     this.$channel.$on("set-page-bangumi-for-post-create", data => {
       this.saveBangumiAndSelected(data);
     });
-    if (this.$store.state.login) {
-      this.getUpToken();
-    }
   },
   beforeDestroy() {
     this.$channel.$off("set-page-bangumi-for-post-create");

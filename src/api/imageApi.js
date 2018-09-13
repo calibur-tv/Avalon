@@ -94,7 +94,8 @@ export default class extends BaseApi {
     height,
     size,
     type,
-    is_creator
+    is_creator,
+    geetest
   }) {
     return this.http.post("image/single/upload", {
       bangumi_id,
@@ -104,7 +105,8 @@ export default class extends BaseApi {
       height,
       size,
       type,
-      is_creator
+      is_creator,
+      geetest
     });
   }
 

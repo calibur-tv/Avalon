@@ -237,9 +237,6 @@ export default {
       return this.$store.state.user.id;
     }
   },
-  mounted() {
-    this.getUpToken();
-  },
   methods: {
     beforeSingleImageUpload(file) {
       this.uploadConfig.max = 5;
@@ -264,22 +261,41 @@ export default {
             return;
           }
           this.submitting = true;
-          const api = new ImageApi(this);
-          api
-            .uploadSingleImage(Object.assign({}, this.form, this.form.image))
-            .then(id => {
-              this.form.name = "";
-              this.form.is_creator = false;
-              this.form.image = null;
-              this.$refs.singleUpload.clearFiles();
-              this.$toast.success("创建成功");
+          this.$captcha({
+            success: async ({ data }) => {
+              const api = new ImageApi(this);
+              api
+                .uploadSingleImage(
+                  Object.assign(
+                    {
+                      geetest: data
+                    },
+                    this.form,
+                    this.form.image
+                  )
+                )
+                .then(id => {
+                  this.form.name = "";
+                  this.form.is_creator = false;
+                  this.form.image = null;
+                  this.$refs.singleUpload.clearFiles();
+                  this.$toast.success("创建成功");
+                  this.submitting = false;
+                  window.location = this.$alias.image(id);
+                })
+                .catch(err => {
+                  this.$toast.error(err);
+                  this.submitting = false;
+                });
+            },
+            error: e => {
               this.submitting = false;
-              window.location = `/pins/${id}`;
-            })
-            .catch(err => {
-              this.$toast.error(err);
+              this.$toast.error(e);
+            },
+            close: () => {
               this.submitting = false;
-            });
+            }
+          });
         } else {
           return false;
         }
@@ -377,7 +393,7 @@ export default {
               ) {
                 window.location.reload();
               } else {
-                window.location = `/pins/${albumId}`;
+                window.location = this.$alias.image(albumId);
               }
             })
             .catch(err => {
