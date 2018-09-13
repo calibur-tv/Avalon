@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const resolve = file => path.resolve(__dirname, file);
 const isProd = process.env.NODE_ENV === "production";
 const isDev = process.env.NODE_ENV === "development";
@@ -145,6 +146,7 @@ module.exports = {
   plugins: (function() {
     let pluginArr = [
       new webpack.ProvidePlugin({}),
+      new LodashModuleReplacementPlugin(),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),

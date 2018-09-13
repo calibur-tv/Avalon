@@ -1,19 +1,29 @@
 <template>
-  <ve-radar
-    :data="chartData"
-    :setting="chartSettings"
-    :extend="chartExtend"
-    :loading="loading"
-    :width="size"
-    :height="size"
-    :legend-visible="false"
-    :tooltip-visible="false"
-    :resizeable="false"
-  />
+  <no-ssr :style="{ height: size }">
+    <ve-radar
+      :data="chartData"
+      :setting="chartSettings"
+      :extend="chartExtend"
+      :loading="loading"
+      :width="size"
+      :height="size"
+      :legend-visible="false"
+      :tooltip-visible="false"
+      :resizeable="false"
+    />
+  </no-ssr>
 </template>
 
 <script>
 export default {
+  components: {
+    VeRadar: () => {
+      if (typeof window === "undefined") {
+        return import("~/assets/js/empty");
+      }
+      return import("v-charts/lib/radar.common");
+    }
+  },
   props: {
     source: {
       type: Object,
