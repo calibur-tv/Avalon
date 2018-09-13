@@ -26,19 +26,27 @@ export default class {
           return shouldSend;
         },
         ignoreErrors: [
+          "Unexpected token", // https://stackoverflow.com/questions/29763557/syntaxerror-unexpected-token-o-at-object-parse-native-angularjs
           "TuiaMedia is not defined",
           "Can't find variable: $UCBrowser",
           /MyAppGet.*AtPoint/,
           /UCArticleFinderJS/,
+          "网络错误",
+          "网络请求超时",
+          "您找的资源不存在",
           "playBackgroundMusic is not defined",
           "value.hasOwnProperty is not a function",
           "Cannot read property",
-          "Unexpected end of JSON input",
+          "is not an object (evaluating", // https://github.com/facebook/react-native/issues/17348
           "canvasList.forEach is not a function. (In 'canvasList.forEach', 'canvasList.forEach' is undefined)",
           /<anonymous>/,
-          "is not an object (evaluating",
+          "Maximum call stack size exceeded", // QQ Browser 9.0.2524
           /('indexOf' of undefined|this.position.indexOf)/, // element-ui notification bug
-          "native code"
+          "native code",
+          /Cannot read property '(\w|\W)+' of (undefined|null)/, // https://github.com/vuejs/vue/issues/8399
+          "Not implemented", // windows7 音频播放的问题
+          "Geetest",
+          "this.position is undefined" // firefox element-UI notification horizontalClass
         ]
       })
         .addPlugin(RavenVue, Vue)
