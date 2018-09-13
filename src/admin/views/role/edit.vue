@@ -163,12 +163,10 @@ export default {
   watch: {
     $route() {
       this.getRoleById();
-      this.getUpToken();
     }
   },
   created() {
     this.getRoleById();
-    this.getUpToken();
   },
   methods: {
     async getRoleById() {

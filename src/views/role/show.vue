@@ -253,7 +253,6 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
 import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
 import CommentMain from "~/components/comments/CommentMain";
 
@@ -295,7 +294,6 @@ export default {
     CreateRoleForm,
     CommentMain
   },
-  mixins: [uploadMixin],
   data() {
     return {
       toggleFansListModal: false,
@@ -393,10 +391,6 @@ export default {
       window.location.reload();
     },
     showEditRoleModal() {
-      this.uploadConfig.max = 1;
-      this.uploadConfig.pathPrefix = `bangumi/${this.bangumi.id}/role/${
-        this.role.id
-      }/avatar`;
       this.showEditModal = true;
     }
   }

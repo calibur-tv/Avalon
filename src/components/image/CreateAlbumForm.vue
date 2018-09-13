@@ -174,9 +174,6 @@ export default {
       return this.$store.state.user.id;
     }
   },
-  mounted() {
-    this.getUpToken();
-  },
   methods: {
     submit() {
       this.$refs.form.validate(valid => {
