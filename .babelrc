@@ -15,7 +15,6 @@
     "stage-0"
   ],
   "plugins": [
-    "lodash",
     "syntax-dynamic-import",
     "transform-runtime",
     ["component", [
