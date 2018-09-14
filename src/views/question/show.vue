@@ -1,6 +1,6 @@
 <style lang="scss">
 #question-show {
-  background-color: #f6f6f6;
+  background-color: $color-gray-light;
 
   .answers {
     margin-left: 15px;
@@ -9,7 +9,7 @@
       height: 50px;
       line-height: 50px;
       padding: 0 20px;
-      border-bottom: 1px solid #f6f6f6;
+      border-bottom: 1px solid $color-gray-light;
       background-color: #fff;
       box-shadow: 0 -1px 3px rgba(26, 26, 26, 0.1);
 
