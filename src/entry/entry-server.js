@@ -44,6 +44,7 @@ export default ssrContext => {
             })
           );
         }
+        matched.push(store.dispatch("initApp", { ctx }));
         await Promise.all(matched);
         ssrContext.state = store.state;
         ssrContext.meta = meta;

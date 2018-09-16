@@ -26,9 +26,12 @@ export function createStore() {
     state: () => ({
       user: null,
       login: false,
-      banner: "banner/2.jpg"
+      pageData: null
     }),
     mutations: {
+      SET_PAGE_DATA(state, data) {
+        state.pageData = data;
+      },
       SET_USER(state, user) {
         state.user = user;
         state.login = true;
@@ -46,6 +49,13 @@ export function createStore() {
       }
     },
     actions: {
+      async initApp({ commit }, { ctx }) {
+        const api = new UserApi(ctx);
+        const data = await api.getPageData({
+          refer: "h5"
+        });
+        commit("SET_PAGE_DATA", data);
+      },
       async initAuth({ commit }, { ctx, must, admin }) {
         const cookie = ctx.header.cookie;
         const throwError = code => {

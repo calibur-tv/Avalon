@@ -248,6 +248,18 @@ export function createRouter() {
         ]
       },
       {
+        path: "/callback",
+        component: () => import("~/layouts/empty"),
+        meta: { useAuth: false },
+        children: [
+          {
+            path: "wechat/auth",
+            name: "wechat-auth-callback",
+            component: () => import("~/views/callback/wechat/auth")
+          }
+        ]
+      },
+      {
         path: "/review",
         component: () => import("~/layouts/write"),
         meta: { useAuth: true },

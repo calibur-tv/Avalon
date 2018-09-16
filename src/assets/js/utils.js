@@ -75,5 +75,19 @@ export default {
       }
     } while ((elem = elem.offsetParent)); // eslint-disable-line no-cond-assign
     return offsetTop;
+  },
+
+  createWechatUrl(ctx) {
+    if (!ctx || !ctx.$store.state.pageData) {
+      return "";
+    }
+    const baseUrl = "https://open.weixin.qq.com/connect/qrconnect";
+    const redirect = "https://www.calibur.tv/callback/wechat/auth";
+
+    return `${baseUrl}?appid=${
+      ctx.$store.state.pageData.wechat_app_id
+    }&redirect_uri=${encodeURIComponent(
+      redirect
+    )}&response_type=code&scope=snsapi_login&state=sign_in#wechat_redirect`;
   }
 };
