@@ -454,7 +454,7 @@ $search-height: 32px;
             :class="$style.logo"
             to="/"
           >
-            <img :src="$resize('owner/logo-new/logo.png', 60)">
+            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })">
           </router-link>
           <router-link
             v-else
