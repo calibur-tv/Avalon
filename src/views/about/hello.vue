@@ -48,6 +48,11 @@
         line-height: 25px;
         float: none;
       }
+
+      a {
+        font-size: 14px;
+        color: $color-blue-normal;
+      }
     }
   }
 }
@@ -58,13 +63,22 @@
     <v-header/>
     <v-layout>
       <template slot="main">
-        <h1>欢迎来到 calibur.tv{{ nickname ? ',' : '！' }} {{ nickname }}</h1>
+        <h1>欢迎来到 calibur.tv{{ currentUser ? ',' : '！' }} {{ currentUser && currentUser.nickname }}</h1>
         <p>在开始之前，你应该了解一下这个网站的规则，这有助于让你得到更好使用的体验，让我们开始吧！</p>
         <h3>金币系统：</h3>
         <p>每个用户每天都可以签到一次，每次可以获取 1 金币，这种金币的使用规则如下：</p>
         <ul>
           <li>1 金币 = 1 元人民币</li>
-          <li>金币可以通过签到获取，也可以让其他用户打赏给你</li>
+          <li>金币可以通过签到获取，也可以通过发表原创内容让其他用户打赏给你</li>
+          <li>
+            使用自己的
+            <a
+              :href="`/about/invite/${currentUser ? currentUser.id : 1}`"
+              target="_blank"
+            >邀请码</a>
+            每邀请一个人注册，自己就会获得1枚金币
+          </li>
+          <li>签到获得的金币无法提现，但签到获得的金币可以打赏给其他人，其他人就可以提现了</li>
           <li>满 100 金币就可以提现</li>
           <li>提现是需要对内容进行审核的，如果你发表过「不利于社区发展」的内容，你是无法提现的</li>
           <li>提现目前只支持支付宝转账，更多提现方式后续会研发</li>
@@ -106,6 +120,12 @@
           <li>漫评是从多个维度出发，既给了大家表达的方向，也给了漫评一个基本的框架</li>
           <li>不同的番剧在各自的维度发挥优势，有利于在未来根据大家对番剧的评价来推荐你喜欢的内容</li>
         </ul>
+        <h3>问答系统：</h3>
+        <p>闲着没事做了一个和知乎一样的问答系统，当然功能还比较简单</p>
+        <ul>
+          <li>一些专业性的问题可以在这个板块下提问</li>
+          <li>问题与回答限制于二次元以内，其它话题都是禁止的</li>
+        </ul>
         <h3>交流反馈：</h3>
         <p>由于个人能力有限，网站可能会有很多不足之处，希望大家可以帮助完善</p>
         <ul>
@@ -129,8 +149,8 @@ export default {
     title: "欢迎"
   },
   computed: {
-    nickname() {
-      return this.$store.state.login ? this.$store.state.user.nickname : "";
+    currentUser() {
+      return this.$store.state.login ? this.$store.state.user : null;
     }
   }
 };

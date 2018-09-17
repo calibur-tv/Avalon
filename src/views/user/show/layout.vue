@@ -300,15 +300,25 @@
         />
         <div class="buttons">
           <template v-if="isMe">
-            <el-button
-              :disabled="daySigned"
-              :loading="signDayLoading"
-              type="primary"
-              size="small"
-              @click="handleDaySign"
+            <el-tooltip
+              class="item"
+              effect="dark"
+              placement="bottom"
             >
-              {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
-            </el-button>
+              <div slot="content">
+                金币可提现额度：{{ coinCount - user.coin_from_sign }}
+                <br>
+                排除签到所得的金币
+              </div>
+              <el-button
+                :loading="signDayLoading"
+                type="primary"
+                size="small"
+                @click="handleDaySign"
+              >
+                {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
+              </el-button>
+            </el-tooltip>
             <el-tooltip
               class="item"
               effect="dark"
@@ -608,6 +618,10 @@ export default {
       }
     },
     async handleDaySign() {
+      if (this.daySigned) {
+        this.$toast.info("今天已经签过到了！");
+        return;
+      }
       if (this.signDayLoading) {
         return;
       }
