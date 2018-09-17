@@ -102,9 +102,7 @@
           height: 40px;
           line-height: 40px;
 
-          .delete-btn,
-          .floor-count,
-          .like-btn {
+          .footer-item {
             margin-right: 20px;
           }
 
@@ -274,8 +272,19 @@
               />
               <div class="footer">
                 <div class="info-bar">
-                  <span class="floor-count">1楼</span>
-                  <v-time v-model="post.created_at"/>
+                  <span class="footer-item">1楼</span>
+                  <v-time
+                    v-model="post.created_at"
+                    class="footer-item"
+                  />
+                  <report-dialog
+                    :id="post.id"
+                    :is-creator="post.is_creator"
+                    type="post"
+                    title="帖子违规举报"
+                  >
+                    <span>举报</span>
+                  </report-dialog>
                   <v-share
                     :desc="post.desc"
                     type="panel"
@@ -327,6 +336,7 @@ import CommentMain from "~/components/comments/CommentMain";
 import PostCommentItem from "~/components/post/PostCommentItem";
 import PostCommentForm from "~/components/post/PostCommentForm";
 import SocialPanel from "~/components/common/SocialPanel";
+import ReportDialog from "~/components/common/ReportDialog";
 
 export default {
   name: "PostShow",
@@ -356,7 +366,8 @@ export default {
     CommentMain,
     PostCommentItem,
     PostCommentForm,
-    SocialPanel
+    SocialPanel,
+    ReportDialog
   },
   head() {
     return {

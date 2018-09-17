@@ -344,4 +344,18 @@ export default class extends BaseApi {
       money
     });
   }
+
+  getReportList() {
+    return this.http.get("admin/report/list");
+  }
+
+  getReportItem({ tail }) {
+    return this.http.get("admin/report/item", {
+      params: { tail }
+    });
+  }
+
+  removeReport({ tail }) {
+    return this.http.post("admin/report/remove", { tail });
+  }
 }

@@ -552,6 +552,12 @@ export function createRouter() {
             component: () => import("~/layouts/empty"),
             children: [
               {
+                path: "user/report",
+                name: "user-report-list",
+                meta: { title: "用户举报", icon: "coffee" },
+                component: () => import("@/views/user/report")
+              },
+              {
                 path: "image/banner",
                 name: "image-banner",
                 meta: { title: "主站轮播", icon: "coffee" },

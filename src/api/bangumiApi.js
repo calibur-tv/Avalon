@@ -45,19 +45,6 @@ export default class extends BaseApi {
     });
   }
 
-  images({ id, seenIds, take, size, tags, roleId, creator }) {
-    return this.http.get(`bangumi/${id}/images`, {
-      params: {
-        seenIds,
-        take,
-        size,
-        tags,
-        roleId,
-        creator
-      }
-    });
-  }
-
   cartoon({ bangumiId, page, take, sort }) {
     return this.http.get(`bangumi/${bangumiId}/cartoon`, {
       params: { page, take, sort }
