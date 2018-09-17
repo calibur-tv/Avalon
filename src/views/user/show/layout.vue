@@ -306,9 +306,9 @@
               placement="bottom"
             >
               <div slot="content">
-                金币可提现额度：{{ coinCount - user.coin_from_sign }}
+                金币可提现额度：{{ withdrawCoinCount }}
                 <br>
-                排除签到所得的金币
+                (排除签到所得的金币)
               </div>
               <el-button
                 :loading="signDayLoading"
@@ -444,6 +444,10 @@ export default {
     },
     coinCount() {
       return this.self.coin;
+    },
+    withdrawCoinCount() {
+      const result = this.user.coin - this.user.coin_from_sign;
+      return result < 0 ? 0 : result;
     },
     cards() {
       return [
