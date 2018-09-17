@@ -57,7 +57,11 @@ export default {
         : "",
       env !== "development"
         ? { innerHTML: script.baiduPush, type: "text/javascript", async: true }
-        : ""
+        : "",
+      {
+        src: "//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js",
+        type: "text/javascript"
+      }
     ].filter(_ => _),
     __dangerouslyDisableSanitizers: "script"
   },

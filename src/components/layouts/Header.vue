@@ -650,13 +650,17 @@ export default {
   },
   data() {
     return {
-      defaultBanner: "https://image.calibur.tv/banner/3.png",
       scrollFlag: false,
       showNotification: false,
       searchFocus: false
     };
   },
   computed: {
+    defaultBanner() {
+      return this.$store.state.pageData
+        ? this.$store.state.pageData.page_banner
+        : "";
+    },
     navClassList() {
       const result = [this.$style.nav];
       const type = this.type;

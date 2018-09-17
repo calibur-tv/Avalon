@@ -97,8 +97,12 @@
         {{ user.faker == 1 ? '是' : '否' }}
       </div>
       <div>
-        <span class="label">金币数：</span>
+        <span class="label">总金币数：</span>
         {{ user.coin_count }}
+      </div>
+      <div>
+        <span class="label">可提现金币数：</span>
+        {{ user.coin_count - user.coin_from_sign }}
       </div>
       <div>
         <span class="label">性别：</span>
@@ -156,7 +160,7 @@
           封禁
         </el-button>
         <el-button
-          v-if="isKing"
+          v-if="isKing && user.coin_count - user.coin_from_sign > 100"
           type="success"
           size="mini"
           @click="getMoney"
