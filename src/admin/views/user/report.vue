@@ -118,11 +118,11 @@ export default {
           val: "回答"
         },
         {
-          key: "post-comment",
-          val: "回帖"
+          key: "post_comment",
+          val: "帖子评论"
         },
         {
-          key: "image-comment",
+          key: "image_comment",
           val: "图片评论"
         },
         {
@@ -140,6 +140,88 @@ export default {
         {
           key: "answer_comment",
           val: "回答评论"
+        },
+        {
+          key: "role_reply",
+          val: "偶像回复"
+        },
+        {
+          key: "post_reply",
+          val: "帖子回复"
+        },
+        {
+          key: "image_reply",
+          val: "图片回复"
+        },
+        {
+          key: "score_reply",
+          val: "漫评回复"
+        },
+        {
+          key: "video_reply",
+          val: "视频回复"
+        },
+        {
+          key: "question_reply",
+          val: "提问回复"
+        },
+        {
+          key: "answer_reply",
+          val: "回答回复"
+        },
+        {
+          key: "role_reply",
+          val: "偶像回复"
+        }
+      ],
+      reportOpt: [
+        {
+          key: 0,
+          val: "其它"
+        },
+        {
+          key: 1,
+          val: "违法违规"
+        },
+        {
+          key: 2,
+          val: "色情低俗"
+        },
+        {
+          key: 3,
+          val: "赌博诈骗"
+        },
+        {
+          key: 4,
+          val: "人身攻击"
+        },
+        {
+          key: 5,
+          val: "侵犯隐私"
+        },
+        {
+          key: 6,
+          val: "内容抄袭"
+        },
+        {
+          key: 7,
+          val: "垃圾广告"
+        },
+        {
+          key: 8,
+          val: "恶意引战"
+        },
+        {
+          key: 9,
+          val: "内容重复/刷屏"
+        },
+        {
+          key: 10,
+          val: "内容不相关"
+        },
+        {
+          key: 11,
+          val: "互刷金币"
         }
       ]
     };
@@ -174,7 +256,14 @@ export default {
       return item.split("|")[0];
     },
     computeType(item) {
-      return item.split("|")[1];
+      const key = +item.split("|")[1];
+      let result = key;
+      this.reportOpt.forEach(item => {
+        if (item.key === key) {
+          result = item.val;
+        }
+      });
+      return result;
     },
     computeMessage(item) {
       const arr = item.split("|");

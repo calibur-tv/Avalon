@@ -104,6 +104,8 @@
 
           .footer-item {
             margin-right: 20px;
+            display: inline-block;
+            float: left;
           }
 
           .v-share {
@@ -282,9 +284,7 @@
                     :is-creator="post.is_creator"
                     type="post"
                     title="帖子违规举报"
-                  >
-                    <span>举报</span>
-                  </report-dialog>
+                  >举报</report-dialog>
                   <v-share
                     :desc="post.desc"
                     type="panel"
@@ -336,7 +336,6 @@ import CommentMain from "~/components/comments/CommentMain";
 import PostCommentItem from "~/components/post/PostCommentItem";
 import PostCommentForm from "~/components/post/PostCommentForm";
 import SocialPanel from "~/components/common/SocialPanel";
-import ReportDialog from "~/components/common/ReportDialog";
 
 export default {
   name: "PostShow",
@@ -366,8 +365,7 @@ export default {
     CommentMain,
     PostCommentItem,
     PostCommentForm,
-    SocialPanel,
-    ReportDialog
+    SocialPanel
   },
   head() {
     return {

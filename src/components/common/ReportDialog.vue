@@ -90,7 +90,7 @@ export default {
     },
     title: {
       type: String,
-      default: "内容举报"
+      default: "违规举报"
     },
     org: {
       type: Boolean,

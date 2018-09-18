@@ -56,6 +56,12 @@
     }
 
     .panel {
+      &:hover {
+        .report-btn {
+          opacity: 1;
+        }
+      }
+
       .el-button,
       .v-share {
         margin-right: 16px;
@@ -69,6 +75,10 @@
 
       .v-share {
         display: inline-block;
+      }
+
+      .report-btn {
+        opacity: 0;
       }
     }
   }
@@ -240,6 +250,16 @@
             :desc="qaq.intro"
             type="button"
           />
+          <report-dialog
+            :id="id"
+            type="question"
+          >
+            <el-button
+              type="text"
+              size="medium"
+              icon="el-icon-phone"
+            >举报</el-button>
+          </report-dialog>
           <el-button
             v-if="!collapsed"
             type="text"

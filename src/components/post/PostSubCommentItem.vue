@@ -4,6 +4,12 @@
   line-height: 20px;
   color: #99a2aa;
 
+  &:hover {
+    .report-btn {
+      opacity: 1 !important;
+    }
+  }
+
   .comment-content {
     font-size: 14px;
     color: #222;
@@ -22,8 +28,13 @@
     line-height: 13px;
     font-size: 12px;
 
-    button {
+    button,
+    time {
       margin-left: 5px;
+    }
+
+    .report-btn {
+      opacity: 0;
     }
   }
 
@@ -67,6 +78,10 @@
     :
     <span class="comment-content">{{ comment.content }}</span>
     <div class="reply-area">
+      <report-dialog
+        :id="comment.id"
+        type="post_reply"
+      >举报</report-dialog>
       <v-time v-model="comment.created_at"/>
       <button
         v-if="canDelete"
