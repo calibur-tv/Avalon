@@ -167,6 +167,14 @@ export default {
         {
           key: "komi萌部落",
           val: "http://www.mengbuluo.cn/"
+        },
+        {
+          key: "卡密动漫",
+          val: "http://kamidm.com/"
+        },
+        {
+          key: "呲哩呲哩",
+          val: "http://www.cilicili.cc/"
         }
       ]
     };
