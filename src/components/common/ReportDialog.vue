@@ -143,6 +143,7 @@ export default {
         this.loading = false;
         this.$toast.success("感谢您的反馈！");
         this.showDialog = false;
+        this.content = "";
         this.selectedType = -1;
       }
     }
