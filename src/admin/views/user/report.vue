@@ -72,7 +72,6 @@
 <script>
 import Api from "~/api/adminApi";
 import pageMixin from "~/mixins/page";
-import UaDetector from "@/utils/ua";
 
 export default {
   mixins: [pageMixin],

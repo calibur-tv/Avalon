@@ -53,7 +53,7 @@
 <script>
 import Api from "~/api/adminApi";
 import pageMixin from "~/mixins/page";
-import UaDetector from "@/utils/ua";
+import UAParser from "ua-parser-js";
 
 export default {
   mixins: [pageMixin],
@@ -111,10 +111,12 @@ export default {
       return result;
     },
     computeUA(ua) {
-      const parser = new UaDetector(ua).parse;
-      return `系统：${parser.os.name} - ${parser.os.fullVersion}<br>浏览器：${
-        parser.browser.name
-      } - ${parser.browser.fullVersion}`;
+      const parser = new UAParser();
+      parser.setUA(ua);
+      const result = parser.getResult();
+      return `系统：${result.os.name} - ${result.os.version}<br>浏览器：${
+        result.browser.name
+      } - ${result.browser.version}`;
     },
     async remove(index, id) {
       const api = new Api(this);

@@ -167,7 +167,8 @@ export default {
     openFeedback() {
       this.$channel.$emit("open-feedback", {
         type: 5,
-        desc: `我想看《${this.info.name}》的视频第 ? 集`
+        desc: `我想看《${this.info.name}》的视频第 {?} 集`,
+        placeholder: "请填写你想看的集数"
       });
     }
   }

@@ -106,7 +106,11 @@ export default {
   },
   methods: {
     openFeedback() {
-      this.$channel.$emit("open-feedback", { type: 3 });
+      this.$channel.$emit("open-feedback", {
+        type: 3,
+        desc: "{?}",
+        placeholder: "请填写你遇到的问题"
+      });
     },
     openCreateImage() {
       this.$channel.$emit("show-upload-image-modal");

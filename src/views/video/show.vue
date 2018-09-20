@@ -290,7 +290,8 @@ export default {
         type: 4,
         desc: `【PC】-《${this.bangumi.name}》视频有错误，视频 id：${
           this.id
-        }：错误详情为：`
+        }：错误详情为：{?}`,
+        placeholder: "请填写错误详情"
       });
     },
     handleFollowAction(result) {
