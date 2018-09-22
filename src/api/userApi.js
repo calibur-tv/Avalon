@@ -107,4 +107,8 @@ export default class extends BaseApi {
       message
     });
   }
+
+  recommended() {
+    return this.http.get("user/recommended");
+  }
 }

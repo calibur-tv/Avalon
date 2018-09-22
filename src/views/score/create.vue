@@ -244,6 +244,10 @@ export default {
         this.$toast.error("标题为必填的");
         return;
       }
+      if (!richContent.desc) {
+        this.$toast.error("至少说点什么吧");
+        return;
+      }
       const scores = {};
       let total = 0;
       Object.keys(this.form).forEach(key => {

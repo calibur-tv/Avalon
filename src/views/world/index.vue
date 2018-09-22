@@ -23,6 +23,57 @@
         }
       }
     }
+
+    .sub-title {
+      font-size: 15px;
+      margin-left: 8px;
+      margin-top: 20px;
+    }
+
+    .recommended-users {
+      li {
+        display: block;
+        padding-left: 9px;
+        margin-bottom: 14px;
+
+        a {
+          display: block;
+          width: 100%;
+          height: 100%;
+          @extend %clearfix;
+
+          &:hover span {
+            color: $color-blue-normal;
+          }
+        }
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 12px;
+          float: left;
+        }
+
+        .intro {
+          overflow: hidden;
+
+          span {
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 16px;
+            color: #222;
+          }
+
+          p {
+            color: $color-text-normal;
+            margin-top: 4px;
+            font-size: 12px;
+            line-height: 18px;
+          }
+        }
+      }
+    }
   }
 
   .col-right {
@@ -135,6 +186,35 @@
               </router-link>
             </li>
           </ul>
+          <template v-if="recommendedUsers.length">
+            <p class="sub-title">推荐用户</p>
+            <ul class="recommended-users">
+              <li
+                v-for="user in recommendedUsers"
+                :key="user.id"
+              >
+                <a
+                  :href="$alias.user(user.zone)"
+                  target="_blank"
+                >
+                  <img
+                    :src="$resize(user.avatar, { width: 80 })"
+                    class="avatar"
+                  >
+                  <div class="intro">
+                    <span
+                      class="oneline"
+                      v-text="user.nickname"
+                    />
+                    <p
+                      class="oneline"
+                      v-text="user.desc"
+                    />
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </template>
         </v-affix>
       </div>
       <div class="col-right">
@@ -148,6 +228,14 @@
 
 <script>
 export default {
-  name: "TheWorld"
+  name: "TheWorld",
+  async asyncData({ store }) {
+    await store.dispatch("users/getRecommended");
+  },
+  computed: {
+    recommendedUsers() {
+      return this.$store.state.users.recommended;
+    }
+  }
 };
 </script>
