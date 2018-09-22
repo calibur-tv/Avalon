@@ -117,8 +117,8 @@
             <img
               v-for="(img, subIndex) in item.images"
               :key="subIndex"
-              :src="$resize(img.src, { width: 200 })"
-              @click="deleteImage(img.id, img.src, index, subIndex)"
+              :src="$resize(img.url, { width: 200 })"
+              @click="deleteImage(img.id, img.url, index, subIndex)"
             >
           </div>
           <div
@@ -206,7 +206,7 @@ export default {
     },
     openImages(images) {
       images.forEach(item => {
-        window.open(item.src);
+        window.open(item.url);
       });
     },
     delPost(index, id) {
@@ -248,8 +248,8 @@ export default {
           this.$message.error(e);
         });
     },
-    deleteImage(id, src, index, subIndex) {
-      if (!src) {
+    deleteImage(id, url, index, subIndex) {
+      if (!url) {
         return;
       }
       this.$confirm("确定删除吗?", "提示", {
@@ -260,7 +260,7 @@ export default {
         .then(() => {
           const api = new Api(this);
           api
-            .deletePostImage({ id, src })
+            .deletePostImage({ id, url })
             .then(() => {})
             .then(() => {
               this.list[index].images.splice(subIndex, 1);

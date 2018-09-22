@@ -246,7 +246,6 @@
                 v-for="(img, idx) in post.images"
                 :key="idx"
                 class="image-package"
-                @click="$previewImages(post.images, idx)"
               >
                 <v-img
                   :src="img.url"

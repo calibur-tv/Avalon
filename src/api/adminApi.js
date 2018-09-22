@@ -293,8 +293,8 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/pass", { id });
   }
 
-  deletePostImage({ id, src }) {
-    return this.http.post("admin/trial/post/delete_image", { id, src });
+  deletePostImage({ id, url }) {
+    return this.http.post("admin/trial/post/delete_image", { id, url });
   }
 
   getTrialImages() {
