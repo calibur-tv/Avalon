@@ -358,4 +358,35 @@ export default class extends BaseApi {
   removeReport({ tail }) {
     return this.http.post("admin/report/remove", { tail });
   }
+
+  getAppVersions() {
+    return this.http.get("admin/app/version/list");
+  }
+
+  getAppUpToken() {
+    return this.http.get("admin/app/version/uptoken");
+  }
+
+  createAppVersion({ type, version, url }) {
+    return this.http.post("admin/app/version/create", {
+      type,
+      version,
+      url
+    });
+  }
+
+  deleteAppVersion({ type, version }) {
+    return this.http.post("admin/app/version/delete", {
+      type,
+      version
+    });
+  }
+
+  toggleAppUpdate({ type, version, force }) {
+    return this.http.post("admin/app/version/toggleForce", {
+      type,
+      version,
+      force
+    });
+  }
 }

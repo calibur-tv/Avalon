@@ -580,6 +580,12 @@ export function createRouter() {
                 name: "trial-words",
                 meta: { title: "敏感词库", icon: "coffee" },
                 component: () => import("@/views/trial/words")
+              },
+              {
+                path: "cm/app-version",
+                name: "app-version",
+                meta: { title: "App版本", icon: "coffee" },
+                component: () => import("@/views/cm/appVersion")
               }
             ]
           },
