@@ -389,4 +389,21 @@ export default class extends BaseApi {
       force
     });
   }
+
+  getFriendLinks() {
+    return this.http.get("admin/web/friend_link/list");
+  }
+
+  addFriendLink({ name, link }) {
+    return this.http.post("admin/web/friend_link/append", {
+      name,
+      link
+    });
+  }
+
+  delFriendLink({ link }) {
+    return this.http.post("admin/web/friend_link/remove", {
+      link
+    });
+  }
 }
