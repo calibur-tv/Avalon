@@ -93,12 +93,16 @@
           {{ computeType(scope.row.app_type) }}
         </template>
       </el-table-column>
-      <el-table-column label="版本号">
+      <el-table-column
+        label="版本号"
+        prop="app_version"
+      />
+      <el-table-column label="下载链接">
         <template slot-scope="scope">
           <a
             :href="scope.row.download_url"
             target="_blank"
-            v-text="scope.row.app_version"
+            v-text="scope.row.download_url"
           />
         </template>
       </el-table-column>
