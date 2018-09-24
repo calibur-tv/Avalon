@@ -152,15 +152,26 @@
           @fetch="loadMore"
         />
       </template>
+      <template slot="aside">
+        <bangumi-recommended/>
+      </template>
     </v-layout>
   </div>
 </template>
 
 <script>
+import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
+
 export default {
   name: "BangumiTimeline",
+  components: {
+    BangumiRecommended
+  },
   async asyncData({ store, ctx }) {
-    await store.dispatch("bangumi/getTimeline", ctx);
+    await Promise.all([
+      store.dispatch("bangumi/getTimeline", ctx),
+      store.dispatch("bangumi/getRecommended")
+    ]);
   },
   head: {
     title: "时间轴 - 番剧"

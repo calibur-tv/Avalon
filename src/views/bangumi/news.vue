@@ -153,20 +153,30 @@
           </el-tab-pane>
         </el-tabs>
       </template>
+      <template slot="aside">
+        <bangumi-recommended/>
+      </template>
     </v-layout>
   </div>
 </template>
 
 <script>
+import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
 const weekly = ["最新", "一", "二", "三", "四", "五", "六", "日"];
 
 export default {
   name: "BangumiNews",
+  components: {
+    BangumiRecommended
+  },
   head: {
     title: "新番放送 - 番剧"
   },
   async asyncData({ store, ctx }) {
-    await store.dispatch("bangumi/getReleased", ctx);
+    await Promise.all([
+      store.dispatch("bangumi/getReleased", ctx),
+      store.dispatch("bangumi/getRecommended")
+    ]);
   },
   data() {
     return {

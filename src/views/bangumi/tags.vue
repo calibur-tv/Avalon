@@ -147,19 +147,30 @@
         </div>
         <no-content v-else-if="id"/>
       </template>
+      <template slot="aside">
+        <bangumi-recommended/>
+      </template>
     </v-layout>
   </div>
 </template>
 
 <script>
+import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
+
 export default {
   name: "BangumiTags",
+  components: {
+    BangumiRecommended
+  },
   head: {
     title: "分类索引 - 番剧"
   },
   async asyncData({ route, store, ctx }) {
     const id = route.query.id;
-    const arr = [store.dispatch("bangumi/getTags", { id, ctx })];
+    const arr = [
+      store.dispatch("bangumi/getTags", { id, ctx }),
+      store.dispatch("bangumi/getRecommended")
+    ];
     if (
       id &&
       (/^\d+$/.test(id) ||

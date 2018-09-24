@@ -36,10 +36,21 @@ const state = () => ({
   topPosts: [],
   topFetchedId: 0,
   score: null,
-  scoreFetchId: 0
+  scoreFetchId: 0,
+  recommended: []
 });
 
 const mutations = {
+  SET_RECOMMENDED(state, data) {
+    const shuffle = array => {
+      for (let i = array.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [array[i - 1], array[j]] = [array[j], array[i - 1]];
+      }
+      return array;
+    };
+    state.recommended = shuffle(data);
+  },
   FETCH_SOCIAL_USERS(state, { type, result }) {
     const prefix = state.info[`${type}_users`];
     state.info[`${type}_users`].list = prefix.list.concat(result.list);
@@ -240,6 +251,14 @@ const actions = {
     const api = new ScoreApi(ctx);
     const data = await api.bangumiScore(id);
     commit("SET_BANGUMI_SCORE", { data, id });
+  },
+  async getRecommended({ state, commit }) {
+    if (state.recommended.length) {
+      return;
+    }
+    const api = new Api(this);
+    const data = await api.recommended();
+    commit("SET_RECOMMENDED", data);
   }
 };
 
