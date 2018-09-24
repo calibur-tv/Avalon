@@ -1,6 +1,7 @@
 import Api from "~/api/userApi";
 import ScoreApi from "~/api/scoreApi";
 import QuestionApi from "~/api/questionApi";
+import UserApi from "~/api/userApi";
 
 const state = () => ({
   show: null,
@@ -26,10 +27,14 @@ const state = () => ({
       noMore: false,
       loading: false
     }
-  }
+  },
+  recommended: []
 });
 
 const mutations = {
+  SET_RECOMMENDED_USERS(state, users) {
+    state.recommended = users;
+  },
   SET_USER_INFO(state, data) {
     state.show = data;
   },
@@ -160,6 +165,14 @@ const actions = {
       },
       type
     });
+  },
+  async getRecommended({ state, commit }) {
+    if (state.recommended.length) {
+      return;
+    }
+    const api = new UserApi();
+    const users = await api.recommended();
+    commit("SET_RECOMMENDED_USERS", users);
   }
 };
 

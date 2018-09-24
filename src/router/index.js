@@ -552,6 +552,12 @@ export function createRouter() {
             component: () => import("~/layouts/empty"),
             children: [
               {
+                path: "user/report",
+                name: "user-report-list",
+                meta: { title: "用户举报", icon: "coffee" },
+                component: () => import("@/views/user/report")
+              },
+              {
                 path: "image/banner",
                 name: "image-banner",
                 meta: { title: "主站轮播", icon: "coffee" },
@@ -574,6 +580,18 @@ export function createRouter() {
                 name: "trial-words",
                 meta: { title: "敏感词库", icon: "coffee" },
                 component: () => import("@/views/trial/words")
+              },
+              {
+                path: "cm/app-version",
+                name: "app-version",
+                meta: { title: "App版本", icon: "coffee" },
+                component: () => import("@/views/cm/appVersion")
+              },
+              {
+                path: "cm/friend-link",
+                name: "friend-link",
+                meta: { title: "友情链接", icon: "coffee" },
+                component: () => import("@/views/cm/friendLink")
               }
             ]
           },

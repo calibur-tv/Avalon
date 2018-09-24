@@ -129,7 +129,7 @@
       >
         <button
           class="tool-btn feedback-btn"
-          @click="showFeedModal = true"
+          @click="handleFeedbackClick"
         >
           <i class="el-icon-service"/>
         </button>
@@ -167,7 +167,7 @@
       </v-dialog>
       <create-image-panel/>
     </template>
-    <v-feedback v-model="showFeedModal"/>
+    <v-feedback/>
   </div>
 </template>
 
@@ -191,7 +191,6 @@ export default {
     return {
       showToTop: false,
       showPostModal: false,
-      showFeedModal: false,
       showQuestionModal: false
     };
   },
@@ -252,6 +251,13 @@ export default {
         return;
       }
       this.$channel.$emit("show-upload-image-modal");
+    },
+    handleFeedbackClick() {
+      this.$channel.$emit("open-feedback", {
+        type: "",
+        desc: "{?}",
+        placeholder: "非常感谢您的反馈，请填写详细信息方便我们解决"
+      });
     },
     computeShow() {
       this.showToTop = window.scrollY > window.innerHeight;

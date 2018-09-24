@@ -102,10 +102,10 @@
           height: 40px;
           line-height: 40px;
 
-          .delete-btn,
-          .floor-count,
-          .like-btn {
+          .footer-item {
             margin-right: 20px;
+            display: inline-block;
+            float: left;
           }
 
           .v-share {
@@ -246,7 +246,6 @@
                 v-for="(img, idx) in post.images"
                 :key="idx"
                 class="image-package"
-                @click="$previewImages(post.images, idx)"
               >
                 <v-img
                   :src="img.url"
@@ -274,8 +273,17 @@
               />
               <div class="footer">
                 <div class="info-bar">
-                  <span class="floor-count">1楼</span>
-                  <v-time v-model="post.created_at"/>
+                  <span class="footer-item">1楼</span>
+                  <v-time
+                    v-model="post.created_at"
+                    class="footer-item"
+                  />
+                  <report-dialog
+                    :id="post.id"
+                    :is-creator="post.is_creator"
+                    type="post"
+                    title="帖子违规举报"
+                  >举报</report-dialog>
                   <v-share
                     :desc="post.desc"
                     type="panel"

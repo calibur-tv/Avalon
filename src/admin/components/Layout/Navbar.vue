@@ -167,6 +167,15 @@
           size="mini"
         >回答审核：{{ todo.answer }}</el-button>
       </router-link>
+      <router-link
+        v-if="todo.report"
+        to="/admin/cm/user/report"
+      >
+        <el-button
+          type="success"
+          size="mini"
+        >用户举报：{{ todo.report }}</el-button>
+      </router-link>
     </div>
   </nav>
 </template>

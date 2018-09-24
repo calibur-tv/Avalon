@@ -147,9 +147,9 @@
           <a
             v-for="(item, index) in friends"
             :key="index"
-            :href="item.val"
+            :href="item.link"
             target="_blank"
-            v-text="item.key"
+            v-text="item.name"
           />
         </li>
       </ul>
@@ -162,13 +162,7 @@ export default {
   name: "VFooter",
   data() {
     return {
-      toggleShareModal: false,
-      friends: [
-        {
-          key: "komi萌部落",
-          val: "http://www.mengbuluo.cn/"
-        }
-      ]
+      toggleShareModal: false
     };
   },
   computed: {
@@ -178,6 +172,11 @@ export default {
           this.$route.name
         ) === -1
       );
+    },
+    friends() {
+      return this.$store.state.pageData
+        ? this.$store.state.pageData.friend_links
+        : [];
     }
   },
   methods: {

@@ -131,7 +131,14 @@
             @click="deleteComment"
           >删除</button>
           <span class="floor-count">{{ post.floor_count }}楼</span>
-          <v-time v-model="post.created_at"/>
+          <v-time
+            v-model="post.created_at"
+            class="floor-count"
+          />
+          <report-dialog
+            :id="post.id"
+            type="post_comment"
+          >举报</report-dialog>
         </div>
       </div>
     </div>

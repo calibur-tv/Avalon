@@ -219,10 +219,6 @@ export default {
       type: Boolean,
       required: true
     },
-    auto: {
-      type: Boolean,
-      default: false
-    },
     keyboard: {
       type: Boolean,
       default: true
@@ -300,7 +296,7 @@ export default {
         wrapper: "#video-wrap",
         src: this.source,
         controls: true,
-        autoplay: this.auto,
+        autoplay: true,
         kernels: flvKernel ? { flv: flvKernel } : {},
         noDefaultContextMenu: true,
         plugin: [

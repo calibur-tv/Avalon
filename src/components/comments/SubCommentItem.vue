@@ -30,6 +30,12 @@
       }
     }
 
+    &:hover {
+      .report-btn {
+        opacity: 1 !important;
+      }
+    }
+
     .sub-text {
       font-weight: 400;
       font-size: 14px;
@@ -62,6 +68,10 @@
           color: $color-blue-normal;
           background-color: $color-gray-normal;
         }
+      }
+
+      .report-btn {
+        opacity: 0;
       }
 
       button:hover {
@@ -125,6 +135,13 @@
         >
           <i class="iconfont icon-shanchu"/>
         </button>
+        <report-dialog
+          v-else
+          :id="comment.id"
+          :type="type + '_reply'"
+        >
+          <button class="reply-btn">举报</button>
+        </report-dialog>
       </div>
       <comment-reply-form
         v-model="showReplyArea"

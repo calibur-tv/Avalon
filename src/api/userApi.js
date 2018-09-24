@@ -99,16 +99,16 @@ export default class extends BaseApi {
     });
   }
 
-  images({ zone, take, seenIds, size, tags, bangumiId, creator }) {
-    return this.http.get(`user/${zone}/images/list`, {
-      params: {
-        take,
-        seenIds,
-        size,
-        tags,
-        bangumiId,
-        creator
-      }
+  report({ id, type, model, message }) {
+    return this.http.post("report/send", {
+      id,
+      type,
+      model,
+      message
     });
+  }
+
+  recommended() {
+    return this.http.get("user/recommended");
   }
 }

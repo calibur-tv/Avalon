@@ -105,6 +105,10 @@
     .publish-time {
       font-size: 14px;
       color: #8590a6;
+
+      .report-btn {
+        float: right;
+      }
     }
 
     .v-parts {
@@ -276,6 +280,10 @@
             <span>
               发布于：<v-time v-model="info.created_at"/>
             </span>
+            <report-dialog
+              :id="id"
+              type="image"
+            >举报</report-dialog>
           </div>
           <v-parts
             v-if="info.is_cartoon"

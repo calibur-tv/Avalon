@@ -14,6 +14,12 @@
     float: left;
   }
 
+  .el-icon-upload-success {
+    position: absolute;
+    top: 0;
+    left: 15px;
+  }
+
   .submit-btn {
     width: 100%;
   }

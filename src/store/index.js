@@ -52,7 +52,7 @@ export function createStore() {
       async initApp({ commit }, { ctx }) {
         const api = new UserApi(ctx);
         const data = await api.getPageData({
-          refer: "h5"
+          refer: "pc"
         });
         commit("SET_PAGE_DATA", data);
       },

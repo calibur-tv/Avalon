@@ -55,6 +55,12 @@
     height: 54px;
     padding: 10px 20px;
 
+    &:hover {
+      .report-btn {
+        opacity: 1 !important;
+      }
+    }
+
     .el-button,
     .v-share {
       margin-left: 16px;
@@ -67,6 +73,10 @@
 
     .v-share {
       display: inline-block;
+    }
+
+    .report-btn {
+      opacity: 0;
     }
   }
 }
@@ -193,6 +203,16 @@
           删除
         </el-button>
       </template>
+      <report-dialog
+        :id="item.id"
+        type="answer"
+      >
+        <el-button
+          type="text"
+          size="medium"
+          icon="el-icon-phone"
+        >举报</el-button>
+      </report-dialog>
     </footer>
     <v-dialog
       v-model="showCommentModal"

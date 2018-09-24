@@ -113,26 +113,14 @@
                   />
                 </a>
                 &nbsp;·&nbsp;
-                <template v-if="info.published_at === info.updated_at">
-                  发表于：
-                  <el-tooltip
-                    :content="info.published_at"
-                    placement="top"
-                    effect="dark"
-                  >
-                    <v-time v-model="info.published_at"/>
-                  </el-tooltip>
-                </template>
-                <template v-else>
-                  编辑于：
-                  <el-tooltip
-                    :content="`发表于：${info.published_at}`"
-                    placement="top"
-                    effect="dark"
-                  >
-                    <v-time v-model="info.updated_at"/>
-                  </el-tooltip>
-                </template>
+                发表于：
+                <el-tooltip
+                  :content="info.published_at"
+                  placement="top"
+                  effect="dark"
+                >
+                  <v-time v-model="info.published_at"/>
+                </el-tooltip>
                 <template v-if="info.like_count">
                   &nbsp;·&nbsp;
                   赞：{{ info.like_count }}
@@ -141,6 +129,13 @@
                   &nbsp;·&nbsp;
                   评论：{{ info.comment_count }}
                 </template>
+                &nbsp;·&nbsp;
+                <report-dialog
+                  :id="info.id"
+                  type="score"
+                >
+                  举报
+                </report-dialog>
               </div>
             </div>
           </div>

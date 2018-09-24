@@ -4,8 +4,7 @@ export default {
   data() {
     return {
       uploadHeaders: {
-        token: "",
-        key: ""
+        token: ""
       },
       uploadConfig: {
         max: 5,
@@ -56,25 +55,25 @@ export default {
         return false;
       }
 
-      if (!this.uploadConfig.params && !this.uploadConfig.pathPrefix) {
-        this.$toast.error("缺少上传参数!");
-        return false;
-      }
-
-      if (this.uploadConfig.params) {
-        this.uploadHeaders.key = this.$utils.createFileName(
-          Object.assign({ file }, this.uploadConfig.params)
-        );
-        this.uploadConfig.params = null;
-        return true;
-      }
-
-      this.uploadHeaders.key = `${
-        this.uploadConfig.pathPrefix
-      }/${new Date().getTime()}-${Math.random()
-        .toString(36)
-        .substring(3, 6)}.${file.type.split("/").pop()}`;
-      this.uploadConfig.pathPrefix = "";
+      // if (!this.uploadConfig.params && !this.uploadConfig.pathPrefix) {
+      //   this.$toast.error("缺少上传参数!");
+      //   return false;
+      // }
+      //
+      // if (this.uploadConfig.params) {
+      //   this.uploadHeaders.key = this.$utils.createFileName(
+      //     Object.assign({ file }, this.uploadConfig.params)
+      //   );
+      //   this.uploadConfig.params = null;
+      //   return true;
+      // }
+      //
+      // this.uploadHeaders.key = `${
+      //   this.uploadConfig.pathPrefix
+      // }/${new Date().getTime()}-${Math.random()
+      //   .toString(36)
+      //   .substring(3, 6)}.${file.type.split("/").pop()}`;
+      // this.uploadConfig.pathPrefix = "";
       return true;
     }
   }

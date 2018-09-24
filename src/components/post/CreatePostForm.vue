@@ -12,6 +12,12 @@
     float: left;
   }
 
+  .el-icon-upload-success {
+    position: absolute;
+    top: 0;
+    left: 15px;
+  }
+
   .el-icon-question {
     margin-left: 10px;
     cursor: pointer;

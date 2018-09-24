@@ -18,12 +18,14 @@ import "~/assets/css/element-ui.scss";
 import Affix from "~/components/common/Affix";
 import ImageLazyLoad from "~/components/common/ImageLazyLoad";
 import LoadMoreBtn from "~/components/common/LoadMoreBtn";
+import ReportDialog from "~/components/common/ReportDialog";
 
 import { InfiniteScroll } from "mint-ui";
 
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
 Vue.use(ImageLazyLoad, {});
+Vue.component(ReportDialog.name, ReportDialog);
 Vue.component(LoadMoreBtn.name, LoadMoreBtn);
 Vue.component(Header.name, Header);
 Vue.component(Affix.name, Affix);

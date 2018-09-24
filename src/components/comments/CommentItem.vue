@@ -17,6 +17,12 @@
     padding: 22px 0 14px;
     border-top: 1px solid $color-gray-normal;
 
+    &:hover {
+      .main-comment-report-btn {
+        opacity: 1 !important;
+      }
+    }
+
     .header {
       margin-bottom: 4px;
 
@@ -73,6 +79,10 @@
           color: $color-blue-normal;
           background-color: $color-gray-normal;
         }
+      }
+
+      .main-comment-report-btn {
+        opacity: 0;
       }
     }
 
@@ -147,6 +157,13 @@
         >
           <i class="iconfont icon-shanchu"/>
         </button>
+        <report-dialog
+          v-else
+          :id="comment.id"
+          :type="type + '_comment'"
+        >
+          <button class="reply-btn main-comment-report-btn">举报</button>
+        </report-dialog>
       </div>
       <comment-reply-form
         v-model="showReplyArea"

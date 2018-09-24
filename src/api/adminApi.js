@@ -293,8 +293,8 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/pass", { id });
   }
 
-  deletePostImage({ id, src }) {
-    return this.http.post("admin/trial/post/delete_image", { id, src });
+  deletePostImage({ id, url }) {
+    return this.http.post("admin/trial/post/delete_image", { id, url });
   }
 
   getTrialImages() {
@@ -342,6 +342,68 @@ export default class extends BaseApi {
     return this.http.post("admin/user/withdrawal", {
       id,
       money
+    });
+  }
+
+  getReportList() {
+    return this.http.get("admin/report/list");
+  }
+
+  getReportItem({ tail }) {
+    return this.http.get("admin/report/item", {
+      params: { tail }
+    });
+  }
+
+  removeReport({ tail }) {
+    return this.http.post("admin/report/remove", { tail });
+  }
+
+  getAppVersions() {
+    return this.http.get("admin/app/version/list");
+  }
+
+  getAppUpToken() {
+    return this.http.get("admin/app/version/uptoken");
+  }
+
+  createAppVersion({ type, version, url }) {
+    return this.http.post("admin/app/version/create", {
+      type,
+      version,
+      url
+    });
+  }
+
+  deleteAppVersion({ type, version }) {
+    return this.http.post("admin/app/version/delete", {
+      type,
+      version
+    });
+  }
+
+  toggleAppUpdate({ type, version, force }) {
+    return this.http.post("admin/app/version/toggleForce", {
+      type,
+      version,
+      force
+    });
+  }
+
+  getFriendLinks() {
+    return this.http.get("admin/web/friend_link/list");
+  }
+
+  addFriendLink({ name, link }) {
+    return this.http.post("admin/web/friend_link/append", {
+      name,
+      link
+    });
+  }
+
+  delFriendLink({ link }) {
+    return this.http.post("admin/web/friend_link/remove", {
+      link
     });
   }
 }

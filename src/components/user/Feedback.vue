@@ -35,8 +35,8 @@
         <el-input
           v-model.trim="forms.desc"
           :rows="6"
+          :placeholder="placeholder"
           type="textarea"
-          placeholder="非常感谢您的反馈，请填写详细信息方便我们解决"
         />
       </el-form-item>
     </el-form>
@@ -57,6 +57,8 @@ export default {
   data() {
     return {
       show: this.value,
+      placeholder: "",
+      preContent: "",
       options: [
         {
           label: "功能建议",
@@ -120,9 +122,11 @@ export default {
     }
   },
   mounted() {
-    this.$channel.$on("open-feedback", ({ type, desc }) => {
+    this.$channel.$on("open-feedback", ({ type, desc, placeholder }) => {
       this.forms.type = type || "";
-      this.forms.desc = desc || "";
+      this.preContent = desc || "{?}";
+      this.placeholder =
+        placeholder || "非常感谢您的反馈，请填写详细信息方便我们解决";
       this.show = true;
     });
   },
@@ -133,8 +137,8 @@ export default {
           const api = new Api(this);
           await api.feedback({
             type: this.forms.type,
-            desc: this.forms.desc,
-            ua: navigator.userAgent + navigator.appVersion + navigator.vendor
+            desc: this.preContent.replace("{?}", this.forms.desc),
+            ua: navigator.userAgent
           });
           this.show = false;
           this.$refs.forms.resetFields();
