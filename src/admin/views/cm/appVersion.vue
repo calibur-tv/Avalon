@@ -303,10 +303,6 @@ export default {
       return result;
     },
     beforeUploadApp(file) {
-      if (file.type !== "application/vnd.android.package-archive") {
-        this.$toast.error("请选择APK安装包");
-        return false;
-      }
       this.uploadHeaders.key = `app/android/${Date.now()}-v-${
         this.appVersion
       }/calibur-tv.apk`;
