@@ -23,15 +23,24 @@
         height: 32px;
         line-height: 32px;
 
+        .prefix {
+          float: left;
+        }
+
+        .title {
+          display: block;
+        }
+
         .time {
           float: right;
           display: block;
           line-height: 32px;
-          color: #999;
           font-size: 12px;
           position: relative;
-          z-index: 1;
           margin-right: 12px;
+          margin-left: 10px;
+          color: #999;
+          z-index: 1;
         }
 
         .avatar {
@@ -134,13 +143,7 @@
           :key="item.id"
         >
           <div class="header clearfix">
-            回复：
-            <a
-              :href="$alias.post(item.post.id)"
-              class="href-fade-blue"
-              target="_blank"
-              v-text="item.post.title"
-            />
+            <span class="prefix">回复：</span>
             <el-tooltip
               :content="item.bangumi.name"
               effect="dark"
@@ -160,6 +163,12 @@
             <v-time
               v-model="item.created_at"
               class="time"
+            />
+            <a
+              :href="$alias.post(item.post.id)"
+              class="title href-fade-blue oneline"
+              target="_blank"
+              v-text="item.post.title"
             />
           </div>
           <div class="origin">

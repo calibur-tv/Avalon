@@ -29,7 +29,7 @@
     .title {
       font-size: 14px;
       line-height: 32px;
-      display: inline-block;
+      display: block;
     }
 
     .time {
