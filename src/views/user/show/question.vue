@@ -4,6 +4,10 @@
     margin-left: 0 !important;
     margin-top: 6px;
   }
+
+  #no-content {
+    margin-top: 25px;
+  }
 }
 </style>
 

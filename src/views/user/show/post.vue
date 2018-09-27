@@ -115,6 +115,10 @@
       margin-left: 10px;
     }
   }
+
+  #no-content {
+    margin-top: 25px;
+  }
 }
 </style>
 
