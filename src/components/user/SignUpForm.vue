@@ -286,7 +286,7 @@ export default {
         .then(res => {
           this.$toast.success("注册成功！");
           this.$cookie.set("JWT-TOKEN", res);
-          window.location = "/about/hello";
+          window.location.reload();
         })
         .catch(err => {
           this.step = 0;

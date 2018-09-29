@@ -190,63 +190,69 @@ $input-height: 40px;
 </style>
 
 <template>
-  <div
-    id="space3D"
-    :class="[ showModal ? 'space-enter' : 'space-leave' ]"
-    @click="hiddenSign"
-  >
+  <div class="sign-container">
     <div
-      ref="wrap"
-      class="sign-modal-wrap abs"
+      v-if="isGuest"
+      id="space3D"
+      :class="[ showModal ? 'space-enter' : 'space-leave' ]"
+      @click="hiddenSign"
     >
       <div
-        :class="{
-          'sign-in-init' : !showSignIn && !showSignUp,
-          'sign-in-show' : showSignIn && !showSignUp,
-          'sign-in-turn' : !showSignIn && showSignUp
-        }"
-        class="sign-modal sign-in-modal"
-        @click.stop
+        ref="wrap"
+        class="sign-modal-wrap abs"
       >
         <div
-          v-show="showReset"
-          class="form-container"
+          :class="{
+            'sign-in-init' : !showSignIn && !showSignUp,
+            'sign-in-show' : showSignIn && !showSignUp,
+            'sign-in-turn' : !showSignIn && showSignUp
+          }"
+          class="sign-modal sign-in-modal"
+          @click.stop
         >
-          <img
-            class="logo"
-            src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip"
-            alt="sign-logo"
+          <div
+            v-show="showReset"
+            class="form-container"
           >
-          <reset-password-form
-            @to-login="showReset = false"
-            @to-register="showRegister"
-          />
+            <img
+              class="logo"
+              src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip"
+              alt="sign-logo"
+            >
+            <reset-password-form
+              @to-login="showReset = false"
+              @to-register="showRegister"
+            />
+          </div>
+          <div
+            v-show="!showReset"
+            class="form-container"
+          >
+            <sign-in-form
+              @to-reset="showReset = true"
+              @to-register="showRegister"
+            />
+          </div>
         </div>
         <div
-          v-show="!showReset"
-          class="form-container"
+          :class="{
+            'sign-up-init' : !showSignUp && !showSignIn,
+            'sign-up-show' : showSignUp && !showSignIn,
+            'sign-up-turn' : !showSignUp && showSignIn
+          }"
+          class="sign-modal sign-up-modal"
+          @click.stop
         >
-          <sign-in-form
-            @to-reset="showReset = true"
-            @to-register="showRegister"
-          />
-        </div>
-      </div>
-      <div
-        :class="{
-          'sign-up-init' : !showSignUp && !showSignIn,
-          'sign-up-show' : showSignUp && !showSignIn,
-          'sign-up-turn' : !showSignUp && showSignIn
-        }"
-        class="sign-modal sign-up-modal"
-        @click.stop
-      >
-        <div class="slogan"/>
-        <div class="form-container">
-          <sign-up-form @to-login="showLogin"/>
+          <div class="slogan"/>
+          <div class="form-container">
+            <sign-up-form @to-login="showLogin"/>
+          </div>
         </div>
       </div>
     </div>
+    <template v-else>
+      <first-sign-dialog/>
+    </template>
   </div>
 </template>
 
@@ -254,13 +260,15 @@ $input-height: 40px;
 import SignInForm from "~/components/user/SignInForm";
 import SignUpForm from "~/components/user/SignUpForm";
 import ResetPasswordForm from "~/components/user/ResetPasswordForm";
+import FirstSignDialog from "~/components/dialogs/FirstSignDialog";
 
 export default {
   name: "VSign",
   components: {
     SignUpForm,
     SignInForm,
-    ResetPasswordForm
+    ResetPasswordForm,
+    FirstSignDialog
   },
   data() {
     return {
@@ -269,6 +277,11 @@ export default {
       showSignUp: false,
       showReset: false
     };
+  },
+  computed: {
+    isGuest() {
+      return !this.$store.state.login;
+    }
   },
   watch: {
     showModal(val) {

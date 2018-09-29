@@ -205,21 +205,8 @@
           />
         </a>
       </el-tooltip>
-      <el-tooltip
-        v-if="item.updated_at !== item.created_at"
-        :content="`发表于：${item.created_at}`"
-        effect="dark"
-        placement="top"
-      >
-        <span class="time">
-          回复于: <v-time v-model="item.updated_at"/>
-        </span>
-      </el-tooltip>
-      <span
-        v-else
-        class="time"
-      >
-        发表于: <v-time v-model="item.updated_at"/>
+      <span class="time">
+        发表于: <v-time v-model="item.created_at"/>
       </span>
       <div
         v-if="item.top_at"
