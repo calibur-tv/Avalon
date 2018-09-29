@@ -487,6 +487,12 @@ $search-height: 32px;
           >
             <span>功能简介</span>
           </router-link>
+          <router-link
+            :class="$style.navLink"
+            to="/app/download"
+          >
+            <span>下载APP</span>
+          </router-link>
         </div>
         <div :class="$style.right">
           <div class="search-container">
