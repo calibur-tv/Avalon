@@ -42,7 +42,7 @@
     <header>
       <user-search
         :disabled="true"
-        @submit="searchUserByZone"
+        @submit="getUserData"
       />
     </header>
     <div
@@ -138,6 +138,14 @@
           查看交易记录
         </el-button>
         <el-button
+          v-if="user.ip_address.length"
+          type="primary"
+          size="mini"
+          @click="showIpAddress = !showIpAddress"
+        >
+          {{ showIpAddress ? '隐藏ip地址' : '查看ip地址' }}
+        </el-button>
+        <el-button
           v-if="user.deleted_at"
           :loading="loading"
           type="success"
@@ -165,6 +173,24 @@
         </el-button>
       </div>
     </div>
+    <el-collapse-transition>
+      <el-table
+        v-if="showIpAddress"
+        :data="user.ip_address"
+        border
+        fit
+        highlight-current-row
+      >
+        <el-table-column
+          label="地址"
+          prop="ip_address"
+        />
+        <el-table-column
+          label="记录时间"
+          prop="created_at"
+        />
+      </el-table>
+    </el-collapse-transition>
     <template v-if="showTransactions">
       <el-table
         :data="pageData"
@@ -233,13 +259,11 @@ export default {
       searching: false,
       user: null,
       loading: false,
-      showTransactions: false
+      showTransactions: false,
+      showIpAddress: false
     };
   },
   computed: {
-    queryZone() {
-      return this.$route.query.zone || "";
-    },
     queryId() {
       return +(this.$route.query.id || 0);
     },
@@ -247,20 +271,12 @@ export default {
       return this.$store.state.user.id === 1;
     }
   },
-  watch: {
-    $route() {
-      this.user = null;
-      if (this.queryZone) {
-        this.searchUserByZone(this.queryZone);
-      }
-    }
-  },
   created() {
-    if (this.queryZone) {
-      this.searchUserByZone(this.queryZone);
-    }
     if (this.queryId) {
-      this.searchUserById(this.queryId);
+      this.getUserData({
+        type: "id",
+        value: this.queryId
+      });
     }
   },
   methods: {
@@ -297,28 +313,27 @@ export default {
         this.pageLoading = false;
       }
     },
-    async searchUserByZone(zone) {
+    async getUserData(data) {
       if (this.searching) {
         return;
       }
       this.searching = true;
       const api = new Api(this);
       try {
-        this.user = await api.searchUser({ zone });
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.searching = false;
-      }
-    },
-    async searchUserById(id) {
-      if (this.searching) {
-        return;
-      }
-      this.searching = true;
-      const api = new Api(this);
-      try {
-        this.user = await api.searchUser({ id });
+        const result = await api.searchUser(data);
+        if (data.type === "ip_address") {
+          if (!result.length) {
+            this.$toast.error("没有找到用户");
+            return;
+          }
+          result.forEach(item => {
+            window.open(
+              `${window.location.href.split("?")[0]}?id=${item.user_id}`
+            );
+          });
+          return;
+        }
+        this.user = result;
       } catch (e) {
         this.$toast.error(e);
       } finally {

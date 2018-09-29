@@ -2,10 +2,27 @@
   <div class="clearfix">
     <el-row>
       <el-col :span="20">
-        <el-input
-          v-model.trim="input"
-          placeholder="请输入内容用户网址"
-        />
+        <el-row>
+          <el-col :span="4">
+            <el-select
+              v-model="type"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-col>
+          <el-col :span="20">
+            <el-input
+              v-model.trim="input"
+              placeholder="请输入搜索信息"
+            />
+          </el-col>
+        </el-row>
       </el-col>
       <el-col
         :span="2"
@@ -54,9 +71,27 @@ export default {
   data() {
     return {
       input: "",
-      lastQ: "",
       loading: false,
-      user: null
+      user: null,
+      type: "id",
+      options: [
+        {
+          label: "手机号",
+          value: "phone"
+        },
+        {
+          label: "邀请码",
+          value: "id"
+        },
+        {
+          label: "ip地址",
+          value: "ip_address"
+        },
+        {
+          label: "个性域名",
+          value: "zone"
+        }
+      ]
     };
   },
   methods: {
@@ -65,25 +100,21 @@ export default {
       if (!q) {
         return;
       }
-      if (!/(.calibur.tv\/user\/|localhost:)/.test(q)) {
-        this.$toast.error("请输入正确的查询条件");
-        return;
-      }
-
-      q = q.split("/").pop();
-      if (q && q === this.lastQ) {
-        return;
-      }
-      this.lastQ = q;
 
       if (this.disabled) {
-        this.$emit("submit", q);
+        this.$emit("submit", {
+          type: this.type,
+          value: q
+        });
         return;
       }
 
       const api = new Api(this);
       try {
-        const user = await api.searchUser({ zone: q });
+        const user = await api.searchUser({
+          type: this.type,
+          value: q
+        });
         this.user = user;
         this.$emit("input", parseInt(user.id, 10));
       } catch (e) {
