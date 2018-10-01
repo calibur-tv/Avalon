@@ -162,7 +162,12 @@ $layout-width: 900px;
         :header="false"
         :footer="false"
       >
-        <json-content :content="sections"/>
+        <div style="max-width: 700px;margin: 20px auto;">
+          <json-content
+            :show="preview"
+            :content="sections"
+          />
+        </div>
       </v-dialog>
     </template>
     <div
