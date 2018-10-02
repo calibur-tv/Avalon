@@ -303,7 +303,12 @@ export default {
       arr.shift();
       return arr.join("");
     },
-    async remove(index, tail) {
+    async remove(index, data) {
+      let tail = data;
+      const arr = data.split("-");
+      if (arr.length > 2) {
+        tail = `${arr[0]}-${arr[1]}`;
+      }
       const api = new Api(this);
       try {
         await api.removeReport({ tail });
