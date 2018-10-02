@@ -2,6 +2,10 @@
 .sub-comment-item {
   padding: 10px 0;
 
+  &.focused-sub-comment {
+    background-color: rgba($color-blue-light, 0.2);
+  }
+
   .sub-user {
     float: left;
 
@@ -85,7 +89,10 @@
 </style>
 
 <template>
-  <div class="sub-comment-item">
+  <div
+    :class="{ 'focused-sub-comment': focusThisComment }"
+    class="sub-comment-item"
+  >
     <div class="sub-user">
       <div class="avatar">
         <a
@@ -191,6 +198,9 @@ export default {
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.parentUserId;
+    },
+    focusThisComment() {
+      return parseInt(this.$route.query["reply-id"]) === this.comment.id;
     }
   },
   methods: {

@@ -111,12 +111,24 @@ export default {
       return result;
     },
     computeUA(ua) {
-      const parser = new UAParser();
-      parser.setUA(ua);
-      const result = parser.getResult();
-      return `系统：${result.os.name} - ${result.os.version}<br>浏览器：${
-        result.browser.name
-      } - ${result.browser.version}`;
+      if (/-----/.test(ua)) {
+        const arr = ua.split("-----");
+        let result = `厂商：${arr[0]}<br>型号：${arr[1]}`;
+        if (arr[2]) {
+          result = `${result}<br>App版本：${arr[2]}`;
+        }
+        if (arr[3]) {
+          result = `${result}<br>系统版本：${arr[3]}`;
+        }
+        return result;
+      } else {
+        const parser = new UAParser();
+        parser.setUA(ua);
+        const result = parser.getResult();
+        return `系统：${result.os.name} - ${result.os.version}<br>浏览器：${
+          result.browser.name
+        } - ${result.browser.version}`;
+      }
     },
     async remove(index, id) {
       const api = new Api(this);

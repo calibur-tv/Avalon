@@ -418,7 +418,6 @@ export default {
     }
   },
   mounted() {
-    this.scrollToReply();
     this.$channel.$on("get-page-bangumi-for-post-create", () => {
       this.$channel.$emit("set-page-bangumi-for-post-create", {
         id: this.bangumi.id,
@@ -511,19 +510,6 @@ export default {
       } finally {
         this.loadingToggleMark = false;
       }
-    },
-    scrollToReply() {
-      const replyId = this.$route.query["comment-id"];
-      if (!replyId) {
-        return;
-      }
-      const reply = document.getElementById(`comment-${replyId}`);
-      if (!reply) {
-        return;
-      }
-      this.$nextTick(() => {
-        this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400);
-      });
     },
     handleBangumiFollow(result) {
       this.$store.commit("post/FOLLOW_BANGUMI", result);

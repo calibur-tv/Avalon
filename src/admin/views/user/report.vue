@@ -14,9 +14,14 @@
           {{ computeModel(scope.row) }}
         </template>
       </el-table-column>
-      <el-table-column label="索引">
+      <el-table-column label="链接">
         <template slot-scope="scope">
-          {{ computeModelId(scope.row) }}
+          <a
+            :href="computeModelId(scope.row)"
+            target="_blank"
+          >
+            {{ computeModelId(scope.row) }}
+          </a>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -249,7 +254,35 @@ export default {
       return result;
     },
     computeModelId(type) {
-      return type.split("-")[1];
+      let prefix = "";
+      let tail = "";
+      let id = "";
+      if (/_/.test(type)) {
+        const one = type.split("_");
+        const two = one[1].split("-");
+        if (two[0] === "reply") {
+          // 子评论
+          tail = `?comment-id=${two[3]}&reply-id=${two[1]}`;
+        } else {
+          // 主评论
+          tail = `?comment-id=${two[1]}`;
+        }
+        prefix = one[0];
+        if (prefix === "score") {
+          prefix = "review";
+        } else if (prefix === "question") {
+          prefix = "qaq";
+        } else if (prefix === "answer") {
+          prefix = "soga";
+        } else if (prefix === "image") {
+          prefix = "pin";
+        }
+        id = two[2];
+      } else {
+        id = type.split("-")[1];
+        prefix = type.split("-")[0];
+      }
+      return `/${prefix}/${id}${tail}`;
     },
     computeUserId(item) {
       return item.split("|")[0];

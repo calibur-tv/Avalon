@@ -2,6 +2,10 @@
 .def-comment-item {
   @extend %clearfix;
 
+  &.focused-main-comment {
+    background-color: rgba($color-blue-light, 0.1);
+  }
+
   .user {
     float: left;
     width: 85px;
@@ -97,6 +101,7 @@
 <template>
   <div
     :id="`comment-${comment.id}`"
+    :class="{ 'focused-main-comment': focusThisComment }"
     class="def-comment-item"
   >
     <div class="user">
@@ -223,6 +228,9 @@ export default {
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.masterId;
+    },
+    focusThisComment() {
+      return parseInt(this.$route.query["comment-id"]) === this.comment.id;
     }
   },
   methods: {
