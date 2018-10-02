@@ -321,7 +321,12 @@ export default {
         this.$toast.error(e);
       }
     },
-    async detail(tail) {
+    async detail(data) {
+      let tail = data;
+      const arr = data.split("-");
+      if (arr.length > 2) {
+        tail = `${arr[0]}-${arr[1]}`;
+      }
       const api = new Api(this);
       try {
         this.details = await api.getReportItem({ tail });
