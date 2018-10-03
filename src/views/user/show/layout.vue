@@ -290,10 +290,19 @@
           class="avatar"
           alt="avatar"
         >
-        <span
-          class="nickname"
-          v-text="user.nickname"
-        />
+        <span class="nickname">
+          {{ user.nickname }}
+          <user-sex
+            v-if="isMe"
+            :sex="convertUserSex(user.sex)"
+            :secret="user.sexSecret"
+          />
+          <user-sex
+            v-else
+            :sex="user.sex"
+            :secret="user.sexSecret"
+          />
+        </span>
         <div class="buttons">
           <template v-if="isMe">
             <el-tooltip
@@ -369,6 +378,7 @@ import UserApi from "~/api/userApi";
 import ImageApi from "~/api/imageApi";
 import ImageCropper from "~/components/common/ImageCropper";
 import TabContainer from "~/components/common/TabContainer";
+import UserSex from "~/components/user/UserSex";
 
 export default {
   name: "UserShowLayout",
@@ -402,7 +412,8 @@ export default {
   },
   components: {
     TabContainer,
-    ImageCropper
+    ImageCropper,
+    UserSex
   },
   data() {
     return {
@@ -419,7 +430,8 @@ export default {
         showBar: false,
         loading: false
       },
-      signDayLoading: false
+      signDayLoading: false,
+      doSign: false
     };
   },
   computed: {
@@ -442,7 +454,10 @@ export default {
       return this.self.coin;
     },
     withdrawCoinCount() {
-      const result = this.user.coin - this.user.coin_from_sign;
+      let result = this.user.coin - this.user.coin_from_sign;
+      if (this.doSign) {
+        result -= 1;
+      }
       return result < 0 ? 0 : result;
     },
     cards() {
@@ -639,6 +654,7 @@ export default {
           key: "coin",
           value: this.coinCount + 1
         });
+        this.doSign = true;
       } catch (e) {
         this.$toast.error(e);
       } finally {
@@ -656,6 +672,32 @@ export default {
           this.$toast.success("复制成功");
         });
       });
+    },
+    convertUserSex(sex) {
+      let $res = "";
+      switch (sex) {
+        case 0:
+          $res = "未知";
+          break;
+        case 1:
+          $res = "男";
+          break;
+        case 2:
+          $res = "女";
+          break;
+        case 3:
+          $res = "伪娘";
+          break;
+        case 4:
+          $res = "药娘";
+          break;
+        case 5:
+          $res = "扶她";
+          break;
+        default:
+          $res = "未知";
+      }
+      return $res;
     }
   }
 };
