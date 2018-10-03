@@ -98,7 +98,7 @@ $tool-btn-width: 40px;
 
     i {
       color: #99a2aa;
-      font-size: 18px;
+      font-size: 22px;
 
       &:hover {
         color: #6d757a;
