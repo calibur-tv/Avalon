@@ -72,7 +72,6 @@
     :width="loading ? 80 : 375"
     :open-delay="500"
     trigger="hover"
-    placement="top"
     @show="handleHover"
   >
     <div class="content">
