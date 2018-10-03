@@ -17,6 +17,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #ddd;
   }
 
   .profile {
@@ -80,7 +81,7 @@
       />
       <template v-else-if="user">
         <div
-          :style="{ backgroundImage: `url(${user.banner})` }"
+          :style="{ backgroundImage: `url(${$resize(user.banner, { width: 750, height: 240 })})` }"
           class="background"
         />
         <div class="profile">
