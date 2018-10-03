@@ -12,9 +12,9 @@
     height: 40px;
     margin-bottom: 10px;
 
-    .avatar {
+    .user-avatar {
       float: left;
-      margin-right: 14px;
+      margin-right: 10px;
       @include avatar(40px);
     }
 
@@ -88,16 +88,16 @@
     class="answer-flow-item"
   >
     <header class="answer-header">
-      <a
-        :href="$alias.user(item.user.zone)"
-        class="avatar"
-        target="_blank"
+      <user-card
+        :id="item.user.id"
+        :zone="item.user.zone"
+        custom-class="user-avatar"
       >
         <v-img
           :src="item.user.avatar"
           size="40"
         />
-      </a>
+      </user-card>
       <div class="info">
         <a
           :href="$alias.user(item.user.zone)"

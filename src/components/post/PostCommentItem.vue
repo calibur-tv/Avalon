@@ -79,22 +79,20 @@
     class="post-comment-item"
   >
     <div class="user">
-      <a
-        :href="$alias.user(post.from_user_zone)"
-        target="_blank"
+      <user-card
+        :id="post.from_user_id"
+        :zone="post.from_user_zone"
       >
         <v-img
           :src="post.from_user_avatar"
           size="80"
           class="avatar"
         />
-      </a>
-      <a
-        :href="$alias.user(post.from_user_zone)"
-        class="nickname oneline"
-        target="_blank"
-        v-text="post.from_user_name"
-      />
+        <p
+          class="nickname oneline"
+          v-text="post.from_user_name"
+        />
+      </user-card>
     </div>
     <div class="content">
       <div class="main">

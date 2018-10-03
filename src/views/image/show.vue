@@ -271,11 +271,12 @@
         <div class="album-footer">
           <div class="publish-time">
             UP：
-            <a
-              :href="$alias.user(user.zone)"
-              target="_blank"
-              v-text="user.nickname"
-            />
+            <user-card
+              :id="user.id"
+              :zone="user.zone"
+            >
+              {{ user.nickname }}
+            </user-card>
             &nbsp;·&nbsp;
             <span>
               发布于：<v-time v-model="info.created_at"/>

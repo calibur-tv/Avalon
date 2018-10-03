@@ -224,22 +224,20 @@
         <main>
           <el-row class="post-main">
             <div class="user">
-              <a
-                :href="$alias.user(master.zone)"
-                target="_blank"
+              <user-card
+                :id="master.id"
+                :zone="master.zone"
               >
                 <v-img
                   :src="master.avatar"
                   size="80"
                   class="avatar"
                 />
-              </a>
-              <a
-                :href="$alias.user(master.zone)"
-                class="nickname oneline"
-                target="_blank"
-                v-text="master.nickname"
-              />
+                <p
+                  class="nickname oneline"
+                  v-text="master.nickname"
+                />
+              </user-card>
             </div>
             <div class="content">
               <div

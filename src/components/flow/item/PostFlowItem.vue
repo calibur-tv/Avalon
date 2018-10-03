@@ -171,23 +171,17 @@
 <template>
   <li class="post-show-item">
     <div class="header clearfix">
-      <el-tooltip
+      <user-card
         v-if="item.user"
-        :content="item.user.nickname"
-        effect="dark"
-        placement="top"
+        :id="item.user.id"
+        :zone="item.user.zone"
+        custom-class="user-avatar"
       >
-        <a
-          :href="$alias.user(item.user.zone)"
-          class="user-avatar"
-          target="_blank"
-        >
-          <v-img
-            :src="item.user.avatar"
-            size="32"
-          />
-        </a>
-      </el-tooltip>
+        <v-img
+          :src="item.user.avatar"
+          :size="32"
+        />
+      </user-card>
       <el-tooltip
         v-else-if="item.bangumi"
         :content="item.bangumi.name"

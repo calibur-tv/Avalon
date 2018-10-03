@@ -19,12 +19,15 @@ import Affix from "~/components/common/Affix";
 import ImageLazyLoad from "~/components/common/ImageLazyLoad";
 import LoadMoreBtn from "~/components/common/LoadMoreBtn";
 import ReportDialog from "~/components/common/ReportDialog";
+import UserCard from "~/components/user/UserCard";
 
-import { InfiniteScroll } from "mint-ui";
+import { InfiniteScroll, Spinner } from "mint-ui";
 
 Vue.use(ElementUI);
 Vue.use(InfiniteScroll);
 Vue.use(ImageLazyLoad, {});
+Vue.component(Spinner.name, Spinner);
+Vue.component(UserCard.name, UserCard);
 Vue.component(ReportDialog.name, ReportDialog);
 Vue.component(LoadMoreBtn.name, LoadMoreBtn);
 Vue.component(Header.name, Header);
