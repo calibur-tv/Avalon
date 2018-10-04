@@ -43,6 +43,21 @@ $--color-primary: $color-blue-normal !default;
   .el-loading-mask {
     position: fixed;
   }
+
+  .el-message {
+    min-width: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    user-select: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+
+    .el-message__content {
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
 }
 
 $--font-path: '../../../node_modules/element-ui/lib/theme-chalk/fonts';

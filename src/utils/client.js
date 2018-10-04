@@ -3,7 +3,7 @@ import scrollToY from "~/assets/js/scrollToY";
 import Backdrop from "~/assets/js/Backdrop";
 import captcha from "~/assets/js/captcha";
 import Cookies from "js-cookie";
-import { Notification, MessageBox } from "element-ui";
+import { Message, MessageBox } from "element-ui";
 import QRCode from "~/assets/js/qrcode";
 import Clipboard from "~/assets/js/clipboard";
 
@@ -15,7 +15,7 @@ Vue.use({
 
     Vue.prototype.$backdrop = new Backdrop();
 
-    Vue.prototype.$toast = Notification;
+    Vue.prototype.$toast = Message;
 
     Vue.prototype.$copy = Clipboard;
 
