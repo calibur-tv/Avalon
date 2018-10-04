@@ -188,7 +188,7 @@ export default {
             .then(data => {
               this.$refs.form.resetFields();
               this.$refs.upload.clearFiles();
-              this.$toast.success("创建成功");
+              this.$toast.success("创建成功，经验+3");
               this.submitting = false;
               this.$emit("success", data);
             })

@@ -143,7 +143,7 @@ export default {
             };
             this.images = [];
             this.$refs.uploader.clearFiles();
-            this.$toast.success("评论成功");
+            this.$toast.success("评论成功，经验+2");
             setTimeout(() => {
               const dom = document.getElementById(`comment-${newComment.id}`);
               dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600);

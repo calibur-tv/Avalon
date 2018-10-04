@@ -121,6 +121,7 @@ export default {
         });
         this.open = false;
         this.content = "";
+        this.$toast.success("回复成功，经验+1");
       } catch (e) {
         this.$toast.error(e);
       } finally {

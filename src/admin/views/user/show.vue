@@ -101,6 +101,10 @@
         {{ user.coin_count }}，可提现：{{ user.coin_count - user.coin_from_sign }}
       </div>
       <div>
+        <span class="label">等级：</span>
+        {{ user.level }}
+      </div>
+      <div>
         <span class="label">性别：</span>
         {{ user.sex }}
       </div>
@@ -267,6 +271,9 @@ export default {
     queryId() {
       return +(this.$route.query.id || 0);
     },
+    queryZone() {
+      return this.$route.query.zone || "";
+    },
     isKing() {
       return this.$store.state.user.id === 1;
     }
@@ -276,6 +283,12 @@ export default {
       this.getUserData({
         type: "id",
         value: this.queryId
+      });
+    }
+    if (this.queryZone) {
+      this.getUserData({
+        type: "zone",
+        value: this.queryZone
       });
     }
   },

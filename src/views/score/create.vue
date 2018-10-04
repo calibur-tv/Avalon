@@ -297,7 +297,7 @@ export default {
           newId = await api.create(form);
         }
         if (richContent.publish) {
-          this.$confirm("发布成功", "提示", {
+          this.$confirm(newId ? "发布成功" : "发布成功，经验+5", "提示", {
             confirmButtonText: "点击查看",
             cancelButtonText: "继续编辑",
             type: "warning"

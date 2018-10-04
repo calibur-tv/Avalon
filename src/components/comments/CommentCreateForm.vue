@@ -138,7 +138,7 @@ export default {
         if (this.withImage) {
           this.$refs.uploader.clearFiles();
         }
-        this.$toast.success("评论成功");
+        this.$toast.success("评论成功，经验+2");
         if (!window.__closeImageLazy__) {
           setTimeout(() => {
             const dom = document.getElementById(`comment-${newComment.id}`);
