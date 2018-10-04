@@ -89,6 +89,10 @@ export default {
     id: {
       type: [Number, String],
       required: true
+    },
+    masterId: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -138,7 +142,12 @@ export default {
         if (this.withImage) {
           this.$refs.uploader.clearFiles();
         }
-        this.$toast.success("评论成功，经验+2");
+        if (this.masterId === this.$store.state.user.id) {
+          this.$toast.success("评论成功");
+        } else {
+          this.$toast.success("评论成功，经验+2");
+          this.$store.commit("UPDATE_USER_EXP", 2);
+        }
         if (!window.__closeImageLazy__) {
           setTimeout(() => {
             const dom = document.getElementById(`comment-${newComment.id}`);

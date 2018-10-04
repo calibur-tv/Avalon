@@ -36,6 +36,7 @@
       <comment-create-form
         :id="id"
         :type="type"
+        :master-id="masterId"
         @submit="$emit('create-main-comment')"
       />
     </slot>
@@ -86,6 +87,7 @@
           v-if="list.length >= 10"
           :id="id"
           :type="type"
+          :master-id="masterId"
           @submit="$emit('create-main-comment')"
         />
       </slot>

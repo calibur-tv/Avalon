@@ -308,7 +308,10 @@
               id="bottom-comment-post-form"
               slot="reply"
             >
-              <post-comment-form :id="post.id"/>
+              <post-comment-form
+                :id="post.id"
+                :master-id="master.id"
+              />
             </div>
           </comment-main>
         </main>

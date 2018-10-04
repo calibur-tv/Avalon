@@ -228,12 +228,8 @@
     }
   }
 
-  ul {
-    margin-bottom: 10px;
-
-    li {
-      font-size: 12px;
-    }
+  li {
+    font-size: 12px;
   }
 }
 </style>
@@ -361,6 +357,8 @@
               <li>写评论（包括跟帖）：+2</li>
               <li>回复评论：+1</li>
             </ul>
+            <v-hr text="其它提醒"/>
+            <p>评论/回复自己的内容不会获得经验</p>
             <p>如果内容被删除，会掉经验的哦~</p>
           </div>
           <div
