@@ -69,8 +69,8 @@
 <template>
   <el-popover
     :popper-class="loading ? 'user-card-loading' : 'user-card'"
-    :width="loading ? 80 : 375"
-    :open-delay="500"
+    :width="375"
+    :open-delay="400"
     trigger="hover"
     @show="handleHover"
   >

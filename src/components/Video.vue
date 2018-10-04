@@ -246,6 +246,10 @@ export default {
     isGuest: {
       required: true,
       type: Boolean
+    },
+    poster: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -295,8 +299,9 @@ export default {
       this.player = new Chimee({
         wrapper: "#video-wrap",
         src: this.source,
+        poster: this.poster,
         controls: true,
-        autoplay: true,
+        autoplay: false,
         kernels: flvKernel ? { flv: flvKernel } : {},
         noDefaultContextMenu: true,
         plugin: [
