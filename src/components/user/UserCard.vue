@@ -43,6 +43,10 @@
           font-size: 14px;
           margin-right: 5px;
         }
+
+        .level {
+          color: $color-text-light;
+        }
       }
 
       .signature {
@@ -107,6 +111,9 @@
                 :sex="user.sex"
                 :secret="user.sexSecret"
               />
+              <span class="level">
+                Lv{{ user.level }}
+              </span>
             </p>
             <p
               class="signature"

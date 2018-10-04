@@ -47,6 +47,32 @@ export function createStore() {
       },
       UPDATE_USER_INFO(state, { key, value }) {
         state.user[key] = value;
+      },
+      UPDATE_USER_EXP(state, score) {
+        if (!state.user) {
+          return;
+        }
+        if (score > 0) {
+          if (state.user.exp.have_exp + score >= state.user.next_level_exp) {
+            const newLevel = state.user.exp.level + 1;
+            state.user.exp.level = newLevel;
+            state.user.exp.have_exp =
+              state.user.exp.have_exp + score - state.user.next_level_exp;
+            state.user.exp.next_level_exp = newLevel * newLevel + newLevel * 10;
+          } else {
+            state.user.exp.have_exp = state.user.exp.have_exp + score;
+          }
+        } else {
+          if (state.user.exp.have_exp + score < 0) {
+            const newLevel = state.user.exp.level - 1;
+            const lastTotalExp = newLevel * newLevel + newLevel * 10;
+            state.user.exp.have_exp =
+              lastTotalExp + state.user.exp.have_exp + score;
+            state.user.exp.next_level_exp = lastTotalExp;
+          } else {
+            state.user.exp.have_exp = state.user.exp.have_exp + score;
+          }
+        }
       }
     },
     actions: {

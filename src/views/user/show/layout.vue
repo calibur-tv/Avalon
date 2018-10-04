@@ -91,6 +91,12 @@
       pointer-events: none;
     }
 
+    .exp-container {
+      width: 200px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
     .signature {
       margin: 30px 0 20px 0;
       max-width: 600px;
@@ -208,6 +214,28 @@
     transform: translateX(-50%);
   }
 }
+
+.exp-detail .content {
+  padding: 10px 15px;
+  font-size: 13px;
+  line-height: 20px;
+
+  p {
+    font-weight: bold;
+
+    span {
+      font-weight: normal;
+    }
+  }
+
+  ul {
+    margin-bottom: 10px;
+
+    li {
+      font-size: 12px;
+    }
+  }
+}
 </style>
 
 <template>
@@ -292,17 +320,61 @@
         >
         <span class="nickname">
           {{ user.nickname }}
-          <user-sex
-            v-if="isMe"
-            :sex="convertUserSex(user.sex)"
-            :secret="user.sexSecret"
-          />
-          <user-sex
-            v-else
-            :sex="user.sex"
-            :secret="user.sexSecret"
-          />
+          <template v-if="isMe">
+            <user-sex
+              :sex="convertUserSex(user.sex)"
+              :secret="user.sexSecret"
+            />
+            <span class="level">
+              Lv{{ user.exp.level }}
+            </span>
+          </template>
+          <template v-else>
+            <user-sex
+              :sex="user.sex"
+              :secret="user.sexSecret"
+            />
+            <span class="level">
+              Lv{{ user.level }}
+            </span>
+          </template>
         </span>
+        <el-popover
+          v-if="isMe"
+          placement="right"
+          width="250"
+          trigger="hover"
+          popper-class="exp-detail"
+        >
+          <div class="content">
+            <v-hr text="我的等级"/>
+            <p>当前等级：<span>{{ user.exp.level }}</span></p>
+            <p>距离升级：<span>{{ user.exp.have_exp }} / {{ user.exp.next_level_exp }}</span></p>
+            <v-hr text="升级方法"/>
+            <ul>
+              <li>每日签到：+2</li>
+              <li>发帖子：+4</li>
+              <li>写漫评：+5</li>
+              <li>写回答：+4</li>
+              <li>传图片（限图片区）：+3</li>
+              <li>提问题（限问答区）：+3</li>
+              <li>写评论（包括跟帖）：+2</li>
+              <li>回复评论：+1</li>
+            </ul>
+            <p>如果内容被删除，会掉经验的哦~</p>
+          </div>
+          <div
+            slot="reference"
+            class="exp-container"
+          >
+            <el-progress
+              :text-inside="true"
+              :stroke-width="18"
+              :percentage="expPercent"
+              color="#f25d8e"
+            />
+          </div>
+        </el-popover>
         <div class="buttons">
           <template v-if="isMe">
             <el-tooltip
@@ -379,6 +451,7 @@ import ImageApi from "~/api/imageApi";
 import ImageCropper from "~/components/common/ImageCropper";
 import TabContainer from "~/components/common/TabContainer";
 import UserSex from "~/components/user/UserSex";
+import { Progress } from "element-ui";
 
 export default {
   name: "UserShowLayout",
@@ -413,7 +486,8 @@ export default {
   components: {
     TabContainer,
     ImageCropper,
-    UserSex
+    UserSex,
+    "el-progress": Progress
   },
   data() {
     return {
@@ -503,6 +577,15 @@ export default {
           show: this.isMe
         }
       ].filter(_ => _.show);
+    },
+    expPercent() {
+      if (!this.isMe) {
+        return 0;
+      }
+      return parseInt(
+        (this.user.exp.have_exp / this.user.exp.next_level_exp) * 100,
+        10
+      );
     }
   },
   mounted() {
@@ -655,6 +738,8 @@ export default {
           value: this.coinCount + 1
         });
         this.doSign = true;
+        this.$toast.success("签到成功，经验+2");
+        this.$store.commit("UPDATE_USER_EXP", 2);
       } catch (e) {
         this.$toast.error(e);
       } finally {
