@@ -11,6 +11,7 @@
     text-shadow: 0 1px 10px gray;
     user-select: none;
     position: relative;
+    background-color: rgba(#000, 0.3);
 
     .file-input {
       &:before {

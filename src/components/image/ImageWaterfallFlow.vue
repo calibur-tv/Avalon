@@ -289,6 +289,7 @@
                       :id="item.user.id"
                       :zone="item.user.zone"
                       style="float: none"
+                      custom-class="oneline"
                     >
                       {{ item.user.nickname }}
                     </user-card>
