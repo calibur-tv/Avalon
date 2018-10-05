@@ -203,7 +203,7 @@
         发表于: <v-time v-model="item.created_at"/>
       </span>
       <div
-        v-if="item.top_at"
+        v-if="item.top_at && bangumiId"
         class="top_badge"
       >置顶</div>
       <div
@@ -293,6 +293,14 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    bangumiId: {
+      type: Number,
+      default: 0
+    },
+    userZone: {
+      type: String,
+      default: ""
     }
   }
 };
