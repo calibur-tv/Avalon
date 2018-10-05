@@ -29,7 +29,7 @@
     .title {
       font-size: 14px;
       line-height: 32px;
-      display: inline-block;
+      display: block;
     }
 
     .time {
@@ -171,23 +171,17 @@
 <template>
   <li class="post-show-item">
     <div class="header clearfix">
-      <el-tooltip
+      <user-card
         v-if="item.user"
-        :content="item.user.nickname"
-        effect="dark"
-        placement="top"
+        :id="item.user.id"
+        :zone="item.user.zone"
+        custom-class="user-avatar"
       >
-        <a
-          :href="$alias.user(item.user.zone)"
-          class="user-avatar"
-          target="_blank"
-        >
-          <v-img
-            :src="item.user.avatar"
-            size="32"
-          />
-        </a>
-      </el-tooltip>
+        <v-img
+          :src="item.user.avatar"
+          :size="32"
+        />
+      </user-card>
       <el-tooltip
         v-else-if="item.bangumi"
         :content="item.bangumi.name"
@@ -205,24 +199,11 @@
           />
         </a>
       </el-tooltip>
-      <el-tooltip
-        v-if="item.updated_at !== item.created_at"
-        :content="`发表于：${item.created_at}`"
-        effect="dark"
-        placement="top"
-      >
-        <span class="time">
-          回复于: <v-time v-model="item.updated_at"/>
-        </span>
-      </el-tooltip>
-      <span
-        v-else
-        class="time"
-      >
-        发表于: <v-time v-model="item.updated_at"/>
+      <span class="time">
+        发表于: <v-time v-model="item.created_at"/>
       </span>
       <div
-        v-if="item.top_at"
+        v-if="item.top_at && bangumiId"
         class="top_badge"
       >置顶</div>
       <div
@@ -312,6 +293,14 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    bangumiId: {
+      type: Number,
+      default: 0
+    },
+    userZone: {
+      type: String,
+      default: ""
     }
   }
 };

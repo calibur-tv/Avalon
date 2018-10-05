@@ -11,6 +11,7 @@
     text-shadow: 0 1px 10px gray;
     user-select: none;
     position: relative;
+    background-color: rgba(#000, 0.3);
 
     .file-input {
       &:before {
@@ -89,6 +90,12 @@
       font-size: 13px;
       line-height: 20px;
       pointer-events: none;
+    }
+
+    .exp-container {
+      width: 200px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     .signature {
@@ -195,10 +202,6 @@
   .user-setting-form {
     width: 750px;
   }
-
-  #no-content {
-    margin-top: 25px;
-  }
 }
 </style>
 
@@ -210,6 +213,24 @@
     width: 200px;
     margin-left: 50%;
     transform: translateX(-50%);
+  }
+}
+
+.exp-detail .content {
+  padding: 10px 15px;
+  font-size: 13px;
+  line-height: 20px;
+
+  p {
+    font-weight: bold;
+
+    span {
+      font-weight: normal;
+    }
+  }
+
+  li {
+    font-size: 12px;
   }
 }
 </style>
@@ -294,10 +315,65 @@
           class="avatar"
           alt="avatar"
         >
-        <span
-          class="nickname"
-          v-text="user.nickname"
-        />
+        <span class="nickname">
+          {{ user.nickname }}
+          <template v-if="isMe">
+            <user-sex
+              :sex="convertUserSex(user.sex)"
+              :secret="user.sexSecret"
+            />
+            <span class="level">
+              Lv{{ user.exp.level }}
+            </span>
+          </template>
+          <template v-else>
+            <user-sex
+              :sex="user.sex"
+              :secret="user.sexSecret"
+            />
+            <span class="level">
+              Lv{{ user.level }}
+            </span>
+          </template>
+        </span>
+        <el-popover
+          v-if="isMe"
+          placement="right"
+          width="250"
+          trigger="hover"
+          popper-class="exp-detail"
+        >
+          <div class="content">
+            <v-hr text="我的等级"/>
+            <p>当前等级：<span>{{ user.exp.level }}</span></p>
+            <p>距离升级：<span>{{ user.exp.have_exp }} / {{ user.exp.next_level_exp }}</span></p>
+            <v-hr text="升级方法"/>
+            <ul>
+              <li>每日签到：+2</li>
+              <li>发帖子：+4</li>
+              <li>写漫评：+5</li>
+              <li>写回答：+4</li>
+              <li>传图片（限图片区）：+3</li>
+              <li>提问题（限问答区）：+3</li>
+              <li>写评论（包括跟帖）：+2</li>
+              <li>回复评论：+1</li>
+            </ul>
+            <v-hr text="其它提醒"/>
+            <p>评论/回复自己的内容不会获得经验</p>
+            <p>如果内容被删除，会掉经验的哦~</p>
+          </div>
+          <div
+            slot="reference"
+            class="exp-container"
+          >
+            <el-progress
+              :text-inside="true"
+              :stroke-width="18"
+              :percentage="expPercent"
+              color="#f25d8e"
+            />
+          </div>
+        </el-popover>
         <div class="buttons">
           <template v-if="isMe">
             <el-tooltip
@@ -373,6 +449,8 @@ import UserApi from "~/api/userApi";
 import ImageApi from "~/api/imageApi";
 import ImageCropper from "~/components/common/ImageCropper";
 import TabContainer from "~/components/common/TabContainer";
+import UserSex from "~/components/user/UserSex";
+import { Progress } from "element-ui";
 
 export default {
   name: "UserShowLayout",
@@ -406,7 +484,9 @@ export default {
   },
   components: {
     TabContainer,
-    ImageCropper
+    ImageCropper,
+    UserSex,
+    "el-progress": Progress
   },
   data() {
     return {
@@ -423,7 +503,8 @@ export default {
         showBar: false,
         loading: false
       },
-      signDayLoading: false
+      signDayLoading: false,
+      doSign: false
     };
   },
   computed: {
@@ -446,7 +527,10 @@ export default {
       return this.self.coin;
     },
     withdrawCoinCount() {
-      const result = this.user.coin - this.user.coin_from_sign;
+      let result = this.user.coin - this.user.coin_from_sign;
+      if (this.doSign) {
+        result -= 1;
+      }
       return result < 0 ? 0 : result;
     },
     cards() {
@@ -492,6 +576,15 @@ export default {
           show: this.isMe
         }
       ].filter(_ => _.show);
+    },
+    expPercent() {
+      if (!this.isMe) {
+        return 0;
+      }
+      return parseInt(
+        (this.user.exp.have_exp / this.user.exp.next_level_exp) * 100,
+        10
+      );
     }
   },
   mounted() {
@@ -643,6 +736,9 @@ export default {
           key: "coin",
           value: this.coinCount + 1
         });
+        this.doSign = true;
+        this.$toast.success("签到成功，经验+2");
+        this.$store.commit("UPDATE_USER_EXP", 2);
       } catch (e) {
         this.$toast.error(e);
       } finally {
@@ -660,6 +756,32 @@ export default {
           this.$toast.success("复制成功");
         });
       });
+    },
+    convertUserSex(sex) {
+      let $res = "";
+      switch (sex) {
+        case 0:
+          $res = "未知";
+          break;
+        case 1:
+          $res = "男";
+          break;
+        case 2:
+          $res = "女";
+          break;
+        case 3:
+          $res = "伪娘";
+          break;
+        case 4:
+          $res = "药娘";
+          break;
+        case 5:
+          $res = "扶她";
+          break;
+        default:
+          $res = "未知";
+      }
+      return $res;
     }
   }
 };

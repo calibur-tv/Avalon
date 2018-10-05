@@ -139,13 +139,12 @@
       </a>
       <div
         v-if="item.lover"
-        class="lover"
+        class="lover fr"
       >
         <span>守护者：</span>
-        <a
-          :href="$alias.user(item.lover.zone)"
-          class="fr"
-          target="_blank"
+        <user-card
+          :id="item.lover.id"
+          :zone="item.lover.zone"
         >
           <span v-text="item.lover.nickname"/>
           <v-img
@@ -153,7 +152,7 @@
             size="20"
             class="image"
           />
-        </a>
+        </user-card>
       </div>
       <div
         v-else

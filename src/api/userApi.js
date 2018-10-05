@@ -111,4 +111,10 @@ export default class extends BaseApi {
   recommended() {
     return this.http.get("user/recommended");
   }
+
+  getUserCard({ id }) {
+    return this.http.get("user/card", {
+      params: { id }
+    });
+  }
 }

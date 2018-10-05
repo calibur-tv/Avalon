@@ -224,22 +224,20 @@
         <main>
           <el-row class="post-main">
             <div class="user">
-              <a
-                :href="$alias.user(master.zone)"
-                target="_blank"
+              <user-card
+                :id="master.id"
+                :zone="master.zone"
               >
                 <v-img
                   :src="master.avatar"
                   size="80"
                   class="avatar"
                 />
-              </a>
-              <a
-                :href="$alias.user(master.zone)"
-                class="nickname oneline"
-                target="_blank"
-                v-text="master.nickname"
-              />
+                <p
+                  class="nickname oneline"
+                  v-text="master.nickname"
+                />
+              </user-card>
             </div>
             <div class="content">
               <div
@@ -310,7 +308,10 @@
               id="bottom-comment-post-form"
               slot="reply"
             >
-              <post-comment-form :id="post.id"/>
+              <post-comment-form
+                :id="post.id"
+                :master-id="master.id"
+              />
             </div>
           </comment-main>
         </main>
@@ -418,7 +419,6 @@ export default {
     }
   },
   mounted() {
-    this.scrollToReply();
     this.$channel.$on("get-page-bangumi-for-post-create", () => {
       this.$channel.$emit("set-page-bangumi-for-post-create", {
         id: this.bangumi.id,
@@ -511,19 +511,6 @@ export default {
       } finally {
         this.loadingToggleMark = false;
       }
-    },
-    scrollToReply() {
-      const replyId = this.$route.query["comment-id"];
-      if (!replyId) {
-        return;
-      }
-      const reply = document.getElementById(`comment-${replyId}`);
-      if (!reply) {
-        return;
-      }
-      this.$nextTick(() => {
-        this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400);
-      });
     },
     handleBangumiFollow(result) {
       this.$store.commit("post/FOLLOW_BANGUMI", result);

@@ -1,5 +1,8 @@
 <template>
-  <div class="json-content">
+  <div
+    v-if="show"
+    class="json-content"
+  >
     <component
       v-for="(item, index) in content"
       :key="index"
@@ -23,6 +26,10 @@ export default {
     content: {
       required: true,
       type: Array
+    },
+    show: {
+      type: Boolean,
+      default: true
     }
   }
 };

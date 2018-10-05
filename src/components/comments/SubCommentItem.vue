@@ -2,6 +2,10 @@
 .sub-comment-item {
   padding: 10px 0;
 
+  &.focused-sub-comment {
+    background-color: rgba($color-blue-light, 0.2);
+  }
+
   .sub-user {
     float: left;
 
@@ -85,35 +89,41 @@
 </style>
 
 <template>
-  <div class="sub-comment-item">
+  <div
+    :class="{ 'focused-sub-comment': focusThisComment }"
+    class="sub-comment-item"
+  >
     <div class="sub-user">
       <div class="avatar">
-        <a
-          :href="$alias.user(comment.from_user_zone)"
-          target="_blank"
+        <user-card
+          :id="comment.from_user_id"
+          :zone="comment.from_user_zone"
         >
           <v-img
             :src="comment.from_user_avatar"
             size="24"
           />
-        </a>
+        </user-card>
       </div>
     </div>
     <div class="sub-body">
-      <a
-        :href="$alias.user(comment.from_user_zone)"
-        class="from-user href-fade-blue"
-        target="_blank"
-        v-text="comment.from_user_name"
-      />
+      <user-card
+        :id="comment.from_user_id"
+        :zone="comment.from_user_zone"
+        custom-class="from-user href-fade-blue"
+      >
+        {{ comment.from_user_name }}
+      </user-card>
       <span class="sub-text">
         <template v-if="comment.to_user_id && comment.to_user_id !== parentUserId">
           回复
-          <a
-            :href="$alias.user(comment.to_user_zone)"
-            class="to-user"
-            target="_blank"
-          >@{{ comment.to_user_name }}</a>:
+          <user-card
+            :id="comment.to_user_id"
+            :zone="comment.to_user_zone"
+            custom-class="to-user"
+          >
+            @{{ comment.to_user_name }}
+          </user-card>
         </template>
         {{ comment.content }}
       </span>
@@ -191,6 +201,9 @@ export default {
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.parentUserId;
+    },
+    focusThisComment() {
+      return parseInt(this.$route.query["reply-id"]) === this.comment.id;
     }
   },
   methods: {

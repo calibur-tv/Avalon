@@ -8,7 +8,7 @@
 }
 
 .el-dialog {
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1) !important;
   border-radius: 6px !important;
   background-color: #fff;
@@ -111,6 +111,8 @@
       :visible.sync="dialogVisible"
       :before-close="beforeClose"
       :fullscreen="fullscreen"
+      :close-on-click-modal="clickClose"
+      :close-on-press-escape="clickClose"
     >
       <div class="v-dialog-container">
         <div
@@ -124,7 +126,7 @@
           />
         </div>
         <button
-          v-if="close"
+          v-if="!clickClose || close"
           class="v-dialog-close-btn"
           @click="cancel"
         >&times;</button>
@@ -234,6 +236,10 @@ export default {
     noMore: {
       type: Boolean,
       default: false
+    },
+    clickClose: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

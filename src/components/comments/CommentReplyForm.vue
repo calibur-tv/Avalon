@@ -121,6 +121,12 @@ export default {
         });
         this.open = false;
         this.content = "";
+        if (this.toUserId === this.$store.state.user.id) {
+          this.$toast.success("回复成功");
+        } else {
+          this.$toast.success("回复成功，经验+1");
+          this.$store.commit("UPDATE_USER_EXP", 1);
+        }
       } catch (e) {
         this.$toast.error(e);
       } finally {

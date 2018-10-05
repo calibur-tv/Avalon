@@ -256,24 +256,21 @@
                   />
                 </div>
               </template>
-              <template v-else-if="bangumiId">
-                <a
-                  :href="$alias.user(item.user.zone)"
-                  target="_blank"
+              <user-card
+                v-else-if="bangumiId"
+                :id="item.user.id"
+                :zone="item.user.zone"
+              >
+                <v-img
+                  :src="item.user.avatar"
+                  size="30"
                   class="user-avatar"
-                >
-                  <v-img
-                    :src="item.user.avatar"
-                    size="30"
-                  />
-                </a>
-                <a
-                  :href="$alias.user(item.user.zone)"
-                  target="_blank"
+                />
+                <span
                   class="main-name"
                   v-text="item.user.nickname"
                 />
-              </template>
+              </user-card>
               <template v-else>
                 <a
                   :href="$alias.bangumi(item.bangumi.id)"
@@ -288,12 +285,14 @@
                 <div class="info">
                   <p class="main-info">
                     <span>UP：</span>
-                    <a
-                      :href="$alias.user(item.user.zone)"
-                      target="_blank"
-                      class="oneline"
-                      v-text="item.user.nickname"
-                    />
+                    <user-card
+                      :id="item.user.id"
+                      :zone="item.user.zone"
+                      style="float: none"
+                      custom-class="oneline"
+                    >
+                      {{ item.user.nickname }}
+                    </user-card>
                   </p>
                   <a
                     :href="$alias.bangumi(item.bangumi.id)"

@@ -36,9 +36,9 @@ export default class extends BaseApi {
     return this.http.post("admin/banner/edit", { id, bangumi_id, user_id });
   }
 
-  searchUser({ zone, id }) {
+  searchUser({ type, value }) {
     return this.http.get("admin/search/user", {
-      params: { zone, id }
+      params: { type, value }
     });
   }
 

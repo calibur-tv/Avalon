@@ -2,6 +2,10 @@
 .def-comment-item {
   @extend %clearfix;
 
+  &.focused-main-comment {
+    background-color: rgba($color-blue-light, 0.1);
+  }
+
   .user {
     float: left;
     width: 85px;
@@ -97,28 +101,30 @@
 <template>
   <div
     :id="`comment-${comment.id}`"
+    :class="{ 'focused-main-comment': focusThisComment }"
     class="def-comment-item"
   >
     <div class="user">
-      <a
-        :href="$alias.user(comment.from_user_zone)"
-        target="_blank"
+      <user-card
+        :id="comment.from_user_id"
+        :zone="comment.from_user_zone"
       >
         <v-img
           :src="comment.from_user_avatar"
           size="48"
           class="avatar"
         />
-      </a>
+      </user-card>
     </div>
     <div class="body">
       <div class="header">
-        <a
-          :href="$alias.user(comment.from_user_zone)"
-          class="href-fade-blue"
-          target="_blank"
-          v-text="comment.from_user_name"
-        />
+        <user-card
+          :id="comment.from_user_id"
+          :zone="comment.from_user_zone"
+          custom-class="href-fade-blue"
+        >
+          {{ comment.from_user_name }}
+        </user-card>
       </div>
       <div
         class="content"
@@ -223,6 +229,9 @@ export default {
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.masterId;
+    },
+    focusThisComment() {
+      return parseInt(this.$route.query["comment-id"]) === this.comment.id;
     }
   },
   methods: {

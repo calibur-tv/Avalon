@@ -98,9 +98,9 @@
               />
               <div class="user">
                 作者：
-                <a
-                  :href="$alias.user(user.zone)"
-                  target="_blank"
+                <user-card
+                  :id="user.id"
+                  :zone="user.zone"
                 >
                   <v-img
                     :src="user.avatar"
@@ -111,7 +111,7 @@
                     class="name"
                     v-text="user.nickname"
                   />
-                </a>
+                </user-card>
                 &nbsp;·&nbsp;
                 发表于：
                 <el-tooltip

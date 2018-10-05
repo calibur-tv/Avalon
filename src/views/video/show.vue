@@ -105,7 +105,7 @@
               :source="computeVideoSrc"
               :other-src="useOtherSiteSource"
               :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-              :poster="$resize(video.poster)"
+              :poster="$resize(video.poster, { width: 800 })"
               :next="nextPartVideo"
               :is-guest="isGuest"
               @playing="handlePlaying"

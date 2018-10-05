@@ -200,22 +200,20 @@
             </div>
           </a>
           <div class="about">
-            <a
-              :href="$alias.user(item.user.zone)"
-              target="_blank"
-              class="user-avatar"
+            <user-card
+              :id="item.user.id"
+              :zone="item.user.zone"
             >
               <v-img
                 :src="item.user.avatar"
+                class="user-avatar"
                 size="30"
               />
-            </a>
-            <a
-              :href="$alias.user(item.user.zone)"
-              target="_blank"
-              class="main-name"
-              v-text="item.user.nickname"
-            />
+              <span
+                class="main-name"
+                v-text="item.user.nickname"
+              />
+            </user-card>
           </div>
         </li>
       </ul>

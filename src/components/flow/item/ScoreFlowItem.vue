@@ -24,7 +24,7 @@
       .bangumi-avatar {
         display: inline-block;
         vertical-align: middle;
-        margin-right: 13px;
+        margin-right: 8px;
       }
 
       .user-avatar {
@@ -109,10 +109,10 @@
       <div
         class="about"
       >
-        <a
+        <user-card
           v-if="bangumiId"
-          :href="$alias.user(item.user.zone)"
-          target="_blank"
+          :id="item.user.id"
+          :zone="item.user.zone"
         >
           <v-img
             :src="item.user.avatar"
@@ -123,7 +123,7 @@
             class="name href-fade-blue"
             v-text="item.user.nickname"
           />
-        </a>
+        </user-card>
         <a
           v-else
           :href="$alias.bangumi(item.bangumi.id)"

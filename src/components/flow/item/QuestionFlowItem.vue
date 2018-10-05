@@ -12,7 +12,7 @@
     height: 24px;
     margin-bottom: 8px;
 
-    .avatar {
+    .user-avatar {
       float: left;
       margin-right: 10px;
       @include avatar(24px);
@@ -88,16 +88,16 @@
 <template>
   <li class="question-flow-item">
     <header class="qaq-flow-header">
-      <a
-        :href="$alias.user(item.user.zone)"
-        target="_blank"
-        class="avatar"
+      <user-card
+        :id="item.user.id"
+        :zone="item.user.zone"
+        custom-class="user-avatar"
       >
         <v-img
           :src="item.user.avatar"
           size="24"
         />
-      </a>
+      </user-card>
       <a
         :href="$alias.user(item.user.zone)"
         target="_blank"

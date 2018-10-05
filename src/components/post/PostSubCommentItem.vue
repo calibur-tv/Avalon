@@ -48,32 +48,31 @@
 
 <template>
   <div class="post-sub-comment-item">
-    <a
-      :href="$alias.user(comment.from_user_zone)"
-      class="avatar"
-      target="_blank"
+    <user-card
+      :zone="comment.from_user_zone"
+      :id="comment.from_user_id"
     >
       <v-img
         :src="comment.from_user_avatar"
         size="30"
+        class="avatar"
       />
-    </a>
-    <a
-      :href="$alias.user(comment.from_user_zone)"
-      class="href-fade-blue"
-      target="_blank"
-      v-text="comment.from_user_name"
-    />
+      <span
+        class="href-fade-blue"
+        v-text="comment.from_user_name"
+      />
+    </user-card>
     <template
       v-if="comment.to_user_id && comment.to_user_id !== parentUserId"
     >
       回复
-      <a
-        :href="$alias.user(comment.to_user_zone)"
-        class="href-fade-blue"
-        target="_blank"
-        v-text="comment.to_user_name"
-      />
+      <user-card
+        :id="comment.to_user_id"
+        :zone="comment.to_user_zone"
+        custom-class="href-fade-blue"
+      >
+        {{ comment.to_user_name }}
+      </user-card>
     </template>
     :
     <span class="comment-content">{{ comment.content }}</span>

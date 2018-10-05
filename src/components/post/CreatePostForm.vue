@@ -219,9 +219,10 @@ export default {
                 this.images = [];
                 this.$refs.forms.resetFields();
                 this.$emit("submit");
-                this.$toast.success("发布成功！");
-                window.location = this.$alias.post(id);
                 this.submitting = false;
+                this.$toast.success("发布成功，经验+4").then(() => {
+                  window.location = this.$alias.post(id);
+                });
               } catch (err) {
                 this.$toast.error(err);
                 this.submitting = false;

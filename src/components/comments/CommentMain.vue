@@ -36,6 +36,7 @@
       <comment-create-form
         :id="id"
         :type="type"
+        :master-id="masterId"
         @submit="$emit('create-main-comment')"
       />
     </slot>
@@ -86,6 +87,7 @@
           v-if="list.length >= 10"
           :id="id"
           :type="type"
+          :master-id="masterId"
           @submit="$emit('create-main-comment')"
         />
       </slot>
@@ -164,6 +166,9 @@ export default {
         this.loadMore(true);
       });
     }
+    this.$nextTick(() => {
+      this.scrollToReply();
+    });
   },
   methods: {
     async loadMore(firstRequest = false) {
@@ -184,6 +189,19 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    scrollToReply() {
+      const replyId = this.$route.query["comment-id"];
+      if (!replyId) {
+        return;
+      }
+      const reply = document.getElementById(`comment-${replyId}`);
+      if (!reply) {
+        return;
+      }
+      this.$nextTick(() => {
+        this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400);
+      });
     }
   }
 };

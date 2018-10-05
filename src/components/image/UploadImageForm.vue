@@ -279,9 +279,10 @@ export default {
                   this.form.is_creator = false;
                   this.form.image = null;
                   this.$refs.singleUpload.clearFiles();
-                  this.$toast.success("创建成功");
                   this.submitting = false;
-                  window.location = this.$alias.image(id);
+                  this.$toast.success("上传成功，经验+3").then(() => {
+                    window.location = this.$alias.image(id);
+                  });
                 })
                 .catch(err => {
                   this.$toast.error(err);

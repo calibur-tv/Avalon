@@ -211,7 +211,11 @@ export default {
           this.id = await api.createAnswer(form);
         }
         if (richContent.publish) {
-          window.location.href = this.$alias.answer(this.id);
+          this.$toast
+            .success(this.id ? "发表成功！" : "发表成功，经验+4")
+            .then(() => {
+              window.location.href = this.$alias.answer(this.id);
+            });
         } else {
           this.$toast.success("编辑成功！");
           this.$store.commit("question/EDIT_ANSWER", { id: this.id });
