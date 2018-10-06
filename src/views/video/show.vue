@@ -108,6 +108,7 @@
               :poster="$resize(video.poster, { width: 800 })"
               :next="nextPartVideo"
               :is-guest="isGuest"
+              :blocked="blocked"
               @playing="handlePlaying"
             />
           </no-ssr>
@@ -266,6 +267,9 @@ export default {
     },
     computeVideoSrc() {
       return this.video.src;
+    },
+    blocked() {
+      return this.videoPackage.blocked;
     }
   },
   mounted() {

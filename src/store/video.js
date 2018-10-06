@@ -6,7 +6,8 @@ export default {
     bangumi: null,
     info: null,
     list: null,
-    season: null
+    season: null,
+    blocked: false
   }),
   mutations: {
     SET_DATA(state, data) {
@@ -14,6 +15,7 @@ export default {
       state.info = data.info;
       state.bangumi = data.bangumi;
       state.season = data.season;
+      state.blocked = data.ip_blocked;
     },
     FOLLOW_ALBUM_BANGUMI(state, { result }) {
       state.bangumi.followed = result;

@@ -26,6 +26,7 @@ $tool-btn-width: 40px;
 
     p {
       width: 100%;
+      line-height: 24px;
     }
 
     a {
@@ -196,6 +197,20 @@ $tool-btn-width: 40px;
       <a @click="$channel.$emit('sign-in')">立即登录</a>
     </div>
     <div
+      v-else-if="blocked"
+      class="not-play-screen"
+    >
+      <p>
+        由于你消耗的视频流量过高，被系统判定为机器人恶意攻击，已被禁止看视频功能
+        <br>
+        如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
+      </p>
+      <a
+        href="/about/hello"
+        target="_blank"
+      >查看群号</a>
+    </div>
+    <div
       v-else
       id="video-wrap"
       :class="[isFull ? '' : 'chimee-control-fixed']"
@@ -244,6 +259,10 @@ export default {
       default: false
     },
     isGuest: {
+      required: true,
+      type: Boolean
+    },
+    blocked: {
       required: true,
       type: Boolean
     },
