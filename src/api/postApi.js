@@ -53,14 +53,6 @@ export default class extends BaseApi {
     return this.http.post(`post/${postId}/deleteComment`, { commentId });
   }
 
-  toggleLike(id) {
-    return this.http.post(`post/${id}/toggleLike`);
-  }
-
-  toggleMark(id) {
-    return this.http.post(`post/${id}/toggleMark`);
-  }
-
   setTop({ id }) {
     return this.http.post("post/manager/top/set", { id });
   }
