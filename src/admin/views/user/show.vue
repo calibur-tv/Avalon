@@ -190,8 +190,25 @@
           prop="ip_address"
         />
         <el-table-column
+          label="封禁状态"
+        >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.blocked !== '1'">正常</el-tag>
+            <el-tag
+              v-else
+              type="danger"
+            >
+              已封禁
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="记录时间"
           prop="created_at"
+        />
+        <el-table-column
+          label="操作时间"
+          prop="updated_at"
         />
       </el-table>
     </el-collapse-transition>
@@ -274,6 +291,9 @@ export default {
     queryZone() {
       return this.$route.query.zone || "";
     },
+    queryIp() {
+      return this.$route.query.ip || "";
+    },
     isKing() {
       return this.$store.state.user.id === 1;
     }
@@ -289,6 +309,12 @@ export default {
       this.getUserData({
         type: "zone",
         value: this.queryZone
+      });
+    }
+    if (this.queryIp) {
+      this.getUserData({
+        type: "ip_address",
+        value: this.queryIp
       });
     }
   },
