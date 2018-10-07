@@ -25,12 +25,12 @@ $tool-btn-width: 40px;
     height: 100%;
     color: #ffffff;
     text-align: center;
-    transform: translateY(40%);
     z-index: 999;
     overflow: hidden;
 
     p {
       width: 100%;
+      margin-top: 150px;
       line-height: 24px;
     }
 
