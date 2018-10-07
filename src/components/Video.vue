@@ -30,11 +30,11 @@ $tool-btn-width: 40px;
     }
 
     a {
-      margin-top: 20px;
       display: inline-block;
       border-radius: 5px;
       border: 1px solid #fff;
       padding: 10px 15px;
+      margin: 20px 8px 0;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.3);
@@ -180,7 +180,13 @@ $tool-btn-width: 40px;
 <template>
   <div class="vue-pwa-video">
     <div
-      v-if="otherSrc"
+      v-if="!source"
+      class="not-play-screen"
+    >
+      <p>这个资源消失了_〆(´Д｀ )</p>
+    </div>
+    <div
+      v-else-if="otherSrc"
       class="not-play-screen"
     >
       <p>应版权方要求 (⇀‸↼‶)，该视频暂不提供站内播放</p>
@@ -206,9 +212,47 @@ $tool-btn-width: 40px;
         如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
       </p>
       <a
+        href="https://www.calibur.tv/post/2282"
+        target="_blank"
+      >&nbsp;&nbsp;为什么要限流？</a>
+      <a
         href="/about/hello"
         target="_blank"
-      >查看群号</a>
+      >查看加群方式</a>
+    </div>
+    <div
+      v-else-if="mustReward"
+      class="not-play-screen"
+    >
+      <p>
+        由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
+        <br>
+        金币可通过签到等方式获得
+      </p>
+      <a
+        href="https://www.calibur.tv/post/2282"
+        target="_blank"
+      >&nbsp;&nbsp;为什么要限流？</a>
+      <a
+        href="/about/hello"
+        target="_blank"
+      >&nbsp;&nbsp;什么是金币？</a>
+    </div>
+    <div
+      v-else-if="showLevelThrottle"
+      class="not-play-screen"
+    >
+      <p>
+        由于站内视频流量过大，站长资金难以维持，该视频需要你的等级至少 {{ needMinLevel }} 才能播放
+      </p>
+      <a
+        href="https://www.calibur.tv/post/2282"
+        target="_blank"
+      >&nbsp;&nbsp;为什么要限流？</a>
+      <a
+        href="https://www.calibur.tv/post/2279"
+        target="_blank"
+      >&nbsp;&nbsp;如何升级？</a>
     </div>
     <div
       v-else
@@ -269,6 +313,14 @@ export default {
     poster: {
       type: String,
       default: ""
+    },
+    mustReward: {
+      type: Boolean,
+      default: false
+    },
+    needMinLevel: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -288,6 +340,12 @@ export default {
           .pop()
           .toLowerCase() === "flv"
       );
+    },
+    showLevelThrottle() {
+      if (this.$store.state.login) {
+        return this.$store.state.user.exp.level < this.needMinLevel;
+      }
+      return true;
     }
   },
   mounted() {

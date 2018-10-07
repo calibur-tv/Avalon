@@ -221,15 +221,17 @@
       :fullscreen="true"
       class="comment-dialog"
     >
-      <comment-main
-        :id="item.id"
-        :master-id="item.user.id"
-        :auto="true"
-        empty-text="还没有评论"
-        type="answer"
-        @delete-main-comment="handleCommentChange(-1)"
-        @create-main-comment="handleCommentChange(1)"
-      />
+      <div style="max-width: 700px;margin: 0 auto">
+        <comment-main
+          :id="item.id"
+          :master-id="item.user.id"
+          :auto="true"
+          empty-text="还没有评论"
+          type="answer"
+          @delete-main-comment="handleCommentChange(-1)"
+          @create-main-comment="handleCommentChange(1)"
+        />
+      </div>
     </v-dialog>
   </div>
 </template>
