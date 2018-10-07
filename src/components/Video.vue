@@ -8,6 +8,8 @@ $tool-btn-width: 40px;
   height: 100% !important;
   position: relative;
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+  min-height: 400px;
+  background-color: #000;
   z-index: 0;
 
   #video-wrap {
@@ -16,13 +18,16 @@ $tool-btn-width: 40px;
   }
 
   .not-play-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 600px;
+    height: 100%;
     color: #ffffff;
     text-align: center;
-    top: -50%;
-    transform: translateY(50%);
+    transform: translateY(40%);
     z-index: 999;
+    overflow: hidden;
 
     p {
       width: 100%;

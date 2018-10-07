@@ -16,12 +16,6 @@
     }
   }
 
-  .video-placeholder {
-    height: 560px;
-    background-color: #000;
-    overflow: hidden;
-  }
-
   .video-info {
     padding-top: 60px;
     margin-bottom: 20px;
@@ -101,20 +95,18 @@
       </div>
       <v-layout>
         <template slot="main">
-          <no-ssr class="video-placeholder">
-            <v-video
-              :source="computeVideoSrc"
-              :other-src="useOtherSiteSource"
-              :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-              :poster="$resize(video.poster, { width: 800 })"
-              :next="nextPartVideo"
-              :is-guest="isGuest"
-              :blocked="videoPackage.blocked"
-              :must-reward="videoPackage.mustReward && !video.rewarded"
-              :need-min-level="videoPackage.needMinLevel"
-              @playing="handlePlaying"
-            />
-          </no-ssr>
+          <v-video
+            :source="computeVideoSrc"
+            :other-src="useOtherSiteSource"
+            :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+            :poster="$resize(video.poster, { width: 800 })"
+            :next="nextPartVideo"
+            :is-guest="isGuest"
+            :blocked="videoPackage.blocked"
+            :must-reward="videoPackage.mustReward && !video.rewarded"
+            :need-min-level="videoPackage.needMinLevel"
+            @playing="handlePlaying"
+          />
           <div class="video-info">
             <social-panel
               :id="video.id"
