@@ -13,7 +13,6 @@
   border-radius: 6px !important;
   background-color: #fff;
   overflow: hidden;
-  margin-top: 10vh !important;
 
   .el-dialog__header {
     display: none;

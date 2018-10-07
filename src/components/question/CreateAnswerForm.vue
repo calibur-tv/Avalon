@@ -35,6 +35,7 @@
   border-top: 1px solid $color-gray-light;
   padding-top: 7px;
   text-align: right;
+  z-index: 1;
 
   .source-url {
     float: left;
