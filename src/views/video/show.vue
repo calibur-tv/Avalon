@@ -19,6 +19,7 @@
   .video-placeholder {
     height: 560px;
     background-color: #000;
+    overflow: hidden;
   }
 
   .video-info {

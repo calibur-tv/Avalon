@@ -319,8 +319,8 @@ export default {
       default: false
     },
     needMinLevel: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -350,6 +350,9 @@ export default {
   },
   mounted() {
     if (this.otherSrc || this.isGuest) {
+      return;
+    }
+    if (this.showLevelThrottle || this.mustReward) {
       return;
     }
     Chimee.install(chimeePluginControlbar);
