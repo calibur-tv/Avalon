@@ -361,11 +361,12 @@ export default {
       try {
         const result = await api.searchUser(data);
         if (data.type === "ip_address") {
-          if (!result.length) {
+          const ids = data.filter(_ => _.user_id !== "0");
+          if (!ids.length) {
             this.$toast.error("没有找到用户");
             return;
           }
-          result.forEach(item => {
+          ids.forEach(item => {
             window.open(
               `${window.location.href.split("?")[0]}?id=${item.user_id}`
             );
