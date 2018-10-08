@@ -89,7 +89,7 @@ $tool-btn-width: 40px;
   }
 
   chimee-progresstime {
-    color: $color-text-light;
+    color: $color-text-light !important;
     font-size: 13px;
     margin-right: 10px;
   }
