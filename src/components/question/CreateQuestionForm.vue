@@ -175,7 +175,7 @@ export default {
             success: async ({ data }) => {
               const api = new Api(this);
               try {
-                const id = await api.createQuestion({
+                const result = await api.createQuestion({
                   title: this.form.title,
                   tags: this.form.tags,
                   intro: this.form.content.substring(0, 120),
@@ -187,8 +187,8 @@ export default {
                 this.$refs.form.resetFields();
                 this.$emit("submit");
                 this.submitting = false;
-                this.$toast.success("提交成功，经验+3").then(() => {
-                  window.location = this.$alias.question(id);
+                this.$toast.success(result.message).then(() => {
+                  window.location = this.$alias.question(result.data);
                 });
               } catch (err) {
                 this.$toast.error(err);

@@ -294,20 +294,25 @@ export default {
           form.id = newId;
           await api.update(form);
         } else {
-          newId = await api.create(form);
+          const result = await api.create(form);
+          newId = result.data;
         }
         if (richContent.publish) {
-          this.$confirm(newId ? "发布成功" : "发布成功，经验+5", "提示", {
-            confirmButtonText: "点击查看",
-            cancelButtonText: "继续编辑",
-            type: "warning"
-          })
+          this.$confirm(
+            typeof result !== "undefined" ? result.message : "发布成功",
+            "提示",
+            {
+              confirmButtonText: "点击查看",
+              cancelButtonText: "继续编辑",
+              type: "warning"
+            }
+          )
             .then(() => {
               window.location.href = this.$alias.score(newId);
             })
             .catch(() => {});
         } else {
-          this.$toast.success("操作成功");
+          this.$toast.success("保存成功");
           if (!richContent.id) {
             setTimeout(() => {
               window.location = this.$alias.editScore(newId);

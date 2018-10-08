@@ -206,7 +206,7 @@ export default {
           this.$captcha({
             success: async ({ data }) => {
               try {
-                const id = await this.$store.dispatch("post/create", {
+                const result = await this.$store.dispatch("post/create", {
                   title: this.forms.title,
                   bangumiId: this.forms.bangumiId,
                   desc: this.forms.content.substring(0, 120),
@@ -220,8 +220,8 @@ export default {
                 this.$refs.forms.resetFields();
                 this.$emit("submit");
                 this.submitting = false;
-                this.$toast.success("发布成功，经验+4").then(() => {
-                  window.location = this.$alias.post(id);
+                this.$toast.success(result.message).then(() => {
+                  window.location = this.$alias.post(result.data);
                 });
               } catch (err) {
                 this.$toast.error(err);

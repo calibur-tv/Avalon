@@ -49,7 +49,7 @@ export function createStore() {
         state.user[key] = value;
       },
       UPDATE_USER_EXP(state, score) {
-        if (!state.user) {
+        if (!state.user || !score) {
           return;
         }
         if (score > 0) {

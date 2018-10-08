@@ -112,7 +112,7 @@ export default {
       }
       this.submitting = true;
       try {
-        await this.$store.dispatch("comment/createSubComment", {
+        const result = await this.$store.dispatch("comment/createSubComment", {
           id: this.id,
           ctx: this,
           type: this.type,
@@ -121,12 +121,8 @@ export default {
         });
         this.open = false;
         this.content = "";
-        if (this.toUserId === this.$store.state.user.id) {
-          this.$toast.success("回复成功");
-        } else {
-          this.$toast.success("回复成功，经验+1");
-          this.$store.commit("UPDATE_USER_EXP", 1);
-        }
+        this.$toast.success(result.message);
+        this.$store.commit(result.exp);
       } catch (e) {
         this.$toast.error(e);
       } finally {
