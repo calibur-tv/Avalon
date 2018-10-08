@@ -268,19 +268,19 @@ export default {
           tail = `?comment-id=${two[1]}`;
         }
         prefix = one[0];
-        if (prefix === "score") {
-          prefix = "review";
-        } else if (prefix === "question") {
-          prefix = "qaq";
-        } else if (prefix === "answer") {
-          prefix = "soga";
-        } else if (prefix === "image") {
-          prefix = "pin";
-        }
         id = two[2];
       } else {
         id = type.split("-")[1];
         prefix = type.split("-")[0];
+      }
+      if (prefix === "score") {
+        prefix = "review";
+      } else if (prefix === "question") {
+        prefix = "qaq";
+      } else if (prefix === "answer") {
+        prefix = "soga";
+      } else if (prefix === "image") {
+        prefix = "pin";
       }
       return `/${prefix}/${id}${tail}`;
     },
