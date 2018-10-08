@@ -1,5 +1,9 @@
 <style lang="scss">
 .post-comment-item {
+  &.focused-main-comment {
+    background-color: rgba($color-blue-light, 0.1);
+  }
+
   .user {
     width: 180px;
     float: left;
@@ -12,7 +16,6 @@
 
     .nickname {
       display: block;
-      background: #fff;
       width: 98px;
       height: 28px;
       line-height: 24px;
@@ -23,7 +26,6 @@
 
   .content {
     overflow: hidden;
-    background: #fff;
     border-top: 1px solid #e5e9ef;
     padding-top: 22px;
     margin-top: 14px;
@@ -76,6 +78,7 @@
 <template>
   <div
     :id="`comment-${post.id}`"
+    :class="{ 'focused-main-comment': focusThisComment }"
     class="post-comment-item"
   >
     <div class="user">
@@ -177,6 +180,9 @@ export default {
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.masterId;
+    },
+    focusThisComment() {
+      return parseInt(this.$route.query["comment-id"]) === this.post.id;
     }
   },
   methods: {

@@ -90,6 +90,7 @@
 
 <template>
   <div
+    :id="`sub-comment-${comment.id}`"
     :class="{ 'focused-sub-comment': focusThisComment }"
     class="sub-comment-item"
   >
