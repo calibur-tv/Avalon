@@ -8,6 +8,8 @@ $tool-btn-width: 40px;
   height: 100% !important;
   position: relative;
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+  min-height: 400px;
+  background-color: #000;
   z-index: 0;
 
   #video-wrap {
@@ -16,24 +18,28 @@ $tool-btn-width: 40px;
   }
 
   .not-play-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 600px;
+    height: 100%;
     color: #ffffff;
     text-align: center;
-    top: -50%;
-    transform: translateY(50%);
     z-index: 999;
+    overflow: hidden;
 
     p {
       width: 100%;
+      margin-top: 150px;
+      line-height: 24px;
     }
 
     a {
-      margin-top: 20px;
       display: inline-block;
       border-radius: 5px;
       border: 1px solid #fff;
       padding: 10px 15px;
+      margin: 20px 8px 0;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.3);
@@ -83,7 +89,7 @@ $tool-btn-width: 40px;
   }
 
   chimee-progresstime {
-    color: $color-text-light;
+    color: $color-text-light !important;
     font-size: 13px;
     margin-right: 10px;
   }
@@ -179,7 +185,13 @@ $tool-btn-width: 40px;
 <template>
   <div class="vue-pwa-video">
     <div
-      v-if="otherSrc"
+      v-if="!source"
+      class="not-play-screen"
+    >
+      <p>这个资源消失了_〆(´Д｀ )</p>
+    </div>
+    <div
+      v-else-if="otherSrc"
       class="not-play-screen"
     >
       <p>应版权方要求 (⇀‸↼‶)，该视频暂不提供站内播放</p>
@@ -194,6 +206,58 @@ $tool-btn-width: 40px;
     >
       <p>流量压力太大了 (ಥ_ಥ)，需要登录才能看番</p>
       <a @click="$channel.$emit('sign-in')">立即登录</a>
+    </div>
+    <div
+      v-else-if="blocked"
+      class="not-play-screen"
+    >
+      <p>
+        由于你消耗的视频流量过高，被系统判定为机器人恶意攻击，已被禁止看视频功能
+        <br>
+        如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
+      </p>
+      <a
+        href="https://www.calibur.tv/post/2282"
+        target="_blank"
+      >&nbsp;&nbsp;为什么要限流？</a>
+      <a
+        href="/about/hello"
+        target="_blank"
+      >查看加群方式</a>
+    </div>
+    <div
+      v-else-if="mustReward"
+      class="not-play-screen"
+    >
+      <p>
+        由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
+        <br>
+        金币可通过签到等方式获得
+      </p>
+      <a
+        href="https://www.calibur.tv/post/2282"
+        target="_blank"
+      >&nbsp;&nbsp;为什么要限流？</a>
+      <a
+        href="/about/hello"
+        target="_blank"
+      >&nbsp;&nbsp;什么是金币？</a>
+    </div>
+    <div
+      v-else-if="showLevelThrottle"
+      class="not-play-screen"
+    >
+      <p>
+        由于站内视频流量过大，站长资金难以维持，该视频需要你的等级至少 {{ needMinLevel }} 才能播放
+      </p>
+      <a
+        href="https://www.calibur.tv/post/2282"
+        target="_blank"
+      >&nbsp;&nbsp;为什么要限流？</a>
+      <a
+        href="https://www.calibur.tv/post/2279"
+        target="_blank"
+      >&nbsp;&nbsp;如何升级？</a>
     </div>
     <div
       v-else
@@ -247,9 +311,21 @@ export default {
       required: true,
       type: Boolean
     },
+    blocked: {
+      required: true,
+      type: Boolean
+    },
     poster: {
       type: String,
       default: ""
+    },
+    mustReward: {
+      type: Boolean,
+      default: false
+    },
+    needMinLevel: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -269,10 +345,19 @@ export default {
           .pop()
           .toLowerCase() === "flv"
       );
+    },
+    showLevelThrottle() {
+      if (this.$store.state.login) {
+        return this.$store.state.user.exp.level < this.needMinLevel;
+      }
+      return true;
     }
   },
   mounted() {
     if (this.otherSrc || this.isGuest) {
+      return;
+    }
+    if (this.showLevelThrottle || this.mustReward) {
       return;
     }
     Chimee.install(chimeePluginControlbar);

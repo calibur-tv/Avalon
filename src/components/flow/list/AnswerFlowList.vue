@@ -5,10 +5,12 @@
   .load-more-btn {
     width: 100%;
     background-color: #fff;
-    margin-bottom: 10px;
     border: none;
     box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
     border-radius: 2px;
+    height: 50px;
+    line-height: 50px;
+    margin-bottom: 30px;
   }
 }
 </style>

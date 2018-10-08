@@ -104,7 +104,7 @@ export default {
       required: true,
       type: String,
       validator: val =>
-        ~["post", "video", "image", "score", "answer"].indexOf(val)
+        ~["post", "video", "image", "score", "answer", "video"].indexOf(val)
     },
     likeUsers: {
       required: true,
@@ -179,6 +179,7 @@ export default {
               this.$store.commit("USE_COIN");
             }
             this.commitResult("reward", result);
+            this.$emit("reward-callback");
             this.$toast.success("操作成功");
           } catch (e) {
             this.$toast.error(e);

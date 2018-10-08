@@ -406,4 +406,20 @@ export default class extends BaseApi {
       link
     });
   }
+
+  blockedIpList() {
+    return this.http.get("admin/ip_blocker/list");
+  }
+
+  blockIpAddress({ ip_address }) {
+    return this.http.post("admin/ip_blocker/block", {
+      ip_address
+    });
+  }
+
+  recoverIpAddress({ ip_address }) {
+    return this.http.post("admin/ip_blocker/recover", {
+      ip_address
+    });
+  }
 }

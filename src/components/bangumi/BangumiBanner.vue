@@ -1,5 +1,14 @@
 <style lang="scss">
 .bangumi-banner {
+  .banner-mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(#000, 0.3);
+  }
+
   .info {
     width: 60%;
     min-width: 600px;
@@ -75,6 +84,7 @@
     height="400px"
     class="bangumi-banner"
   >
+    <div class="banner-mask"/>
     <div class="info">
       <h1
         class="title"

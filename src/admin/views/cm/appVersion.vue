@@ -258,7 +258,10 @@ export default {
               version: row.app_version
             })
             .then(() => {
-              this.pageList.splice(index, 1);
+              this.pageList.splice(
+                (this.pageState.cur - 1) * this.pageState.size + index,
+                1
+              );
               this.$toast.success("操作成功");
             })
             .catch(e => {

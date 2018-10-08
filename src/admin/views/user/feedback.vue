@@ -134,7 +134,10 @@ export default {
       const api = new Api(this);
       try {
         await api.readFeedback({ id });
-        this.pageList.splice(index, 1);
+        this.pageList.splice(
+          (this.pageState.cur - 1) * this.pageState.size + index,
+          1
+        );
         this.$channel.$emit("admin-trial-do", {
           type: "feedback"
         });

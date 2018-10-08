@@ -268,19 +268,19 @@ export default {
           tail = `?comment-id=${two[1]}`;
         }
         prefix = one[0];
-        if (prefix === "score") {
-          prefix = "review";
-        } else if (prefix === "question") {
-          prefix = "qaq";
-        } else if (prefix === "answer") {
-          prefix = "soga";
-        } else if (prefix === "image") {
-          prefix = "pin";
-        }
         id = two[2];
       } else {
         id = type.split("-")[1];
         prefix = type.split("-")[0];
+      }
+      if (prefix === "score") {
+        prefix = "review";
+      } else if (prefix === "question") {
+        prefix = "qaq";
+      } else if (prefix === "answer") {
+        prefix = "soga";
+      } else if (prefix === "image") {
+        prefix = "pin";
       }
       return `/${prefix}/${id}${tail}`;
     },
@@ -312,7 +312,10 @@ export default {
       const api = new Api(this);
       try {
         await api.removeReport({ tail });
-        this.pageList.splice(index, 1);
+        this.pageList.splice(
+          (this.pageState.cur - 1) * this.pageState.size + index,
+          1
+        );
         this.$channel.$emit("admin-trial-do", {
           type: "report"
         });

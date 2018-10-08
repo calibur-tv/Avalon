@@ -16,13 +16,8 @@
     }
   }
 
-  .video-placeholder {
-    height: 560px;
-    background-color: #000;
-  }
-
   .video-info {
-    margin-top: 60px;
+    padding-top: 60px;
     margin-bottom: 20px;
 
     .v-share {
@@ -100,18 +95,32 @@
       </div>
       <v-layout>
         <template slot="main">
-          <no-ssr class="video-placeholder">
-            <v-video
-              :source="computeVideoSrc"
-              :other-src="useOtherSiteSource"
-              :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-              :poster="$resize(video.poster, { width: 800 })"
-              :next="nextPartVideo"
-              :is-guest="isGuest"
-              @playing="handlePlaying"
-            />
-          </no-ssr>
+          <v-video
+            :source="computeVideoSrc"
+            :other-src="useOtherSiteSource"
+            :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+            :poster="$resize(video.poster, { width: 800 })"
+            :next="nextPartVideo"
+            :is-guest="isGuest"
+            :blocked="videoPackage.blocked"
+            :must-reward="videoPackage.mustReward && !video.rewarded"
+            :need-min-level="videoPackage.needMinLevel"
+            @playing="handlePlaying"
+          />
           <div class="video-info">
+            <social-panel
+              :id="video.id"
+              :is-creator="video.is_creator"
+              :user-id="video.user_id"
+              :liked="video.liked"
+              :marked="video.marked"
+              :rewarded="video.rewarded"
+              :reward-users="video.reward_users"
+              :like-users="video.like_users"
+              :mark-users="video.mark_users"
+              type="video"
+              @reward-callback="handleRewardAction"
+            />
             <v-share type="panel"/>
             <el-button
               type="warning"
@@ -148,6 +157,7 @@ import VideoApi from "~/api/videoApi";
 import vVideo from "~/components/Video";
 import vPart from "~/components/lists/Parts";
 import CommentMain from "~/components/comments/CommentMain";
+import SocialPanel from "~/components/common/SocialPanel";
 
 export default {
   name: "VideoShow",
@@ -199,7 +209,8 @@ export default {
   components: {
     vVideo,
     vPart,
-    CommentMain
+    CommentMain,
+    SocialPanel
   },
   async asyncData({ route, store, ctx }) {
     const id = route.params.id;
@@ -224,7 +235,6 @@ export default {
       return parseInt(this.$route.params.id, 10);
     },
     isGuest() {
-      //      return this.bangumi.id !== 34 && !this.$store.state.login;
       return !this.$store.state.login;
     },
     videoPackage() {
@@ -296,6 +306,11 @@ export default {
     },
     handleFollowAction(result) {
       this.$store.commit("video/FOLLOW_ALBUM_BANGUMI", { result });
+    },
+    handleRewardAction() {
+      if (this.videoPackage.mustReward) {
+        window.location.reload();
+      }
     }
   }
 };

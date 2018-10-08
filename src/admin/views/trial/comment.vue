@@ -27,7 +27,7 @@
     v-loading="loading"
     id="trial-comment"
   >
-    <header v-if="isKing">
+    <header>
       <el-button
         type="danger"
         icon="delete"
@@ -54,11 +54,6 @@
                 :href="computeCommentLink(scope.row)"
                 target="_blank"
               >
-                <el-tag v-if="computeCommentLink(scope.row) !== 'javascript:;'">可以查看</el-tag>
-                <el-tag
-                  v-else
-                  type="danger"
-                >不可查看</el-tag>
                 <span
                   class="content"
                   v-html="item.data"
@@ -81,11 +76,6 @@
             :href="computeCommentLink(scope.row)"
             target="_blank"
           >
-            <el-tag v-if="computeCommentLink(scope.row) !== 'javascript:;'">可以查看</el-tag>
-            <el-tag
-              v-else
-              type="danger"
-            >不可查看</el-tag>
             <span
               class="content"
               v-text="scope.row.content"
@@ -134,11 +124,6 @@ export default {
       loading: true
     };
   },
-  computed: {
-    isKing() {
-      return this.$store.state.user.id === 1;
-    }
-  },
   created() {
     this.getData();
   },
@@ -158,16 +143,14 @@ export default {
         });
     },
     computeCommentLink(comment) {
-      if (+comment.modal_id === 0) {
-        return "javascript:;";
-      }
-      try {
+      if (comment.parent_id !== "0") {
         return `${this.$alias[comment.type](comment.modal_id)}?comment-id=${
-          comment.id
-        }`;
-      } catch (e) {
-        return "javascript:;";
+          comment.parent_id
+        }&reply-id=${comment.id}`;
       }
+      return `${this.$alias[comment.type](comment.modal_id)}?comment-id=${
+        comment.id
+      }`;
     },
     checkIsHTML(content) {
       return content.startsWith("[{");

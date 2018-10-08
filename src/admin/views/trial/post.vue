@@ -63,7 +63,7 @@
     v-loading="loading"
     id="trial-post"
   >
-    <header v-if="isKing">
+    <header>
       <el-button
         type="danger"
         icon="delete"
@@ -181,11 +181,6 @@ export default {
       list: [],
       loading: true
     };
-  },
-  computed: {
-    isKing() {
-      return this.$store.state.user.id === 1;
-    }
   },
   created() {
     this.getData();
