@@ -738,7 +738,7 @@ export default {
         });
         this.doSign = true;
         this.$toast.success(result.message);
-        this.$store.commit(result.exp);
+        this.$store.commit("UPDATE_USER_EXP", result.exp);
       } catch (e) {
         this.$toast.error(e);
       } finally {
