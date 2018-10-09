@@ -110,7 +110,7 @@ const actions = {
       return;
     }
     const api = new Api(ctx);
-    await api.daySign();
+    return await api.daySign();
   },
   async getNotifications({ state, commit }, { ctx, init }) {
     const length = state.notifications.list.length;

@@ -185,12 +185,13 @@ export default {
           const api = new ImageApi(this);
           api
             .createAlbum(Object.assign({}, this.form, this.form.poster))
-            .then(data => {
+            .then(result => {
               this.$refs.form.resetFields();
               this.$refs.upload.clearFiles();
-              this.$toast.success("创建成功，经验+3");
+              this.$toast.success(result.message);
+              this.$store.commit("UPDATE_USER_EXP", result.exp);
               this.submitting = false;
-              this.$emit("success", data);
+              this.$emit("success", result.data);
             })
             .catch(err => {
               this.$toast.error(err);

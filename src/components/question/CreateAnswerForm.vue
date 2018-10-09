@@ -209,11 +209,14 @@ export default {
           form.id = this.id;
           await api.updateAnswer(form);
         } else {
-          this.id = await api.createAnswer(form);
+          const result = await api.createAnswer(form);
+          this.id = result.data;
         }
         if (richContent.publish) {
           this.$toast
-            .success(this.id ? "发表成功！" : "发表成功，经验+4")
+            .success(
+              typeof result !== "undefined" ? result.message : "发布成功"
+            )
             .then(() => {
               window.location.href = this.$alias.answer(this.id);
             });

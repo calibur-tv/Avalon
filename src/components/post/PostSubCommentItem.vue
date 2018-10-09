@@ -4,6 +4,10 @@
   line-height: 20px;
   color: #99a2aa;
 
+  &.focused-sub-comment {
+    background-color: rgba($color-blue-light, 0.2);
+  }
+
   &:hover {
     .report-btn {
       opacity: 1 !important;
@@ -47,7 +51,11 @@
 </style>
 
 <template>
-  <div class="post-sub-comment-item">
+  <div
+    :id="`sub-comment-${comment.id}`"
+    :class="{ 'focused-sub-comment': focusThisComment }"
+    class="post-sub-comment-item"
+  >
     <user-card
       :zone="comment.from_user_zone"
       :id="comment.from_user_id"
@@ -135,6 +143,9 @@ export default {
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.parentUserId;
+    },
+    focusThisComment() {
+      return parseInt(this.$route.query["reply-id"]) === this.comment.id;
     }
   },
   methods: {

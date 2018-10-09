@@ -274,14 +274,14 @@ export default {
                     this.form.image
                   )
                 )
-                .then(id => {
+                .then(result => {
                   this.form.name = "";
                   this.form.is_creator = false;
                   this.form.image = null;
                   this.$refs.singleUpload.clearFiles();
                   this.submitting = false;
-                  this.$toast.success("上传成功，经验+3").then(() => {
-                    window.location = this.$alias.image(id);
+                  this.$toast.success(result.message).then(() => {
+                    window.location = this.$alias.image(result.data);
                   });
                 })
                 .catch(err => {

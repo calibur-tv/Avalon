@@ -228,25 +228,25 @@ const actions = {
   },
   async createMainComment({ commit }, { ctx, images, content, type, id }) {
     const api = new Api(ctx);
-    const comment = await api.createMainComment({
+    const result = await api.createMainComment({
       type,
       id,
       content,
       images
     });
-    commit("CREATE_MAIN_COMMENT", comment);
-    return comment;
+    commit("CREATE_MAIN_COMMENT", result.data);
+    return result;
   },
   async createSubComment({ commit }, { ctx, id, type, content, targetUserId }) {
     const api = new Api(ctx);
-    const comment = await api.createSubComment({
+    const result = await api.createSubComment({
       id,
       type,
       content,
       targetUserId
     });
-    commit("CREATE_SUB_COMMENT", { id, comment });
-    return comment;
+    commit("CREATE_SUB_COMMENT", { id, comment: result.data });
+    return result;
   },
   async deleteSubComment({ commit }, { ctx, id, type, parentId }) {
     const api = new Api(ctx);

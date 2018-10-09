@@ -143,12 +143,16 @@ export default {
         });
     },
     computeCommentLink(comment) {
+      let aliasName = comment.type;
+      if (aliasName === "cartoon_role") {
+        aliasName = "cartoonRole";
+      }
       if (comment.parent_id !== "0") {
-        return `${this.$alias[comment.type](comment.modal_id)}?comment-id=${
+        return `${this.$alias[aliasName](comment.modal_id)}?comment-id=${
           comment.parent_id
         }&reply-id=${comment.id}`;
       }
-      return `${this.$alias[comment.type](comment.modal_id)}?comment-id=${
+      return `${this.$alias[aliasName](comment.modal_id)}?comment-id=${
         comment.id
       }`;
     },
