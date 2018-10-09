@@ -58,8 +58,7 @@
           :href="$alias.answer(item.id)"
           class="title"
           target="_blank"
-          v-text="item.title"
-        />
+        >点击查看内容</a>
         <json-content :content="item.content"/>
         <div class="control">
           <div class="bottom clearfix">

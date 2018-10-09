@@ -39,6 +39,10 @@
               v-if="qaq.answer_count > 1"
               class="read-all-btn"
             >查看全部 {{ qaq.answer_count }} 个回答</el-button>
+            <el-button
+              v-else
+              class="read-all-btn"
+            >查看问题</el-button>
           </a>
           <answer-flow-item :item="answer"/>
           <a
@@ -49,6 +53,10 @@
               v-if="qaq.answer_count > 1"
               class="read-all-btn"
             >查看全部 {{ qaq.answer_count }} 个回答</el-button>
+            <el-button
+              v-else
+              class="read-all-btn"
+            >查看问题</el-button>
           </a>
         </div>
         <no-content v-else>
