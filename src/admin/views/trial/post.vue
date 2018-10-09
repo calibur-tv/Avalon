@@ -298,7 +298,7 @@ export default {
       if (post.deleted_at) {
         return "已删除";
       }
-      if (post.user_id === post.state) {
+      if (parseInt(post.user_id, 10) === post.state) {
         return "刚发布";
       }
       if (post.is_nice) {
