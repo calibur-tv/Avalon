@@ -365,7 +365,11 @@ export default {
       return this.computeImageHeight(image) + 106;
     },
     computeImageHeight(image) {
-      return parseInt((image.height / image.width) * this.width, 10);
+      const result = parseInt((image.height / image.width) * this.width, 10);
+      if (result > 300) {
+        return 300;
+      }
+      return result;
     },
     loadMore() {
       this.$emit("load");
