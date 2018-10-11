@@ -1,24 +1,9 @@
-<style lang="scss" module>
+<style lang="scss">
 $transition: 0.4s linear;
 $placeholder-color: #ddd;
 
-.inline {
-  position: relative;
-  background-color: transparent;
-  transition: $transition;
-  overflow: hidden;
-  display: inline-block;
-
-  img {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-}
-
-.block {
-  max-width: 100%;
-  margin: 0 auto;
+.lazy-flow-image,
+.lazy-full-image {
   position: relative;
   background-color: transparent;
   transition: $transition;
@@ -32,11 +17,7 @@ $placeholder-color: #ddd;
   }
 }
 
-.avatar {
-  border-radius: 50%;
-}
-
-.retry {
+.lazy-image-retry {
   background-color: $placeholder-color;
   opacity: 0.3;
   position: relative;
@@ -45,35 +26,40 @@ $placeholder-color: #ddd;
   img {
     display: none;
   }
-}
 
-.message {
-  color: #000;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.padding {
-  width: 100%;
-  height: 0;
-}
-
-.shim {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-
-  img {
-    margin: 0 auto;
+  .lazy-image-message {
+    color: #000;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
-.unload {
+.lazy-full-image {
+  max-width: 100%;
+  margin: 0 auto;
+
+  .lazy-image-padding {
+    width: 100%;
+    height: 0;
+  }
+
+  .lazy-image-shim {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+
+    img {
+      margin: 0 auto;
+    }
+  }
+}
+
+.lazy-image-fade {
   background-color: $placeholder-color;
   opacity: 0.3;
 
@@ -86,23 +72,17 @@ $placeholder-color: #ddd;
 <template>
   <div
     v-if="full"
-    :class="[
-      $style.block,
-      {
-        [$style.unload]: !loaded,
-        [$style.retry]: error,
-        [$style.avatar]: avatar,
-      }
-    ]"
+    :class="{ 'lazy-image-fade': !loaded, 'lazy-image-retry': error }"
     :style="lazyFullStyle"
+    class="lazy-full-image"
   >
     <div
       :style="fullImagePaddingShim"
-      :class="$style.padding"
+      class="lazy-image-padding"
     />
     <div
       ref="shim"
-      :class="$style.shim"
+      class="lazy-image-shim"
     >
       <img
         ref="img"
@@ -114,24 +94,19 @@ $placeholder-color: #ddd;
     </div>
     <div
       v-if="error"
-      :class="$style.error"
+      class="lazy-image-error"
     >
       <span
-        :class="$style.message"
+        class="lazy-image-message"
         v-text="message"
       />
     </div>
   </div>
   <span
     v-else
-    :class="[
-      $style.inline,
-      {
-        [$style.unload]: !loaded,
-        [$style.avatar]: avatar
-      }
-    ]"
+    :class="{ 'lazy-image-fade': !loaded }"
     :style="normalImageStyle"
+    class="lazy-flow-image"
   >
     <img
       ref="img"
@@ -180,10 +155,6 @@ export default {
     lazy: {
       type: Boolean,
       default: true
-    },
-    avatar: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
