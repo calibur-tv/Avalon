@@ -17,7 +17,7 @@ const app = new Koa();
 const router = new Route();
 
 Sentry.init({
-  dsn: "https://dc4d63662b1c4ef58a68774d9eb87516@sentry.io/1208158"
+  dsn: "https://b92d1436a1ba431e91dd1644ea0bab3a@sentry.io/1300421"
 });
 
 const microCache = LRU({
@@ -107,22 +107,19 @@ router.get("*", async ctx => {
     ctx.body = await renderer.renderToString(context);
   } catch (e) {
     const code = e.code || 0;
-    if (isDev) {
-      console.error(e);
+    console.error(e);
+    if (code === 302) {
+      ctx.redirect(e.url);
+      return;
     }
-    switch (code) {
-      case 302:
-        ctx.redirect(e.url);
-        break;
-      default:
-        isProd && Sentry.captureException(e);
-        ctx.redirect(
-          `/errors/${code}?redirect=${encodeURIComponent(req.url)}&message=${
-            e.message
-          }`
-        );
-        break;
+    if (code >= 500 && isProd) {
+      Sentry.captureException(e);
     }
+    ctx.redirect(
+      `/errors/${code}?redirect=${encodeURIComponent(req.url)}&message=${
+        e.message
+      }`
+    );
   }
 });
 

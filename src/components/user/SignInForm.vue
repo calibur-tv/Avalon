@@ -41,7 +41,7 @@
 <template>
   <div class="sign-in-form">
     <img
-      :src="$resize('https://image.calibur.tv/owner/logo/calibur-tv.png', { width: 600, height: 200 })"
+      :src="$resize('https://image.calibur.tv/owner/logo/calibur-tv-blue.png', { width: 600, height: 200 })"
       class="logo"
       alt="sign-logo"
     >
