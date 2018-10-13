@@ -1,5 +1,9 @@
 <style lang="scss">
 .sign-in-form {
+  .logo {
+    margin-top: -14px;
+  }
+
   .sign-in-opt {
     margin-bottom: 10px;
     margin-top: -12px;
@@ -37,8 +41,8 @@
 <template>
   <div class="sign-in-form">
     <img
+      :src="$resize('https://image.calibur.tv/owner/logo/calibur-tv.png', { width: 600, height: 200 })"
       class="logo"
-      src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip"
       alt="sign-logo"
     >
     <el-form
