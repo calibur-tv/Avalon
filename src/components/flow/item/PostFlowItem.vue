@@ -243,17 +243,23 @@
       v-if="item.images.length"
       class="images clearfix"
     >
-      <div
-        v-for="(image, index) in item.images"
-        :key="index"
-        class="image-box"
+      <image-preview
+        :images="item.images"
+        :download="false"
+        query="image-box"
       >
-        <v-img
-          :src="image.url"
-          width="auto"
-          height="90"
-        />
-      </div>
+        <div
+          v-for="(image, index) in item.images"
+          :key="index"
+          class="image-box"
+        >
+          <v-img
+            :src="image.url"
+            width="auto"
+            height="90"
+          />
+        </div>
+      </image-preview>
     </div>
     <span
       class="counter"
@@ -287,8 +293,13 @@
 </template>
 
 <script>
+import ImagePreview from "~/components/common/ImagePreview/ImagePreview";
+
 export default {
   name: "PostShowItem",
+  components: {
+    ImagePreview
+  },
   props: {
     item: {
       type: Object,

@@ -56,6 +56,7 @@
 
     .image-package {
       position: relative;
+      margin-bottom: 5px;
 
       .sort-btn {
         position: absolute;
@@ -220,7 +221,10 @@
           </h1>
         </nav>
         <div class="images-wrap">
-          <template v-if="info.is_album">
+          <image-preview
+            v-if="info.is_album"
+            :images="images"
+          >
             <div
               v-for="(img, idx) in images"
               :key="img.id"
@@ -248,19 +252,21 @@
                 />
               </template>
             </div>
-          </template>
-          <div
+          </image-preview>
+          <image-preview
             v-else
-            class="image-package"
+            :images="[source]"
           >
-            <v-img
-              :src="source.url"
-              :width="source.width"
-              :height="source.height"
-              :full="true"
-              class="image"
-            />
-          </div>
+            <div class="image-package">
+              <v-img
+                :src="source.url"
+                :width="source.width"
+                :height="source.height"
+                :full="true"
+                class="image"
+              />
+            </div>
+          </image-preview>
         </div>
         <p
           v-if="!info.image_count"
@@ -340,6 +346,7 @@ import CommentMain from "~/components/comments/CommentMain";
 import EditAlbumForm from "~/components/image/EditAlbumForm";
 import EditImageForm from "~/components/image/EditImageForm";
 import SocialPanel from "~/components/common/SocialPanel";
+import ImagePreview from "~/components/common/ImagePreview/ImagePreview";
 
 export default {
   name: "ImageShow",
@@ -360,7 +367,8 @@ export default {
     CommentMain,
     EditAlbumForm,
     EditImageForm,
-    SocialPanel
+    SocialPanel,
+    ImagePreview
   },
   data() {
     return {

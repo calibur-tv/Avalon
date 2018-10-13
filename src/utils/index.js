@@ -87,7 +87,8 @@ Vue.use({
         return false;
       };
 
-      const format = canUseWebP() ? "/format/webp" : "";
+      const useWebP = options.webP === undefined ? true : options.webP;
+      const format = canUseWebP() && useWebP ? "/format/webp" : "";
       const mode = options.mode === undefined ? 1 : options.mode;
 
       if (
