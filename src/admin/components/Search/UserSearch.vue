@@ -96,6 +96,7 @@ export default {
   },
   methods: {
     async search() {
+      console.log("click");
       let q = this.input;
       if (!q) {
         return;

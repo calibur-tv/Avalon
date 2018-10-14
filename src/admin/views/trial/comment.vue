@@ -5,6 +5,18 @@
     margin-right: 15px;
   }
 
+  .content-wrap {
+    a {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .el-tag {
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  }
+
   .comment-item-img {
     display: inline-block;
     margin-right: 10px;
@@ -47,14 +59,25 @@
       fit
       highlight-current-row
     >
+      <el-table-column
+        label="分区"
+        width="80px"
+      >
+        <template slot-scope="scope">
+          <el-tag>
+            {{ computeArea(scope.row.type) }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="内容">
         <template slot-scope="scope">
           <template v-if="checkIsHTML(scope.row.content)">
             <div
               v-for="(item, index) in transformerContent(scope.row.content)"
               :key="index"
-              :class="`comment-item-${item.type}`"
+              :class="`content-wrap comment-item-${item.type}`"
             >
+              <el-tag type="info">主评论</el-tag>
               <a
                 v-if="item.type === 'txt'"
                 :href="computeCommentLink(scope.row)"
@@ -77,16 +100,21 @@
               </a>
             </div>
           </template>
-          <a
+          <div
             v-else
-            :href="computeCommentLink(scope.row)"
-            target="_blank"
+            class="content-wrap comment-item-txt"
           >
-            <span
-              class="content"
-              v-text="scope.row.content"
-            />
-          </a>
+            <el-tag type="info">子评论</el-tag>
+            <a
+              :href="computeCommentLink(scope.row)"
+              target="_blank"
+            >
+              <span
+                class="content"
+                v-text="scope.row.content"
+              />
+            </a>
+          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -277,6 +305,29 @@ export default {
             });
         })
         .catch(() => {});
+    },
+    computeArea(type) {
+      switch (type) {
+        case "post":
+          return "帖子";
+          break;
+        case "image":
+          return "图片";
+          break;
+        case "video":
+          return "视频";
+          break;
+        case "question":
+          return "提问";
+          break;
+        case "answer":
+          return "回答";
+          break;
+        case "role":
+          return "偶像";
+          break;
+      }
+      return type;
     }
   }
 };

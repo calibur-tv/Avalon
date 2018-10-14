@@ -282,6 +282,9 @@ export default {
       } else if (prefix === "image") {
         prefix = "pin";
       }
+      if (prefix === "user") {
+        return `/admin/user/show?id=${id}`;
+      }
       return `/${prefix}/${id}${tail}`;
     },
     computeUserId(item) {
