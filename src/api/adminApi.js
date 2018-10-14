@@ -317,6 +317,10 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/comment/pass", { id, type });
   }
 
+  batchDeleteComment({ user_id, type }) {
+    return this.http.post("admin/trial/comment/batch_ban", { user_id, type });
+  }
+
   deleteComment({ id, type }) {
     return this.http.post("admin/trial/comment/ban", { id, type });
   }

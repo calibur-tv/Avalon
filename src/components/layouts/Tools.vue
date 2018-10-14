@@ -99,13 +99,23 @@
         effect="dark"
         content="写漫评"
       >
-        <button class="creator-btn score-btn">
+        <button
+          v-if="userLevel > 2"
+          class="creator-btn score-btn"
+        >
           <a
             :href="$alias.createScore"
             target="_blank"
           >
             <i class="iconfont icon-fatie1"/>
           </a>
+        </button>
+        <button
+          v-else
+          class="creator-btn score-btn"
+          @click="handleScoreClick"
+        >
+          <i class="iconfont icon-fatie1"/>
         </button>
       </el-tooltip>
       <el-tooltip
@@ -200,6 +210,13 @@ export default {
     },
     show() {
       return ["homepage", "invite-user"].indexOf(this.$route.name) === -1;
+    },
+    userLevel() {
+      if (this.isGuest) {
+        return 0;
+      } else {
+        return this.$store.state.user.exp.level;
+      }
     }
   },
   mounted() {
@@ -242,7 +259,18 @@ export default {
         this.$channel.$emit("sign-in");
         return;
       }
+      if (this.userLevel < 3) {
+        this.$toast.info("3级以后才能提问");
+        return;
+      }
       this.showQuestionModal = true;
+    },
+    handleScoreClick() {
+      if (this.userLevel < 3) {
+        this.$toast.info("3级以后才能写漫评");
+        return;
+      }
+      window.location = this.$alias.createScore;
     },
     handleImageClick() {
       if (!this.$store.state.login) {

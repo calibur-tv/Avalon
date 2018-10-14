@@ -755,7 +755,7 @@ export default {
       this.$cookie.remove("JWT-TOKEN");
       const api = new UserApi(this);
       api.logout();
-      window.location.reload();
+      window.location.href = "/";
     },
     handleSearchBlur() {
       setTimeout(() => {
