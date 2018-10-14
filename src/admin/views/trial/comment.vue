@@ -5,13 +5,18 @@
     margin-right: 15px;
   }
 
+  .sub-tag {
+    margin-top: 5px;
+  }
+
   .content-wrap {
     a {
       display: inline-block;
       vertical-align: middle;
     }
 
-    .el-tag {
+    .tag-wrap {
+      display: inline-block;
       vertical-align: middle;
       margin-right: 10px;
     }
@@ -64,9 +69,16 @@
         width="80px"
       >
         <template slot-scope="scope">
-          <el-tag>
-            {{ computeArea(scope.row.type) }}
-          </el-tag>
+          <div>
+            <el-tag>
+              {{ computeArea(scope.row.type) }}
+            </el-tag>
+          </div>
+          <div class="sub-tag">
+            <el-tag>
+              {{ scope.row.modal_id }}
+            </el-tag>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="内容">
@@ -77,7 +89,21 @@
               :key="index"
               :class="`content-wrap comment-item-${item.type}`"
             >
-              <el-tag type="info">主评论</el-tag>
+              <div
+                v-if="!index"
+                class="tag-wrap"
+              >
+                <div>
+                  <el-tag
+                    type="info"
+                  >主评论</el-tag>
+                </div>
+                <el-tag
+                  type="info"
+                  class="sub-tag"
+                  v-text="scope.row.user_id"
+                />
+              </div>
               <a
                 v-if="item.type === 'txt'"
                 :href="computeCommentLink(scope.row)"
@@ -104,7 +130,16 @@
             v-else
             class="content-wrap comment-item-txt"
           >
-            <el-tag type="info">子评论</el-tag>
+            <div class="tag-wrap">
+              <div>
+                <el-tag type="info">子评论</el-tag>
+              </div>
+              <el-tag
+                type="info"
+                class="sub-tag"
+                v-text="scope.row.user_id"
+              />
+            </div>
             <a
               :href="computeCommentLink(scope.row)"
               target="_blank"

@@ -295,10 +295,12 @@ export default {
         .catch(() => {});
     },
     computePostState(post) {
+      const userId = parseInt(post.user_id, 10);
+      const state = post.state;
       if (post.deleted_at) {
-        return "已删除";
+        return userId === state ? "系统已删除" : "吧务已删除";
       }
-      if (parseInt(post.user_id, 10) === post.state) {
+      if (userId === state) {
         return "刚发布";
       }
       if (post.is_nice) {
