@@ -113,7 +113,10 @@ router.get("*", async ctx => {
       return;
     }
     if (code >= 500 && isProd) {
-      Sentry.captureException(e);
+      Sentry.withScope(scope => {
+        scope.setTag("request-url", req.url);
+        Sentry.captureException(e);
+      });
     }
     ctx.redirect(
       `/errors/${code}?redirect=${encodeURIComponent(req.url)}&message=${
