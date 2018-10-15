@@ -66,16 +66,25 @@
                 v-text="image.name"
               />
             </div>
-            <el-button
-              type="success"
-              size="mini"
-              @click="passImage(image, index)"
-            >通过</el-button>
-            <el-button
-              type="danger"
-              size="mini"
-              @click="deleteImage(image, index)"
-            >删除</el-button>
+            <template v-if="item.deleted_at">
+              <el-button
+                type="success"
+                size="mini"
+                @click="passImage(image, index)"
+              >确认删除</el-button>
+            </template>
+            <template v-else>
+              <el-button
+                type="success"
+                size="mini"
+                @click="passImage(image, index)"
+              >通过</el-button>
+              <el-button
+                type="danger"
+                size="mini"
+                @click="deleteImage(image, index)"
+              >删除</el-button>
+            </template>
             <router-link
               :to="`/admin/user/show?id=${image.user_id}`"
               style="margin-left: 10px"

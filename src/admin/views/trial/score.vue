@@ -63,16 +63,25 @@
         <json-content :content="item.content"/>
         <div class="control">
           <div class="bottom clearfix">
-            <el-button
-              type="success"
-              size="mini"
-              @click="pass(item.id, index)"
-            >通过</el-button>
-            <el-button
-              type="danger"
-              size="mini"
-              @click="ban(item.id, index)"
-            >删除</el-button>
+            <template v-if="item.deleted_at">
+              <el-button
+                type="success"
+                size="mini"
+                @click="pass(item.id, index)"
+              >确认删除</el-button>
+            </template>
+            <template v-else>
+              <el-button
+                type="success"
+                size="mini"
+                @click="pass(item.id, index)"
+              >通过</el-button>
+              <el-button
+                type="danger"
+                size="mini"
+                @click="ban(item.id, index)"
+              >删除</el-button>
+            </template>
             <router-link
               :to="`/admin/user/show?id=${item.user_id}`"
               style="margin-left: 10px"

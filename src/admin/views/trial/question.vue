@@ -109,16 +109,25 @@
         </div>
         <div class="item">
           <span class="label">操作：</span>
-          <el-button
-            size="small"
-            type="success"
-            @click="pass(item.id, index)"
-          >通过</el-button>
-          <el-button
-            size="small"
-            type="danger"
-            @click="ban(item.id, index)"
-          >删除</el-button>
+          <template v-if="item.deleted_at">
+            <el-button
+              size="small"
+              type="success"
+              @click="pass(item.id, index)"
+            >确认删除</el-button>
+          </template>
+          <template v-else>
+            <el-button
+              size="small"
+              type="success"
+              @click="pass(item.id, index)"
+            >通过</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="ban(item.id, index)"
+            >删除</el-button>
+          </template>
           <router-link
             :to="`/admin/user/show?id=${item.user_id}`"
             style="margin-left: 10px;margin-right: 10px"
