@@ -219,8 +219,8 @@ export default {
   },
   mounted() {
     this.getTodo();
-    this.$channel.$on("admin-trial-do", ({ type }) => {
-      this.todo[type] = this.todo[type] - 1;
+    this.$channel.$on("admin-trial-do", ({ type, count = 1 }) => {
+      this.todo[type] = this.todo[type] - count;
     });
   },
   methods: {

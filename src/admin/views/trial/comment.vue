@@ -36,6 +36,12 @@
   .content {
     margin-left: 5px;
   }
+
+  .control {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }
 </style>
 
@@ -179,6 +185,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <div
+      v-if="list.length"
+      class="control"
+    >
+      <el-button
+        :loading="batching"
+        type="primary"
+        round
+        @click="batchPass"
+      >全部通过</el-button>
+    </div>
   </div>
 </template>
 
@@ -190,7 +207,8 @@ export default {
     return {
       list: [],
       types: [],
-      loading: true
+      loading: true,
+      batching: false
     };
   },
   created() {
@@ -198,6 +216,8 @@ export default {
   },
   methods: {
     getData() {
+      this.loading = true;
+      this.list = [];
       const api = new Api(this);
       api
         .getTrialComments()
@@ -363,6 +383,36 @@ export default {
           break;
       }
       return type;
+    },
+    batchPass() {
+      if (this.batching || !this.list.length) {
+        return;
+      }
+      this.batching = true;
+      const api = new Api(this);
+      api
+        .batchPassComment(
+          this.list.map(_ => {
+            return {
+              id: _.id,
+              type: _.type
+            };
+          })
+        )
+        .then(() => {
+          this.batching = false;
+          this.$message.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "comments",
+            count: this.list.length
+          });
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+          this.batching = false;
+          this.$Message.error(err);
+        });
     }
   }
 };

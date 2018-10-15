@@ -426,4 +426,10 @@ export default class extends BaseApi {
       ip_address
     });
   }
+
+  batchPassComment(arr) {
+    return this.http.post("admin/trial/comment/batch_pass", {
+      arr
+    });
+  }
 }
