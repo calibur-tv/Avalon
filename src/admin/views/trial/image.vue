@@ -66,7 +66,7 @@
                 v-text="image.name"
               />
             </div>
-            <template v-if="item.deleted_at">
+            <template v-if="image.deleted_at">
               <el-button
                 type="success"
                 size="mini"
