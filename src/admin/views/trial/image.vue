@@ -42,7 +42,7 @@
       <el-col
         v-for="(image, index) in list"
         :key="image.id"
-        :span="5"
+        :span="7"
         :offset="1"
         class="image"
       >
@@ -51,7 +51,7 @@
             :href="$resize(image.url)"
             target="_blank"
           >
-            <img :src="$resize(image.url, { width: 300, mode: 2 })">
+            <img :src="$resize(image.url, { width: 500, mode: 2 })">
           </a>
           <div style="padding: 14px;">
             <div class="name">
@@ -59,7 +59,8 @@
                 :href="computeAlbumHref(image)"
                 target="_blank"
               >
-                <el-tag>查看相册</el-tag>
+                <el-tag style="margin-right: 5px">查看相册</el-tag>
+                <el-tag>{{ image.bangumi_id ? '封面' : '图片' }}</el-tag>
               </a>
               <span
                 v-if="image.name"
@@ -68,10 +69,15 @@
             </div>
             <template v-if="image.deleted_at">
               <el-button
+                type="danger"
+                size="mini"
+                @click="approveImage(image, index)"
+              >确认删除</el-button>
+              <el-button
                 type="success"
                 size="mini"
-                @click="passImage(image, index)"
-              >确认删除</el-button>
+                @click="rejectImage(image, index)"
+              >恢复图片</el-button>
             </template>
             <template v-else>
               <el-button
@@ -164,6 +170,42 @@ export default {
       const api = new Api(this);
       api
         .passImage({
+          id: image.id,
+          type: image.bangumi_id ? "album" : "image"
+        })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$channel.$emit("admin-trial-do", {
+            type: "images"
+          });
+        })
+        .catch(e => {
+          console.log(e);
+          this.$message.error(e);
+        });
+    },
+    approveImage(image, index) {
+      const api = new Api(this);
+      api
+        .approveImage({
+          id: image.id,
+          type: image.bangumi_id ? "album" : "image"
+        })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$channel.$emit("admin-trial-do", {
+            type: "images"
+          });
+        })
+        .catch(e => {
+          console.log(e);
+          this.$message.error(e);
+        });
+    },
+    rejectImage(image, index) {
+      const api = new Api(this);
+      api
+        .rejectImage({
           id: image.id,
           type: image.bangumi_id ? "album" : "image"
         })

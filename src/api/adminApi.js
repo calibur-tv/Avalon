@@ -293,6 +293,14 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/pass", { id });
   }
 
+  approvePost({ id }) {
+    return this.http.post("admin/trial/post/approve", { id });
+  }
+
+  rejectPost({ id }) {
+    return this.http.post("admin/trial/post/reject", { id });
+  }
+
   deletePostImage({ id, url }) {
     return this.http.post("admin/trial/post/delete_image", { id, url });
   }
@@ -309,12 +317,32 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/image/pass", { id, type });
   }
 
+  approveImage({ id, type }) {
+    return this.http.post("admin/trial/image/approve", { id, type });
+  }
+
+  rejectImage({ id, type }) {
+    return this.http.post("admin/trial/image/reject", { id, type });
+  }
+
   getTrialComments() {
     return this.http.get("admin/trial/comment/list");
   }
 
   passComment({ id, type }) {
     return this.http.post("admin/trial/comment/pass", { id, type });
+  }
+
+  approveComment({ id, type }) {
+    return this.http.post("admin/trial/comment/approve", { id, type });
+  }
+
+  rejectComment({ id, type, parent_id }) {
+    return this.http.post("admin/trial/comment/reject", {
+      id,
+      type,
+      parent_id
+    });
   }
 
   batchDeleteComment({ user_id, type }) {

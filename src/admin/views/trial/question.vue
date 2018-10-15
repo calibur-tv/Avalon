@@ -112,9 +112,14 @@
           <template v-if="item.deleted_at">
             <el-button
               size="small"
-              type="success"
-              @click="pass(item.id, index)"
+              type="danger"
+              @click="approve(item.id, index)"
             >确认删除</el-button>
+            <el-button
+              size="small"
+              type="success"
+              @click="reject(item.id, index)"
+            >恢复提问</el-button>
           </template>
           <template v-else>
             <el-button
@@ -189,6 +194,36 @@ export default {
       const api = new Api(this);
       api
         .questionPass({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "question"
+          });
+        })
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    approve(id, index) {
+      const api = new Api(this);
+      api
+        .questionApprove({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "question"
+          });
+        })
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    reject(id, index) {
+      const api = new Api(this);
+      api
+        .questionReject({ id })
         .then(() => {
           this.list.splice(index, 1);
           this.$toast.success("操作成功");

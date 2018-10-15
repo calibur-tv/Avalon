@@ -67,8 +67,13 @@
               <el-button
                 type="success"
                 size="mini"
-                @click="pass(item.id, index)"
+                @click="approve(item.id, index)"
               >确认删除</el-button>
+              <el-button
+                type="success"
+                size="mini"
+                @click="reject(item.id, index)"
+              >恢复漫评</el-button>
             </template>
             <template v-else>
               <el-button
@@ -148,6 +153,36 @@ export default {
       const api = new Api(this);
       api
         .pass({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "score"
+          });
+        })
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    approve(id, index) {
+      const api = new Api(this);
+      api
+        .approve({ id })
+        .then(() => {
+          this.list.splice(index, 1);
+          this.$toast.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "score"
+          });
+        })
+        .catch(err => {
+          this.$toast.error(err);
+        });
+    },
+    reject(id, index) {
+      const api = new Api(this);
+      api
+        .reject({ id })
         .then(() => {
           this.list.splice(index, 1);
           this.$toast.success("操作成功");

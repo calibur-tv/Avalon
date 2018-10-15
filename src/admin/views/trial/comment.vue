@@ -163,16 +163,30 @@
         width="240px"
       >
         <template slot-scope="scope">
-          <el-button
-            type="success"
-            size="mini"
-            @click="passComment(scope.row, scope.$index)"
-          >通过</el-button>
-          <el-button
-            type="danger"
-            size="mini"
-            @click="deleteComment(scope.row, scope.$index)"
-          >删除</el-button>
+          <template v-if="scope.row.deleted_at">
+            <el-button
+              type="warning"
+              size="mini"
+              @click="approveComment(scope.row, scope.$index)"
+            >确认</el-button>
+            <el-button
+              type="success"
+              size="mini"
+              @click="rejectComment(scope.row, scope.$index)"
+            >恢复</el-button>
+          </template>
+          <template v-else>
+            <el-button
+              type="success"
+              size="mini"
+              @click="passComment(scope.row, scope.$index)"
+            >通过</el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              @click="deleteComment(scope.row, scope.$index)"
+            >删除</el-button>
+          </template>
           <router-link
             :to="`/admin/user/show?id=${scope.row.user_id}`"
             style="margin-left: 10px"
@@ -261,6 +275,45 @@ export default {
         .passComment({
           id: item.id,
           type: item.type
+        })
+        .then(() => {
+          this.$message.success("操作成功");
+          this.list.splice(index, 1);
+          this.$channel.$emit("admin-trial-do", {
+            type: "comments"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$Message.error(err);
+        });
+    },
+    approveComment(item, index) {
+      const api = new Api(this);
+      api
+        .approveComment({
+          id: item.id,
+          type: item.type
+        })
+        .then(() => {
+          this.$message.success("操作成功");
+          this.list.splice(index, 1);
+          this.$channel.$emit("admin-trial-do", {
+            type: "comments"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$Message.error(err);
+        });
+    },
+    rejectComment(item, index) {
+      const api = new Api(this);
+      api
+        .rejectComment({
+          id: item.id,
+          type: item.type,
+          parent_id: item.parent_id
         })
         .then(() => {
           this.$message.success("操作成功");
@@ -391,14 +444,20 @@ export default {
       this.batching = true;
       const api = new Api(this);
       api
-        .batchPassComment(
-          this.list.map(_ => {
+        .batchPassComment({
+          pass_arr: this.list.filter(_ => !_.deleted_at).map(_ => {
+            return {
+              id: _.id,
+              type: _.type
+            };
+          }),
+          approve_arr: this.list.filter(_ => !!_.deleted_at).map(_ => {
             return {
               id: _.id,
               type: _.type
             };
           })
-        )
+        })
         .then(() => {
           this.batching = false;
           this.$message.success("操作成功");
