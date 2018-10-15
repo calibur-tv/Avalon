@@ -455,9 +455,10 @@ export default class extends BaseApi {
     });
   }
 
-  batchPassComment(arr) {
+  batchPassComment({ approve_arr, pass_arr }) {
     return this.http.post("admin/trial/comment/batch_pass", {
-      arr
+      approve_arr,
+      pass_arr
     });
   }
 }
