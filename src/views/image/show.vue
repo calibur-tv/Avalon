@@ -252,6 +252,12 @@
                 />
               </template>
             </div>
+            <p
+              v-if="!info.image_count"
+              class="no-image"
+            >
+              还没有上传图片
+            </p>
           </image-preview>
           <image-preview
             v-else
@@ -268,12 +274,6 @@
             </div>
           </image-preview>
         </div>
-        <p
-          v-if="!info.image_count"
-          class="no-image"
-        >
-          还没有上传图片
-        </p>
         <div class="album-footer">
           <div class="publish-time">
             UP：
