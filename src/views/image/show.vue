@@ -317,7 +317,6 @@
           />
         </div>
         <comment-main
-          v-if="info.image_count || info.is_cartoon"
           :id="id"
           :master-id="user.id"
           type="image"
