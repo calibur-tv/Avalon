@@ -22,8 +22,6 @@
 
   .search-suggestions {
     position: absolute;
-    left: 0;
-    top: 110%;
     z-index: 999;
 
     li {
@@ -37,10 +35,6 @@
         vertical-align: middle;
         margin-left: 10px;
         margin-right: 8px;
-      }
-
-      &.active {
-        background-color: $color-gray-normal;
       }
     }
   }

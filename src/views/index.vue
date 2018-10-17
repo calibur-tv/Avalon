@@ -45,6 +45,15 @@
       border: 1px solid rgba(255, 255, 255, 0.8);
       background: rgba(0, 0, 0, 0.15);
 
+      &:hover {
+        border: 1px solid $color-white;
+        background: rgba(0, 0, 0, 0.3);
+
+        .search-input-btn {
+          color: $color-white;
+        }
+      }
+
       .search-input-btn {
         position: absolute;
         right: 0;
@@ -62,12 +71,19 @@
         @include input-placeholder();
       }
 
-      &:hover {
-        border: 1px solid $color-white;
-        background: rgba(0, 0, 0, 0.3);
+      .search-suggestions {
+        left: -1px;
+        top: 100%;
+        width: 551px;
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.8);
 
-        .search-input-btn {
-          color: $color-white;
+        span {
+          color: #fff;
+        }
+
+        li.active {
+          background-color: rgba(0, 0, 0, 0.3);
         }
       }
     }
@@ -128,8 +144,8 @@
         class="slogan bg"
       />
       <v-search
+        v-model="query"
         :autofocus="true"
-        :show-suggestion="false"
         placeholder="搜索二次元的一切"
       >
         <i
@@ -205,7 +221,8 @@ export default {
         width: 2048,
         height: 0,
         mode: 0
-      }
+      },
+      query: ""
     };
   },
   computed: {
