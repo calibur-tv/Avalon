@@ -82,6 +82,7 @@
           color: #fff;
         }
 
+        li:hover,
         li.active {
           background-color: rgba(0, 0, 0, 0.3);
         }

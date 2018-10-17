@@ -44,6 +44,7 @@
         top: 110%;
         left: 0;
 
+        li:hover,
         li.active {
           background-color: $color-gray-normal;
         }

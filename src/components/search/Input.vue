@@ -23,8 +23,15 @@
   .search-suggestions {
     position: absolute;
     z-index: 999;
+    max-height: 200px;
+    overflow-y: scroll;
+
+    &:hover {
+      display: block !important;
+    }
 
     li {
+      cursor: pointer;
       height: 40px;
       padding: 5px 0;
 
@@ -78,13 +85,14 @@
       >
     </div>
     <ul
-      v-if="displaySuggestion"
+      v-show="displaySuggestion"
       class="search-suggestions"
     >
       <li
         v-for="(item, index) in filteredSelect"
         :key="item.id"
         :class="{ active: index === selectedIndex }"
+        @click="clickToSearch(index)"
       >
         <img :src="$resize(item.avatar, { width: 60 })">
         <span v-text="item.name"/>
@@ -179,6 +187,10 @@ export default {
         name: "search-index",
         query: { q, type: this.selectedType }
       });
+    },
+    clickToSearch(index) {
+      this.selectedIndex = index;
+      this.submit();
     },
     handleEnter(query) {
       if (!query) {
