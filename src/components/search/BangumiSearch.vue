@@ -22,7 +22,6 @@
     :filterable="true"
     :clearable="clear"
     :disabled="disabled"
-    :loading="loading"
     :placeholder="placeholder"
     :multiple="multiple"
     :multiple-limit="limit"
@@ -73,29 +72,26 @@ export default {
   },
   data() {
     return {
-      init: true,
-      loading: true,
       searchId: this.value,
       filteredOptions: []
     };
   },
   computed: {
     bangumis() {
-      return this.$store.state.search.bangumis;
-    }
-  },
-  created() {
-    if (this.init) {
-      this.getBangumis();
+      return this.$store.state.bangumi.all;
     }
   },
   mounted() {
+    this.filteredOptions = this.bangumis;
     this.$watch("value", val => {
       this.searchId = val;
     });
     this.$watch("searchId", val => {
       this.$emit("input", val);
       val && this.$emit("search", val);
+    });
+    this.$watch("bangumis", val => {
+      this.filteredOptions = val;
     });
   },
   methods: {
@@ -109,21 +105,6 @@ export default {
           option.alias.indexOf(query) > -1 || option.name.indexOf(query) > -1
         );
       });
-    },
-    async getBangumis() {
-      this.init = false;
-      if (this.bangumis.length) {
-        this.filteredOptions = this.bangumis;
-        this.loading = false;
-        return;
-      }
-      try {
-        await this.$store.dispatch("search/fetchBangumis");
-        this.filteredOptions = this.bangumis;
-        this.loading = false;
-      } catch (e) {
-        this.init = true;
-      }
     },
     handleSelectToggle(result) {
       if (!result) {
