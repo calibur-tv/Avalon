@@ -240,8 +240,8 @@ export default class extends BaseApi {
   }
 
   trialTestText({ text }) {
-    return this.http.get("admin/trial/test/text", {
-      params: { text }
+    return this.http.post("admin/trial/test/text", {
+      text
     });
   }
 
