@@ -60,7 +60,10 @@
                 target="_blank"
               >
                 <el-tag style="margin-right: 5px">查看相册</el-tag>
-                <el-tag>{{ image.bangumi_id ? '封面' : '图片' }}</el-tag>
+                <el-tag style="margin-right: 5px">{{ image.bangumi_id ? '封面' : '图片' }}</el-tag>
+                <el-tag
+                  v-if="image.deleted_at"
+                >{{ image.user_id == image.state ? '系统删除' : '举报删除' }}</el-tag>
               </a>
               <span
                 v-if="image.name"
