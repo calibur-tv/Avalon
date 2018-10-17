@@ -293,6 +293,12 @@ $search-height: 32px;
 
       &.search-focus {
         width: 267px;
+
+        & ~ .search-history {
+          visibility: visible;
+          opacity: 1;
+          transition: 0.2s;
+        }
       }
     }
 
@@ -308,6 +314,9 @@ $search-height: 32px;
       font-size: 12px;
       padding-bottom: 5px;
       box-shadow: rgba(0, 0, 0, 0.16) 0 2px 4px;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0s;
 
       .hr {
         margin: 0 20px;
@@ -346,6 +355,12 @@ $search-height: 32px;
             }
           }
         }
+      }
+
+      &:hover {
+        visibility: visible;
+        opacity: 1;
+        transition: 0.2s;
       }
     }
   }
@@ -496,16 +511,13 @@ $search-height: 32px;
         </div>
         <div :class="$style.right">
           <div class="search-container">
-            <v-search
-              @blur="handleSearchBlur"
-              @focus="searchFocus = true"
-            >
+            <v-search :show-suggestion="false">
               <i
                 slot="submit-btn"
                 class="iconfont icon-sousuo"
               />
             </v-search>
-            <v-search-history v-model="searchFocus"/>
+            <v-search-history/>
           </div>
           <template v-if="isLogin">
             <el-popover
@@ -657,8 +669,7 @@ export default {
   data() {
     return {
       scrollFlag: false,
-      showNotification: false,
-      searchFocus: false
+      showNotification: false
     };
   },
   computed: {
@@ -756,11 +767,6 @@ export default {
       const api = new UserApi(this);
       api.logout();
       window.location.href = "/";
-    },
-    handleSearchBlur() {
-      setTimeout(() => {
-        this.searchFocus = false;
-      }, 100);
     },
     handleScroll() {
       this.scrollFlag =

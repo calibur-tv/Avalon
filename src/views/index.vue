@@ -129,6 +129,7 @@
       />
       <v-search
         :autofocus="true"
+        :show-suggestion="false"
         placeholder="搜索二次元的一切"
       >
         <i

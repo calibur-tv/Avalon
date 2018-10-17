@@ -34,6 +34,14 @@
           background-color: $color-blue-light;
         }
       }
+
+      .search-suggestions {
+        width: 549px;
+        border: 1px solid $color-gray-deep;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+      }
     }
   }
 

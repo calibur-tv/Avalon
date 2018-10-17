@@ -73,6 +73,9 @@ export default {
       return;
     }
     M.vueHub = this.$channel;
+  },
+  mounted() {
+    this.$store.dispatch("bangumi/getAllBangumi");
   }
 };
 </script>
