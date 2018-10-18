@@ -82,7 +82,9 @@ export default {
     }
   },
   mounted() {
-    this.filteredOptions = this.bangumis;
+    this.$nextTick(() => {
+      this.filteredOptions = this.bangumis;
+    });
     this.$watch("value", val => {
       this.searchId = val;
     });

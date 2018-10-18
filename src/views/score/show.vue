@@ -18,6 +18,7 @@
 
     .title {
       overflow: hidden;
+      margin-top: 0;
     }
 
     .user {
