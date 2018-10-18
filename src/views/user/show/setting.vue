@@ -234,7 +234,7 @@ export default {
     },
     isMe() {
       return this.$store.state.login
-        ? this.user.zone === this.$store.state.user.zone
+        ? this.user.zone === this.$route.params.zone
         : false;
     }
   },
