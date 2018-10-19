@@ -222,6 +222,9 @@ export default {
     this.$channel.$on("admin-trial-do", ({ type, count = 1 }) => {
       this.todo[type] = this.todo[type] - count;
     });
+    this.$channel.$on("admin-get-to-do", () => {
+      this.getTodo();
+    });
   },
   methods: {
     toggleSideBar() {

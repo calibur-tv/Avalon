@@ -56,7 +56,6 @@
 
     .image-package {
       position: relative;
-      margin-bottom: 5px;
 
       .sort-btn {
         position: absolute;
@@ -228,6 +227,7 @@
             <div
               v-for="(img, idx) in images"
               :key="img.id"
+              :id="`image-${img.id}`"
               class="image-package"
             >
               <v-img

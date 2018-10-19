@@ -466,6 +466,7 @@ export default {
             count: this.list.length
           });
           this.getData();
+          this.$channel.$emit("admin-get-to-do");
         })
         .catch(err => {
           console.log(err);
