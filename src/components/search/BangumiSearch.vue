@@ -22,7 +22,7 @@
     :filterable="true"
     :clearable="clear"
     :disabled="disabled"
-    :placeholder="placeholder"
+    :placeholder="showPlaceholder"
     :multiple="multiple"
     :multiple-limit="limit"
     style="width: 100%"
@@ -68,32 +68,55 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    followed: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       searchId: this.value,
-      filteredOptions: []
+      filteredOptions: [],
+      loading: false,
+      fetched: false,
+      fetchedBangumi: []
     };
   },
   computed: {
     bangumis() {
-      return this.$store.state.bangumi.all;
+      return this.followed
+        ? this.fetchedBangumi
+        : this.$store.state.bangumi.all;
+    },
+    user() {
+      return this.$store.state.user;
+    },
+    showPlaceholder() {
+      if (!this.followed) {
+        return this.placeholder;
+      }
+      if (this.loading) {
+        return "加载中...";
+      }
+      if (this.fetched && !this.bangumis.length) {
+        return "还没有关注任何番剧";
+      }
+      return this.placeholder;
     }
   },
   mounted() {
-    this.$nextTick(() => {
+    if (this.followed) {
+      this.getData();
+    } else {
       this.filteredOptions = this.bangumis;
-    });
+    }
     this.$watch("value", val => {
       this.searchId = val;
     });
     this.$watch("searchId", val => {
       this.$emit("input", val);
       val && this.$emit("search", val);
-    });
-    this.$watch("bangumis", val => {
-      this.filteredOptions = val;
     });
   },
   methods: {
@@ -103,9 +126,9 @@ export default {
         return;
       }
       this.filteredOptions = this.bangumis.filter(option => {
-        return (
-          option.alias.indexOf(query) > -1 || option.name.indexOf(query) > -1
-        );
+        return option.alias
+          ? option.alias.indexOf(query) > -1 || option.name.indexOf(query) > -1
+          : option.name.indexOf(query) > -1;
       });
     },
     handleSelectToggle(result) {
@@ -115,6 +138,26 @@ export default {
         }, 500);
       } else if (this.filteredOptions.length === 1) {
         this.filteredOptions = this.bangumis;
+      }
+    },
+    async getData() {
+      if (this.loading || this.fetched || !this.user) {
+        return;
+      }
+      this.loading = true;
+      try {
+        this.fetchedBangumi = await this.$store.dispatch(
+          "users/getFollowBangumis",
+          {
+            zone: this.user.zone
+          }
+        );
+        this.filteredOptions = this.bangumis;
+        this.fetched = true;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loading = false;
       }
     }
   }

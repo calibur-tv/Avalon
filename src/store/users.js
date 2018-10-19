@@ -98,7 +98,7 @@ const actions = {
   },
   async getFollowBangumis({ state, commit }, { ctx, zone }) {
     if (state.fetchedBangumiZone === zone) {
-      return;
+      return state.bangumis;
     }
     const api = new Api(ctx);
     const data = await api.followBangumis(zone);

@@ -56,6 +56,7 @@
     <h3 class="sub-title">番剧</h3>
     <bangumi-search
       v-model="bangumiId"
+      :followed="true"
       :disabled="disabled"
       placeholder="选择要评价的番剧"
       class="bangumi-search"

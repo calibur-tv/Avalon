@@ -145,6 +145,12 @@
     font-size: 13px;
     color: $color-text-light;
 
+    .bangumi {
+      float: left;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
     .v-share {
       display: inline-block;
 
@@ -266,6 +272,13 @@
       v-text="item.comment_count"
     />
     <div class="footer">
+      <a
+        v-if="!bangumiId && !userZone"
+        :href="$alias.bangumi(item.bangumi.id)"
+        target="_blank"
+        class="bangumi"
+        v-text="item.bangumi.name"
+      />
       <v-share
         :url="$alias.post(item.id)"
         :title="item.title"
