@@ -152,6 +152,19 @@
             v-text="item.name"
           />
         </li>
+        <li class="card-item">
+          <a
+            href="https://www.calibur.tv/user/yu-yuan-lin-yin-7/bangumi"
+            target="_blank"
+            style="margin:0"
+          >
+            <v-img
+              src="https://image.calibur.tv/owner/logo/animate.gif"
+              width="250"
+              height="100"
+            />
+          </a>
+        </li>
       </ul>
     </div>
   </footer>

@@ -52,7 +52,7 @@
   >
     <header>
       <el-button
-        type="danger"
+        type="warning"
         icon="delete"
         size="small"
         @click="quickDelete"

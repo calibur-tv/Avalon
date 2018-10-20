@@ -12,6 +12,12 @@
   .name {
     margin-bottom: 10px;
 
+    .tag-container {
+      .el-tag {
+        margin-right: 5px;
+      }
+    }
+
     a {
       margin-right: 8px;
     }
@@ -59,11 +65,26 @@
                 :href="computeAlbumHref(image)"
                 target="_blank"
               >
-                <el-tag style="margin-right: 5px">查看相册</el-tag>
-                <el-tag style="margin-right: 5px">{{ image.bangumi_id ? '封面' : '图片' }}</el-tag>
-                <el-tag
-                  v-if="image.deleted_at"
-                >{{ image.user_id == image.state ? '系统删除' : '举报删除' }}</el-tag>
+                <div class="tag-container">
+                  <el-tag>查看相册</el-tag>
+                  <a
+                    v-if="image.bangumi_id"
+                    :href="$alias.bangumi(image.bangumi_id, 'pins')"
+                    target="_blank"
+                  >
+                    <el-tag>查看番剧</el-tag>
+                  </a>
+                  <a
+                    v-else
+                    :href="$alias.image(image.album_id)"
+                    target="_blank"
+                  >
+                    <el-tag>查看相册</el-tag>
+                  </a>
+                  <el-tag
+                    v-if="image.deleted_at"
+                  >{{ image.user_id == image.state ? '系统删除' : '举报删除' }}</el-tag>
+                </div>
               </a>
               <span
                 v-if="image.name"
