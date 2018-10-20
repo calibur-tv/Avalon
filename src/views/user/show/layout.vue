@@ -410,10 +410,10 @@
                 邀请小伙伴们注册赚金币
               </div>
               <el-button
-                ref="inviteBtn"
-                :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
+                v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
                 type="warning"
                 size="small"
+                @success="handleCopySuccess"
               >邀请码：{{ user.id }}</el-button>
             </el-tooltip>
           </template>
@@ -591,9 +591,6 @@ export default {
       );
     }
   },
-  mounted() {
-    this.watchCopyInviteLink();
-  },
   methods: {
     openAvatarModal(e) {
       const file = e.target.files[0];
@@ -749,17 +746,8 @@ export default {
         this.signDayLoading = false;
       }
     },
-    watchCopyInviteLink() {
-      if (!this.$refs.inviteBtn) {
-        return;
-      }
-      this.$nextTick(() => {
-        const clipboard = new this.$copy(this.$refs.inviteBtn.$el);
-
-        clipboard.on("success", () => {
-          this.$toast.success("复制成功");
-        });
-      });
+    handleCopySuccess() {
+      this.$toast.success("复制成功");
     },
     convertUserSex(sex) {
       let $res = "";

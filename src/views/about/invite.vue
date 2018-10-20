@@ -72,10 +72,10 @@
           >
             <div slot="content">点击复制我的邀请地址<br>邀请小伙伴们注册赚金币</div>
             <el-button
-              ref="inviteBtn"
-              :data-clipboard-text="`http://calibur.tv/about/invite/${user.id}`"
+              v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
               type="warning"
               size="large"
+              @success="handleCopySuccess"
             >
               邀请码：{{ user.id }}
             </el-button>
@@ -92,15 +92,7 @@
           title=""
         >
           <p>注册之后，邀请者会收到短信提示，并且获得 1 枚金币；</p>
-          <p>由于站内视频流量过大，为了降低宽带费用，先需要注册后才能看番，影响到了大家的体验，非常抱歉；</p>
-          <p>另外
-            <a
-              href="/bangumi/34"
-              target="_blank"
-              class="href-fade-blue"
-            >《进击的巨人》</a>
-            资源每周同步更新，大家不要错过。
-          </p>
+          <p>由于站内视频流量过大，为了降低宽带费用，先需要注册后才能看番，影响到了大家的体验，非常抱歉</p>
         </el-alert>
         <sign-up-form :invite-code="inviteUserId"/>
       </div>
@@ -124,21 +116,9 @@ export default {
       return this.$store.state.user;
     }
   },
-  mounted() {
-    this.watchCopyInviteLink();
-  },
   methods: {
-    watchCopyInviteLink() {
-      if (!this.user) {
-        return;
-      }
-      this.$nextTick(() => {
-        const clipboard = new this.$copy(this.$refs.inviteBtn.$el);
-
-        clipboard.on("success", () => {
-          this.$toast.success("复制成功");
-        });
-      });
+    handleCopySuccess() {
+      this.$toast.success("复制成功");
     }
   }
 };

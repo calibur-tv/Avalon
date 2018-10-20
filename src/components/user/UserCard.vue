@@ -147,7 +147,7 @@ export default {
   props: {
     id: {
       required: true,
-      type: Number
+      type: [Number, String]
     },
     zone: {
       required: true,

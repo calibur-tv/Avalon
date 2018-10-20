@@ -5,8 +5,10 @@ import captcha from "~/assets/js/captcha";
 import Cookies from "js-cookie";
 import { MessageBox } from "element-ui";
 import QRCode from "~/assets/js/qrcode";
-import Clipboard from "~/assets/js/clipboard";
 import Toast from "~/assets/js/toast";
+import VueClipboards from "vue-clipboards";
+
+Vue.use(VueClipboards);
 
 Vue.use({
   install(Vue, options) {
@@ -17,8 +19,6 @@ Vue.use({
     Vue.prototype.$backdrop = new Backdrop();
 
     Vue.prototype.$toast = Toast;
-
-    Vue.prototype.$copy = Clipboard;
 
     Vue.prototype.$QRCode = (el, text, options = { width: 170, height: 170 }) =>
       new QRCode(el, {

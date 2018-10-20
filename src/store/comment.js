@@ -1,5 +1,4 @@
 import Api from "~/api/commentApi";
-import { orderBy } from "lodash";
 
 const state = () => ({
   type: "",
@@ -66,7 +65,10 @@ const mutations = {
       _ => originList.map(_ => _.id).indexOf(_) === -1
     ).length;
     state.list = state.list.filter(_ => resIds.indexOf(_.id) === -1);
-    state.list = orderBy(state.list.concat(formatComments), "id", state.sort);
+    state.list =
+      state.sort === "asc"
+        ? state.list.concat(formatComments).sort((a, b) => a.id - b.id)
+        : state.list.concat(formatComments).sort((a, b) => b.id - a.id);
     state.noMore = hasNew ? comments.noMore : true;
     state.total = hasNew ? comments.total : state.list.length;
   },

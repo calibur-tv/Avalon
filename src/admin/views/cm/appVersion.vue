@@ -144,6 +144,7 @@
 <script>
 import Api from "~/api/adminApi";
 import pageMixin from "~/mixins/page";
+import { orderBy } from "lodash";
 
 export default {
   name: "AppVersion",
@@ -179,7 +180,7 @@ export default {
       if (this.appType === "" || this.versionType === 0) {
         return "";
       }
-      const list = this.$utils.orderBy(
+      const list = orderBy(
         this.pageList.filter(_ => _.app_type === this.appType),
         "id",
         "desc"
