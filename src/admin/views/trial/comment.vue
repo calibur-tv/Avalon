@@ -3,6 +3,12 @@
   header {
     text-align: right;
     margin-right: 15px;
+
+    .tips {
+      float: left;
+      line-height: 30px;
+      color: $color-text-normal;
+    }
   }
 
   .sub-tag {
@@ -51,6 +57,7 @@
     id="trial-comment"
   >
     <header>
+      <span class="tips">帖子：post，相册：image，漫评：score，视频：video，提问：question，回答：answer，偶像：role</span>
       <el-button
         type="warning"
         icon="delete"
