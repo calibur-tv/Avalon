@@ -576,19 +576,19 @@ export function createRouter() {
                 component: () => import("@/views/trial/words")
               },
               {
-                path: "cm/ip_blocker",
+                path: "ip_blocker",
                 name: "ip_blocker",
                 meta: { title: "ip封禁", icon: "coffee" },
                 component: () => import("@/views/cm/ipBlocker")
               },
               {
-                path: "cm/app-version",
+                path: "app-version",
                 name: "app-version",
                 meta: { title: "App版本", icon: "coffee" },
                 component: () => import("@/views/cm/appVersion")
               },
               {
-                path: "cm/friend-link",
+                path: "friend-link",
                 name: "friend-link",
                 meta: { title: "友情链接", icon: "coffee" },
                 component: () => import("@/views/cm/friendLink")
