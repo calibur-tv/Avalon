@@ -1,34 +1,27 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
+      "env",
       {
-        "useBuiltIns": "usage",
         "targets": {
-          "node": "current",
           "browsers": [
-            "Chrome >= 49",
-            "Firefox >= 45",
-            "Safari >= 10",
-            "Edge >= 13",
-            "IE >= 11"
+            "> 1%",
+            "last 3 versions",
+            "ie > 8"
           ]
-        },
-        "modules": false
+        }
       }
-    ]
+    ],
+    "stage-0"
   ],
   "plugins": [
-    "lodash",
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-runtime",
-    [
-      "component",
+    "syntax-dynamic-import",
+    "transform-runtime",
+    ["component", [
       {
         "libraryName": "mint-ui",
         "style": true
-      },
-      "mint-ui"
-    ]
+      }
+    ]]
   ]
 }
