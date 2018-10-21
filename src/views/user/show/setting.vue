@@ -148,8 +148,8 @@ export default {
         callback(new Error("。。。"));
       } else if (curTs - setTs < 315360000000) {
         callback(new Error("你应该大于10岁了吧...?"));
-      } else if (curTs - setTs > 1576800000000) {
-        callback(new Error("你应该小于50岁的吧...?"));
+      } else if (curTs - setTs > 1261440000000) {
+        callback(new Error("你应该小于40岁的吧...?"));
       }
       callback();
     };
