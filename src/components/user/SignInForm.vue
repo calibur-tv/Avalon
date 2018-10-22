@@ -2,6 +2,7 @@
 .sign-in-form {
   .logo {
     margin-top: -14px;
+    height: 127px;
   }
 
   .sign-in-opt {
@@ -41,7 +42,7 @@
 <template>
   <div class="sign-in-form">
     <img
-      :src="$resize('https://image.calibur.tv/owner/logo/calibur-tv-blue.png', { width: 600, height: 200 })"
+      :src="$resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png', { width: 600, height: 200 })"
       class="logo"
       alt="sign-logo"
     >

@@ -546,6 +546,12 @@ export function createRouter() {
             component: () => import("~/layouts/empty"),
             children: [
               {
+                path: "loop",
+                name: "cm-loop",
+                meta: { title: "营销轮播", icon: "coffee" },
+                component: () => import("@/views/cm/loop")
+              },
+              {
                 path: "user/report",
                 name: "user-report-list",
                 meta: { title: "用户举报", icon: "coffee" },

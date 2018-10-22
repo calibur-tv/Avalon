@@ -461,4 +461,28 @@ export default class extends BaseApi {
       pass_arr
     });
   }
+
+  getCMLoop() {
+    return this.http.get("admin/cm/loop/list");
+  }
+
+  createCMLoop(params) {
+    return this.http.post("admin/cm/loop/add", params);
+  }
+
+  updateCMLoop(params) {
+    return this.http.post("admin/cm/loop/update", params);
+  }
+
+  sortCMLoop({ id }) {
+    return this.http.post("admin/cm/loop/sort", {
+      id
+    });
+  }
+
+  deleteCMLoop({ id }) {
+    return this.http.post("admin/cm/loop/delete", {
+      id
+    });
+  }
 }

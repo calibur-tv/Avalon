@@ -151,6 +151,44 @@
     .load-more-btn {
       width: 100%;
     }
+
+    .carousel {
+      height: 266px;
+      margin-bottom: 30px;
+
+      .background {
+        display: block;
+        background-color: $color-blue-normal;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .intro {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: rgba(30, 30, 34, 0.6);
+        height: 50px;
+        width: 100%;
+        padding: 8px 20px 3px;
+        color: #fff;
+
+        .title {
+          font-size: 14px;
+        }
+
+        .desc {
+          margin-top: 4px;
+          font-size: 12px;
+        }
+      }
+    }
   }
 }
 </style>
@@ -218,6 +256,36 @@
         </v-affix>
       </div>
       <div class="col-right">
+        <el-carousel
+          v-if="loops.length"
+          :interval="4000"
+          type="card"
+          height="240px"
+          class="carousel"
+        >
+          <el-carousel-item
+            v-for="item in loops"
+            :key="item"
+          >
+            <a
+              :style="{ backgroundImage: `url(${$resize(item.poster, { width: 800, height: 480 })})` }"
+              :href="item.link"
+              target="_blank"
+              class="background"
+            >
+              <div class="intro">
+                <p
+                  class="title"
+                  v-text="item.title"
+                />
+                <p
+                  class="desc oneline"
+                  v-text="item.desc"
+                />
+              </div>
+            </a>
+          </el-carousel-item>
+        </el-carousel>
         <keep-alive>
           <router-view/>
         </keep-alive>
@@ -230,11 +298,17 @@
 export default {
   name: "TheWorld",
   async asyncData({ store }) {
-    await store.dispatch("users/getRecommended");
+    await Promise.all([
+      store.dispatch("users/getRecommended"),
+      store.dispatch("cm/getCmLoop")
+    ]);
   },
   computed: {
     recommendedUsers() {
       return this.$store.state.users.recommended;
+    },
+    loops() {
+      return this.$store.state.cm.loops;
     }
   }
 };

@@ -2,6 +2,7 @@
   <v-dialog
     v-model="show"
     :loading="submitting"
+    :click-close="false"
     :footer="false"
     title="上传图片"
     class="create-image-modal"

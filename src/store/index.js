@@ -18,6 +18,7 @@ import world from "./flow";
 import cartoonRole from "./cartoonRole";
 import question from "./question";
 import app from "./app";
+import cm from "./cm";
 
 Vue.use(Vuex);
 
@@ -164,7 +165,8 @@ export function createStore() {
       editor,
       world,
       question,
-      app
+      app,
+      cm
     }
   });
 }
