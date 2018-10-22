@@ -179,7 +179,7 @@ export default {
       if (this.appType === "" || this.versionType === 0) {
         return "";
       }
-      const list = this.$utils.orderBy(
+      const list = _.orderBy(
         this.pageList.filter(_ => _.app_type === this.appType),
         "id",
         "desc"

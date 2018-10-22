@@ -229,9 +229,9 @@
       popper-class="v-share v-share-button"
     >
       <button
+        v-clipboard="shareUrl"
         v-if="canRender"
-        ref="copy"
-        :data-clipboard-text="shareUrl"
+        @click="handleCopySuccess"
       >
         <i class="iconfont ic-link"/>
         复制链接
@@ -314,9 +314,9 @@
       placement="top"
     >
       <button
-        ref="copy"
-        :data-clipboard-text="shareUrl"
+        v-clipboard="shareUrl"
         class="share-icon ic-link"
+        @click="handleCopySuccess"
       />
     </el-tooltip>
   </div>
@@ -364,7 +364,6 @@ export default {
   mounted() {
     this.canRender = true;
     this.makeWechatQrCode();
-    this.watchCopyLink();
   },
   methods: {
     shareTitle() {
@@ -425,14 +424,8 @@ export default {
         this.$QRCode(this.$refs.qr, this.shareUrl, { width: 105, height: 105 });
       });
     },
-    watchCopyLink() {
-      this.$nextTick(() => {
-        const clipboard = new this.$copy(this.$refs.copy);
-
-        clipboard.on("success", () => {
-          this.$toast.success("复制成功");
-        });
-      });
+    handleCopySuccess() {
+      this.$toast.success("复制成功");
     }
   }
 };

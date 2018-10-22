@@ -46,6 +46,7 @@
       <bangumi-search
         v-model="form.tags"
         :multiple="true"
+        :followed="true"
         :limit="5"
         placeholder="添加番剧标签"
       />

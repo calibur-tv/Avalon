@@ -12,6 +12,7 @@
     <el-form-item label="番剧">
       <bangumi-search
         v-model="form.bangumi_id"
+        :followed="true"
         :clear="false"
       />
     </el-form-item>

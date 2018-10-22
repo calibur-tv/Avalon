@@ -240,8 +240,8 @@ export default class extends BaseApi {
   }
 
   trialTestText({ text }) {
-    return this.http.get("admin/trial/test/text", {
-      params: { text }
+    return this.http.post("admin/trial/test/text", {
+      text
     });
   }
 
@@ -293,6 +293,14 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/pass", { id });
   }
 
+  approvePost({ id }) {
+    return this.http.post("admin/trial/post/approve", { id });
+  }
+
+  rejectPost({ id }) {
+    return this.http.post("admin/trial/post/reject", { id });
+  }
+
   deletePostImage({ id, url }) {
     return this.http.post("admin/trial/post/delete_image", { id, url });
   }
@@ -309,12 +317,32 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/image/pass", { id, type });
   }
 
+  approveImage({ id, type }) {
+    return this.http.post("admin/trial/image/approve", { id, type });
+  }
+
+  rejectImage({ id, type }) {
+    return this.http.post("admin/trial/image/reject", { id, type });
+  }
+
   getTrialComments() {
     return this.http.get("admin/trial/comment/list");
   }
 
   passComment({ id, type }) {
     return this.http.post("admin/trial/comment/pass", { id, type });
+  }
+
+  approveComment({ id, type }) {
+    return this.http.post("admin/trial/comment/approve", { id, type });
+  }
+
+  rejectComment({ id, type, parent_id }) {
+    return this.http.post("admin/trial/comment/reject", {
+      id,
+      type,
+      parent_id
+    });
   }
 
   batchDeleteComment({ user_id, type }) {
@@ -424,6 +452,37 @@ export default class extends BaseApi {
   recoverIpAddress({ ip_address }) {
     return this.http.post("admin/ip_blocker/recover", {
       ip_address
+    });
+  }
+
+  batchPassComment({ approve_arr, pass_arr }) {
+    return this.http.post("admin/trial/comment/batch_pass", {
+      approve_arr,
+      pass_arr
+    });
+  }
+
+  getCMLoop() {
+    return this.http.get("admin/cm/loop/list");
+  }
+
+  createCMLoop(params) {
+    return this.http.post("admin/cm/loop/add", params);
+  }
+
+  updateCMLoop(params) {
+    return this.http.post("admin/cm/loop/update", params);
+  }
+
+  sortCMLoop({ id }) {
+    return this.http.post("admin/cm/loop/sort", {
+      id
+    });
+  }
+
+  deleteCMLoop({ id }) {
+    return this.http.post("admin/cm/loop/delete", {
+      id
     });
   }
 }

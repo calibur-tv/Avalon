@@ -163,6 +163,7 @@
     <template v-if="!isGuest">
       <v-dialog
         v-model="showPostModal"
+        :click-close="false"
         :footer="false"
         title="发帖"
       >
@@ -171,6 +172,7 @@
       <v-dialog
         v-model="showQuestionModal"
         :footer="false"
+        :click-close="false"
         title="写下你的问题"
       >
         <create-question-form @submit="showQuestionModal = false"/>

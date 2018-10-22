@@ -77,6 +77,14 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/answer/pass", { id });
   }
 
+  answerApprove({ id }) {
+    return this.http.post("admin/trial/answer/approve", { id });
+  }
+
+  answerReject({ id }) {
+    return this.http.post("admin/trial/answer/reject", { id });
+  }
+
   questionTrials() {
     return this.http.get("admin/trial/question/list");
   }
@@ -87,6 +95,14 @@ export default class extends BaseApi {
 
   questionPass({ id }) {
     return this.http.post("admin/trial/question/pass", { id });
+  }
+
+  questionApprove({ id }) {
+    return this.http.post("admin/trial/question/approve", { id });
+  }
+
+  questionReject({ id }) {
+    return this.http.post("admin/trial/question/reject", { id });
   }
 
   drafts() {

@@ -107,11 +107,14 @@ export default {
       if (value.length > 5) {
         return callback(new Error("最多选择 5 个标签"));
       }
+      if (value.join("").length > 120) {
+        return callback(new Error("最多 120 字"));
+      }
       callback();
     };
     const validateName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请先填写番剧名称"));
+        return callback(new Error("请先填写角色名称"));
       }
       if (value.length > 35) {
         return callback(new Error("名称最长 35 个字"));
@@ -120,7 +123,7 @@ export default {
     };
     const validateDesc = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请先填写番剧简介"));
+        return callback(new Error("请先填写角色简介"));
       }
       if (value.length > 200) {
         return callback(new Error("简介最多 200 个字"));
@@ -171,10 +174,12 @@ export default {
                 .toString()
             };
             if (this.isCreate) {
-              await api.create(params);
+              const id = await api.create(params);
               this.$refs.form.resetFields();
               this.$refs.upload.clearFiles();
-              this.$toast.success("添加成功");
+              this.$toast.success("添加成功").then(() => {
+                window.open(this.$alias.cartoonRole(id));
+              });
             } else {
               await api.edit(
                 Object.assign(params, {

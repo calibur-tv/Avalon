@@ -81,7 +81,8 @@ export default {
       if (this.userZone) {
         return this.source.list;
       }
-      return this.$utils.orderBy(this.source.list, "star_count", "desc");
+      // eslint-disable-next-line
+      return this.source.list.sort((a, b) => b.star_count - a.star_count);
     }
   },
   methods: {

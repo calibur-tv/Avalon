@@ -48,4 +48,12 @@ export default class extends BaseApi {
   pass({ id }) {
     return this.http.post("admin/trial/score/pass", { id });
   }
+
+  approve({ id }) {
+    return this.http.post("admin/trial/score/approve", { id });
+  }
+
+  reject({ id }) {
+    return this.http.post("admin/trial/score/reject", { id });
+  }
 }

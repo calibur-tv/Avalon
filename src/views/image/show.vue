@@ -56,7 +56,6 @@
 
     .image-package {
       position: relative;
-      margin-bottom: 5px;
 
       .sort-btn {
         position: absolute;
@@ -228,6 +227,7 @@
             <div
               v-for="(img, idx) in images"
               :key="img.id"
+              :id="`image-${img.id}`"
               class="image-package"
             >
               <v-img
@@ -252,6 +252,12 @@
                 />
               </template>
             </div>
+            <p
+              v-if="!info.image_count"
+              class="no-image"
+            >
+              还没有上传图片
+            </p>
           </image-preview>
           <image-preview
             v-else
@@ -268,12 +274,6 @@
             </div>
           </image-preview>
         </div>
-        <p
-          v-if="!info.image_count"
-          class="no-image"
-        >
-          还没有上传图片
-        </p>
         <div class="album-footer">
           <div class="publish-time">
             UP：
@@ -317,7 +317,6 @@
           />
         </div>
         <comment-main
-          v-if="info.image_count || info.is_cartoon"
           :id="id"
           :master-id="user.id"
           type="image"

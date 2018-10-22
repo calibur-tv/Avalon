@@ -49,26 +49,11 @@
       label="番剧"
       prop="bangumiId"
     >
-      <el-select
+      <bangumi-search
         v-model="forms.bangumiId"
-        filterable
-        placeholder="请选择你关注的番剧"
-      >
-        <el-option
-          v-for="item in optionBangumis"
-          :label="item.name"
-          :key="item.id"
-          :value="item.id"
-        />
-      </el-select>
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="只能选择你已关注的番剧"
-        placement="top"
-      >
-        <i class="el-icon-question"/>
-      </el-tooltip>
+        :followed="true"
+        placeholder="请选择要投稿的番剧"
+      />
     </el-form-item>
     <el-form-item label="原创">
       <el-switch v-model="forms.is_creator"/>
@@ -149,7 +134,7 @@ export default {
             type: "number",
             required: true,
             message: "请选择相应番剧",
-            trigger: "change"
+            trigger: "submit"
           }
         ],
         content: [
@@ -163,7 +148,6 @@ export default {
       },
       images: [],
       exceed: 6,
-      appendBangumi: [],
       loadingFetchBangumi: false,
       submitting: false
     };
@@ -173,22 +157,7 @@ export default {
       return this.$route.name === "bangumi-show"
         ? parseInt(this.$route.params.id, 10)
         : 0;
-    },
-    bangumis() {
-      return this.$store.state.users.bangumis;
-    },
-    optionBangumis() {
-      return this.appendBangumi.concat(this.bangumis);
     }
-  },
-  mounted() {
-    this.getUserFollowedBangumis();
-    this.$channel.$on("set-page-bangumi-for-post-create", data => {
-      this.saveBangumiAndSelected(data);
-    });
-  },
-  beforeDestroy() {
-    this.$channel.$off("set-page-bangumi-for-post-create");
   },
   methods: {
     submit() {
@@ -242,31 +211,6 @@ export default {
         }
       });
     },
-    async getUserFollowedBangumis() {
-      if (this.bangumiId) {
-        this.forms.bangumiId = this.bangumiId;
-      }
-      if (this.bangumis.length) {
-        this.$nextTick(() => {
-          this.$channel.$emit("get-page-bangumi-for-post-create");
-        });
-        return;
-      }
-      if (this.loadingFetchBangumi) {
-        return;
-      }
-      this.loadingFetchBangumi = true;
-      try {
-        await this.$store.dispatch("users/getFollowBangumis", {
-          zone: this.$store.state.user.zone
-        });
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loadingFetchBangumi = false;
-        this.$channel.$emit("get-page-bangumi-for-post-create");
-      }
-    },
     handleError(err, file) {
       console.log(err);
       this.images.forEach((item, index) => {
@@ -306,13 +250,6 @@ export default {
       };
 
       return this.beforeImageUpload(file);
-    },
-    saveBangumiAndSelected(data) {
-      this.forms.bangumiId = data.id;
-      if (this.optionBangumis.some(_ => _.id === data.id)) {
-        return;
-      }
-      this.appendBangumi.push(data);
     }
   }
 };

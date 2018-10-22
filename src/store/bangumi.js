@@ -37,10 +37,14 @@ const state = () => ({
   topFetchedId: 0,
   score: null,
   scoreFetchId: 0,
-  recommended: []
+  recommended: [],
+  all: []
 });
 
 const mutations = {
+  SET_ALL_BANGUMI(state, data) {
+    state.all = data;
+  },
   SET_RECOMMENDED(state, data) {
     const shuffle = array => {
       for (let i = array.length; i; i--) {
@@ -142,6 +146,27 @@ const mutations = {
 };
 
 const actions = {
+  async getAllBangumi({ state, commit }) {
+    let needLoad = true;
+    try {
+      const lastLoadAt = sessionStorage.getItem("all-bangumi-load-at");
+      if (lastLoadAt && Date.now() - lastLoadAt < 3600000) {
+        const list = JSON.parse(sessionStorage.getItem("all-bangumi-list"));
+        list && commit("SET_ALL_BANGUMI", list);
+        needLoad = !(list && list.length);
+      }
+    } catch (e) {}
+    if (state.all.length || !needLoad) {
+      return;
+    }
+    const api = new Api();
+    const data = await api.all();
+    commit("SET_ALL_BANGUMI", data);
+    try {
+      sessionStorage.setItem("all-bangumi-load-at", Date.now());
+      sessionStorage.setItem("all-bangumi-list", JSON.stringify(data));
+    } catch (e) {}
+  },
   async getTags({ state, commit }, { id, ctx }) {
     if (state.tags.length) {
       return;

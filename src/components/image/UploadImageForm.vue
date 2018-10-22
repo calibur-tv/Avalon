@@ -65,6 +65,7 @@
       >
         <bangumi-search
           v-model="form.bangumi_id"
+          :followed="true"
           placeholder="【单个上传】选择要投稿的番剧"
         />
       </el-form-item>

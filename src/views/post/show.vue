@@ -418,15 +418,6 @@ export default {
       return this.$store.state.user.id === this.master.id;
     }
   },
-  mounted() {
-    this.$channel.$on("get-page-bangumi-for-post-create", () => {
-      this.$channel.$emit("set-page-bangumi-for-post-create", {
-        id: this.bangumi.id,
-        name: this.bangumi.name,
-        avatar: this.bangumi.avatar
-      });
-    });
-  },
   methods: {
     scrollToReplyForm() {
       if (!this.$store.state.login) {

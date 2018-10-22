@@ -293,7 +293,7 @@ export default {
       const eventId = utils.on(
         document,
         "scroll",
-        utils.throttle(() => {
+        this.$utils.throttle(() => {
           if (utils.checkInView(this.$el)) {
             this.loadImageResource(false);
             utils.off(eventId);

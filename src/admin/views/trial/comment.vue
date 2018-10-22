@@ -3,6 +3,29 @@
   header {
     text-align: right;
     margin-right: 15px;
+
+    .tips {
+      float: left;
+      line-height: 30px;
+      color: $color-text-normal;
+    }
+  }
+
+  .sub-tag {
+    margin-top: 5px;
+  }
+
+  .content-wrap {
+    a {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .tag-wrap {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
   }
 
   .comment-item-img {
@@ -19,6 +42,12 @@
   .content {
     margin-left: 5px;
   }
+
+  .control {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }
 </style>
 
@@ -28,8 +57,9 @@
     id="trial-comment"
   >
     <header>
+      <span class="tips">帖子：post，相册：image，漫评：score，视频：video，提问：question，回答：answer，偶像：role</span>
       <el-button
-        type="danger"
+        type="warning"
         icon="delete"
         size="small"
         @click="quickDelete"
@@ -47,14 +77,46 @@
       fit
       highlight-current-row
     >
+      <el-table-column
+        label="分区"
+        width="80px"
+      >
+        <template slot-scope="scope">
+          <div>
+            <el-tag>
+              {{ computeArea(scope.row.type) }}
+            </el-tag>
+          </div>
+          <div class="sub-tag">
+            <el-tag>
+              {{ scope.row.modal_id }}
+            </el-tag>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="内容">
         <template slot-scope="scope">
           <template v-if="checkIsHTML(scope.row.content)">
             <div
               v-for="(item, index) in transformerContent(scope.row.content)"
               :key="index"
-              :class="`comment-item-${item.type}`"
+              :class="`content-wrap comment-item-${item.type}`"
             >
+              <div
+                v-if="!index"
+                class="tag-wrap"
+              >
+                <div>
+                  <el-tag
+                    type="info"
+                  >主评论</el-tag>
+                </div>
+                <el-tag
+                  type="info"
+                  class="sub-tag"
+                  v-text="scope.row.user_id"
+                />
+              </div>
               <a
                 v-if="item.type === 'txt'"
                 :href="computeCommentLink(scope.row)"
@@ -77,16 +139,30 @@
               </a>
             </div>
           </template>
-          <a
+          <div
             v-else
-            :href="computeCommentLink(scope.row)"
-            target="_blank"
+            class="content-wrap comment-item-txt"
           >
-            <span
-              class="content"
-              v-text="scope.row.content"
-            />
-          </a>
+            <div class="tag-wrap">
+              <div>
+                <el-tag type="info">子评论</el-tag>
+              </div>
+              <el-tag
+                type="info"
+                class="sub-tag"
+                v-text="scope.row.user_id"
+              />
+            </div>
+            <a
+              :href="computeCommentLink(scope.row)"
+              target="_blank"
+            >
+              <span
+                class="content"
+                v-text="scope.row.content"
+              />
+            </a>
+          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -94,16 +170,30 @@
         width="240px"
       >
         <template slot-scope="scope">
-          <el-button
-            type="success"
-            size="mini"
-            @click="passComment(scope.row, scope.$index)"
-          >通过</el-button>
-          <el-button
-            type="danger"
-            size="mini"
-            @click="deleteComment(scope.row, scope.$index)"
-          >删除</el-button>
+          <template v-if="scope.row.deleted_at">
+            <el-button
+              type="warning"
+              size="mini"
+              @click="approveComment(scope.row, scope.$index)"
+            >确认</el-button>
+            <el-button
+              type="success"
+              size="mini"
+              @click="rejectComment(scope.row, scope.$index)"
+            >恢复</el-button>
+          </template>
+          <template v-else>
+            <el-button
+              type="success"
+              size="mini"
+              @click="passComment(scope.row, scope.$index)"
+            >通过</el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              @click="deleteComment(scope.row, scope.$index)"
+            >删除</el-button>
+          </template>
           <router-link
             :to="`/admin/user/show?id=${scope.row.user_id}`"
             style="margin-left: 10px"
@@ -116,6 +206,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <div
+      v-if="list.length"
+      class="control"
+    >
+      <el-button
+        :loading="batching"
+        type="primary"
+        round
+        @click="batchPass"
+      >全部通过</el-button>
+    </div>
   </div>
 </template>
 
@@ -127,7 +228,8 @@ export default {
     return {
       list: [],
       types: [],
-      loading: true
+      loading: true,
+      batching: false
     };
   },
   created() {
@@ -135,6 +237,8 @@ export default {
   },
   methods: {
     getData() {
+      this.loading = true;
+      this.list = [];
       const api = new Api(this);
       api
         .getTrialComments()
@@ -178,6 +282,45 @@ export default {
         .passComment({
           id: item.id,
           type: item.type
+        })
+        .then(() => {
+          this.$message.success("操作成功");
+          this.list.splice(index, 1);
+          this.$channel.$emit("admin-trial-do", {
+            type: "comments"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$Message.error(err);
+        });
+    },
+    approveComment(item, index) {
+      const api = new Api(this);
+      api
+        .approveComment({
+          id: item.id,
+          type: item.type
+        })
+        .then(() => {
+          this.$message.success("操作成功");
+          this.list.splice(index, 1);
+          this.$channel.$emit("admin-trial-do", {
+            type: "comments"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$Message.error(err);
+        });
+    },
+    rejectComment(item, index) {
+      const api = new Api(this);
+      api
+        .rejectComment({
+          id: item.id,
+          type: item.type,
+          parent_id: item.parent_id
         })
         .then(() => {
           this.$message.success("操作成功");
@@ -277,6 +420,66 @@ export default {
             });
         })
         .catch(() => {});
+    },
+    computeArea(type) {
+      switch (type) {
+        case "post":
+          return "帖子";
+          break;
+        case "image":
+          return "图片";
+          break;
+        case "video":
+          return "视频";
+          break;
+        case "question":
+          return "提问";
+          break;
+        case "answer":
+          return "回答";
+          break;
+        case "role":
+          return "偶像";
+          break;
+      }
+      return type;
+    },
+    batchPass() {
+      if (this.batching || !this.list.length) {
+        return;
+      }
+      this.batching = true;
+      const api = new Api(this);
+      api
+        .batchPassComment({
+          pass_arr: this.list.filter(_ => !_.deleted_at).map(_ => {
+            return {
+              id: _.id,
+              type: _.type
+            };
+          }),
+          approve_arr: this.list.filter(_ => !!_.deleted_at).map(_ => {
+            return {
+              id: _.id,
+              type: _.type
+            };
+          })
+        })
+        .then(() => {
+          this.batching = false;
+          this.$message.success("操作成功");
+          this.$channel.$emit("admin-trial-do", {
+            type: "comments",
+            count: this.list.length
+          });
+          this.getData();
+          this.$channel.$emit("admin-get-to-do");
+        })
+        .catch(err => {
+          console.log(err);
+          this.batching = false;
+          this.$Message.error(err);
+        });
     }
   }
 };
