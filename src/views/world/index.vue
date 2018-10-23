@@ -155,13 +155,11 @@
     .carousel {
       height: 266px;
       margin-bottom: 30px;
+      overflow: hidden;
 
       .background {
         display: block;
         background-color: $color-blue-normal;
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         background-position: center;
@@ -176,7 +174,7 @@
         background-color: rgba(30, 30, 34, 0.6);
         height: 50px;
         width: 100%;
-        padding: 8px 20px 3px;
+        padding: 8px 12px 3px;
         color: #fff;
 
         .title {
