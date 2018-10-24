@@ -77,7 +77,7 @@
 
 <template>
   <div
-    :id="`post-${post.id}`"
+    :id="`comment-${post.id}`"
     :class="{ 'focused-main-comment': focusThisComment }"
     class="post-comment-item"
   >
