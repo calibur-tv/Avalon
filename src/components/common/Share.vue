@@ -51,7 +51,7 @@
     border-color: #fdbe3d;
 
     &:before {
-      content: "\e6f8";
+      content: "\e7f6";
     }
   }
 
