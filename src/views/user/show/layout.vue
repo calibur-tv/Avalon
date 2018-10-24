@@ -15,7 +15,7 @@
 
     .file-input {
       &:before {
-        content: "\e603";
+        content: "\e60a";
         opacity: 0;
         position: absolute;
         left: 0;
@@ -23,7 +23,7 @@
         bottom: 0;
         right: 0;
         background-color: rgba(0, 0, 0, 0.5);
-        @include iconfont(30px);
+        @include iconfont(27px);
         text-align: center;
         line-height: 100px;
         color: $color-white;
