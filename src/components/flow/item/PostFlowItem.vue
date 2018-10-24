@@ -158,7 +158,7 @@
       .share-btn {
         color: $color-text-light;
         font-size: 12px;
-        width: 70px;
+        width: 55px;
       }
 
       span,

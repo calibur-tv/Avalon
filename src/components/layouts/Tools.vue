@@ -19,7 +19,7 @@
   .tool-btn {
     width: 60px;
     height: 60px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     border-radius: 50%;
     font-size: 30px;
     text-align: center;
@@ -37,7 +37,7 @@
   }
 
   .top-btn {
-    bottom: 70px;
+    bottom: 60px;
   }
 
   .feedback-btn {

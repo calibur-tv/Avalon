@@ -18,7 +18,7 @@
     line-height: 60px;
     color: #fff;
     position: absolute;
-    bottom: 205px;
+    bottom: 230px;
     right: 60px;
     pointer-events: auto;
   }
