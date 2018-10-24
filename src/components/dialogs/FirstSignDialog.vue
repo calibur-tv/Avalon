@@ -62,13 +62,13 @@
     <h3 class="title">欢迎来到「calibur.tv」</h3>
     <p class="content">
       使用你的“邀请码”带朋友一起来玩吧！<br>
-      每邀请一个朋友加入，你就可以获得一枚金币<br>
-      1金币=1人民币，满100就可以提现噢！
+      每邀请一个朋友加入，你就可以获得一个团子<br>
+      1团子=1人民币，满100就可以提现噢！
     </p>
     <div class="control">
       <a href="/about/hello">
         <button style="background-color: #00ce72">
-          查看金币规则
+          查看团子规则
           <i class="el-icon-arrow-right"/>
         </button>
       </a>

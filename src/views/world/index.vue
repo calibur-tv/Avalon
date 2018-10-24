@@ -262,8 +262,8 @@
           class="carousel"
         >
           <el-carousel-item
-            v-for="item in loops"
-            :key="item"
+            v-for="(item, index) in loops"
+            :key="index"
           >
             <a
               :style="{ backgroundImage: `url(${$resize(item.poster, { width: 800, height: 480 })})` }"

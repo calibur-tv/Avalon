@@ -136,7 +136,7 @@
               v-if="role.star_count"
               class="coin"
             >
-              <strong>粉丝：</strong>共有 {{ role.fans_count }} 个粉丝，收获了 {{ role.star_count }} 个金币
+              <strong>粉丝：</strong>共有 {{ role.fans_count }} 个粉丝，收获了 {{ role.star_count }} 个团子
             </p>
           </div>
         </div>
@@ -245,7 +245,7 @@
           <span
             v-else
             class="score"
-          >{{ item.score }}个金币</span>
+          >{{ item.score }}个团子</span>
         </a>
       </li>
     </v-dialog>
@@ -343,7 +343,7 @@ export default {
         return;
       }
       if (!this.$store.state.user.coin) {
-        this.$toast.error("金币不足");
+        this.$toast.error("团子不足");
         return;
       }
       try {

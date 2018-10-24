@@ -359,7 +359,7 @@
               <li>回复评论：+1</li>
               <li>获得喜欢：+2</li>
               <li>获得收藏：+2</li>
-              <li>获得金币：+3</li>
+              <li>获得团子：+3</li>
             </ul>
             <v-hr text="其它提醒"/>
             <p>评论/回复自己的内容不会获得经验</p>
@@ -386,9 +386,9 @@
               placement="bottom"
             >
               <div slot="content">
-                金币可提现额度：{{ withdrawCoinCount }}
+                团子可提现额度：{{ withdrawCoinCount }}
                 <br>
-                (排除签到所得的金币)
+                (排除签到所得的团子)
               </div>
               <el-button
                 :loading="signDayLoading"
@@ -407,7 +407,7 @@
               <div slot="content">
                 点击复制我的邀请地址
                 <br>
-                邀请小伙伴们注册赚金币
+                邀请小伙伴们注册赚团子
               </div>
               <el-button
                 v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
@@ -431,7 +431,7 @@
       >
         <span>重要提醒</span>
         <p>这是一个运营号，并非本人，该账号下所有信息都是搬运而来</p>
-        <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的金币也将归你所有</p>
+        <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的团子也将归你所有</p>
         <p>当然，你也有权要求我们删除所有你的内容</p>
       </div>
       <div class="user-flows-wrap">

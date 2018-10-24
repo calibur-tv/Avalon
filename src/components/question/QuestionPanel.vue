@@ -66,6 +66,7 @@
       .v-share {
         margin-right: 16px;
         margin-left: 0;
+        vertical-align: middle;
       }
 
       .el-button--text,
@@ -241,7 +242,7 @@
             size="medium"
             @click="loadQAQComment"
           >
-            <i class="iconfont icon-pinglun1"/>
+            <i class="iconfont icon-talk"/>
             {{ qaq.comment_count ? qaq.comment_count + ' 条评论' : '添加评论' }}
           </el-button>
           <v-share

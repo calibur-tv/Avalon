@@ -1,12 +1,18 @@
 <style lang="scss">
 .v-share {
+  .iconfont {
+    font-size: 16px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  span {
+    vertical-align: middle;
+  }
+
   .ic-link {
     color: #9266f9;
     border-color: #9266f9;
-
-    &:hover {
-      background-color: #9266f9;
-    }
 
     &:before {
       content: "\e63f";
@@ -17,10 +23,6 @@
     color: #56b6e7;
     border-color: #56b6e7;
 
-    &:hover {
-      background-color: #56b6e7;
-    }
-
     &:before {
       content: "\e68b";
     }
@@ -29,10 +31,6 @@
   .ic-weibo {
     color: #ff763b;
     border-color: #ff763b;
-
-    &:hover {
-      background-color: #ff763b;
-    }
 
     &:before {
       content: "\e60e";
@@ -43,10 +41,6 @@
     color: #33b045;
     border-color: #33b045;
 
-    &:hover {
-      background-color: #33b045;
-    }
-
     &:before {
       content: "\e601";
     }
@@ -56,10 +50,6 @@
     color: #fdbe3d;
     border-color: #fdbe3d;
 
-    &:hover {
-      background-color: #fdbe3d;
-    }
-
     &:before {
       content: "\e6f8";
     }
@@ -68,14 +58,6 @@
   .ic-wechat {
     color: #7bc549;
     border-color: #7bc549;
-
-    &:hover {
-      background-color: #7bc549;
-
-      .wechat-qrcode {
-        display: block;
-      }
-    }
 
     &:before {
       content: "\e673";
@@ -184,6 +166,112 @@
         color: #fff;
       }
     }
+
+    .ic-link {
+      &:hover {
+        background-color: #9266f9;
+      }
+    }
+
+    .ic-qq {
+      &:hover {
+        background-color: #56b6e7;
+      }
+    }
+
+    .ic-weibo {
+      &:hover {
+        background-color: #ff763b;
+      }
+    }
+
+    .ic-douban {
+      &:hover {
+        background-color: #33b045;
+      }
+    }
+
+    .ic-qzone {
+      &:hover {
+        background-color: #fdbe3d;
+      }
+    }
+
+    .ic-wechat {
+      &:hover {
+        background-color: #7bc549;
+
+        .wechat-qrcode {
+          display: block;
+        }
+      }
+
+      .wechat-qrcode {
+        display: none;
+        border: 1px solid #eee;
+        position: absolute;
+        z-index: 9;
+        top: -205px;
+        left: -84px;
+        width: 200px;
+        height: 192px;
+        color: #666;
+        font-size: 12px;
+        text-align: center;
+        background-color: #fff;
+        box-shadow: 0 2px 10px #aaa;
+        transition: all 200ms;
+
+        .button {
+          top: 40px;
+          left: -84px;
+
+          &:after {
+            display: none;
+          }
+        }
+
+        h4 {
+          font-weight: normal;
+          height: 26px;
+          line-height: 26px;
+          font-size: 12px;
+          background-color: #f3f3f3;
+          margin: 0;
+          padding: 0;
+          color: #777;
+        }
+
+        .qrcode {
+          width: 105px;
+          margin: 10px auto;
+
+          table {
+            margin: 0 !important;
+          }
+        }
+
+        .help p {
+          font-weight: normal;
+          line-height: 16px;
+          padding: 0;
+          margin: 0;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          margin-left: -6px;
+          bottom: -13px;
+          width: 0;
+          height: 0;
+          border-width: 8px 6px 6px 6px;
+          border-style: solid;
+          border-color: #fff transparent transparent transparent;
+        }
+      }
+    }
   }
 }
 
@@ -234,23 +322,23 @@
         @click="handleCopySuccess"
       >
         <i class="iconfont ic-link"/>
-        复制链接
+        <span>复制链接</span>
       </button>
       <button @click="makeUrl('weibo')">
         <i class="iconfont ic-weibo"/>
-        微博
+        <span>微博</span>
       </button>
       <button @click="makeUrl('qq')">
         <i class="iconfont ic-qq"/>
-        QQ
+        <span>QQ</span>
       </button>
       <button @click="makeUrl('douban')">
         <i class="iconfont ic-douban"/>
-        豆瓣
+        <span>豆瓣</span>
       </button>
       <button @click="makeUrl('qzone')">
         <i class="iconfont ic-qzone"/>
-        QQ空间
+        <span>QQ空间</span>
       </button>
     </el-popover>
     <slot>
@@ -258,8 +346,8 @@
         v-popover:popover2
         class="share-btn"
       >
-        <i class="iconfont icon-emizhifeiji"/>
-        分享
+        <i class="iconfont icon-fenxiang"/>
+        <span>分享</span>
       </button>
     </slot>
   </div>

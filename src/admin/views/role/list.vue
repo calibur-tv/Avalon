@@ -47,11 +47,11 @@
         </a>
       </el-table-column>
       <el-table-column
-        label="粉丝数"
+        label="粉丝"
         prop="fans_count"
       />
       <el-table-column
-        label="金币数"
+        label="团子"
         prop="star_count"
       />
       <el-table-column label="操作">

@@ -64,6 +64,7 @@
     .el-button,
     .v-share {
       margin-left: 16px;
+      vertical-align: middle;
     }
 
     .el-button--text,
@@ -176,8 +177,8 @@
         size="medium"
         @click="loadAnswerComment"
       >
-        <i class="iconfont icon-pinglun1"/>
-        {{ item.comment_count ? item.comment_count + ' 条评论' : '添加评论' }}
+        <i class="iconfont icon-talk"/>
+        {{ item.comment_count ? item.comment_count + '条评论' : '添加评论' }}
       </el-button>
       <v-share
         :url="$alias.answer(item.id)"

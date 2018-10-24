@@ -144,7 +144,7 @@
           @click="toggleLike"
         >
           <i
-            :class="[ comment.liked ? 'icon-dianzan1 ic-liked' : 'icon-dianzan' ]"
+            :class="[ comment.liked ? 'icon-like ic-liked' : 'icon-dianzan' ]"
             class="iconfont"
           />
           <span

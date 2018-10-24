@@ -75,6 +75,7 @@
     margin-top: 3px;
     color: #666;
     font-size: 12px;
+    margin-bottom: 5px;
     @include twoline(22px);
 
     &.min-height {
@@ -157,18 +158,31 @@
       .share-btn {
         color: $color-text-light;
         font-size: 12px;
+        width: 70px;
+      }
+
+      span,
+      i {
+        line-height: 15px;
       }
     }
 
+    .meta {
+      display: inline-block;
+      width: 90px;
+    }
+
     span {
-      margin-left: 15px;
       line-height: 20px;
       font-size: 12px;
+      vertical-align: middle;
     }
 
     i {
+      vertical-align: middle;
       line-height: 20px;
-      font-size: 12px;
+      font-size: 14px;
+      margin-right: 3px;
     }
   }
 }
@@ -277,29 +291,37 @@
         :href="$alias.bangumi(item.bangumi.id)"
         target="_blank"
         class="bangumi"
-        v-text="item.bangumi.name"
-      />
+      >
+        <i class="iconfont icon-biaoqian"/>
+        <span v-text="item.bangumi.name"/>
+      </a>
       <v-share
         :url="$alias.post(item.id)"
         :title="item.title"
         :desc="item.desc"
         type="button"
       />
-      <span>
-        <i class="iconfont icon-buoumaotubiao44"/>
-        收藏数&nbsp;({{ item.mark_count }})
+      <span
+        v-if="item.is_creator"
+        class="meta"
+      >
+        <i class="iconfont icon-fantuan"/>
+        <span>投食&nbsp;({{ item.reward_count }})</span>
       </span>
-      <span v-if="item.is_creator">
-        <i class="iconfont icon-guanzhu"/>
-        投食数&nbsp;({{ item.reward_count }})
+      <span
+        v-else
+        class="meta"
+      >
+        <i class="iconfont icon-like"/>
+        <span>喜欢&nbsp;({{ item.like_count }})</span>
       </span>
-      <span v-else>
-        <i class="iconfont icon-dianzan1"/>
-        喜欢数&nbsp;({{ item.like_count }})
+      <span class="meta">
+        <i class="iconfont icon-mark"/>
+        <span>收藏&nbsp;({{ item.mark_count }})</span>
       </span>
-      <span>
-        <i class="iconfont icon-pinglun1"/>
-        评论数&nbsp;({{ item.comment_count }})
+      <span class="meta">
+        <i class="iconfont icon-talk"/>
+        <span>评论&nbsp;({{ item.comment_count }})</span>
       </span>
     </div>
   </li>

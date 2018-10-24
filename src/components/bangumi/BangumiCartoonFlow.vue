@@ -182,14 +182,14 @@
                   v-if="item.like_count"
                   :class="{ 'done': item.liked }"
                 >
-                  <i class="iconfont icon-guanzhu"/>
+                  <i class="iconfont icon-fantuan"/>
                   {{ item.like_count }}
                 </span>
                 <span
                   v-if="item.comment_count"
                   :class="{ 'done': item.commented }"
                 >
-                  <i class="iconfont icon-pinglun1"/>
+                  <i class="iconfont icon-talk"/>
                   {{ item.comment_count }}
                 </span>
                 <span v-if="item.view_count">

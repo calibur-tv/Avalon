@@ -28,6 +28,7 @@ $color-gray-hover: #6d757a;
     background-color: $color-blue;
     float: right;
     color: #fff;
+    font-size: 20px;
   }
 
   .M-main {
@@ -296,7 +297,7 @@ $color-gray-hover: #6d757a;
   .lg-btn {
     width: 40px;
     height: 40px;
-    font-size: 40px;
+    font-size: 45px;
     line-height: 40px;
   }
 

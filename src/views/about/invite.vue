@@ -70,7 +70,7 @@
             effect="dark"
             placement="bottom"
           >
-            <div slot="content">点击复制我的邀请地址<br>邀请小伙伴们注册赚金币</div>
+            <div slot="content">点击复制我的邀请地址<br>邀请小伙伴们注册赚团子</div>
             <el-button
               v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
               type="warning"
@@ -91,7 +91,7 @@
           type="info"
           title=""
         >
-          <p>注册之后，邀请者会收到短信提示，并且获得 1 枚金币；</p>
+          <p>注册之后，邀请者会收到短信提示，并且获得 1 枚团子；</p>
           <p>由于站内视频流量过大，为了降低宽带费用，先需要注册后才能看番，影响到了大家的体验，非常抱歉</p>
         </el-alert>
         <sign-up-form :invite-code="inviteUserId"/>

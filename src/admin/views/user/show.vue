@@ -97,7 +97,7 @@
         {{ user.faker == 1 ? '是' : '否' }}
       </div>
       <div>
-        <span class="label">总金币数：</span>
+        <span class="label">总团子：</span>
         {{ user.coin_count }}，可提现：{{ user.coin_count - user.coin_from_sign }}
       </div>
       <div>
