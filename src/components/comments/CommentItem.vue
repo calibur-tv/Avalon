@@ -100,7 +100,7 @@
 
 <template>
   <div
-    :id="`comment-${comment.id}`"
+    :id="`${type}-${comment.id}`"
     :class="{ 'focused-main-comment': focusThisComment }"
     class="def-comment-item"
   >

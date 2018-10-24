@@ -63,13 +63,13 @@
         icon="delete"
         size="small"
         @click="quickDelete"
-      >一键删评论</el-button>
+      >一键删某条评论</el-button>
       <el-button
         type="danger"
         icon="delete"
         size="small"
         @click="batchDelete"
-      >批量删评论</el-button>
+      >批量删用户评论</el-button>
     </header>
     <el-table
       :data="list"
