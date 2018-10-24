@@ -17,7 +17,7 @@
     class="follow-button"
     @click="toggleFollow"
   >
-    <i class="iconfont icon-fantuan"/>
+    <i class="iconfont icon-follow"/>
     {{ followed ? followedText : unFollowText }}
   </el-button>
 </template>

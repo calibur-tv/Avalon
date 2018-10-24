@@ -29,13 +29,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 4px;
+    border-radius: 50%;
     font-size: 30px;
     color: #fff;
-    background-color: $color-gray-deep;
+    background-color: RGB(229, 229, 229);
 
     &:hover {
-      background-color: $color-dark-light;
+      background-color: #b5b5b5;
     }
   }
 

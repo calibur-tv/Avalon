@@ -17,11 +17,10 @@
   }
 
   .tool-btn {
-    background-color: $color-gray-deep;
     width: 60px;
     height: 60px;
     margin-bottom: 5px;
-    border-radius: 4px;
+    border-radius: 50%;
     font-size: 30px;
     text-align: center;
     line-height: 60px;
@@ -30,9 +29,10 @@
     pointer-events: auto;
     position: absolute;
     right: 60px;
+    background-color: RGB(229, 229, 229);
 
     &:hover {
-      background-color: $color-dark-light;
+      background-color: #b5b5b5;
     }
   }
 
