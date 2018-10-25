@@ -178,8 +178,29 @@
             v-if="item.images.length"
             size="small"
             type="primary"
+            style="margin-left: 10px;margin-right: 10px"
             @click="openImages(item.images)"
           >查看所有图片</el-button>
+          <a
+            :href="$alias.bangumi(item.bangumi_id)"
+            target="_blank"
+          >
+            <el-button
+              size="small"
+              type="primary"
+            >查看番剧</el-button>
+          </a>
+          <a
+            v-if="computePostState(item) === '吧务已删除'"
+            :href="`/admin/user/show?id=${item.state}`"
+            target="_blank"
+            style="margin-left: 10px;margin-right: 10px"
+          >
+            <el-button
+              size="small"
+              type="primary"
+            >查看吧主</el-button>
+          </a>
         </div>
       </div>
     </div>
