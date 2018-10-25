@@ -91,6 +91,10 @@
             href="javascript:;"
             @click="openShareModal"
           >分享网站</a>
+          <a
+            href="/about/thanks"
+            target="_blank"
+          >品牌与站娘</a>
           <v-dialog
             v-model="toggleShareModal"
             :custom-class="$style.shareTipsModal"

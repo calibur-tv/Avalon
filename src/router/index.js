@@ -196,6 +196,11 @@ export function createRouter() {
             component: () => import("~/views/about/hello")
           },
           {
+            path: "about/thanks",
+            name: "thanks",
+            component: () => import("~/views/about/thanks")
+          },
+          {
             path: "about/invite/:id(\\d+)",
             name: "invite-user",
             component: () => import("~/views/about/invite")
