@@ -26,6 +26,27 @@
         color: $color-text-normal;
       }
     }
+
+    .video-item {
+      display: inline-block;
+      width: 188px;
+      height: 116px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-right: 15px;
+      text-align: center;
+      font-size: 50px;
+      line-height: 116px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 188px 116px;
+      transition: 0.4s cubic-bezier(0.22, 0.58, 0.12, 0.98);
+      border: 1px solid $color-gray-normal;
+
+      &:hover {
+        background-size: 282px 174px;
+      }
+    }
   }
 
   .intro {
@@ -264,6 +285,39 @@
             href="https://www.calibur.tv/user/jian-pao-zhi-yuan"
             target="_blank"
           >JPZY</a>
+        </p>
+        <h3 class="sub-title">宣传片</h3>
+        <div class="panel">
+          <a
+            :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/user/1/post/0/1533826373648-y0q.jpeg', { width: 376, height: 232 })})` }"
+            href="https://static.calibur.tv/owner/video/02.mp4"
+            class="video-item"
+            target="_blank"
+            style="color: #fff"
+          >
+            <i class="iconfont icon-bofang1"/>
+          </a>
+          <a
+            :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/cartoon-poster.png', { width: 376, height: 232 })})` }"
+            href="https://image.calibur.tv/owner/video/cartoon.mp4"
+            class="video-item"
+            target="_blank"
+            style="color: #333"
+          >
+            <i class="iconfont icon-bofang1"/>
+          </a>
+        </div>
+        <p class="intro">
+          <strong>视频1作者：</strong>
+          <a
+            href="https://www.calibur.tv/user/cfdxkk"
+            target="_blank"
+          >冲锋的小卡卡</a>，
+          <strong>视频2作者：</strong>
+          <a
+            href="https://www.calibur.tv/user/chun-feng-bu-ji-lei-mu-xiao"
+            target="_blank"
+          >指绘君</a>
         </p>
       </div>
     </v-layout>
