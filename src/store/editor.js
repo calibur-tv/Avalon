@@ -9,6 +9,16 @@ const templates = {
   },
   txt: {
     type: "txt",
+    text: "",
+    title: ""
+  },
+  list: {
+    type: "list",
+    text: "",
+    sort: ""
+  },
+  use: {
+    type: "use",
     text: ""
   }
 };
@@ -18,7 +28,9 @@ const state = () => ({
   selectedIndex: 0,
   sections: [
     Object.assign({}, templates.txt, { id: 0 }),
-    Object.assign({}, templates.img, { id: 1 })
+    Object.assign({}, templates.img, { id: 1 }),
+    Object.assign({}, templates.list, { id: 2 }),
+    Object.assign({}, templates.use, { id: 3 })
   ]
 });
 
@@ -41,6 +53,12 @@ const mutations = {
   UPDATE_SECTION_TEXT(state, { value }) {
     state.sections[state.selectedIndex].text = value;
   },
+  UPDATE_SECTION_TITLE(state, { value }) {
+    state.sections[state.selectedIndex].title = value;
+  },
+  UPDATE_SECTION_SORT(state, { value }) {
+    state.sections[state.selectedIndex].sort = value;
+  },
   UPDATE_SECTION_IMAGE(state, { url, width, height, size, mime }) {
     state.sections[state.selectedIndex].url = url;
     state.sections[state.selectedIndex].width = width;
@@ -50,7 +68,7 @@ const mutations = {
   },
   DELETE_SECTION(state, { index }) {
     state.sections.splice(index, 1);
-    state.selectedIndex = index === 0 ? 0 : index - 1;
+    state.selectedIndex = -1;
   },
   SORT_SECTION(state, { index }) {
     state.sections.splice(
@@ -73,7 +91,7 @@ const mutations = {
 const actions = {
   async getData({ commit }, { api, id }) {
     const data = await api.edit({ id });
-    commit("INIT_SECTION", data);
+    data && commit("INIT_SECTION", data);
   }
 };
 

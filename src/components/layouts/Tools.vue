@@ -268,10 +268,6 @@ export default {
       this.showQuestionModal = true;
     },
     handleScoreClick() {
-      if (this.userLevel < 3) {
-        this.$toast.info("3级以后才能写漫评");
-        return;
-      }
       window.location = this.$alias.createScore;
     },
     handleImageClick() {

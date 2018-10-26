@@ -245,8 +245,8 @@ export default {
         this.$toast.error("标题为必填的");
         return;
       }
-      if (!richContent.desc) {
-        this.$toast.error("至少说点什么吧");
+      if (richContent.desc.length < 400) {
+        this.$toast.error("漫评至少400字");
         return;
       }
       const scores = {};

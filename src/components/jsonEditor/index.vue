@@ -71,13 +71,17 @@
 import JsonItem from "./JsonItem";
 import ImgPreview from "./preview/ImgPreview";
 import TxtPreview from "./preview/TxtPreview";
+import ListPreview from "./preview/ListPreview";
+import UsePreview from "./preview/UsePreview";
 
 export default {
   name: "JsonEditorMain",
   components: {
     JsonItem,
     ImgPreview,
-    TxtPreview
+    TxtPreview,
+    UsePreview,
+    ListPreview
   },
   props: {},
   computed: {
@@ -131,6 +135,14 @@ export default {
             result.push(item);
           }
         } else if (item.type === "txt") {
+          if (item.title || item.text) {
+            result.push(item);
+          }
+        } else if (item.type === "use") {
+          if (item.text) {
+            result.push(item);
+          }
+        } else if (item.type === "list") {
           if (item.text) {
             result.push(item);
           }
@@ -141,8 +153,21 @@ export default {
     getPureContent() {
       let result = "";
       this.sections.forEach(item => {
+        if (item.type === "txt" && item.title) {
+          result += `${item.title}，`;
+        }
         if (item.type === "txt" && item.text) {
           result += item.text.replace(/<br>/g, "\n");
+        }
+        if (item.type === "use" && item.text) {
+          result += item.text.replace(/<br>/g, "\n");
+        }
+        if (item.type === "list" && item.text) {
+          let list = item.text;
+          while (/\n\n/.test(list)) {
+            list = list.replace(/\n\n/g, "\n");
+          }
+          result += list.replace(/\n/g, ";");
         }
       });
       return result;
