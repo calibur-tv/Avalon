@@ -1,9 +1,10 @@
 <style lang="scss">
 .json-content-txt-parser {
   blockquote {
-    margin-left: 18px;
+    margin-left: 5px;
     margin-right: 15px;
-    padding-left: 1em;
+    margin-bottom: 15px;
+    padding-left: 12px;
     color: #646464;
     border-left: 3px solid #d3d3d3;
     font-size: 14px;

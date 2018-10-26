@@ -2,7 +2,7 @@
 .json-content-list-parser {
   ul,
   ol {
-    margin: 15px 15px 13px 34px;
+    margin: 15px 15px 13px 19px;
   }
 
   ul li {
