@@ -110,7 +110,7 @@
             />
             <span
               class="percent"
-              v-text="`${star.val / bangumiScore.count * 100}%`"
+              v-text="`${(star.val / bangumiScore.count * 100).toFixed(2)}%`"
             />
           </div>
         </div>
