@@ -140,7 +140,7 @@
 
 <template>
   <div
-    :class="{ selected }"
+    :class="[{ selected }, `json-item-${index}`]"
     class="json-item"
   >
     <el-button

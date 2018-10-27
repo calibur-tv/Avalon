@@ -178,7 +178,7 @@ export default {
     },
     handleItemAppend({ index, type }) {
       this.$store.commit("editor/APPEND_SECTION", { index, type });
-      this.focusTextarea();
+      this.focusTextareaAndScroll(index);
     },
     handleItemDelete({ index }) {
       this.$store.commit("editor/DELETE_SECTION", { index });
@@ -186,10 +186,19 @@ export default {
     handleItemSort({ index }) {
       this.$store.commit("editor/SORT_SECTION", { index });
     },
-    focusTextarea() {
+    focusTextareaAndScroll(index) {
       this.$nextTick(() => {
         const textarea = this.$el.querySelector(".focus-textarea");
         textarea && textarea.focus();
+        if (index === this.sections.length - 2) {
+          const dom = document.querySelector(`.json-item-${index}`);
+          dom &&
+            this.$scrollToY(
+              (index + 2) * 300,
+              1000,
+              document.querySelector(".editor-tabs")
+            );
+        }
       });
     }
   }

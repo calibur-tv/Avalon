@@ -68,6 +68,7 @@ $textarea-padding-right: 15px;
       />
       <textarea
         v-model="text"
+        class="focus-textarea"
         placeholder="添加引用的文本"
         @focus="textAreaFocus"
       />

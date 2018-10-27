@@ -86,6 +86,7 @@ $textarea-padding-right: 15px;
       />
       <textarea
         v-model="text"
+        class="focus-textarea"
         placeholder="添加文字列表，回车分割"
         @focus="textAreaFocus"
       />
