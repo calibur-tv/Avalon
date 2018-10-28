@@ -21,74 +21,81 @@
 </style>
 
 <template>
-  <el-form
-    id="create-question-form"
-    ref="form"
-    :model="form"
-    :rules="rules"
-    :disabled="submitting"
-    label-width="45px"
+  <v-dialog
+    v-model="showQuestionModal"
+    :footer="false"
+    :click-close="false"
+    title="写下你的问题"
   >
-    <el-form-item
-      label="标题"
-      prop="title"
+    <el-form
+      id="create-question-form"
+      ref="form"
+      :model="form"
+      :rules="rules"
+      :disabled="submitting"
+      label-width="42px"
     >
-      <el-input
-        v-model.trim="form.title"
-        maxlength="30"
-        placeholder="问题标题"
-      />
-    </el-form-item>
-    <el-form-item
-      label="番剧"
-      prop="tags"
-    >
-      <bangumi-search
-        v-model="form.tags"
-        :multiple="true"
-        :followed="true"
-        :limit="5"
-        placeholder="添加番剧标签"
-      />
-    </el-form-item>
-    <el-form-item
-      label="描述"
-      prop="content"
-    >
-      <el-input
-        v-model.trim="form.content"
-        :rows="5"
-        placeholder="问题背景，条件等详细信息"
-        type="textarea"
-        maxlength="1000"
-      />
-    </el-form-item>
-    <el-form-item label="图片">
-      <el-upload
-        ref="uploader"
-        :data="uploadHeaders"
-        :on-error="handleError"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :on-exceed="handleExceed"
-        :limit="exceed"
-        :before-upload="beforeUpload"
-        :action="imageUploadAction"
-        :accept="imageUploadAccept"
-        multiple
-        list-type="picture-card"
+      <el-form-item
+        label="标题"
+        prop="title"
       >
-        <i class="el-icon-plus"/>
-      </el-upload>
-    </el-form-item>
-    <el-form-item>
-      <el-button
-        :loading="submitting"
-        type="primary"
-        @click="submit"
-      >提交问题</el-button>
-    </el-form-item>
-  </el-form>
+        <el-input
+          v-model.trim="form.title"
+          maxlength="30"
+          placeholder="问题标题"
+        />
+      </el-form-item>
+      <el-form-item
+        label="番剧"
+        prop="tags"
+      >
+        <bangumi-search
+          v-model="form.tags"
+          :multiple="true"
+          :followed="true"
+          :limit="5"
+          placeholder="添加番剧标签"
+        />
+      </el-form-item>
+      <el-form-item
+        label="描述"
+        prop="content"
+      >
+        <el-input
+          v-model.trim="form.content"
+          :rows="5"
+          placeholder="问题背景，条件等详细信息"
+          type="textarea"
+          maxlength="1000"
+        />
+      </el-form-item>
+      <el-form-item label="图片">
+        <el-upload
+          ref="uploader"
+          :data="uploadHeaders"
+          :on-error="handleError"
+          :on-remove="handleRemove"
+          :on-success="handleSuccess"
+          :on-exceed="handleExceed"
+          :limit="exceed"
+          :before-upload="beforeUpload"
+          :action="imageUploadAction"
+          :accept="imageUploadAccept"
+          multiple
+          list-type="picture-card"
+        >
+          <i class="el-icon-plus"/>
+        </el-upload>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          :loading="submitting"
+          type="primary"
+          @click="submit"
+        >提交问题</el-button>
+      </el-form-item>
+    </el-form>
+  </v-dialog>
 </template>
 
 <script>
@@ -96,7 +103,7 @@ import uploadMixin from "~/mixins/upload";
 import Api from "~/api/questionApi";
 
 export default {
-  name: "CreateQuestionForm",
+  name: "CreateQuestionDialog",
   mixins: [uploadMixin],
   data() {
     const validateTitle = (rule, value, callback) => {
@@ -118,6 +125,7 @@ export default {
       callback();
     };
     return {
+      showQuestionModal: false,
       form: {
         title: "",
         tags: [],
@@ -131,6 +139,13 @@ export default {
       exceed: 7,
       submitting: false
     };
+  },
+  mounted() {
+    this.$channel.$on("show-create-question-modal", () => {
+      this.$store.state.login
+        ? (this.showQuestionModal = true)
+        : this.$channel.$emit("sign-in");
+    });
   },
   methods: {
     beforeUpload(file) {

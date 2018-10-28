@@ -1,10 +1,20 @@
 import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
-  create({ title, bangumiId, content, images, desc, geetest, is_creator }) {
+  create({
+    title,
+    bangumiId,
+    tags,
+    content,
+    images,
+    desc,
+    geetest,
+    is_creator
+  }) {
     return this.http.post("post/create", {
       title,
       bangumiId,
+      tags,
       content,
       images,
       desc,
@@ -67,5 +77,9 @@ export default class extends BaseApi {
 
   removeNice({ id }) {
     return this.http.post("post/manager/nice/remove", { id });
+  }
+
+  tags() {
+    return this.http.get("post/tags");
   }
 }

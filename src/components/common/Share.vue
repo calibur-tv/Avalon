@@ -347,7 +347,7 @@
         class="share-btn"
       >
         <i class="iconfont icon-fenxiang"/>
-        <span>分享</span>
+        <span v-if="showText">分享</span>
       </button>
     </slot>
   </div>
@@ -434,6 +434,10 @@ export default {
     url: {
       type: String,
       default: ""
+    },
+    showText: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

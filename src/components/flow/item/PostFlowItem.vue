@@ -73,8 +73,6 @@
 
   .content {
     margin-top: 3px;
-    color: #666;
-    font-size: 12px;
     margin-bottom: 5px;
     @include twoline(22px);
 
@@ -82,7 +80,12 @@
       min-height: 44px;
     }
 
-    a {
+    .desc {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .nickname {
       font-size: 12px;
       line-height: 22px;
       color: #262626;
@@ -142,47 +145,69 @@
   }
 
   .footer {
-    text-align: right;
     font-size: 13px;
     color: $color-text-light;
 
-    .bangumi {
-      float: left;
+    .tags {
+      overflow: hidden;
       font-size: 12px;
-      line-height: 20px;
-    }
+      margin-right: 10px;
 
-    .v-share {
-      display: inline-block;
-
-      .share-btn {
-        color: $color-text-light;
-        font-size: 12px;
-        width: 55px;
+      > * {
+        display: inline-block;
+        height: 20px;
+        border-radius: 10px;
+        line-height: 20px;
+        background-color: $color-gray-normal;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-right: 5px;
       }
 
-      span,
+      .tag {
+        cursor: default;
+        user-select: none;
+      }
+
       i {
-        line-height: 15px;
+        margin-right: 3px;
       }
     }
 
-    .meta {
-      display: inline-block;
-      width: 90px;
-    }
+    .stats {
+      float: right;
 
-    span {
-      line-height: 20px;
-      font-size: 12px;
-      vertical-align: middle;
-    }
+      .v-share {
+        display: inline-block;
 
-    i {
-      vertical-align: middle;
-      line-height: 20px;
-      font-size: 14px;
-      margin-right: 3px;
+        .share-btn {
+          color: $color-text-light;
+          font-size: 12px;
+        }
+
+        span,
+        i {
+          line-height: 15px;
+        }
+      }
+
+      .meta {
+        display: inline-block;
+        width: 50px;
+
+        span {
+          line-height: 20px;
+          font-size: 12px;
+          vertical-align: middle;
+        }
+
+        i {
+          vertical-align: middle;
+          line-height: 20px;
+          font-size: 14px;
+          margin-right: 5px;
+        }
+      }
     }
   }
 }
@@ -234,12 +259,14 @@
         v-if="item.is_creator"
         class="creator_badge"
       >原创</div>
-      <a
-        :href="$alias.post(item.id)"
-        class="title oneline href-fade-blue"
-        target="_blank"
-        v-text="item.title"
-      />
+      <div class="title oneline">
+        <a
+          :href="$alias.post(item.id)"
+          class="href-fade-blue"
+          target="_blank"
+          v-text="item.title"
+        />
+      </div>
     </div>
     <p
       v-if="item.user"
@@ -249,9 +276,16 @@
       <a
         :href="$alias.user(item.user.zone)"
         target="_blank"
+        class="nickname"
       >{{ item.user.nickname }}</a>
       :
-      {{ item.desc }}
+      <a
+        :href="$alias.post(item.id)"
+        target="_blank"
+        class="desc"
+      >
+        {{ item.desc }}
+      </a>
     </p>
     <p
       v-else
@@ -286,43 +320,53 @@
       v-text="item.comment_count"
     />
     <div class="footer">
-      <a
-        v-if="!bangumiId && !userZone"
-        :href="$alias.bangumi(item.bangumi.id)"
-        target="_blank"
-        class="bangumi"
-      >
-        <i class="iconfont icon-biaoqian"/>
-        <span v-text="item.bangumi.name"/>
-      </a>
-      <v-share
-        :url="$alias.post(item.id)"
-        :title="item.title"
-        :desc="item.desc"
-        type="button"
-      />
-      <span
-        v-if="item.is_creator"
-        class="meta"
-      >
-        <i class="iconfont icon-fantuan"/>
-        <span>投食&nbsp;({{ item.reward_count }})</span>
-      </span>
-      <span
-        v-else
-        class="meta"
-      >
-        <i class="iconfont icon-like"/>
-        <span>喜欢&nbsp;({{ item.like_count }})</span>
-      </span>
-      <span class="meta">
-        <i class="iconfont icon-mark"/>
-        <span>收藏&nbsp;({{ item.mark_count }})</span>
-      </span>
-      <span class="meta">
-        <i class="iconfont icon-talk"/>
-        <span>评论&nbsp;({{ item.comment_count }})</span>
-      </span>
+      <div class="stats">
+        <span
+          v-if="item.is_creator"
+          class="meta"
+        >
+          <i class="iconfont icon-fantuan"/>
+          <span>{{ $utils.shortenNumber(item.reward_count) }}</span>
+        </span>
+        <span
+          v-else
+          class="meta"
+        >
+          <i class="iconfont icon-like"/>
+          <span>{{ $utils.shortenNumber(item.like_count) }}</span>
+        </span>
+        <span class="meta">
+          <i class="iconfont icon-mark"/>
+          <span>{{ $utils.shortenNumber(item.mark_count) }}</span>
+        </span>
+        <span class="meta">
+          <i class="iconfont icon-talk"/>
+          <span>{{ $utils.shortenNumber(item.comment_count) }}</span>
+        </span>
+        <v-share
+          :url="$alias.post(item.id)"
+          :title="item.title"
+          :desc="item.desc"
+          :show-text="false"
+          type="button"
+        />
+      </div>
+      <div class="tags oneline">
+        <a
+          v-if="!bangumiId && !userZone"
+          :href="$alias.bangumi(item.bangumi.id)"
+          target="_blank"
+        >
+          <i class="iconfont icon-biaoqian"/>
+          <span v-text="item.bangumi.name"/>
+        </a>
+        <span
+          v-for="tag in item.tags"
+          :key="tag.id"
+          class="tag"
+          v-text="tag.name"
+        />
+      </div>
     </div>
   </li>
 </template>

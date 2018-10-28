@@ -29,95 +29,127 @@
 </style>
 
 <template>
-  <el-form
-    ref="forms"
-    :model="forms"
-    :rules="rules"
-    label-width="70px"
-    class="create-post-form"
+  <v-dialog
+    v-model="showPostModal"
+    :click-close="false"
+    :footer="false"
+    title="发帖"
   >
-    <el-form-item
-      label="标题"
-      prop="title"
+    <el-form
+      ref="forms"
+      :model="forms"
+      :rules="rules"
+      label-width="42px"
+      class="create-post-form"
     >
-      <el-input
-        v-model.trim="forms.title"
-        placeholder="请填写帖子标题"
-      />
-    </el-form-item>
-    <el-form-item
-      label="番剧"
-      prop="bangumiId"
-    >
-      <bangumi-search
-        v-model="forms.bangumiId"
-        :followed="true"
-        placeholder="请选择要投稿的番剧"
-      />
-    </el-form-item>
-    <el-form-item label="原创">
-      <el-switch v-model="forms.is_creator"/>
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="如果帖子是转载的，请不要勾选"
-        placement="top"
+      <el-form-item
+        label="标题"
+        prop="title"
       >
-        <i class="el-icon-question"/>
-      </el-tooltip>
-    </el-form-item>
-    <el-form-item label="图片">
-      <el-upload
-        ref="uploader"
-        :data="uploadHeaders"
-        :action="imageUploadAction"
-        :accept="imageUploadAccept"
-        :on-error="handleError"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :on-exceed="handleExceed"
-        :limit="exceed"
-        :before-upload="beforeUpload"
-        multiple
-        list-type="picture-card"
+        <el-input
+          v-model.trim="forms.title"
+          placeholder="请填写帖子标题"
+        />
+      </el-form-item>
+      <el-form-item
+        label="番剧"
+        prop="bangumiId"
       >
-        <i class="el-icon-plus"/>
-      </el-upload>
-    </el-form-item>
-    <el-form-item
-      label="内容"
-      prop="content"
-    >
-      <el-input
-        v-model.trim="forms.content"
-        :rows="10"
-        type="textarea"
-        placeholder="1000字以内"
-        resize="none"
-      />
-    </el-form-item>
-    <el-form-item>
-      <el-button
-        :loading="submitting"
-        type="primary"
-        @click="submit"
-      >发布</el-button>
-    </el-form-item>
-  </el-form>
+        <bangumi-search
+          v-model="forms.bangumiId"
+          :followed="true"
+          placeholder="请选择要投稿的番剧"
+        />
+      </el-form-item>
+      <el-form-item label="标签">
+        <el-select
+          v-model="forms.tags"
+          multiple
+          placeholder="添加标签"
+          style="width: 100%"
+        >
+          <el-option
+            v-for="item in tags"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="原创">
+        <el-switch v-model="forms.is_creator"/>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="如果帖子是转载的，请不要勾选"
+          placement="top"
+        >
+          <i class="el-icon-question"/>
+        </el-tooltip>
+      </el-form-item>
+      <el-form-item label="图片">
+        <el-upload
+          ref="uploader"
+          :data="uploadHeaders"
+          :action="imageUploadAction"
+          :accept="imageUploadAccept"
+          :on-error="handleError"
+          :on-remove="handleRemove"
+          :on-success="handleSuccess"
+          :on-exceed="handleExceed"
+          :limit="exceed"
+          :before-upload="beforeUpload"
+          multiple
+          list-type="picture-card"
+        >
+          <i class="el-icon-plus"/>
+        </el-upload>
+      </el-form-item>
+      <el-form-item
+        label="内容"
+        prop="content"
+      >
+        <el-input
+          v-model.trim="forms.content"
+          :rows="7"
+          type="textarea"
+          placeholder="1000字以内"
+          resize="none"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          :loading="submitting"
+          type="primary"
+          @click="submit"
+        >发布</el-button>
+      </el-form-item>
+    </el-form>
+  </v-dialog>
 </template>
 
 <script>
 import uploadMixin from "~/mixins/upload";
+import PostApi from "~/api/postApi";
 
 export default {
-  name: "CreatePostForm",
+  name: "CreatePostDialog",
   mixins: [uploadMixin],
   data() {
+    const validateTags = (rule, value, callback) => {
+      if (value.length > 3) {
+        return callback(new Error("最多选择 3 个标签"));
+      }
+      callback();
+    };
     return {
+      showPostModal: false,
+      tags: [],
       forms: {
         title: "",
         bangumiId: "",
         content: "",
+        tags: [],
         is_creator: false
       },
       rules: {
@@ -144,7 +176,8 @@ export default {
             message: "内容不能为空，且不超过1000字",
             trigger: "submit"
           }
-        ]
+        ],
+        tags: [{ validator: validateTags, trigger: "change" }]
       },
       images: [],
       exceed: 6,
@@ -158,6 +191,16 @@ export default {
         ? parseInt(this.$route.params.id, 10)
         : 0;
     }
+  },
+  mounted() {
+    this.$channel.$on("show-create-post-modal", () => {
+      if (this.$store.state.login) {
+        this.showPostModal = true;
+        this.getPostTags();
+      } else {
+        this.$channel.$emit("sign-in");
+      }
+    });
   },
   methods: {
     submit() {
@@ -175,15 +218,16 @@ export default {
           this.$captcha({
             success: async ({ data }) => {
               try {
-                const result = await this.$store.dispatch("post/create", {
+                const api = new PostApi(this);
+                const result = await api.create({
                   title: this.forms.title,
                   bangumiId: this.forms.bangumiId,
+                  tags: this.forms.tags,
                   desc: this.forms.content.substring(0, 120),
                   content: this.forms.content,
                   images: this.images.map(item => item.img),
-                  geetest: data,
-                  ctx: this,
-                  is_creator: this.forms.is_creator
+                  is_creator: this.forms.is_creator,
+                  geetest: data
                 });
                 this.images = [];
                 this.$refs.forms.resetFields();
@@ -250,6 +294,24 @@ export default {
       };
 
       return this.beforeImageUpload(file);
+    },
+    async getPostTags() {
+      if (this.tags.length) {
+        return;
+      }
+      try {
+        const list = JSON.parse(sessionStorage.getItem("cache-post-tags"));
+        if (list) {
+          this.tags = list;
+          return;
+        }
+      } catch (e) {}
+      const api = new PostApi(this);
+      try {
+        const tags = await api.tags();
+        this.tags = tags;
+        sessionStorage.setItem("cache-post-tags", JSON.stringify(tags));
+      } catch (e) {}
     }
   }
 };

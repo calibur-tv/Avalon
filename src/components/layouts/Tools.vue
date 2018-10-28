@@ -75,7 +75,7 @@
   >
     <v-creator>
       <el-tooltip
-        placement="top"
+        placement="left"
         effect="dark"
         content="传图片"
       >
@@ -161,23 +161,9 @@
       </el-tooltip>
     </div>
     <template v-if="!isGuest">
-      <v-dialog
-        v-model="showPostModal"
-        :click-close="false"
-        :footer="false"
-        title="发帖"
-      >
-        <create-post-form @submit="showPostModal = false"/>
-      </v-dialog>
-      <v-dialog
-        v-model="showQuestionModal"
-        :footer="false"
-        :click-close="false"
-        title="写下你的问题"
-      >
-        <create-question-form @submit="showQuestionModal = false"/>
-      </v-dialog>
-      <create-image-panel/>
+      <create-post-dialog/>
+      <create-question-dialog/>
+      <create-image-dialog/>
     </template>
     <v-feedback/>
   </div>
@@ -186,24 +172,22 @@
 <script>
 import vCreator from "./Creator.vue";
 import vFeedback from "~/components/user/Feedback";
-import CreatePostForm from "~/components/post/CreatePostForm";
-import CreateImagePanel from "~/components/image/CreateImagePanel";
-import CreateQuestionForm from "~/components/question/CreateQuestionForm";
+import CreatePostDialog from "~/components/post/CreatePostDialog";
+import CreateImageDialog from "~/components/image/CreateImageDialog";
+import CreateQuestionDialog from "~/components/question/CreateQuestionDialog";
 
 export default {
   name: "SideTools",
   components: {
     vCreator,
     vFeedback,
-    CreatePostForm,
-    CreateImagePanel,
-    CreateQuestionForm
+    CreatePostDialog,
+    CreateImageDialog,
+    CreateQuestionDialog
   },
   data() {
     return {
-      showToTop: false,
-      showPostModal: false,
-      showQuestionModal: false
+      showToTop: false
     };
   },
   computed: {
@@ -235,16 +219,6 @@ export default {
         this.computeShow();
       }, 500)
     );
-    this.$channel.$on("show-create-post-modal", () => {
-      this.$store.state.login
-        ? (this.showPostModal = true)
-        : this.$channel.$emit("sign-in");
-    });
-    this.$channel.$on("show-create-question-modal", () => {
-      this.$store.state.login
-        ? (this.showQuestionModal = true)
-        : this.$channel.$emit("sign-in");
-    });
   },
   methods: {
     handlePostClick() {
@@ -253,7 +227,7 @@ export default {
         this.$channel.$emit("sign-in");
         return;
       }
-      this.showPostModal = true;
+      this.$channel.$emit("show-create-post-modal");
     },
     handleQuestionClick() {
       if (!this.$store.state.login) {
@@ -265,7 +239,7 @@ export default {
         this.$toast.info("3级以后才能提问");
         return;
       }
-      this.showQuestionModal = true;
+      this.$channel.$emit("show-create-question-modal");
     },
     handleScoreClick() {
       window.location = this.$alias.createScore;
