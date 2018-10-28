@@ -61,7 +61,10 @@
           placeholder="请选择要投稿的番剧"
         />
       </el-form-item>
-      <el-form-item label="标签">
+      <el-form-item
+        label="标签"
+        prop="tags"
+      >
         <el-select
           v-model="forms.tags"
           multiple
