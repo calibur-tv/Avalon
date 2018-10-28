@@ -161,7 +161,7 @@
         background-color: $color-gray-normal;
         padding-left: 10px;
         padding-right: 10px;
-        margin-right: 5px;
+        margin-right: 7px;
       }
 
       .tag {
