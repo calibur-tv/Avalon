@@ -71,7 +71,7 @@
       padding: 0 12px;
       border-radius: 20px;
       font-size: 13px;
-      line-height: 28px;
+      line-height: 26px;
       border: 1px solid;
     }
   }
