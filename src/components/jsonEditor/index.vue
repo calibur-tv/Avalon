@@ -174,7 +174,7 @@ export default {
     },
     handleItemPreview({ index }) {
       this.$store.commit("editor/SWITCH_SECTION", { index });
-      this.focusTextarea();
+      this.focusTextareaAndScroll();
     },
     handleItemAppend({ index, type }) {
       this.$store.commit("editor/APPEND_SECTION", { index, type });
