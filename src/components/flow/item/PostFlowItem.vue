@@ -73,7 +73,7 @@
 
   .content {
     margin-top: 3px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     @include twoline(22px);
 
     &.min-height {
@@ -97,7 +97,7 @@
     height: 90px;
     overflow: hidden;
     margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 11px;
 
     .image-box {
       margin-right: 10px;
@@ -319,7 +319,7 @@
       class="counter"
       v-text="item.comment_count"
     />
-    <div class="footer">
+    <div class="footer clearfix">
       <div class="stats">
         <span
           v-if="item.is_creator"

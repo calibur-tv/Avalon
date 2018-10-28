@@ -58,7 +58,7 @@
     .cancel {
       height: 28px;
       font-size: 13px;
-      color: $color-gray-normal;
+      color: $color-text-normal;
 
       &:hover {
         color: #333333;
