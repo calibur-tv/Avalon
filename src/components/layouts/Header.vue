@@ -304,7 +304,7 @@ $search-height: 32px;
 
     .search-history {
       position: absolute;
-      left: 0;
+      right: 20px;
       top: 120%;
       height: 192px;
       width: 267px;

@@ -34,33 +34,8 @@ export default class extends BaseApi {
     });
   }
 
-  reply({ postId, images, content, geetest }) {
-    return this.http.post(`post/${postId}/reply`, {
-      images,
-      content,
-      geetest
-    });
-  }
-
-  comment({ postId, content, targetUserId }) {
-    return this.http.post(`post/${postId}/comment`, {
-      content,
-      targetUserId
-    });
-  }
-
-  comments({ postId, page }) {
-    return this.http.get(`post/${postId}/comments`, {
-      params: { page }
-    });
-  }
-
   deletePost(id) {
     return this.http.post(`post/${id}/deletePost`);
-  }
-
-  deleteComment({ postId, commentId }) {
-    return this.http.post(`post/${postId}/deleteComment`, { commentId });
   }
 
   setTop({ id }) {

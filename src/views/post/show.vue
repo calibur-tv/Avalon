@@ -71,7 +71,7 @@
       }
     }
 
-    .content {
+    .body {
       background: #fff;
       padding: 22px 0 14px;
       border-top: 1px solid #e5e9ef;
@@ -81,16 +81,48 @@
         min-height: 80px;
       }
 
-      .image {
-        margin-bottom: 12px;
+      .content {
+        min-height: 300px;
+
+        .image {
+          margin-bottom: 12px;
+        }
+
+        .text-area {
+          line-height: 24px;
+          padding: 2px 0;
+          font-size: 14px;
+          overflow: hidden;
+          word-wrap: break-word;
+        }
       }
 
-      .text-area {
-        line-height: 24px;
-        padding: 2px 0;
-        font-size: 14px;
-        overflow: hidden;
-        word-wrap: break-word;
+      .tags {
+        font-size: 12px;
+        margin-bottom: -10px;
+        margin-top: 10px;
+
+        > * {
+          display: inline-block;
+          height: 20px;
+          border-radius: 10px;
+          line-height: 20px;
+          background-color: $color-gray-normal;
+          color: $color-text-normal;
+          padding-left: 10px;
+          padding-right: 10px;
+          margin-right: 8px;
+          margin-bottom: 8px;
+        }
+
+        .tag {
+          cursor: default;
+          user-select: none;
+        }
+
+        i {
+          margin-right: 3px;
+        }
       }
 
       .footer {
@@ -239,24 +271,41 @@
                 />
               </user-card>
             </div>
-            <div class="content">
-              <div
-                v-for="(img, idx) in post.images"
-                :key="idx"
-                class="image-package"
-              >
-                <v-img
-                  :src="img.url"
-                  :width="img.width"
-                  :height="img.height"
-                  :full="true"
-                  class="image"
+            <div class="body">
+              <div class="content">
+                <div
+                  v-for="(img, idx) in post.images"
+                  :key="idx"
+                  class="image-package"
+                >
+                  <v-img
+                    :src="img.url"
+                    :width="img.width"
+                    :height="img.height"
+                    :full="true"
+                    class="image"
+                  />
+                </div>
+                <div
+                  class="text-area"
+                  v-html="post.content"
                 />
               </div>
-              <div
-                class="text-area"
-                v-html="post.content"
-              />
+              <div class="tags">
+                <a
+                  :href="$alias.bangumi(bangumi.id)"
+                  target="_blank"
+                >
+                  <i class="iconfont icon-biaoqian"/>
+                  <span v-text="bangumi.name"/>
+                </a>
+                <span
+                  v-for="tag in post.tags"
+                  :key="tag.id"
+                  class="tag"
+                  v-text="tag.name"
+                />
+              </div>
               <social-panel
                 :id="post.id"
                 :is-creator="post.is_creator"
