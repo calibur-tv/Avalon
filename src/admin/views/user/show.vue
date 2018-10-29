@@ -165,8 +165,46 @@
           size="mini"
           @click="block"
         >
-          封禁
+          永久封禁
         </el-button>
+        <el-tooltip
+          v-if="user.banned_to"
+          :content="user.banned_to"
+          placement="top"
+          effect="dark"
+        >
+          <el-button
+            :loading="banning"
+            type="primary"
+            size="mini"
+            @click="freeUser"
+          >
+            解除禁言
+          </el-button>
+        </el-tooltip>
+        <el-popover
+          v-else
+          placement="right"
+          width="220"
+          trigger="hover">
+          <el-date-picker
+            v-model="banned_to"
+            :picker-options="bannedOpts"
+            align="right"
+            type="datetime"
+            placeholder="选择终点"
+          />
+          <el-button
+            slot="reference"
+            :loading="banning"
+            type="danger"
+            size="mini"
+            style="margin-left: 8px"
+            @click="freezeUser"
+          >
+            禁言
+          </el-button>
+        </el-popover>
         <el-button
           v-if="isKing && user.coin_count - user.coin_from_sign >= 100"
           type="success"
@@ -277,11 +315,44 @@ export default {
   mixins: [pageMixin],
   data() {
     return {
+      bannedOpts: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [
+          {
+            text: "一天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "三天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 3);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      },
       searching: false,
       user: null,
       loading: false,
       showTransactions: false,
-      showIpAddress: false
+      showIpAddress: false,
+      banned_to: null,
+      banning: false
     };
   },
   computed: {
@@ -319,6 +390,41 @@ export default {
     }
   },
   methods: {
+    async freezeUser() {
+      if (!this.banned_to) {
+        this.$toast.error("请先选择禁言时长");
+        return;
+      }
+      this.banning = true;
+      const api = new Api(this);
+      try {
+        await api.freezeUser({
+          id: this.user.id,
+          banned_to: this.banned_to
+        });
+        this.user.banned_to = this.banned_to.toString();
+        this.$toast.success("操作成功");
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.banning = false;
+      }
+    },
+    async freeUser() {
+      this.banning = true;
+      const api = new Api(this);
+      try {
+        await api.freeUser({
+          id: this.user.id
+        });
+        this.user.banned_to = null;
+        this.$toast.success("操作成功");
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.banning = false;
+      }
+    },
     async getTransactions(page) {
       this.showTransactions = true;
       if (page <= this.pageState.max) {

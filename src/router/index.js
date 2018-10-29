@@ -593,6 +593,12 @@ export function createRouter() {
                 component: () => import("@/views/cm/ipBlocker")
               },
               {
+                path: "cron_freeze",
+                name: "cron_freeze",
+                meta: { title: "限时禁言", icon: "coffee" },
+                component: () => import("@/views/cm/cronFreeze")
+              },
+              {
                 path: "app-version",
                 name: "app-version",
                 meta: { title: "App版本", icon: "coffee" },

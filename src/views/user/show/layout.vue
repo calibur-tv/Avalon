@@ -434,6 +434,15 @@
         <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的团子也将归你所有</p>
         <p>当然，你也有权要求我们删除所有你的内容</p>
       </div>
+      <div
+        v-if="blockedAt"
+        class="faker-tips"
+      >
+        <span>该用户已被封禁，封禁至：{{ blockedAt }}，可能是由于以下原因：</span>
+        <p>1. 破坏社区环境，包括但不限于：无脑刷屏、复制他人内容来发表</p>
+        <p>2. 恶意带节奏</p>
+        <p>3. 其它原因还没想好，希望大家引以为戒</p>
+      </div>
       <div class="user-flows-wrap">
         <tab-container
           :list="cards"
@@ -520,6 +529,9 @@ export default {
     },
     self() {
       return this.$store.state.user;
+    },
+    blockedAt() {
+      return this.$store.state.users.show.banned_to;
     },
     user() {
       return this.isMe ? this.self : this.$store.state.users.show;
