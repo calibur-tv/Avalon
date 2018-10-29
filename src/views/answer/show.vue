@@ -31,10 +31,7 @@
           v-if="answer"
           class="answer"
         >
-          <a
-            :href="$alias.question(qaq.id)"
-            target="_blank"
-          >
+          <a :href="$alias.question(qaq.id)">
             <el-button
               v-if="qaq.answer_count > 1"
               class="read-all-btn"
@@ -45,10 +42,7 @@
             >查看问题</el-button>
           </a>
           <answer-flow-item :item="answer"/>
-          <a
-            :href="$alias.question(qaq.id)"
-            target="_blank"
-          >
+          <a :href="$alias.question(qaq.id)">
             <el-button
               v-if="qaq.answer_count > 1"
               class="read-all-btn"

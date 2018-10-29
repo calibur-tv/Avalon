@@ -22,7 +22,7 @@
         />
       </el-table-column>
       <el-table-column
-        label="金币数"
+        label="团子"
         prop="coin_count"
       />
       <el-table-column label="运营号">

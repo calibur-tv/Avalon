@@ -32,7 +32,7 @@ import UploadImageForm from "~/components/image/UploadImageForm";
 import CreateAlbumForm from "~/components/image/CreateAlbumForm";
 
 export default {
-  name: "UploadImageModal",
+  name: "CreateImageDialog",
   components: {
     UploadImageForm,
     CreateAlbumForm

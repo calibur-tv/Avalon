@@ -280,7 +280,7 @@ export default {
             window.location.reload();
           });
         } else {
-          const result = api.createCMLoop(this.form);
+          const result = await api.createCMLoop(this.form);
           this.pageList.unshift(result);
           this.showCreateModal = false;
           this.$toast.success("操作成功");
@@ -289,25 +289,6 @@ export default {
         this.$toast.error(e);
       } finally {
         this.submitting = false;
-      }
-    },
-    async createFriendLink() {
-      const api = new Api(this);
-      try {
-        api.addFriendLink({
-          link: this.link.split("?")[0],
-          name: this.name
-        });
-        this.pageList.unshift({
-          link: this.link.split("?")[0],
-          name: this.name
-        });
-        this.$toast.success("操作成功");
-        this.showCreateModal = false;
-        this.name = "";
-        this.link = "";
-      } catch (e) {
-        this.$toast.error(e);
       }
     },
     async remove(index, row) {

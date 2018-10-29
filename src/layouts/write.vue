@@ -142,6 +142,7 @@ $layout-width: 900px;
             round
             @click="emitPreview"
           >预览</el-button>
+          <!--
           <el-button
             v-if="id"
             size="small"
@@ -151,6 +152,7 @@ $layout-width: 900px;
             round
             @click="emitDestroy"
           >删除</el-button>
+          -->
         </template>
       </div>
     </header>

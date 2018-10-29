@@ -485,4 +485,21 @@ export default class extends BaseApi {
       id
     });
   }
+
+  freezeUserList() {
+    return this.http.get("admin/user/banned/freezeUsers");
+  }
+
+  freezeUser({ banned_to, id }) {
+    return this.http.post("admin/user/banned/freeze", {
+      banned_to,
+      id
+    });
+  }
+
+  freeUser({ id }) {
+    return this.http.post("admin/user/banned/free", {
+      id
+    });
+  }
 }

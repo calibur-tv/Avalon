@@ -104,7 +104,7 @@ $tool-btn-width: 40px;
 
     i {
       color: #99a2aa;
-      font-size: 22px;
+      font-size: 24px;
 
       &:hover {
         color: #6d757a;
@@ -232,7 +232,7 @@ $tool-btn-width: 40px;
       <p>
         由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
         <br>
-        金币可通过签到等方式获得
+        团子可通过签到等方式获得
       </p>
       <a
         href="https://www.calibur.tv/post/2282"
@@ -241,7 +241,7 @@ $tool-btn-width: 40px;
       <a
         href="/about/hello"
         target="_blank"
-      >&nbsp;&nbsp;什么是金币？</a>
+      >&nbsp;&nbsp;什么是团子？</a>
     </div>
     <div
       v-else-if="showLevelThrottle"

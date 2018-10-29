@@ -196,6 +196,11 @@ export function createRouter() {
             component: () => import("~/views/about/hello")
           },
           {
+            path: "about/thanks",
+            name: "thanks",
+            component: () => import("~/views/about/thanks")
+          },
+          {
             path: "about/invite/:id(\\d+)",
             name: "invite-user",
             component: () => import("~/views/about/invite")
@@ -586,6 +591,12 @@ export function createRouter() {
                 name: "ip_blocker",
                 meta: { title: "ip封禁", icon: "coffee" },
                 component: () => import("@/views/cm/ipBlocker")
+              },
+              {
+                path: "cron_freeze",
+                name: "cron_freeze",
+                meta: { title: "限时禁言", icon: "coffee" },
+                component: () => import("@/views/cm/cronFreeze")
               },
               {
                 path: "app-version",

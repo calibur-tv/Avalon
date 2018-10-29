@@ -225,7 +225,7 @@ export default {
         },
         {
           key: 11,
-          val: "互刷金币"
+          val: "互刷团子"
         }
       ]
     };

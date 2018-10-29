@@ -51,7 +51,7 @@
         <el-radio :label="8">恶意引战</el-radio>
         <el-radio :label="9">重复内容/刷屏</el-radio>
         <el-radio :label="10">内容不相关</el-radio>
-        <el-radio :label="11">互刷金币</el-radio>
+        <el-radio :label="11">互刷团子</el-radio>
         <el-radio :label="0">其它</el-radio>
       </el-radio-group>
       <template v-if="needContent">

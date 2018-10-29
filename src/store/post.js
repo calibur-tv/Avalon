@@ -45,10 +45,6 @@ const actions = {
     const data = await api.show({ id, only });
     commit("SET_POST_INFO", data);
   },
-  async create({}, params) {
-    const api = new Api(params.ctx);
-    return await api.create(params);
-  },
   async deletePost({}, { ctx, id }) {
     const api = new Api(ctx);
     await api.deletePost(id);

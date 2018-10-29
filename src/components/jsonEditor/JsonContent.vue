@@ -15,12 +15,16 @@
 <script>
 import TxtParser from "./parser/TxtParser";
 import ImgParser from "./parser/ImgParser";
+import UseParser from "./parser/UseParser";
+import ListParser from "./parser/ListParser";
 
 export default {
   name: "JsonContent",
   components: {
     TxtParser,
-    ImgParser
+    ImgParser,
+    UseParser,
+    ListParser
   },
   props: {
     content: {

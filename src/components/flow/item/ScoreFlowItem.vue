@@ -79,15 +79,22 @@
     line-height: 16px;
     color: #99a2aa;
 
+    .meta {
+      display: inline-block;
+      width: 90px;
+    }
+
     span {
-      margin-right: 15px;
+      vertical-align: middle;
       line-height: 20px;
       font-size: 12px;
     }
 
     i {
       line-height: 20px;
-      font-size: 12px;
+      font-size: 14px;
+      margin-right: 3px;
+      vertical-align: middle;
     }
   }
 }
@@ -166,21 +173,27 @@
       />
     </a>
     <div class="footer">
-      <span>
-        <i class="iconfont icon-buoumaotubiao44"/>
-        收藏数&nbsp;({{ item.mark_count }})
+      <span
+        v-if="item.is_creator"
+        class="meta"
+      >
+        <i class="iconfont icon-fantuan"/>
+        <span>投食&nbsp;({{ item.reward_count }})</span>
       </span>
-      <span v-if="item.is_creator">
-        <i class="iconfont icon-guanzhu"/>
-        投食数&nbsp;({{ item.reward_count }})
+      <span
+        v-else
+        class="meta"
+      >
+        <i class="iconfont icon-fantuan"/>
+        <span>喜欢&nbsp;({{ item.like_count }})</span>
       </span>
-      <span v-else>
-        <i class="iconfont icon-guanzhu"/>
-        喜欢数&nbsp;({{ item.like_count }})
+      <span class="meta">
+        <i class="iconfont icon-mark"/>
+        <span>收藏&nbsp;({{ item.mark_count }})</span>
       </span>
-      <span>
-        <i class="iconfont icon-pinglun1"/>
-        评论数&nbsp;({{ item.comment_count }})
+      <span class="meta">
+        <i class="iconfont icon-talk"/>
+        <span>评论&nbsp;({{ item.comment_count }})</span>
       </span>
     </div>
   </div>

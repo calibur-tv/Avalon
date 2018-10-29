@@ -71,13 +71,17 @@
 import JsonItem from "./JsonItem";
 import ImgPreview from "./preview/ImgPreview";
 import TxtPreview from "./preview/TxtPreview";
+import ListPreview from "./preview/ListPreview";
+import UsePreview from "./preview/UsePreview";
 
 export default {
   name: "JsonEditorMain",
   components: {
     JsonItem,
     ImgPreview,
-    TxtPreview
+    TxtPreview,
+    UsePreview,
+    ListPreview
   },
   props: {},
   computed: {
@@ -131,6 +135,14 @@ export default {
             result.push(item);
           }
         } else if (item.type === "txt") {
+          if (item.title || item.text) {
+            result.push(item);
+          }
+        } else if (item.type === "use") {
+          if (item.text) {
+            result.push(item);
+          }
+        } else if (item.type === "list") {
           if (item.text) {
             result.push(item);
           }
@@ -141,19 +153,32 @@ export default {
     getPureContent() {
       let result = "";
       this.sections.forEach(item => {
+        if (item.type === "txt" && item.title) {
+          result += `${item.title}，`;
+        }
         if (item.type === "txt" && item.text) {
           result += item.text.replace(/<br>/g, "\n");
+        }
+        if (item.type === "use" && item.text) {
+          result += item.text.replace(/<br>/g, "\n");
+        }
+        if (item.type === "list" && item.text) {
+          let list = item.text;
+          while (/\n\n/.test(list)) {
+            list = list.replace(/\n\n/g, "\n");
+          }
+          result += list.replace(/\n/g, ";");
         }
       });
       return result;
     },
     handleItemPreview({ index }) {
       this.$store.commit("editor/SWITCH_SECTION", { index });
-      this.focusTextarea();
+      this.focusTextareaAndScroll();
     },
     handleItemAppend({ index, type }) {
       this.$store.commit("editor/APPEND_SECTION", { index, type });
-      this.focusTextarea();
+      this.focusTextareaAndScroll(index);
     },
     handleItemDelete({ index }) {
       this.$store.commit("editor/DELETE_SECTION", { index });
@@ -161,10 +186,19 @@ export default {
     handleItemSort({ index }) {
       this.$store.commit("editor/SORT_SECTION", { index });
     },
-    focusTextarea() {
+    focusTextareaAndScroll(index) {
       this.$nextTick(() => {
         const textarea = this.$el.querySelector(".focus-textarea");
         textarea && textarea.focus();
+        if (index === this.sections.length - 2) {
+          const dom = document.querySelector(`.json-item-${index}`);
+          dom &&
+            this.$scrollToY(
+              (index + 2) * 300,
+              1000,
+              document.querySelector(".editor-tabs")
+            );
+        }
       });
     }
   }

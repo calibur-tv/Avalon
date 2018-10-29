@@ -32,7 +32,7 @@
       />
       <el-table-column
         prop="coin_count"
-        label="金币数"
+        label="团子"
       />
       <el-table-column label="操作">
         <template slot-scope="scope">

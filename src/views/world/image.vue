@@ -67,7 +67,7 @@
           </p>
           <p>
             如果你上传的图片是你自己创作的，那么请在上传图片或创建相册时勾选 “原创” 选项，它能够为你带来一些
-            <router-link to="/about/hello">「金币」</router-link>
+            <router-link to="/about/hello">「团子」</router-link>
           </p>
         </el-alert>
       </div>

@@ -7,7 +7,9 @@
  */
 export default (targetY, timer, dom, ease) => {
   let currentTime = 0;
-  const element = dom || window;
+  const element = dom
+    ? [dom]
+    : [document.getElementsByTagName("html")[0], document.body];
   const scrollY = dom ? dom.scrollTop : window.scrollY;
   const scrollTargetY = targetY || 0;
   const speed = timer || 2000;
@@ -31,28 +33,32 @@ export default (targetY, timer, dom, ease) => {
       return 0.5 * (Math.pow(pos - 2, 5) + 2);
     }
   };
-  if (!element.requestAnimFrame) {
-    element.requestAnimFrame = (function() {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        }
-      );
-    })().bind(window);
-  }
+  element.forEach(ele => {
+    if (!ele.requestAnimFrame) {
+      ele.requestAnimFrame = (function() {
+        return (
+          window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+          }
+        );
+      })().bind(window);
+    }
+  });
   function tick() {
     currentTime += 1 / 60;
     const p = currentTime / time;
     const t = easingEquations[easing](p);
-    if (p < 1) {
-      element.requestAnimFrame(tick);
-      element.scrollTo(0, scrollY + (scrollTargetY - scrollY) * t);
-    } else {
-      element.scrollTo(0, scrollTargetY);
-    }
+    element.forEach(ele => {
+      if (p < 1) {
+        ele.requestAnimFrame(tick);
+        ele.scrollTop = scrollY + (scrollTargetY - scrollY) * t;
+      } else {
+        ele.scrollTop = scrollTargetY;
+      }
+    });
   }
   tick();
 };

@@ -110,12 +110,8 @@ export default {
           text: "番剧"
         },
         {
-          value: 1,
-          text: "图片类型"
-        },
-        {
-          value: 2,
-          text: "图片尺寸"
+          value: "post",
+          text: "帖子"
         }
       ],
       selectedType: "bangumi",

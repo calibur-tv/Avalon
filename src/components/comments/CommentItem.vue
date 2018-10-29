@@ -64,7 +64,7 @@
         font-size: 14px;
       }
 
-      .ic-liked {
+      .liked {
         color: $color-blue-normal;
       }
 
@@ -144,8 +144,8 @@
           @click="toggleLike"
         >
           <i
-            :class="[ comment.liked ? 'icon-dianzan1 ic-liked' : 'icon-dianzan' ]"
-            class="iconfont"
+            :class="{ liked: comment.liked }"
+            class="iconfont icon-dianzan"
           />
           <span
             v-if="comment.like_count"

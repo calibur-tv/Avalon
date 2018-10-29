@@ -1,55 +1,27 @@
-<style lang="scss">
-.v-modal {
-  background-color: hsla(0, 0%, 100%, 0.7) !important;
-}
-
-.v-dialog-mask {
-  -webkit-filter: blur(3px) grayscale(25%);
-}
-
-.el-dialog {
-  border: none !important;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 6px !important;
-  background-color: #fff;
+<style lang="scss" module>
+.container {
   overflow: hidden;
 
-  .el-dialog__header {
-    display: none;
-  }
-
-  .el-dialog__body {
+  .header {
     position: relative;
-    padding: 0;
-    color: #333;
+    padding: 20px;
+    height: 65px;
+    border-bottom: 1px solid #e5e5e5;
 
-    .v-dialog-container {
-      overflow: hidden;
-    }
-  }
-
-  .v-dialog-header {
-    position: relative;
-    background-color: #f4f4f4;
-
-    .v-dialog-title {
-      font-size: 16px;
-      height: 45px;
-      line-height: 45px;
-      margin: 0;
-      padding-left: 20px;
+    .title {
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 24px;
       color: #333;
-      text-align: left;
-      font-weight: 400;
     }
   }
 
-  .v-dialog-close-btn {
-    font-weight: bold;
-    font-size: 20px;
+  .close {
     position: absolute;
     right: 20px;
-    top: 9px;
+    top: 20px;
+    font-weight: 200;
+    font-size: 26px;
     opacity: 0.2;
     height: 24px;
     line-height: 24px;
@@ -60,13 +32,13 @@
     }
   }
 
-  .v-dialog-content {
+  .content {
     padding: 0 20px;
     margin: 20px 0;
     overflow-y: auto;
 
-    .list-loading,
-    .list-no-more {
+    .loading,
+    .no-more {
       text-align: center;
       font-size: 13px;
       margin-top: 20px;
@@ -78,24 +50,29 @@
     }
   }
 
-  .v-dialog-footer {
+  .footer {
     margin: 20px 0;
     padding: 0 20px;
     text-align: right;
 
-    .v-dialog-cancel-btn {
-      background-color: #fff;
-      color: $color-text-light;
-      height: 32px;
-      font-size: 12px;
-      border-radius: 3px;
-      padding: 0 15px;
-      margin-right: 15px;
+    .cancel {
+      height: 28px;
+      font-size: 13px;
+      color: $color-text-normal;
 
       &:hover {
-        background-color: $color-gray-normal;
-        color: $color-text-normal;
+        color: #333333;
       }
+    }
+
+    .submit {
+      height: 28px;
+      margin-left: 30px;
+      padding: 0 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      line-height: 26px;
+      border: 1px solid;
     }
   }
 }
@@ -114,71 +91,82 @@
       :close-on-click-modal="clickClose"
       :close-on-press-escape="clickClose"
     >
-      <div class="v-dialog-container">
-        <div
+      <section :class="$style.container">
+        <header
           v-if="header"
           slot="header"
-          class="v-dialog-header"
+          :class="$style.header"
         >
-          <h4
-            class="v-dialog-title"
-            v-text="title"
-          />
-        </div>
+          <slot name="title">
+            <h4
+              :class="$style.title"
+              v-text="title"
+            />
+          </slot>
+        </header>
         <button
           v-if="!clickClose || close"
-          class="v-dialog-close-btn"
+          :class="$style.close"
           @click="cancel"
         >&times;</button>
         <main
           :style="computeDialogHeight"
-          class="v-dialog-content"
+          :class="$style.content"
           @scroll="handleScroll"
         >
           <template v-if="scroll">
             <ul ref="ul">
               <slot/>
             </ul>
-            <p
+            <slot
               v-if="loading"
-              class="list-loading"
-            >加载中...</p>
-            <p
+              :class="$style.loading"
+              name="loading"
+            >
+              <p :class="$style.loading">加载中...</p>
+            </slot>
+            <slot
               v-else-if="noMore"
-              class="list-no-more"
-            >没有更多了</p>
+              :class="$style.noMore"
+              name="nomore"
+            >
+              <p :class="$style.noMore">没有更多了</p>
+            </slot>
           </template>
           <slot v-else/>
         </main>
-        <div
+        <footer
           v-if="footer"
-          class="v-dialog-footer"
+          :class="$style.footer"
         >
           <slot name="footer">
             <button
               v-if="cancelText"
-              class="v-dialog-cancel-btn"
+              :class="$style.cancel"
               @click="cancel"
               v-text="cancelText"
             />
-            <el-button
+            <button
               :loading="loading"
-              type="primary"
-              size="small"
-              class="v-dialog-submit-btn"
+              :class="[$style.submit, `btn-${theme}`]"
               @click="submit"
               v-text="submitText"
             />
           </slot>
-        </div>
-      </div>
+        </footer>
+      </section>
     </el-dialog>
   </no-ssr>
 </template>
 
 <script>
+import { Dialog } from "element-ui";
+
 export default {
   name: "VDialog",
+  components: {
+    "el-dialog": Dialog
+  },
   props: {
     value: {
       type: Boolean,
@@ -203,7 +191,7 @@ export default {
     },
     title: {
       type: String,
-      default: ""
+      default: "提示"
     },
     header: {
       type: Boolean,
@@ -240,6 +228,11 @@ export default {
     clickClose: {
       type: Boolean,
       default: true
+    },
+    theme: {
+      type: String,
+      validator: val => ~["success", "danger"].indexOf(val),
+      default: "success"
     }
   },
   data() {
@@ -272,11 +265,6 @@ export default {
     this.$watch("dialogVisible", val => {
       this.$emit("input", val);
       window.__closeImageLazy__ = val;
-      if (val) {
-        document.getElementById("app").classList.add("v-dialog-mask");
-      } else {
-        document.getElementById("app").classList.remove("v-dialog-mask");
-      }
     });
   },
   methods: {

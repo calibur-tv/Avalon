@@ -18,6 +18,9 @@
 
     .title {
       overflow: hidden;
+    }
+
+    .sub-title {
       margin-top: 0;
     }
 
