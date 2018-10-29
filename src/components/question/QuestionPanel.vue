@@ -329,8 +329,9 @@
 <script>
 import FollowButton from "~/components/common/FollowButton";
 import CreateAnswerForm from "~/components/question/CreateAnswerForm";
-import QuestionApi from "~/api/questionApi";
 import CommentMain from "~/components/comments/CommentMain";
+import QuestionApi from "~/api/questionApi";
+import ToggleApi from "~/api/toggleApi";
 
 export default {
   name: "QuestionPanel",
@@ -409,7 +410,7 @@ export default {
         return;
       }
       this.loadingFollowers = true;
-      const api = new Api(this);
+      const api = new ToggleApi(this);
       const type = "follow";
       try {
         const result = await api.users({
