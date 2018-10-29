@@ -321,6 +321,46 @@ export default {
         },
         shortcuts: [
           {
+            text: "30分钟",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 500);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "1小时",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "3小时",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 3);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "6小时",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 6);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "12小时",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 12);
+              picker.$emit("pick", date);
+            }
+          },
+          {
             text: "一天",
             onClick(picker) {
               const date = new Date();

@@ -438,10 +438,12 @@
         v-if="blockedAt"
         class="faker-tips"
       >
-        <span>该用户已被封禁，封禁至：{{ blockedAt }}，可能是由于以下原因：</span>
+        <span>该用户已被禁言，禁言至：{{ blockedAt }}，可能是由于以下原因：</span>
         <p>1. 破坏社区环境，包括但不限于：无脑刷屏、复制他人内容来发表</p>
         <p>2. 恶意带节奏</p>
-        <p>3. 其它原因还没想好，希望大家引以为戒</p>
+        <p>3. 发表于二次元无关的内容</p>
+        <p>4. 其它原因还没想好，希望大家引以为戒</p>
+        <p>如果想要提前申诉解禁，请加QQ群反馈</p>
       </div>
       <div class="user-flows-wrap">
         <tab-container
