@@ -5,12 +5,13 @@
   }
 
   .user {
+    position: relative;
     width: 180px;
     float: left;
 
     .avatar {
       display: block;
-      margin: 34px auto 5px auto;
+      margin: 29px auto 5px auto;
       @extend %avatar;
     }
 
@@ -22,6 +23,24 @@
       margin: 0 auto;
       text-align: center;
     }
+
+    .iconfont {
+      position: absolute;
+    }
+
+    .icon-leader {
+      color: $color-pink-deep;
+      font-size: 23px;
+      left: 103px;
+      top: 86px;
+    }
+
+    .icon-master {
+      color: $color-blue-normal;
+      font-size: 20px;
+      left: 103px;
+      top: 87px;
+    }
   }
 
   .content {
@@ -31,7 +50,7 @@
     margin-top: 14px;
 
     .main {
-      min-height: 80px;
+      min-height: 84px;
     }
 
     .image {
@@ -96,6 +115,22 @@
           v-text="post.from_user_name"
         />
       </user-card>
+      <el-tooltip
+        v-if="post.is_leader"
+        placement="right"
+        effect="dark"
+        content="版主"
+      >
+        <i class="iconfont icon-leader"/>
+      </el-tooltip>
+      <el-tooltip
+        v-else-if="post.is_master"
+        placement="right"
+        effect="dark"
+        content="代行者"
+      >
+        <i class="iconfont icon-master"/>
+      </el-tooltip>
     </div>
     <div class="content">
       <div class="main">
