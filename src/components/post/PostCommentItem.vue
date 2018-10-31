@@ -28,6 +28,13 @@
       position: absolute;
     }
 
+    .icon-owner {
+      color: gold;
+      left: 78px;
+      top: 16px;
+      font-size: 22px;
+    }
+
     .icon-leader {
       color: $color-pink-deep;
       font-size: 23px;
@@ -115,6 +122,14 @@
           v-text="post.from_user_name"
         />
       </user-card>
+      <el-tooltip
+        v-if="post.is_owner"
+        placement="top"
+        effect="dark"
+        content="楼主"
+      >
+        <i class="iconfont icon-owner"/>
+      </el-tooltip>
       <el-tooltip
         v-if="post.is_leader"
         placement="right"
