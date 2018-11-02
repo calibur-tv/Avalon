@@ -73,7 +73,7 @@
     </template>
     <template v-else>
       <aside :class="$style.asideLeft">
-        <v-affix :offset-top="85">
+        <v-affix :offset-top="affixTop">
           <slot name="aside"/>
         </v-affix>
       </aside>
@@ -91,6 +91,10 @@ export default {
     left: {
       type: Boolean,
       default: true
+    },
+    affixTop: {
+      type: Number,
+      default: 85
     },
     customClass: {
       type: String,

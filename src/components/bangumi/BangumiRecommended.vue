@@ -75,42 +75,36 @@
 
 <template>
   <div id="bangumi-recommended">
-    <v-affix
-      :offset="{ top: 70, bottom: 40 }"
-      relative-element-selector=".default-layout"
-      style="width: 280px"
-    >
-      <h3 class="sub-title">
-        推荐番剧
-        <span @click="choiceTags">
-          <i
-            :style="{ transform: `rotate(${counter * 360}deg)` }"
-            class="el-icon-refresh"
-          />
-          换一换
-        </span>
-      </h3>
-      <ul>
-        <li
-          v-for="item in filterList"
-          :key="item.id"
+    <h3 class="sub-title">
+      推荐番剧
+      <span @click="choiceTags">
+        <i
+          :style="{ transform: `rotate(${counter * 360}deg)` }"
+          class="el-icon-refresh"
+        />
+        换一换
+      </span>
+    </h3>
+    <ul>
+      <li
+        v-for="item in filterList"
+        :key="item.id"
+      >
+        <a
+          :href="$alias.bangumi(item.id)"
+          target="_blank"
         >
-          <a
-            :href="$alias.bangumi(item.id)"
-            target="_blank"
-          >
-            <img :src="$resize(item.avatar, { width: 120 })">
-            <div>
-              <p
-                class="oneline"
-                v-text="'《' + item.name + '》'"
-              />
-              <span v-text="item.tag"/>
-            </div>
-          </a>
-        </li>
-      </ul>
-    </v-affix>
+          <img :src="$resize(item.avatar, { width: 120 })">
+          <div>
+            <p
+              class="oneline"
+              v-text="'《' + item.name + '》'"
+            />
+            <span v-text="item.tag"/>
+          </div>
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 

@@ -68,7 +68,7 @@
     class="main"
   >
     <v-header/>
-    <v-layout>
+    <v-layout :affix-top="235">
       <div class="breadcrumb-links">
         <router-link :to="$alias.bangumiNews">新番放送</router-link>
         <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
