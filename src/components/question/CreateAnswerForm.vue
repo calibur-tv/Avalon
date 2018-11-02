@@ -205,11 +205,12 @@ export default {
           source_url: this.source_url.split("?")[0],
           geetest
         };
+        let result;
         if (this.id) {
           form.id = this.id;
           await api.updateAnswer(form);
         } else {
-          const result = await api.createAnswer(form);
+          result = await api.createAnswer(form);
           this.id = result.data;
         }
         if (richContent.publish) {

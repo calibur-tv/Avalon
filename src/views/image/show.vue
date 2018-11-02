@@ -525,7 +525,7 @@ export default {
             this.loadingEditImages = false;
           }
         })
-        .catch(e => {});
+        .catch(() => {});
     },
     handleDeleteAlbum() {
       this.$prompt(`请输入${this.albumType}的名字`, "删除确认", {

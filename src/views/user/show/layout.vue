@@ -272,7 +272,7 @@
           >
             <input
               ref="bannerInput"
-              :accept="$imageAcceptStr"
+              accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="selectBanner"
             >
@@ -285,7 +285,7 @@
           >
             <input
               ref="avatarInput"
-              :accept="$imageAcceptStr"
+              accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="openAvatarModal"
             >

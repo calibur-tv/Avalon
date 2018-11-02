@@ -34,6 +34,7 @@ export default {
     };
   },
   mounted() {
+    // eslint-disable-next-line
     this.$channel.$on("search-action", ({ text, type }) => {
       this.set(text);
     });

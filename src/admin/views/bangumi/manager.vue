@@ -86,7 +86,6 @@
 
 <script>
 import Api from "~/api/adminApi";
-import BangumiApi from "~/api/bangumiApi";
 import ToggleApi from "~/api/toggleApi";
 
 export default {

@@ -196,9 +196,8 @@ export default {
     userLevel() {
       if (this.isGuest) {
         return 0;
-      } else {
-        return this.$store.state.user.exp.level;
       }
+      return this.$store.state.user.exp.level;
     }
   },
   mounted() {

@@ -45,7 +45,7 @@ Vue.component(Share.name, Share);
 Vue.component(Dialog.name, Dialog);
 
 Vue.use({
-  install(Vue, options) {
+  install(Vue) {
     Vue.prototype.$utils = Utils;
 
     Vue.prototype.$cdn = env.cdn;
@@ -53,9 +53,6 @@ Vue.use({
     Vue.prototype.$channel = new Vue();
 
     Vue.prototype.$alias = Alias;
-
-    Vue.prototype.$imageAcceptStr =
-      "image/png, image/jpeg, image/jpg, image/x-png, image/gif";
 
     Vue.prototype.$resize = (url, options = {}) => {
       if (!url) {
@@ -113,20 +110,5 @@ Vue.use({
 
       return `${link}?imageMogr2/auto-orient/strip|imageView2/${mode}${width}${height}${format}`;
     };
-  }
-});
-
-Vue.mixin({
-  methods: {
-    $computeImageAspect(image) {
-      const width = image.width;
-      const height = image.height;
-
-      if (!width || !height) {
-        return 0;
-      }
-
-      return height / width;
-    }
   }
 });

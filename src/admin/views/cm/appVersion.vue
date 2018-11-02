@@ -194,11 +194,10 @@ export default {
         return `${nowBiggestVersion[0] + 1}.0.0`;
       } else if (this.versionType === 2) {
         return `${nowBiggestVersion[0]}.${nowBiggestVersion[1] + 1}.0`;
-      } else {
-        return `${nowBiggestVersion[0]}.${
-          nowBiggestVersion[1]
-        }.${nowBiggestVersion[2] + 1}`;
       }
+      return `${nowBiggestVersion[0]}.${
+        nowBiggestVersion[1]
+      }.${nowBiggestVersion[2] + 1}`;
     }
   },
   created() {
@@ -305,10 +304,11 @@ export default {
       });
       return result;
     },
-    beforeUploadApp(file) {
-      this.uploadHeaders.key = `app/android/${Date.now()}-v-${
-        this.appVersion
-      }/calibur-tv.apk`;
+    beforeUploadApp() {
+      this.uploadHeaders.key = `app/android/${Date.now()}/calibur-tv-${this.appVersion.replace(
+        /./g,
+        "-"
+      )}.apk`;
       return true;
     },
     handleAppUploaded(res) {

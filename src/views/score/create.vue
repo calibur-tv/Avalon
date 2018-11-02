@@ -287,15 +287,16 @@ export default {
           content: richContent.content,
           intro: richContent.desc.substring(0, 120),
           do_publish: richContent.publish,
-          geetest,
-          is_creator: this.is_creator
+          is_creator: this.is_creator,
+          geetest
         });
         let newId = richContent.id;
+        let result;
         if (newId) {
           form.id = newId;
           await api.update(form);
         } else {
-          const result = await api.create(form);
+          result = await api.create(form);
           newId = result.data;
         }
         if (richContent.publish) {

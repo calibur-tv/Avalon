@@ -146,9 +146,6 @@
 </template>
 
 <script>
-import ScoreApi from "~/api/scoreApi";
-import QuestionApi from "~/api/questionApi";
-
 export default {
   name: "UserDraft",
   async asyncData({ store, ctx }) {

@@ -356,12 +356,10 @@ export default {
               if (index) {
                 if (index === arr.length - 1) {
                   return item === -1 || item > arr[index - 1];
-                } else {
-                  return item > arr[index - 1];
                 }
-              } else {
-                return item === 0;
+                return item > arr[index - 1];
               }
+              return item === 0;
             })
           ) {
             callback(new Error("part 要从 0 开始，升序排列，最后一项可为 -1"));
