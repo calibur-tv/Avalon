@@ -1,12 +1,9 @@
 <style lang="scss">
 #bangumi-timeline {
   $time-size: 30px;
-  .sub-title {
-    margin-left: $time-size / 2;
-  }
-
   .collections {
     position: relative;
+    margin-left: -$time-size / 2;
 
     &:before {
       content: "";
@@ -98,60 +95,58 @@
   <div id="bangumi-timeline">
     <v-header/>
     <v-layout>
-      <template slot="main">
-        <div class="breadcrumb-links">
-          <router-link :to="$alias.bangumiNews">新番放送</router-link>
-          <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-          <a :href="$alias.bangumiTag()">分类索引</a>
-        </div>
-        <h2 class="sub-title">时间轴</h2>
-        <ul class="collections">
-          <ul
-            v-for="col in timeline"
-            :key="col.date"
-            class="collection"
+      <div class="breadcrumb-links">
+        <router-link :to="$alias.bangumiNews">新番放送</router-link>
+        <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
+        <a :href="$alias.bangumiTag()">分类索引</a>
+      </div>
+      <h2 class="sub-title">时间轴</h2>
+      <ul class="collections">
+        <ul
+          v-for="col in timeline"
+          :key="col.date"
+          class="collection"
+        >
+          <h3
+            class="time"
+            v-text="col.date"
+          />
+          <li
+            v-for="item in col.list"
+            :key="item.id"
+            class="bangumi"
           >
-            <h3
-              class="time"
-              v-text="col.date"
-            />
-            <li
-              v-for="item in col.list"
-              :key="item.id"
-              class="bangumi"
+            <a
+              :href="$alias.bangumi(item.id)"
+              target="_blank"
+              class="avatar"
             >
+              <v-img
+                :src="item.avatar"
+                size="90"
+              />
+            </a>
+            <div class="content">
               <a
                 :href="$alias.bangumi(item.id)"
                 target="_blank"
-                class="avatar"
-              >
-                <v-img
-                  :src="item.avatar"
-                  size="90"
-                />
-              </a>
-              <div class="content">
-                <a
-                  :href="$alias.bangumi(item.id)"
-                  target="_blank"
-                  class="title"
-                  v-text="item.name"
-                />
-                <p
-                  class="desc"
-                  v-text="item.summary"
-                />
-              </div>
-            </li>
-          </ul>
+                class="title"
+                v-text="item.name"
+              />
+              <p
+                class="desc"
+                v-text="item.summary"
+              />
+            </div>
+          </li>
         </ul>
-        <load-more-btn
-          :no-more="noMore"
-          :loading="loading"
-          :auto="true"
-          @fetch="loadMore"
-        />
-      </template>
+      </ul>
+      <load-more-btn
+        :no-more="noMore"
+        :loading="loading"
+        :auto="true"
+        @fetch="loadMore"
+      />
       <template slot="aside">
         <bangumi-recommended/>
       </template>

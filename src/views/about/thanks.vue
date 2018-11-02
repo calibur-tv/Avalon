@@ -62,10 +62,7 @@
   <div id="about-thanks">
     <v-header type="pure"/>
     <v-layout>
-      <div
-        slot="main"
-        class="main-container"
-      >
+      <div class="main-container">
         <h3 class="sub-title">logo</h3>
         <div
           class="panel"
@@ -320,6 +317,7 @@
           >指绘君</a>
         </p>
       </div>
+      <template slot="aside">&nbsp;</template>
     </v-layout>
   </div>
 </template>

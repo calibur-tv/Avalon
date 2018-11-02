@@ -217,154 +217,152 @@
   <div id="post-show">
     <v-header/>
     <v-layout>
-      <section slot="main">
-        <header>
-          <div class="title-wrap">
-            <div class="control">
-              <el-button
-                size="mini"
-                plain
-                @click="switchOnlyMaster"
-              >{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
-              <el-button
-                size="mini"
-                plain
-                @click="scrollToReplyForm"
-              >回复</el-button>
-              <el-button
-                v-if="isMaster"
-                size="mini"
-                plain
-                @click="deletePost"
-              >删除</el-button>
-              <span class="floor">共{{ total }}条</span>
-            </div>
-            <div
-              v-if="post.is_nice"
-              class="nice_badge"
-            >精</div>
-            <div
-              v-if="post.is_creator"
-              class="creator_badge"
-            >原创</div>
-            <h1
-              class="oneline"
-              v-text="post.title"
-            />
+      <header>
+        <div class="title-wrap">
+          <div class="control">
+            <el-button
+              size="mini"
+              plain
+              @click="switchOnlyMaster"
+            >{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
+            <el-button
+              size="mini"
+              plain
+              @click="scrollToReplyForm"
+            >回复</el-button>
+            <el-button
+              v-if="isMaster"
+              size="mini"
+              plain
+              @click="deletePost"
+            >删除</el-button>
+            <span class="floor">共{{ total }}条</span>
           </div>
-        </header>
-        <main>
-          <el-row class="post-main">
-            <div class="user">
-              <user-card
-                :id="master.id"
-                :zone="master.zone"
+          <div
+            v-if="post.is_nice"
+            class="nice_badge"
+          >精</div>
+          <div
+            v-if="post.is_creator"
+            class="creator_badge"
+          >原创</div>
+          <h1
+            class="oneline"
+            v-text="post.title"
+          />
+        </div>
+      </header>
+      <main>
+        <el-row class="post-main">
+          <div class="user">
+            <user-card
+              :id="master.id"
+              :zone="master.zone"
+            >
+              <v-img
+                :src="master.avatar"
+                size="80"
+                class="avatar"
+              />
+              <p
+                class="nickname oneline"
+                v-text="master.nickname"
+              />
+            </user-card>
+          </div>
+          <div class="body">
+            <div class="content">
+              <div
+                v-for="(img, idx) in post.images"
+                :key="idx"
+                class="image-package"
               >
                 <v-img
-                  :src="master.avatar"
-                  size="80"
-                  class="avatar"
-                />
-                <p
-                  class="nickname oneline"
-                  v-text="master.nickname"
-                />
-              </user-card>
-            </div>
-            <div class="body">
-              <div class="content">
-                <div
-                  v-for="(img, idx) in post.images"
-                  :key="idx"
-                  class="image-package"
-                >
-                  <v-img
-                    :src="img.url"
-                    :width="img.width"
-                    :height="img.height"
-                    :full="true"
-                    class="image"
-                  />
-                </div>
-                <div
-                  class="text-area"
-                  v-html="post.content"
+                  :src="img.url"
+                  :width="img.width"
+                  :height="img.height"
+                  :full="true"
+                  class="image"
                 />
               </div>
-              <div class="tags">
-                <a
-                  :href="$alias.bangumi(bangumi.id)"
-                  target="_blank"
-                >
-                  <i class="iconfont icon-biaoqian"/>
-                  <span v-text="bangumi.name"/>
-                </a>
-                <span
-                  v-for="tag in post.tags"
-                  :key="tag.id"
-                  class="tag"
-                  v-text="tag.name"
-                />
-              </div>
-              <social-panel
-                :id="post.id"
-                :is-creator="post.is_creator"
-                :user-id="master.id"
-                :liked="post.liked"
-                :marked="post.marked"
-                :rewarded="post.rewarded"
-                :reward-users="post.reward_users"
-                :like-users="post.like_users"
-                :mark-users="post.mark_users"
-                type="post"
+              <div
+                class="text-area"
+                v-html="post.content"
               />
-              <div class="footer">
-                <div class="info-bar">
-                  <span class="footer-item">1楼</span>
-                  <v-time
-                    v-model="post.created_at"
-                    class="footer-item"
-                  />
-                  <report-dialog
-                    :id="post.id"
-                    :is-creator="post.is_creator"
-                    type="post"
-                    title="帖子违规举报"
-                  >举报</report-dialog>
-                  <v-share
-                    :desc="post.desc"
-                    type="panel"
-                  />
-                </div>
+            </div>
+            <div class="tags">
+              <a
+                :href="$alias.bangumi(bangumi.id)"
+                target="_blank"
+              >
+                <i class="iconfont icon-biaoqian"/>
+                <span v-text="bangumi.name"/>
+              </a>
+              <span
+                v-for="tag in post.tags"
+                :key="tag.id"
+                class="tag"
+                v-text="tag.name"
+              />
+            </div>
+            <social-panel
+              :id="post.id"
+              :is-creator="post.is_creator"
+              :user-id="master.id"
+              :liked="post.liked"
+              :marked="post.marked"
+              :rewarded="post.rewarded"
+              :reward-users="post.reward_users"
+              :like-users="post.like_users"
+              :mark-users="post.mark_users"
+              type="post"
+            />
+            <div class="footer">
+              <div class="info-bar">
+                <span class="footer-item">1楼</span>
+                <v-time
+                  v-model="post.created_at"
+                  class="footer-item"
+                />
+                <report-dialog
+                  :id="post.id"
+                  :is-creator="post.is_creator"
+                  type="post"
+                  title="帖子违规举报"
+                >举报</report-dialog>
+                <v-share
+                  :desc="post.desc"
+                  type="panel"
+                />
               </div>
             </div>
-          </el-row>
-          <comment-main
-            :id="post.id"
-            :only-see-master="onlySeeMaster"
+          </div>
+        </el-row>
+        <comment-main
+          :id="post.id"
+          :only-see-master="onlySeeMaster"
+          :master-id="master.id"
+          empty-text=""
+          type="post"
+        >
+          <div slot="header"/>
+          <post-comment-item
+            slot="comment-item"
+            slot-scope="{ comment }"
+            :post="comment"
             :master-id="master.id"
-            empty-text=""
-            type="post"
+          />
+          <div
+            id="bottom-comment-post-form"
+            slot="reply"
           >
-            <div slot="header"/>
-            <post-comment-item
-              slot="comment-item"
-              slot-scope="{ comment }"
-              :post="comment"
+            <post-comment-form
+              :id="post.id"
               :master-id="master.id"
             />
-            <div
-              id="bottom-comment-post-form"
-              slot="reply"
-            >
-              <post-comment-form
-                :id="post.id"
-                :master-id="master.id"
-              />
-            </div>
-          </comment-main>
-        </main>
-      </section>
+          </div>
+        </comment-main>
+      </main>
       <aside slot="aside">
         <v-bangumi-panel
           :id="bangumi.id"

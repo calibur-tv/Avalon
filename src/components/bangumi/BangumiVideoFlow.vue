@@ -1,8 +1,8 @@
 <style lang="scss">
 #bangumi-video-flow {
-  $video-item-width: 255px;
-  $video-item-margin: 15px;
-  $video-item-height: 70px;
+  $video-item-width: 195px;
+  $video-item-margin: 13px;
+  $video-item-height: 60px;
 
   .video-item {
     margin: 0 $video-item-margin 15px 0;
@@ -73,8 +73,8 @@
               >
                 <v-img
                   :src="video.poster"
-                  width="110"
-                  height="70"
+                  width="106"
+                  height="60"
                   class="poster"
                 />
                 <div class="intro">

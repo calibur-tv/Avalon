@@ -1,49 +1,101 @@
-<style lang="scss">
-.default-layout {
-  margin-left: auto;
-  margin-right: auto;
+<style lang="scss" module>
+.container {
+  position: relative;
+  margin: 0 auto;
   @extend %clearfix;
 
-  .layout-main,
-  .layout-aside {
+  .main-left,
+  .main-right {
+    overflow: hidden;
+  }
+
+  .main-left {
     padding-left: 15px;
+  }
+
+  .main-right {
     padding-right: 15px;
   }
 
-  .layout-main {
-    margin-bottom: 30px;
+  .aside-left {
+    float: left;
   }
 
-  @media (min-width: 1120px) {
-    width: 1160px;
+  .aside-right {
+    float: right;
+  }
 
-    .layout-main {
-      width: 75%;
-      margin-bottom: 0;
-      float: left;
+  @media (min-width: 1050px) {
+    width: 1170px;
+
+    .aside-left,
+    .aside-right {
+      width: 280px;
     }
 
-    .layout-aside {
-      width: 25%;
-      overflow: hidden;
+    .aside-right {
+      margin-left: 40px;
+    }
+
+    .aside-left {
+      margin-right: 40px;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    width: 880px;
+
+    .aside-left,
+    .aside-right {
+      width: 220px;
+    }
+
+    .aside-right {
+      margin-left: 30px;
+    }
+
+    .aside-left {
+      margin-right: 30px;
     }
   }
 }
 </style>
 
 <template>
-  <div class="default-layout">
-    <div class="layout-main">
-      <slot name="main"/>
-    </div>
-    <div class="layout-aside">
-      <slot name="aside"/>
-    </div>
-  </div>
+  <section :class="[$style.container, customClass]">
+    <template v-if="left">
+      <aside :class="$style.asideRight">
+        <slot name="aside"/>
+      </aside>
+      <main :class="$style.mainLeft">
+        <slot/>
+      </main>
+    </template>
+    <template v-else>
+      <aside :class="$style.asideLeft">
+        <v-affix :offset-top="85">
+          <slot name="aside"/>
+        </v-affix>
+      </aside>
+      <main :class="$style.mainRight">
+        <slot/>
+      </main>
+    </template>
+  </section>
 </template>
 
 <script>
 export default {
-  name: "VLayout"
+  name: "VLayout",
+  props: {
+    left: {
+      type: Boolean,
+      default: true
+    },
+    customClass: {
+      type: String,
+      default: ""
+    }
+  }
 };
 </script>

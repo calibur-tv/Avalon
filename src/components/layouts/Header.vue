@@ -22,18 +22,12 @@ $avatar-height: 36px;
       padding-right: 20px;
       z-index: 1;
 
-      .left {
-        position: absolute;
-        height: 100%;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
       .right {
-        position: relative;
-        float: right;
+        position: absolute;
+        top: 0;
+        right: 30px;
         height: 100%;
+        z-index: 10;
 
         .sign-btn {
           width: 52px;
@@ -81,7 +75,6 @@ $avatar-height: 36px;
         float: left;
         margin-top: ($header-height - $logo-size) / 2 - 1;
         margin-right: 10px;
-        margin-left: 16px;
 
         img {
           width: $logo-size;
@@ -101,6 +94,10 @@ $avatar-height: 36px;
           margin: 0 6px;
           padding: 4px 9px;
           border-radius: 5px;
+        }
+
+        &.first {
+          margin-left: -16px;
         }
       }
     }
@@ -460,10 +457,7 @@ $search-height: 32px;
       :class="navClassList"
     >
       <div :class="$style.text">
-        <div
-          :class="$style.left"
-          class="container"
-        >
+        <v-layout>
           <router-link
             v-if="type === 'pure' || scrollFlag"
             :class="$style.logo"
@@ -473,7 +467,7 @@ $search-height: 32px;
           </router-link>
           <router-link
             v-else
-            :class="$style.navLink"
+            :class="[$style.navLink, $style.first]"
             to="/"
           >
             <span>首页</span>
@@ -508,7 +502,7 @@ $search-height: 32px;
           >
             <span>下载APP</span>
           </router-link>
-        </div>
+        </v-layout>
         <div :class="$style.right">
           <div class="search-container">
             <v-search :show-suggestion="false">

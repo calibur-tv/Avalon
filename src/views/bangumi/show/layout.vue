@@ -2,13 +2,11 @@
   <div id="bangumi-show">
     <bangumi-banner/>
     <v-layout>
-      <template slot="main">
-        <tab-container
-          :list="cards"
-          def="bangumi-post"
-        />
-        <router-view/>
-      </template>
+      <tab-container
+        :list="cards"
+        def="bangumi-post"
+      />
+      <router-view/>
       <bangumi-aside slot="aside"/>
     </v-layout>
   </div>

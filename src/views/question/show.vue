@@ -1,10 +1,9 @@
 <style lang="scss">
 #question-show {
   background-color: $color-gray-light;
+  margin-bottom: -40px;
 
   .answers {
-    margin-left: 15px;
-
     .answers-title {
       height: 50px;
       line-height: 50px;
@@ -35,28 +34,27 @@
     />
     <question-panel/>
     <v-layout>
-      <template slot="main">
-        <div
-          v-if="qaq.answer_count"
-          class="answers"
-        >
-          <div class="answers-title">
-            <h2>
-              {{ qaq.answer_count }} 个回答
-            </h2>
-          </div>
-          <answer-flow-list
-            :bangumi-id="id"
-          />
+      <div
+        v-if="qaq.answer_count"
+        class="answers"
+      >
+        <div class="answers-title">
+          <h2>
+            {{ qaq.answer_count }} 个回答
+          </h2>
         </div>
-        <no-content v-else>
-          <el-button
-            type="primary"
-            round
-            @click="$channel.$emit('open-write-answer-dialog')"
-          >开始写第一个回答</el-button>
-        </no-content>
-      </template>
+        <answer-flow-list
+          :bangumi-id="id"
+        />
+      </div>
+      <no-content v-else>
+        <el-button
+          type="primary"
+          round
+          @click="$channel.$emit('open-write-answer-dialog')"
+        >开始写第一个回答</el-button>
+      </no-content>
+      <template slot="aside">&nbsp;</template>
     </v-layout>
   </div>
 </template>

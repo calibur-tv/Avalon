@@ -5,7 +5,7 @@ $tool-btn-width: 40px;
 .vue-pwa-video {
   box-sizing: border-box;
   width: 100%;
-  height: 100% !important;
+  height: 460px !important;
   position: relative;
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
   min-height: 400px;

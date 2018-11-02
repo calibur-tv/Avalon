@@ -8,8 +8,6 @@
   background-color: $color-gray-light;
 
   .cards {
-    margin-left: 20px;
-
     .card-item {
       display: block;
       min-height: 100px;
@@ -184,11 +182,7 @@ export default {
   },
   computed: {
     show() {
-      return (
-        ["homepage", "invite-user", "question-show"].indexOf(
-          this.$route.name
-        ) === -1
-      );
+      return ["homepage", "invite-user"].indexOf(this.$route.name) === -1;
     },
     friends() {
       return this.$store.state.pageData

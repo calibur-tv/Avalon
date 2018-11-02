@@ -1,10 +1,10 @@
 <style lang="scss">
 #answer-show {
-  background-color: #f6f6f6;
+  background-color: $color-gray-light;
+  margin-bottom: -40px;
 
   .answer {
     position: relative;
-    margin-left: 15px;
   }
 
   .read-all-btn {
@@ -26,45 +26,44 @@
     />
     <question-panel/>
     <v-layout>
-      <template slot="main">
-        <div
-          v-if="answer"
-          class="answer"
+      <div
+        v-if="answer"
+        class="answer"
+      >
+        <a :href="$alias.question(qaq.id)">
+          <el-button
+            v-if="qaq.answer_count > 1"
+            class="read-all-btn"
+          >查看全部 {{ qaq.answer_count }} 个回答</el-button>
+          <el-button
+            v-else
+            class="read-all-btn"
+          >查看问题</el-button>
+        </a>
+        <answer-flow-item :item="answer"/>
+        <a :href="$alias.question(qaq.id)">
+          <el-button
+            v-if="qaq.answer_count > 1"
+            class="read-all-btn"
+          >查看全部 {{ qaq.answer_count }} 个回答</el-button>
+          <el-button
+            v-else
+            class="read-all-btn"
+          >查看问题</el-button>
+        </a>
+      </div>
+      <no-content v-else>
+        <a
+          v-if="qaq.answer_count"
+          :href="$alias.question(qaq.id)"
         >
-          <a :href="$alias.question(qaq.id)">
-            <el-button
-              v-if="qaq.answer_count > 1"
-              class="read-all-btn"
-            >查看全部 {{ qaq.answer_count }} 个回答</el-button>
-            <el-button
-              v-else
-              class="read-all-btn"
-            >查看问题</el-button>
-          </a>
-          <answer-flow-item :item="answer"/>
-          <a :href="$alias.question(qaq.id)">
-            <el-button
-              v-if="qaq.answer_count > 1"
-              class="read-all-btn"
-            >查看全部 {{ qaq.answer_count }} 个回答</el-button>
-            <el-button
-              v-else
-              class="read-all-btn"
-            >查看问题</el-button>
-          </a>
-        </div>
-        <no-content v-else>
-          <a
-            v-if="qaq.answer_count"
-            :href="$alias.question(qaq.id)"
-          >
-            <el-button
-              type="primary"
-              round
-            >这个答案在审核中或已被删除，查看其它答案</el-button>
-          </a>
-        </no-content>
-      </template>
+          <el-button
+            type="primary"
+            round
+          >这个答案在审核中或已被删除，查看其它答案</el-button>
+        </a>
+      </no-content>
+      <template slot="aside">&nbsp;</template>
     </v-layout>
   </div>
 </template>

@@ -6,8 +6,6 @@
   margin-bottom: 10px;
 
   .qaq-question {
-    margin-left: 15px;
-
     .qaq-tags {
       .tag {
         display: inline-block;
@@ -85,8 +83,6 @@
   }
 
   .question-aside {
-    margin-left: 15px;
-
     .meta-item {
       margin-top: 5px;
       margin-bottom: 10px;
@@ -108,10 +104,7 @@
     id="question-panel"
   >
     <v-layout>
-      <div
-        slot="main"
-        class="qaq-question"
-      >
+      <div class="qaq-question">
         <ul class="qaq-tags">
           <li
             v-for="tag in qaq.tags"

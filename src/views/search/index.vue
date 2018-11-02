@@ -104,36 +104,34 @@
           :label="tab"
         >
           <v-layout>
-            <template slot="main">
+            <component
+              v-if="noMore && !list.length"
+              :is="`nothing-${selectedType}`"
+            />
+            <template v-else>
               <component
-                v-if="noMore && !list.length"
-                :is="`nothing-${selectedType}`"
+                v-for="item in list"
+                :key="`${item.type}-${item.id}`"
+                :is="`${item.type}-item`"
+                :item="item"
+                :in-common="item.type != selectedType"
               />
-              <template v-else>
-                <component
-                  v-for="item in list"
-                  :key="`${item.type}-${item.id}`"
-                  :is="`${item.type}-item`"
-                  :item="item"
-                  :in-common="item.type != selectedType"
-                />
-              </template>
-              <el-button
-                v-if="!noMore && list.length"
-                :loading="loading"
-                type="info"
-                plain
-                round
-                class="load-more-btn"
-                @click="loadMore"
-              >{{ loading ? '加载中' : '加载更多' }}</el-button>
-              <div
-                v-if="loading && !list.length"
-                class="loading-wrap"
-              >
-                <div class="el-icon-loading"/>
-              </div>
             </template>
+            <el-button
+              v-if="!noMore && list.length"
+              :loading="loading"
+              type="info"
+              plain
+              round
+              class="load-more-btn"
+              @click="loadMore"
+            >{{ loading ? '加载中' : '加载更多' }}</el-button>
+            <div
+              v-if="loading && !list.length"
+              class="loading-wrap"
+            >
+              <div class="el-icon-loading"/>
+            </div>
           </v-layout>
         </el-tab-pane>
       </el-tabs>

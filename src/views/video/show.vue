@@ -3,7 +3,7 @@
   $meta-height: 30px;
   $meta-margin-bottom: 8px;
 
-  #video-metas {
+  #video-header {
     margin-bottom: 20px;
     overflow: hidden;
     position: relative;
@@ -36,7 +36,10 @@
 <template>
   <div id="video-show">
     <v-header/>
-    <div class="container">
+    <div
+      id="video-header"
+      class="container"
+    >
       <nav>
         <h1
           v-if="bangumi && video"
@@ -54,101 +57,98 @@
           第{{ video.part }}话&nbsp;{{ video.name }}
         </h1>
       </nav>
-      <div
-        id="video-metas"
-        class="container"
-      >
-        <template v-if="season && showAll">
-          <div
-            v-for="(items, idx) in list"
-            :key="idx"
-          >
-            <h6
-              class="season-title"
-              v-text="season.name[idx]"
-            />
-            <v-part
-              :list="items.data"
-              :alias="$alias.video"
-              :is-first="idx === 0"
-              :force-all="true"
-              :all-data="videos"
-              v-model="showAll"
-            >
-              <template slot-scope="{ item }">
-                <span>{{ item.part - items.base }}</span>{{ item.name }}
-              </template>
-            </v-part>
-          </div>
-        </template>
-        <v-part
-          v-else
-          :list="videos"
-          :all-data="videos"
-          :alias="$alias.video"
-          v-model="showAll"
+      <template v-if="season && showAll">
+        <div
+          v-for="(items, idx) in list"
+          :key="idx"
         >
-          <template slot-scope="{ item }">
-            <span>{{ item.part }}</span>{{ item.name }}
-          </template>
-        </v-part>
-      </div>
-      <v-layout>
-        <template slot="main">
-          <v-video
-            :source="computeVideoSrc"
-            :other-src="useOtherSiteSource"
-            :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-            :poster="$resize(video.poster, { width: 800 })"
-            :next="nextPartVideo"
-            :is-guest="isGuest"
-            :blocked="videoPackage.blocked"
-            :must-reward="videoPackage.mustReward && !video.rewarded"
-            :need-min-level="videoPackage.needMinLevel"
-            @playing="handlePlaying"
+          <h6
+            class="season-title"
+            v-text="season.name[idx]"
           />
-          <div class="video-info">
-            <social-panel
-              :id="video.id"
-              :is-creator="video.is_creator"
-              :user-id="video.user_id"
-              :liked="video.liked"
-              :marked="video.marked"
-              :rewarded="video.rewarded"
-              :reward-users="video.reward_users"
-              :like-users="video.like_users"
-              :mark-users="video.mark_users"
-              type="video"
-              @reward-callback="handleRewardAction"
-            />
-            <v-share type="panel"/>
-            <el-button
-              type="warning"
-              size="medium"
-              class="video-report"
-              round
-              @click="handleVideoReportClick"
-            >资源报错</el-button>
-          </div>
-          <comment-main
-            :id="id"
-            :master-id="video.user_id"
-            type="video"
-          />
+          <v-part
+            :list="items.data"
+            :alias="$alias.video"
+            :is-first="idx === 0"
+            :force-all="true"
+            :all-data="videos"
+            v-model="showAll"
+          >
+            <template slot-scope="{ item }">
+              <span>{{ item.part - items.base }}</span>{{ item.name }}
+            </template>
+          </v-part>
+        </div>
+      </template>
+      <v-part
+        v-else
+        :list="videos"
+        :all-data="videos"
+        :alias="$alias.video"
+        v-model="showAll"
+      >
+        <template slot-scope="{ item }">
+          <span>{{ item.part }}</span>{{ item.name }}
         </template>
-        <template slot="aside">
-          <v-bangumi-panel
-            :id="bangumi.id"
-            :name="bangumi.name"
-            :avatar="bangumi.avatar"
-            :summary="bangumi.summary"
-            :followed="bangumi.followed"
-            class="bangumi-panel"
-            @follow="handleFollowAction"
-          />
-        </template>
-      </v-layout>
+      </v-part>
     </div>
+    <v-layout>
+      <!-- 播放器 -->
+      <v-video
+        :source="computeVideoSrc"
+        :other-src="useOtherSiteSource"
+        :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
+        :poster="$resize(video.poster, { width: 800 })"
+        :next="nextPartVideo"
+        :is-guest="isGuest"
+        :blocked="videoPackage.blocked"
+        :must-reward="videoPackage.mustReward && !video.rewarded"
+        :need-min-level="videoPackage.needMinLevel"
+        @playing="handlePlaying"
+      />
+      <!-- 视频底部 -->
+      <div class="video-info">
+        <social-panel
+          :id="video.id"
+          :is-creator="video.is_creator"
+          :user-id="video.user_id"
+          :liked="video.liked"
+          :marked="video.marked"
+          :rewarded="video.rewarded"
+          :reward-users="video.reward_users"
+          :like-users="video.like_users"
+          :mark-users="video.mark_users"
+          type="video"
+          @reward-callback="handleRewardAction"
+        />
+        <v-share type="panel"/>
+        <el-button
+          type="warning"
+          size="medium"
+          class="video-report"
+          round
+          @click="handleVideoReportClick"
+        >资源报错</el-button>
+      </div>
+      <!-- 评论区 -->
+      <comment-main
+        :id="id"
+        :master-id="video.user_id"
+        type="video"
+      />
+      <!-- 侧边栏 -->
+      <template slot="aside">
+        <v-bangumi-panel
+          :id="bangumi.id"
+          :name="bangumi.name"
+          :avatar="bangumi.avatar"
+          :summary="bangumi.summary"
+          :followed="bangumi.followed"
+          class="bangumi-panel"
+          @follow="handleFollowAction"
+        />
+      </template>
+    </v-layout>
   </div>
 </template>
 

@@ -2,10 +2,9 @@
   <div id="trending-role">
     <v-header/>
     <v-layout>
-      <template slot="main">
-        <h2 class="sub-title">偶像排行榜</h2>
-        <cartoon-role-flow-list/>
-      </template>
+      <h2 class="sub-title">偶像排行榜</h2>
+      <cartoon-role-flow-list/>
+      <template slot="aside">&nbsp;</template>
     </v-layout>
   </div>
 </template>
