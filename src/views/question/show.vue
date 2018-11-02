@@ -82,7 +82,19 @@ export default {
   },
   head() {
     return {
-      title: `${this.qaq.title} - 提问`
+      title: `${this.qaq.title} - 提问`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$utils.truncate(this.qaq.intro)
+        },
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: `calibur,提问,天下漫友是一家,${this.qaq.intro}`
+        }
+      ]
     };
   },
   components: {
