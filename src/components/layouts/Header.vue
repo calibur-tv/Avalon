@@ -13,7 +13,7 @@ $avatar-height: 36px;
     top: 0;
     width: 100%;
     height: $header-height;
-    z-index: 3;
+    z-index: 100;
 
     .text {
       position: relative;
