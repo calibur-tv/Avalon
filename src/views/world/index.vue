@@ -291,6 +291,9 @@ export default {
       store.dispatch("cm/getCmLoop")
     ]);
   },
+  head: {
+    title: "站内热点"
+  },
   computed: {
     recommendedUsers() {
       return this.$store.state.users.recommended;

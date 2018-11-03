@@ -1,3 +1,15 @@
+<style lang="scss">
+.search-history {
+  ul {
+    margin-left: 0 !important;
+  }
+
+  li {
+    list-style-type: none !important;
+  }
+}
+</style>
+
 <template>
   <div
     v-if="list.length"
