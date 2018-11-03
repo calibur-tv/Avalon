@@ -116,9 +116,7 @@
               <span class="level">
                 Lv{{ user.level }}
               </span>
-              <span class="power">
-                &nbsp;-&nbsp;战斗力：{{ user.power }}
-              </span>
+              <span class="power">-&nbsp;战斗力：{{ user.power }}</span>
             </p>
             <p
               class="signature"
