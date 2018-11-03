@@ -15,7 +15,6 @@
     .user-avatar {
       float: left;
       margin-right: 10px;
-      @include avatar(24px);
     }
 
     .nickname {
@@ -46,7 +45,6 @@
       margin-top: -2px;
       margin-right: 18px;
       margin-bottom: 4px;
-      border-radius: 4px;
       overflow: hidden;
       float: left;
     }
@@ -95,6 +93,7 @@
       >
         <v-img
           :src="item.user.avatar"
+          :avatar="true"
           size="24"
         />
       </user-card>
@@ -126,6 +125,7 @@
         >
           <v-img
             :src="item.answer.poster.url"
+            :poster="true"
             width="190"
             height="105"
           />

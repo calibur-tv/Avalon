@@ -12,7 +12,6 @@
     .avatar {
       margin-top: 5px;
       margin-right: 10px;
-      @extend %avatar;
     }
   }
 
@@ -102,6 +101,7 @@
         >
           <v-img
             :src="comment.from_user_avatar"
+            :avatar="true"
             size="24"
           />
         </user-card>

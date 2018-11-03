@@ -67,10 +67,6 @@ $layout-width: 900px;
         }
       }
     }
-
-    .avatar {
-      @extend %avatar;
-    }
   }
 
   .main-view {
@@ -113,6 +109,7 @@ $layout-width: 900px;
             <button class="avatar">
               <v-img
                 :src="user.avatar"
+                :avatar="true"
                 size="30"
               />
             </button>

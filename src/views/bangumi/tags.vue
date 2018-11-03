@@ -34,7 +34,6 @@
 
     .avatar {
       margin-right: 15px;
-      border-radius: 5px;
       overflow: hidden;
       float: left;
     }
@@ -115,6 +114,7 @@
             >
               <v-img
                 :src="item.avatar"
+                :poster="true"
                 size="90"
               />
             </a>

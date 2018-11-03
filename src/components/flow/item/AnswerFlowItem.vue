@@ -15,7 +15,6 @@
     .user-avatar {
       float: left;
       margin-right: 10px;
-      @include avatar(40px);
     }
 
     .info {
@@ -96,6 +95,7 @@
       >
         <v-img
           :src="item.user.avatar"
+          :avatar="true"
           size="40"
         />
       </user-card>

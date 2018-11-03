@@ -12,7 +12,6 @@
 
     .avatar {
       margin: 24px 0 0 5px;
-      @extend %avatar;
     }
   }
 
@@ -134,6 +133,7 @@
       >
         <v-img
           :src="comment.from_user_avatar"
+          :avatar="true"
           size="48"
           class="avatar"
         />

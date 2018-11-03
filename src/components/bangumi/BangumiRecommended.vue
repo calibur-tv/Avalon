@@ -45,6 +45,7 @@
     width: 60px;
     height: 60px;
     margin-right: 5px;
+    border-radius: 5px;
     float: left;
   }
 

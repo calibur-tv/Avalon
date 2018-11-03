@@ -27,15 +27,6 @@
         margin-right: 8px;
       }
 
-      .user-avatar {
-        @extend %avatar;
-      }
-
-      .bangumi-avatar {
-        border-radius: 3px;
-        border: 1px solid #e5e9ef;
-      }
-
       .name {
         line-height: 30px;
         font-size: 12px;
@@ -123,6 +114,7 @@
         >
           <v-img
             :src="item.user.avatar"
+            :avatar="true"
             size="30"
             class="user-avatar"
           />
@@ -138,6 +130,7 @@
         >
           <v-img
             :src="item.bangumi.avatar"
+            :poster="true"
             size="30"
             class="bangumi-avatar"
           />

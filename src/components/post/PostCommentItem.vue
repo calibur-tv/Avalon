@@ -12,7 +12,6 @@
     .avatar {
       display: block;
       margin: 29px auto 5px auto;
-      @extend %avatar;
     }
 
     .nickname {
@@ -114,6 +113,7 @@
       >
         <v-img
           :src="post.from_user_avatar"
+          :avatar="true"
           size="80"
           class="avatar"
         />

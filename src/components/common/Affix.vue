@@ -99,6 +99,10 @@ export default {
   },
   methods: {
     handleScroll() {
+      const point = this.$refs.point;
+      if (!point) {
+        return;
+      }
       const affix = this.affix;
       const scrollTop = getScroll(window, true);
       const elOffset = getOffset(this.$el);
@@ -113,8 +117,8 @@ export default {
       ) {
         this.affix = true;
         this.slotStyle = {
-          width: this.$refs.point.clientWidth + "px",
-          height: this.$refs.point.clientHeight + "px"
+          width: point.clientWidth + "px",
+          height: point.clientHeight + "px"
         };
         this.slot = true;
         this.styles = {

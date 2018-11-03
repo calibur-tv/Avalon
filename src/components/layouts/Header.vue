@@ -65,7 +65,6 @@ $avatar-height: 36px;
 
           .avatar {
             margin-top: ($header-height - $avatar-height) / 2;
-            @include avatar($avatar-height);
           }
         }
       }
@@ -557,6 +556,8 @@ $search-height: 32px;
                 <v-img
                   :src="user.avatar"
                   :class="$style.avatar"
+                  :avatar="true"
+                  :lazy="false"
                   size="34"
                 />
               </a>

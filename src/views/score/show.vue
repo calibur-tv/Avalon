@@ -32,7 +32,6 @@
         margin-right: 10px;
         display: inline-block;
         vertical-align: middle;
-        @extend %avatar;
       }
     }
 
@@ -107,6 +106,7 @@
               >
                 <v-img
                   :src="user.avatar"
+                  :avatar="true"
                   size="30"
                   class="avatar"
                 />

@@ -101,8 +101,8 @@
           >
             <v-img
               :src="video.poster"
-              width="110"
-              height="70"
+              width="106"
+              height="60"
               class="poster"
             />
             <div class="intro">

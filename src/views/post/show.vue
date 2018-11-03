@@ -56,8 +56,6 @@
       .avatar {
         display: block;
         margin: 20px auto 5px auto;
-        border: 1px solid $color-gray-normal;
-        @include avatar(80px);
       }
 
       .nickname {
@@ -261,6 +259,8 @@
             >
               <v-img
                 :src="master.avatar"
+                :avatar="true"
+                :lazy="false"
                 size="80"
                 class="avatar"
               />

@@ -119,9 +119,7 @@
       .user-avatar {
         display: block;
         margin-right: 10px;
-        overflow: hidden;
         float: left;
-        @extend %avatar;
       }
 
       .main-name {
@@ -206,6 +204,7 @@
             >
               <v-img
                 :src="item.user.avatar"
+                :avatar="true"
                 class="user-avatar"
                 size="30"
               />
