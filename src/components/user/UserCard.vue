@@ -116,9 +116,8 @@
               <span class="level">
                 Lv{{ user.level }}
               </span>
-              &nbsp;·&nbsp;
               <span class="power">
-                战斗力：{{ user.power }}
+                &nbsp;-&nbsp;战斗力：{{ user.power }}
               </span>
             </p>
             <p
