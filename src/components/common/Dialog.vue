@@ -33,8 +33,7 @@
   }
 
   .content {
-    padding: 0 20px;
-    margin: 20px 0;
+    padding: 20px;
     overflow-y: auto;
 
     .loading,
