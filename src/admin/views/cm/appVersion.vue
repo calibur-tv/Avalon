@@ -179,11 +179,7 @@ export default {
       if (this.appType === "" || this.versionType === 0) {
         return "";
       }
-      const list = _.orderBy(
-        this.pageList.filter(_ => _.app_type === this.appType),
-        "id",
-        "desc"
-      );
+      const list = this.pageList.filter(_ => _.app_type === this.appType);
       if (!list.length) {
         return "0.0.1";
       }
