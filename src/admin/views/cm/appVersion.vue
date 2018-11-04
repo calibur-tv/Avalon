@@ -306,7 +306,7 @@ export default {
     },
     beforeUploadApp() {
       this.uploadHeaders.key = `app/android/${Date.now()}/calibur-tv-${this.appVersion.replace(
-        /./g,
+        /\./g,
         "-"
       )}.apk`;
       return true;
