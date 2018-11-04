@@ -18,7 +18,7 @@
     width: 198px;
     height: 406px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    margin: 3px 9px 15px 3px;
+    margin: 3px 7px 15px 3px;
     background-color: #fafafa;
     overflow: hidden;
     float: left;

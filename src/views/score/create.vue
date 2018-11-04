@@ -245,7 +245,7 @@ export default {
         this.$toast.error("标题为必填的");
         return;
       }
-      if (richContent.desc.length < 400) {
+      if (richContent.publish && richContent.desc.length < 400) {
         this.$toast.error("漫评至少400字");
         return;
       }
