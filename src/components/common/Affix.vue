@@ -90,12 +90,10 @@ export default {
     }
   },
   mounted() {
-    utils.on(window, "scroll", this.handleScroll);
-    utils.on(window, "resize", this.handleScroll);
+    utils.on(window, ["scroll", "resize"], this.handleScroll);
   },
   beforeDestroy() {
-    utils.off(window, "scroll", this.handleScroll);
-    utils.off(window, "resize", this.handleScroll);
+    utils.off(window, ["scroll", "resize"], this.handleScroll);
   },
   methods: {
     handleScroll() {
