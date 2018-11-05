@@ -3,54 +3,56 @@
     v-loading="pageLoading"
     id="bangumi-list"
   >
-    <header>
-      <el-row>
-        <el-col :span="4">
-          <router-link to="/admin/bangumi/create">
-            <el-button type="primary">
-              <i class="el-icon-plus"/>
-              创建番剧
-            </el-button>
-          </router-link>
-        </el-col>
-        <el-col
-          :span="10"
-          :offset="10"
-        >
-          <bangumi-search @search="handleBangumiSearch"/>
-        </el-col>
-      </el-row>
-    </header>
     <el-table
       :data="pageData"
       border
       fit
       highlight-current-row
     >
-      <el-table-column label="番剧名称">
+      <el-table-column label="番剧">
         <template slot-scope="scope">
           <a
-            :href="$alias.bangumi(scope.row.id)"
+            :href="$alias.bangumi(scope.row.bangumi.id)"
             target="_blank"
-          >{{ scope.row.name }}</a>
+          >{{ scope.row.bangumi.name }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column label="版主">
+        <template slot-scope="scope">
+          <span>{{ scope.row.is_leader !== '0' ? '【大】' : '【小】' }}</span>
+          <a
+            :href="$alias.user(scope.row.user.zone)"
+            target="_blank"
+          >{{ scope.row.user.nickname }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column label="番剧活跃度">
+        <template slot-scope="scope">
+          <span>{{ scope.row.bangumi.power }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户战斗力">
+        <template slot-scope="scope">
+          <span>{{ scope.row.user.power }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="授权时间">
+        <template slot-scope="scope">
+          <span>{{ scope.row.created_at }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <router-link :to="`/admin/bangumi/edit/${scope.row.id}`">
+          <a
+            :href="`/admin/user/show?zone=${scope.row.user.zone}`"
+            target="_blank"
+          >
             <el-button
               size="small"
               type="primary"
               icon="edit"
-            >编辑</el-button>
-          </router-link>
-          &nbsp;
-          <el-button
-            v-if="scope.row.deleted_at"
-            type="danger"
-            size="small"
-            icon="delete"
-          >已删除</el-button>
+            >查看用户</el-button>
+          </a>
         </template>
       </el-table-column>
     </el-table>
@@ -83,7 +85,7 @@ export default {
       this.pageState.size = 15;
       const api = new Api(this);
       try {
-        const data = await api.getBangumiList({
+        const data = await api.getBangumiManagers({
           to_page: page,
           cur_page: this.pageState.cur,
           take: this.pageState.size
@@ -97,11 +99,6 @@ export default {
       } finally {
         this.pageLoading = false;
       }
-    },
-    handleBangumiSearch(id) {
-      this.$router.push({
-        path: `/admin/bangumi/edit/${id}`
-      });
     }
   }
 };

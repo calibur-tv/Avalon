@@ -71,12 +71,12 @@
       >还没有人关注</span>
     </div>
     <div id="bangumi-managers">
-      <h2 class="sub-title">吧主</h2>
+      <h2 class="sub-title">版主</h2>
       <ava-dialog
         v-if="managers.total"
         :users="managerUsers"
         :fetch="fetchMoreManagers"
-        :title="`《${info.name}》的吧主们`"
+        :title="`《${info.name}》的版主们`"
         :loading="false"
         :no-more="true"
       />
@@ -86,15 +86,15 @@
         size="mini"
         type="primary"
         @click="openRequestMasterModal = true"
-      >还没有吧主，点击申请</el-button>
+      >还没有版主，点击申请</el-button>
       <v-dialog
         v-model="openRequestMasterModal"
-        :title="`申请成为《${info.name}》的吧主`"
+        :title="`申请成为《${info.name}》的版主`"
         :footer="false"
         class="request-become-master-modal"
       >
         <p>亲爱的漫友你好，欢迎来到 calibur.tv！</p>
-        <p>如果你成为了吧主，那就代表你成为了这里重要的一员，因此我们在甄选吧主时会非常谨慎，你起码要满足一下要求：</p>
+        <p>如果你成为了版主，那就代表你成为了这里重要的一员，因此我们在甄选版主时会非常谨慎，你起码要满足一下要求：</p>
         <ul>
           <li>你要有足够的阅片量，是个真正的漫迷，足够强</li>
           <li>你要有充足的精力和耐心，与 calibur 一同成长</li>

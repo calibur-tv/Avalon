@@ -199,7 +199,7 @@
             <el-button
               size="small"
               type="primary"
-            >查看吧主</el-button>
+            >查看版主</el-button>
           </a>
         </div>
       </div>

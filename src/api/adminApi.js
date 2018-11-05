@@ -502,4 +502,10 @@ export default class extends BaseApi {
       id
     });
   }
+
+  getBangumiManagers({ cur_page, to_page, take }) {
+    return this.http.get("admin/bangumi/manager/list", {
+      params: { cur_page, to_page, take }
+    });
+  }
 }
