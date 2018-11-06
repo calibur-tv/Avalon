@@ -56,7 +56,7 @@
       </ul>
     </div>
     <div id="bangumi-followers">
-      <h2 class="sub-title">关注的人{{ followers.total ? `（${followers.total}）` : '' }}</h2>
+      <h2 class="sub-title">关注的人</h2>
       <ava-dialog
         v-if="followers.total"
         :users="followers.list"
