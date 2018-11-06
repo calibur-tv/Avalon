@@ -300,7 +300,12 @@ export default {
       });
       return result;
     },
-    beforeUploadApp() {
+    beforeUploadApp(file) {
+      if (file.type !== "application/vnd.android.package-archive") {
+        this.$toast.error("文件类型不正确！");
+        return false;
+      }
+      this.uploadHeaders.mime = "application/vnd.android.package-archive";
       this.uploadHeaders.key = `app/android/${Date.now()}/calibur-tv-${this.appVersion.replace(
         /\./g,
         "-"
