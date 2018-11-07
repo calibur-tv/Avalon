@@ -508,4 +508,12 @@ export default class extends BaseApi {
       params: { cur_page, to_page, take }
     });
   }
+
+  getAppTemplates() {
+    return this.http.get("app/template");
+  }
+
+  setAppTemplates({ list }) {
+    return this.http.post("admin/app/setTemplates", { list });
+  }
 }

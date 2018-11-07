@@ -611,6 +611,12 @@ export function createRouter() {
                 component: () => import("@/views/cm/appVersion")
               },
               {
+                path: "app-template",
+                name: "app-template",
+                meta: { title: "App模板", icon: "coffee" },
+                component: () => import("@/views/cm/appTemplate")
+              },
+              {
                 path: "friend-link",
                 name: "friend-link",
                 meta: { title: "友情链接", icon: "coffee" },
