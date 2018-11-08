@@ -78,8 +78,8 @@ $--color-primary: $color-blue-normal !default;
     &.is-fullscreen {
       margin: 0 !important;
       top: 50%;
-      border-width: 0;
-      border-radius: 0;
+      border-width: 0 !important;
+      border-radius: 0 !important;
       overflow: auto;
     }
 

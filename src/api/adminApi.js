@@ -516,4 +516,10 @@ export default class extends BaseApi {
   setAppTemplates({ list }) {
     return this.http.post("admin/app/setTemplates", { list });
   }
+
+  getUserInvites({ id }) {
+    return this.http.get("user/invite/list", {
+      params: { id }
+    });
+  }
 }
