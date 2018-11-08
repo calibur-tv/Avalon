@@ -143,6 +143,7 @@
         </el-button>
         <el-button
           v-if="!showInvite"
+          :loading="loadingInvite"
           type="primary"
           size="mini"
           @click="getInvite(1)"
@@ -454,10 +455,10 @@ export default {
         return null;
       }
       return {
-        columns: ["时间", "等级"],
+        columns: ["等级", "id"],
         rows: this.inviteList.map(_ => {
           return {
-            时间: _.created_at.split(" ")[0],
+            id: _.id,
             等级: _.level
           };
         })
@@ -468,10 +469,10 @@ export default {
         return null;
       }
       return {
-        columns: ["时间", "战斗力"],
+        columns: ["战斗力", "id"],
         rows: this.inviteList.map(_ => {
           return {
-            时间: _.created_at.split(" ")[0],
+            id: _.id,
             战斗力: _.power
           };
         })
@@ -616,6 +617,7 @@ export default {
           return;
         }
         this.user = result;
+        this.inviteList = [];
       } catch (e) {
         this.$toast.error(e);
       } finally {
