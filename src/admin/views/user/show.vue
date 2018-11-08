@@ -454,28 +454,40 @@ export default {
       if (!this.inviteList.length) {
         return null;
       }
+      const resource = _.mapValues(_.groupBy(this.inviteList, "level"), clist =>
+        clist.map(item => _.omit(item, "level"))
+      );
+      const result = [];
+      Object.keys(resource).forEach(level => {
+        result.push({
+          等级: level,
+          人数: resource[level].length,
+          list: resource[level]
+        });
+      });
       return {
-        columns: ["等级", "id"],
-        rows: this.inviteList.map(_ => {
-          return {
-            id: _.id,
-            等级: _.level
-          };
-        })
+        columns: ["等级", "人数"],
+        rows: result
       };
     },
     inviteUserPowerChartData() {
       if (!this.inviteList.length) {
         return null;
       }
+      const resource = _.mapValues(_.groupBy(this.inviteList, "power"), clist =>
+        clist.map(item => _.omit(item, "power"))
+      );
+      const result = [];
+      Object.keys(resource).forEach(power => {
+        result.push({
+          战斗力: power,
+          人数: resource[power].length,
+          list: resource[power]
+        });
+      });
       return {
-        columns: ["战斗力", "id"],
-        rows: this.inviteList.map(_ => {
-          return {
-            id: _.id,
-            战斗力: _.power
-          };
-        })
+        columns: ["战斗力", "人数"],
+        rows: result
       };
     }
   },
