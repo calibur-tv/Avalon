@@ -316,6 +316,7 @@
     </template>
     <!-- 用户的邀请视图 -->
     <v-dialog
+      v-if="user"
       v-model="showInvite"
       :fullscreen="true"
       :title="`${user.nickname}邀请的人`"
