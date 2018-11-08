@@ -35,6 +35,12 @@
         type="danger"
         icon="delete"
         size="small"
+        @click="quickDeleteAlbumPoster"
+      >删除相册封面</el-button>
+      <el-button
+        type="danger"
+        icon="delete"
+        size="small"
         @click="quickDeleteImage"
       >一键删图片</el-button>
       <el-button
@@ -261,6 +267,32 @@ export default {
             .deleteImage({
               id: value,
               type: "album"
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    quickDeleteAlbumPoster() {
+      this.$prompt("请输入图片id", "删除图片", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
+          if (value < 1) {
+            this.$toast.error("非法的id");
+            return;
+          }
+          const api = new Api(this);
+          api
+            .deleteImagePoster({
+              id: value
             })
             .then(() => {
               this.$toast.success("操作成功");

@@ -289,6 +289,10 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/ban", { id });
   }
 
+  deletePostTitle({ id }) {
+    return this.http.post("admin/trial/post/delete_title", { id });
+  }
+
   passPost({ id }) {
     return this.http.post("admin/trial/post/pass", { id });
   }
@@ -323,6 +327,10 @@ export default class extends BaseApi {
 
   rejectImage({ id, type }) {
     return this.http.post("admin/trial/image/reject", { id, type });
+  }
+
+  deleteImagePoster({ id }) {
+    return this.http.post("admin/trial/image/delete_poster", { id });
   }
 
   getTrialComments() {
