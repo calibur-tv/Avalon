@@ -87,9 +87,8 @@
               round
               @click="showSelectAlbum = !showSelectAlbum"
             >
-              选择已有漫画
+              {{ showSelectAlbum ? '新建一集漫画' : '选择已有漫画，进行续传' }}
             </el-button>
-            ，进行续传
           </el-alert>
           <el-row v-if="showSelectAlbum">
             <el-col :span="20">

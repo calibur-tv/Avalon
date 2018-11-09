@@ -431,9 +431,7 @@ export default {
     },
     editable() {
       return this.$store.state.login
-        ? this.info.is_cartoon
-          ? this.bangumi.is_master
-          : this.user.id === this.$store.state.user.id
+        ? this.user.id === this.$store.state.user.id
         : false;
     },
     albumType() {
@@ -449,47 +447,6 @@ export default {
   methods: {
     handleFollowAction(result) {
       this.$store.commit("image/SHOW_FOLLOW_BANGUMI", { result });
-    },
-    async handleAlbumLike() {
-      if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
-      }
-      if (this.isMine) {
-        this.$toast.info("不能为自己的相册点赞");
-        return;
-      }
-      if (this.loadingFollowAlbum) {
-        return;
-      }
-      this.loadingFollowAlbum = true;
-      if (this.info.is_creator && !this.info.liked) {
-        this.$confirm("原创相册点赞需要团子, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.submitLikeRequest();
-          })
-          .catch(() => {});
-        return;
-      }
-      this.submitLikeRequest();
-    },
-    async submitLikeRequest() {
-      const api = new Api(this);
-      try {
-        const result = await api.toggleLike({
-          id: this.id
-        });
-        this.$store.commit("image/SHOW_TOGGLE_LIKE", { result });
-        this.$toast.success("操作成功");
-      } catch (e) {
-        this.$toast.error(e);
-      } finally {
-        this.loadingFollowAlbum = false;
-      }
     },
     async handleSortBtnClick(index, toNext) {
       if (this.loadingEditImages) {

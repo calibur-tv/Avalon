@@ -11,7 +11,7 @@
     width: 85px;
 
     .avatar {
-      margin: 24px 0 0 5px;
+      margin-top: 22px;
     }
   }
 

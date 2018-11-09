@@ -5,7 +5,7 @@
 
   .avatar {
     float: left;
-    margin: 7px 32px 0 5px;
+    margin: 7px 32px 0 0;
   }
 
   .main-area {
