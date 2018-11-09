@@ -160,6 +160,7 @@
               >
                 <v-img
                   :src="item.bangumi.avatar"
+                  :poster="true"
                   size="24"
                 />
               </a>
@@ -169,7 +170,7 @@
               class="time"
             />
             <a
-              :href="$alias.post(item.post.id)"
+              :href="$alias.post(item.post.id, { 'comment-id': item.id })"
               class="title href-fade-blue oneline"
               target="_blank"
               v-text="item.post.title"

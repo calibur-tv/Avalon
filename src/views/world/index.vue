@@ -1,12 +1,6 @@
 <style lang="scss">
 #the-world {
-  .col-left {
-    width: 280px;
-    height: 1px;
-    float: left;
-    margin-right: 40px;
-    margin-left: 5px;
-
+  .col-aside {
     .side-bar {
       .router-link-active {
         background-color: $color-gray-normal;
@@ -76,9 +70,7 @@
     }
   }
 
-  .col-right {
-    overflow: hidden;
-
+  .col-main {
     .flow-intro {
       @extend %clearfix;
       margin-bottom: 20px;
@@ -194,66 +186,64 @@
 <template>
   <div id="the-world">
     <v-header type="pure"/>
-    <div class="container">
-      <div class="col-left">
-        <v-affix
-          relative-element-selector="#the-world"
-          style="width: 280px"
-        >
-          <ul class="side-bar">
-            <li>
-              <router-link :to="$alias.world('post')">
-                帖子
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="$alias.world('pins')">
-                相册
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="$alias.world('review')">
-                漫评
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="$alias.world('qaq')">
-                问答
-              </router-link>
+    <v-layout :left="false">
+      <div
+        slot="aside"
+        class="col-aside"
+      >
+        <ul class="side-bar">
+          <li>
+            <router-link :to="$alias.world('post')">
+              帖子
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="$alias.world('pins')">
+              相册
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="$alias.world('review')">
+              漫评
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="$alias.world('qaq')">
+              问答
+            </router-link>
+          </li>
+        </ul>
+        <template v-if="recommendedUsers.length">
+          <p class="sub-title">推荐用户</p>
+          <ul class="recommended-users">
+            <li
+              v-for="user in recommendedUsers"
+              :key="user.id"
+            >
+              <a
+                :href="$alias.user(user.zone)"
+                target="_blank"
+              >
+                <img
+                  :src="$resize(user.avatar, { width: 80 })"
+                  class="avatar"
+                >
+                <div class="intro">
+                  <span
+                    class="oneline"
+                    v-text="user.nickname"
+                  />
+                  <p
+                    class="oneline"
+                    v-text="user.desc"
+                  />
+                </div>
+              </a>
             </li>
           </ul>
-          <template v-if="recommendedUsers.length">
-            <p class="sub-title">推荐用户</p>
-            <ul class="recommended-users">
-              <li
-                v-for="user in recommendedUsers"
-                :key="user.id"
-              >
-                <a
-                  :href="$alias.user(user.zone)"
-                  target="_blank"
-                >
-                  <img
-                    :src="$resize(user.avatar, { width: 80 })"
-                    class="avatar"
-                  >
-                  <div class="intro">
-                    <span
-                      class="oneline"
-                      v-text="user.nickname"
-                    />
-                    <p
-                      class="oneline"
-                      v-text="user.desc"
-                    />
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </template>
-        </v-affix>
+        </template>
       </div>
-      <div class="col-right">
+      <div class="col-main">
         <el-carousel
           v-if="loops.length"
           :interval="4000"
@@ -288,7 +278,7 @@
           <router-view/>
         </keep-alive>
       </div>
-    </div>
+    </v-layout>
   </div>
 </template>
 
@@ -300,6 +290,9 @@ export default {
       store.dispatch("users/getRecommended"),
       store.dispatch("cm/getCmLoop")
     ]);
+  },
+  head: {
+    title: "站内热点"
   },
   computed: {
     recommendedUsers() {

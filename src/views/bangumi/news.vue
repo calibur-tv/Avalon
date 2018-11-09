@@ -1,13 +1,6 @@
 <style lang="scss">
 #bangumi-news {
-  $time-size: 30px;
-  .sub-title {
-    margin-left: $time-size / 2;
-  }
-
   .el-tabs {
-    padding-left: $time-size / 2;
-
     .el-tabs__nav {
       width: 100%;
       display: flex;
@@ -83,76 +76,74 @@
 <template>
   <div id="bangumi-news">
     <v-header/>
-    <v-layout>
-      <template slot="main">
-        <div class="breadcrumb-links">
-          <router-link :to="$alias.bangumiNews">新番放送</router-link>
-          <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-          <a :href="$alias.bangumiTag()">分类索引</a>
-        </div>
-        <h2 class="sub-title">新番放送表</h2>
-        <el-tabs v-model="thisWeek">
-          <el-tab-pane
-            v-for="(tab, index) in showtime"
-            :key="index"
-            :name="tab"
-            :label="tab"
-          >
-            <ul v-if="released && released[index] && released[index].length">
-              <li
-                v-for="item in released[index]"
-                :key="item.id"
-                class="bangumi"
+    <v-layout :affix-top="235">
+      <div class="breadcrumb-links">
+        <router-link :to="$alias.bangumiNews">新番放送</router-link>
+        <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
+        <a :href="$alias.bangumiTag()">分类索引</a>
+      </div>
+      <h2 class="sub-title">新番放送表</h2>
+      <el-tabs v-model="thisWeek">
+        <el-tab-pane
+          v-for="(tab, index) in showtime"
+          :key="index"
+          :name="tab"
+          :label="tab"
+        >
+          <ul v-if="released && released[index] && released[index].length">
+            <li
+              v-for="item in released[index]"
+              :key="item.id"
+              class="bangumi"
+            >
+              <a
+                :href="$alias.bangumi(item.id)"
+                target="_blank"
+                class="avatar"
               >
+                <img
+                  :src="$resize(item.avatar, { width: 180 })"
+                  :alt="item.name"
+                >
+              </a>
+              <div class="intro">
                 <a
                   :href="$alias.bangumi(item.id)"
+                  class="name href-fade-blue"
                   target="_blank"
-                  class="avatar"
-                >
-                  <img
-                    :src="$resize(item.avatar, { width: 180 })"
-                    :alt="item.name"
-                  >
-                </a>
-                <div class="intro">
+                  v-text="item.name"
+                />
+                <span>
+                  更新至
                   <a
-                    :href="$alias.bangumi(item.id)"
-                    class="name href-fade-blue"
+                    v-if="item.released_video_id"
+                    :class="[item.update ? 'new' : 'old']"
+                    :href="$alias.video(item.released_video_id)"
                     target="_blank"
-                    v-text="item.name"
-                  />
-                  <span>
-                    更新至
-                    <a
-                      v-if="item.released_video_id"
-                      :class="[item.update ? 'new' : 'old']"
-                      :href="$alias.video(item.released_video_id)"
-                      target="_blank"
-                      class="part oneline"
-                    >
-                      {{ item.end ? '已完结' : `${item.released_part}话` }}
-                    </a>
-                    <strong
-                      v-else
-                      :class="[item.update ? 'new' : 'old']"
-                      class="part oneline"
-                    >
-                      {{ item.end ? '已完结' : `${item.released_part}话` }}
-                    </strong>
-                  </span>
-                </div>
-              </li>
-            </ul>
-            <no-content v-else>
-              <el-button
-                type="primary"
-                round
-                @click="openFeedbackForResource"
-              >求资源</el-button>
-            </no-content>
-          </el-tab-pane>
-        </el-tabs>
-      </template>
+                    class="part oneline"
+                  >
+                    {{ item.end ? '已完结' : `${item.released_part}话` }}
+                  </a>
+                  <strong
+                    v-else
+                    :class="[item.update ? 'new' : 'old']"
+                    class="part oneline"
+                  >
+                    {{ item.end ? '已完结' : `${item.released_part}话` }}
+                  </strong>
+                </span>
+              </div>
+            </li>
+          </ul>
+          <no-content v-else>
+            <el-button
+              type="primary"
+              round
+              @click="openFeedbackForResource"
+            >求资源</el-button>
+          </no-content>
+        </el-tab-pane>
+      </el-tabs>
       <template slot="aside">
         <bangumi-recommended/>
       </template>

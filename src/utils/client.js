@@ -11,7 +11,7 @@ import VueClipboards from "vue-clipboards";
 Vue.use(VueClipboards);
 
 Vue.use({
-  install(Vue, options) {
+  install(Vue) {
     Vue.prototype.$cookie = Cookies;
 
     Vue.prototype.$scrollToY = scrollToY;

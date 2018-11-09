@@ -68,6 +68,12 @@
         type="danger"
         icon="delete"
         size="small"
+        @click="deleteTitle"
+      >删除帖子标题</el-button>
+      <el-button
+        type="danger"
+        icon="delete"
+        size="small"
         @click="quickDelete"
       >一键删帖</el-button>
     </header>
@@ -199,7 +205,7 @@
             <el-button
               size="small"
               type="primary"
-            >查看吧主</el-button>
+            >查看版主</el-button>
           </a>
         </div>
       </div>
@@ -329,6 +335,32 @@ export default {
             .catch(e => {
               console.log(e);
               this.$message.error(e);
+            });
+        })
+        .catch(() => {});
+    },
+    deleteTitle() {
+      this.$prompt("请输入帖子id", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^\d+$/,
+        inputErrorMessage: "非法的id"
+      })
+        .then(({ value }) => {
+          if (value < 1) {
+            this.$toast.error("非法的id");
+            return;
+          }
+          const api = new Api(this);
+          api
+            .deletePostTitle({
+              id: value
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
             });
         })
         .catch(() => {});

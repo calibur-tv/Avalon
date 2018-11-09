@@ -204,15 +204,12 @@ export default {
   },
   methods: {
     toggle(event) {
-      if (!this.transforming) {
-        if (this.expanded) {
-          this.collapse(event);
-        } else {
-          this.expand(event);
-        }
+      if (this.transforming) {
+        return;
       }
+      this.expanded ? this.collapse(event) : this.expand(event);
     },
-    onMainAnimationEnd(event) {
+    onMainAnimationEnd() {
       this.transforming = false;
       this.$emit("expanded");
     },

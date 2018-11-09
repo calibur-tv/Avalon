@@ -102,7 +102,7 @@
       </div>
       <div>
         <span class="label">等级：</span>
-        {{ user.level }}
+        {{ user.level }}，战斗力：{{ user.power }}
       </div>
       <div>
         <span class="label">性别：</span>
@@ -140,6 +140,15 @@
           @click="getTransactions(1)"
         >
           查看交易记录
+        </el-button>
+        <el-button
+          v-if="!showInvite"
+          :loading="loadingInvite"
+          type="primary"
+          size="mini"
+          @click="getInvite(1)"
+        >
+          查看邀请视图
         </el-button>
         <el-button
           v-if="user.ip_address.length"
@@ -199,7 +208,7 @@
             :loading="banning"
             type="danger"
             size="mini"
-            style="margin-left: 8px"
+            style="margin-left: 10px;margin-right: 10px"
             @click="freezeUser"
           >
             禁言
@@ -215,6 +224,7 @@
         </el-button>
       </div>
     </div>
+    <!-- 用户的 ip 列表 -->
     <el-collapse-transition>
       <el-table
         v-if="showIpAddress"
@@ -250,6 +260,7 @@
         />
       </el-table>
     </el-collapse-transition>
+    <!-- 用户的交易记录 -->
     <template v-if="showTransactions">
       <el-table
         :data="pageData"
@@ -304,6 +315,26 @@
         :state="pageState"
       />
     </template>
+    <!-- 用户的邀请视图 -->
+    <v-dialog
+      v-if="user"
+      v-model="showInvite"
+      :fullscreen="true"
+      :title="`${user.nickname}邀请的人`"
+      :footer="false"
+      :loading="loadingInvite"
+    >
+      <div class="container">
+        <ve-histogram
+          v-if="inviteUserLevelChartData"
+          :data="inviteUserLevelChartData"
+        />
+        <ve-histogram
+          v-if="inviteUserPowerChartData"
+          :data="inviteUserPowerChartData"
+        />
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -312,6 +343,14 @@ import Api from "~/api/adminApi";
 import pageMixin from "~/mixins/page";
 
 export default {
+  components: {
+    VeHistogram: () => {
+      if (typeof window === "undefined") {
+        return import("~/assets/js/empty");
+      }
+      return import("v-charts/lib/histogram.common");
+    }
+  },
   mixins: [pageMixin],
   data() {
     return {
@@ -392,7 +431,10 @@ export default {
       showTransactions: false,
       showIpAddress: false,
       banned_to: null,
-      banning: false
+      banning: false,
+      showInvite: false,
+      loadingInvite: false,
+      inviteList: []
     };
   },
   computed: {
@@ -407,6 +449,46 @@ export default {
     },
     isKing() {
       return this.$store.state.user.id === 1;
+    },
+    inviteUserLevelChartData() {
+      if (!this.inviteList.length) {
+        return null;
+      }
+      const resource = _.mapValues(_.groupBy(this.inviteList, "level"), clist =>
+        clist.map(item => _.omit(item, "level"))
+      );
+      const result = [];
+      Object.keys(resource).forEach(level => {
+        result.push({
+          等级: level,
+          人数: resource[level].length,
+          list: resource[level]
+        });
+      });
+      return {
+        columns: ["等级", "人数"],
+        rows: result
+      };
+    },
+    inviteUserPowerChartData() {
+      if (!this.inviteList.length) {
+        return null;
+      }
+      const resource = _.mapValues(_.groupBy(this.inviteList, "power"), clist =>
+        clist.map(item => _.omit(item, "power"))
+      );
+      const result = [];
+      Object.keys(resource).forEach(power => {
+        result.push({
+          战斗力: power,
+          人数: resource[power].length,
+          list: resource[power]
+        });
+      });
+      return {
+        columns: ["战斗力", "人数"],
+        rows: result
+      };
     }
   },
   created() {
@@ -430,6 +512,31 @@ export default {
     }
   },
   methods: {
+    async getInvite() {
+      if (this.showInvite) {
+        this.showInvite = false;
+        return;
+      }
+      if (this.inviteList.length) {
+        this.showInvite = true;
+        return;
+      }
+      if (this.loadingInvite) {
+        return;
+      }
+      this.loadingInvite = true;
+      try {
+        const api = new Api(this);
+        this.inviteList = await api.getUserInvites({
+          id: this.user.id
+        });
+        this.showInvite = true;
+      } catch (e) {
+        this.$toast.error(e);
+      } finally {
+        this.loadingInvite = false;
+      }
+    },
     async freezeUser() {
       if (!this.banned_to) {
         this.$toast.error("请先选择禁言时长");
@@ -466,6 +573,10 @@ export default {
       }
     },
     async getTransactions(page) {
+      if (this.showTransactions) {
+        this.showTransactions = false;
+        return;
+      }
       this.showTransactions = true;
       if (page <= this.pageState.max) {
         this.pageState.cur = page;
@@ -518,6 +629,7 @@ export default {
           return;
         }
         this.user = result;
+        this.inviteList = [];
       } catch (e) {
         this.$toast.error(e);
       } finally {

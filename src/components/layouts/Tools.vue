@@ -44,12 +44,12 @@
     bottom: 135px;
   }
 
-  .creator-btn.icon-tupian {
+  .creator-btn.el-icon-picture-outline {
     background-color: #ec414d;
   }
 
-  .question-btn {
-    background-color: #0084ff !important;
+  .creator-btn.el-icon-printer {
+    background-color: #0084ff;
   }
 
   .score-btn {
@@ -62,7 +62,7 @@
     }
   }
 
-  .creator-btn.icon-fankui {
+  .creator-btn.el-icon-edit {
     background-color: RGB(60, 134, 247);
   }
 }
@@ -80,7 +80,7 @@
         content="传图片"
       >
         <button
-          class="creator-btn iconfont icon-tupian"
+          class="creator-btn el-icon-picture-outline"
           @click="handleImageClick"
         />
       </el-tooltip>
@@ -90,7 +90,7 @@
         content="发帖"
       >
         <button
-          class="creator-btn iconfont icon-fankui"
+          class="creator-btn el-icon-edit"
           @click="handlePostClick"
         />
       </el-tooltip>
@@ -107,16 +107,14 @@
             :href="$alias.createScore"
             target="_blank"
           >
-            <i class="iconfont icon-fatie1"/>
+            <i class="iconfont el-icon-edit-outline"/>
           </a>
         </button>
         <button
           v-else
-          class="creator-btn score-btn"
+          class="creator-btn el-icon-edit-outline"
           @click="handleScoreClick"
-        >
-          <i class="iconfont icon-fatie1"/>
-        </button>
+        />
       </el-tooltip>
       <el-tooltip
         placement="top"
@@ -124,11 +122,9 @@
         content="提问"
       >
         <button
-          class="creator-btn question-btn"
+          class="creator-btn el-icon-printer"
           @click="handleQuestionClick"
-        >
-          <i class="el-icon-question"/>
-        </button>
+        />
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">
@@ -200,9 +196,8 @@ export default {
     userLevel() {
       if (this.isGuest) {
         return 0;
-      } else {
-        return this.$store.state.user.exp.level;
       }
+      return this.$store.state.user.exp.level;
     }
   },
   mounted() {

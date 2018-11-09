@@ -193,12 +193,12 @@ export default {
           height: (this.loading / this.max) * 100 + "%",
           width: this.barsize + "px"
         };
-      } else {
-        return {
-          width: (this.loading / this.max) * 100 + "%",
-          height: this.barsize + "px"
-        };
       }
+
+      return {
+        width: (this.loading / this.max) * 100 + "%",
+        height: this.barsize + "px"
+      };
     },
     thumbStyle() {
       if (!this.tailsize) {

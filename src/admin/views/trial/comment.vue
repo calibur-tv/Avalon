@@ -441,6 +441,9 @@ export default {
         case "role":
           return "偶像";
           break;
+        case "cartoon_role":
+          return "偶像";
+          break;
       }
       return type;
     },

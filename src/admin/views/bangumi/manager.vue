@@ -19,7 +19,7 @@
             size="medium"
             @click="addManager"
           >
-            添加吧主
+            添加版主
           </el-button>
         </el-col>
       </el-row>
@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column label="权限">
         <template slot-scope="scope">
-          {{ scope.row.is_leader ? '大吧主' : '小吧主' }}
+          {{ scope.row.is_leader ? '版主' : '代行者' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -70,13 +70,13 @@
               type="warning"
               size="mini"
               @click="downgradeManager(scope.row.user.id, scope.$index)"
-            >降为小吧主</el-button>
+            >降为小版主</el-button>
             <el-button
               v-else
               type="success"
               size="mini"
               @click="upgradeManager(scope.row.user.id, scope.$index)"
-            >升为大吧主</el-button>
+            >升为大版主</el-button>
           </template>
         </template>
       </el-table-column>
@@ -86,7 +86,6 @@
 
 <script>
 import Api from "~/api/adminApi";
-import BangumiApi from "~/api/bangumiApi";
 import ToggleApi from "~/api/toggleApi";
 
 export default {

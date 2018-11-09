@@ -289,6 +289,10 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/ban", { id });
   }
 
+  deletePostTitle({ id }) {
+    return this.http.post("admin/trial/post/delete_title", { id });
+  }
+
   passPost({ id }) {
     return this.http.post("admin/trial/post/pass", { id });
   }
@@ -323,6 +327,10 @@ export default class extends BaseApi {
 
   rejectImage({ id, type }) {
     return this.http.post("admin/trial/image/reject", { id, type });
+  }
+
+  deleteImagePoster({ id }) {
+    return this.http.post("admin/trial/image/delete_poster", { id });
   }
 
   getTrialComments() {
@@ -500,6 +508,26 @@ export default class extends BaseApi {
   freeUser({ id }) {
     return this.http.post("admin/user/banned/free", {
       id
+    });
+  }
+
+  getBangumiManagers({ cur_page, to_page, take }) {
+    return this.http.get("admin/bangumi/manager/list", {
+      params: { cur_page, to_page, take }
+    });
+  }
+
+  getAppTemplates() {
+    return this.http.get("app/template");
+  }
+
+  setAppTemplates({ list }) {
+    return this.http.post("admin/app/setTemplates", { list });
+  }
+
+  getUserInvites({ id }) {
+    return this.http.get("user/invite/list", {
+      params: { id }
     });
   }
 }

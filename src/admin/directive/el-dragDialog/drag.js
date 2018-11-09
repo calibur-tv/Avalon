@@ -9,9 +9,8 @@ export default {
     const getStyle = (function() {
       if (window.document.currentStyle) {
         return (dom, attr) => dom.currentStyle[attr];
-      } else {
-        return (dom, attr) => getComputedStyle(dom, false)[attr];
       }
+      return (dom, attr) => getComputedStyle(dom, false)[attr];
     })();
 
     dialogHeaderEl.onmousedown = e => {

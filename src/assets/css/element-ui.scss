@@ -75,6 +75,14 @@ $--color-primary: $color-blue-normal !default;
     transform: translate(-50%,-50%);
     background-color: #fff;
 
+    &.is-fullscreen {
+      margin: 0 !important;
+      top: 50%;
+      border-width: 0 !important;
+      border-radius: 0 !important;
+      overflow: auto;
+    }
+
     &__header {
       display: none;
     }

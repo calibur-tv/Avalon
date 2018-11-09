@@ -6,8 +6,6 @@
   margin-bottom: 10px;
 
   .qaq-question {
-    margin-left: 15px;
-
     .qaq-tags {
       .tag {
         display: inline-block;
@@ -85,8 +83,6 @@
   }
 
   .question-aside {
-    margin-left: 15px;
-
     .meta-item {
       margin-top: 5px;
       margin-bottom: 10px;
@@ -108,10 +104,7 @@
     id="question-panel"
   >
     <v-layout>
-      <div
-        slot="main"
-        class="qaq-question"
-      >
+      <div class="qaq-question">
         <ul class="qaq-tags">
           <li
             v-for="tag in qaq.tags"
@@ -329,8 +322,9 @@
 <script>
 import FollowButton from "~/components/common/FollowButton";
 import CreateAnswerForm from "~/components/question/CreateAnswerForm";
-import QuestionApi from "~/api/questionApi";
 import CommentMain from "~/components/comments/CommentMain";
+import QuestionApi from "~/api/questionApi";
+import ToggleApi from "~/api/toggleApi";
 
 export default {
   name: "QuestionPanel",
@@ -409,7 +403,7 @@ export default {
         return;
       }
       this.loadingFollowers = true;
-      const api = new Api(this);
+      const api = new ToggleApi(this);
       const type = "follow";
       try {
         const result = await api.users({

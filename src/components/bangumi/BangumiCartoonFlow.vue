@@ -18,7 +18,7 @@
     width: 198px;
     height: 406px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    margin: 3px 9px 15px 3px;
+    margin: 3px 7px 15px 3px;
     background-color: #fafafa;
     overflow: hidden;
     float: left;
@@ -119,9 +119,7 @@
       .user-avatar {
         display: block;
         margin-right: 10px;
-        overflow: hidden;
         float: left;
-        @extend %avatar;
       }
 
       .main-name {
@@ -206,6 +204,7 @@
             >
               <v-img
                 :src="item.user.avatar"
+                :avatar="true"
                 class="user-avatar"
                 size="30"
               />

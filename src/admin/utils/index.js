@@ -54,19 +54,18 @@ export function formatTime(time, option) {
   }
   if (option) {
     return parseTime(time, option);
-  } else {
-    return (
-      d.getMonth() +
-      1 +
-      "月" +
-      d.getDate() +
-      "日" +
-      d.getHours() +
-      "时" +
-      d.getMinutes() +
-      "分"
-    );
   }
+  return (
+    d.getMonth() +
+    1 +
+    "月" +
+    d.getDate() +
+    "日" +
+    d.getHours() +
+    "时" +
+    d.getMinutes() +
+    "分"
+  );
 }
 
 // 格式化时间
@@ -234,9 +233,8 @@ export const pickerOptions = [
 export function getTime(type) {
   if (type === "start") {
     return new Date().getTime() - 3600 * 1000 * 24 * 90;
-  } else {
-    return new Date(new Date().toDateString());
   }
+  return new Date(new Date().toDateString());
 }
 
 export function debounce(func, wait, immediate) {

@@ -58,14 +58,15 @@
 
 .breadcrumb {
   height: 20px;
+  margin-top: 0;
   margin-bottom: 30px;
   font-family: 'iconfont' !important;
   position: relative;
-  padding-left: 40px;
+  padding-left: 20px;
 
   &:before {
     position: absolute;
-    left: 15px;
+    left: -4px;
     top: 0;
     content: "\e6b1";
     color: $color-blue-normal;
@@ -170,7 +171,7 @@
   a {
     font-size: 14px;
     transition: .2s;
-    margin: 0 12px 30px;
+    margin: 0 24px 30px 0;
     display: inline-block;
     padding-bottom: 6px;
     font-weight: 500;

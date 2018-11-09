@@ -8,7 +8,6 @@
   .avatar {
     float: left;
     margin-right: 12px;
-    @extend %avatar;
   }
 
   .intro {
@@ -61,6 +60,7 @@
     >
       <v-img
         :src="item.avatar"
+        :avatar="true"
         size="90"
       />
     </a>

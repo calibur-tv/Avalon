@@ -163,165 +163,176 @@
     </v-header>
     <v-header v-else/>
     <v-layout>
-      <template slot="main">
-        <nav>
-          <div
-            v-if="editable && isMine"
-            class="edit-area"
+      <nav>
+        <div
+          v-if="editable && isMine"
+          class="edit-area"
+        >
+          <el-button
+            round
+            plain
+            type="primary"
+            size="mini"
+            @click="openEditModal = true"
           >
-            <el-button
-              round
-              plain
-              type="primary"
-              size="mini"
-              @click="openEditModal = true"
-            >
-              编辑
-            </el-button>
-            <el-button
-              round
-              plain
-              type="danger"
-              size="mini"
-              @click="handleDeleteAlbum"
-            >
-              删除
-            </el-button>
-            <v-dialog
-              v-model="openEditModal"
-              :title="`编辑${albumType}`"
-              :footer="false"
-            >
-              <edit-album-form
-                v-if="info.is_album"
-                :bangumi-id="bangumi.id"
-                :album-id="info.id"
-                :album="info"
-              />
-              <edit-image-form
-                v-else
-                :image="info"
-              />
-            </v-dialog>
-          </div>
-          <h1 class="breadcrumb">
-            <a
-              href="/"
-              target="_blank"
-            >主站</a>
-            <a
-              v-if="bangumi"
-              :href="$alias.bangumi(bangumi.id)"
-              target="_blank"
-              v-text="bangumi.name"
+            编辑
+          </el-button>
+          <el-button
+            round
+            plain
+            type="danger"
+            size="mini"
+            @click="handleDeleteAlbum"
+          >
+            删除
+          </el-button>
+          <v-dialog
+            v-model="openEditModal"
+            :title="`编辑${albumType}`"
+            :footer="false"
+          >
+            <edit-album-form
+              v-if="info.is_album"
+              :bangumi-id="bangumi.id"
+              :album-id="info.id"
+              :album="info"
             />
-            <a href="javascript:;">{{ albumType }}</a>
-            {{ info.name }}
-          </h1>
-        </nav>
-        <div class="images-wrap">
-          <image-preview
-            v-if="info.is_album"
-            :images="images"
-          >
-            <div
-              v-for="(img, idx) in images"
-              :key="img.id"
-              :id="`image-${img.id}`"
-              class="image-package"
-            >
-              <v-img
-                :src="img.url"
-                :width="img.width"
-                :height="img.height"
-                :full="true"
-                class="image"
-              />
-              <template v-if="editable">
-                <button
-                  class="sort-btn delete-btn el-icon-close"
-                  @click="handleImageDelete(idx)"
-                />
-                <button
-                  class="sort-btn to-prev el-icon-caret-top"
-                  @click="handleSortBtnClick(idx, false)"
-                />
-                <button
-                  class="sort-btn to-next el-icon-caret-bottom"
-                  @click="handleSortBtnClick(idx, true)"
-                />
-              </template>
-            </div>
-            <p
-              v-if="!info.image_count"
-              class="no-image"
-            >
-              还没有上传图片
-            </p>
-          </image-preview>
-          <image-preview
-            v-else
-            :images="[source]"
-          >
-            <div class="image-package">
-              <v-img
-                :src="source.url"
-                :width="source.width"
-                :height="source.height"
-                :full="true"
-                class="image"
-              />
-            </div>
-          </image-preview>
+            <edit-image-form
+              v-else
+              :image="info"
+            />
+          </v-dialog>
         </div>
-        <div class="album-footer">
-          <div class="publish-time">
-            UP：
-            <user-card
-              :id="user.id"
-              :zone="user.zone"
-            >
-              {{ user.nickname }}
-            </user-card>
-            &nbsp;·&nbsp;
-            <span>
-              发布于：<v-time v-model="info.created_at"/>
-            </span>
-            <report-dialog
-              :id="id"
-              type="image"
-            >举报</report-dialog>
-          </div>
-          <v-parts
-            v-if="info.is_cartoon"
-            :list="info.parts"
-            :alias="$alias.image"
-            :all-data="info.parts"
-            v-model="showAllPart"
-          >
-            <span slot-scope="{ item }">
-              {{ item.part }}：{{ item.name }}
-            </span>
-          </v-parts>
-          <social-panel
-            :id="info.id"
-            :is-creator="info.is_creator"
-            :user-id="user.id"
-            :liked="info.liked"
-            :marked="info.marked"
-            :rewarded="info.rewarded"
-            :like-users="info.like_users"
-            :reward-users="info.reward_users"
-            :mark-users="info.mark_users"
-            type="image"
+        <h1 class="breadcrumb">
+          <a
+            href="/"
+            target="_blank"
+          >主站</a>
+          <a
+            v-if="bangumi"
+            :href="$alias.bangumi(bangumi.id)"
+            target="_blank"
+            v-text="bangumi.name"
           />
+          <a
+            v-if="!info.is_album"
+            href="javascript:;"
+          >图片</a>
+          <a
+            v-else-if="info.is_cartoon"
+            :href="$alias.bangumi(bangumi.id, 'cartoon')"
+            target="_blank"
+          >漫画</a>
+          <a
+            v-else
+            :href="$alias.bangumi(bangumi.id, 'pins')"
+            target="_blank"
+          >相册</a>
+          {{ info.name }}
+        </h1>
+      </nav>
+      <div class="images-wrap">
+        <image-preview
+          v-if="info.is_album"
+          :images="images"
+        >
+          <div
+            v-for="(img, idx) in images"
+            :key="img.id"
+            :id="`image-${img.id}`"
+            class="image-package"
+          >
+            <v-img
+              :src="img.url"
+              :width="img.width"
+              :height="img.height"
+              :full="true"
+              class="image"
+            />
+            <template v-if="editable">
+              <button
+                class="sort-btn delete-btn el-icon-close"
+                @click="handleImageDelete(idx)"
+              />
+              <button
+                class="sort-btn to-prev el-icon-caret-top"
+                @click="handleSortBtnClick(idx, false)"
+              />
+              <button
+                class="sort-btn to-next el-icon-caret-bottom"
+                @click="handleSortBtnClick(idx, true)"
+              />
+            </template>
+          </div>
+          <p
+            v-if="!info.image_count"
+            class="no-image"
+          >
+            还没有上传图片
+          </p>
+        </image-preview>
+        <image-preview
+          v-else
+          :images="[source]"
+        >
+          <div class="image-package">
+            <v-img
+              :src="source.url"
+              :width="source.width"
+              :height="source.height"
+              :full="true"
+              class="image"
+            />
+          </div>
+        </image-preview>
+      </div>
+      <div class="album-footer">
+        <div class="publish-time">
+          UP：
+          <user-card
+            :id="user.id"
+            :zone="user.zone"
+          >
+            {{ user.nickname }}
+          </user-card>
+          &nbsp;·&nbsp;
+          <span>
+            发布于：<v-time v-model="info.created_at"/>
+          </span>
+          <report-dialog
+            :id="id"
+            type="image"
+          >举报</report-dialog>
         </div>
-        <comment-main
-          :id="id"
-          :master-id="user.id"
+        <v-parts
+          v-if="info.is_cartoon"
+          :list="info.parts"
+          :alias="$alias.image"
+          :all-data="info.parts"
+          v-model="showAllPart"
+        >
+          <span slot-scope="{ item }">
+            {{ item.part }}：{{ item.name }}
+          </span>
+        </v-parts>
+        <social-panel
+          :id="info.id"
+          :is-creator="info.is_creator"
+          :user-id="user.id"
+          :liked="info.liked"
+          :marked="info.marked"
+          :rewarded="info.rewarded"
+          :like-users="info.like_users"
+          :reward-users="info.reward_users"
+          :mark-users="info.mark_users"
           type="image"
         />
-      </template>
+      </div>
+      <comment-main
+        :id="id"
+        :master-id="user.id"
+        type="image"
+      />
       <template slot="aside">
         <h3 class="sub-title">所属番剧</h3>
         <v-bangumi-panel
@@ -368,6 +379,20 @@ export default {
     EditImageForm,
     SocialPanel,
     ImagePreview
+  },
+  head() {
+    return {
+      title: `${this.info.name} - ${this.albumType}`,
+      meta: [
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: `calibur,相册,天下漫友是一家,${this.info.name},${
+            this.bangumi ? this.bangumi.name : ""
+          }`
+        }
+      ]
+    };
   },
   data() {
     return {
@@ -511,7 +536,7 @@ export default {
             this.loadingEditImages = false;
           }
         })
-        .catch(e => {});
+        .catch(() => {});
     },
     handleDeleteAlbum() {
       this.$prompt(`请输入${this.albumType}的名字`, "删除确认", {

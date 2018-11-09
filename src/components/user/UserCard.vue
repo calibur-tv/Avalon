@@ -24,11 +24,8 @@
     padding: 0 20px 15px;
 
     .avatar {
-      border: 2px solid #fff;
-      border-radius: 50%;
-      margin-top: -20px;
+      margin-top: -25px;
       margin-right: 10px;
-      overflow: hidden;
       float: left;
     }
 
@@ -45,6 +42,10 @@
         }
 
         .level {
+          color: $color-text-light;
+        }
+
+        .power {
           color: $color-text-light;
         }
       }
@@ -97,6 +98,7 @@
             <v-img
               :src="user.avatar"
               :size="55"
+              :avatar="true"
               :lazy="false"
             />
           </a>
@@ -114,6 +116,7 @@
               <span class="level">
                 Lv{{ user.level }}
               </span>
+              <span class="power">-&nbsp;战斗力：{{ user.power }}</span>
             </p>
             <p
               class="signature"

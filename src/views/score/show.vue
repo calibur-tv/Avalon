@@ -32,7 +32,6 @@
         margin-right: 10px;
         display: inline-block;
         vertical-align: middle;
-        @extend %avatar;
       }
     }
 
@@ -42,7 +41,7 @@
 
       .star-item {
         float: left;
-        margin-right: 60px;
+        margin-right: 58px;
         margin-bottom: 10px;
 
         &:nth-child(5n) {
@@ -72,122 +71,121 @@
   <div id="score-show">
     <v-header/>
     <v-layout v-if="info">
-      <template slot="main">
-        <div class="score-header">
-          <div>
-            <div class="total">{{ info.total }}分</div>
-            <template v-if="isMine">
+      <div class="score-header">
+        <div>
+          <div class="total">{{ info.total }}分</div>
+          <template v-if="isMine">
+            <el-button
+              round
+              plain
+              type="danger"
+              class="control-btn"
+              size="mini"
+              @click="deleteScore"
+            >删除</el-button>
+            <a :href="$alias.editScore(info.id)">
               <el-button
                 round
                 plain
-                type="danger"
+                type="primary"
                 class="control-btn"
                 size="mini"
-                @click="deleteScore"
-              >删除</el-button>
-              <a :href="$alias.editScore(info.id)">
-                <el-button
-                  round
-                  plain
-                  type="primary"
-                  class="control-btn"
-                  size="mini"
-                >编辑</el-button>
-              </a>
-            </template>
-            <div class="title">
-              <h1
-                class="sub-title"
-                v-text="info.title"
-              />
-              <div class="user">
-                作者：
-                <user-card
-                  :id="user.id"
-                  :zone="user.zone"
-                >
-                  <v-img
-                    :src="user.avatar"
-                    size="30"
-                    class="avatar"
-                  />
-                  <span
-                    class="name"
-                    v-text="user.nickname"
-                  />
-                </user-card>
-                &nbsp;·&nbsp;
-                发表于：
-                <el-tooltip
-                  :content="info.published_at"
-                  placement="top"
-                  effect="dark"
-                >
-                  <v-time v-model="info.published_at"/>
-                </el-tooltip>
-                <template v-if="info.like_count">
-                  &nbsp;·&nbsp;
-                  赞：{{ info.like_count }}
-                </template>
-                <template v-if="info.comment_count">
-                  &nbsp;·&nbsp;
-                  评论：{{ info.comment_count }}
-                </template>
-                &nbsp;·&nbsp;
-                <report-dialog
-                  :id="info.id"
-                  type="score"
-                >
-                  举报
-                </report-dialog>
-              </div>
-            </div>
-          </div>
-          <div class="star-row">
-            <div
-              v-for="(item, index) in columns"
-              :key="index"
-              class="star-item"
-            >
-              <div
-                class="label"
-                v-text="labelMap[item]"
-              />
+              >编辑</el-button>
+            </a>
+          </template>
+          <div class="title">
+            <h1
+              class="sub-title"
+              v-text="info.title"
+            />
+            <div class="user">
+              作者：
+              <user-card
+                :id="user.id"
+                :zone="user.zone"
+              >
+                <v-img
+                  :src="user.avatar"
+                  :avatar="true"
+                  size="30"
+                  class="avatar"
+                />
+                <span
+                  class="name"
+                  v-text="user.nickname"
+                />
+              </user-card>
+              &nbsp;·&nbsp;
+              发表于：
               <el-tooltip
-                :content="`${info[item] * 2}分`"
+                :content="info.published_at"
                 placement="top"
                 effect="dark"
               >
-                <el-rate
-                  v-model="info[item]"
-                  disabled
-                  allow-half
-                />
+                <v-time v-model="info.published_at"/>
               </el-tooltip>
+              <template v-if="info.like_count">
+                &nbsp;·&nbsp;
+                赞：{{ info.like_count }}
+              </template>
+              <template v-if="info.comment_count">
+                &nbsp;·&nbsp;
+                评论：{{ info.comment_count }}
+              </template>
+              &nbsp;·&nbsp;
+              <report-dialog
+                :id="info.id"
+                type="score"
+              >
+                举报
+              </report-dialog>
             </div>
           </div>
         </div>
-        <div class="score-body">
-          <json-content :content="info.content"/>
+        <div class="star-row">
+          <div
+            v-for="(item, index) in columns"
+            :key="index"
+            class="star-item"
+          >
+            <div
+              class="label"
+              v-text="labelMap[item]"
+            />
+            <el-tooltip
+              :content="`${info[item] * 2}分`"
+              placement="top"
+              effect="dark"
+            >
+              <el-rate
+                v-model="info[item]"
+                disabled
+                allow-half
+              />
+            </el-tooltip>
+          </div>
         </div>
-        <social-panel
-          :id="info.id"
-          :is-creator="info.is_creator"
-          :user-id="user.id"
-          :liked="info.liked"
-          :marked="info.marked"
-          :rewarded="info.rewarded"
-          :reward-users="info.reward_users"
-          :mark-users="info.mark_users"
-          :like-users="info.like_users"
-          type="score"
-        />
-        <comment-main
-          :id="info.id"
-          :master-id="user.id"
-          type="score"
-        />
-      </template>
+      </div>
+      <div class="score-body">
+        <json-content :content="info.content"/>
+      </div>
+      <social-panel
+        :id="info.id"
+        :is-creator="info.is_creator"
+        :user-id="user.id"
+        :liked="info.liked"
+        :marked="info.marked"
+        :rewarded="info.rewarded"
+        :reward-users="info.reward_users"
+        :mark-users="info.mark_users"
+        :like-users="info.like_users"
+        type="score"
+      />
+      <comment-main
+        :id="info.id"
+        :master-id="user.id"
+        type="score"
+      />
       <template slot="aside">
         <v-bangumi-panel
           :id="bangumi.id"
@@ -230,6 +228,20 @@ export default {
     CommentMain,
     JsonContent,
     SocialPanel
+  },
+  head() {
+    return {
+      title: `${this.info.title} - 漫评`,
+      meta: [
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: `calibur,漫评,天下漫友是一家,${this.info.title},${
+            this.bangumi.name
+          }`
+        }
+      ]
+    };
   },
   data() {
     const labelMap = {

@@ -93,6 +93,8 @@
           </template>
         </v-search>
       </div>
+    </div>
+    <v-layout>
       <el-tabs
         v-model="selectedType"
         @tab-click="handleTabClick"
@@ -103,41 +105,38 @@
           :name="index"
           :label="tab"
         >
-          <v-layout>
-            <template slot="main">
-              <component
-                v-if="noMore && !list.length"
-                :is="`nothing-${selectedType}`"
-              />
-              <template v-else>
-                <component
-                  v-for="item in list"
-                  :key="`${item.type}-${item.id}`"
-                  :is="`${item.type}-item`"
-                  :item="item"
-                  :in-common="item.type != selectedType"
-                />
-              </template>
-              <el-button
-                v-if="!noMore && list.length"
-                :loading="loading"
-                type="info"
-                plain
-                round
-                class="load-more-btn"
-                @click="loadMore"
-              >{{ loading ? '加载中' : '加载更多' }}</el-button>
-              <div
-                v-if="loading && !list.length"
-                class="loading-wrap"
-              >
-                <div class="el-icon-loading"/>
-              </div>
-            </template>
-          </v-layout>
+          <component
+            v-if="noMore && !list.length"
+            :is="`nothing-${selectedType}`"
+          />
+          <template v-else>
+            <component
+              v-for="item in list"
+              :key="`${item.type}-${item.id}`"
+              :is="`${item.type}-item`"
+              :item="item"
+              :in-common="item.type != selectedType"
+            />
+          </template>
+          <el-button
+            v-if="!noMore && list.length"
+            :loading="loading"
+            type="info"
+            plain
+            round
+            class="load-more-btn"
+            @click="loadMore"
+          >{{ loading ? '加载中' : '加载更多' }}</el-button>
+          <div
+            v-if="loading && !list.length"
+            class="loading-wrap"
+          >
+            <div class="el-icon-loading"/>
+          </div>
         </el-tab-pane>
       </el-tabs>
-    </div>
+      <template slot="aside">&nbsp;</template>
+    </v-layout>
   </div>
 </template>
 

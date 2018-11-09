@@ -121,14 +121,13 @@ export default {
           result = `${result}<br>系统版本：${arr[3]}`;
         }
         return result;
-      } else {
-        const parser = new UAParser();
-        parser.setUA(ua);
-        const result = parser.getResult();
-        return `系统：${result.os.name} - ${result.os.version}<br>浏览器：${
-          result.browser.name
-        } - ${result.browser.version}`;
       }
+      const parser = new UAParser();
+      parser.setUA(ua);
+      const result = parser.getResult();
+      return `系统：${result.os.name} - ${result.os.version}<br>浏览器：${
+        result.browser.name
+      } - ${result.browser.version}`;
     },
     async remove(index, id) {
       const api = new Api(this);

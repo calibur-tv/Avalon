@@ -10,77 +10,75 @@
     }
   }
 
-  .layout-main {
-    .intro {
-      margin-bottom: 35px;
+  .intro {
+    margin-bottom: 35px;
 
-      .avatar-wrap {
-        float: left;
-        margin-right: 25px;
-        text-align: center;
+    .avatar-wrap {
+      float: left;
+      margin-right: 25px;
+      text-align: center;
 
-        .avatar {
-          width: 150px;
-          height: 150px;
-          display: block;
-        }
-
-        button {
-          margin-top: 15px;
-        }
+      .avatar {
+        width: 150px;
+        height: 150px;
+        display: block;
       }
 
-      .info {
-        overflow: hidden;
-
-        .name {
-          font-size: 42px;
-          margin-bottom: 10px;
-          margin-top: 0;
-        }
-
-        .summary {
-          line-height: 24px;
-          font-size: 14px;
-          margin-bottom: 10px;
-        }
-
-        .alias {
-          line-height: 24px;
-          font-size: 14px;
-          margin-bottom: 10px;
-
-          strong {
-            float: left;
-          }
-
-          li {
-            float: left;
-            margin-right: 10px;
-            text-decoration: underline;
-          }
-        }
-
-        .coin {
-          line-height: 24px;
-          font-size: 14px;
-          margin-bottom: 10px;
-        }
+      button {
+        margin-top: 15px;
       }
     }
 
-    .lover {
-      margin-bottom: 25px;
+    .info {
+      overflow: hidden;
 
-      .user {
-        .avatar {
-          display: inline-block;
-          vertical-align: middle;
-          border: 1px solid #f0f0f0;
-          overflow: hidden;
-          @include avatar(40px);
-          margin-right: 10px;
+      .name {
+        font-size: 42px;
+        margin-bottom: 10px;
+        margin-top: 0;
+      }
+
+      .summary {
+        line-height: 24px;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .alias {
+        line-height: 24px;
+        font-size: 14px;
+        margin-bottom: 10px;
+
+        strong {
+          float: left;
         }
+
+        li {
+          float: left;
+          margin-right: 10px;
+          text-decoration: underline;
+        }
+      }
+
+      .coin {
+        line-height: 24px;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .lover {
+    margin-bottom: 25px;
+
+    .user {
+      .avatar {
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid #f0f0f0;
+        overflow: hidden;
+        @include avatar(40px);
+        margin-right: 10px;
       }
     }
   }
@@ -91,84 +89,82 @@
   <div id="role-show">
     <v-header/>
     <v-layout>
-      <template slot="main">
-        <div class="intro clearfix">
-          <p class="sub-title">
-            角色信息
-            <el-button
-              v-if="bangumi.is_master"
-              size="mini"
-              round
-              @click="showEditRoleModal"
-            >编辑</el-button>
-          </p>
-          <div class="avatar-wrap">
-            <img
-              :src="$resize(role.avatar, { width: 200 })"
-              class="avatar"
-            >
-            <el-button
-              type="warning"
-              class="star"
-              size="mini"
-              round
-              plain
-              @click="handleStarRole"
-            >为TA应援</el-button>
-          </div>
-          <div class="info">
-            <h1
-              class="name"
-              v-text="role.name"
-            />
-            <p class="summary">
-              <strong>简介：</strong>{{ role.intro }}
-            </p>
-            <ul class="alias">
-              <strong>别名：</strong>
-              <li
-                v-for="(name, index) in computeRoleAlias"
-                :key="index"
-                v-text="name"
-              />
-            </ul>
-            <p
-              v-if="role.star_count"
-              class="coin"
-            >
-              <strong>粉丝：</strong>共有 {{ role.fans_count }} 个粉丝，收获了 {{ role.star_count }} 个团子
-            </p>
-          </div>
-        </div>
-        <div
-          v-if="role.lover"
-          class="lover"
-        >
-          <p class="sub-title">
-            守护者
-            <el-button
-              size="mini"
-              round
-              @click="openFansModal('hot')"
-            >排行榜</el-button>
-          </p>
-          <a
-            :href="$alias.user(role.lover.zone)"
-            class="user"
-            target="_blank"
+      <div class="intro clearfix">
+        <p class="sub-title">
+          角色信息
+          <el-button
+            v-if="bangumi.is_master"
+            size="mini"
+            round
+            @click="showEditRoleModal"
+          >编辑</el-button>
+        </p>
+        <div class="avatar-wrap">
+          <img
+            :src="$resize(role.avatar, { width: 200 })"
+            class="avatar"
           >
-            <div class="avatar">
-              <img :src="$resize(role.lover.avatar, { width: 80 })">
-            </div>
-            <span v-text="role.lover.nickname"/>
-          </a>
+          <el-button
+            type="warning"
+            class="star"
+            size="mini"
+            round
+            plain
+            @click="handleStarRole"
+          >为TA应援</el-button>
         </div>
-        <comment-main
-          :id="id"
-          :master-id="1"
-          type="role"
-        />
-      </template>
+        <div class="info">
+          <h1
+            class="name"
+            v-text="role.name"
+          />
+          <p class="summary">
+            <strong>简介：</strong>{{ role.intro }}
+          </p>
+          <ul class="alias">
+            <strong>别名：</strong>
+            <li
+              v-for="(name, index) in computeRoleAlias"
+              :key="index"
+              v-text="name"
+            />
+          </ul>
+          <p
+            v-if="role.star_count"
+            class="coin"
+          >
+            <strong>粉丝：</strong>共有 {{ role.fans_count }} 个粉丝，收获了 {{ role.star_count }} 个团子
+          </p>
+        </div>
+      </div>
+      <div
+        v-if="role.lover"
+        class="lover"
+      >
+        <p class="sub-title">
+          守护者
+          <el-button
+            size="mini"
+            round
+            @click="openFansModal('hot')"
+          >排行榜</el-button>
+        </p>
+        <a
+          :href="$alias.user(role.lover.zone)"
+          class="user"
+          target="_blank"
+        >
+          <div class="avatar">
+            <img :src="$resize(role.lover.avatar, { width: 80 })">
+          </div>
+          <span v-text="role.lover.nickname"/>
+        </a>
+      </div>
+      <comment-main
+        :id="id"
+        :master-id="1"
+        type="role"
+      />
       <template slot="aside">
         <div class="bangumi">
           <p class="sub-title">所属番剧</p>

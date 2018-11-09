@@ -12,9 +12,14 @@
     "mocha": true
   },
   "rules": {
+    "no-undef": "error",
+    "no-unused-vars": "warn",
+    "no-else-return": "warn"
   },
   "globals": {
     "M": true,
-    "flvjs": true
+    "flvjs": true,
+    "WxLogin": true,
+    "_": true
   }
 }

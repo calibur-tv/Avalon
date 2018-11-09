@@ -6,7 +6,6 @@
   .avatar {
     float: left;
     margin: 7px 32px 0 5px;
-    @extend %avatar;
   }
 
   .main-area {
@@ -58,6 +57,7 @@
   <div class="create-comment-form">
     <v-img
       :src="userAvatar"
+      :avatar="true"
       size="48"
       class="avatar"
     />

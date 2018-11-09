@@ -18,8 +18,7 @@ export default function checkPermission(value) {
       return false;
     }
     return true;
-  } else {
-    console.error(`need roles! Like v-permission="['admin','editor']"`);
-    return false;
   }
+  console.error(`need roles! Like v-permission="['admin','editor']"`);
+  return false;
 }

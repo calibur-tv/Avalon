@@ -348,8 +348,14 @@ export function createRouter() {
               {
                 path: "manager",
                 name: "bangumi-manager",
-                meta: { title: "吧主管理", icon: "coffee" },
+                meta: { title: "版主管理", icon: "coffee" },
                 component: () => import("@/views/bangumi/manager")
+              },
+              {
+                path: "managers",
+                name: "bangumi-managers",
+                meta: { title: "版主列表", icon: "coffee" },
+                component: () => import("@/views/bangumi/managers")
               },
               {
                 path: "edit/:id(\\d+)",
@@ -603,6 +609,12 @@ export function createRouter() {
                 name: "app-version",
                 meta: { title: "App版本", icon: "coffee" },
                 component: () => import("@/views/cm/appVersion")
+              },
+              {
+                path: "app-template",
+                name: "app-template",
+                meta: { title: "App模板", icon: "coffee" },
+                component: () => import("@/views/cm/appTemplate")
               },
               {
                 path: "friend-link",

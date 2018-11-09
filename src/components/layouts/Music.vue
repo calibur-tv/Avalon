@@ -212,6 +212,7 @@ $color-gray-hover: #6d757a;
       overflow-y: auto;
       background-color: #fff;
       box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
+      border-radius: 0 5px 0 0;
       height: 100%;
       padding-top: 33px;
 
@@ -230,7 +231,7 @@ $color-gray-hover: #6d757a;
 
       .item {
         color: $color-gray;
-        background-color: #fff;
+        background-color: transparent;
         font-size: 13px;
         height: 30px;
         line-height: 20px;

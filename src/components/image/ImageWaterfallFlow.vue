@@ -114,14 +114,6 @@
       padding: 10px 15px;
       border-top: 1px solid #f2f2f2;
 
-      .user-avatar {
-        @extend %avatar;
-      }
-
-      .bangumi-avatar {
-        border-radius: 4px;
-      }
-
       .user-avatar,
       .bangumi-avatar {
         display: block;
@@ -245,6 +237,7 @@
                 >
                   <v-img
                     :src="item.bangumi.avatar"
+                    :poster="true"
                     size="30"
                   />
                 </a>
@@ -264,6 +257,7 @@
               >
                 <v-img
                   :src="item.user.avatar"
+                  :avatar="true"
                   size="30"
                   class="user-avatar"
                 />
@@ -280,6 +274,7 @@
                 >
                   <v-img
                     :src="item.bangumi.avatar"
+                    :poster="true"
                     size="30"
                   />
                 </a>

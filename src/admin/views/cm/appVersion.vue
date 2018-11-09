@@ -179,11 +179,7 @@ export default {
       if (this.appType === "" || this.versionType === 0) {
         return "";
       }
-      const list = _.orderBy(
-        this.pageList.filter(_ => _.app_type === this.appType),
-        "id",
-        "desc"
-      );
+      const list = this.pageList.filter(_ => _.app_type === this.appType);
       if (!list.length) {
         return "0.0.1";
       }
@@ -194,11 +190,10 @@ export default {
         return `${nowBiggestVersion[0] + 1}.0.0`;
       } else if (this.versionType === 2) {
         return `${nowBiggestVersion[0]}.${nowBiggestVersion[1] + 1}.0`;
-      } else {
-        return `${nowBiggestVersion[0]}.${
-          nowBiggestVersion[1]
-        }.${nowBiggestVersion[2] + 1}`;
       }
+      return `${nowBiggestVersion[0]}.${
+        nowBiggestVersion[1]
+      }.${nowBiggestVersion[2] + 1}`;
     }
   },
   created() {
@@ -306,9 +301,15 @@ export default {
       return result;
     },
     beforeUploadApp(file) {
-      this.uploadHeaders.key = `app/android/${Date.now()}-v-${
-        this.appVersion
-      }/calibur-tv.apk`;
+      if (file.type !== "application/vnd.android.package-archive") {
+        this.$toast.error("文件类型不正确！");
+        return false;
+      }
+      this.uploadHeaders.mime = "application/vnd.android.package-archive";
+      this.uploadHeaders.key = `app/android/${Date.now()}/calibur-tv-${this.appVersion.replace(
+        /\./g,
+        "-"
+      )}.apk`;
       return true;
     },
     handleAppUploaded(res) {

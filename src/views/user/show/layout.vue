@@ -272,7 +272,7 @@
           >
             <input
               ref="bannerInput"
-              :accept="$imageAcceptStr"
+              accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="selectBanner"
             >
@@ -285,7 +285,7 @@
           >
             <input
               ref="avatarInput"
-              :accept="$imageAcceptStr"
+              accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="openAvatarModal"
             >
@@ -335,6 +335,9 @@
               Lv{{ user.level }}
             </span>
           </template>
+          <span class="level">
+            &nbsp;·&nbsp;战斗力：{{ userPower }}
+          </span>
         </span>
         <el-popover
           v-if="isMe"
@@ -534,6 +537,9 @@ export default {
     },
     blockedAt() {
       return this.$store.state.users.show.banned_to;
+    },
+    userPower() {
+      return this.$store.state.users.show.power;
     },
     user() {
       return this.isMe ? this.self : this.$store.state.users.show;

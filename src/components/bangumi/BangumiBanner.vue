@@ -68,10 +68,27 @@
     }
   }
 
-  .v-share {
+  .bangumi-header-bottom {
     position: absolute;
-    right: 40px;
+    height: 40px;
+    left: 0;
+    right: 0;
     bottom: 10px;
+
+    .meta {
+      float: left;
+      line-height: 40px;
+      color: $color-white;
+      text-shadow: 0 1px 10px gray;
+
+      span {
+        margin-right: 20px;
+      }
+    }
+
+    .v-share {
+      float: right;
+    }
   }
 }
 </style>
@@ -104,7 +121,15 @@
         />
       </div>
     </div>
-    <v-share type="panel"/>
+    <div class="bangumi-header-bottom">
+      <v-layout>
+        <div class="meta">
+          <span v-if="info.follow_users">关注人数：{{ info.follow_users.total }}</span>
+          <span v-if="info.power">活跃度：{{ info.power }}</span>
+        </div>
+        <v-share type="panel"/>
+      </v-layout>
+    </div>
   </v-header>
 </template>
 

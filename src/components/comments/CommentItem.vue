@@ -12,7 +12,6 @@
 
     .avatar {
       margin: 24px 0 0 5px;
-      @extend %avatar;
     }
   }
 
@@ -34,6 +33,29 @@
         font-size: 12px;
         font-weight: 700;
         line-height: 18px;
+        vertical-align: middle;
+        margin-right: 3px;
+      }
+
+      span {
+        font-size: 12px;
+        line-height: 18px;
+        vertical-align: middle;
+        margin-right: 3px;
+      }
+
+      .iconfont {
+        vertical-align: middle;
+      }
+
+      .icon-leader {
+        color: $color-pink-deep;
+        font-size: 16px;
+      }
+
+      .icon-master {
+        color: $color-blue-normal;
+        font-size: 14px;
       }
     }
 
@@ -111,6 +133,7 @@
       >
         <v-img
           :src="comment.from_user_avatar"
+          :avatar="true"
           size="48"
           class="avatar"
         />
@@ -118,13 +141,29 @@
     </div>
     <div class="body">
       <div class="header">
-        <user-card
-          :id="comment.from_user_id"
-          :zone="comment.from_user_zone"
-          custom-class="href-fade-blue"
+        <a
+          :href="$alias.user(comment.from_user_zone)"
+          target="_blank"
+          class="href-fade-blue"
+          v-text="comment.from_user_name"
+        />
+        <span v-if="comment.is_owner">(楼主)</span>
+        <el-tooltip
+          v-if="comment.is_leader"
+          placement="top"
+          effect="dark"
+          content="版主"
         >
-          {{ comment.from_user_name }}
-        </user-card>
+          <i class="iconfont icon-leader"/>
+        </el-tooltip>
+        <el-tooltip
+          v-else-if="comment.is_master"
+          placement="top"
+          effect="dark"
+          content="代行者"
+        >
+          <i class="iconfont icon-master"/>
+        </el-tooltip>
       </div>
       <div
         class="content"

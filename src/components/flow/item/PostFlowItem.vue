@@ -23,7 +23,6 @@
       display: block;
       float: left;
       margin-right: 7px;
-      @extend %avatar;
     }
 
     .title {
@@ -224,6 +223,7 @@
       >
         <v-img
           :src="item.user.avatar"
+          :avatar="true"
           :size="32"
         />
       </user-card>
@@ -240,6 +240,7 @@
         >
           <v-img
             :src="item.bangumi.avatar"
+            :poster="true"
             size="24"
           />
         </a>
