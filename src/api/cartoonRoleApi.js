@@ -2,7 +2,11 @@ import BaseApi from "./_baseApi";
 
 export default class extends BaseApi {
   getTodayActivity() {
-    return this.http.get("cartoon_role/list/today");
+    return this.http.get(
+      `cartoon_role/list/today?t=${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(3, 6)}`
+    );
   }
 
   star({ roleId }) {

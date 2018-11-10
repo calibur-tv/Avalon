@@ -24,7 +24,7 @@ export default {
   mutations: {
     SET_TODAY_ACTIVITY(state, data) {
       state.todayActivity = data
-        .sort((a, b) => a.activity - b.activity)
+        .sort((a, b) => b.activity - a.activity)
         .map(_ => {
           return {
             偶像: _.name,
