@@ -10,20 +10,20 @@
         background-color: transparent;
       }
     }
-  }
 
-  .el-tabs__item {
-    height: 30px;
-    line-height: 30px;
-    font-size: 12px;
+    .el-tabs__item {
+      height: 30px;
+      line-height: 30px;
+      font-size: 12px;
 
-    &.is-disabled {
-      font-size: 18px;
-      font-weight: 400;
-      height: auto;
-      line-height: 18px;
-      top: 3px;
-      color: #303133;
+      &.is-disabled {
+        font-size: 18px;
+        font-weight: 400;
+        height: auto;
+        line-height: 18px;
+        top: 3px;
+        color: #303133;
+      }
     }
   }
 }
