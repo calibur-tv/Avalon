@@ -13,7 +13,10 @@
           style="margin-right: 50px"
         >
           <ve-bar
+            v-if="chartData"
             :data="chartData"
+            :extend="chartExtend"
+            :height="chartHgt"
           />
         </div>
         <template slot="1">
@@ -52,6 +55,14 @@ export default {
       dimension: ["偶像"],
       metrics: ["团子数"]
     };
+    this.chartExtend = {
+      series(v) {
+        v.forEach(i => {
+          i.barWidth = 10;
+        });
+        return v;
+      }
+    };
     return {
       pages: [
         {
@@ -78,6 +89,9 @@ export default {
         columns: ["偶像", "团子数", "粉丝数"],
         rows: this.todayActivity
       };
+    },
+    chartHgt() {
+      return `${this.todayActivity.length * 50 + 100}px`;
     }
   },
   mounted() {
