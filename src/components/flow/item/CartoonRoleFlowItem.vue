@@ -95,6 +95,16 @@
       font-size: 12px;
       overflow: hidden;
       margin-right: 8px;
+      height: 20px;
+      border-radius: 10px;
+      line-height: 20px;
+      background-color: $color-gray-normal;
+      padding-left: 10px;
+      padding-right: 10px;
+
+      i {
+        margin-right: 3px;
+      }
     }
 
     .stats {
@@ -195,8 +205,10 @@
         :href="$alias.bangumi(item.bangumi.id)"
         class="bangumi"
         target="_blank"
-        v-text="item.bangumi.name"
-      />
+      >
+        <i class="iconfont icon-biaoqian"/>
+        <span v-text="item.bangumi.name"/>
+      </a>
     </div>
   </li>
 </template>

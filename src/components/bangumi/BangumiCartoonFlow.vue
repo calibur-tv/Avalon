@@ -216,6 +216,12 @@
           </div>
         </li>
       </ul>
+      <load-more-btn
+        :auto="true"
+        :no-more="cartoons.noMore"
+        :loading="state.loading"
+        @fetch="getData(false)"
+      />
     </template>
     <no-content v-else-if="cartoons.noMore">
       <el-button
@@ -224,12 +230,6 @@
         @click="openFeedback"
       >求漫画</el-button>
     </no-content>
-    <load-more-btn
-      :auto="true"
-      :no-more="cartoons.noMore"
-      :loading="state.loading"
-      @fetch="getData(false)"
-    />
   </div>
 </template>
 

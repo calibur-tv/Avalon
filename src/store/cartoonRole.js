@@ -18,9 +18,21 @@ export default {
     info: {
       data: {},
       bangumi: {}
-    }
+    },
+    todayActivity: []
   }),
   mutations: {
+    SET_TODAY_ACTIVITY(state, data) {
+      state.todayActivity = data
+        .sort((a, b) => b.activity - a.activity)
+        .map(_ => {
+          return {
+            偶像: _.name,
+            团子数: _.star_count,
+            粉丝数: _.fans_count
+          };
+        });
+    },
     ADD_ROLE_STATE(state, { hasStar, user }) {
       if (hasStar) {
         state.info.data.hasStar++;
@@ -92,6 +104,11 @@ export default {
       const api = new Api(ctx);
       const data = await api.show(id);
       commit("SET_ROLE_INFO", data);
+    },
+    async getTodayActivity({ commit }) {
+      const api = new Api();
+      const data = await api.getTodayActivity();
+      commit("SET_TODAY_ACTIVITY", data);
     },
     async star({ rootState, commit }, { bangumiId, roleId, ctx, hasStar }) {
       const api = new Api(ctx);
