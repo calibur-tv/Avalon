@@ -9,6 +9,14 @@ export default class extends BaseApi {
     );
   }
 
+  dalao() {
+    return this.http.get("cartoon_role/list/dalao");
+  }
+
+  newbie() {
+    return this.http.get("cartoon_role/list/newbie");
+  }
+
   star({ roleId }) {
     return this.http.post(`cartoon_role/${roleId}/star`);
   }

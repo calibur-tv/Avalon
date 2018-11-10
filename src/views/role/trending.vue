@@ -1,3 +1,59 @@
+<style lang="scss">
+#trending-role {
+  aside {
+    .recommended-users {
+      margin-bottom: 20px;
+
+      li {
+        display: block;
+        margin-bottom: 14px;
+
+        a {
+          display: block;
+          width: 100%;
+          height: 100%;
+          @extend %clearfix;
+        }
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 12px;
+          float: left;
+        }
+
+        .intro {
+          overflow: hidden;
+
+          p {
+            margin-top: 2px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 16px;
+            color: #222;
+          }
+
+          span {
+            border-radius: 7px;
+            color: #fff;
+            text-align: center;
+            padding: 0 10px;
+            height: 16px;
+            min-width: 50px;
+            display: inline-block;
+            background-color: $color-pink-normal;
+            line-height: 16px;
+            font-size: 12px;
+            margin-top: 3px;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+
 <template>
   <div id="trending-role">
     <v-header/>
@@ -23,7 +79,66 @@
           <cartoon-role-flow-list/>
         </template>
       </tab-container>
-      <template slot="aside">&nbsp;</template>
+      <template slot="aside">
+        <template v-if="newbieUsers.length">
+          <p class="sub-title">超新星11人</p>
+          <ul class="recommended-users">
+            <li
+              v-for="user in newbieUsers"
+              :key="user.id"
+            >
+              <a
+                :href="$alias.user(user.zone)"
+                target="_blank"
+              >
+                <img
+                  :src="$resize(user.avatar, { width: 80 })"
+                  class="avatar"
+                >
+                <div class="intro">
+                  <p
+                    class="oneline"
+                    v-text="user.nickname"
+                  />
+                  <span
+                    class="contribution"
+                    v-text="user.contribution"
+                  />
+                </div>
+              </a>
+            </li>
+          </ul>
+        </template>
+        <template v-if="dalaoUsers.length">
+          <p class="sub-title">最强の11人</p>
+          <ul class="recommended-users">
+            <li
+              v-for="user in dalaoUsers"
+              :key="user.id"
+            >
+              <a
+                :href="$alias.user(user.zone)"
+                target="_blank"
+              >
+                <img
+                  :src="$resize(user.avatar, { width: 80 })"
+                  class="avatar"
+                >
+                <div class="intro">
+                  <p
+                    class="oneline"
+                    v-text="user.nickname"
+                  />
+                  <span
+                    class="contribution"
+                    v-text="user.contribution"
+                  />
+                </div>
+              </a>
+            </li>
+          </ul>
+        </template>
+      </template>
     </v-layout>
   </div>
 </template>
@@ -35,7 +150,11 @@ import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
 export default {
   name: "TrendingRole",
   async asyncData({ store }) {
-    await store.dispatch("cartoonRole/getTodayActivity");
+    await Promise.all([
+      store.dispatch("cartoonRole/getTodayActivity"),
+      store.dispatch("cartoonRole/getDalaoUsers"),
+      store.dispatch("cartoonRole/getNewbieUsers")
+    ]);
   },
   head: {
     title: "角色排行榜"
@@ -92,6 +211,12 @@ export default {
     },
     chartHgt() {
       return `${this.todayActivity.length * 50 + 100}px`;
+    },
+    dalaoUsers() {
+      return this.$store.state.cartoonRole.dalao;
+    },
+    newbieUsers() {
+      return this.$store.state.cartoonRole.newbie;
     }
   },
   mounted() {

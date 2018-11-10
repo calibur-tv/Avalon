@@ -19,9 +19,17 @@ export default {
       data: {},
       bangumi: {}
     },
-    todayActivity: []
+    todayActivity: [],
+    dalao: [],
+    newbie: []
   }),
   mutations: {
+    SET_DALAO(state, data) {
+      state.dalao = data;
+    },
+    SET_NEWBIE(state, data) {
+      state.newbie = data;
+    },
     SET_TODAY_ACTIVITY(state, data) {
       state.todayActivity = data
         .sort((a, b) => b.activity - a.activity)
@@ -109,6 +117,16 @@ export default {
       const api = new Api();
       const data = await api.getTodayActivity();
       commit("SET_TODAY_ACTIVITY", data);
+    },
+    async getNewbieUsers({ commit }) {
+      const api = new Api();
+      const data = await api.newbie();
+      commit("SET_NEWBIE", data);
+    },
+    async getDalaoUsers({ commit }) {
+      const api = new Api();
+      const data = await api.dalao();
+      commit("SET_DALAO", data);
     },
     async star({ rootState, commit }, { bangumiId, roleId, ctx, hasStar }) {
       const api = new Api(ctx);
