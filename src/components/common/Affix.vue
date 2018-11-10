@@ -69,7 +69,8 @@ export default {
       affix: false,
       styles: {},
       slot: false,
-      slotStyle: {}
+      slotStyle: {},
+      eventIds: []
     };
   },
   computed: {
@@ -90,10 +91,10 @@ export default {
     }
   },
   mounted() {
-    utils.on(window, ["scroll", "resize"], this.handleScroll);
+    this.eventIds = utils.on(window, ["scroll", "resize"], this.handleScroll);
   },
   beforeDestroy() {
-    utils.off(window, ["scroll", "resize"], this.handleScroll);
+    utils.off(this.eventIds);
   },
   methods: {
     handleScroll() {
