@@ -73,9 +73,16 @@
     </template>
     <template v-else>
       <aside :class="$style.asideLeft">
-        <v-affix :offset-top="affixTop">
+        <v-affix
+          v-if="fixed"
+          :offset-top="affixTop"
+        >
           <slot name="aside"/>
         </v-affix>
+        <slot
+          v-else
+          name="aside"
+        />
       </aside>
       <main :class="$style.mainRight">
         <slot/>
@@ -99,6 +106,10 @@ export default {
     customClass: {
       type: String,
       default: ""
+    },
+    fixed: {
+      type: Boolean,
+      default: true
     }
   }
 };
