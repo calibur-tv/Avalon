@@ -60,6 +60,14 @@
     margin-top: 15px;
     margin-left: -8px;
     margin-bottom: 15px;
+
+    @media (max-width: 1080px) {
+      width: 630px;
+
+      .cell {
+        width: 190px;
+      }
+    }
   }
 
   .cell {
