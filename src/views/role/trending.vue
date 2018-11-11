@@ -63,6 +63,7 @@
   }
 
   .cell {
+    position: relative;
     display: inline-block;
     width: 200px;
     height: 252px;
@@ -75,6 +76,7 @@
     text-align: center;
     font-size: 0;
     vertical-align: middle;
+    overflow: hidden;
 
     img {
       display: block;
@@ -82,6 +84,55 @@
       height: 48px;
       border-radius: 50%;
       margin: 26px auto 8px;
+    }
+
+    &:nth-child(1),
+    &:nth-child(2),
+    &:nth-child(3) {
+      .index {
+        display: none;
+      }
+
+      .iconfont {
+        display: block;
+      }
+    }
+
+    &:nth-child(1) {
+      .iconfont {
+        color: gold;
+      }
+    }
+
+    &:nth-child(2) {
+      .iconfont {
+        color: silver;
+      }
+    }
+
+    &:nth-child(3) {
+      .iconfont {
+        color: indianred;
+      }
+    }
+
+    .iconfont {
+      position: absolute;
+      left: 85px;
+      top: 3px;
+      font-size: 30px;
+      display: none;
+    }
+
+    .index {
+      position: absolute;
+      right: 10px;
+      top: 0;
+      height: 40px;
+      line-height: 40px;
+      font-size: 20px;
+      text-align: right;
+      color: gold;
     }
 
     .name {
@@ -131,10 +182,15 @@
             class="cell-container"
           >
             <div
-              v-for="item in todayActivity"
+              v-for="(item, index) in todayActivity"
               :key="item.id"
               class="cell"
             >
+              <div
+                class="index"
+                v-text="index + 1"
+              />
+              <i class="iconfont icon-huangguan"/>
               <a
                 :href="$alias.cartoonRole(item.id)"
                 target="_blank"

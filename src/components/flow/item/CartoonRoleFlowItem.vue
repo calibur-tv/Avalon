@@ -17,7 +17,7 @@
 
   &:nth-of-type(2) {
     .top:before {
-      color: indianred;
+      color: silver;
       font-size: 22px;
       line-height: 44px;
     }
@@ -25,7 +25,7 @@
 
   &:nth-of-type(3) {
     .top:before {
-      color: silver;
+      color: indianred;
       font-size: 16px;
       line-height: 44px;
     }
