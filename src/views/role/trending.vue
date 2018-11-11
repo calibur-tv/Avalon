@@ -1,5 +1,8 @@
 <style lang="scss">
 #trending-role {
+  background-color: #f6f9fa;
+  margin-bottom: -40px;
+
   aside {
     .recommended-users {
       margin-bottom: 20px;
@@ -51,6 +54,63 @@
       }
     }
   }
+
+  .cell-container {
+    width: 840px;
+    margin-top: 15px;
+    margin-left: -8px;
+    margin-bottom: 15px;
+  }
+
+  .cell {
+    display: inline-block;
+    width: 200px;
+    height: 252px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: #fff;
+    transition: 0.2s ease;
+    text-align: center;
+    font-size: 0;
+    vertical-align: middle;
+
+    img {
+      display: block;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin: 26px auto 8px;
+    }
+
+    .name {
+      margin: 16px 16px 7px;
+      color: #333;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .intro {
+      height: 42px;
+      margin-bottom: 14px;
+      padding-left: 16px;
+      padding-right: 16px;
+      font-size: 14px;
+      color: gray;
+      @include twoline(21px);
+    }
+
+    .meta {
+      font-size: 14px;
+      color: gray;
+      margin-bottom: 15px;
+    }
+  }
+
+  .cell-move {
+    transition: transform 1s;
+  }
 }
 </style>
 
@@ -64,16 +124,42 @@
         title="偶像排行榜"
         @change="changeTab"
       >
-        <div
-          slot="0"
-          style="margin-right: 50px"
-        >
-          <ve-bar
-            v-if="chartData"
-            :data="chartData"
-            :extend="chartExtend"
-            :height="chartHgt"
-          />
+        <div slot="0">
+          <transition-group
+            name="cell"
+            tag="div"
+            class="cell-container"
+          >
+            <div
+              v-for="item in todayActivity"
+              :key="item.id"
+              class="cell"
+            >
+              <a
+                :href="$alias.cartoonRole(item.id)"
+                target="_blank"
+              >
+                <img :src="$resize(item.avatar, { width: 96 })">
+                <p
+                  class="name oneline"
+                  v-text="item.name"
+                />
+              </a>
+              <p
+                class="intro"
+                v-text="item.intro"
+              />
+              <p class="meta">
+                {{ $utils.shortenNumber(item.star_count) }}个团子
+                |
+                {{ $utils.shortenNumber(item.fans_count) }}人应援
+              </p>
+              <cartoon-role-btn
+                :id="item.id"
+                @success="handleSuccess"
+              />
+            </div>
+          </transition-group>
         </div>
         <template slot="1">
           <cartoon-role-flow-list/>
@@ -146,6 +232,7 @@
 <script>
 import TabContainer from "~/components/common/TabContainer";
 import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
+import CartoonRoleBtn from "~/components/buttons/CartoonRoleBtn";
 
 export default {
   name: "TrendingRole",
@@ -160,28 +247,11 @@ export default {
     title: "角色排行榜"
   },
   components: {
+    CartoonRoleBtn,
     TabContainer,
-    CartoonRoleFlowList,
-    VeBar: () => {
-      if (typeof window === "undefined") {
-        return import("~/assets/js/empty");
-      }
-      return import("v-charts/lib/bar.common");
-    }
+    CartoonRoleFlowList
   },
   data() {
-    this.chartSettings = {
-      dimension: ["偶像"],
-      metrics: ["团子数"]
-    };
-    this.chartExtend = {
-      series(v) {
-        v.forEach(i => {
-          i.barWidth = 10;
-        });
-        return v;
-      }
-    };
     return {
       pages: [
         {
@@ -199,18 +269,6 @@ export default {
   computed: {
     todayActivity() {
       return this.$store.state.cartoonRole.todayActivity;
-    },
-    chartData() {
-      if (!this.todayActivity.length) {
-        return null;
-      }
-      return {
-        columns: ["偶像", "团子数", "粉丝数"],
-        rows: this.todayActivity
-      };
-    },
-    chartHgt() {
-      return `${this.todayActivity.length * 50 + 100}px`;
     },
     dalaoUsers() {
       return this.$store.state.cartoonRole.dalao;
@@ -251,6 +309,9 @@ export default {
         sort: "hot",
         ctx: this
       });
+    },
+    handleSuccess() {
+      this.$toast.success("应援成功!");
     }
   }
 };

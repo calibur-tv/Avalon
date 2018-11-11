@@ -31,15 +31,7 @@ export default {
       state.newbie = data;
     },
     SET_TODAY_ACTIVITY(state, data) {
-      state.todayActivity = data
-        .sort((a, b) => b.activity - a.activity)
-        .map(_ => {
-          return {
-            偶像: _.name,
-            团子数: _.star_count,
-            粉丝数: _.fans_count
-          };
-        });
+      state.todayActivity = data;
     },
     ADD_ROLE_STATE(state, { hasStar, user }) {
       if (hasStar) {

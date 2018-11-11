@@ -47,11 +47,12 @@ const mutations = {
   },
   SET_RECOMMENDED(state, data) {
     const shuffle = array => {
-      for (let i = array.length; i; i--) {
+      const result = array.map(_ => _);
+      for (let i = result.length; i; i--) {
         let j = Math.floor(Math.random() * i);
-        [array[i - 1], array[j]] = [array[j], array[i - 1]];
+        [result[i - 1], result[j]] = [result[j], result[i - 1]];
       }
-      return array;
+      return result;
     };
     state.recommended = shuffle(data);
   },
