@@ -275,15 +275,27 @@ export default {
       );
     },
     fullImageSrc() {
-      return this.width > this.containerWidth
-        ? this.$resize(this.src, {
-            width: this.containerWidth * 2,
-            height: this.computeContainerHeight * 2
-          })
-        : this.$resize(this.src, {
-            width: this.width,
-            height: this.height
-          });
+      let resultWidth;
+      let resultHeight;
+      if (this.width > this.containerWidth) {
+        resultWidth = this.containerWidth * 2;
+        resultHeight = this.computeContainerHeight * 2;
+      } else {
+        resultWidth = this.width;
+        resultHeight = this.height;
+      }
+      if (resultWidth > 9999) {
+        resultHeight = parseInt((9999 / resultWidth) * resultHeight, 10);
+        resultWidth = 9999;
+      }
+      if (resultHeight > 9999) {
+        resultWidth = parseInt((9999 / resultHeight) * resultWidth, 10);
+        resultHeight = 9999;
+      }
+      return this.$resize(this.src, {
+        width: resultWidth,
+        height: resultHeight
+      });
     },
     flowImageSrc() {
       if (this.full) {
