@@ -68,6 +68,12 @@
         type="danger"
         icon="delete"
         size="small"
+        @click="changeArea"
+      >修改帖子番剧</el-button>
+      <el-button
+        type="danger"
+        icon="delete"
+        size="small"
         @click="deleteTitle"
       >删除帖子标题</el-button>
       <el-button
@@ -407,6 +413,36 @@ export default {
         return "被置顶";
       }
       return "未知";
+    },
+    changeArea() {
+      this.$prompt("请输入帖子id和番剧id，-分割", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          const data = value.split("-");
+          if (data.length !== 2) {
+            this.$toast.error("错误的格式");
+            return;
+          }
+          if (!/^\d+$/.test(data[1]) || !/^\d+$/.test(data[0])) {
+            this.$toast.error("非法的id");
+            return;
+          }
+          const api = new Api(this);
+          api
+            .changePostArea({
+              post_id: data[0],
+              bangumi_id: data[1]
+            })
+            .then(() => {
+              this.$toast.success("操作成功");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
+        })
+        .catch(() => {});
     }
   }
 };

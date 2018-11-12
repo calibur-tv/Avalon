@@ -293,6 +293,13 @@ export default class extends BaseApi {
     return this.http.post("admin/trial/post/delete_title", { id });
   }
 
+  changePostArea({ post_id, bangumi_id }) {
+    return this.http.post("admin/trial/post/change_area", {
+      post_id,
+      bangumi_id
+    });
+  }
+
   passPost({ id }) {
     return this.http.post("admin/trial/post/pass", { id });
   }
