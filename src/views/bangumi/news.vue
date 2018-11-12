@@ -1,18 +1,5 @@
 <style lang="scss">
 #bangumi-news {
-  .el-tabs {
-    .el-tabs__nav {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      text-align: center;
-
-      .el-tabs__item {
-        flex: 1;
-      }
-    }
-  }
-
   .bangumi {
     width: 195px;
     margin: 0 10px 20px 0;
@@ -82,17 +69,20 @@
         <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
         <a :href="$alias.bangumiTag()">分类索引</a>
       </div>
-      <h2 class="sub-title">新番放送表</h2>
-      <el-tabs v-model="thisWeek">
-        <el-tab-pane
-          v-for="(tab, index) in showtime"
+      <tab-container
+        :list="showtime"
+        :route="false"
+        :def="thisWeek"
+        title="新番放送表"
+      >
+        <div
+          v-for="index in 8"
           :key="index"
-          :name="tab"
-          :label="tab"
+          :slot="index - 1"
         >
-          <ul v-if="released && released[index] && released[index].length">
+          <ul v-if="released && released[index - 1] && released[index - 1].length">
             <li
-              v-for="item in released[index]"
+              v-for="item in released[index - 1]"
               :key="item.id"
               class="bangumi"
             >
@@ -142,8 +132,8 @@
               @click="openFeedbackForResource"
             >求资源</el-button>
           </no-content>
-        </el-tab-pane>
-      </el-tabs>
+        </div>
+      </tab-container>
       <template slot="aside">
         <bangumi-recommended/>
       </template>
@@ -153,11 +143,12 @@
 
 <script>
 import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
-const weekly = ["最新", "一", "二", "三", "四", "五", "六", "日"];
+import TabContainer from "~/components/common/TabContainer";
 
 export default {
   name: "BangumiNews",
   components: {
+    TabContainer,
     BangumiRecommended
   },
   head: {
@@ -171,8 +162,17 @@ export default {
   },
   data() {
     return {
-      showtime: weekly,
-      thisWeek: weekly[new Date().getDay() || 7]
+      showtime: [
+        { label: "最新" },
+        { label: "周一" },
+        { label: "周二" },
+        { label: "周三" },
+        { label: "周四" },
+        { label: "周五" },
+        { label: "周六" },
+        { label: "周日" }
+      ],
+      thisWeek: `${new Date().getDay() || 7}`
     };
   },
   computed: {

@@ -72,7 +72,7 @@ $textarea-padding-right: 15px;
       type="text"
       class="title-input"
       placeholder="段落小标题"
-      maxlength="20"
+      maxlength="30"
     />
     <div class="text-area">
       <textarea

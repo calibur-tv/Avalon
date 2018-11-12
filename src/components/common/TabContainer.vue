@@ -1,11 +1,28 @@
 <style lang="scss">
 .tab-container {
   &.el-tabs--top {
-    margin-top: -10px;
+    .el-tabs__header {
+      margin-bottom: 17px;
+    }
 
     .el-tabs__nav-wrap {
       &:after {
         background-color: transparent;
+      }
+    }
+
+    .el-tabs__item {
+      height: 30px;
+      line-height: 30px;
+      font-size: 12px;
+
+      &.is-disabled {
+        font-size: 18px;
+        font-weight: 400;
+        height: auto;
+        line-height: 18px;
+        top: 3px;
+        color: #303133;
       }
     }
   }
@@ -20,16 +37,20 @@
     @tab-click="tabClick"
   >
     <el-tab-pane
+      v-if="title"
+      :label="title"
+      :disabled="true"
+      :name="title"
+    />
+    <el-tab-pane
       v-for="(i, index) in list" 
       :key="index"
-      :name="i.name"
-      :lazy="i.lazy"
-      :disabled="i.disabled" 
-      :closable="i.closable"
+      :label="i.label"
+      :name="route ? i.name : `${index}`"
     >
-      <div 
-        slot="label" 
-        v-html="i.label"
+      <slot
+        v-if="!route"
+        :name="`${index}`"
       />
     </el-tab-pane>
   </el-tabs>
@@ -45,11 +66,19 @@ export default {
     },
     def: {
       type: String,
-      default: ""
+      default: "0"
     },
     pos: {
       type: String,
       default: "top"
+    },
+    route: {
+      type: Boolean,
+      default: true
+    },
+    title: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -57,16 +86,20 @@ export default {
       current: this.def
     };
   },
-  watch: {
-    $route(to) {
-      this.current = to.name;
-    }
-  },
   mounted() {
-    this.current = this.$route.name;
+    if (this.route) {
+      this.current = this.$route.name;
+      this.$watch("$route", val => {
+        this.current = val.name;
+      });
+    }
   },
   methods: {
     tabClick(i) {
+      if (!this.route) {
+        this.$emit("change", this.title ? i.index - 1 : i.index - 0);
+        return;
+      }
       this.go(i.name);
     },
     go(x) {

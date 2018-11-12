@@ -6,7 +6,11 @@ export default class extends BaseApi {
   }
 
   getCaptcha() {
-    return this.http.get("image/captcha");
+    return this.http.get(
+      `image/captcha?t=${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(3, 6)}`
+    );
   }
 
   getUpToken() {

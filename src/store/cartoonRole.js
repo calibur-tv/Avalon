@@ -18,9 +18,21 @@ export default {
     info: {
       data: {},
       bangumi: {}
-    }
+    },
+    todayActivity: [],
+    dalao: [],
+    newbie: []
   }),
   mutations: {
+    SET_DALAO(state, data) {
+      state.dalao = data;
+    },
+    SET_NEWBIE(state, data) {
+      state.newbie = data;
+    },
+    SET_TODAY_ACTIVITY(state, data) {
+      state.todayActivity = data;
+    },
     ADD_ROLE_STATE(state, { hasStar, user }) {
       if (hasStar) {
         state.info.data.hasStar++;
@@ -92,6 +104,21 @@ export default {
       const api = new Api(ctx);
       const data = await api.show(id);
       commit("SET_ROLE_INFO", data);
+    },
+    async getTodayActivity({ commit }) {
+      const api = new Api();
+      const data = await api.getTodayActivity();
+      commit("SET_TODAY_ACTIVITY", data);
+    },
+    async getNewbieUsers({ commit }) {
+      const api = new Api();
+      const data = await api.newbie();
+      commit("SET_NEWBIE", data);
+    },
+    async getDalaoUsers({ commit }) {
+      const api = new Api();
+      const data = await api.dalao();
+      commit("SET_DALAO", data);
     },
     async star({ rootState, commit }, { bangumiId, roleId, ctx, hasStar }) {
       const api = new Api(ctx);

@@ -298,6 +298,15 @@
         >
           <i class="iconfont icon-bofang1"/>
         </a>
+        <a
+          :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/mc-poster.png', { width: 376, height: 232 })})` }"
+          href="https://static.calibur.tv/owner/video/mc.mp4"
+          class="video-item"
+          target="_blank"
+          style="color: #fff"
+        >
+          <i class="iconfont icon-bofang1"/>
+        </a>
       </div>
       <p class="intro">
         <strong>视频1作者：</strong>
@@ -309,7 +318,12 @@
         <a
           href="https://www.calibur.tv/user/chun-feng-bu-ji-lei-mu-xiao"
           target="_blank"
-        >指绘君</a>
+        >指绘君</a>，
+        <strong>视频3作者：</strong>
+        <a
+          href="https://www.calibur.tv/user/yu-yuan-lin-yin-7/bangumi"
+          target="_blank"
+        >艾了个拉</a>
       </p>
       <template slot="aside">&nbsp;</template>
     </v-layout>

@@ -172,7 +172,7 @@ $avatar-height: 36px;
 
   .nav-pure {
     background-color: #fff;
-    border-bottom: 1px solid $color-gray-normal;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
 
     .nav-link {
       &:hover {

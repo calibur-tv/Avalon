@@ -147,6 +147,9 @@ export default {
       this.$store.dispatch("users/readAllMessage", this);
     },
     handleMessageClick(evt, msg) {
+      if (!msg.link) {
+        return;
+      }
       if (/user/.test(evt.target.classList)) {
         window.open(this.$alias.user(msg.user.zone));
         return;

@@ -246,7 +246,7 @@ export default {
     },
     handleSingleImageUploadSuccess(res) {
       this.form.image = res.data;
-      this.$toast.success("封面上传成功");
+      this.$toast.success("图片上传成功");
     },
     handleSingleImageRemove() {
       this.form.image = null;
@@ -359,6 +359,10 @@ export default {
       this.$toast.error(`一次最多可上传 ${this.exceed} 张图片!`);
     },
     submitManyImage() {
+      if (this.form.images.some(_ => _.status !== "success")) {
+        this.$toast.warn("请等待所有图片上传成功");
+        return;
+      }
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.submitting) {

@@ -78,11 +78,7 @@ export default {
   },
   computed: {
     roles() {
-      if (this.userZone) {
-        return this.source.list;
-      }
-      // eslint-disable-next-line
-      return this.source.list.sort((a, b) => b.star_count - a.star_count);
+      return this.source.list;
     }
   },
   methods: {

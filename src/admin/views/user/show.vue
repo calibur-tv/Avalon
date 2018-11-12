@@ -134,10 +134,9 @@
           @click="addUserToTrial"
         >加入审核列表</el-button>
         <el-button
-          v-if="!showTransactions"
           type="primary"
           size="mini"
-          @click="getTransactions(1)"
+          @click="showTransactions = !showTransactions; getTransactions(1)"
         >
           查看交易记录
         </el-button>
@@ -573,11 +572,6 @@ export default {
       }
     },
     async getTransactions(page) {
-      if (this.showTransactions) {
-        this.showTransactions = false;
-        return;
-      }
-      this.showTransactions = true;
       if (page <= this.pageState.max) {
         this.pageState.cur = page;
         return;

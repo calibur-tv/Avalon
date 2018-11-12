@@ -43,6 +43,7 @@
     >
       <el-input-number
         v-model="form.part"
+        :precision="1"
         :min="1"
       />
     </el-form-item>

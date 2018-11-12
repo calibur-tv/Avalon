@@ -168,11 +168,13 @@
 }
 
 .breadcrumb-links {
+  margin-bottom: 16px;
+
   a {
     font-size: 14px;
     transition: .2s;
-    margin: 0 24px 30px 0;
     display: inline-block;
+    margin-right: 24px;
     padding-bottom: 6px;
     font-weight: 500;
     color: #2d2f33;

@@ -1,38 +1,13 @@
 <style lang="scss">
-$textarea-padding-right: 15px;
-
 .text-preview {
   position: relative;
   z-index: 1;
 
-  .content-wrap {
-    position: relative;
-    margin-bottom: 46px;
+  .use-area {
     margin-left: 15px;
     padding-left: 1em;
     color: #646464;
     border-left: 3px solid #d3d3d3;
-  }
-
-  .shim,
-  textarea {
-    width: 100%;
-    display: block;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 25px;
-    letter-spacing: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    @extend %breakWord;
-  }
-
-  .shim {
-    height: auto;
-    position: relative;
-    visibility: hidden;
-    white-space: pre-wrap;
-    min-height: 300px;
   }
 
   textarea {
@@ -44,47 +19,28 @@ $textarea-padding-right: 15px;
     border: none;
     resize: none;
     color: #333;
-  }
-
-  .footer {
-    position: absolute;
     width: 100%;
-    height: $preview-footer-height;
-    line-height: $preview-footer-height;
-    padding-right: $textarea-padding-right;
-    left: 0;
-    bottom: 0;
-    text-align: right;
+    display: block;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    letter-spacing: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    @extend %breakWord;
   }
 }
 </style>
 
 <template>
   <div class="text-preview">
-    <div class="content-wrap">
-      <pre
-        class="shim"
-        v-html="item.text"
-      />
+    <div class="text-area use-area">
       <textarea
         v-model="text"
         class="focus-textarea"
-        placeholder="添加引用的文本"
-        @focus="textAreaFocus"
+        placeholder="添加文字内容"
       />
     </div>
-    <!--
-    <div class="footer">
-      <el-button
-        :loading="saving"
-        size="small"
-        type="primary"
-        round
-        class="save-btn"
-        @click="emitSave"
-      >保存</el-button>
-    </div>
-    -->
   </div>
 </template>
 
