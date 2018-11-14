@@ -81,6 +81,13 @@ $layout-width: 900px;
     text-align: center;
     margin-top: 30vh;
   }
+
+  .saving-flag {
+    float: right;
+    display: inline-block;
+    line-height: 32px;
+    margin-top: 4px;
+  }
 }
 </style>
 
@@ -139,6 +146,9 @@ $layout-width: 900px;
             round
             @click="emitPreview"
           >预览</el-button>
+          <span class="saving-flag">
+            {{ saving === false ? '已保存' : saving === true ? '正在保存中...' : '' }}
+          </span>
           <!--
           <el-button
             v-if="id"
@@ -195,7 +205,8 @@ export default {
   data() {
     return {
       submitting: false,
-      preview: false
+      preview: false,
+      saving: null
     };
   },
   computed: {
@@ -217,6 +228,9 @@ export default {
   mounted() {
     this.$channel.$on("write-submit", result => {
       this.submitting = result;
+    });
+    this.$channel.$on("auto-save", saving => {
+      this.saving = saving;
     });
   },
   methods: {

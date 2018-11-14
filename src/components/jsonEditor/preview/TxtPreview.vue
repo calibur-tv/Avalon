@@ -7,11 +7,14 @@ $textarea-padding-right: 15px;
   padding-bottom: $preview-footer-height;
 
   .title-input {
-    input {
-      border-left-width: 0;
-      border-right-width: 0;
-      border-top-width: 0;
-    }
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom: 1px solid #dcdfe6;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    font-size: 16px;
   }
 
   .text-area {
@@ -67,17 +70,17 @@ $textarea-padding-right: 15px;
 
 <template>
   <div class="text-preview">
-    <el-input
+    <input
       v-model="title"
       type="text"
-      class="title-input"
+      class="title-input mousetrap"
       placeholder="段落小标题"
       maxlength="30"
-    />
+    >
     <div class="text-area">
       <textarea
         v-model="text"
-        class="focus-textarea"
+        class="focus-textarea mousetrap"
         placeholder="添加文字内容"
       />
     </div>

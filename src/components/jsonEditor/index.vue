@@ -73,6 +73,7 @@ import ImgPreview from "./preview/ImgPreview";
 import TxtPreview from "./preview/TxtPreview";
 import ListPreview from "./preview/ListPreview";
 import UsePreview from "./preview/UsePreview";
+import Mousetrap from "mousetrap";
 
 export default {
   name: "JsonEditorMain",
@@ -99,7 +100,7 @@ export default {
     }
   },
   mounted() {
-    this.$channel.$on("write-save", () => {
+    this.$channel.$on("write-save", (auto = false) => {
       const richContent = this.getRichContent();
       if (!richContent.length) {
         this.$toast.info("内容不能为空！");
@@ -109,7 +110,8 @@ export default {
         content: richContent,
         desc: this.getPureContent(),
         publish: false,
-        id: this.id
+        id: this.id,
+        auto
       });
     });
     this.$channel.$on("write-publish", () => {
@@ -124,6 +126,12 @@ export default {
         publish: true,
         id: this.id
       });
+    });
+    Mousetrap.bind(["command+s", "ctrl+s"], () => {
+      if (this.id) {
+        this.$channel.$emit("write-save", true);
+      }
+      return false;
     });
   },
   methods: {

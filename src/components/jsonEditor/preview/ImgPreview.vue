@@ -40,7 +40,7 @@
           v-model="desc"
           maxlength="45"
           placeholder="添加图片描述"
-          class="focus-textarea"
+          class="focus-textarea mousetrap"
         />
       </div>
       <el-upload

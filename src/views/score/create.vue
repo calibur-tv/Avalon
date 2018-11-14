@@ -278,7 +278,11 @@ export default {
       }
     },
     async submit(richContent, scores, geetest = {}) {
-      this.$channel.$emit("write-submit", true);
+      if (richContent.auto) {
+        this.$channel.$emit("auto-save", true);
+      } else {
+        this.$channel.$emit("write-submit", true);
+      }
       const api = new Api(this);
       try {
         const form = Object.assign({}, scores, {
@@ -314,7 +318,9 @@ export default {
             })
             .catch(() => {});
         } else {
-          this.$toast.success("保存成功");
+          if (!richContent.auto) {
+            this.$toast.success("保存成功");
+          }
           if (!richContent.id) {
             setTimeout(() => {
               window.location = this.$alias.editScore(newId);
@@ -325,7 +331,11 @@ export default {
         this.$toast.error(e);
       } finally {
         this.$channel.$emit("write-save-done");
-        this.$channel.$emit("write-submit", false);
+        if (richContent.auto) {
+          this.$channel.$emit("auto-save", false);
+        } else {
+          this.$channel.$emit("write-submit", false);
+        }
       }
     },
     loadEditContent() {
