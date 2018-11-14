@@ -108,7 +108,7 @@
       type="primary"
       round
       @click="switchPage"
-    >{{ sort === 'bangumi' ? '番剧视角' : '版主视角' }}</el-button>
+    >{{ sort === 'bangumi' ? '切换到番剧视角' : '切换到版主视角' }}</el-button>
     <ul
       v-if="sort === 'bangumi'"
       class="bangumi-list"
@@ -132,7 +132,7 @@
             v-for="item in list.list"
             :key="item.id"
           >
-            【<strong>{{ item.is_leader ? '大' : '小' }}</strong>】
+            【<strong :style="[ item.is_leader ? { color: 'red' } : '' ]">{{ item.is_leader ? '大' : '小' }}</strong>】
             <a
               :href="$alias.user(item.zone)"
               target="_blank"
@@ -168,7 +168,7 @@
             v-for="item in list.list"
             :key="item.id"
           >
-            【<strong>{{ item.is_leader ? '大' : '小' }}</strong>】
+            【<strong :style="[ item.is_leader ? { color: 'red' } : '' ]">{{ item.is_leader ? '大' : '小' }}</strong>】
             <a
               :href="$alias.bangumi(item.id)"
               target="_blank"
@@ -190,7 +190,7 @@ export default {
     return {
       source: [],
       loading: false,
-      sort: "bangumi"
+      sort: "user"
     };
   },
   mounted() {
