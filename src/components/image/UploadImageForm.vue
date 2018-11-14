@@ -371,35 +371,46 @@ export default {
           this.submitting = true;
           const api = new ImageApi(this);
           const albumId = this.form.album_id;
+          const newWindow =
+            this.$route.name === "image-show" &&
+            !(this.$route.params.id - albumId)
+              ? null
+              : window.open();
           api
             .uploadManyImage({
               album_id: albumId,
-              images: this.form.images.map(_ => {
-                return {
-                  url: _.url
-                    .split("calibur.tv/")
-                    .pop()
-                    .split("?")[0],
-                  size: _.size,
-                  type: _.type,
-                  width: _.width,
-                  height: _.height
-                };
-              })
+              images: this.form.images
+                .sort((a, b) => {
+                  try {
+                    return (
+                      parseInt(a.name.split(".")) - parseInt(b.name.split("."))
+                    );
+                  } catch (e) {
+                    return true;
+                  }
+                })
+                .map(_ => {
+                  return {
+                    url: _.url
+                      .split("calibur.tv/")
+                      .pop()
+                      .split("?")[0],
+                    size: _.size,
+                    type: _.type,
+                    width: _.width,
+                    height: _.height
+                  };
+                })
             })
             .then(() => {
-              this.form.album_id = "";
               this.form.images = [];
               this.$refs.manyUpload.clearFiles();
               this.$toast.success("上传成功");
               this.submitting = false;
-              if (
-                this.$route.name === "image-show" &&
-                !(this.$route.params.id - albumId)
-              ) {
-                window.location.reload();
+              if (newWindow) {
+                newWindow.location = this.$alias.image(albumId);
               } else {
-                window.location = this.$alias.image(albumId);
+                window.location.reload();
               }
             })
             .catch(err => {
