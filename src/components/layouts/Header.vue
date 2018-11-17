@@ -155,7 +155,7 @@ $avatar-height: 36px;
   }
 
   .nav-banner {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 
     .text {
       background-color: hsla(0, 0%, 100%, 0.4);
