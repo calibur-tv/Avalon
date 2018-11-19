@@ -37,13 +37,11 @@ export default {
       console.log(err);
       this.$toast.error(`图片：${file.name} 上传失败`);
     },
-    async beforeImageUpload(file) {
+    beforeImageUpload(file) {
       if (!this.$store.state.login) {
         this.$channel.$emit("sign-in");
-        return;
+        return false;
       }
-
-      await this.getUpToken();
 
       const isFormat =
         this.imageUploadAccept.split(",").indexOf(file.type) !== -1;
@@ -58,25 +56,13 @@ export default {
         return false;
       }
 
-      // if (!this.uploadConfig.params && !this.uploadConfig.pathPrefix) {
-      //   this.$toast.error("缺少上传参数!");
-      //   return false;
-      // }
-      //
-      // if (this.uploadConfig.params) {
-      //   this.uploadHeaders.key = this.$utils.createFileName(
-      //     Object.assign({ file }, this.uploadConfig.params)
-      //   );
-      //   this.uploadConfig.params = null;
-      //   return true;
-      // }
-      //
-      // this.uploadHeaders.key = `${
-      //   this.uploadConfig.pathPrefix
-      // }/${new Date().getTime()}-${Math.random()
-      //   .toString(36)
-      //   .substring(3, 6)}.${file.type.split("/").pop()}`;
-      // this.uploadConfig.pathPrefix = "";
+      this.uploadHeaders.key = this.$utils.createFileName({
+        userId: this.$store.state.user.id,
+        type: this.$route.fullPath,
+        id: 0,
+        file
+      });
+
       return true;
     }
   }

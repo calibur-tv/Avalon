@@ -238,6 +238,9 @@ export default {
       return this.$store.state.user.id;
     }
   },
+  mounted() {
+    this.getUpToken();
+  },
   methods: {
     beforeSingleImageUpload(file) {
       this.uploadConfig.max = 5;
@@ -371,11 +374,13 @@ export default {
           this.submitting = true;
           const api = new ImageApi(this);
           const albumId = this.form.album_id;
+          /*
           const newWindow =
             this.$route.name === "image-show" &&
             !(this.$route.params.id - albumId)
               ? null
               : window.open();
+          */
           api
             .uploadManyImage({
               album_id: albumId,
@@ -407,20 +412,18 @@ export default {
               this.$refs.manyUpload.clearFiles();
               this.$toast.success("上传成功");
               this.submitting = false;
-              if (newWindow) {
-                newWindow.location = this.$alias.image(albumId);
-              } else {
+              if (
+                this.$route.name === "image-show" &&
+                !(this.$route.params.id - albumId)
+              ) {
                 window.location.reload();
+              } else {
+                window.location.href = this.$alias.image(albumId);
               }
             })
             .catch(err => {
               this.$toast.error(err);
               this.submitting = false;
-              if (/审核/.test(err)) {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
-              }
             });
         } else {
           return false;

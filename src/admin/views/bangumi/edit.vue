@@ -470,6 +470,7 @@ export default {
   created() {
     this.getBangumiById();
     this.getBangumiTags();
+    this.getUpToken();
   },
   methods: {
     getBangumiById() {

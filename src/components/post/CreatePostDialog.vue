@@ -200,6 +200,7 @@ export default {
       if (this.$store.state.login) {
         this.showPostModal = true;
         this.getPostTags();
+        this.getUpToken();
       } else {
         this.$channel.$emit("sign-in");
       }

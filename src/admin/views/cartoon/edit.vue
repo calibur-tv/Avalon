@@ -114,6 +114,7 @@ export default {
   },
   created() {
     this.getData();
+    this.getUpToken();
   },
   methods: {
     async getData() {

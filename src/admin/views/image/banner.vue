@@ -213,6 +213,7 @@ export default {
     };
   },
   created() {
+    this.getUpToken();
     this.getData();
   },
   methods: {

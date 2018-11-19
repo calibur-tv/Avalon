@@ -153,6 +153,9 @@ export default {
       submitting: false
     };
   },
+  mounted() {
+    this.getUpToken();
+  },
   methods: {
     submit() {
       this.$refs.form.validate(async valid => {

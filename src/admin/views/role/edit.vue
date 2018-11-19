@@ -166,6 +166,7 @@ export default {
     }
   },
   created() {
+    this.getUpToken();
     this.getRoleById();
   },
   methods: {

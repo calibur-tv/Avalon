@@ -142,9 +142,12 @@ export default {
   },
   mounted() {
     this.$channel.$on("show-create-question-modal", () => {
-      this.$store.state.login
-        ? (this.showQuestionModal = true)
-        : this.$channel.$emit("sign-in");
+      if (this.$store.state.login) {
+        this.showQuestionModal = true;
+        this.getUpToken();
+      } else {
+        this.$channel.$emit("sign-in");
+      }
     });
   },
   methods: {

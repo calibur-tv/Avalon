@@ -118,6 +118,9 @@ export default {
       return this.$store.state.comment.submitting;
     }
   },
+  mounted() {
+    this.getUpToken();
+  },
   methods: {
     submit() {
       if (this.isGuest) {

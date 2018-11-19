@@ -114,6 +114,7 @@ export default {
     }
   },
   mounted() {
+    this.getUpToken();
     this.$channel.$on("write-save-done", () => {
       this.saving = false;
     });
