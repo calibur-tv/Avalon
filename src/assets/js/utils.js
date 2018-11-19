@@ -87,8 +87,8 @@ export default {
     return str.substring(startIndex, len);
   },
 
-  createFileName({ userId, type, id, file }) {
-    return `user/${userId}/${type}/${id}/${new Date().getTime()}-${Math.random()
+  createFileName({ userId, type, file }) {
+    return `user/${userId}/${type}/${new Date().getTime()}-${Math.random()
       .toString(36)
       .substring(3, 6)}.${file.type.split("/").pop()}`;
   },

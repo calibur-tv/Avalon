@@ -646,7 +646,6 @@ export default {
       const filename = this.$utils.createFileName({
         userId: this.user.id,
         type: "avatar",
-        id: 0,
         file: this.avatarCropper.file
       });
       const imageApi = new ImageApi();
@@ -707,7 +706,6 @@ export default {
       const filename = this.$utils.createFileName({
         userId: this.user.id,
         type: "banner",
-        id: 0,
         file: this.bannerSelector.file
       });
       try {
