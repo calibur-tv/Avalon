@@ -273,6 +273,10 @@
           <div class="body">
             <div class="content">
               <div
+                class="text-area"
+                v-html="post.content"
+              />
+              <div
                 v-for="(img, idx) in post.images"
                 :key="idx"
                 class="image-package"
@@ -285,10 +289,6 @@
                   class="image"
                 />
               </div>
-              <div
-                class="text-area"
-                v-html="post.content"
-              />
             </div>
             <div class="tags">
               <a

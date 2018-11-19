@@ -197,6 +197,7 @@
               </div>
             </div>
           </a>
+          <!--
           <div class="about">
             <user-card
               :id="item.user.id"
@@ -214,6 +215,7 @@
               />
             </user-card>
           </div>
+          -->
         </li>
       </ul>
       <load-more-btn
