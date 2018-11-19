@@ -290,3 +290,13 @@
 .image-package {
   margin-bottom: 3px;
 }
+
+.blue-link {
+  transition: $fade-time;
+  color: $color-link;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-blue-normal;
+  }
+}

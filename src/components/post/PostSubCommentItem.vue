@@ -66,7 +66,7 @@
         class="avatar"
       />
       <span
-        class="href-fade-blue"
+        class="blue-link"
         v-text="comment.from_user_name"
       />
     </user-card>
@@ -77,7 +77,7 @@
       <user-card
         :id="comment.to_user_id"
         :zone="comment.to_user_zone"
-        custom-class="href-fade-blue"
+        custom-class="blue-link"
       >
         {{ comment.to_user_name }}
       </user-card>

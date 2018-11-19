@@ -119,7 +119,7 @@
             class="user-avatar"
           />
           <span
-            class="name href-fade-blue"
+            class="name blue-link"
             v-text="item.user.nickname"
           />
         </user-card>
@@ -135,7 +135,7 @@
             class="bangumi-avatar"
           />
           <span
-            class="name href-fade-blue"
+            class="name blue-link"
             v-text="item.bangumi.name"
           />
         </a>

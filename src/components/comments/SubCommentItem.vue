@@ -111,7 +111,7 @@
       <user-card
         :id="comment.from_user_id"
         :zone="comment.from_user_zone"
-        custom-class="from-user href-fade-blue"
+        custom-class="from-user blue-link"
       >
         {{ comment.from_user_name }}
       </user-card>

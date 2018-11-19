@@ -30,7 +30,7 @@ export default {
         await this.$store.dispatch("getUpToken", this);
         this.uploadHeaders.token = this.$store.state.user.uptoken.upToken;
       } catch (e) {
-        // this.$toast.error(e);
+        this.$toast.error(e);
       }
     },
     handleImageUploadError(err, file) {

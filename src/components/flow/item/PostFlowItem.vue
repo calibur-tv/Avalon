@@ -263,7 +263,7 @@
       <div class="title oneline">
         <a
           :href="$alias.post(item.id)"
-          class="href-fade-blue"
+          class="blue-link"
           target="_blank"
           v-text="item.title"
         />

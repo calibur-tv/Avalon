@@ -99,7 +99,7 @@
               <div class="intro">
                 <a
                   :href="$alias.bangumi(item.id)"
-                  class="name href-fade-blue"
+                  class="name blue-link"
                   target="_blank"
                   v-text="item.name"
                 />

@@ -1,10 +1,5 @@
 <style lang="scss">
 #user-draft {
-  .el-radio-group {
-    margin-left: 0 !important;
-    margin-top: 6px;
-  }
-
   .score-draft {
     padding-bottom: 15px;
     padding-top: 20px;
@@ -103,7 +98,7 @@
           <div class="title">
             <a
               :href="$alias.editScore(item.id)"
-              class="href-fade-blue"
+              class="blue-link"
               target="_blank"
               v-text="item.title"
             />

@@ -29,7 +29,7 @@
     .header {
       margin-bottom: 4px;
 
-      .href-fade-blue {
+      .blue-link {
         font-size: 12px;
         font-weight: 700;
         line-height: 18px;
@@ -144,7 +144,7 @@
         <a
           :href="$alias.user(comment.from_user_zone)"
           target="_blank"
-          class="href-fade-blue"
+          class="blue-link"
           v-text="comment.from_user_name"
         />
         <span v-if="comment.is_owner">(楼主)</span>

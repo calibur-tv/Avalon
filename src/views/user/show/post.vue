@@ -1,17 +1,9 @@
 <style lang="scss">
 #user-post {
-  .posts-of-mine {
-    margin-left: 10px;
-
-    #no-content {
-      margin-left: -10px;
-    }
-  }
-
   .posts-of-reply {
     li {
       float: none;
-      padding: 10px;
+      padding: 10px 10px 10px 0;
       position: relative;
 
       &:not(:last-child) {
@@ -110,10 +102,6 @@
         }
       }
     }
-
-    .load-more-btn {
-      margin-left: 10px;
-    }
   }
 
   #no-content {
@@ -132,16 +120,14 @@
       <el-radio-button label="发表"/>
       <el-radio-button label="回复"/>
     </el-radio-group>
-    <post-flow-list
-      v-show="tab === '发表'"
-      :user-zone="zone"
-      class="posts-of-mine"
-    />
-    <div
-      v-show="tab === '回复'"
-      class="posts-of-reply"
-    >
-      <ul>
+    <template v-if="tab === '发表'">
+      <post-flow-list
+        :user-zone="zone"
+        class="posts-of-mine"
+      />
+    </template>
+    <template v-else-if="tab === '回复'">
+      <ul class="posts-of-reply">
         <li
           v-for="item in list"
           :key="item.id"
@@ -171,7 +157,7 @@
             />
             <a
               :href="$alias.post(item.post.id, { 'comment-id': item.id })"
-              class="title href-fade-blue oneline"
+              class="title blue-link oneline"
               target="_blank"
               v-text="item.post.title"
             />
@@ -230,7 +216,7 @@
         :loading="loading"
         @fetch="getUserPosts(false)"
       />
-    </div>
+    </template>
   </div>
 </template>
 

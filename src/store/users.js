@@ -28,10 +28,57 @@ const state = () => ({
       loading: false
     }
   },
-  recommended: []
+  recommended: [],
+  bookmark: {
+    post: {
+      noMore: false,
+      loading: false,
+      list: [],
+      total: 0,
+      page: 0
+    },
+    image: {
+      noMore: false,
+      loading: false,
+      list: [],
+      total: 0,
+      page: 0
+    },
+    score: {
+      noMore: false,
+      loading: false,
+      list: [],
+      total: 0,
+      page: 0
+    },
+    answer: {
+      noMore: false,
+      loading: false,
+      list: [],
+      total: 0,
+      page: 0
+    },
+    video: {
+      noMore: false,
+      loading: false,
+      list: [],
+      total: 0,
+      page: 0
+    }
+  }
 });
 
 const mutations = {
+  SET_BOOKMARK_LOADING(state, type) {
+    state.bookmark[type].loading = true;
+  },
+  SET_BOOKMARKS(state, { data, type }) {
+    state.bookmark[type].list = state.bookmark[type].list.concat(data.list);
+    state.bookmark[type].noMore = data.noMore;
+    state.bookmark[type].total = data.total;
+    state.bookmark[type].page++;
+    state.bookmark[type].loading = false;
+  },
   SET_RECOMMENDED_USERS(state, users) {
     state.recommended = users;
   },
@@ -102,8 +149,7 @@ const actions = {
     }
     const api = new Api(ctx);
     const data = await api.followBangumis(zone);
-    commit("SET_USER_FOLLOW_BANGUMI", { data, zone });
-    return data;
+    data && commit("SET_USER_FOLLOW_BANGUMI", { data, zone });
   },
   async daySign({ rootState }, { ctx }) {
     if (rootState.user.signed) {
@@ -173,6 +219,22 @@ const actions = {
     const api = new UserApi();
     const users = await api.recommended();
     commit("SET_RECOMMENDED_USERS", users);
+  },
+  async getBookmarks({ state, commit }, { type, init, ctx }) {
+    if (state.bookmark[type].page && init) {
+      return;
+    }
+    if (state.bookmark[type].loading || state.bookmark[type].noMore) {
+      return;
+    }
+    const api = new UserApi(ctx);
+    commit("SET_BOOKMARK_LOADING", type);
+    const data = await api.getBookmarks({
+      page: state.bookmark[type].page,
+      take: 16,
+      type
+    });
+    data && commit("SET_BOOKMARKS", { type, data });
   }
 };
 

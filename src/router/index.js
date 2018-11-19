@@ -179,6 +179,11 @@ export function createRouter() {
                 component: () => import("~/views/user/show/draft")
               },
               {
+                path: "mark",
+                name: "user-mark",
+                component: () => import("~/views/user/show/mark")
+              },
+              {
                 path: "setting",
                 name: "user-setting",
                 component: () => import("~/views/user/show/setting")

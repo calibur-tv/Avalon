@@ -172,7 +172,7 @@
 
     .user-flows-wrap {
       position: relative;
-      min-height: 320px;
+      min-height: 350px;
 
       .tab-container {
         position: absolute;
@@ -190,7 +190,7 @@
       }
 
       .el-radio-group {
-        margin-left: 10px;
+        margin-top: 6px;
       }
 
       .route-container {
@@ -592,6 +592,11 @@ export default {
         {
           label: "草稿",
           name: "user-draft",
+          show: this.isMe
+        },
+        {
+          label: "收藏",
+          name: "user-mark",
           show: this.isMe
         },
         {

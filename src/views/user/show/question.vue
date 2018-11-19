@@ -1,10 +1,5 @@
 <style lang="scss">
 #user-question {
-  .el-radio-group {
-    margin-left: 0 !important;
-    margin-top: 6px;
-  }
-
   #no-content {
     margin-top: 25px;
   }

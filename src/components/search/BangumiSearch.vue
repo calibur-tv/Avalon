@@ -146,12 +146,10 @@ export default {
       }
       this.loading = true;
       try {
-        this.fetchedBangumi = await this.$store.dispatch(
-          "users/getFollowBangumis",
-          {
-            zone: this.user.zone
-          }
-        );
+        await this.$store.dispatch("users/getFollowBangumis", {
+          zone: this.user.zone
+        });
+        this.fetchedBangumi = this.$store.state.users.bangumis;
         this.filteredOptions = this.bangumis;
         this.fetched = true;
       } catch (e) {
