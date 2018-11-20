@@ -109,16 +109,16 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
-import ImageApi from "~/api/imageApi";
+import uploadMixin from '~/mixins/upload'
+import ImageApi from '~/api/imageApi'
 
 export default {
-  name: "CreateAlbumForm",
+  name: 'CreateAlbumForm',
   mixins: [uploadMixin],
   props: {
     bangumiId: {
       type: [Number, String],
-      default: ""
+      default: ''
     },
     isCartoon: {
       type: Boolean,
@@ -128,35 +128,35 @@ export default {
   data() {
     const validateName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请先填名字"));
+        return callback(new Error('请先填名字'))
       }
       if (value.length > 30) {
-        return callback(new Error("名字最长 30 个字"));
+        return callback(new Error('名字最长 30 个字'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateBangumi = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请选择一个相关的番剧"));
+        return callback(new Error('请选择一个相关的番剧'))
       }
-      callback();
-    };
+      callback()
+    }
     const validatePart = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("漫画的集数是必填的"));
+        return callback(new Error('漫画的集数是必填的'))
       }
-      callback();
-    };
+      callback()
+    }
     const validatePoster = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请给相册选择一个封面"));
+        return callback(new Error('请给相册选择一个封面'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       submitting: false,
       form: {
-        name: "",
+        name: '',
         bangumi_id: this.bangumiId,
         is_cartoon: this.isCartoon,
         is_creator: false,
@@ -164,61 +164,61 @@ export default {
         poster: null
       },
       rule: {
-        name: [{ validator: validateName, trigger: "submit" }],
-        bangumi_id: [{ validator: validateBangumi, trigger: "submit" }],
-        part: [{ validator: validatePart, trigger: "submit" }],
-        poster: [{ validator: validatePoster, trigger: "submit" }]
+        name: [{ validator: validateName, trigger: 'submit' }],
+        bangumi_id: [{ validator: validateBangumi, trigger: 'submit' }],
+        part: [{ validator: validatePart, trigger: 'submit' }],
+        poster: [{ validator: validatePoster, trigger: 'submit' }]
       }
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.user.id;
+      return this.$store.state.user.id
     }
   },
   mounted() {
-    this.getUpToken();
+    this.getUpToken()
   },
   methods: {
     submit() {
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
-          const api = new ImageApi(this);
+          this.submitting = true
+          const api = new ImageApi(this)
           api
             .createAlbum(Object.assign({}, this.form, this.form.poster))
             .then(result => {
-              this.$refs.form.resetFields();
-              this.$refs.upload.clearFiles();
-              this.$toast.success(result.message);
-              this.$store.commit("UPDATE_USER_EXP", result.exp);
-              this.submitting = false;
-              this.$emit("success", result.data);
+              this.$refs.form.resetFields()
+              this.$refs.upload.clearFiles()
+              this.$toast.success(result.message)
+              this.$store.commit('UPDATE_USER_EXP', result.exp)
+              this.submitting = false
+              this.$emit('success', result.data)
             })
             .catch(err => {
-              this.$toast.error(err);
-              this.submitting = false;
-            });
+              this.$toast.error(err)
+              this.submitting = false
+            })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     beforePosterUpload(file) {
-      this.uploadConfig.max = 10;
-      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`;
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 10
+      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`
+      return this.beforeImageUpload(file)
     },
     handleAlbumUploadSuccess(res) {
-      this.form.poster = res.data;
-      this.$toast.success("封面上传成功");
+      this.form.poster = res.data
+      this.$toast.success('封面上传成功')
     },
     handlePosterRemove() {
-      this.form.poster = null;
+      this.form.poster = null
     }
   }
-};
+}
 </script>

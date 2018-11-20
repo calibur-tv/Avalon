@@ -28,7 +28,7 @@
       display: block;
 
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: 0;
         left: 0;
@@ -237,7 +237,7 @@
 
 <script>
 export default {
-  name: "BangumiCartoonFlow",
+  name: 'BangumiCartoonFlow',
   data() {
     return {
       state: {
@@ -246,62 +246,62 @@ export default {
       },
       order: [
         {
-          label: "由大到小排序",
-          value: "desc"
+          label: '由大到小排序',
+          value: 'desc'
         },
         {
-          label: "由小到大排序",
-          value: "asc"
+          label: '由小到大排序',
+          value: 'asc'
         }
       ]
-    };
+    }
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     },
     cartoons() {
-      return this.$store.state.bangumi.cartoon;
+      return this.$store.state.bangumi.cartoon
     },
     sort: {
       get() {
-        return this.cartoons.sort;
+        return this.cartoons.sort
       },
       set(sort) {
-        this.$store.dispatch("bangumi/changeCartoonSort", {
+        this.$store.dispatch('bangumi/changeCartoonSort', {
           sort,
           ctx: this,
           bangumiId: this.info.id
-        });
+        })
       }
     }
   },
   methods: {
     async getData() {
       if (this.state.loading) {
-        return;
+        return
       }
-      this.state.loading = true;
+      this.state.loading = true
 
       try {
-        await this.$store.dispatch("bangumi/getCartoons", {
+        await this.$store.dispatch('bangumi/getCartoons', {
           ctx: this,
           bangumiId: this.info.id
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.state.loading = false;
-        this.state.fetched = true;
+        this.state.loading = false
+        this.state.fetched = true
       }
     },
     openFeedback() {
-      this.$channel.$emit("open-feedback", {
+      this.$channel.$emit('open-feedback', {
         type: 7,
         desc: `我想看《${this.info.name}》的漫画第 {?} 话`,
-        placeholder: "请填写你要看的集数"
-      });
+        placeholder: '请填写你要看的集数'
+      })
     }
   }
-};
+}
 </script>

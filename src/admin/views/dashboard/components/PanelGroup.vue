@@ -265,8 +265,8 @@
 </template>
 
 <script>
-import CountTo from "vue-count-to";
-import Api from "~/api/adminApi";
+import CountTo from 'vue-count-to'
+import Api from '~/api/adminApi'
 
 export default {
   components: {
@@ -275,18 +275,18 @@ export default {
   data() {
     return {
       stats: {}
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
-      const api = new Api(this);
+      const api = new Api(this)
       api.realtimeStats().then(data => {
-        this.stats = data;
-      });
+        this.stats = data
+      })
     }
   }
-};
+}
 </script>

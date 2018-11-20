@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "SearchNothingBangumi"
-};
+  name: 'SearchNothingBangumi'
+}
 </script>

@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import CartoonRoleApi from "~/api/cartoonRoleApi";
-import uploadMixin from "~/mixins/upload";
+import CartoonRoleApi from '~/api/cartoonRoleApi'
+import uploadMixin from '~/mixins/upload'
 
 export default {
-  name: "CreateRoleForm",
+  name: 'CreateRoleForm',
   mixins: [uploadMixin],
   props: {
     isAdmin: {
@@ -102,114 +102,114 @@ export default {
   data() {
     const validateAlias = (rule, value, callback) => {
       if (!value || !value.length) {
-        return callback(new Error("至少选择 1 个标签"));
+        return callback(new Error('至少选择 1 个标签'))
       }
       if (value.length > 5) {
-        return callback(new Error("最多选择 5 个标签"));
+        return callback(new Error('最多选择 5 个标签'))
       }
-      if (value.join("").length > 120) {
-        return callback(new Error("最多 120 字"));
+      if (value.join('').length > 120) {
+        return callback(new Error('最多 120 字'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请先填写角色名称"));
+        return callback(new Error('请先填写角色名称'))
       }
       if (value.length > 35) {
-        return callback(new Error("名称最长 35 个字"));
+        return callback(new Error('名称最长 35 个字'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateDesc = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请先填写角色简介"));
+        return callback(new Error('请先填写角色简介'))
       }
       if (value.length > 200) {
-        return callback(new Error("简介最多 200 个字"));
+        return callback(new Error('简介最多 200 个字'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateAvatar = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请先上传头像"));
+        return callback(new Error('请先上传头像'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       form: {
         bangumi_id: this.bangumiId,
-        name: this.role ? this.role.name : "",
-        alias: this.role ? this.role.alias.split(",") : [],
-        avatar: this.role ? this.role.avatar : "",
-        intro: this.role ? this.role.intro : ""
+        name: this.role ? this.role.name : '',
+        alias: this.role ? this.role.alias.split(',') : [],
+        avatar: this.role ? this.role.avatar : '',
+        intro: this.role ? this.role.intro : ''
       },
       rules: {
-        name: [{ validator: validateName, trigger: "submit" }],
-        intro: [{ validator: validateDesc, trigger: "submit" }],
-        avatar: [{ validator: validateAvatar, trigger: "submit" }],
-        alias: [{ validator: validateAlias, trigger: "submit" }]
+        name: [{ validator: validateName, trigger: 'submit' }],
+        intro: [{ validator: validateDesc, trigger: 'submit' }],
+        avatar: [{ validator: validateAvatar, trigger: 'submit' }],
+        alias: [{ validator: validateAlias, trigger: 'submit' }]
       },
       submitting: false
-    };
+    }
   },
   mounted() {
-    this.getUpToken();
+    this.getUpToken()
   },
   methods: {
     submit() {
       this.$refs.form.validate(async valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
-          const api = new CartoonRoleApi(this);
-          const name = this.form.name;
+          this.submitting = true
+          const api = new CartoonRoleApi(this)
+          const name = this.form.name
           try {
             const params = {
               bangumi_id: this.form.bangumi_id,
               name: name,
               intro: this.form.intro,
-              avatar: this.form.avatar.split(".calibur.tv/").pop(),
+              avatar: this.form.avatar.split('.calibur.tv/').pop(),
               alias: [name]
                 .concat(this.form.alias.filter(_ => _ !== name))
                 .toString()
-            };
+            }
             if (this.isCreate) {
-              const id = await api.create(params);
-              this.$refs.form.resetFields();
-              this.$refs.upload.clearFiles();
-              this.$toast.success("添加成功").then(() => {
-                window.open(this.$alias.cartoonRole(id));
-              });
+              const id = await api.create(params)
+              this.$refs.form.resetFields()
+              this.$refs.upload.clearFiles()
+              this.$toast.success('添加成功').then(() => {
+                window.open(this.$alias.cartoonRole(id))
+              })
             } else {
               await api.edit(
                 Object.assign(params, {
                   id: this.role.id
                 })
-              );
-              this.$emit("success");
+              )
+              this.$emit('success')
             }
           } catch (err) {
-            this.$toast.error(err);
+            this.$toast.error(err)
           } finally {
-            this.submitting = false;
+            this.submitting = false
           }
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     beforeAvatarUpload(file) {
-      this.uploadConfig.max = 1;
-      this.uploadConfig.pathPrefix = `bangumi/${this.bangumiId}/role`;
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 1
+      this.uploadConfig.pathPrefix = `bangumi/${this.bangumiId}/role`
+      return this.beforeImageUpload(file)
     },
     handleAvatarSuccess(res) {
-      this.$toast.success("上传成功");
-      this.form.avatar = res.data.url;
+      this.$toast.success('上传成功')
+      this.form.avatar = res.data.url
     }
   }
-};
+}
 </script>

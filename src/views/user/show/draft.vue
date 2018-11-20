@@ -142,55 +142,55 @@
 
 <script>
 export default {
-  name: "UserDraft",
+  name: 'UserDraft',
   async asyncData({ store, ctx }) {
-    await store.dispatch("users/getUserDrafts", {
-      type: "score",
+    await store.dispatch('users/getUserDrafts', {
+      type: 'score',
       ctx
-    });
+    })
   },
   data() {
     return {
-      active: "漫评"
-    };
+      active: '漫评'
+    }
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     },
     isMe() {
       return this.$store.state.login
         ? this.zone === this.$store.state.user.zone
-        : false;
+        : false
     },
     scores() {
-      return this.$store.state.users.drafts.score;
+      return this.$store.state.users.drafts.score
     },
     answers() {
-      return this.$store.state.users.drafts.answer;
+      return this.$store.state.users.drafts.answer
     }
   },
   mounted() {
     if (!this.isMe) {
       this.$router.replace({
-        name: "user-bangumi"
-      });
+        name: 'user-bangumi'
+      })
     }
   },
   methods: {
     handleTabSwitch(label) {
-      if (label === "漫评") {
-        this.getUserDrafts("score");
-      } else if (label === "回答") {
-        this.getUserDrafts("answer");
+      if (label === '漫评') {
+        this.getUserDrafts('score')
+      } else if (label === '回答') {
+        this.getUserDrafts('answer')
       }
     },
     async getUserDrafts(type) {
-      await this.$store.dispatch("users/getUserDrafts", {
+      await this.$store.dispatch('users/getUserDrafts', {
         type,
         ctx: this
-      });
+      })
     }
   }
-};
+}
 </script>

@@ -76,19 +76,19 @@
 </template>
 
 <script>
-import PostFlowList from "~/components/flow/list/PostFlowList";
+import PostFlowList from '~/components/flow/list/PostFlowList'
 
 export default {
-  name: "PostWorld",
+  name: 'PostWorld',
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("world/getData", {
-        type: "post",
-        sort: "active",
+      store.dispatch('world/getData', {
+        type: 'post',
+        sort: 'active',
         ctx
       }),
-      store.dispatch("world/getMeta", { type: "post" })
-    ]);
+      store.dispatch('world/getMeta', { type: 'post' })
+    ])
   },
   components: {
     PostFlowList
@@ -96,17 +96,17 @@ export default {
   data() {
     return {
       showTips: false
-    };
+    }
   },
   computed: {
     meta() {
-      return this.$store.state.world.post.meta;
+      return this.$store.state.world.post.meta
     }
   },
   methods: {
     openCreatePost() {
-      this.$channel.$emit("show-create-post-modal");
+      this.$channel.$emit('show-create-post-modal')
     }
   }
-};
+}
 </script>

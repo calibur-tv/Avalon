@@ -320,14 +320,14 @@
 </template>
 
 <script>
-import FollowButton from "~/components/common/FollowButton";
-import CreateAnswerForm from "~/components/question/CreateAnswerForm";
-import CommentMain from "~/components/comments/CommentMain";
-import QuestionApi from "~/api/questionApi";
-import ToggleApi from "~/api/toggleApi";
+import FollowButton from '~/components/common/FollowButton'
+import CreateAnswerForm from '~/components/question/CreateAnswerForm'
+import CommentMain from '~/components/comments/CommentMain'
+import QuestionApi from '~/api/questionApi'
+import ToggleApi from '~/api/toggleApi'
 
 export default {
-  name: "QuestionPanel",
+  name: 'QuestionPanel',
   components: {
     FollowButton,
     CommentMain,
@@ -339,91 +339,91 @@ export default {
       loadingFollowers: false,
       showCommentModal: false,
       showCreateAnswerForm: false
-    };
+    }
   },
   computed: {
     id() {
-      return this.qaq.id;
+      return this.qaq.id
     },
     qaq() {
-      return this.$store.state.question.qaq;
+      return this.$store.state.question.qaq
     },
     collapsedContent() {
-      let text = this.qaq.intro.substring(0, 78);
+      let text = this.qaq.intro.substring(0, 78)
       if (this.qaq.images.length) {
-        text += "[图片]";
+        text += '[图片]'
       }
-      return `${text}...`;
+      return `${text}...`
     },
     followers() {
-      return this.qaq.follow_users;
+      return this.qaq.follow_users
     },
     answerPage() {
-      return this.$route.name === "answer-show";
+      return this.$route.name === 'answer-show'
     },
     answer() {
-      return this.$store.state.question.answers.list[0];
+      return this.$store.state.question.answers.list[0]
     },
     isGuest() {
-      return !this.$store.state.login;
+      return !this.$store.state.login
     },
     isMyAnswer() {
       if (this.isGuest || !this.answerPage) {
-        return false;
+        return false
       }
-      return this.answer.user.id === this.$store.state.user.id;
+      return this.answer.user.id === this.$store.state.user.id
     },
     isMyQAQ() {
       if (this.isGuest || this.answerPage) {
-        return false;
+        return false
       }
-      return this.qaq.user.id === this.$store.state.user.id;
+      return this.qaq.user.id === this.$store.state.user.id
     }
   },
   created() {
-    this.collapsed = this.qaq.intro || this.qaq.images.length;
+    this.collapsed = this.qaq.intro || this.qaq.images.length
   },
   mounted() {
-    this.$channel.$on("open-write-answer-dialog", (isEdit = false) => {
+    this.$channel.$on('open-write-answer-dialog', (isEdit = false) => {
       if (!this.$store.state.login) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
       if (isEdit) {
-        this.editMyAnswer();
+        this.editMyAnswer()
       } else {
-        this.showCreateAnswerForm = true;
+        this.showCreateAnswerForm = true
       }
-    });
+    })
   },
   methods: {
     async fetchMoreFollowers() {
       if (this.loadingFollowers) {
-        return;
+        return
       }
-      this.loadingFollowers = true;
-      const api = new ToggleApi(this);
-      const type = "follow";
+      this.loadingFollowers = true
+      const api = new ToggleApi(this)
+      const type = 'follow'
       try {
         const result = await api.users({
           id: this.id,
           take: 15,
           last_id: this.followers.list[this.followers.list.length - 1].id,
-          model: "question",
+          model: 'question',
           type
-        });
-        this.$store.commit("question/FETCH_QAQ_SOCIAL_USERS", { type, result });
+        })
+        this.$store.commit('question/FETCH_QAQ_SOCIAL_USERS', { type, result })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingFollowers = false;
+        this.loadingFollowers = false
       }
     },
     toggleFollowQAQ(result) {
-      const user = this.$store.state.user;
-      this.$store.commit("question/QAQ_SOCIAL_TOGGLE", {
-        key: "follow",
+      const user = this.$store.state.user
+      this.$store.commit('question/QAQ_SOCIAL_TOGGLE', {
+        key: 'follow',
         value: result,
         user: {
           id: user.id,
@@ -431,44 +431,44 @@ export default {
           nickname: user.nickname,
           avatar: user.avatar
         }
-      });
+      })
     },
     async editMyAnswer() {
       try {
-        await this.$store.dispatch("editor/getData", {
+        await this.$store.dispatch('editor/getData', {
           api: new QuestionApi(this),
           id: this.qaq.my_answer.id
-        });
-        this.showCreateAnswerForm = true;
+        })
+        this.showCreateAnswerForm = true
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     loadQAQComment() {
-      this.showCommentModal = true;
+      this.showCommentModal = true
       this.$nextTick(() => {
-        this.$channel.$emit(`fire-load-comment-question-${this.id}`);
-      });
+        this.$channel.$emit(`fire-load-comment-question-${this.id}`)
+      })
     },
     collapsedQAQ() {
-      this.collapsed = true;
-      window.scrollTo(0, 0);
+      this.collapsed = true
+      window.scrollTo(0, 0)
     },
     handleCommentChange(count) {
-      this.$store.commit("question/COMMENT_CHANGE_COUNT", {
+      this.$store.commit('question/COMMENT_CHANGE_COUNT', {
         id: this.id,
-        key: "qaq",
+        key: 'qaq',
         value: count
-      });
+      })
     },
     beginWriteAnswer() {
       if (!this.$store.state.login) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
-      this.showCreateAnswerForm = true;
+      this.showCreateAnswerForm = true
     }
   }
-};
+}
 </script>

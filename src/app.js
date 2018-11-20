@@ -1,23 +1,23 @@
-import Vue from "vue";
-import App from "./app.vue";
-import { sync } from "vuex-router-sync";
-import { createStore } from "~/store";
-import { createRouter } from "~/router";
-import "~/assets/css/global";
-import "~/utils";
-import "normalize.css";
+import Vue from 'vue'
+import App from './app.vue'
+import { sync } from 'vuex-router-sync'
+import { createStore } from '~/store'
+import { createRouter } from '~/router'
+import '~/assets/css/global'
+import '~/utils'
+import 'normalize.css'
 
 export function createApp() {
-  const router = createRouter();
-  const store = createStore();
+  const router = createRouter()
+  const store = createStore()
 
-  sync(store, router);
+  sync(store, router)
 
   const app = new Vue({
     router,
     store,
     render: h => h(App)
-  });
+  })
 
-  return { app, router, store };
+  return { app, router, store }
 }

@@ -109,64 +109,64 @@
 </template>
 
 <script>
-import Api from "~/api/toggleApi";
+import Api from '~/api/toggleApi'
 
 export default {
-  name: "BangumiAside",
+  name: 'BangumiAside',
   data() {
     return {
       loadingFollowers: false,
       openRequestMasterModal: false
-    };
+    }
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     },
     tags() {
-      return this.info.tags;
+      return this.info.tags
     },
     followers() {
-      return this.info.follow_users;
+      return this.info.follow_users
     },
     managers() {
-      return this.info.manager_users;
+      return this.info.manager_users
     },
     managerUsers() {
       if (!this.managers.total) {
-        return [];
+        return []
       }
       return this.managers.list.map(_ => {
-        return _.user;
-      });
+        return _.user
+      })
     }
   },
   methods: {
     async fetchMoreFollowers() {
       if (this.loadingFollowers) {
-        return;
+        return
       }
-      this.loadingFollowers = true;
-      const api = new Api(this);
-      const type = "follow";
+      this.loadingFollowers = true
+      const api = new Api(this)
+      const type = 'follow'
       try {
         const result = await api.users({
           id: this.info.id,
           take: 15,
           last_id: this.followers.list[this.followers.list.length - 1].id,
-          model: "bangumi",
+          model: 'bangumi',
           type
-        });
-        this.$store.commit("bangumi/FETCH_SOCIAL_USERS", { type, result });
+        })
+        this.$store.commit('bangumi/FETCH_SOCIAL_USERS', { type, result })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingFollowers = false;
+        this.loadingFollowers = false
       }
     },
     fetchMoreManagers() {
       // 现在最多5个，没有分页
     }
   }
-};
+}
 </script>

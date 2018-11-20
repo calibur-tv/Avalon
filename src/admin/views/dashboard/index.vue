@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import PanelGroup from "./components/PanelGroup";
-import LineChart from "./components/LineChart";
+import PanelGroup from './components/PanelGroup'
+import LineChart from './components/LineChart'
 
 export default {
-  name: "DashboardAdmin",
+  name: 'DashboardAdmin',
   components: {
     PanelGroup,
     LineChart
   }
-};
+}
 </script>

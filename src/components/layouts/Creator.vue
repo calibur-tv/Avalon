@@ -125,7 +125,7 @@
 
 <script>
 export default {
-  name: "MtPaletteButton",
+  name: 'MtPaletteButton',
   props: {
     offset: {
       type: Number, // 扇面偏移角，默认是四分之π，配合默认方向lt
@@ -133,7 +133,7 @@ export default {
     },
     direction: {
       type: String,
-      default: "lt" // lt t rt this.radius rb b lb l 取值有8个方向，左上、上、右上、右、右下、下、左下、左，默认为左上
+      default: 'lt' // lt t rt this.radius rb b lb l 取值有8个方向，左上、上、右上、右、右下、下、左下、左，默认为左上
     },
     radius: {
       type: Number,
@@ -141,94 +141,94 @@ export default {
     },
     mainButtonStyle: {
       type: String, // 应用到 mint-main-button 上的 class
-      default: ""
+      default: ''
     }
   },
   data: function() {
     return {
       transforming: false, // 是否正在执行动画
       expanded: false // 是否已经展开子按钮
-    };
+    }
   },
   mounted() {
-    this.slotChildren = [];
+    this.slotChildren = []
     for (let i = 0; i < this.$slots.default.length; i++) {
       if (this.$slots.default[i].elm.nodeType !== 3) {
-        this.slotChildren.push(this.$slots.default[i]);
+        this.slotChildren.push(this.$slots.default[i])
       }
     }
-    let css = "";
+    let css = ''
     let directionArc =
       (Math.PI *
         (3 +
           Math.max(
-            ["lt", "t", "rt", "r", "rb", "b", "lb", "l"].indexOf(
+            ['lt', 't', 'rt', 'r', 'rb', 'b', 'lb', 'l'].indexOf(
               this.direction
             ),
             0
           ))) /
-      4;
+      4
     for (let i = 0; i < this.slotChildren.length; i++) {
       const arc =
         ((Math.PI - this.offset * 2) / (this.slotChildren.length - 1)) * i +
         this.offset +
-        directionArc;
-      const x = (Math.cos(arc) * this.radius).toFixed(2);
-      const y = (Math.sin(arc) * this.radius).toFixed(2);
+        directionArc
+      const x = (Math.cos(arc) * this.radius).toFixed(2)
+      const y = (Math.sin(arc) * this.radius).toFixed(2)
       css +=
-        ".expand .palette-button-" +
+        '.expand .palette-button-' +
         this._uid +
-        "-sub-" +
+        '-sub-' +
         i +
-        "{transform:translate(" +
+        '{transform:translate(' +
         x +
-        "px," +
+        'px,' +
         y +
-        "px) rotate(720deg);transition-delay:" +
+        'px) rotate(720deg);transition-delay:' +
         0.03 * i +
-        "s}";
+        's}'
       this.slotChildren[i].elm.className +=
-        " palette-button-" + this._uid + "-sub-" + i;
+        ' palette-button-' + this._uid + '-sub-' + i
     }
-    this.styleNode = document.createElement("style");
-    this.styleNode.type = "text/css";
-    this.styleNode.rel = "stylesheet";
-    this.styleNode.title = "palette button style";
-    this.styleNode.appendChild(document.createTextNode(css));
-    document.getElementsByTagName("head")[0].appendChild(this.styleNode);
+    this.styleNode = document.createElement('style')
+    this.styleNode.type = 'text/css'
+    this.styleNode.rel = 'stylesheet'
+    this.styleNode.title = 'palette button style'
+    this.styleNode.appendChild(document.createTextNode(css))
+    document.getElementsByTagName('head')[0].appendChild(this.styleNode)
   },
   destroyed() {
     if (this.styleNode) {
-      this.styleNode.parentNode.removeChild(this.styleNode);
+      this.styleNode.parentNode.removeChild(this.styleNode)
     }
   },
   methods: {
     toggle(event) {
       if (this.transforming) {
-        return;
+        return
       }
-      this.expanded ? this.collapse(event) : this.expand(event);
+      this.expanded ? this.collapse(event) : this.expand(event)
     },
     onMainAnimationEnd() {
-      this.transforming = false;
-      this.$emit("expanded");
+      this.transforming = false
+      this.$emit('expanded')
     },
     expand(event) {
       this.$backdrop.show({
         ele: this.$el,
         click: () => {
-          this.collapse();
+          this.collapse()
         }
-      });
-      this.expanded = true;
-      this.transforming = true;
-      this.$emit("expand", event);
+      })
+      this.expanded = true
+      this.transforming = true
+      this.$emit('expand', event)
     },
     collapse(event) {
-      this.$backdrop.hide();
-      this.expanded = false;
-      this.$emit("collapse", event);
+      this.$backdrop.hide()
+      this.expanded = false
+      this.$emit('collapse', event)
     }
   }
-};
+}
 </script>

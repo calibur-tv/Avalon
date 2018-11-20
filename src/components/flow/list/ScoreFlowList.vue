@@ -45,19 +45,19 @@
 </template>
 
 <script>
-import flowMixin from "./_flowListMixin";
-import ScoreFlowItem from "../item/ScoreFlowItem";
+import flowMixin from './_flowListMixin'
+import ScoreFlowItem from '../item/ScoreFlowItem'
 
 export default {
-  name: "ScoreFlowList",
+  name: 'ScoreFlowList',
   components: {
     ScoreFlowItem
   },
   mixins: [flowMixin],
   data() {
     return {
-      flowType: "score"
-    };
+      flowType: 'score'
+    }
   }
-};
+}
 </script>

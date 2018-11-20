@@ -1,13 +1,13 @@
-import Clipboard from "./clipboard";
+import Clipboard from './clipboard'
 
 const install = function(Vue) {
-  Vue.directive("Clipboard", Clipboard);
-};
-
-if (window.Vue) {
-  window.clipboard = Clipboard;
-  Vue.use(install); // eslint-disable-line
+  Vue.directive('Clipboard', Clipboard)
 }
 
-Clipboard.install = install;
-export default Clipboard;
+if (window.Vue) {
+  window.clipboard = Clipboard
+  Vue.use(install) // eslint-disable-line
+}
+
+Clipboard.install = install
+export default Clipboard

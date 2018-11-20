@@ -62,40 +62,40 @@
 </template>
 
 <script>
-import Navbar from "@/components/Layout/Navbar";
-import Sidebar from "@/components/Layout/Sidebar";
-import AppMain from "@/components/Layout/AppMain";
-import "moment";
-import "lodash";
-import "@/filters";
-import "@/utils/library";
+import Navbar from '@/components/Layout/Navbar'
+import Sidebar from '@/components/Layout/Sidebar'
+import AppMain from '@/components/Layout/AppMain'
+import 'moment'
+import 'lodash'
+import '@/filters'
+import '@/utils/library'
 
 export default {
-  name: "AdminLayout",
+  name: 'AdminLayout',
   components: {
     Navbar,
     Sidebar,
     AppMain
   },
   head: {
-    title: "calibur - 控制台",
+    title: 'calibur - 控制台',
     link: [
       {
-        rel: "stylesheet",
-        href: "https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+        rel: 'stylesheet',
+        href: 'https://use.fontawesome.com/releases/v5.1.0/css/all.css'
       }
     ]
   },
   computed: {
     sidebar() {
-      return this.$store.state.admin.sidebar;
+      return this.$store.state.admin.sidebar
     },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation
-      };
+      }
     }
   }
-};
+}
 </script>

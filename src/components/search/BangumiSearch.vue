@@ -43,11 +43,11 @@
 
 <script>
 export default {
-  name: "BangumiSearch",
+  name: 'BangumiSearch',
   props: {
     value: {
       type: [String, Number, Array],
-      default: ""
+      default: ''
     },
     multiple: {
       type: Boolean,
@@ -63,7 +63,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: "未选择"
+      default: '未选择'
     },
     disabled: {
       type: Boolean,
@@ -81,83 +81,81 @@ export default {
       loading: false,
       fetched: false,
       fetchedBangumi: []
-    };
+    }
   },
   computed: {
     bangumis() {
-      return this.followed
-        ? this.fetchedBangumi
-        : this.$store.state.bangumi.all;
+      return this.followed ? this.fetchedBangumi : this.$store.state.bangumi.all
     },
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user
     },
     showPlaceholder() {
       if (!this.followed) {
-        return this.placeholder;
+        return this.placeholder
       }
       if (this.loading) {
-        return "加载中...";
+        return '加载中...'
       }
       if (this.fetched && !this.bangumis.length) {
-        return "还没有关注任何番剧";
+        return '还没有关注任何番剧'
       }
-      return this.placeholder;
+      return this.placeholder
     }
   },
   mounted() {
     if (this.followed) {
-      this.getData();
+      this.getData()
     } else {
-      this.filteredOptions = this.bangumis;
+      this.filteredOptions = this.bangumis
     }
-    this.$watch("value", val => {
-      this.searchId = val;
-    });
-    this.$watch("searchId", val => {
-      this.$emit("input", val);
-      val && this.$emit("search", val);
-    });
+    this.$watch('value', val => {
+      this.searchId = val
+    })
+    this.$watch('searchId', val => {
+      this.$emit('input', val)
+      val && this.$emit('search', val)
+    })
   },
   methods: {
     handleEnter(query) {
       if (!query) {
-        this.filteredOptions = this.bangumis;
-        return;
+        this.filteredOptions = this.bangumis
+        return
       }
       this.filteredOptions = this.bangumis.filter(option => {
         return option.alias
           ? option.alias.indexOf(query) > -1 || option.name.indexOf(query) > -1
-          : option.name.indexOf(query) > -1;
-      });
+          : option.name.indexOf(query) > -1
+      })
     },
     handleSelectToggle(result) {
       if (!result) {
         setTimeout(() => {
-          this.filteredOptions = this.bangumis;
-        }, 500);
+          this.filteredOptions = this.bangumis
+        }, 500)
       } else if (this.filteredOptions.length === 1) {
-        this.filteredOptions = this.bangumis;
+        this.filteredOptions = this.bangumis
       }
     },
     async getData() {
       if (this.loading || this.fetched || !this.user) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("users/getFollowBangumis", {
+        await this.$store.dispatch('users/getFollowBangumis', {
           zone: this.user.zone
-        });
-        this.fetchedBangumi = this.$store.state.users.bangumis;
-        this.filteredOptions = this.bangumis;
-        this.fetched = true;
+        })
+        this.fetchedBangumi = this.$store.state.users.bangumis
+        this.filteredOptions = this.bangumis
+        this.fetched = true
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

@@ -55,7 +55,7 @@
 
 <script>
 export default {
-  name: "CommentReplyForm",
+  name: 'CommentReplyForm',
   props: {
     type: {
       required: true,
@@ -79,56 +79,56 @@ export default {
     return {
       open: this.value,
       submitting: false,
-      content: ""
-    };
+      content: ''
+    }
   },
   mounted() {
-    this.$watch("value", val => {
-      this.open = val;
+    this.$watch('value', val => {
+      this.open = val
       if (val) {
         this.$nextTick(() => {
-          this.$refs.input.focus();
-        });
+          this.$refs.input.focus()
+        })
       }
-    });
-    this.$watch("open", val => {
-      this.$emit("input", val);
-    });
+    })
+    this.$watch('open', val => {
+      this.$emit('input', val)
+    })
   },
   methods: {
     cancel() {
-      this.open = false;
+      this.open = false
     },
     async submit() {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (!this.content) {
-        return;
+        return
       }
       if (this.submitting) {
-        return;
+        return
       }
-      this.submitting = true;
+      this.submitting = true
       try {
-        const result = await this.$store.dispatch("comment/createSubComment", {
+        const result = await this.$store.dispatch('comment/createSubComment', {
           id: this.id,
           ctx: this,
           type: this.type,
           content: this.content,
           targetUserId: this.toUserId
-        });
-        this.open = false;
-        this.content = "";
-        this.$toast.success(result.message);
-        this.$store.commit("UPDATE_USER_EXP", result.exp);
+        })
+        this.open = false
+        this.content = ''
+        this.$toast.success(result.message)
+        this.$store.commit('UPDATE_USER_EXP', result.exp)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.submitting = false;
+        this.submitting = false
       }
     }
   }
-};
+}
 </script>

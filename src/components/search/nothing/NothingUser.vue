@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "SearchNothingUser"
-};
+  name: 'SearchNothingUser'
+}
 </script>

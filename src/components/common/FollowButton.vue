@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import Api from "~/api/toggleApi";
+import Api from '~/api/toggleApi'
 
 export default {
-  name: "FollowButton",
+  name: 'FollowButton',
   props: {
     type: {
       required: true,
       type: String,
-      validator: val => ~["bangumi", "user", "question"].indexOf(val)
+      validator: val => ~['bangumi', 'user', 'question'].indexOf(val)
     },
     id: {
       required: true,
@@ -43,11 +43,11 @@ export default {
     },
     classes: {
       type: String,
-      default: ""
+      default: ''
     },
     theme: {
       type: String,
-      default: "danger"
+      default: 'danger'
     },
     round: {
       type: Boolean,
@@ -55,54 +55,54 @@ export default {
     },
     followedText: {
       type: String,
-      default: "已关注"
+      default: '已关注'
     },
     unFollowText: {
       type: String,
-      default: "关注"
+      default: '关注'
     },
     size: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0;
+      return this.$store.state.login ? this.$store.state.user.id : 0
     }
   },
   methods: {
     async toggleFollow() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
-      if (this.type === "user" && this.id === this.currentUserId) {
-        this.$toast.error("不能关注你自己");
-        return;
+      if (this.type === 'user' && this.id === this.currentUserId) {
+        this.$toast.error('不能关注你自己')
+        return
       }
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         const result = await api.follow({
           type: this.type,
           id: this.id
-        });
-        this.$emit("submit", result);
+        })
+        this.$emit('submit', result)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
       }
-      this.loading = false;
+      this.loading = false
     }
   }
-};
+}
 </script>

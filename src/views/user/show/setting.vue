@@ -119,130 +119,130 @@
 </template>
 
 <script>
-import Api from "~/api/userApi";
+import Api from '~/api/userApi'
 
 export default {
-  name: "UserSetting",
+  name: 'UserSetting',
   data() {
     const validateNickname = (rule, value, callback) => {
-      const length = value.replace(/([\u4e00-\u9fa5])/g, "aa").trim().length;
+      const length = value.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
       if (!length) {
-        callback(new Error("昵称不能为空"));
+        callback(new Error('昵称不能为空'))
       } else if (length < 2) {
-        callback(new Error("昵称至少为2个字符"));
+        callback(new Error('昵称至少为2个字符'))
       } else if (length > 14) {
-        callback(new Error("昵称不能超过14个字符"));
+        callback(new Error('昵称不能超过14个字符'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateSignature = (rule, value, callback) => {
       if (value.length > 150) {
-        callback(new Error("签名最多 150 个字"));
+        callback(new Error('签名最多 150 个字'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateBirthday = (rule, value, callback) => {
-      const setTs = new Date(value).getTime();
-      const curTs = Date.now();
+      const setTs = new Date(value).getTime()
+      const curTs = Date.now()
       if (setTs >= curTs) {
-        callback(new Error("。。。"));
+        callback(new Error('。。。'))
       } else if (curTs - setTs < 315360000000) {
-        callback(new Error("你应该大于10岁了吧...?"));
+        callback(new Error('你应该大于10岁了吧...?'))
       } else if (curTs - setTs > 1261440000000) {
-        callback(new Error("你应该小于40岁的吧...?"));
+        callback(new Error('你应该小于40岁的吧...?'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       submitting: false,
       rule: {
-        nickname: [{ validator: validateNickname, trigger: "submit" }],
-        signature: [{ validator: validateSignature, trigger: "submit" }],
-        birthday: [{ validator: validateBirthday, trigger: "submit" }]
+        nickname: [{ validator: validateNickname, trigger: 'submit' }],
+        signature: [{ validator: validateSignature, trigger: 'submit' }],
+        birthday: [{ validator: validateBirthday, trigger: 'submit' }]
       }
-    };
+    }
   },
   computed: {
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user
     },
     nickname: {
       get() {
-        return this.user.nickname;
+        return this.user.nickname
       },
       set(value) {
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "nickname",
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'nickname',
           value
-        });
+        })
       }
     },
     birthday: {
       get() {
-        return this.user.birthday;
+        return this.user.birthday
       },
       set(value) {
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "birthday",
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'birthday',
           value
-        });
+        })
       }
     },
     birthSecret: {
       get() {
-        return this.user.birthSecret;
+        return this.user.birthSecret
       },
       set(value) {
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "birthSecret",
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'birthSecret',
           value
-        });
+        })
       }
     },
     sex: {
       get() {
-        return this.user.sex;
+        return this.user.sex
       },
       set(value) {
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "sex",
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'sex',
           value
-        });
+        })
       }
     },
     sexSecret: {
       get() {
-        return this.user.sexSecret;
+        return this.user.sexSecret
       },
       set(value) {
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "sexSecret",
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'sexSecret',
           value
-        });
+        })
       }
     },
     signature: {
       get() {
-        return this.user.signature;
+        return this.user.signature
       },
       set(value) {
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "signature",
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'signature',
           value
-        });
+        })
       }
     },
     isMe() {
       return this.$store.state.login
         ? this.user.zone === this.$route.params.zone
-        : false;
+        : false
     }
   },
   mounted() {
     if (!this.isMe) {
       this.$router.replace({
-        name: "user-bangumi"
-      });
+        name: 'user-bangumi'
+      })
     }
   },
   methods: {
@@ -250,10 +250,10 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
-          const api = new Api(this);
+          this.submitting = true
+          const api = new Api(this)
           try {
             await api.settingProfile({
               nickname: this.nickname,
@@ -262,18 +262,18 @@ export default {
               birth_secret: this.birthSecret,
               sex_secret: this.sexSecret,
               sex: this.sex
-            });
-            this.$toast.success("设置成功");
+            })
+            this.$toast.success('设置成功')
           } catch (err) {
-            this.$toast.error(err);
+            this.$toast.error(err)
           } finally {
-            this.submitting = false;
+            this.submitting = false
           }
         } else {
-          return false;
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>

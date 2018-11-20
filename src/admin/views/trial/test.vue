@@ -135,71 +135,71 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
     return {
-      imageUrl: "",
-      content: "",
+      imageUrl: '',
+      content: '',
       testing: false,
       imageResult: null,
       textResult: null
-    };
+    }
   },
   methods: {
     async imageTest() {
       if (!this.imageUrl) {
-        return;
+        return
       }
       if (!/^http(|s):\/\//.test(this.imageUrl)) {
-        return;
+        return
       }
       if (this.testing) {
-        return;
+        return
       }
-      this.testing = true;
-      this.imageResult = null;
-      const api = new Api(this);
+      this.testing = true
+      this.imageResult = null
+      const api = new Api(this)
       try {
         this.imageResult = await api.trialTestImage({
-          url: this.imageUrl.split("?")[0]
-        });
+          url: this.imageUrl.split('?')[0]
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.testing = false;
+        this.testing = false
       }
     },
     async textTest() {
       if (!this.content) {
-        return;
+        return
       }
       if (this.testing) {
-        return;
+        return
       }
-      this.testing = true;
-      this.textResult = null;
-      const api = new Api(this);
+      this.testing = true
+      this.textResult = null
+      const api = new Api(this)
       try {
         this.textResult = await api.trialTestText({
           text: this.content
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.testing = false;
+        this.testing = false
       }
     },
     computedDaddyDetail(detail) {
       if (!Array.isArray(detail)) {
-        return [];
+        return []
       }
       if (!detail.length) {
-        return [];
+        return []
       }
-      return detail.map(item => item.value.name);
+      return detail.map(item => item.value.name)
     }
   }
-};
+}
 </script>

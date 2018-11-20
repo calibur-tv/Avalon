@@ -93,7 +93,7 @@
 
 <script>
 export default {
-  name: "VLayout",
+  name: 'VLayout',
   props: {
     left: {
       type: Boolean,
@@ -105,12 +105,12 @@ export default {
     },
     customClass: {
       type: String,
-      default: ""
+      default: ''
     },
     fixed: {
       type: Boolean,
       default: true
     }
   }
-};
+}
 </script>

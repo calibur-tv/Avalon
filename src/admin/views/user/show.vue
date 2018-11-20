@@ -338,16 +338,16 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
   components: {
     VeHistogram: () => {
-      if (typeof window === "undefined") {
-        return import("~/assets/js/empty");
+      if (typeof window === 'undefined') {
+        return import('~/assets/js/empty')
       }
-      return import("v-charts/lib/histogram.common");
+      return import('v-charts/lib/histogram.common')
     }
   },
   mixins: [pageMixin],
@@ -355,71 +355,71 @@ export default {
     return {
       bannedOpts: {
         disabledDate(time) {
-          return time.getTime() < Date.now();
+          return time.getTime() < Date.now()
         },
         shortcuts: [
           {
-            text: "30分钟",
+            text: '30分钟',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 500);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 500)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "1小时",
+            text: '1小时',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "3小时",
+            text: '3小时',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000 * 3);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 3)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "6小时",
+            text: '6小时',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000 * 6);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 6)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "12小时",
+            text: '12小时',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000 * 12);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 12)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "一天",
+            text: '一天',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000 * 24);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 24)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "三天",
+            text: '三天',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000 * 24 * 3);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 3)
+              picker.$emit('pick', date)
             }
           },
           {
-            text: "一周",
+            text: '一周',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
             }
           }
         ]
@@ -434,290 +434,290 @@ export default {
       showInvite: false,
       loadingInvite: false,
       inviteList: []
-    };
+    }
   },
   computed: {
     queryId() {
-      return +(this.$route.query.id || 0);
+      return +(this.$route.query.id || 0)
     },
     queryZone() {
-      return this.$route.query.zone || "";
+      return this.$route.query.zone || ''
     },
     queryIp() {
-      return this.$route.query.ip || "";
+      return this.$route.query.ip || ''
     },
     isKing() {
-      return this.$store.state.user.id === 1;
+      return this.$store.state.user.id === 1
     },
     inviteUserLevelChartData() {
       if (!this.inviteList.length) {
-        return null;
+        return null
       }
-      const resource = _.mapValues(_.groupBy(this.inviteList, "level"), clist =>
-        clist.map(item => _.omit(item, "level"))
-      );
-      const result = [];
+      const resource = _.mapValues(_.groupBy(this.inviteList, 'level'), clist =>
+        clist.map(item => _.omit(item, 'level'))
+      )
+      const result = []
       Object.keys(resource).forEach(level => {
         result.push({
           等级: level,
           人数: resource[level].length,
           list: resource[level]
-        });
-      });
+        })
+      })
       return {
-        columns: ["等级", "人数"],
+        columns: ['等级', '人数'],
         rows: result
-      };
+      }
     },
     inviteUserPowerChartData() {
       if (!this.inviteList.length) {
-        return null;
+        return null
       }
-      const resource = _.mapValues(_.groupBy(this.inviteList, "power"), clist =>
-        clist.map(item => _.omit(item, "power"))
-      );
-      const result = [];
+      const resource = _.mapValues(_.groupBy(this.inviteList, 'power'), clist =>
+        clist.map(item => _.omit(item, 'power'))
+      )
+      const result = []
       Object.keys(resource).forEach(power => {
         result.push({
           战斗力: power,
           人数: resource[power].length,
           list: resource[power]
-        });
-      });
+        })
+      })
       return {
-        columns: ["战斗力", "人数"],
+        columns: ['战斗力', '人数'],
         rows: result
-      };
+      }
     }
   },
   created() {
     if (this.queryId) {
       this.getUserData({
-        type: "id",
+        type: 'id',
         value: this.queryId
-      });
+      })
     }
     if (this.queryZone) {
       this.getUserData({
-        type: "zone",
+        type: 'zone',
         value: this.queryZone
-      });
+      })
     }
     if (this.queryIp) {
       this.getUserData({
-        type: "ip_address",
+        type: 'ip_address',
         value: this.queryIp
-      });
+      })
     }
   },
   methods: {
     async getInvite() {
       if (this.showInvite) {
-        this.showInvite = false;
-        return;
+        this.showInvite = false
+        return
       }
       if (this.inviteList.length) {
-        this.showInvite = true;
-        return;
+        this.showInvite = true
+        return
       }
       if (this.loadingInvite) {
-        return;
+        return
       }
-      this.loadingInvite = true;
+      this.loadingInvite = true
       try {
-        const api = new Api(this);
+        const api = new Api(this)
         this.inviteList = await api.getUserInvites({
           id: this.user.id
-        });
-        this.showInvite = true;
+        })
+        this.showInvite = true
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingInvite = false;
+        this.loadingInvite = false
       }
     },
     async freezeUser() {
       if (!this.banned_to) {
-        this.$toast.error("请先选择禁言时长");
-        return;
+        this.$toast.error('请先选择禁言时长')
+        return
       }
-      this.banning = true;
-      const api = new Api(this);
+      this.banning = true
+      const api = new Api(this)
       try {
         await api.freezeUser({
           id: this.user.id,
           banned_to: this.banned_to
-        });
-        this.user.banned_to = this.banned_to.toString();
-        this.$toast.success("操作成功");
+        })
+        this.user.banned_to = this.banned_to.toString()
+        this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.banning = false;
+        this.banning = false
       }
     },
     async freeUser() {
-      this.banning = true;
-      const api = new Api(this);
+      this.banning = true
+      const api = new Api(this)
       try {
         await api.freeUser({
           id: this.user.id
-        });
-        this.user.banned_to = null;
-        this.$toast.success("操作成功");
+        })
+        this.user.banned_to = null
+        this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.banning = false;
+        this.banning = false
       }
     },
     async getTransactions(page) {
       if (page <= this.pageState.max) {
-        this.pageState.cur = page;
-        return;
+        this.pageState.cur = page
+        return
       }
       if (this.pageLoading) {
-        return;
+        return
       }
-      this.pageLoading = true;
-      this.pageState.size = 20;
-      const api = new Api(this);
+      this.pageLoading = true
+      this.pageState.size = 20
+      const api = new Api(this)
       try {
         const data = await api.getUserCoinTransactions({
           id: this.user.id,
           to_page: page,
           cur_page: this.pageState.cur,
           take: this.pageState.size
-        });
-        this.pageState.total = data.total;
-        this.pageState.cur = page;
-        this.pageState.max = page;
+        })
+        this.pageState.total = data.total
+        this.pageState.cur = page
+        this.pageState.max = page
         if (page === 1) {
-          this.pageList = data.list;
+          this.pageList = data.list
         } else {
-          this.pageList = this.pageList.concat(data.list);
+          this.pageList = this.pageList.concat(data.list)
         }
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.pageLoading = false;
+        this.pageLoading = false
       }
     },
     async getUserData(data) {
       if (this.searching) {
-        return;
+        return
       }
-      this.searching = true;
-      const api = new Api(this);
+      this.searching = true
+      const api = new Api(this)
       try {
-        const result = await api.searchUser(data);
-        if (data.type === "ip_address") {
-          const ids = result.filter(_ => _ !== "0");
+        const result = await api.searchUser(data)
+        if (data.type === 'ip_address') {
+          const ids = result.filter(_ => _ !== '0')
           if (!ids.length) {
-            this.$toast.error("没有找到用户");
-            return;
+            this.$toast.error('没有找到用户')
+            return
           }
           ids.forEach(item => {
-            window.open(`${window.location.href.split("?")[0]}?id=${item}`);
-          });
-          return;
+            window.open(`${window.location.href.split('?')[0]}?id=${item}`)
+          })
+          return
         }
-        this.user = result;
-        this.inviteList = [];
+        this.user = result
+        this.inviteList = []
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.searching = false;
+        this.searching = false
       }
     },
     async addUserToTrial() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         await api.addUserToTrial({
           id: this.user.id
-        });
-        this.$toast.success("操作成功");
-        this.user.state = 1;
+        })
+        this.$toast.success('操作成功')
+        this.user.state = 1
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async recover() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         await api.recoverUser({
           id: this.user.id
-        });
-        this.$toast.success("操作成功");
-        this.user.deleted_at = null;
+        })
+        this.$toast.success('操作成功')
+        this.user.deleted_at = null
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async block() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         await api.blockUser({
           id: this.user.id
-        });
-        this.$toast.success("操作成功");
-        this.user.deleted_at = Date.now();
+        })
+        this.$toast.success('操作成功')
+        this.user.deleted_at = Date.now()
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     getMoney() {
-      this.$prompt("输入要提现的金额", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('输入要提现的金额', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
-          const data = +value;
+          const data = +value
           if (data !== data) {
-            this.$toast.error("错误的格式");
-            return;
+            this.$toast.error('错误的格式')
+            return
           }
           if (!/^\d+$/.test(data)) {
-            this.$toast.error("必须是整数");
-            return;
+            this.$toast.error('必须是整数')
+            return
           }
           if (data <= 0) {
-            this.$toast.error("必须大于0");
-            return;
+            this.$toast.error('必须大于0')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .withdrawal({
               id: this.user.id,
               money: data
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

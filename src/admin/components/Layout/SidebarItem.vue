@@ -74,7 +74,7 @@
 
 <script>
 export default {
-  name: "SidebarItem",
+  name: 'SidebarItem',
   props: {
     routes: {
       type: Array,
@@ -88,10 +88,10 @@ export default {
   methods: {
     hasOneShowingChildren(children) {
       const showingChildren = children.filter(item => {
-        return !item.hidden;
-      });
-      return showingChildren.length === 1;
+        return !item.hidden
+      })
+      return showingChildren.length === 1
     }
   }
-};
+}
 </script>

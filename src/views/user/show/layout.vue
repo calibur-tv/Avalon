@@ -15,7 +15,7 @@
 
     .file-input {
       &:before {
-        content: "\e60a";
+        content: '\e60a';
         opacity: 0;
         position: absolute;
         left: 0;
@@ -463,341 +463,341 @@
 </template>
 
 <script>
-import UserApi from "~/api/userApi";
-import ImageApi from "~/api/imageApi";
-import ImageCropper from "~/components/common/ImageCropper";
-import TabContainer from "~/components/common/TabContainer";
-import UserSex from "~/components/user/UserSex";
-import { Progress } from "element-ui";
+import UserApi from '~/api/userApi'
+import ImageApi from '~/api/imageApi'
+import ImageCropper from '~/components/common/ImageCropper'
+import TabContainer from '~/components/common/TabContainer'
+import UserSex from '~/components/user/UserSex'
+import { Progress } from 'element-ui'
 
 export default {
-  name: "UserShowLayout",
+  name: 'UserShowLayout',
   async asyncData({ route, store, ctx }) {
-    await store.dispatch("users/getUser", {
+    await store.dispatch('users/getUser', {
       ctx,
       zone: route.params.zone
-    });
+    })
   },
   head() {
     if (!this.zone) {
-      return;
+      return
     }
     return {
       title: `${this.user.nickname} - 用户`,
       meta: [
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content: this.user.signature
         },
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,用户,天下漫友是一家,${this.user.zone},${
             this.user.nickname
           }`
         }
       ]
-    };
+    }
   },
   components: {
     TabContainer,
     ImageCropper,
     UserSex,
-    "el-progress": Progress
+    'el-progress': Progress
   },
   data() {
     return {
       avatarCropper: {
-        src: "",
-        type: "",
+        src: '',
+        type: '',
         showModal: false,
         loading: false,
         file: null
       },
       bannerSelector: {
         file: null,
-        image: "",
+        image: '',
         showBar: false,
         loading: false
       },
       signDayLoading: false,
       doSign: false
-    };
+    }
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     },
     isMe() {
-      return this.$store.state.login ? this.zone === this.self.zone : false;
+      return this.$store.state.login ? this.zone === this.self.zone : false
     },
     self() {
-      return this.$store.state.user;
+      return this.$store.state.user
     },
     blockedAt() {
-      return this.$store.state.users.show.banned_to;
+      return this.$store.state.users.show.banned_to
     },
     userPower() {
-      return this.$store.state.users.show.power;
+      return this.$store.state.users.show.power
     },
     user() {
-      return this.isMe ? this.self : this.$store.state.users.show;
+      return this.isMe ? this.self : this.$store.state.users.show
     },
     daySigned() {
-      return this.self.daySign;
+      return this.self.daySign
     },
     coinCount() {
-      return this.self.coin;
+      return this.self.coin
     },
     withdrawCoinCount() {
-      let result = this.user.coin - this.user.coin_from_sign;
+      let result = this.user.coin - this.user.coin_from_sign
       if (this.doSign) {
-        result -= 1;
+        result -= 1
       }
-      return result < 0 ? 0 : result;
+      return result < 0 ? 0 : result
     },
     cards() {
       return [
         {
-          label: "番剧",
-          name: "user-bangumi",
+          label: '番剧',
+          name: 'user-bangumi',
           show: true
         },
         {
-          label: "帖子",
-          name: "user-post",
+          label: '帖子',
+          name: 'user-post',
           show: true
         },
         {
-          label: "相册",
-          name: "user-image",
+          label: '相册',
+          name: 'user-image',
           show: true
         },
         {
-          label: "漫评",
-          name: "user-score",
+          label: '漫评',
+          name: 'user-score',
           show: true
         },
         {
-          label: "问答",
-          name: "user-question",
+          label: '问答',
+          name: 'user-question',
           show: true
         },
         {
-          label: "偶像",
-          name: "user-role",
+          label: '偶像',
+          name: 'user-role',
           show: true
         },
         {
-          label: "草稿",
-          name: "user-draft",
+          label: '草稿',
+          name: 'user-draft',
           show: this.isMe
         },
         {
-          label: "收藏",
-          name: "user-mark",
+          label: '收藏',
+          name: 'user-mark',
           show: this.isMe
         },
         {
-          label: "设置",
-          name: "user-setting",
+          label: '设置',
+          name: 'user-setting',
           show: this.isMe
         }
-      ].filter(_ => _.show);
+      ].filter(_ => _.show)
     },
     expPercent() {
       if (!this.isMe) {
-        return 0;
+        return 0
       }
       return parseInt(
         (this.user.exp.have_exp / this.user.exp.next_level_exp) * 100,
         10
-      );
+      )
     }
   },
   methods: {
     openAvatarModal(e) {
-      const file = e.target.files[0];
+      const file = e.target.files[0]
       if (!file) {
-        this.$toast.error("请先选择一张图片");
-        return;
+        this.$toast.error('请先选择一张图片')
+        return
       }
       if (
-        ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
+        ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(
           file.type
         ) === -1
       ) {
-        this.$toast.error("仅支持 jpg / jpeg / png / gif 格式的图片");
-        return;
+        this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
+        return
       }
-      const reader = new FileReader();
-      this.avatarCropper.type = file.type;
-      this.avatarCropper.file = file;
+      const reader = new FileReader()
+      this.avatarCropper.type = file.type
+      this.avatarCropper.file = file
       reader.onload = evt => {
-        this.avatarCropper.src = evt.target.result;
-        this.avatarCropper.showModal = true;
-      };
-      reader.readAsDataURL(file);
+        this.avatarCropper.src = evt.target.result
+        this.avatarCropper.showModal = true
+      }
+      reader.readAsDataURL(file)
     },
     handleAvatarCropperCancel() {
-      this.avatarCropper.showModal = false;
+      this.avatarCropper.showModal = false
       this.$nextTick(() => {
-        this.$refs.avatarInput.value = "";
-      });
+        this.$refs.avatarInput.value = ''
+      })
     },
     async handleAvatarCropperSubmit(formData) {
-      this.avatarCropper.loading = true;
+      this.avatarCropper.loading = true
       const filename = this.$utils.createFileName({
         userId: this.user.id,
-        type: "avatar",
+        type: 'avatar',
         file: this.avatarCropper.file
-      });
-      const imageApi = new ImageApi();
+      })
+      const imageApi = new ImageApi()
       try {
-        await this.$store.dispatch("getUpToken", this);
-        formData.append("token", this.user.uptoken.upToken);
-        formData.append("key", filename);
-        const result = await imageApi.uploadToQiniu(formData);
-        const userApi = new UserApi(this);
+        await this.$store.dispatch('getUpToken', this)
+        formData.append('token', this.user.uptoken.upToken)
+        formData.append('key', filename)
+        const result = await imageApi.uploadToQiniu(formData)
+        const userApi = new UserApi(this)
         await userApi.settingImage({
-          type: "avatar",
+          type: 'avatar',
           url: result.url
-        });
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "avatar",
+        })
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'avatar',
           value: `${this.$cdn.image}${result.url}`
-        });
-        this.$toast.success("头像更新成功");
+        })
+        this.$toast.success('头像更新成功')
       } catch (e) {
-        typeof e === "string"
+        typeof e === 'string'
           ? this.$toast.error(e)
-          : this.$toast.error("头像更新失败，请刷新页面重试或选择其他图片");
+          : this.$toast.error('头像更新失败，请刷新页面重试或选择其他图片')
       } finally {
-        this.avatarCropper.loading = false;
-        this.handleAvatarCropperCancel();
+        this.avatarCropper.loading = false
+        this.handleAvatarCropperCancel()
       }
     },
     selectBanner(e) {
-      const file = e.target.files[0];
+      const file = e.target.files[0]
       if (!file) {
-        this.$toast.error("请先选择一张图片");
-        return;
+        this.$toast.error('请先选择一张图片')
+        return
       }
       if (
-        ["image/jpeg", "image/png", "image/jpg", "image/gif"].indexOf(
+        ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].indexOf(
           file.type
         ) === -1
       ) {
-        this.$toast.error("仅支持 jpg / jpeg / png / gif 格式的图片");
-        return;
+        this.$toast.error('仅支持 jpg / jpeg / png / gif 格式的图片')
+        return
       }
-      const reader = new FileReader();
-      this.bannerSelector.file = file;
+      const reader = new FileReader()
+      this.bannerSelector.file = file
       reader.onload = evt => {
-        this.bannerSelector.image = evt.target.result;
-        this.bannerSelector.showBar = true;
-      };
-      reader.readAsDataURL(file);
+        this.bannerSelector.image = evt.target.result
+        this.bannerSelector.showBar = true
+      }
+      reader.readAsDataURL(file)
     },
     cancelBannerChange() {
-      this.bannerSelector.showBar = false;
+      this.bannerSelector.showBar = false
       this.$nextTick(() => {
-        this.$refs.bannerInput.value = "";
-      });
+        this.$refs.bannerInput.value = ''
+      })
     },
     async submitBannerChange(formData) {
-      this.bannerSelector.loading = true;
+      this.bannerSelector.loading = true
       const filename = this.$utils.createFileName({
         userId: this.user.id,
-        type: "banner",
+        type: 'banner',
         file: this.bannerSelector.file
-      });
+      })
       try {
-        await this.$store.dispatch("getUpToken", this);
-        formData.append("token", this.user.uptoken.upToken);
-        formData.append("key", filename);
-        const imageApi = new ImageApi();
-        const result = await imageApi.uploadToQiniu(formData);
-        const userApi = new UserApi(this);
+        await this.$store.dispatch('getUpToken', this)
+        formData.append('token', this.user.uptoken.upToken)
+        formData.append('key', filename)
+        const imageApi = new ImageApi()
+        const result = await imageApi.uploadToQiniu(formData)
+        const userApi = new UserApi(this)
         await userApi.settingImage({
-          type: "banner",
+          type: 'banner',
           url: result.url
-        });
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "banner",
+        })
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'banner',
           value: `${this.$cdn.image}${result.url}`
-        });
-        this.$toast.success("背景更新成功");
+        })
+        this.$toast.success('背景更新成功')
       } catch (e) {
-        typeof e === "string"
+        typeof e === 'string'
           ? this.$toast.error(e)
-          : this.$toast.error("背景图更新失败，请刷新页面重试或选择其他图片");
+          : this.$toast.error('背景图更新失败，请刷新页面重试或选择其他图片')
       } finally {
-        this.bannerSelector.loading = false;
-        this.cancelBannerChange();
+        this.bannerSelector.loading = false
+        this.cancelBannerChange()
       }
     },
     async handleDaySign() {
       if (this.daySigned) {
-        this.$toast.info("今天已经签过到了！");
-        return;
+        this.$toast.info('今天已经签过到了！')
+        return
       }
       if (this.signDayLoading) {
-        return;
+        return
       }
-      this.signDayLoading = true;
+      this.signDayLoading = true
 
       try {
-        const result = await this.$store.dispatch("users/daySign", {
+        const result = await this.$store.dispatch('users/daySign', {
           ctx: this
-        });
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "daySign",
+        })
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'daySign',
           value: true
-        });
-        this.$store.commit("UPDATE_USER_INFO", {
-          key: "coin",
+        })
+        this.$store.commit('UPDATE_USER_INFO', {
+          key: 'coin',
           value: this.coinCount + 1
-        });
-        this.doSign = true;
-        this.$toast.success(result.message);
-        this.$store.commit("UPDATE_USER_EXP", result.exp);
+        })
+        this.doSign = true
+        this.$toast.success(result.message)
+        this.$store.commit('UPDATE_USER_EXP', result.exp)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.signDayLoading = false;
+        this.signDayLoading = false
       }
     },
     handleCopySuccess() {
-      this.$toast.success("复制成功");
+      this.$toast.success('复制成功')
     },
     convertUserSex(sex) {
-      let $res = "";
+      let $res = ''
       switch (sex) {
         case 0:
-          $res = "未知";
-          break;
+          $res = '未知'
+          break
         case 1:
-          $res = "男";
-          break;
+          $res = '男'
+          break
         case 2:
-          $res = "女";
-          break;
+          $res = '女'
+          break
         case 3:
-          $res = "伪娘";
-          break;
+          $res = '伪娘'
+          break
         case 4:
-          $res = "药娘";
-          break;
+          $res = '药娘'
+          break
         case 5:
-          $res = "扶她";
-          break;
+          $res = '扶她'
+          break
         default:
-          $res = "未知";
+          $res = '未知'
       }
-      return $res;
+      return $res
     }
   }
-};
+}
 </script>

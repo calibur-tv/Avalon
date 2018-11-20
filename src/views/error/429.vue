@@ -14,6 +14,6 @@
 
 <script>
 export default {
-  name: "Error429"
-};
+  name: 'Error429'
+}
 </script>

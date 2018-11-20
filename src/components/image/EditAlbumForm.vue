@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
-import Api from "~/api/imageApi";
+import uploadMixin from '~/mixins/upload'
+import Api from '~/api/imageApi'
 
 export default {
-  name: "EditAlbumForm",
+  name: 'EditAlbumForm',
   mixins: [uploadMixin],
   props: {
     bangumiId: {
@@ -94,67 +94,67 @@ export default {
         part: this.album.part,
         poster: this.album.source
       }
-    };
+    }
   },
   computed: {
     isCartoon() {
-      return this.form.is_cartoon;
+      return this.form.is_cartoon
     },
     currentUserId() {
-      return this.$store.state.user.id;
+      return this.$store.state.user.id
     }
   },
   mounted() {
-    this.getUpToken();
+    this.getUpToken()
   },
   methods: {
     async submit() {
       if (!this.form.poster) {
-        this.$toast.error("必须选择一个封面");
-        return;
+        this.$toast.error('必须选择一个封面')
+        return
       }
-      const name = this.form.name;
+      const name = this.form.name
       if (!name) {
-        this.$toast.error("名字不能为空");
-        return;
+        this.$toast.error('名字不能为空')
+        return
       }
       if (name.length > 30) {
-        this.$toast.error("名字不能超过 30 个字");
-        return;
+        this.$toast.error('名字不能超过 30 个字')
+        return
       }
       if (this.submitting) {
-        return;
+        return
       }
-      this.submitting = true;
-      const api = new Api(this);
+      this.submitting = true
+      const api = new Api(this)
       try {
         await api.editAlbum(
           Object.assign({}, this.form, this.form.poster, {
-            url: this.form.poster.url.split("calibur.tv/").pop()
+            url: this.form.poster.url.split('calibur.tv/').pop()
           })
-        );
-        this.$toast.success("操作成功");
+        )
+        this.$toast.success('操作成功')
         setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+          window.location.reload()
+        }, 1000)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.submitting = false;
+        this.submitting = false
       }
     },
     beforePosterUpload(file) {
-      this.uploadConfig.max = 3;
-      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`;
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 3
+      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album`
+      return this.beforeImageUpload(file)
     },
     handleAlbumUploadSuccess(res) {
-      this.form.poster = res.data;
-      this.$toast.success("封面上传成功");
+      this.form.poster = res.data
+      this.$toast.success('封面上传成功')
     },
     handlePosterRemove() {
-      this.form.poster = null;
+      this.form.poster = null
     }
   }
-};
+}
 </script>

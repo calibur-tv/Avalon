@@ -16,7 +16,7 @@
     margin-bottom: 20px;
 
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       left: 0;
       top: 0;
@@ -139,14 +139,14 @@
 
 <script>
 export default {
-  name: "DoorHello",
+  name: 'DoorHello',
   head: {
-    title: "欢迎"
+    title: '欢迎'
   },
   computed: {
     currentUser() {
-      return this.$store.state.login ? this.$store.state.user : null;
+      return this.$store.state.login ? this.$store.state.user : null
     }
   }
-};
+}
 </script>

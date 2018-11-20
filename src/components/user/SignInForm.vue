@@ -97,64 +97,64 @@
 </template>
 
 <script>
-import UserApi from "~/api/userApi";
+import UserApi from '~/api/userApi'
 
 export default {
-  name: "SignInForm",
+  name: 'SignInForm',
   data() {
     const validateAccess = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请填写手机号"));
+        return callback(new Error('请填写手机号'))
       }
       if (value.length !== 11) {
-        return callback(new Error("请填写11位手机号"));
+        return callback(new Error('请填写11位手机号'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateSecret = (rule, value, callback) => {
-      if (value === "") {
-        return callback(new Error("请填写登录密码"));
+      if (value === '') {
+        return callback(new Error('请填写登录密码'))
       }
       if (value.length < 6) {
-        return callback(new Error("密码不能小于6位"));
+        return callback(new Error('密码不能小于6位'))
       }
       if (value.length > 16) {
-        return callback(new Error("密码不能大于16位"));
+        return callback(new Error('密码不能大于16位'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       form: {
-        access: "",
-        secret: "",
+        access: '',
+        secret: '',
         remember: true
       },
       rule: {
-        access: [{ validator: validateAccess, trigger: "blur" }],
-        secret: [{ validator: validateSecret, trigger: "blur" }]
+        access: [{ validator: validateAccess, trigger: 'blur' }],
+        secret: [{ validator: validateSecret, trigger: 'blur' }]
       },
       loading: false,
       watchPwd: false
-    };
+    }
   },
   methods: {
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.login();
+          this.login()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     login() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       this.$captcha({
         success: ({ data }) => {
-          const api = new UserApi();
+          const api = new UserApi()
           api
             .login({
               access: this.form.access,
@@ -163,36 +163,36 @@ export default {
               geetest: data
             })
             .then(token => {
-              this.$cookie.set("JWT-TOKEN", token, {
+              this.$cookie.set('JWT-TOKEN', token, {
                 expires: this.form.remember ? 365 : 1
-              });
-              window.location.reload();
+              })
+              window.location.reload()
             })
             .catch(err => {
-              this.$toast.error(err);
-              this.loading = false;
-            });
+              this.$toast.error(err)
+              this.loading = false
+            })
         },
         close: () => {
-          this.loading = false;
+          this.loading = false
         },
         error: err => {
-          this.loading = false;
-          this.$toast.error(err);
+          this.loading = false
+          this.$toast.error(err)
         }
-      });
+      })
     },
     showReset() {
-      this.$emit("to-reset");
-      this.$refs.form.resetFields();
+      this.$emit('to-reset')
+      this.$refs.form.resetFields()
     },
     showRegister() {
-      this.$emit("to-register");
-      this.$refs.form.resetFields();
+      this.$emit('to-register')
+      this.$refs.form.resetFields()
     },
     showOAuth() {
-      this.$toast.info("暂未开放第三方登录");
+      this.$toast.info('暂未开放第三方登录')
     }
   }
-};
+}
 </script>

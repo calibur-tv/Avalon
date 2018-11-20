@@ -183,43 +183,43 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
     return {
       source: [],
       loading: false,
-      sort: "user"
-    };
+      sort: 'user'
+    }
   },
   mounted() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData() {
       if (this.loading) {
-        return;
+        return
       }
       try {
-        const api = new Api(this);
+        const api = new Api(this)
         this.source = await api.getBangumiManagers({
           sort: this.sort
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     switchPage() {
-      if (this.sort === "bangumi") {
-        this.sort = "user";
+      if (this.sort === 'bangumi') {
+        this.sort = 'user'
       } else {
-        this.sort = "bangumi";
+        this.sort = 'bangumi'
       }
-      this.getData();
+      this.getData()
     }
   }
-};
+}
 </script>

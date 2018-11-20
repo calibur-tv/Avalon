@@ -37,29 +37,29 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
   mixins: [pageMixin],
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
+      this.pageLoading = true
+      const api = new Api(this)
       try {
-        const data = await api.cartoonBangumis();
-        this.pageState.cur = 1;
-        this.pageState.total = data.length;
-        this.pageList = data;
+        const data = await api.cartoonBangumis()
+        this.pageState.cur = 1
+        this.pageState.total = data.length
+        this.pageList = data
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.pageLoading = false;
+        this.pageLoading = false
       }
     }
   }
-};
+}
 </script>

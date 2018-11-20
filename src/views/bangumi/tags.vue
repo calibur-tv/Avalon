@@ -148,85 +148,85 @@
 </template>
 
 <script>
-import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
+import BangumiRecommended from '~/components/bangumi/BangumiRecommended'
 
 export default {
-  name: "BangumiTags",
+  name: 'BangumiTags',
   components: {
     BangumiRecommended
   },
   head: {
-    title: "分类索引 - 番剧"
+    title: '分类索引 - 番剧'
   },
   async asyncData({ route, store, ctx }) {
-    const id = route.query.id;
+    const id = route.query.id
     const arr = [
-      store.dispatch("bangumi/getTags", { id, ctx }),
-      store.dispatch("bangumi/getRecommended")
-    ];
+      store.dispatch('bangumi/getTags', { id, ctx }),
+      store.dispatch('bangumi/getRecommended')
+    ]
     if (
       id &&
       (/^\d+$/.test(id) ||
-        (id.indexOf("-") !== -1 &&
-          id.split("-").every(item => /^\d+$/.test(item))))
+        (id.indexOf('-') !== -1 &&
+          id.split('-').every(item => /^\d+$/.test(item))))
     ) {
       arr.push(
-        store.dispatch("bangumi/getCategory", {
+        store.dispatch('bangumi/getCategory', {
           id,
           ctx
         })
-      );
+      )
     }
-    await Promise.all(arr);
+    await Promise.all(arr)
   },
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     id() {
-      return this.$route.query.id;
+      return this.$route.query.id
     },
     bangumis() {
-      return this.$store.state.bangumi.category.data;
+      return this.$store.state.bangumi.category.data
     },
     tags() {
-      return this.$store.state.bangumi.tags;
+      return this.$store.state.bangumi.tags
     },
     noMore() {
-      return this.$store.state.bangumi.category.noMore;
+      return this.$store.state.bangumi.category.noMore
     }
   },
   methods: {
     refresh() {
-      const selected = [];
+      const selected = []
       this.tags.forEach(tag => {
         if (tag.selected) {
-          selected.push(tag.id);
+          selected.push(tag.id)
         }
-      });
+      })
       if (selected.length) {
-        window.location = this.$alias.bangumiTag(selected.join("-"));
+        window.location = this.$alias.bangumiTag(selected.join('-'))
       }
     },
     async loadMore() {
       if (this.notFetch) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
 
       try {
-        await this.$store.dispatch("bangumi/getCategory", {
+        await this.$store.dispatch('bangumi/getCategory', {
           id: this.$route.query.id,
           ctx: this
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

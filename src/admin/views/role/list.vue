@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import Api from "~/api/flowApi";
+import Api from '~/api/flowApi'
 
 export default {
   data() {
@@ -77,38 +77,38 @@ export default {
       bangumiId: 0,
       list: [],
       loading: false
-    };
+    }
   },
   methods: {
     async getData() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api();
+      this.loading = true
+      const api = new Api()
       try {
         const data = await api.fetch({
-          type: "role",
-          sort: "hot",
+          type: 'role',
+          sort: 'hot',
           take: 1000,
-          seenIds: "",
+          seenIds: '',
           page: 0,
-          userZone: "",
+          userZone: '',
           bangumiId: this.bangumiId
-        });
-        this.list = data.list;
+        })
+        this.list = data.list
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     handleBangumiSearch(id) {
       if (this.bangumiId !== id) {
-        this.bangumiId = id;
-        this.getData();
+        this.bangumiId = id
+        this.getData()
       }
     }
   }
-};
+}
 </script>

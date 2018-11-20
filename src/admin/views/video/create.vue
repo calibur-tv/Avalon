@@ -312,32 +312,32 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
     return {
       validatePart: (rule, value, callback) => {
         if (value.length !== 2) {
-          callback(new Error("集数格式不对"));
+          callback(new Error('集数格式不对'))
         } else if (value[0] < 1) {
-          callback(new Error("集数不能小于1"));
+          callback(new Error('集数不能小于1'))
         } else if (value[0] > value[1]) {
-          callback(new Error("集数必须是正确的区间"));
+          callback(new Error('集数必须是正确的区间'))
         } else {
-          callback();
+          callback()
         }
       },
-      options: ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"],
-      videoFormat: ["mp4", "flv", "Mp4", "Flv"],
+      options: ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'],
+      videoFormat: ['mp4', 'flv', 'Mp4', 'Flv'],
       form: {
-        bangumiId: "",
+        bangumiId: '',
         parts: [1, 1],
-        prefix: "",
-        suffix: "jpg",
-        format: "mp4",
-        names: "",
-        videos: "",
+        prefix: '',
+        suffix: 'jpg',
+        format: 'mp4',
+        names: '',
+        videos: '',
         uploaded: false,
         titles: [],
         urls: [],
@@ -355,117 +355,117 @@ export default {
       },
       list: {},
       saving: false
-    };
+    }
   },
   methods: {
     validateAndSaveBangumiId() {
-      this.$refs.form.validateField("bangumiId", error => {
+      this.$refs.form.validateField('bangumiId', error => {
         if (!error) {
-          this.saver.bangumi = true;
+          this.saver.bangumi = true
         }
-      });
+      })
     },
     validateAndSavePrefix() {
-      this.$refs.form.validateField("prefix", error => {
+      this.$refs.form.validateField('prefix', error => {
         if (!error) {
-          this.saver.prefix = true;
+          this.saver.prefix = true
         }
-      });
+      })
     },
     validateAndSaveParts() {
-      this.$refs.form.validateField("parts", error => {
+      this.$refs.form.validateField('parts', error => {
         if (!error) {
-          this.saver.parts = true;
+          this.saver.parts = true
         }
-      });
+      })
     },
     handleSaverFormat() {
-      this.saver.format = true;
+      this.saver.format = true
     },
     handleSaverSuffix() {
-      const arr = [];
-      const parts = this.form.parts;
-      const suffix = this.form.suffix;
+      const arr = []
+      const parts = this.form.parts
+      const suffix = this.form.suffix
       for (let i = parts[0]; i <= parts[1]; i++) {
-        arr.push(`bangumi/${this.form.prefix}/poster/${i}.${suffix}`);
+        arr.push(`bangumi/${this.form.prefix}/poster/${i}.${suffix}`)
       }
-      this.form.posters = arr;
-      this.saver.suffix = true;
+      this.form.posters = arr
+      this.saver.suffix = true
     },
     validateAndSaveNames() {
-      const names = this.form.names;
+      const names = this.form.names
       if (!names) {
-        this.$toast.error("标题不能为空");
-        return;
+        this.$toast.error('标题不能为空')
+        return
       }
-      const parts = this.form.parts;
-      const length = parts[1] - parts[0] + 1;
-      const titles = names.split("\n");
-      const result = [];
+      const parts = this.form.parts
+      const length = parts[1] - parts[0] + 1
+      const titles = names.split('\n')
+      const result = []
       if (titles.length !== length) {
-        this.$toast.error("标题个数不对");
-        return;
+        this.$toast.error('标题个数不对')
+        return
       }
-      let goOut = false;
+      let goOut = false
       titles.forEach(title => {
         if (!title || title.length > 30) {
-          goOut = true;
+          goOut = true
         }
-        result.push(title.trim());
-      });
+        result.push(title.trim())
+      })
       if (goOut) {
-        this.$toast.error("每一个标题都不能为空，且不能超过30字");
-        return;
+        this.$toast.error('每一个标题都不能为空，且不能超过30字')
+        return
       }
-      this.form.titles = result;
-      this.saver.names = true;
+      this.form.titles = result
+      this.saver.names = true
     },
     validateAndSaveUrls() {
-      const videos = this.form.videos;
+      const videos = this.form.videos
       if (!videos) {
         if (this.form.haveSelfResource) {
-          this.saver.videos = true;
+          this.saver.videos = true
         } else {
-          this.$toast.error("资源链接不能为空");
+          this.$toast.error('资源链接不能为空')
         }
-        return;
+        return
       }
-      const parts = this.form.parts;
-      const length = parts[1] - parts[0] + 1;
-      const arr = videos.split("\n");
+      const parts = this.form.parts
+      const length = parts[1] - parts[0] + 1
+      const arr = videos.split('\n')
       if (this.form.haveSelfResource) {
         if (arr.length > length) {
-          this.$toast.error("外链视频的个数大于视频的总数");
-          return;
+          this.$toast.error('外链视频的个数大于视频的总数')
+          return
         }
       } else {
         if (arr.length !== length) {
-          this.$toast.error("资源个数");
-          return;
+          this.$toast.error('资源个数')
+          return
         }
       }
-      let goOut = false;
-      const result = [];
+      let goOut = false
+      const result = []
       arr.forEach(video => {
         if (
           video &&
-          !(video.startsWith("http://") || video.startsWith("https://"))
+          !(video.startsWith('http://') || video.startsWith('https://'))
         ) {
-          goOut = true;
+          goOut = true
         }
         result.push(
           video
             .trim()
-            .split("?")
+            .split('?')
             .shift()
-        );
-      });
+        )
+      })
       if (goOut) {
-        this.$toast.error("存在不合法的链接");
-        return;
+        this.$toast.error('存在不合法的链接')
+        return
       }
-      this.form.urls = result;
-      this.saver.videos = true;
+      this.form.urls = result
+      this.saver.videos = true
     },
     resetForm() {
       this.saver = {
@@ -476,58 +476,57 @@ export default {
         format: false,
         parts: false,
         names: false
-      };
+      }
     },
     async submitForm() {
       if (this.saving) {
-        return;
+        return
       }
-      this.saving = true;
-      const arr = [];
-      const begin = this.form.parts[0];
+      this.saving = true
+      const arr = []
+      const begin = this.form.parts[0]
       for (let i = begin; i <= this.form.parts[1]; i++) {
-        const idx = [i - begin];
+        const idx = [i - begin]
         arr.push({
           bangumiId: this.form.bangumiId,
           part: i,
           name: this.form.titles[idx],
-          url: this.form.urls[idx] || "",
+          url: this.form.urls[idx] || '',
           poster: this.form.posters[idx],
           resource: this.form.haveSelfResource
             ? {
                 video: {
-                  "720": {
+                  '720': {
                     useLyc: false,
                     src: `bangumi/${this.form.prefix}/video/720/${i}.${
                       this.form.format
                     }`
                   },
-                  "1080": {
+                  '1080': {
                     useLyc: false,
-                    src: ""
+                    src: ''
                   }
                 },
                 lyric: {
-                  zh: "",
-                  en: ""
+                  zh: '',
+                  en: ''
                 }
               }
             : null
-        });
+        })
       }
-      const api = new Api(this);
+      const api = new Api(this)
       try {
-        await api.videoSave(arr);
-        this.$toast.success("操作成功");
-        this.$refs.form.resetFields();
-        this.resetForm();
+        await api.videoSave(arr)
+        this.$toast.success('操作成功')
+        this.$refs.form.resetFields()
+        this.resetForm()
       } catch (e) {
-        console.log(e);
-        this.$toast.error("保存失败，请联系管理员");
+        this.$toast.error('保存失败，请联系管理员')
       } finally {
-        this.saving = false;
+        this.saving = false
       }
     }
   }
-};
+}
 </script>

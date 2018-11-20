@@ -12,15 +12,15 @@
 
 <script>
 export default {
-  name: "SearchNothingRole",
+  name: 'SearchNothingRole',
   methods: {
     openFeedback() {
-      this.$channel.$emit("open-feedback", {
+      this.$channel.$emit('open-feedback', {
         type: 6,
         desc: `我想要为 {?} 应援`,
-        placeholder: "请填写要应援的偶像"
-      });
+        placeholder: '请填写要应援的偶像'
+      })
     }
   }
-};
+}
 </script>

@@ -195,10 +195,10 @@ $layout-width: 900px;
 </template>
 
 <script>
-import JsonContent from "~/components/jsonEditor/JsonContent";
+import JsonContent from '~/components/jsonEditor/JsonContent'
 
 export default {
-  name: "WriteLayout",
+  name: 'WriteLayout',
   components: {
     JsonContent
   },
@@ -207,45 +207,45 @@ export default {
       submitting: false,
       preview: false,
       saving: null
-    };
+    }
   },
   computed: {
     id() {
-      return this.$route.params.id;
+      return this.$route.params.id
     },
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user
     },
     sections() {
-      return this.$store.state.editor.sections;
+      return this.$store.state.editor.sections
     },
     published() {
       return this.$store.state.editor.resource
         ? !!this.$store.state.editor.resource.published_at
-        : false;
+        : false
     }
   },
   mounted() {
-    this.$channel.$on("write-submit", result => {
-      this.submitting = result;
-    });
-    this.$channel.$on("auto-save", saving => {
-      this.saving = saving;
-    });
+    this.$channel.$on('write-submit', result => {
+      this.submitting = result
+    })
+    this.$channel.$on('auto-save', saving => {
+      this.saving = saving
+    })
   },
   methods: {
     emitPublish() {
-      this.$channel.$emit("write-publish");
+      this.$channel.$emit('write-publish')
     },
     emitSave() {
-      this.$channel.$emit("write-save");
+      this.$channel.$emit('write-save')
     },
     emitPreview() {
-      this.preview = true;
+      this.preview = true
     },
     emitDestroy() {
-      this.$channel.$emit("write-destroy");
+      this.$channel.$emit('write-destroy')
     }
   }
-};
+}
 </script>

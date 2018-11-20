@@ -77,19 +77,19 @@
 </template>
 
 <script>
-import ImageFlowList from "~/components/flow/list/ImageFlowList";
+import ImageFlowList from '~/components/flow/list/ImageFlowList'
 
 export default {
-  name: "ImageWorld",
+  name: 'ImageWorld',
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("world/getData", {
-        type: "image",
-        sort: "active",
+      store.dispatch('world/getData', {
+        type: 'image',
+        sort: 'active',
         ctx
       }),
-      store.dispatch("world/getMeta", { type: "image" })
-    ]);
+      store.dispatch('world/getMeta', { type: 'image' })
+    ])
   },
   components: {
     ImageFlowList
@@ -97,24 +97,24 @@ export default {
   data() {
     return {
       showTips: false
-    };
+    }
   },
   computed: {
     meta() {
-      return this.$store.state.world.image.meta;
+      return this.$store.state.world.image.meta
     }
   },
   methods: {
     openFeedback() {
-      this.$channel.$emit("open-feedback", {
+      this.$channel.$emit('open-feedback', {
         type: 3,
-        desc: "{?}",
-        placeholder: "请填写你遇到的问题"
-      });
+        desc: '{?}',
+        placeholder: '请填写你遇到的问题'
+      })
     },
     openCreateImage() {
-      this.$channel.$emit("show-upload-image-modal");
+      this.$channel.$emit('show-upload-image-modal')
     }
   }
-};
+}
 </script>

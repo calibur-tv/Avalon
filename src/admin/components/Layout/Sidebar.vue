@@ -139,21 +139,21 @@ $menuHover: #001528;
 </template>
 
 <script>
-import SidebarItem from "./SidebarItem";
+import SidebarItem from './SidebarItem'
 
 export default {
   components: { SidebarItem },
   computed: {
     sidebar() {
-      return this.$store.state.admin.sidebar;
+      return this.$store.state.admin.sidebar
     },
     routes() {
-      return this.$router.options.routes.filter(_ => _.path === "/admin")[0]
-        .children;
+      return this.$router.options.routes.filter(_ => _.path === '/admin')[0]
+        .children
     },
     isCollapse() {
-      return !this.sidebar.opened;
+      return !this.sidebar.opened
     }
   }
-};
+}
 </script>

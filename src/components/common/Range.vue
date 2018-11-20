@@ -98,10 +98,10 @@
 </template>
 
 <script>
-import draggable from "~/assets/js/draggable.js";
+import draggable from '~/assets/js/draggable.js'
 
 export default {
-  name: "VRange",
+  name: 'VRange',
   props: {
     min: {
       type: Number,
@@ -145,121 +145,121 @@ export default {
       curRange: this.value,
       dragState: null,
       offset: 0
-    };
+    }
   },
   computed: {
     containerStyle() {
-      let style = {};
+      let style = {}
       let size = this.tailsize
-        ? (this.tailsize - this.barsize) / 2 + "px"
-        : "0px";
+        ? (this.tailsize - this.barsize) / 2 + 'px'
+        : '0px'
       if (this.vertical) {
-        style.paddingLeft = size;
-        style.paddingRight = size;
-        style.height = "100%";
-        style.width = (this.tailsize || this.barsize) + "px";
+        style.paddingLeft = size
+        style.paddingRight = size
+        style.height = '100%'
+        style.width = (this.tailsize || this.barsize) + 'px'
       } else {
-        style.paddingTop = size;
-        style.paddingBottom = size;
-        style.width = "100%";
-        style.height = (this.tailsize || this.barsize) + "px";
+        style.paddingTop = size
+        style.paddingBottom = size
+        style.width = '100%'
+        style.height = (this.tailsize || this.barsize) + 'px'
       }
 
-      return style;
+      return style
     },
     progressStyle() {
-      this.getOffset();
+      this.getOffset()
 
-      let style = {};
-      let offset = this.progress();
+      let style = {}
+      let offset = this.progress()
 
       if (this.vertical) {
-        style.width = this.barsize + "px";
-        style.height = offset + "%";
-        style.top = 100 - offset + "%";
+        style.width = this.barsize + 'px'
+        style.height = offset + '%'
+        style.top = 100 - offset + '%'
       } else {
-        style.width = offset + "%";
-        style.height = this.barsize + "px";
-        style.left = 0;
+        style.width = offset + '%'
+        style.height = this.barsize + 'px'
+        style.left = 0
       }
 
-      return style;
+      return style
     },
     loadingStyle() {
-      this.getOffset();
+      this.getOffset()
 
       if (this.vertical) {
         return {
-          height: (this.loading / this.max) * 100 + "%",
-          width: this.barsize + "px"
-        };
+          height: (this.loading / this.max) * 100 + '%',
+          width: this.barsize + 'px'
+        }
       }
 
       return {
-        width: (this.loading / this.max) * 100 + "%",
-        height: this.barsize + "px"
-      };
+        width: (this.loading / this.max) * 100 + '%',
+        height: this.barsize + 'px'
+      }
     },
     thumbStyle() {
       if (!this.tailsize) {
-        return {};
+        return {}
       }
 
-      this.getOffset();
+      this.getOffset()
 
-      let style = {};
+      let style = {}
 
-      style.width = this.tailsize + "px";
-      style.height = this.tailsize + "px";
+      style.width = this.tailsize + 'px'
+      style.height = this.tailsize + 'px'
 
       if (this.vertical) {
-        style.top = 100 - this.progress() - this.offset + "%";
+        style.top = 100 - this.progress() - this.offset + '%'
       } else {
-        style.left = this.progress() - this.offset + "%";
+        style.left = this.progress() - this.offset + '%'
       }
 
-      return style;
+      return style
     }
   },
   watch: {
     value(val) {
-      this.curRange = val;
+      this.curRange = val
     },
     curRange(val) {
-      this.$emit("input", val);
+      this.$emit('input', val)
     }
   },
   mounted() {
-    this.getOffset();
+    this.getOffset()
 
     draggable(this.$refs.thumb, {
       start: () => {
-        if (this.disabled) return;
-        this.getThumbPosition();
+        if (this.disabled) return
+        this.getThumbPosition()
       },
       drag: event => {
-        this.handleClick(event);
+        this.handleClick(event)
       },
       end: () => {
-        if (this.disabled) return;
-        this.dragState = null;
+        if (this.disabled) return
+        this.dragState = null
       }
-    });
+    })
 
-    window.addEventListener("resize", () => {
-      this.getOffset();
-    });
+    window.addEventListener('resize', () => {
+      this.getOffset()
+    })
   },
   methods: {
     progress() {
-      const value = this.value;
+      const value = this.value
       if (
-        typeof value === "undefined" ||
+        typeof value === 'undefined' ||
         value === null ||
         value - this.min === 0
       )
-        return 0;
-      return Math.floor(((value - this.min) / (this.max - this.min)) * 100);
+        return 0
+      return Math.floor(((value - this.min) / (this.max - this.min)) * 100)
     },
     getOffset() {
       if (this.$refs.content) {
@@ -268,65 +268,65 @@ export default {
             (this.vertical
               ? this.$refs.content.offsetHeight
               : this.$refs.content.offsetWidth)) *
-          50;
+          50
       }
     },
     handleClick(event) {
-      if (this.disabled) return;
-      this.getOffset();
-      this.getPosition(event);
+      if (this.disabled) return
+      this.getOffset()
+      this.getPosition(event)
     },
     getPosition(event) {
-      const contentBox = this.$refs.content.getBoundingClientRect();
-      let delta, newPosition, baseOffset, maxOffset;
+      const contentBox = this.$refs.content.getBoundingClientRect()
+      let delta, newPosition, baseOffset, maxOffset
       if (!this.dragState) {
-        this.getThumbPosition();
+        this.getThumbPosition()
       }
 
       if (this.vertical) {
-        baseOffset = this.dragState.y;
-        maxOffset = contentBox.height;
-        delta = event.pageY - contentBox.top - baseOffset - window.scrollY;
+        baseOffset = this.dragState.y
+        maxOffset = contentBox.height
+        delta = event.pageY - contentBox.top - baseOffset - window.scrollY
       } else {
-        baseOffset = this.dragState.x;
-        maxOffset = contentBox.width;
-        delta = event.pageX - contentBox.left - baseOffset - window.scrollX;
+        baseOffset = this.dragState.x
+        maxOffset = contentBox.width
+        delta = event.pageX - contentBox.left - baseOffset - window.scrollX
       }
 
       if (this.step) {
-        const stepCount = Math.ceil((this.max - this.min) / this.step);
+        const stepCount = Math.ceil((this.max - this.min) / this.step)
         newPosition =
-          baseOffset + delta - ((baseOffset + delta) % (maxOffset / stepCount));
+          baseOffset + delta - ((baseOffset + delta) % (maxOffset / stepCount))
       } else {
-        newPosition = baseOffset + delta;
+        newPosition = baseOffset + delta
       }
 
-      let newProgress = newPosition / maxOffset;
+      let newProgress = newPosition / maxOffset
 
       if (newProgress < 0) {
-        newProgress = 0;
+        newProgress = 0
       } else if (newProgress > 1) {
-        newProgress = 1;
+        newProgress = 1
       }
 
       if (this.vertical) {
-        newProgress = 1 - newProgress;
+        newProgress = 1 - newProgress
       }
 
-      const result = Math.round(this.min + newProgress * (this.max - this.min));
+      const result = Math.round(this.min + newProgress * (this.max - this.min))
 
-      this.$emit("rangeChangeEvent", result);
-      this.curRange = result;
+      this.$emit('rangeChangeEvent', result)
+      this.curRange = result
     },
     getThumbPosition() {
-      const contentBox = this.$refs.content.getBoundingClientRect();
-      const thumbBox = this.$refs.thumb.getBoundingClientRect();
+      const contentBox = this.$refs.content.getBoundingClientRect()
+      const thumbBox = this.$refs.thumb.getBoundingClientRect()
 
       this.dragState = {
         x: thumbBox.left - contentBox.left,
         y: thumbBox.top - contentBox.top
-      };
+      }
     }
   }
-};
+}
 </script>

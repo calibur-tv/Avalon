@@ -70,64 +70,64 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
-  name: "AppTemplate",
+  name: 'AppTemplate',
   mixins: [pageMixin],
   data() {
     return {
       showCreateModal: false,
-      jsonStr: "",
+      jsonStr: '',
       loading: false
-    };
+    }
   },
   computed: {
     isKing() {
-      return this.$store.state.user.id === 1;
+      return this.$store.state.user.id === 1
     }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
-      const data = await api.getAppTemplates();
-      this.pageState.cur = 1;
-      this.pageState.size = 15;
-      this.pageState.total = data.length;
-      this.pageList = data;
-      this.pageLoading = false;
+      this.pageLoading = true
+      const api = new Api(this)
+      const data = await api.getAppTemplates()
+      this.pageState.cur = 1
+      this.pageState.size = 15
+      this.pageState.total = data.length
+      this.pageList = data
+      this.pageLoading = false
     },
     async submit() {
       if (this.loading) {
-        return;
+        return
       }
       try {
-        const dataObj = JSON.parse(this.jsonStr);
-        const list = [];
+        const dataObj = JSON.parse(this.jsonStr)
+        const list = []
         Object.keys(dataObj).forEach(key => {
           list.push({
-            version: key.split("-v")[1],
-            page: key.split("-v")[0],
+            version: key.split('-v')[1],
+            page: key.split('-v')[0],
             url: dataObj[key].file
-          });
-        });
-        const api = new Api(this);
-        this.loading = true;
+          })
+        })
+        const api = new Api(this)
+        this.loading = true
         await api.setAppTemplates({
           list
-        });
-        this.$toast.success("更新成功！").then(() => {
-          window.location.reload();
-        });
+        })
+        this.$toast.success('更新成功！').then(() => {
+          window.location.reload()
+        })
       } catch (e) {
-        this.$toast.error(typeof e === "string" ? e : "数据格式错误，不是JSON");
+        this.$toast.error(typeof e === 'string' ? e : '数据格式错误，不是JSON')
       }
     }
   }
-};
+}
 </script>

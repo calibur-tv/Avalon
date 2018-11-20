@@ -138,198 +138,194 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
     return {
       list: [],
       loading: true
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     computeAlbumHref(image) {
       if (image.bangumi_id) {
-        return this.$alias.image(image.id);
+        return this.$alias.image(image.id)
       }
-      return this.$alias.image(image.album_id);
+      return this.$alias.image(image.album_id)
     },
     getData() {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .getTrialImages()
         .then(data => {
-          this.list = data;
-          this.loading = false;
+          this.list = data
+          this.loading = false
         })
         .catch(e => {
-          this.$toast.error(e);
-          this.loading = false;
-        });
+          this.$toast.error(e)
+          this.loading = false
+        })
     },
     deleteImage(image, index) {
-      this.$confirm("确定要删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteImage({
               id: image.id,
-              type: image.bangumi_id ? "album" : "image"
+              type: image.bangumi_id ? 'album' : 'image'
             })
             .then(() => {
-              this.list.splice(index, 1);
-              this.$channel.$emit("admin-trial-do", {
-                type: "images"
-              });
+              this.list.splice(index, 1)
+              this.$channel.$emit('admin-trial-do', {
+                type: 'images'
+              })
             })
             .catch(e => {
-              console.log(e);
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     passImage(image, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .passImage({
           id: image.id,
-          type: image.bangumi_id ? "album" : "image"
+          type: image.bangumi_id ? 'album' : 'image'
         })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "images"
-          });
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'images'
+          })
         })
         .catch(e => {
-          console.log(e);
-          this.$message.error(e);
-        });
+          this.$message.error(e)
+        })
     },
     approveImage(image, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .approveImage({
           id: image.id,
-          type: image.bangumi_id ? "album" : "image"
+          type: image.bangumi_id ? 'album' : 'image'
         })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "images"
-          });
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'images'
+          })
         })
         .catch(e => {
-          console.log(e);
-          this.$message.error(e);
-        });
+          this.$message.error(e)
+        })
     },
     rejectImage(image, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .rejectImage({
           id: image.id,
-          type: image.bangumi_id ? "album" : "image"
+          type: image.bangumi_id ? 'album' : 'image'
         })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "images"
-          });
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'images'
+          })
         })
         .catch(e => {
-          console.log(e);
-          this.$message.error(e);
-        });
+          this.$message.error(e)
+        })
     },
     quickDeleteAlbum() {
-      this.$prompt("请输入相册id", "删除相册", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入相册id', '删除相册', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteImage({
               id: value,
-              type: "album"
+              type: 'album'
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     quickDeleteAlbumPoster() {
-      this.$prompt("请输入图片id", "删除图片", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入图片id', '删除图片', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteImagePoster({
               id: value
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     quickDeleteImage() {
-      this.$prompt("请输入图片id", "删除图片", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入图片id', '删除图片', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteImage({
               id: value,
-              type: "image"
+              type: 'image'
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

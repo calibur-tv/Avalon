@@ -15,7 +15,7 @@
     border-color: #9266f9;
 
     &:before {
-      content: "\e63f";
+      content: '\e63f';
     }
   }
 
@@ -24,7 +24,7 @@
     border-color: #56b6e7;
 
     &:before {
-      content: "\e68b";
+      content: '\e68b';
     }
   }
 
@@ -33,7 +33,7 @@
     border-color: #ff763b;
 
     &:before {
-      content: "\e60e";
+      content: '\e60e';
     }
   }
 
@@ -42,7 +42,7 @@
     border-color: #33b045;
 
     &:before {
-      content: "\e601";
+      content: '\e601';
     }
   }
 
@@ -51,7 +51,7 @@
     border-color: #fdbe3d;
 
     &:before {
-      content: "\e7f6";
+      content: '\e7f6';
     }
   }
 
@@ -60,7 +60,7 @@
     border-color: #7bc549;
 
     &:before {
-      content: "\e673";
+      content: '\e673';
     }
 
     .wechat-qrcode {
@@ -116,7 +116,7 @@
       }
 
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         left: 50%;
         margin-left: -6px;
@@ -159,7 +159,7 @@
       text-align: center;
       vertical-align: middle;
       transition: background 0.6s ease-out 0s;
-      font-family: "iconfont" !important;
+      font-family: 'iconfont' !important;
       margin: 4px;
 
       &:hover {
@@ -259,7 +259,7 @@
         }
 
         &:after {
-          content: "";
+          content: '';
           position: absolute;
           left: 50%;
           margin-left: -6px;
@@ -412,28 +412,28 @@
 
 <script>
 export default {
-  name: "VShare",
+  name: 'VShare',
   props: {
     image: {
       type: String,
-      default: ""
+      default: ''
     },
     title: {
       type: String,
-      default: ""
+      default: ''
     },
     desc: {
       type: String,
-      default: ""
+      default: ''
     },
     type: {
       type: String,
       required: true,
-      validator: val => ~["button", "panel"].indexOf(val)
+      validator: val => ~['button', 'panel'].indexOf(val)
     },
     url: {
       type: String,
-      default: ""
+      default: ''
     },
     showText: {
       type: Boolean,
@@ -442,83 +442,83 @@ export default {
   },
   data() {
     return {
-      weiboKey: "",
+      weiboKey: '',
       canRender: false
-    };
+    }
   },
   computed: {
     shareUrl() {
       return this.url
         ? `${window.location.origin}${this.url}`
-        : `${window.location.origin}${this.$route.fullPath}`;
+        : `${window.location.origin}${this.$route.fullPath}`
     }
   },
   mounted() {
-    this.canRender = true;
-    this.makeWechatQrCode();
+    this.canRender = true
+    this.makeWechatQrCode()
   },
   methods: {
     shareTitle() {
       return `${this.title || document.title} - ${
-        document.querySelector("meta[name=description]").content
-      }`;
+        document.querySelector('meta[name=description]').content
+      }`
     },
     shareDesc() {
       return `${(
-        this.desc || document.querySelector("meta[name=description]").content
-      ).substring(0, 100)}...`;
+        this.desc || document.querySelector('meta[name=description]').content
+      ).substring(0, 100)}...`
     },
     shareImage() {
       if (this.image) {
-        return this.image;
+        return this.image
       }
-      const images = document.querySelectorAll(".share-img");
+      const images = document.querySelectorAll('.share-img')
       if (!images.length) {
-        return "";
+        return ''
       }
-      return images[images.length - 1];
+      return images[images.length - 1]
     },
     shareSource() {
       return (
-        (document.querySelector("meta[name=site]") &&
-          document.querySelector("meta[name=site]").content) ||
+        (document.querySelector('meta[name=site]') &&
+          document.querySelector('meta[name=site]').content) ||
         document.title
-      );
+      )
     },
     makeUrl(type) {
-      let result = "/";
-      if (type === "weibo") {
+      let result = '/'
+      if (type === 'weibo') {
         result = `https://service.weibo.com/share/share.php?url=${
           this.shareUrl
         }&title=${this.shareTitle()}&pic=${this.shareImage()}&appkey=${
           this.weiboKey
-        }`;
-      } else if (type === "qq") {
+        }`
+      } else if (type === 'qq') {
         result = `http://connect.qq.com/widget/shareqq/index.html?url=${
           this.shareUrl
-        }&title=${this.shareTitle()}&source=${this.shareSource()}&desc=${this.shareDesc()}&pics=${this.shareImage()}&summary="${this.shareDesc()}"`;
-      } else if (type === "douban") {
+        }&title=${this.shareTitle()}&source=${this.shareSource()}&desc=${this.shareDesc()}&pics=${this.shareImage()}&summary="${this.shareDesc()}"`
+      } else if (type === 'douban') {
         result = `http://shuo.douban.com/!service/share?href=${
           this.shareUrl
-        }&name=${this.shareTitle()}&text=${this.shareDesc()}&image=${this.shareImage()}&starid=0&aid=0&style=11`;
-      } else if (type === "qzone") {
+        }&name=${this.shareTitle()}&text=${this.shareDesc()}&image=${this.shareImage()}&starid=0&aid=0&style=11`
+      } else if (type === 'qzone') {
         result = `http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${
           this.shareUrl
-        }&title=${this.shareTitle()}&desc=${this.shareDesc()}&summary=${this.shareDesc()}&site=${this.shareSource()}`;
+        }&title=${this.shareTitle()}&desc=${this.shareDesc()}&summary=${this.shareDesc()}&site=${this.shareSource()}`
       }
-      window.open(result);
+      window.open(result)
     },
     makeWechatQrCode() {
-      if (this.type === "button") {
-        return;
+      if (this.type === 'button') {
+        return
       }
       this.$nextTick(() => {
-        this.$QRCode(this.$refs.qr, this.shareUrl, { width: 105, height: 105 });
-      });
+        this.$QRCode(this.$refs.qr, this.shareUrl, { width: 105, height: 105 })
+      })
     },
     handleCopySuccess() {
-      this.$toast.success("复制成功");
+      this.$toast.success('复制成功')
     }
   }
-};
+}
 </script>

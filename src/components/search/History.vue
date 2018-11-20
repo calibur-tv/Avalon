@@ -37,68 +37,68 @@
 
 <script>
 export default {
-  name: "VSearchHistory",
+  name: 'VSearchHistory',
   data() {
     return {
-      cacheKey: "search-history",
+      cacheKey: 'search-history',
       list: [],
       maxLen: 5
-    };
+    }
   },
   mounted() {
     // eslint-disable-next-line
-    this.$channel.$on("search-action", ({ text, type }) => {
-      this.set(text);
-    });
-    this.list = this.get();
+    this.$channel.$on('search-action', ({ text, type }) => {
+      this.set(text)
+    })
+    this.list = this.get()
   },
   methods: {
     query(q) {
-      this.set(q);
+      this.set(q)
       this.$router.push({
-        name: "search-index",
-        query: { q, type: "all" }
-      });
+        name: 'search-index',
+        query: { q, type: 'all' }
+      })
     },
     set(q) {
       setTimeout(() => {
-        const list = this.get();
-        const index = list.indexOf(q);
+        const list = this.get()
+        const index = list.indexOf(q)
         if (index !== -1) {
-          list.splice(index, 1);
+          list.splice(index, 1)
         }
-        list.unshift(q);
+        list.unshift(q)
         if (list.length > this.maxLen) {
-          list.pop();
+          list.pop()
         }
-        this.list = list;
+        this.list = list
         try {
-          localStorage.setItem(this.cacheKey, JSON.stringify(list));
+          localStorage.setItem(this.cacheKey, JSON.stringify(list))
         } catch (e) {}
-      }, 0);
+      }, 0)
     },
     get() {
       try {
-        return JSON.parse(localStorage.getItem(this.cacheKey)) || [];
+        return JSON.parse(localStorage.getItem(this.cacheKey)) || []
       } catch (e) {
-        return [];
+        return []
       }
     },
     clear() {
       try {
-        localStorage.removeItem(this.cacheKey);
+        localStorage.removeItem(this.cacheKey)
       } catch (e) {}
-      this.list = [];
+      this.list = []
     },
     del(q) {
-      const list = this.get();
-      const index = list.indexOf(q);
-      list.splice(index, 1);
+      const list = this.get()
+      const index = list.indexOf(q)
+      list.splice(index, 1)
       try {
-        localStorage.setItem(this.cacheKey, JSON.stringify(list));
+        localStorage.setItem(this.cacheKey, JSON.stringify(list))
       } catch (e) {}
-      this.list.splice(index, 1);
+      this.list.splice(index, 1)
     }
   }
-};
+}
 </script>

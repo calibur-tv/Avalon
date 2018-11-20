@@ -4,8 +4,8 @@ $avatar-height: 36px;
 
 .header {
   .nav-link {
-    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei",
-      "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei',
+      'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
   }
 
   .nav {
@@ -209,7 +209,7 @@ $avatar-height: 36px;
       background-position: center left;
       background-size: contain;
       background-repeat: no-repeat;
-      background-image: url("https://image.calibur.tv/banner/3-1.png?imageMogr2/auto-orient/strip");
+      background-image: url('https://image.calibur.tv/banner/3-1.png?imageMogr2/auto-orient/strip');
       margin-top: 30px;
       margin-left: 5px;
     }
@@ -630,13 +630,13 @@ $search-height: 32px;
 </template>
 
 <script>
-import UserApi from "~/api/userApi";
-import vSearch from "~/components/search/Input";
-import vSearchHistory from "~/components/search/History";
-import vNotifications from "~/components/layouts/Notifications";
+import UserApi from '~/api/userApi'
+import vSearch from '~/components/search/Input'
+import vSearchHistory from '~/components/search/History'
+import vNotifications from '~/components/layouts/Notifications'
 
 export default {
-  name: "VHeader",
+  name: 'VHeader',
   components: {
     vSearch,
     vSearchHistory,
@@ -645,140 +645,140 @@ export default {
   props: {
     type: {
       type: String,
-      default: "banner",
-      validator: val => ~["mask", "pure", "banner"].indexOf(val)
+      default: 'banner',
+      validator: val => ~['mask', 'pure', 'banner'].indexOf(val)
     },
     banner: {
       type: String,
-      default: ""
+      default: ''
     },
     height: {
       type: String,
-      default: "200px"
+      default: '200px'
     },
     marginBottom: {
       type: String,
-      default: "35px"
+      default: '35px'
     }
   },
   data() {
     return {
       scrollFlag: false,
       showNotification: false
-    };
+    }
   },
   computed: {
     defaultBanner() {
       return this.$store.state.pageData
         ? this.$store.state.pageData.page_banner
-        : "";
+        : ''
     },
     navClassList() {
-      const result = [this.$style.nav];
-      const type = this.type;
+      const result = [this.$style.nav]
+      const type = this.type
       if (this.scrollFlag) {
-        result.push(this.$style.navFixed);
-        result.push(this.$style.navPure);
-        result.push("nav-pure");
+        result.push(this.$style.navFixed)
+        result.push(this.$style.navPure)
+        result.push('nav-pure')
       } else {
         result.push(
-          type === "banner" ? this.$style.navAbs : this.$style.navFixed
-        );
+          type === 'banner' ? this.$style.navAbs : this.$style.navFixed
+        )
         result.push(
-          type === "mask"
+          type === 'mask'
             ? this.$style.navMask
-            : type === "banner"
+            : type === 'banner'
               ? this.$style.navBanner
               : this.$style.navPure
-        );
-        result.push(`nav-${type}`);
+        )
+        result.push(`nav-${type}`)
       }
-      return result;
+      return result
     },
     bannerImage() {
       return {
         backgroundImage: `url(${this.$resize(
-          this.type === "banner"
+          this.type === 'banner'
             ? this.banner || this.defaultBanner
             : this.banner,
           { width: 2048, mode: 0 }
         )})`
-      };
+      }
     },
     convertBannerHeight() {
-      const matched = this.height.match(/(\d+)px$/);
-      return matched ? +matched[1] : +this.height.replace("%", "");
+      const matched = this.height.match(/(\d+)px$/)
+      return matched ? +matched[1] : +this.height.replace('%', '')
     },
     normalBannerBgStyle() {
-      let height;
-      let top;
+      let height
+      let top
 
-      const compute = this.convertBannerHeight;
+      const compute = this.convertBannerHeight
 
       if (this.height.match(/(\d+)px$/)) {
-        height = `${compute * 1.25}px`;
-        top = `${-compute * 0.125}px`;
+        height = `${compute * 1.25}px`
+        top = `${-compute * 0.125}px`
       } else {
-        height = `${compute * 1.25}%`;
-        top = `${-compute * 0.125}%`;
+        height = `${compute * 1.25}%`
+        top = `${-compute * 0.125}%`
       }
 
       return Object.assign({}, this.bannerImage, {
         height,
         top
-      });
+      })
     },
     isLogin() {
-      return this.$store.state.login;
+      return this.$store.state.login
     },
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user
     },
     notificationsCount() {
       const result =
-        this.user.notification - this.$store.state.users.notifications.checked;
-      return result < 0 ? 0 : result;
+        this.user.notification - this.$store.state.users.notifications.checked
+      return result < 0 ? 0 : result
     }
   },
   mounted() {
-    document.addEventListener("scroll", this.handleScroll);
-    this.$channel.$on("page-switch", () => {
-      this.resetNotification();
-    });
+    document.addEventListener('scroll', this.handleScroll)
+    this.$channel.$on('page-switch', () => {
+      this.resetNotification()
+    })
   },
   beforeDestroy() {
-    this.$channel.$off("page-switch");
-    document.removeEventListener("scroll", this.handleScroll);
+    this.$channel.$off('page-switch')
+    document.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     signIn() {
-      this.$channel.$emit("sign-in");
+      this.$channel.$emit('sign-in')
     },
     signUp() {
-      this.$channel.$emit("sign-up");
+      this.$channel.$emit('sign-up')
     },
     signOut() {
-      this.$cookie.remove("JWT-TOKEN");
-      const api = new UserApi(this);
-      api.logout();
-      window.location.href = "/";
+      this.$cookie.remove('JWT-TOKEN')
+      const api = new UserApi(this)
+      api.logout()
+      window.location.href = '/'
     },
     handleScroll() {
       this.scrollFlag =
         window.scrollY >
-        (this.type === "mask"
+        (this.type === 'mask'
           ? this.convertBannerHeight - 100
-          : this.convertBannerHeight);
+          : this.convertBannerHeight)
     },
     resetNotification() {
       if (!this.isLogin) {
-        return;
+        return
       }
       if (!this.showNotification) {
-        this.$store.commit("users/RESET_NOTIFICATION");
+        this.$store.commit('users/RESET_NOTIFICATION')
       }
-      this.$store.dispatch("getNotification", this);
+      this.$store.dispatch('getNotification', this)
     }
   }
-};
+}
 </script>

@@ -249,42 +249,42 @@
 </template>
 
 <script>
-import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
-import CommentMain from "~/components/comments/CommentMain";
+import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
+import CommentMain from '~/components/comments/CommentMain'
 
 export default {
-  name: "RoleShow",
+  name: 'RoleShow',
   async asyncData({ store, route, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("cartoonRole/getRoleInfo", { ctx, id }),
-      store.dispatch("cartoonRole/getFansList", {
+      store.dispatch('cartoonRole/getRoleInfo', { ctx, id }),
+      store.dispatch('cartoonRole/getFansList', {
         ctx,
         bangumiId: 0,
         roleId: id,
-        sort: "new",
+        sort: 'new',
         reset: false
       }),
-      store.dispatch("comment/getMainComments", {
+      store.dispatch('comment/getMainComments', {
         ctx,
         id,
-        type: "role",
-        seeReplyId: route.query["comment-id"]
+        type: 'role',
+        seeReplyId: route.query['comment-id']
       })
-    ]);
+    ])
   },
   head() {
     return {
       title: `${this.role.name} - 角色`,
       meta: [
-        { hid: "description", name: "description", content: this.role.intro },
+        { hid: 'description', name: 'description', content: this.role.intro },
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,角色,天下漫友是一家,${this.role.alias}`
         }
       ]
-    };
+    }
   },
   components: {
     CreateRoleForm,
@@ -295,100 +295,100 @@ export default {
       toggleFansListModal: false,
       loadingRoleFans: false,
       showEditModal: false,
-      focusRoleSort: "new"
-    };
+      focusRoleSort: 'new'
+    }
   },
   computed: {
     id() {
-      return +this.$route.params.id;
+      return +this.$route.params.id
     },
     info() {
-      return this.$store.state.cartoonRole.info;
+      return this.$store.state.cartoonRole.info
     },
     role() {
-      return this.info.data;
+      return this.info.data
     },
     bangumi() {
-      return this.info.bangumi;
+      return this.info.bangumi
     },
     fans() {
-      return this.$store.state.cartoonRole.fans.new;
+      return this.$store.state.cartoonRole.fans.new
     },
     computeRoleAlias() {
-      return this.role.alias.split(",");
+      return this.role.alias.split(',')
     },
     displayFans() {
-      return this.fans.data.slice(0, 6);
+      return this.fans.data.slice(0, 6)
     },
     fansModalData() {
-      return this.focusRoleSort === "new"
+      return this.focusRoleSort === 'new'
         ? this.fans.data
-        : this.$store.state.cartoonRole.fans.hot.data;
+        : this.$store.state.cartoonRole.fans.hot.data
     },
     noMoreFans() {
-      return this.$store.state.cartoonRole.fans[this.focusRoleSort].noMore;
+      return this.$store.state.cartoonRole.fans[this.focusRoleSort].noMore
     }
   },
   methods: {
     handleFollowBangumiAction(result) {
-      this.$store.commit("cartoonRole/FOLLOW_ROLE_BANGUMI", { result });
+      this.$store.commit('cartoonRole/FOLLOW_ROLE_BANGUMI', { result })
     },
     async handleStarRole() {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (!this.$store.state.user.coin) {
-        this.$toast.error("团子不足");
-        return;
+        this.$toast.error('团子不足')
+        return
       }
       try {
-        await this.$store.dispatch("cartoonRole/star", {
+        await this.$store.dispatch('cartoonRole/star', {
           bangumiId: this.bangumi.id,
           roleId: this.id,
           ctx: this,
           hasStar: this.role.hasStar
-        });
-        this.$store.commit("USE_COIN");
-        this.$toast.success(`+${this.role.hasStar}s`);
+        })
+        this.$store.commit('USE_COIN')
+        this.$toast.success(`+${this.role.hasStar}s`)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     async fetchRoleFans(init = false) {
       if (init && this.fansModalData.length > 10) {
-        return;
+        return
       }
       if (this.loadingRoleFans) {
-        return;
+        return
       }
-      this.loadingRoleFans = true;
+      this.loadingRoleFans = true
       try {
-        await this.$store.dispatch("cartoonRole/getFansList", {
+        await this.$store.dispatch('cartoonRole/getFansList', {
           ctx: this,
           bangumiId: this.bangumi.id,
           roleId: this.id,
           sort: this.focusRoleSort
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingRoleFans = false;
+        this.loadingRoleFans = false
       }
     },
     openFansModal(sort) {
-      this.focusRoleSort = sort;
-      this.toggleFansListModal = true;
-      this.fetchRoleFans(true);
+      this.focusRoleSort = sort
+      this.toggleFansListModal = true
+      this.fetchRoleFans(true)
     },
     cartoonRoleEditSuccess() {
-      this.$toast.success("编辑成功");
-      this.showEditModal = false;
-      window.location.reload();
+      this.$toast.success('编辑成功')
+      this.showEditModal = false
+      window.location.reload()
     },
     showEditRoleModal() {
-      this.showEditModal = true;
+      this.showEditModal = true
     }
   }
-};
+}
 </script>

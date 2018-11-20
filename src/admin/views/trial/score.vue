@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import Api from "~/api/scoreApi";
-import JsonContent from "~/components/jsonEditor/JsonContent";
+import Api from '~/api/scoreApi'
+import JsonContent from '~/components/jsonEditor/JsonContent'
 
 export default {
   components: {
@@ -115,111 +115,111 @@ export default {
     return {
       list: [],
       loading: true
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .trials()
         .then(data => {
-          this.list = data;
-          this.loading = false;
+          this.list = data
+          this.loading = false
         })
         .catch(err => {
-          this.$toast.error(err);
-          this.loading = false;
-        });
+          this.$toast.error(err)
+          this.loading = false
+        })
     },
     ban(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .ban({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "score"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'score'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     pass(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .pass({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "score"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'score'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     approve(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .approve({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "score"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'score'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     reject(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .reject({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "score"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'score'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     quickDelete() {
-      this.$prompt("请输入漫评id", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入漫评id', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .ban({
               id: value
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

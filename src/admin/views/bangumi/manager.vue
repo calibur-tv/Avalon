@@ -85,8 +85,8 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import ToggleApi from "~/api/toggleApi";
+import Api from '~/api/adminApi'
+import ToggleApi from '~/api/toggleApi'
 
 export default {
   data() {
@@ -94,117 +94,117 @@ export default {
       bangumiId: 0,
       list: [],
       loading: false
-    };
+    }
   },
   computed: {
     isKing() {
-      return this.$store.state.user.id === 1;
+      return this.$store.state.user.id === 1
     }
   },
   methods: {
     searchBangumiManager(id) {
       if (id === this.bangumiId) {
-        return;
+        return
       }
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      this.bangumiId = id;
-      this.searchManagers();
+      this.loading = true
+      this.bangumiId = id
+      this.searchManagers()
     },
     async searchManagers() {
-      const api = new ToggleApi(this);
+      const api = new ToggleApi(this)
       try {
         const data = await api.users({
-          type: "contributors",
-          model: "bangumi",
+          type: 'contributors',
+          model: 'bangumi',
           id: this.bangumiId
-        });
-        this.list = data.list;
+        })
+        this.list = data.list
       } catch (err) {
-        this.$toast.error(err);
+        this.$toast.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     addManager() {
       if (!this.bangumiId) {
-        this.$toast.error("请先选择番剧");
-        return;
+        this.$toast.error('请先选择番剧')
+        return
       }
-      this.$prompt("请输入用户id", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入用户id', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .setBangumiManager({
               bangumi_id: this.bangumiId,
               user_id: value
             })
             .then(() => {
-              this.$toast.success("操作成功");
-              window.location.reload();
+              this.$toast.success('操作成功')
+              window.location.reload()
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     removeManager(userId, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .removeBangumiManager({
           bangumi_id: this.bangumiId,
           user_id: userId
         })
         .then(() => {
-          this.$toast.success("操作成功");
-          this.list.splice(index, 1);
+          this.$toast.success('操作成功')
+          this.list.splice(index, 1)
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     upgradeManager(userId, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .upgradeBangumiManager({
           bangumi_id: this.bangumiId,
           user_id: userId
         })
         .then(() => {
-          this.$toast.success("操作成功");
-          this.list[index].is_leader = 1;
+          this.$toast.success('操作成功')
+          this.list[index].is_leader = 1
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     downgradeManager(userId, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .downgradeBangumiManager({
           bangumi_id: this.bangumiId,
           user_id: userId
         })
         .then(() => {
-          this.$toast.success("操作成功");
-          this.list[index].is_leader = 0;
+          this.$toast.success('操作成功')
+          this.list[index].is_leader = 0
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     }
   }
-};
+}
 </script>

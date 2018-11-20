@@ -57,19 +57,19 @@
 </template>
 
 <script>
-import QuestionFlowList from "~/components/flow/list/QuestionFlowList";
+import QuestionFlowList from '~/components/flow/list/QuestionFlowList'
 
 export default {
-  name: "QuestionWorld",
+  name: 'QuestionWorld',
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("world/getData", {
-        type: "question",
-        sort: "active",
+      store.dispatch('world/getData', {
+        type: 'question',
+        sort: 'active',
         ctx
       }),
-      store.dispatch("world/getMeta", { type: "question" })
-    ]);
+      store.dispatch('world/getMeta', { type: 'question' })
+    ])
   },
   components: {
     QuestionFlowList
@@ -77,17 +77,17 @@ export default {
   data() {
     return {
       showTips: false
-    };
+    }
   },
   computed: {
     meta() {
-      return this.$store.state.world.question.meta;
+      return this.$store.state.world.question.meta
     }
   },
   methods: {
     openCreateQuestion() {
-      this.$channel.$emit("show-create-question-modal");
+      this.$channel.$emit('show-create-question-modal')
     }
   }
-};
+}
 </script>

@@ -64,60 +64,60 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
-  name: "FriendLink",
+  name: 'FriendLink',
   mixins: [pageMixin],
   data() {
     return {
       showCreateModal: false,
-      name: "",
-      link: ""
-    };
+      name: '',
+      link: ''
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
-      const data = await api.getFriendLinks();
-      this.pageState.cur = 1;
-      this.pageState.size = 15;
-      this.pageState.total = data.length;
-      this.pageList = data;
-      this.pageLoading = false;
+      this.pageLoading = true
+      const api = new Api(this)
+      const data = await api.getFriendLinks()
+      this.pageState.cur = 1
+      this.pageState.size = 15
+      this.pageState.total = data.length
+      this.pageList = data
+      this.pageLoading = false
     },
     async createFriendLink() {
-      const api = new Api(this);
+      const api = new Api(this)
       try {
         api.addFriendLink({
-          link: this.link.split("?")[0],
+          link: this.link.split('?')[0],
           name: this.name
-        });
+        })
         this.pageList.unshift({
-          link: this.link.split("?")[0],
+          link: this.link.split('?')[0],
           name: this.name
-        });
-        this.$toast.success("操作成功");
-        this.showCreateModal = false;
-        this.name = "";
-        this.link = "";
+        })
+        this.$toast.success('操作成功')
+        this.showCreateModal = false
+        this.name = ''
+        this.link = ''
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     async removeFriendLink(index, row) {
-      this.$confirm("确定要删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .delFriendLink({
               link: row.link
@@ -126,16 +126,15 @@ export default {
               this.pageList.splice(
                 (this.pageState.cur - 1) * this.pageState.size + index,
                 1
-              );
-              this.$toast.success("操作成功");
+              )
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              console.log(e);
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

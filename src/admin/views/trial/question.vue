@@ -149,118 +149,118 @@
 </template>
 
 <script>
-import Api from "~/api/questionApi";
+import Api from '~/api/questionApi'
 
 export default {
   data() {
     return {
       list: [],
       loading: true
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .questionTrials()
         .then(data => {
-          this.list = data;
-          this.loading = false;
+          this.list = data
+          this.loading = false
         })
         .catch(err => {
-          this.$toast.error(err);
-          this.loading = false;
-        });
+          this.$toast.error(err)
+          this.loading = false
+        })
     },
     ban(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .questionBan({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "question"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'question'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     pass(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .questionPass({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "question"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'question'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     approve(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .questionApprove({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "question"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'question'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     reject(id, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .questionReject({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "question"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'question'
+          })
         })
         .catch(err => {
-          this.$toast.error(err);
-        });
+          this.$toast.error(err)
+        })
     },
     quickDelete() {
-      this.$prompt("请输入问题id", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入问题id', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .questionBan({
               id: value
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

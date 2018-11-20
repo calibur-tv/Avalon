@@ -194,7 +194,7 @@
 
 <script>
 export default {
-  name: "ScoreFlowItem",
+  name: 'ScoreFlowItem',
   props: {
     item: {
       required: true,
@@ -206,18 +206,18 @@ export default {
     },
     userZone: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       noScore: 0
-    };
+    }
   },
   computed: {
     starCount() {
-      return this.item.total / 2;
+      return this.item.total / 2
     }
   }
-};
+}
 </script>

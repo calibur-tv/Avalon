@@ -6,7 +6,7 @@
     margin-left: -$time-size / 2;
 
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       display: block;
       left: 14.5px;
@@ -31,7 +31,7 @@
         margin-top: 20px;
 
         &:before {
-          content: "";
+          content: '';
           position: absolute;
           left: 0;
           top: 0;
@@ -43,7 +43,7 @@
         }
 
         &:after {
-          content: "";
+          content: '';
           position: absolute;
           left: 7px;
           top: 7px;
@@ -154,46 +154,46 @@
 </template>
 
 <script>
-import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
+import BangumiRecommended from '~/components/bangumi/BangumiRecommended'
 
 export default {
-  name: "BangumiTimeline",
+  name: 'BangumiTimeline',
   components: {
     BangumiRecommended
   },
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("bangumi/getTimeline", ctx),
-      store.dispatch("bangumi/getRecommended")
-    ]);
+      store.dispatch('bangumi/getTimeline', ctx),
+      store.dispatch('bangumi/getRecommended')
+    ])
   },
   head: {
-    title: "时间轴 - 番剧"
+    title: '时间轴 - 番剧'
   },
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     timeline() {
-      return this.$store.state.bangumi.timeline.data;
+      return this.$store.state.bangumi.timeline.data
     },
     noMore() {
-      return this.$store.state.bangumi.timeline.noMore;
+      return this.$store.state.bangumi.timeline.noMore
     }
   },
   methods: {
     async loadMore() {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("bangumi/getTimeline");
+        await this.$store.dispatch('bangumi/getTimeline')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

@@ -101,7 +101,7 @@ $textarea-padding-right: 15px;
 
 <script>
 export default {
-  name: "TxtPreview",
+  name: 'TxtPreview',
   props: {
     item: {
       required: true,
@@ -111,43 +111,43 @@ export default {
   data() {
     return {
       saving: false
-    };
+    }
   },
   computed: {
     text: {
       get() {
-        return this.item.text.replace(/<br>/g, "\n");
+        return this.item.text.replace(/<br>/g, '\n')
       },
       set(value) {
-        this.$store.commit("editor/UPDATE_SECTION_TEXT", {
-          value: value.replace(/\n/g, "<br>")
-        });
+        this.$store.commit('editor/UPDATE_SECTION_TEXT', {
+          value: value.replace(/\n/g, '<br>')
+        })
       }
     },
     title: {
       get() {
-        return this.item.title;
+        return this.item.title
       },
       set(value) {
-        this.$store.commit("editor/UPDATE_SECTION_TITLE", {
+        this.$store.commit('editor/UPDATE_SECTION_TITLE', {
           value
-        });
+        })
       }
     }
   },
   mounted() {
-    this.$channel.$on("write-save-done", () => {
-      this.saving = false;
-    });
+    this.$channel.$on('write-save-done', () => {
+      this.saving = false
+    })
   },
   methods: {
     emitSave() {
-      if (!this.text.replace(/\n/g, "")) {
-        return;
+      if (!this.text.replace(/\n/g, '')) {
+        return
       }
-      this.$channel.$emit("write-save");
-      this.saving = true;
+      this.$channel.$emit('write-save')
+      this.saving = true
     }
   }
-};
+}
 </script>

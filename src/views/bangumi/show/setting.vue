@@ -121,15 +121,15 @@
 </template>
 
 <script>
-import BangumiEditForm from "~/components/bangumi/forms/BangumiEditForm";
-import CreateRoleForm from "~/components/bangumi/forms/CreateRoleForm";
-import BangumiPostSetting from "~/components/bangumi/forms/BangumiPostSetting";
-import UploadImageForm from "~/components/image/UploadImageForm";
-import CreateAlbumForm from "~/components/image/CreateAlbumForm";
-import ImageAlbumSelect from "~/components/image/ImageAlbumSelect";
+import BangumiEditForm from '~/components/bangumi/forms/BangumiEditForm'
+import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
+import BangumiPostSetting from '~/components/bangumi/forms/BangumiPostSetting'
+import UploadImageForm from '~/components/image/UploadImageForm'
+import CreateAlbumForm from '~/components/image/CreateAlbumForm'
+import ImageAlbumSelect from '~/components/image/ImageAlbumSelect'
 
 export default {
-  name: "BangumiSetting",
+  name: 'BangumiSetting',
   components: {
     BangumiEditForm,
     CreateRoleForm,
@@ -140,31 +140,31 @@ export default {
   },
   data() {
     return {
-      activeName: "0",
+      activeName: '0',
       showSelectAlbum: false,
       createdAlbum: null,
       selectedAlbum: null
-    };
+    }
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     }
   },
   mounted() {
     if (!this.info.is_master) {
       this.$router.replace({
-        name: "bangumi-post"
-      });
+        name: 'bangumi-post'
+      })
     }
   },
   methods: {
     setSelectedAlbum(album) {
-      this.selectedAlbum = album;
+      this.selectedAlbum = album
     },
     handleAlbumCreated(album) {
-      this.createdAlbum = album;
+      this.createdAlbum = album
     }
   }
-};
+}
 </script>

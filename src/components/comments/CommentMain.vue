@@ -96,11 +96,11 @@
 </template>
 
 <script>
-import CommentItem from "./CommentItem";
-import CommentCreateForm from "./CommentCreateForm";
+import CommentItem from './CommentItem'
+import CommentCreateForm from './CommentCreateForm'
 
 export default {
-  name: "VCommentMain",
+  name: 'VCommentMain',
   components: {
     CommentCreateForm,
     CommentItem
@@ -115,13 +115,13 @@ export default {
       type: String,
       validator: val =>
         ~[
-          "post",
-          "video",
-          "image",
-          "score",
-          "question",
-          "answer",
-          "role"
+          'post',
+          'video',
+          'image',
+          'score',
+          'question',
+          'answer',
+          'role'
         ].indexOf(val)
     },
     onlySeeMaster: {
@@ -134,7 +134,7 @@ export default {
     },
     emptyText: {
       type: String,
-      default: "暂无评论，快来抢沙发吧╮(￣▽￣)╭！"
+      default: '暂无评论，快来抢沙发吧╮(￣▽￣)╭！'
     },
     auto: {
       type: Boolean,
@@ -144,65 +144,65 @@ export default {
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     store() {
-      return this.$store.state.comment;
+      return this.$store.state.comment
     },
     list() {
-      return this.store.list;
+      return this.store.list
     },
     noMore() {
-      return this.store.noMore;
+      return this.store.noMore
     },
     total() {
-      return this.store.total;
+      return this.store.total
     }
   },
   mounted() {
     if (this.auto) {
       this.$channel.$on(`fire-load-comment-${this.type}-${this.id}`, () => {
-        this.loadMore(true);
-      });
+        this.loadMore(true)
+      })
     }
     this.$nextTick(() => {
-      this.scrollToReply();
-    });
+      this.scrollToReply()
+    })
   },
   methods: {
     async loadMore(firstRequest = false) {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("comment/getMainComments", {
+        await this.$store.dispatch('comment/getMainComments', {
           ctx: this,
           type: this.type,
           id: this.id,
           onlySeeMaster: this.onlySeeMaster ? 1 : 0,
           firstRequest
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     scrollToReply() {
-      const replyId = this.$route.query["comment-id"];
+      const replyId = this.$route.query['comment-id']
       if (!replyId) {
-        return;
+        return
       }
-      const reply = document.getElementById(`comment-${replyId}`);
+      const reply = document.getElementById(`comment-${replyId}`)
       if (!reply) {
-        return;
+        return
       }
       this.$nextTick(() => {
-        this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400);
-      });
+        this.$scrollToY(this.$utils.getOffsetTop(reply) - 200, 400)
+      })
     }
   }
-};
+}
 </script>

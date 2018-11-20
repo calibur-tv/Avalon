@@ -142,52 +142,52 @@
 </template>
 
 <script>
-import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
-import TabContainer from "~/components/common/TabContainer";
+import BangumiRecommended from '~/components/bangumi/BangumiRecommended'
+import TabContainer from '~/components/common/TabContainer'
 
 export default {
-  name: "BangumiNews",
+  name: 'BangumiNews',
   components: {
     TabContainer,
     BangumiRecommended
   },
   head: {
-    title: "新番放送 - 番剧"
+    title: '新番放送 - 番剧'
   },
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("bangumi/getReleased", ctx),
-      store.dispatch("bangumi/getRecommended")
-    ]);
+      store.dispatch('bangumi/getReleased', ctx),
+      store.dispatch('bangumi/getRecommended')
+    ])
   },
   data() {
     return {
       showtime: [
-        { label: "最新" },
-        { label: "周一" },
-        { label: "周二" },
-        { label: "周三" },
-        { label: "周四" },
-        { label: "周五" },
-        { label: "周六" },
-        { label: "周日" }
+        { label: '最新' },
+        { label: '周一' },
+        { label: '周二' },
+        { label: '周三' },
+        { label: '周四' },
+        { label: '周五' },
+        { label: '周六' },
+        { label: '周日' }
       ],
       thisWeek: `${new Date().getDay() || 7}`
-    };
+    }
   },
   computed: {
     released() {
-      return this.$store.state.bangumi.released;
+      return this.$store.state.bangumi.released
     }
   },
   methods: {
     openFeedbackForResource() {
-      this.$channel.$emit("open-feedback", {
+      this.$channel.$emit('open-feedback', {
         type: 5,
-        desc: "我想看新番：{?}",
-        placeholder: "请填写你要的番剧名"
-      });
+        desc: '我想看新番：{?}',
+        placeholder: '请填写你要的番剧名'
+      })
     }
   }
-};
+}
 </script>

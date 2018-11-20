@@ -31,37 +31,37 @@
 </template>
 
 <script>
-import flowMixin from "./_flowListMixin";
-import PostFlowItem from "../item/PostFlowItem";
+import flowMixin from './_flowListMixin'
+import PostFlowItem from '../item/PostFlowItem'
 
 export default {
-  name: "PostFlowList",
+  name: 'PostFlowList',
   components: {
     PostFlowItem
   },
   mixins: [flowMixin],
   data() {
     return {
-      flowType: "post"
-    };
+      flowType: 'post'
+    }
   },
   computed: {
     topPosts() {
-      return this.$store.state.bangumi.topPosts;
+      return this.$store.state.bangumi.topPosts
     },
     postList() {
       if (!this.bangumiId) {
-        return this.source.list;
+        return this.source.list
       }
       return this.source
         ? this.topPosts.concat(this.source.list)
-        : this.topPosts;
+        : this.topPosts
     }
   },
   methods: {
     openCreatePostModal() {
-      this.$channel.$emit("show-create-post-modal");
+      this.$channel.$emit('show-create-post-modal')
     }
   }
-};
+}
 </script>

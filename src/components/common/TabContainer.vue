@@ -58,7 +58,7 @@
 
 <script>
 export default {
-  name: "TabContainer",
+  name: 'TabContainer',
   props: {
     list: {
       type: Array,
@@ -66,11 +66,11 @@ export default {
     },
     def: {
       type: String,
-      default: "0"
+      default: '0'
     },
     pos: {
       type: String,
-      default: "top"
+      default: 'top'
     },
     route: {
       type: Boolean,
@@ -78,36 +78,36 @@ export default {
     },
     title: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       current: this.def
-    };
+    }
   },
   mounted() {
     if (this.route) {
-      this.current = this.$route.name;
-      this.$watch("$route", val => {
-        this.current = val.name;
-      });
+      this.current = this.$route.name
+      this.$watch('$route', val => {
+        this.current = val.name
+      })
     }
   },
   methods: {
     tabClick(i) {
       if (!this.route) {
-        this.$emit("change", this.title ? i.index - 1 : i.index - 0);
-        return;
+        this.$emit('change', this.title ? i.index - 1 : i.index - 0)
+        return
       }
-      this.go(i.name);
+      this.go(i.name)
     },
     go(x) {
-      const name = x ? x : "homepage";
+      const name = x ? x : 'homepage'
       this.$router.push({
         name
-      });
+      })
     }
   }
-};
+}
 </script>

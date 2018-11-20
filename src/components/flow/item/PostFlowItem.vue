@@ -105,7 +105,7 @@
       float: left;
 
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         top: 0;
@@ -373,10 +373,10 @@
 </template>
 
 <script>
-import ImagePreview from "~/components/common/ImagePreview/ImagePreview";
+import ImagePreview from '~/components/common/ImagePreview/ImagePreview'
 
 export default {
-  name: "PostShowItem",
+  name: 'PostShowItem',
   components: {
     ImagePreview
   },
@@ -391,8 +391,8 @@ export default {
     },
     userZone: {
       type: String,
-      default: ""
+      default: ''
     }
   }
-};
+}
 </script>

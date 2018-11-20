@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "SearchNothingVideo"
-};
+  name: 'SearchNothingVideo'
+}
 </script>

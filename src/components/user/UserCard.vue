@@ -139,11 +139,11 @@
 </template>
 
 <script>
-import Api from "~/api/userApi";
-import UserSex from "~/components/user/UserSex";
+import Api from '~/api/userApi'
+import UserSex from '~/components/user/UserSex'
 
 export default {
-  name: "UserCard",
+  name: 'UserCard',
   components: {
     UserSex
   },
@@ -158,45 +158,45 @@ export default {
     },
     customClass: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       user: null,
       loading: false
-    };
+    }
   },
   methods: {
     handleHover() {
       if (!this.user) {
-        this.getUserFromLocal();
+        this.getUserFromLocal()
         if (!this.user) {
-          this.getUserFromServer();
+          this.getUserFromServer()
         }
       }
     },
     getUserFromLocal() {
       try {
-        this.user = JSON.parse(sessionStorage.getItem(`user-card-${this.id}`));
+        this.user = JSON.parse(sessionStorage.getItem(`user-card-${this.id}`))
       } catch (e) {}
     },
     async getUserFromServer() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         const data = await api.getUserCard({
           id: this.id
-        });
-        this.user = data;
-        sessionStorage.setItem(`user-card-${this.id}`, JSON.stringify(data));
+        })
+        this.user = data
+        sessionStorage.setItem(`user-card-${this.id}`, JSON.stringify(data))
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

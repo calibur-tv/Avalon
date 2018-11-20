@@ -116,90 +116,87 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
     return {
       list: [],
       loading: true
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .getTrialUsers()
         .then(data => {
-          this.list = data;
-          this.loading = false;
+          this.list = data
+          this.loading = false
         })
         .catch(err => {
-          this.$toast.error(err);
-          this.loading = false;
-        });
+          this.$toast.error(err)
+          this.loading = false
+        })
     },
     passUser(index, id) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .passUser({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "users"
-          });
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'users'
+          })
         })
         .catch(e => {
-          console.log(e);
-          this.$toast.error(e);
-        });
+          this.$toast.error(e)
+        })
     },
     delUser(index, id) {
-      this.$confirm("确定吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .blockUser({ id })
             .then(() => {
-              this.list.splice(index, 1);
-              this.$channel.$emit("admin-trial-do", {
-                type: "users"
-              });
+              this.list.splice(index, 1)
+              this.$channel.$emit('admin-trial-do', {
+                type: 'users'
+              })
             })
             .catch(e => {
-              console.log(e);
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     delSomething(index, id, value, key) {
-      this.$confirm("确定吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteUserInfo({ id, key, value })
             .then(() => {
-              this.list[index][key] = value;
+              this.list[index][key] = value
             })
             .catch(e => {
-              console.log(e);
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

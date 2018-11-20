@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import SubCommentItem from "./SubCommentItem.vue";
+import SubCommentItem from './SubCommentItem.vue'
 
 export default {
-  name: "VSubCommentList",
+  name: 'VSubCommentList',
   components: {
     SubCommentItem
   },
@@ -68,7 +68,7 @@ export default {
     type: {
       required: true,
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
@@ -76,50 +76,50 @@ export default {
       loading: false,
       showCollapse: false,
       collapsed: false
-    };
+    }
   },
   computed: {
     comments() {
-      return this.parentComment.comments;
+      return this.parentComment.comments
     },
     authorId() {
-      return this.parentComment.from_user_id;
+      return this.parentComment.from_user_id
     },
     filterComments() {
       if (!this.collapsed) {
-        return this.comments.list;
+        return this.comments.list
       }
-      const data = this.comments;
-      const comments = data.list;
-      const result = comments.slice(0, 5);
+      const data = this.comments
+      const comments = data.list
+      const result = comments.slice(0, 5)
       if (comments.every(_ => _.id <= data.maxId)) {
-        return result;
+        return result
       }
-      const ids = result.map(_ => _.id);
+      const ids = result.map(_ => _.id)
       return result.concat(
         comments.filter(_ => _.id > data.maxId && ids.indexOf(_.id) === -1)
-      );
+      )
     }
   },
   methods: {
     async loadMore() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("comment/getSubComments", {
+        await this.$store.dispatch('comment/getSubComments', {
           ctx: this,
           type: this.type,
           id: this.parentComment.id
-        });
-        this.showCollapse = true;
+        })
+        this.showCollapse = true
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

@@ -109,11 +109,11 @@
 </template>
 
 <script>
-import Api from "~/api/questionApi";
-import JsonEditor from "~/components/jsonEditor/index";
+import Api from '~/api/questionApi'
+import JsonEditor from '~/components/jsonEditor/index'
 
 export default {
-  name: "CreateAnswerForm",
+  name: 'CreateAnswerForm',
   components: {
     JsonEditor
   },
@@ -143,23 +143,23 @@ export default {
     return {
       id: this.answerId,
       show: this.value,
-      source_url: "",
+      source_url: '',
       saving: false
-    };
+    }
   },
   computed: {
     resource() {
-      return this.$store.state.editor.resource;
+      return this.$store.state.editor.resource
     }
   },
   mounted() {
-    this.$watch("show", val => {
-      this.$emit("input", val);
-    });
-    this.$watch("value", val => {
-      this.show = val;
-    });
-    this.loadEditContent();
+    this.$watch('show', val => {
+      this.$emit('input', val)
+    })
+    this.$watch('value', val => {
+      this.show = val
+    })
+    this.loadEditContent()
   },
   methods: {
     beforeSubmit(richContent) {
@@ -169,77 +169,77 @@ export default {
           this.source_url
         )
       ) {
-        this.$toast.error("请输入合法转载链接");
-        return;
+        this.$toast.error('请输入合法转载链接')
+        return
       }
       if (this.saving) {
-        return;
+        return
       }
-      this.saving = true;
+      this.saving = true
       if (this.id) {
-        this.submit(richContent);
+        this.submit(richContent)
       } else {
         this.$captcha({
           success: ({ data }) => {
-            this.submit(richContent, data);
+            this.submit(richContent, data)
           },
           error: e => {
-            this.$toast.error(e);
-            this.saving = false;
+            this.$toast.error(e)
+            this.saving = false
           },
           close: () => {
-            this.saving = false;
+            this.saving = false
           }
-        });
+        })
       }
     },
     async submit(richContent, geetest = {}) {
-      this.$channel.$emit("write-submit", true);
-      const api = new Api(this);
+      this.$channel.$emit('write-submit', true)
+      const api = new Api(this)
       try {
         const form = {
           question_id: this.questionId,
           content: richContent.content,
           intro: richContent.desc.substring(0, 120),
           do_publish: richContent.publish,
-          source_url: this.source_url.split("?")[0],
+          source_url: this.source_url.split('?')[0],
           geetest
-        };
-        let result;
+        }
+        let result
         if (this.id) {
-          form.id = this.id;
-          await api.updateAnswer(form);
+          form.id = this.id
+          await api.updateAnswer(form)
         } else {
-          result = await api.createAnswer(form);
-          this.id = result.data;
+          result = await api.createAnswer(form)
+          this.id = result.data
         }
         if (richContent.publish) {
           this.$toast
             .success(
-              typeof result !== "undefined" ? result.message : "发布成功"
+              typeof result !== 'undefined' ? result.message : '发布成功'
             )
             .then(() => {
-              window.location.href = this.$alias.answer(this.id);
-            });
+              window.location.href = this.$alias.answer(this.id)
+            })
         } else {
-          this.$toast.success("编辑成功！");
-          this.$store.commit("question/EDIT_ANSWER", { id: this.id });
-          this.closeEditor();
+          this.$toast.success('编辑成功！')
+          this.$store.commit('question/EDIT_ANSWER', { id: this.id })
+          this.closeEditor()
         }
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.saving = false;
+        this.saving = false
       }
     },
     loadEditContent() {
       if (this.resource) {
-        this.source_url = this.resource.source_url;
+        this.source_url = this.resource.source_url
       }
     },
     closeEditor() {
-      this.show = false;
+      this.show = false
     }
   }
-};
+}
 </script>

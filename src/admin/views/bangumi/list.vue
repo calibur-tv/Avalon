@@ -62,47 +62,47 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
   mixins: [pageMixin],
   mounted() {
-    this.getData(1);
+    this.getData(1)
   },
   methods: {
     async getData(page) {
       if (page <= this.pageState.max) {
-        this.pageState.cur = page;
-        return;
+        this.pageState.cur = page
+        return
       }
       if (this.pageLoading) {
-        return;
+        return
       }
-      this.pageLoading = true;
-      this.pageState.size = 15;
-      const api = new Api(this);
+      this.pageLoading = true
+      this.pageState.size = 15
+      const api = new Api(this)
       try {
         const data = await api.getBangumiList({
           to_page: page,
           cur_page: this.pageState.cur,
           take: this.pageState.size
-        });
-        this.pageState.total = data.total;
-        this.pageState.cur = page;
-        this.pageState.max = page;
-        this.pageList = this.pageList.concat(data.list);
+        })
+        this.pageState.total = data.total
+        this.pageState.cur = page
+        this.pageState.max = page
+        this.pageList = this.pageList.concat(data.list)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.pageLoading = false;
+        this.pageLoading = false
       }
     },
     handleBangumiSearch(id) {
       this.$router.push({
         path: `/admin/bangumi/edit/${id}`
-      });
+      })
     }
   }
-};
+}
 </script>

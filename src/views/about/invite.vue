@@ -1,6 +1,6 @@
 <style lang="scss">
 #invite-user {
-  background-image: url("https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048");
+  background-image: url('https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -101,25 +101,25 @@
 </template>
 
 <script>
-import SignUpForm from "~/components/user/SignUpForm";
+import SignUpForm from '~/components/user/SignUpForm'
 
 export default {
-  name: "InviteUser",
+  name: 'InviteUser',
   components: {
     SignUpForm
   },
   computed: {
     inviteUserId() {
-      return this.$route.params.id;
+      return this.$route.params.id
     },
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user
     }
   },
   methods: {
     handleCopySuccess() {
-      this.$toast.success("复制成功");
+      this.$toast.success('复制成功')
     }
   }
-};
+}
 </script>

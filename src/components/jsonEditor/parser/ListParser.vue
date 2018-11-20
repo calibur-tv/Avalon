@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  name: "JsonContentListParser",
+  name: 'JsonContentListParser',
   props: {
     item: {
       type: Object,
@@ -52,15 +52,15 @@ export default {
   },
   computed: {
     list() {
-      let list = this.item.text;
+      let list = this.item.text
       if (!list) {
-        return [];
+        return []
       }
       while (/\n\n/.test(list)) {
-        list = list.replace(/\n\n/g, "\n");
+        list = list.replace(/\n\n/g, '\n')
       }
-      return list.split("\n");
+      return list.split('\n')
     }
   }
-};
+}
 </script>

@@ -174,30 +174,30 @@
 
 <script>
 export default {
-  name: "VFooter",
+  name: 'VFooter',
   data() {
     return {
       toggleShareModal: false
-    };
+    }
   },
   computed: {
     show() {
-      return ["homepage", "invite-user"].indexOf(this.$route.name) === -1;
+      return ['homepage', 'invite-user'].indexOf(this.$route.name) === -1
     },
     friends() {
       return this.$store.state.pageData
         ? this.$store.state.pageData.friend_links
-        : [];
+        : []
     }
   },
   methods: {
     openShareModal() {
-      this.toggleShareModal = true;
+      this.toggleShareModal = true
     },
     handleCopySuccess() {
-      this.$toast.success("复制成功");
-      this.toggleShareModal = false;
+      this.$toast.success('复制成功')
+      this.toggleShareModal = false
     }
   }
-};
+}
 </script>

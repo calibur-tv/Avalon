@@ -225,11 +225,11 @@
 </template>
 
 <script>
-import SubCommentList from "./SubCommentList.vue";
-import CommentReplyForm from "./CommentReplyForm";
+import SubCommentList from './SubCommentList.vue'
+import CommentReplyForm from './CommentReplyForm'
 
 export default {
-  name: "VCommentItem",
+  name: 'VCommentItem',
   components: {
     SubCommentList,
     CommentReplyForm
@@ -246,7 +246,7 @@ export default {
     type: {
       required: true,
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
@@ -254,79 +254,79 @@ export default {
       deleting: false,
       liking: false,
       showReplyArea: false
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0;
+      return this.$store.state.login ? this.$store.state.user.id : 0
     },
     authorId() {
-      return this.comment.from_user_id;
+      return this.comment.from_user_id
     },
     isMine() {
-      return this.currentUserId === this.authorId;
+      return this.currentUserId === this.authorId
     },
     canDelete() {
-      return this.isMine || this.currentUserId === this.masterId;
+      return this.isMine || this.currentUserId === this.masterId
     },
     focusThisComment() {
-      return parseInt(this.$route.query["comment-id"]) === this.comment.id;
+      return parseInt(this.$route.query['comment-id']) === this.comment.id
     }
   },
   methods: {
     async toggleLike() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.liking) {
-        return;
+        return
       }
-      this.liking = true;
+      this.liking = true
       try {
-        await this.$store.dispatch("comment/toggleLikeMainComment", {
+        await this.$store.dispatch('comment/toggleLikeMainComment', {
           ctx: this,
           type: this.type,
           id: this.comment.id
-        });
+        })
       } catch (e) {
       } finally {
-        this.liking = false;
+        this.liking = false
       }
     },
     deleteComment() {
       if (this.deleting) {
-        return;
+        return
       }
-      this.deleting = true;
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.deleting = true
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.$store.dispatch("comment/deleteMainComment", {
+          this.$store.dispatch('comment/deleteMainComment', {
             ctx: this,
             type: this.type,
             id: this.comment.id
-          });
-          this.$emit("delete");
+          })
+          this.$emit('delete')
         })
         .catch(e => {
-          this.deleting = false;
-          if (e === "cancel") {
-            return;
+          this.deleting = false
+          if (e === 'cancel') {
+            return
           }
-          this.$toast.error(e);
-        });
+          this.$toast.error(e)
+        })
     },
     replyComment() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
-      this.showReplyArea = !this.showReplyArea;
+      this.showReplyArea = !this.showReplyArea
     }
   }
-};
+}
 </script>

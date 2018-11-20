@@ -3,25 +3,25 @@
 </template>
 
 <script>
-import ImageFlowList from "~/components/flow/list/ImageFlowList";
+import ImageFlowList from '~/components/flow/list/ImageFlowList'
 
 export default {
-  name: "UserImage",
+  name: 'UserImage',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "image",
-      sort: "news",
+    await store.dispatch('flow/initData', {
+      type: 'image',
+      sort: 'news',
       userZone: route.params.zone,
       ctx
-    });
+    })
   },
   components: {
     ImageFlowList
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     }
   }
-};
+}
 </script>

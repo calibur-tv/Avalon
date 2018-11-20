@@ -91,9 +91,9 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import BangumiApi from "~/api/bangumiApi";
-import uploadMixin from "~/mixins/upload";
+import Api from '~/api/adminApi'
+import BangumiApi from '~/api/bangumiApi'
+import uploadMixin from '~/mixins/upload'
 
 export default {
   mixins: [uploadMixin],
@@ -105,70 +105,70 @@ export default {
       loadingSubmit: false,
       loadingCreate: false,
       list: []
-    };
+    }
   },
   computed: {
     id() {
-      return this.$route.params.id;
+      return this.$route.params.id
     }
   },
   created() {
-    this.getData();
-    this.getUpToken();
+    this.getData()
+    this.getUpToken()
   },
   methods: {
     async getData() {
-      const api = new BangumiApi(this);
+      const api = new BangumiApi(this)
       try {
         const data = await api.cartoon({
           bangumiId: this.id,
           take: 9999
-        });
-        this.list = data.list;
+        })
+        this.list = data.list
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     beginEditItem(item) {
       this.editingItem = {
         id: item.id,
         name: item.name,
-        url: item.source.url.split("image.calibur.tv/").pop(),
+        url: item.source.url.split('image.calibur.tv/').pop(),
         bangumi_id: item.bangumi_id
-      };
-      this.uploadConfig.pathPrefix = `bangumi/${this.id}/cartoon/${item.id}`;
-      this.toggleEditModal = true;
+      }
+      this.uploadConfig.pathPrefix = `bangumi/${this.id}/cartoon/${item.id}`
+      this.toggleEditModal = true
     },
     async submitCartoonEdit() {
       if (this.loadingCreate) {
-        return;
+        return
       }
-      this.loadingCreate = true;
-      const api = new Api(this);
+      this.loadingCreate = true
+      const api = new Api(this)
       try {
         api.cartoonEdit({
           id: this.editingItem.id,
           name: this.editingItem.name,
           url: this.editingItem.url
-        });
-        this.toggleEditModal = false;
-        this.$toast.success("更新成功");
+        })
+        this.toggleEditModal = false
+        this.$toast.success('更新成功')
         this.list.forEach((item, index) => {
           if (item.id === this.editingItem.id) {
-            this.list[index].name = this.editingItem.name;
-            this.list[index].url = this.editingItem.url;
+            this.list[index].name = this.editingItem.name
+            this.list[index].url = this.editingItem.url
           }
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     handleUpUploadSuccess(res) {
-      this.$toast.success("上传成功");
-      this.editingItem.url = res.data.url;
+      this.$toast.success('上传成功')
+      this.editingItem.url = res.data.url
     }
   }
-};
+}
 </script>

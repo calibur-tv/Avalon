@@ -120,33 +120,33 @@
 
 <script>
 export default {
-  name: "BangumiRecommended",
+  name: 'BangumiRecommended',
   data() {
     return {
       counter: 0
-    };
+    }
   },
   computed: {
     list() {
-      return this.$store.state.bangumi.recommended;
+      return this.$store.state.bangumi.recommended
     },
     filterList() {
       if (!this.list.length) {
-        return [];
+        return []
       }
-      const begin = this.counter * 5;
-      const end = begin + 5;
-      return this.list.slice(begin, end);
+      const begin = this.counter * 5
+      const end = begin + 5
+      return this.list.slice(begin, end)
     }
   },
   methods: {
     choiceTags() {
       if ((this.counter + 1) * 5 >= this.list.length) {
-        this.counter = 0;
+        this.counter = 0
       } else {
-        this.counter++;
+        this.counter++
       }
     }
   }
-};
+}
 </script>

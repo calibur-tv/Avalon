@@ -7,32 +7,32 @@
 </template>
 
 <script>
-import PostFlowList from "~/components/flow/list/PostFlowList";
+import PostFlowList from '~/components/flow/list/PostFlowList'
 
 export default {
-  name: "BangumiPost",
+  name: 'BangumiPost',
   async asyncData({ route, store, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("bangumi/getTopPosts", { ctx, id }),
-      store.dispatch("flow/initData", {
-        type: "post",
-        sort: "active",
+      store.dispatch('bangumi/getTopPosts', { ctx, id }),
+      store.dispatch('flow/initData', {
+        type: 'post',
+        sort: 'active',
         bangumiId: id,
         ctx
       })
-    ]);
+    ])
   },
   components: {
     PostFlowList
   },
   computed: {
     id() {
-      return +this.$route.params.id;
+      return +this.$route.params.id
     },
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     }
   }
-};
+}
 </script>

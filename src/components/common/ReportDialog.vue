@@ -75,10 +75,10 @@
 </template>
 
 <script>
-import Api from "~/api/userApi";
+import Api from '~/api/userApi'
 
 export default {
-  name: "ReportDialog",
+  name: 'ReportDialog',
   props: {
     id: {
       required: true,
@@ -90,7 +90,7 @@ export default {
     },
     title: {
       type: String,
-      default: "违规举报"
+      default: '违规举报'
     },
     org: {
       type: Boolean,
@@ -105,13 +105,13 @@ export default {
     return {
       showDialog: false,
       selectedType: -1,
-      content: "",
+      content: '',
       loading: false
-    };
+    }
   },
   computed: {
     needContent() {
-      return this.selectedType === 0 || this.selectedType === 6;
+      return this.selectedType === 0 || this.selectedType === 6
     }
   },
   watch: {},
@@ -120,33 +120,33 @@ export default {
   methods: {
     async submit() {
       if (this.selectedType < 0) {
-        this.$toast.error("请选择正确的分类");
-        return;
+        this.$toast.error('请选择正确的分类')
+        return
       }
       if (this.needContent && !this.content) {
-        this.$toast.error("请填写具体情况");
-        return;
+        this.$toast.error('请填写具体情况')
+        return
       }
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         api.report({
           id: this.id,
           message: this.content,
           type: this.selectedType,
           model: this.type
-        });
+        })
       } finally {
-        this.loading = false;
-        this.$toast.success("感谢您的反馈！");
-        this.showDialog = false;
-        this.content = "";
-        this.selectedType = -1;
+        this.loading = false
+        this.$toast.success('感谢您的反馈！')
+        this.showDialog = false
+        this.content = ''
+        this.selectedType = -1
       }
     }
   }
-};
+}
 </script>

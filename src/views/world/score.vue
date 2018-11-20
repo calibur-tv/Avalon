@@ -73,19 +73,19 @@
 </template>
 
 <script>
-import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
+import ScoreFlowList from '~/components/flow/list/ScoreFlowList'
 
 export default {
-  name: "ScoreWorld",
+  name: 'ScoreWorld',
   async asyncData({ store, ctx }) {
     await Promise.all([
-      store.dispatch("world/getData", {
-        type: "score",
-        sort: "active",
+      store.dispatch('world/getData', {
+        type: 'score',
+        sort: 'active',
         ctx
       }),
-      store.dispatch("world/getMeta", { type: "score" })
-    ]);
+      store.dispatch('world/getMeta', { type: 'score' })
+    ])
   },
   components: {
     ScoreFlowList
@@ -93,12 +93,12 @@ export default {
   data() {
     return {
       showTips: false
-    };
+    }
   },
   computed: {
     meta() {
-      return this.$store.state.world.score.meta;
+      return this.$store.state.world.score.meta
     }
   }
-};
+}
 </script>

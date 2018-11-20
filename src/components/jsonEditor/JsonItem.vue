@@ -354,7 +354,7 @@
 
 <script>
 export default {
-  name: "JsonItem",
+  name: 'JsonItem',
   props: {
     item: {
       type: Object,
@@ -372,29 +372,29 @@ export default {
   },
   computed: {
     sectionCount() {
-      return this.$store.state.editor.sections.length;
+      return this.$store.state.editor.sections.length
     }
   },
   methods: {
     emitPreview() {
-      this.$emit("preview", { index: this.index });
+      this.$emit('preview', { index: this.index })
     },
     emitCreate(type) {
-      this.$emit("create", { index: this.index, type });
+      this.$emit('create', { index: this.index, type })
     },
     emitDelete() {
-      this.$emit("delete", { index: this.index });
+      this.$emit('delete', { index: this.index })
     },
     emitSort() {
-      this.$emit("sort", { index: this.index });
+      this.$emit('sort', { index: this.index })
     },
     computeList(text) {
-      let list = text;
+      let list = text
       while (/\n\n/.test(list)) {
-        list = list.replace(/\n\n/g, "\n");
+        list = list.replace(/\n\n/g, '\n')
       }
-      return list.split("\n").slice(0, 4);
+      return list.split('\n').slice(0, 4)
     }
   }
-};
+}
 </script>

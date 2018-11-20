@@ -39,10 +39,10 @@
 </template>
 
 <script>
-import AnswerFlowItem from "../item/AnswerFlowItem";
+import AnswerFlowItem from '../item/AnswerFlowItem'
 
 export default {
-  name: "AnswerFlowList",
+  name: 'AnswerFlowList',
   components: {
     AnswerFlowItem
   },
@@ -53,37 +53,37 @@ export default {
     },
     userZone: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     source() {
-      return this.$store.state.question.answers;
+      return this.$store.state.question.answers
     }
   },
   methods: {
     async loadMore() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("question/getAnswers", {
+        await this.$store.dispatch('question/getAnswers', {
           ctx: this,
           userZone: this.userZone,
           questionId: this.bangumiId
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

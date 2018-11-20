@@ -86,7 +86,7 @@ $meta-margin-bottom: 8px;
 
 <script>
 export default {
-  name: "VParts",
+  name: 'VParts',
   props: {
     list: {
       type: Array,
@@ -120,70 +120,70 @@ export default {
       part: 0,
       page: 0,
       showAll: this.value
-    };
+    }
   },
   computed: {
     id() {
-      return parseInt(this.$route.params.id, 10);
+      return parseInt(this.$route.params.id, 10)
     },
     filterList() {
       if (this.forceAll || this.showAll) {
-        return this.list;
+        return this.list
       }
-      const begin = (this.page - 1) * this.take;
-      return this.list.slice(begin, begin + this.take);
+      const begin = (this.page - 1) * this.take
+      return this.list.slice(begin, begin + this.take)
     },
     showMoreBtn() {
       return this.forceAll
         ? this.forceAll && this.isFirst
-        : this.isFirst && this.take < this.list.length;
+        : this.isFirst && this.take < this.list.length
     }
   },
   watch: {
     value(val) {
-      this.showAll = val;
+      this.showAll = val
     },
     showAll(val) {
-      this.$emit("input", val);
+      this.$emit('input', val)
     }
   },
   mounted() {
-    this.computeMaxWidth();
-    this.$watch("list", () => {
-      this.computeMaxWidth();
-    });
+    this.computeMaxWidth()
+    this.$watch('list', () => {
+      this.computeMaxWidth()
+    })
   },
   methods: {
     computeMaxWidth() {
-      let maxlength = 0;
+      let maxlength = 0
       this.allData.forEach(video => {
-        const templength = video.name.replace(/([\u4e00-\u9fa5])/g, "aa").trim()
-          .length;
+        const templength = video.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim()
+          .length
         if (maxlength < templength) {
-          maxlength = templength;
+          maxlength = templength
         }
-      });
-      this.maxWidth = 46 + maxlength * 8;
+      })
+      this.maxWidth = 46 + maxlength * 8
       this.$nextTick(() => {
-        this.computePage();
-      });
+        this.computePage()
+      })
     },
     computePage() {
       try {
-        this.take = Math.floor(this.$el.offsetWidth / (this.maxWidth + 8)) * 2;
+        this.take = Math.floor(this.$el.offsetWidth / (this.maxWidth + 8)) * 2
       } catch (e) {
-        this.take = 5;
+        this.take = 5
       }
       this.list.forEach((item, index) => {
         if (item.id === this.id) {
-          this.part = index + 1;
+          this.part = index + 1
         }
-      });
-      this.page = Math.ceil(this.part / this.take);
+      })
+      this.page = Math.ceil(this.part / this.take)
     },
     handleFilter() {
-      this.showAll = !this.showAll;
+      this.showAll = !this.showAll
     }
   }
-};
+}
 </script>

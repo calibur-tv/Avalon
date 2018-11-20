@@ -169,12 +169,12 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
-import ImageApi from "~/api/imageApi";
-import ImageAlbumSelect from "./ImageAlbumSelect";
+import uploadMixin from '~/mixins/upload'
+import ImageApi from '~/api/imageApi'
+import ImageAlbumSelect from './ImageAlbumSelect'
 
 export default {
-  name: "UploadImageForm",
+  name: 'UploadImageForm',
   components: {
     ImageAlbumSelect
   },
@@ -186,11 +186,11 @@ export default {
     },
     selectedBangumiId: {
       type: [Number, String],
-      default: ""
+      default: ''
     },
     selectedAlbumId: {
       type: [Number, String],
-      default: ""
+      default: ''
     },
     isCartoon: {
       type: Boolean,
@@ -204,22 +204,22 @@ export default {
   data() {
     const validateImage = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请选择要上传的图片"));
+        return callback(new Error('请选择要上传的图片'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateImages = (rule, value, callback) => {
       if (!value.length) {
-        return callback(new Error("至少选择一张图片"));
+        return callback(new Error('至少选择一张图片'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       submitting: false,
       fetchingAlbum: false,
       pendingUpload: 0,
       form: {
-        name: "",
+        name: '',
         album_id: this.selectedAlbumId,
         bangumi_id: this.bangumiId,
         is_cartoon: false,
@@ -228,46 +228,46 @@ export default {
         images: []
       },
       rule: {
-        image: [{ validator: validateImage, trigger: "submit" }],
-        images: [{ validator: validateImages, trigger: "submit" }]
+        image: [{ validator: validateImage, trigger: 'submit' }],
+        images: [{ validator: validateImages, trigger: 'submit' }]
       }
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.user.id;
+      return this.$store.state.user.id
     }
   },
   mounted() {
-    this.getUpToken();
+    this.getUpToken()
   },
   methods: {
     beforeSingleImageUpload(file) {
-      this.uploadConfig.max = 5;
-      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/image`;
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 5
+      this.uploadConfig.pathPrefix = `user/${this.currentUserId}/image`
+      return this.beforeImageUpload(file)
     },
     handleSingleImageUploadSuccess(res) {
-      this.form.image = res.data;
-      this.$toast.success("图片上传成功");
+      this.form.image = res.data
+      this.$toast.success('图片上传成功')
     },
     handleSingleImageRemove() {
-      this.form.image = null;
+      this.form.image = null
     },
     submitSingleImage() {
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.form.name.length > 30) {
-            this.$toast.error("名字最长 30 个字");
-            return;
+            this.$toast.error('名字最长 30 个字')
+            return
           }
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
+          this.submitting = true
           this.$captcha({
             success: async ({ data }) => {
-              const api = new ImageApi(this);
+              const api = new ImageApi(this)
               api
                 .uploadSingleImage(
                   Object.assign(
@@ -279,42 +279,42 @@ export default {
                   )
                 )
                 .then(result => {
-                  this.form.name = "";
-                  this.form.is_creator = false;
-                  this.form.image = null;
-                  this.$refs.singleUpload.clearFiles();
-                  this.submitting = false;
+                  this.form.name = ''
+                  this.form.is_creator = false
+                  this.form.image = null
+                  this.$refs.singleUpload.clearFiles()
+                  this.submitting = false
                   this.$toast.success(result.message).then(() => {
-                    window.location = this.$alias.image(result.data);
-                  });
+                    window.location = this.$alias.image(result.data)
+                  })
                 })
                 .catch(err => {
-                  this.$toast.error(err);
-                  this.submitting = false;
-                });
+                  this.$toast.error(err)
+                  this.submitting = false
+                })
             },
             error: e => {
-              this.submitting = false;
-              this.$toast.error(e);
+              this.submitting = false
+              this.$toast.error(e)
             },
             close: () => {
-              this.submitting = false;
+              this.submitting = false
             }
-          });
+          })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     handleManyImageRemove(file) {
       if (this.submitting) {
-        return;
+        return
       }
       this.form.images.forEach((item, index) => {
         if (item.uid === file.uid) {
-          this.form.images.splice(index, 1);
+          this.form.images.splice(index, 1)
         }
-      });
+      })
     },
     beforeManyImageUpload(file) {
       this.form.images.push({
@@ -323,14 +323,14 @@ export default {
         size: file.size,
         uid: file.uid,
         percentage: 0,
-        status: "uploading"
-      });
-      this.uploadConfig.max = 10;
+        status: 'uploading'
+      })
+      this.uploadConfig.max = 10
       this.uploadConfig.pathPrefix = `user/${this.currentUserId}/album/${
         this.form.album_id
-      }/image`;
-      this.pendingUpload++;
-      return this.beforeImageUpload(file);
+      }/image`
+      this.pendingUpload++
+      return this.beforeImageUpload(file)
     },
     handleManyImageUploadSuccess(res, file) {
       this.form.images.forEach((item, index) => {
@@ -342,38 +342,37 @@ export default {
             size: res.data.size,
             type: res.data.type,
             url: this.$resize(res.data.url, { width: 160 }),
-            status: "success"
-          });
+            status: 'success'
+          })
         }
-      });
-      this.pendingUpload--;
+      })
+      this.pendingUpload--
     },
     handleManyUploadError(err, file) {
-      console.log(err);
-      this.$toast.error(`图片：${file.name} 上传失败`);
+      this.$toast.error(`图片：${file.name} 上传失败`)
       this.form.images.forEach((item, index) => {
         if (item.uid === file.uid) {
-          this.form.images.splice(index, 1);
+          this.form.images.splice(index, 1)
         }
-      });
-      this.pendingUpload--;
+      })
+      this.pendingUpload--
     },
     handleManyExceed() {
-      this.$toast.error(`一次最多可上传 ${this.exceed} 张图片!`);
+      this.$toast.error(`一次最多可上传 ${this.exceed} 张图片!`)
     },
     submitManyImage() {
-      if (this.form.images.some(_ => _.status !== "success")) {
-        this.$toast.warn("请等待所有图片上传成功");
-        return;
+      if (this.form.images.some(_ => _.status !== 'success')) {
+        this.$toast.warn('请等待所有图片上传成功')
+        return
       }
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
-          const api = new ImageApi(this);
-          const albumId = this.form.album_id;
+          this.submitting = true
+          const api = new ImageApi(this)
+          const albumId = this.form.album_id
           /*
           const newWindow =
             this.$route.name === "image-show" &&
@@ -388,48 +387,48 @@ export default {
                 .sort((a, b) => {
                   try {
                     return (
-                      parseInt(a.name.split(".")) - parseInt(b.name.split("."))
-                    );
+                      parseInt(a.name.split('.')) - parseInt(b.name.split('.'))
+                    )
                   } catch (e) {
-                    return true;
+                    return true
                   }
                 })
                 .map(_ => {
                   return {
                     url: _.url
-                      .split("calibur.tv/")
+                      .split('calibur.tv/')
                       .pop()
-                      .split("?")[0],
+                      .split('?')[0],
                     size: _.size,
                     type: _.type,
                     width: _.width,
                     height: _.height
-                  };
+                  }
                 })
             })
             .then(() => {
-              this.form.images = [];
-              this.$refs.manyUpload.clearFiles();
-              this.$toast.success("上传成功");
-              this.submitting = false;
+              this.form.images = []
+              this.$refs.manyUpload.clearFiles()
+              this.$toast.success('上传成功')
+              this.submitting = false
               if (
-                this.$route.name === "image-show" &&
+                this.$route.name === 'image-show' &&
                 !(this.$route.params.id - albumId)
               ) {
-                window.location.reload();
+                window.location.reload()
               } else {
-                window.location.href = this.$alias.image(albumId);
+                window.location.href = this.$alias.image(albumId)
               }
             })
             .catch(err => {
-              this.$toast.error(err);
-              this.submitting = false;
-            });
+              this.$toast.error(err)
+              this.submitting = false
+            })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>

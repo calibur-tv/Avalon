@@ -220,230 +220,228 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
     return {
       list: [],
       loading: true
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .getTrialPosts()
         .then(data => {
-          this.list = data;
-          this.loading = false;
+          this.list = data
+          this.loading = false
         })
         .catch(err => {
-          this.$toast.error(err);
-          this.loading = false;
-        });
+          this.$toast.error(err)
+          this.loading = false
+        })
     },
     openImages(images) {
       images.forEach(item => {
-        window.open(item.url);
-      });
+        window.open(item.url)
+      })
     },
     delPost(index, id) {
-      this.$confirm("确定删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deletePost({ id })
             .then(() => {
-              this.list.splice(index, 1);
-              this.$toast.success("操作成功");
-              this.$channel.$emit("admin-trial-do", {
-                type: "posts"
-              });
+              this.list.splice(index, 1)
+              this.$toast.success('操作成功')
+              this.$channel.$emit('admin-trial-do', {
+                type: 'posts'
+              })
             })
             .catch(e => {
-              console.log(e);
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     passPost(index, id) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .passPost({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "posts"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'posts'
+          })
         })
         .catch(e => {
-          this.$message.error(e);
-        });
+          this.$message.error(e)
+        })
     },
     approvePost(index, id) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .approvePost({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "posts"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'posts'
+          })
         })
         .catch(e => {
-          this.$message.error(e);
-        });
+          this.$message.error(e)
+        })
     },
     rejectPost(index, id) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .rejectPost({ id })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$toast.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "posts"
-          });
+          this.list.splice(index, 1)
+          this.$toast.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'posts'
+          })
         })
         .catch(e => {
-          this.$message.error(e);
-        });
+          this.$message.error(e)
+        })
     },
     deleteImage(id, url, index, subIndex) {
       if (!url) {
-        return;
+        return
       }
-      this.$confirm("确定删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deletePostImage({ id, url })
             .then(() => {})
             .then(() => {
-              this.list[index].images.splice(subIndex, 1);
-              this.$toast.success("操作成功");
+              this.list[index].images.splice(subIndex, 1)
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              console.log(e);
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     deleteTitle() {
-      this.$prompt("请输入帖子id", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入帖子id', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deletePostTitle({
               id: value
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     quickDelete() {
-      this.$prompt("请输入帖子id", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入帖子id', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d+$/,
-        inputErrorMessage: "非法的id"
+        inputErrorMessage: '非法的id'
       })
         .then(({ value }) => {
           if (value < 1) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deletePost({
               id: value
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     computePostState(post) {
-      const userId = parseInt(post.user_id, 10);
-      const state = post.state;
+      const userId = parseInt(post.user_id, 10)
+      const state = post.state
       if (post.deleted_at) {
-        return userId === state ? "系统已删除" : "吧务已删除";
+        return userId === state ? '系统已删除' : '吧务已删除'
       }
       if (userId === state) {
-        return "刚发布";
+        return '刚发布'
       }
       if (post.is_nice) {
-        return "被加精";
+        return '被加精'
       }
       if (post.top_at) {
-        return "被置顶";
+        return '被置顶'
       }
-      return "未知";
+      return '未知'
     },
     changeArea() {
-      this.$prompt("请输入帖子id和番剧id，-分割", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('请输入帖子id和番剧id，-分割', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
-          const data = value.split("-");
+          const data = value.split('-')
           if (data.length !== 2) {
-            this.$toast.error("错误的格式");
-            return;
+            this.$toast.error('错误的格式')
+            return
           }
           if (!/^\d+$/.test(data[1]) || !/^\d+$/.test(data[0])) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .changePostArea({
               post_id: data[0],
               bangumi_id: data[1]
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

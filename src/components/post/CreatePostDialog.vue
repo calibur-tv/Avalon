@@ -132,26 +132,26 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
-import PostApi from "~/api/postApi";
+import uploadMixin from '~/mixins/upload'
+import PostApi from '~/api/postApi'
 
 export default {
-  name: "CreatePostDialog",
+  name: 'CreatePostDialog',
   mixins: [uploadMixin],
   data() {
     const validateTags = (rule, value, callback) => {
       if (value.length > 3) {
-        return callback(new Error("最多选择 3 个标签"));
+        return callback(new Error('最多选择 3 个标签'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       showPostModal: false,
       tags: [],
       forms: {
-        title: "",
-        bangumiId: "",
-        content: "",
+        title: '',
+        bangumiId: '',
+        content: '',
         tags: [],
         is_creator: false
       },
@@ -160,69 +160,69 @@ export default {
           {
             required: true,
             max: 40,
-            message: "请输入帖子标题，最多40字",
-            trigger: "submit"
+            message: '请输入帖子标题，最多40字',
+            trigger: 'submit'
           }
         ],
         bangumiId: [
           {
-            type: "number",
+            type: 'number',
             required: true,
-            message: "请选择相应番剧",
-            trigger: "submit"
+            message: '请选择相应番剧',
+            trigger: 'submit'
           }
         ],
         content: [
           {
             required: true,
             max: 1000,
-            message: "内容不能为空，且不超过1000字",
-            trigger: "submit"
+            message: '内容不能为空，且不超过1000字',
+            trigger: 'submit'
           }
         ],
-        tags: [{ validator: validateTags, trigger: "change" }]
+        tags: [{ validator: validateTags, trigger: 'change' }]
       },
       images: [],
       exceed: 6,
       loadingFetchBangumi: false,
       submitting: false
-    };
+    }
   },
   computed: {
     bangumiId() {
-      return this.$route.name === "bangumi-show"
+      return this.$route.name === 'bangumi-show'
         ? parseInt(this.$route.params.id, 10)
-        : 0;
+        : 0
     }
   },
   mounted() {
-    this.$channel.$on("show-create-post-modal", () => {
+    this.$channel.$on('show-create-post-modal', () => {
       if (this.$store.state.login) {
-        this.showPostModal = true;
-        this.getPostTags();
-        this.getUpToken();
+        this.showPostModal = true
+        this.getPostTags()
+        this.getUpToken()
       } else {
-        this.$channel.$emit("sign-in");
+        this.$channel.$emit('sign-in')
       }
-    });
+    })
   },
   methods: {
     submit() {
       if (!this.$store.state.login) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.submitting) {
-        return;
+        return
       }
-      this.submitting = true;
+      this.submitting = true
       this.$refs.forms.validate(valid => {
         if (valid) {
           this.$captcha({
             success: async ({ data }) => {
               try {
-                const api = new PostApi(this);
+                const api = new PostApi(this)
                 const result = await api.create({
                   title: this.forms.title,
                   bangumiId: this.forms.bangumiId,
@@ -232,91 +232,90 @@ export default {
                   images: this.images.map(item => item.img),
                   is_creator: this.forms.is_creator,
                   geetest: data
-                });
-                this.images = [];
-                this.$refs.forms.resetFields();
-                this.$emit("submit");
-                this.submitting = false;
+                })
+                this.images = []
+                this.$refs.forms.resetFields()
+                this.$emit('submit')
+                this.submitting = false
                 this.$toast.success(result.message).then(() => {
-                  window.location = this.$alias.post(result.data);
-                });
+                  window.location = this.$alias.post(result.data)
+                })
               } catch (err) {
-                this.$toast.error(err);
-                this.submitting = false;
+                this.$toast.error(err)
+                this.submitting = false
               }
             },
             error: e => {
-              this.submitting = false;
-              this.$toast.error(e);
+              this.submitting = false
+              this.$toast.error(e)
             },
             close: () => {
-              this.submitting = false;
+              this.submitting = false
             }
-          });
+          })
         } else {
-          this.submitting = false;
-          return false;
+          this.submitting = false
+          return false
         }
-      });
+      })
     },
     handleError(err, file) {
-      console.log(err);
       this.images.forEach((item, index) => {
         if (item.id === file.uid) {
-          this.images.splice(index, 1);
+          this.images.splice(index, 1)
         }
-      });
-      this.$toast.error(`图片：${file.name} 上传失败`);
+      })
+      this.$toast.error(`图片：${file.name} 上传失败`)
     },
     handleRemove(file) {
       this.images.forEach((item, index) => {
         if (item.id === file.uid) {
-          this.images.splice(index, 1);
+          this.images.splice(index, 1)
         }
-      });
+      })
     },
     handleSuccess(res, file) {
       this.images.push({
         id: file.uid,
         img: res.data
-      });
+      })
     },
     handleExceed() {
-      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`);
+      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
     },
     beforeUpload(file) {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
 
-      this.uploadConfig.max = 5;
+      this.uploadConfig.max = 5
       this.uploadConfig.params = {
         userId: this.$store.state.user.id,
         id: 0,
-        type: "post"
-      };
+        type: 'post'
+      }
 
-      return this.beforeImageUpload(file);
+      return this.beforeImageUpload(file)
     },
     async getPostTags() {
       if (this.tags.length) {
-        return;
+        return
       }
       try {
-        const list = JSON.parse(sessionStorage.getItem("cache-post-tags"));
+        const list = JSON.parse(sessionStorage.getItem('cache-post-tags'))
         if (list) {
-          this.tags = list;
-          return;
+          this.tags = list
+          return
         }
       } catch (e) {}
-      const api = new PostApi(this);
+      const api = new PostApi(this)
       try {
-        const tags = await api.tags();
-        this.tags = tags;
-        sessionStorage.setItem("cache-post-tags", JSON.stringify(tags));
+        const tags = await api.tags()
+        this.tags = tags
+        sessionStorage.setItem('cache-post-tags', JSON.stringify(tags))
       } catch (e) {}
     }
   }
-};
+}
 </script>

@@ -106,7 +106,7 @@
 
 <script>
 export default {
-  name: "AvaDialog",
+  name: 'AvaDialog',
   props: {
     users: {
       required: true,
@@ -130,18 +130,18 @@ export default {
     },
     title: {
       type: String,
-      default: "用户列表"
+      default: '用户列表'
     }
   },
   data() {
     return {
       showDialog: false
-    };
+    }
   },
   computed: {
     displayUsers() {
-      return this.users.slice(0, this.displayCount);
+      return this.users.slice(0, this.displayCount)
     }
   }
-};
+}
 </script>

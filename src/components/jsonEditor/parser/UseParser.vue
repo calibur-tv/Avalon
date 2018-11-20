@@ -21,12 +21,12 @@
 
 <script>
 export default {
-  name: "JsonContentTxtParser",
+  name: 'JsonContentTxtParser',
   props: {
     item: {
       type: Object,
       required: true
     }
   }
-};
+}
 </script>

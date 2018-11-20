@@ -142,111 +142,111 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
-  name: "AppVersion",
+  name: 'AppVersion',
   mixins: [pageMixin],
   data() {
     return {
       showCreateModal: false,
-      imageUploadAccept: "",
-      appType: "",
+      imageUploadAccept: '',
+      appType: '',
       versionType: 0,
-      downloadUrl: "",
+      downloadUrl: '',
       types: [
         {
-          label: "Android",
-          value: "1"
+          label: 'Android',
+          value: '1'
         },
         {
-          label: "iOS",
-          value: "2"
+          label: 'iOS',
+          value: '2'
         }
       ],
       uploadHeaders: {
-        token: "",
-        key: ""
+        token: '',
+        key: ''
       }
-    };
+    }
   },
   computed: {
     isKing() {
-      return this.$store.state.user.id === 1;
+      return this.$store.state.user.id === 1
     },
     appVersion() {
-      if (this.appType === "" || this.versionType === 0) {
-        return "";
+      if (this.appType === '' || this.versionType === 0) {
+        return ''
       }
-      const list = this.pageList.filter(_ => _.app_type === this.appType);
+      const list = this.pageList.filter(_ => _.app_type === this.appType)
       if (!list.length) {
-        return "0.0.1";
+        return '0.0.1'
       }
       const nowBiggestVersion = list[0].app_version
-        .split(".")
-        .map(_ => parseInt(_));
+        .split('.')
+        .map(_ => parseInt(_))
       if (this.versionType === 1) {
-        return `${nowBiggestVersion[0] + 1}.0.0`;
+        return `${nowBiggestVersion[0] + 1}.0.0`
       } else if (this.versionType === 2) {
-        return `${nowBiggestVersion[0]}.${nowBiggestVersion[1] + 1}.0`;
+        return `${nowBiggestVersion[0]}.${nowBiggestVersion[1] + 1}.0`
       }
       return `${nowBiggestVersion[0]}.${
         nowBiggestVersion[1]
-      }.${nowBiggestVersion[2] + 1}`;
+      }.${nowBiggestVersion[2] + 1}`
     }
   },
   created() {
-    this.getData();
-    this.getUploadAppUpToken();
+    this.getData()
+    this.getUploadAppUpToken()
   },
   methods: {
     async getUploadAppUpToken() {
-      const api = new Api(this);
-      this.uploadHeaders.token = await api.getAppUpToken();
+      const api = new Api(this)
+      this.uploadHeaders.token = await api.getAppUpToken()
     },
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
-      const data = await api.getAppVersions();
-      this.pageState.cur = 1;
-      this.pageState.size = 15;
-      this.pageState.total = data.length;
+      this.pageLoading = true
+      const api = new Api(this)
+      const data = await api.getAppVersions()
+      this.pageState.cur = 1
+      this.pageState.size = 15
+      this.pageState.total = data.length
       this.pageList = data.map(_ => {
         return Object.assign(_, {
-          force_update: _.force_update === "1"
-        });
-      });
-      this.pageLoading = false;
+          force_update: _.force_update === '1'
+        })
+      })
+      this.pageLoading = false
     },
     async createAppVersion() {
       if (!this.appType || !this.appVersion || !this.downloadUrl) {
-        return;
+        return
       }
-      const api = new Api(this);
+      const api = new Api(this)
       try {
         const data = await api.createAppVersion({
           type: this.appType,
           version: this.appVersion,
           url: this.downloadUrl
-        });
-        this.$toast.success("操作成功");
-        this.pageList.unshift(data);
-        this.showCreateModal = false;
-        this.appType = "";
-        this.versionType = 0;
+        })
+        this.$toast.success('操作成功')
+        this.pageList.unshift(data)
+        this.showCreateModal = false
+        this.appType = ''
+        this.versionType = 0
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     async remove(index, row) {
-      this.$confirm("确定要删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteAppVersion({
               type: row.app_type,
@@ -256,24 +256,23 @@ export default {
               this.pageList.splice(
                 (this.pageState.cur - 1) * this.pageState.size + index,
                 1
-              );
-              this.$toast.success("操作成功");
+              )
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              console.log(e);
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     async toggleForce(row) {
-      this.$confirm("确定要执行该操作吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定要执行该操作吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .toggleAppUpdate({
               type: row.app_type,
@@ -281,40 +280,39 @@ export default {
               force: !row.force_update
             })
             .then(() => {
-              row.force_update = !row.force_update;
-              this.$toast.success("操作成功");
+              row.force_update = !row.force_update
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              console.log(e);
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     computeType(type) {
-      let result = "";
+      let result = ''
       this.types.forEach(item => {
         if (item.value === type) {
-          result = item.label;
+          result = item.label
         }
-      });
-      return result;
+      })
+      return result
     },
     beforeUploadApp(file) {
-      if (file.type !== "application/vnd.android.package-archive") {
-        this.$toast.error("文件类型不正确！");
-        return false;
+      if (file.type !== 'application/vnd.android.package-archive') {
+        this.$toast.error('文件类型不正确！')
+        return false
       }
-      this.uploadHeaders.mime = "application/vnd.android.package-archive";
+      this.uploadHeaders.mime = 'application/vnd.android.package-archive'
       this.uploadHeaders.key = `app/android/${Date.now()}/calibur-tv-${this.appVersion.replace(
         /\./g,
-        "-"
-      )}.apk`;
-      return true;
+        '-'
+      )}.apk`
+      return true
     },
     handleAppUploaded(res) {
-      this.downloadUrl = `https://static.calibur.tv/${res.key}`;
+      this.downloadUrl = `https://static.calibur.tv/${res.key}`
     }
   }
-};
+}
 </script>

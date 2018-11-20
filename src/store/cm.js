@@ -1,4 +1,4 @@
-import Api from "~/api/cmApi";
+import Api from '~/api/cmApi'
 
 export default {
   namespaced: true,
@@ -7,15 +7,15 @@ export default {
   }),
   mutations: {
     SET_LOOPS(state, data) {
-      state.loops = data;
+      state.loops = data
     }
   },
   actions: {
     async getCmLoop({ commit }) {
-      const api = new Api();
-      const data = await api.getLoop();
-      commit("SET_LOOPS", data);
+      const api = new Api()
+      const data = await api.getLoop()
+      commit('SET_LOOPS', data)
     }
   },
   getters: {}
-};
+}

@@ -111,10 +111,10 @@
 </template>
 
 <script>
-import CommentReplyForm from "~/components/comments/CommentReplyForm";
+import CommentReplyForm from '~/components/comments/CommentReplyForm'
 
 export default {
-  name: "PostSubCommentItem",
+  name: 'PostSubCommentItem',
   components: {
     CommentReplyForm
   },
@@ -132,52 +132,52 @@ export default {
     return {
       showReplyArea: false,
       deleting: false
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0;
+      return this.$store.state.login ? this.$store.state.user.id : 0
     },
     isMine() {
-      return this.currentUserId === this.comment.from_user_id;
+      return this.currentUserId === this.comment.from_user_id
     },
     canDelete() {
-      return this.isMine || this.currentUserId === this.parentUserId;
+      return this.isMine || this.currentUserId === this.parentUserId
     },
     focusThisComment() {
-      return parseInt(this.$route.query["reply-id"]) === this.comment.id;
+      return parseInt(this.$route.query['reply-id']) === this.comment.id
     }
   },
   methods: {
     toggleCommentArea() {
-      this.showReplyArea = !this.showReplyArea;
+      this.showReplyArea = !this.showReplyArea
     },
     deleteComment() {
       if (this.deleting) {
-        return;
+        return
       }
-      this.deleting = true;
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.deleting = true
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.$store.dispatch("comment/deleteSubComment", {
-            type: "post",
+          this.$store.dispatch('comment/deleteSubComment', {
+            type: 'post',
             ctx: this,
             id: this.comment.id,
             parentId: this.comment.parent_id
-          });
+          })
         })
         .catch(e => {
-          this.deleting = false;
-          if (e === "cancel") {
-            return;
+          this.deleting = false
+          if (e === 'cancel') {
+            return
           }
-          this.$toast.error(e);
-        });
+          this.$toast.error(e)
+        })
     }
   }
-};
+}
 </script>

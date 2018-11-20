@@ -98,70 +98,70 @@
 </template>
 
 <script>
-import UserApi from "~/api/userApi";
+import UserApi from '~/api/userApi'
 
 export default {
-  name: "SignUpForm",
+  name: 'SignUpForm',
   props: {
     inviteCode: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     const validateNickname = (rule, value, callback) => {
-      if (value === "") {
-        return callback(new Error("请先给自己起个名字"));
+      if (value === '') {
+        return callback(new Error('请先给自己起个名字'))
       }
-      const length = value.replace(/([\u4e00-\u9fa5])/g, "aa").trim().length;
+      const length = value.replace(/([\u4e00-\u9fa5])/g, 'aa').trim().length
       if (length < 2) {
-        return callback(new Error("昵称至少是2个字符"));
+        return callback(new Error('昵称至少是2个字符'))
       }
       if (length > 14) {
-        return callback(new Error("昵称不能超过14个字符，1个汉字占2个字符"));
+        return callback(new Error('昵称不能超过14个字符，1个汉字占2个字符'))
       }
       if (!/^([\u4e00-\u9fa5]|[a-z0-9])+$/i.test(value)) {
-        return callback(new Error("昵称只能包含：中文、数字、字母"));
+        return callback(new Error('昵称只能包含：中文、数字、字母'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateAccess = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请填写手机号"));
+        return callback(new Error('请填写手机号'))
       }
       if (value.length !== 11) {
-        return callback(new Error("请填写11位手机号"));
+        return callback(new Error('请填写11位手机号'))
       }
       if (!/^(0|86|17951)?(1)[0-9]{10}$/.test(value)) {
-        return callback(new Error("错误的手机号格式"));
+        return callback(new Error('错误的手机号格式'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateSecret = (rule, value, callback) => {
-      if (value === "") {
-        return callback(new Error("请填写登录密码"));
+      if (value === '') {
+        return callback(new Error('请填写登录密码'))
       }
       if (value.length < 6) {
-        return callback(new Error("密码不能小于6位"));
+        return callback(new Error('密码不能小于6位'))
       }
       if (value.length > 16) {
-        return callback(new Error("密码不能大于16位"));
+        return callback(new Error('密码不能大于16位'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       watchPwd: false,
       form: {
-        access: "",
-        secret: "",
-        nickname: "",
-        authCode: "",
+        access: '',
+        secret: '',
+        nickname: '',
+        authCode: '',
         inviteCode: this.inviteCode
       },
       rule: {
-        nickname: [{ validator: validateNickname, trigger: "blur" }],
-        access: [{ validator: validateAccess, trigger: "blur" }],
-        secret: [{ validator: validateSecret, trigger: "blur" }]
+        nickname: [{ validator: validateNickname, trigger: 'blur' }],
+        access: [{ validator: validateAccess, trigger: 'blur' }],
+        secret: [{ validator: validateSecret, trigger: 'blur' }]
       },
       /**
        * 0：初始化，表单待校验
@@ -188,25 +188,25 @@ export default {
        */
       step: 0,
       timeout: 0
-    };
+    }
   },
   computed: {
     submitBtnText() {
       if (this.step === 0) {
-        return "注册";
+        return '注册'
       } else if (this.step === 1) {
-        return "提交中...";
+        return '提交中...'
       } else if (this.step === 2) {
-        return "短信已发送";
+        return '短信已发送'
       } else if (this.step === 3) {
-        return "注册中...";
+        return '注册中...'
       }
     },
     submitBtnLoading() {
-      return this.step === 1 || this.step === 3;
+      return this.step === 1 || this.step === 3
     },
     submitBtnDisabled() {
-      return (this.timeout !== 0 && this.step === 0) || this.step === 3;
+      return (this.timeout !== 0 && this.step === 0) || this.step === 3
     }
   },
   methods: {
@@ -214,67 +214,67 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.step === 0) {
-            this.getRegisterAuthCode();
+            this.getRegisterAuthCode()
           }
           if (this.step === 2) {
-            this.openConfirmModal();
+            this.openConfirmModal()
           }
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     getRegisterAuthCode() {
-      this.step = 1;
+      this.step = 1
       this.$captcha({
         success: async ({ data }) => {
-          const api = new UserApi();
+          const api = new UserApi()
           try {
             await api.sendMessage({
-              type: "sign_up",
+              type: 'sign_up',
               phone_number: this.form.access,
               geetest: data
-            });
-            this.step = 2;
-            this.openConfirmModal();
+            })
+            this.step = 2
+            this.openConfirmModal()
           } catch (err) {
-            this.$toast.error(err);
-            this.step = 0;
+            this.$toast.error(err)
+            this.step = 0
           } finally {
-            this.timeout = 60;
+            this.timeout = 60
             const timer = setInterval(() => {
               if (!--this.timeout) {
-                this.step = 0;
-                clearInterval(timer);
+                this.step = 0
+                clearInterval(timer)
               }
-            }, 1000);
+            }, 1000)
           }
         },
         close: () => {
-          this.step = 0;
+          this.step = 0
         },
         error: err => {
-          this.step = 0;
-          this.$toast.error(err);
+          this.step = 0
+          this.$toast.error(err)
         }
-      });
+      })
     },
     openConfirmModal() {
-      this.$prompt("请输入收到的验证码", "短信已发送", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入收到的验证码', '短信已发送', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d{6}$/,
-        inputErrorMessage: "验证码格式不正确"
+        inputErrorMessage: '验证码格式不正确'
       })
         .then(({ value }) => {
-          this.form.authCode = value;
-          this.step = 3;
-          this.signUp();
+          this.form.authCode = value
+          this.step = 3
+          this.signUp()
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     signUp() {
-      const api = new UserApi();
+      const api = new UserApi()
       api
         .register({
           access: this.form.access,
@@ -284,22 +284,22 @@ export default {
           inviteCode: this.form.inviteCode
         })
         .then(res => {
-          this.$toast.success("注册成功！");
-          this.$cookie.set("JWT-TOKEN", res);
-          window.location.reload();
+          this.$toast.success('注册成功！')
+          this.$cookie.set('JWT-TOKEN', res)
+          window.location.reload()
         })
         .catch(err => {
-          this.step = 0;
-          this.$toast.error(err);
-        });
+          this.step = 0
+          this.$toast.error(err)
+        })
     },
     showOAuth() {
-      this.$toast.info("暂未开放第三方注册");
+      this.$toast.info('暂未开放第三方注册')
     },
     showLogin() {
-      this.$emit("to-login");
-      this.$refs.form.resetFields();
+      this.$emit('to-login')
+      this.$refs.form.resetFields()
     }
   }
-};
+}
 </script>

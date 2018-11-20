@@ -332,6 +332,6 @@
 
 <script>
 export default {
-  name: "AboutThanks"
-};
+  name: 'AboutThanks'
+}
 </script>

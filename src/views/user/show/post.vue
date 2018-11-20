@@ -79,7 +79,7 @@
           float: left;
 
           &:after {
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             top: 0;
@@ -221,69 +221,69 @@
 </template>
 
 <script>
-import PostFlowList from "~/components/flow/list/PostFlowList";
-import Api from "~/api/userApi";
+import PostFlowList from '~/components/flow/list/PostFlowList'
+import Api from '~/api/userApi'
 
 export default {
-  name: "UserPost",
+  name: 'UserPost',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "post",
-      sort: "news",
+    await store.dispatch('flow/initData', {
+      type: 'post',
+      sort: 'news',
       userZone: route.params.zone,
       ctx
-    });
+    })
   },
   components: {
     PostFlowList
   },
   data() {
     return {
-      tab: "发表",
-      postListType: "reply",
+      tab: '发表',
+      postListType: 'reply',
       list: [],
       loading: false,
       fetched: false,
       noMore: false,
       page: 0
-    };
+    }
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     }
   },
   methods: {
     handleTabSwitch(label) {
-      if (label === "回复") {
-        this.getUserPosts(true);
+      if (label === '回复') {
+        this.getUserPosts(true)
       }
     },
     async getUserPosts(init = false) {
       if (init && this.fetched) {
-        return;
+        return
       }
       if (this.loading || this.noMore) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         const data = await api.replyPosts({
           take: 10,
           page: this.page,
           zone: this.zone
-        });
-        this.fetched = true;
-        this.list = this.list.concat(data.list);
-        this.noMore = data.noMore;
-        this.page++;
+        })
+        this.fetched = true
+        this.list = this.list.concat(data.list)
+        this.noMore = data.noMore
+        this.page++
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

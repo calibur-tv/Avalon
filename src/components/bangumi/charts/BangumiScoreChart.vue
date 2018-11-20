@@ -18,10 +18,10 @@
 export default {
   components: {
     VeRadar: () => {
-      if (typeof window === "undefined") {
-        return import("~/assets/js/empty");
+      if (typeof window === 'undefined') {
+        return import('~/assets/js/empty')
       }
-      return import("v-charts/lib/radar.common");
+      return import('v-charts/lib/radar.common')
     }
   },
   props: {
@@ -35,52 +35,52 @@ export default {
     },
     size: {
       type: String,
-      default: "400px"
+      default: '400px'
     }
   },
   data() {
     const labelMap = {
-      total: "总分",
-      lol: "笑点",
-      cry: "泪点",
-      fight: "燃点",
-      moe: "萌点",
-      sound: "音乐",
-      vision: "画面",
-      story: "情节",
-      role: "人设",
-      express: "内涵",
-      style: "美感"
-    };
-    const dimension = "total";
-    const columns = Object.keys(labelMap);
-    const metrics = columns.filter(_ => _ !== dimension);
+      total: '总分',
+      lol: '笑点',
+      cry: '泪点',
+      fight: '燃点',
+      moe: '萌点',
+      sound: '音乐',
+      vision: '画面',
+      story: '情节',
+      role: '人设',
+      express: '内涵',
+      style: '美感'
+    }
+    const dimension = 'total'
+    const columns = Object.keys(labelMap)
+    const metrics = columns.filter(_ => _ !== dimension)
     const indicator = metrics.map(_ => {
       return {
         name: labelMap[_],
         max: 10
-      };
-    });
+      }
+    })
     return {
       chartExtend: {
         radar: {
           indicator,
-          shape: "polygon",
+          shape: 'polygon',
           splitArea: {
             show: false
           },
           axisLine: {
             show: true,
             lineStyle: {
-              color: "##ccd0d7",
-              type: "dotted"
+              color: '##ccd0d7',
+              type: 'dotted'
             }
           },
           splitLine: {
             show: true,
             lineStyle: {
-              color: "#ccd0d7",
-              type: "dotted"
+              color: '#ccd0d7',
+              type: 'dotted'
             }
           },
           silent: false,
@@ -100,12 +100,12 @@ export default {
         columns,
         rows: [this.source]
       }
-    };
+    }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {}
-};
+}
 </script>

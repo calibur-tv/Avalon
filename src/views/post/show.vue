@@ -379,34 +379,30 @@
 </template>
 
 <script>
-import CommentMain from "~/components/comments/CommentMain";
-import PostCommentItem from "~/components/post/PostCommentItem";
-import PostCommentForm from "~/components/post/PostCommentForm";
-import SocialPanel from "~/components/common/SocialPanel";
+import CommentMain from '~/components/comments/CommentMain'
+import PostCommentItem from '~/components/post/PostCommentItem'
+import PostCommentForm from '~/components/post/PostCommentForm'
+import SocialPanel from '~/components/common/SocialPanel'
 
 export default {
-  name: "PostShow",
+  name: 'PostShow',
   async asyncData({ route, store, ctx }) {
-    const only = route.query.only
-      ? parseInt(route.query.only, 10)
-        ? 1
-        : 0
-      : 0;
-    const id = route.params.id;
+    const only = route.query.only ? (parseInt(route.query.only, 10) ? 1 : 0) : 0
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("post/getPost", {
+      store.dispatch('post/getPost', {
         id,
         ctx,
         only
       }),
-      store.dispatch("comment/getMainComments", {
+      store.dispatch('comment/getMainComments', {
         ctx,
         id,
-        type: "post",
+        type: 'post',
         onlySeeMaster: only,
-        seeReplyId: route.query["comment-id"]
+        seeReplyId: route.query['comment-id']
       })
-    ]);
+    ])
   },
   components: {
     CommentMain,
@@ -419,140 +415,140 @@ export default {
       title: `${this.post.title} - 帖子`,
       meta: [
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content: this.$utils.truncate(this.post.content)
         },
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,帖子,天下漫友是一家,${this.post.title},${
             this.bangumi.name
           }`
         }
       ]
-    };
+    }
   },
   data() {
     return {
       loadingToggleLike: false,
       loadingToggleMark: false
-    };
+    }
   },
   computed: {
     resource() {
-      return this.$store.state.post.info;
+      return this.$store.state.post.info
     },
     bangumi() {
-      return this.resource.bangumi;
+      return this.resource.bangumi
     },
     post() {
-      return this.resource.post;
+      return this.resource.post
     },
     master() {
-      return this.resource.user;
+      return this.resource.user
     },
     total() {
-      return this.$store.state.comment.total + 1;
+      return this.$store.state.comment.total + 1
     },
     onlySeeMaster() {
-      return !!parseInt(this.$route.query.only, 10);
+      return !!parseInt(this.$route.query.only, 10)
     },
     isMaster() {
       if (!this.$store.state.login) {
-        return false;
+        return false
       }
-      return this.$store.state.user.id === this.master.id;
+      return this.$store.state.user.id === this.master.id
     }
   },
   methods: {
     scrollToReplyForm() {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
-      const wrap = document.getElementById("bottom-comment-post-form");
+      const wrap = document.getElementById('bottom-comment-post-form')
       if (wrap) {
-        this.$scrollToY(this.$utils.getOffsetTop(wrap), 400);
-        wrap.querySelector("textarea").focus();
+        this.$scrollToY(this.$utils.getOffsetTop(wrap), 400)
+        wrap.querySelector('textarea').focus()
       }
     },
     switchOnlyMaster() {
       window.location = this.$alias.post(this.post.id, {
         only: this.onlySeeMaster ? 0 : 1
-      });
+      })
     },
     deletePost() {
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(async () => {
-          await this.$store.dispatch("post/deletePost", {
+          await this.$store.dispatch('post/deletePost', {
             ctx: this,
             id: this.post.id
-          });
-          window.location = this.$alias.bangumi(this.bangumi.id);
+          })
+          window.location = this.$alias.bangumi(this.bangumi.id)
         })
         .catch(e => {
-          this.$toast.error(e);
-        });
+          this.$toast.error(e)
+        })
     },
     async toggleLike() {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.isMaster) {
-        this.$toast.info("不能赞赏自己的帖子");
-        return;
+        this.$toast.info('不能赞赏自己的帖子')
+        return
       }
       if (this.loadingToggleLike) {
-        return;
+        return
       }
-      this.loadingToggleLike = true;
+      this.loadingToggleLike = true
       try {
-        const result = await this.$store.dispatch("post/toggleLike", {
+        const result = await this.$store.dispatch('post/toggleLike', {
           ctx: this,
           id: this.post.id
-        });
+        })
         if (result) {
-          this.$store.commit("USE_COIN");
+          this.$store.commit('USE_COIN')
         }
       } catch (err) {
-        this.$toast.error(err);
+        this.$toast.error(err)
       } finally {
-        this.loadingToggleLike = false;
+        this.loadingToggleLike = false
       }
     },
     async toggleMark() {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.isMaster) {
-        this.$toast.info("不能收藏自己的帖子");
-        return;
+        this.$toast.info('不能收藏自己的帖子')
+        return
       }
       if (this.loadingToggleMark) {
-        return;
+        return
       }
-      this.loadingToggleMark = true;
+      this.loadingToggleMark = true
       try {
-        await this.$store.dispatch("post/toggleMark", {
+        await this.$store.dispatch('post/toggleMark', {
           ctx: this,
           id: this.post.id
-        });
+        })
       } catch (err) {
-        this.$toast.error(err);
+        this.$toast.error(err)
       } finally {
-        this.loadingToggleMark = false;
+        this.loadingToggleMark = false
       }
     },
     handleBangumiFollow(result) {
-      this.$store.commit("post/FOLLOW_BANGUMI", result);
+      this.$store.commit('post/FOLLOW_BANGUMI', result)
     }
   }
-};
+}
 </script>

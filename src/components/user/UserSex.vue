@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: "UserSex",
+  name: 'UserSex',
   props: {
     sex: {
       type: String,
@@ -51,5 +51,5 @@ export default {
       default: false
     }
   }
-};
+}
 </script>

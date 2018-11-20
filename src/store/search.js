@@ -1,19 +1,19 @@
-import Api from "~/api/searchApi";
+import Api from '~/api/searchApi'
 
 const tabs = {
-  all: "综合",
-  bangumi: "番剧",
-  video: "视频",
-  post: "帖子",
-  score: "漫评",
-  role: "偶像",
-  user: "用户"
+  all: '综合',
+  bangumi: '番剧',
+  video: '视频',
+  post: '帖子',
+  score: '漫评',
+  role: '偶像',
+  user: '用户'
   // image: "相册",
-};
+}
 
 const state = () => ({
   tabs,
-  lastSearchKeywords: "",
+  lastSearchKeywords: '',
   resource: Object.assign(
     {},
     ...Object.keys(tabs).map(_ => ({
@@ -27,11 +27,11 @@ const state = () => ({
     }))
   ),
   bangumis: []
-});
+})
 
 const mutations = {
   RESET_DATA(state) {
-    state.lastSearchKeywords = "";
+    state.lastSearchKeywords = ''
     state.resource = Object.assign(
       {},
       ...Object.keys(tabs).map(_ => ({
@@ -43,74 +43,74 @@ const mutations = {
           loading: false
         }
       }))
-    );
+    )
   },
   SET_LOADING(state, { type, value }) {
-    state.resource[type].loading = value;
+    state.resource[type].loading = value
   },
   SET_RESOURCE(state, { type, q, data }) {
-    state.lastSearchKeywords = q;
-    state.resource[type].list = state.resource[type].list.concat(data.list);
-    state.resource[type].page = state.resource[type].page + 1;
-    state.resource[type].noMore = data.noMore;
-    state.resource[type].total = data.total;
-    state.resource[type].loading = false;
+    state.lastSearchKeywords = q
+    state.resource[type].list = state.resource[type].list.concat(data.list)
+    state.resource[type].page = state.resource[type].page + 1
+    state.resource[type].noMore = data.noMore
+    state.resource[type].total = data.total
+    state.resource[type].loading = false
   },
   SET_BANGUMIS(state, data) {
-    state.bangumis = data;
+    state.bangumis = data
   }
-};
+}
 
 const actions = {
   async fetchData({ state, commit }, { q, type, ctx }) {
     if (!q) {
-      return;
+      return
     }
     if (state.lastSearchKeywords && state.lastSearchKeywords !== q) {
-      commit("RESET_DATA");
+      commit('RESET_DATA')
     }
-    const resource = state.resource[type];
+    const resource = state.resource[type]
     if (resource.list.length || resource.noMore || resource.loading) {
-      return;
+      return
     }
-    commit("SET_LOADING", { type, value: true });
-    const api = new Api(ctx);
+    commit('SET_LOADING', { type, value: true })
+    const api = new Api(ctx)
     const data = await api.v2({
       q,
       type,
       page: resource.page
-    });
-    commit("SET_RESOURCE", { q, type, data });
+    })
+    commit('SET_RESOURCE', { q, type, data })
   },
   async fetchMore({ state, commit }, { type, ctx }) {
-    const q = state.lastSearchKeywords;
+    const q = state.lastSearchKeywords
     if (!q) {
-      return;
+      return
     }
-    const resource = state.resource[type];
+    const resource = state.resource[type]
     if (resource.noMore || resource.loading) {
-      return;
+      return
     }
-    commit("SET_LOADING", { type, value: true });
-    const api = new Api(ctx);
+    commit('SET_LOADING', { type, value: true })
+    const api = new Api(ctx)
     const data = await api.v2({
       q,
       type,
       page: resource.page
-    });
-    commit("SET_RESOURCE", { q, type, data });
+    })
+    commit('SET_RESOURCE', { q, type, data })
   },
   async fetchBangumis({ state, commit }) {
     if (state.bangumis.length) {
-      return;
+      return
     }
-    const api = new Api();
-    const data = await api.bangumis();
-    commit("SET_BANGUMIS", data);
+    const api = new Api()
+    const data = await api.bangumis()
+    commit('SET_BANGUMIS', data)
   }
-};
+}
 
-const getters = {};
+const getters = {}
 
 export default {
   namespaced: true,
@@ -118,4 +118,4 @@ export default {
   actions,
   mutations,
   getters
-};
+}

@@ -60,40 +60,40 @@
 </template>
 
 <script>
-import AnswerFlowList from "~/components/flow/list/AnswerFlowList";
-import QuestionPanel from "~/components/question/QuestionPanel";
+import AnswerFlowList from '~/components/flow/list/AnswerFlowList'
+import QuestionPanel from '~/components/question/QuestionPanel'
 
 export default {
-  name: "QuestionShow",
+  name: 'QuestionShow',
   async asyncData({ store, route, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("question/getQAQ", {
+      store.dispatch('question/getQAQ', {
         id,
         ctx
       }),
-      store.dispatch("question/getAnswers", {
+      store.dispatch('question/getAnswers', {
         questionId: id,
         ctx
       })
-    ]);
+    ])
   },
   head() {
     return {
       title: `${this.qaq.title} - 提问`,
       meta: [
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content: this.$utils.truncate(this.qaq.intro)
         },
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,提问,天下漫友是一家,${this.qaq.intro}`
         }
       ]
-    };
+    }
   },
   components: {
     AnswerFlowList,
@@ -101,11 +101,11 @@ export default {
   },
   computed: {
     id() {
-      return +this.$route.params.id;
+      return +this.$route.params.id
     },
     qaq() {
-      return this.$store.state.question.qaq;
+      return this.$store.state.question.qaq
     }
   }
-};
+}
 </script>

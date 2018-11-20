@@ -38,12 +38,12 @@
 
 <script>
 export default {
-  name: "VHr",
+  name: 'VHr',
   props: {
     text: {
       required: true,
       type: String
     }
   }
-};
+}
 </script>

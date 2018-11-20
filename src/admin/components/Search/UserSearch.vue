@@ -54,14 +54,14 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
-  name: "UserSearch",
+  name: 'UserSearch',
   props: {
     value: {
       type: [Number, String],
-      default: ""
+      default: ''
     },
     disabled: {
       type: Boolean,
@@ -70,60 +70,59 @@ export default {
   },
   data() {
     return {
-      input: "",
+      input: '',
       loading: false,
       user: null,
-      type: "id",
+      type: 'id',
       options: [
         {
-          label: "手机号",
-          value: "phone"
+          label: '手机号',
+          value: 'phone'
         },
         {
-          label: "邀请码",
-          value: "id"
+          label: '邀请码',
+          value: 'id'
         },
         {
-          label: "ip地址",
-          value: "ip_address"
+          label: 'ip地址',
+          value: 'ip_address'
         },
         {
-          label: "个性域名",
-          value: "zone"
+          label: '个性域名',
+          value: 'zone'
         }
       ]
-    };
+    }
   },
   methods: {
     async search() {
-      console.log("click");
-      let q = this.input;
+      let q = this.input
       if (!q) {
-        return;
+        return
       }
 
       if (this.disabled) {
-        this.$emit("submit", {
+        this.$emit('submit', {
           type: this.type,
           value: q
-        });
-        return;
+        })
+        return
       }
 
-      const api = new Api(this);
+      const api = new Api(this)
       try {
         const user = await api.searchUser({
           type: this.type,
           value: q
-        });
-        this.user = user;
-        this.$emit("input", parseInt(user.id, 10));
+        })
+        this.user = user
+        this.$emit('input', parseInt(user.id, 10))
       } catch (e) {
-        this.$toast.error("服务暂不可用");
+        this.$toast.error('服务暂不可用')
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>
