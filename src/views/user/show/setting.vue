@@ -132,13 +132,13 @@
     </el-form-item>
     <el-form-item label="绑定">
       <div class="providers">
-        <a href="https://api.calibur.tv/callback/oauth2/qq?from=bind">
+        <a :href="`https://api.calibur.tv/callback/oauth2/qq?from=bind&id=${user.id}&zone=${user.zone}`">
           <i
             :class="{ 'is-bind': user.providers.bind_qq }"
             class="iconfont icon-qq"
           />
         </a>
-        <a href="https://api.calibur.tv/callback/oauth2/wechat?from=bind">
+        <a :href="`https://api.calibur.tv/callback/oauth2/wechat?from=bind&id=${user.id}&zone=${user.zone}`">
           <i
             :class="{ 'is-bind': user.providers.bind_wechat }"
             class="iconfont icon-wechat-copy"
