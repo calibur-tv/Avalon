@@ -1,6 +1,6 @@
 <style lang="scss">
 #invite-user {
-  background-image: url('https://image.calibur.tv/banner/1532339810574-zl3.jpeg?imageMogr2/auto-orient/strip|imageView2/0/w/2048');
+  background-image: url('https://image.calibur.tv/Fu09P6XyZuIvE4WfsE9ipu5BtCO6?imageMogr2/auto-orient/strip|imageView2/0/w/2048');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -26,7 +26,7 @@
     width: 580px;
     margin: 150px auto 0 auto;
     background-color: rgba(255, 255, 255, 0.85);
-    padding: 20px 40px;
+    padding: 20px 40px 40px;
     border-radius: 10px;
 
     h3 {
@@ -87,13 +87,6 @@
         class="sign-wrap"
       >
         <h3>欢迎注册 calibur.tv</h3>
-        <el-alert
-          type="info"
-          title=""
-        >
-          <p>注册之后，邀请者会收到短信提示，并且获得 1 枚团子；</p>
-          <p>由于站内视频流量过大，为了降低宽带费用，先需要注册后才能看番，影响到了大家的体验，非常抱歉</p>
-        </el-alert>
         <sign-up-form :invite-code="inviteUserId"/>
       </div>
     </div>

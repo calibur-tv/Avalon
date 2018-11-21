@@ -28,10 +28,14 @@
     height: 16px;
     margin-top: -8px;
 
+    span {
+      line-height: 21px;
+    }
+
     i {
       font-size: 20px;
       vertical-align: middle;
-      margin-right: 8px;
+      margin-left: 10px;
       color: $color-text-normal;
       cursor: pointer;
     }
@@ -109,13 +113,10 @@
       </el-form-item>
     </el-form>
     <div
-      v-if="!inviteCode"
       class="others"
     >
-      <div
-        v-if="showOAuth"
-        class="provider"
-      >
+      <div class="provider">
+        <span>社交账号注册</span>
         <a href="https://api.calibur.tv/callback/oauth2/qq?from=sign">
           <i class="iconfont icon-qq"/>
         </a>
@@ -123,11 +124,10 @@
           <i class="iconfont icon-wechat-copy"/>
         </a>
       </div>
-      <button
-        v-else
-        @click="showOAuth = true"
-      >社交账号注册</button>
-      <a @click="showLogin">已有账号»</a>
+      <a
+        v-if="!inviteCode"
+        @click="showLogin"
+      >已有账号»</a>
     </div>
   </div>
 </template>
@@ -222,8 +222,7 @@ export default {
        * ---- 无论如何，注册失败都返回 step 0
        */
       step: 0,
-      timeout: 0,
-      showOAuth: false
+      timeout: 0
     }
   },
   computed: {
