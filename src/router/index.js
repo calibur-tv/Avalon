@@ -257,9 +257,16 @@ export function createRouter() {
         meta: { useAuth: false },
         children: [
           {
-            path: 'wechat/auth',
-            name: 'wechat-auth-callback',
-            component: () => import('~/views/callback/wechat/auth')
+            path: 'auth-error',
+            component: () => import('~/views/callback/auth/error')
+          },
+          {
+            path: 'auth-success',
+            component: () => import('~/views/callback/auth/success')
+          },
+          {
+            path: 'auth-redirect',
+            component: () => import('~/views/callback/auth/redirect')
           }
         ]
       },

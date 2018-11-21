@@ -1,5 +1,9 @@
 <style lang="scss">
 .user-setting {
+  .el-radio-group {
+    margin-top: 0 !important;
+  }
+
   .el-icon-question {
     color: $color-gray-deep;
     margin-left: 10px;
@@ -20,6 +24,24 @@
       line-height: 20px;
       margin-left: 3px;
       margin-top: 3px;
+    }
+  }
+
+  .providers {
+    i {
+      font-size: 24px;
+      margin-right: 12px;
+      color: $color-gray-deep;
+    }
+
+    .icon-qq.is-bind,
+    .icon-qq:hover {
+      color: #3194d0;
+    }
+
+    .icon-wechat-copy.is-bind,
+    .icon-wechat-copy:hover {
+      color: #42c02e;
     }
   }
 }
@@ -107,6 +129,22 @@
         type="textarea"
         placeholder="用简单的言语，表达深刻的心"
       />
+    </el-form-item>
+    <el-form-item label="绑定">
+      <div class="providers">
+        <a href="https://api.calibur.tv/callback/oauth2/qq?from=bind">
+          <i
+            :class="{ 'is-bind': user.providers.bind_qq }"
+            class="iconfont icon-qq"
+          />
+        </a>
+        <a href="https://api.calibur.tv/callback/oauth2/wechat?from=bind">
+          <i
+            :class="{ 'is-bind': user.providers.bind_wechat }"
+            class="iconfont icon-wechat-copy"
+          />
+        </a>
+      </div>
     </el-form-item>
     <el-form-item>
       <el-button

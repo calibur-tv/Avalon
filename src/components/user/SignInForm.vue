@@ -36,6 +36,26 @@
     font-size: 18px;
     color: $color-gray-deep;
   }
+
+  .provider {
+    height: 40px;
+
+    i {
+      font-size: 20px;
+      vertical-align: middle;
+      margin-left: 8px;
+      color: $color-text-normal;
+      cursor: pointer;
+    }
+
+    .icon-qq:hover {
+      color: #3194d0;
+    }
+
+    .icon-wechat-copy:hover {
+      color: #42c02e;
+    }
+  }
 }
 </style>
 
@@ -74,9 +94,21 @@
       <el-form-item class="sign-in-opt">
         <div class="opt-container">
           <el-checkbox v-model="form.remember">记住我</el-checkbox>
+          <div
+            v-if="showOAuth"
+            class="provider"
+          >
+            <a href="https://api.calibur.tv/callback/oauth2/qq?from=sign">
+              <i class="iconfont icon-qq"/>
+            </a>
+            <a href="https://api.calibur.tv/callback/oauth2/wechat?from=sign">
+              <i class="iconfont icon-wechat-copy"/>
+            </a>
+          </div>
           <button
+            v-else
             type="button"
-            @click="showOAuth"
+            @click="showOAuth = true"
           >社交账号登录</button>
         </div>
       </el-form-item>
@@ -134,7 +166,8 @@ export default {
         secret: [{ validator: validateSecret, trigger: 'blur' }]
       },
       loading: false,
-      watchPwd: false
+      watchPwd: false,
+      showOAuth: false
     }
   },
   methods: {
@@ -189,9 +222,6 @@ export default {
     showRegister() {
       this.$emit('to-register')
       this.$refs.form.resetFields()
-    },
-    showOAuth() {
-      this.$toast.info('暂未开放第三方登录')
     }
   }
 }

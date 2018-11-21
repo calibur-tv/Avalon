@@ -23,6 +23,27 @@
     font-size: 18px;
     color: $color-gray-deep;
   }
+
+  .provider {
+    height: 16px;
+    margin-top: -8px;
+
+    i {
+      font-size: 20px;
+      vertical-align: middle;
+      margin-right: 8px;
+      color: $color-text-normal;
+      cursor: pointer;
+    }
+
+    .icon-qq:hover {
+      color: #3194d0;
+    }
+
+    .icon-wechat-copy:hover {
+      color: #42c02e;
+    }
+  }
 }
 </style>
 
@@ -91,7 +112,21 @@
       v-if="!inviteCode"
       class="others"
     >
-      <a @click="showOAuth">社交账号注册</a>
+      <div
+        v-if="showOAuth"
+        class="provider"
+      >
+        <a href="https://api.calibur.tv/callback/oauth2/qq?from=sign">
+          <i class="iconfont icon-qq"/>
+        </a>
+        <a href="https://api.calibur.tv/callback/oauth2/wechat?from=sign">
+          <i class="iconfont icon-wechat-copy"/>
+        </a>
+      </div>
+      <button
+        v-else
+        @click="showOAuth = true"
+      >社交账号注册</button>
       <a @click="showLogin">已有账号»</a>
     </div>
   </div>
@@ -187,7 +222,8 @@ export default {
        * ---- 无论如何，注册失败都返回 step 0
        */
       step: 0,
-      timeout: 0
+      timeout: 0,
+      showOAuth: false
     }
   },
   computed: {
@@ -292,9 +328,6 @@ export default {
           this.step = 0
           this.$toast.error(err)
         })
-    },
-    showOAuth() {
-      this.$toast.info('暂未开放第三方注册')
     },
     showLogin() {
       this.$emit('to-login')
