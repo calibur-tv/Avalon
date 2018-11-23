@@ -156,8 +156,8 @@ export default {
   methods: {
     computeMaxWidth() {
       let maxlength = 0
-      this.allData.forEach(video => {
-        const templength = video.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim()
+      this.allData.forEach(item => {
+        const templength = item.name.replace(/([\u4e00-\u9fa5])/g, 'aa').trim()
           .length
         if (maxlength < templength) {
           maxlength = templength

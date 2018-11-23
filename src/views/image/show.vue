@@ -312,7 +312,7 @@
           v-model="showAllPart"
         >
           <span slot-scope="{ item }">
-            {{ item.part }}：{{ item.name }}
+            {{ parseFloat(item.part) }}：{{ item.name }}
           </span>
         </v-parts>
         <social-panel

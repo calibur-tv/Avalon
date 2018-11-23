@@ -170,21 +170,6 @@ export default {
         if (item.type === 'txt' && item.text) {
           result += item.text.replace(/<br>/g, '\n')
         }
-        /*
-        if (item.type === 'title' && item.text) {
-          result += `${item.text}，`
-        }
-        if (item.type === 'use' && item.text) {
-          result += item.text.replace(/<br>/g, '\n')
-        }
-        if (item.type === 'list' && item.text) {
-          let list = item.text
-          while (/\n\n/.test(list)) {
-            list = list.replace(/\n\n/g, '\n')
-          }
-          result += list.replace(/\n/g, ';')
-        }
-        */
       })
       return result
     },
