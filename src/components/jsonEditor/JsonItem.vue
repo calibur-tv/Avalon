@@ -70,6 +70,10 @@
         &.pink {
           background-color: $color-pink-deep;
         }
+
+        &.purple {
+          background-color: #9266f9;
+        }
       }
     }
 
@@ -175,52 +179,41 @@
             v-if="!item.url"
             class="default green"
           >
-            <i class="el-icon-picture-outline"/>
+            <i class="iconfont icon-image"/>
           </div>
         </template>
         <div
           v-else-if="item.type === 'txt'"
           class="default yellow"
         >
-          <i class="el-icon-edit-outline"/>
+          <i class="iconfont icon-text"/>
         </div>
         <div
           v-else-if="item.type === 'list'"
           class="default blue"
         >
-          <i class="el-icon-tickets"/>
+          <i class="iconfont icon-list"/>
         </div>
         <div
           v-else-if="item.type === 'use'"
           class="default pink"
         >
-          <i class="el-icon-service"/>
+          <i class="iconfont icon-use"/>
+        </div>
+        <div
+          v-else-if="item.type === 'title'"
+          class="default purple"
+        >
+          <i class="iconfont icon-title"/>
         </div>
       </div>
       <div class="content">
         <template v-if="item.type === 'txt'">
           <div
-            v-if="item.text && !item.title"
+            v-if="item.text"
             class="text line-4"
             v-html="item.text"
           />
-          <div
-            v-else-if="item.title && !item.text"
-            class="text oneline"
-            v-text="item.title"
-          />
-          <template
-            v-else-if="item.title && item.text"
-          >
-            <div
-              class="text oneline"
-              v-text="item.title"
-            />
-            <div
-              class="text line-3"
-              v-html="item.text"
-            />
-          </template>
           <div
             v-else
             class="text"
@@ -289,6 +282,17 @@
             class="text"
           >点击添加引用内容</div>
         </template>
+        <template v-if="item.type === 'title'">
+          <div
+            v-if="item.text"
+            class="text line-4"
+            v-html="item.text"
+          />
+          <div
+            v-else
+            class="text"
+          >点击添加标题</div>
+        </template>
       </div>
     </div>
     <div class="append-area">
@@ -299,7 +303,7 @@
       >
         <el-button
           type="warning"
-          icon="el-icon-edit-outline"
+          icon="iconfont icon-text"
           circle
           plain
           size="mini"
@@ -313,7 +317,7 @@
       >
         <el-button
           type="success"
-          icon="el-icon-picture-outline"
+          icon="iconfont icon-image"
           circle
           plain
           size="mini"
@@ -327,7 +331,7 @@
       >
         <el-button
           type="primary"
-          icon="el-icon-tickets"
+          icon="iconfont icon-list"
           circle
           plain
           size="mini"
@@ -341,11 +345,25 @@
       >
         <el-button
           type="danger"
-          icon="el-icon-service"
+          icon="iconfont icon-use"
           circle
           plain
           size="mini"
           @click="emitCreate('use')"
+        />
+      </el-tooltip>
+      <el-tooltip
+        content="添加小标题"
+        placement="top"
+        effect="dark"
+      >
+        <el-button
+          type="info"
+          icon="iconfont icon-title"
+          circle
+          plain
+          size="mini"
+          @click="emitCreate('title')"
         />
       </el-tooltip>
     </div>

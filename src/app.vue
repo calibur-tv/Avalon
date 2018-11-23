@@ -46,13 +46,13 @@ export default {
       {
         rel: 'shortcut icon',
         type: 'image/x-icon',
-        href: `${cdn.static}/favicon.ico`
+        href: `${cdn.static}favicon.ico`
       },
       {
         rel: 'search',
         type: 'application/opensearchdescription+xml',
         title: 'calibur',
-        href: `${cdn.static}/owner/pc/search.xml`
+        href: `${cdn.static}owner/pc/search.xml`
       }
     ],
     script: [

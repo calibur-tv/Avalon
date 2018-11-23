@@ -6,17 +6,6 @@ $textarea-padding-right: 15px;
   position: relative;
   padding-bottom: $preview-footer-height;
 
-  .title-input {
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom: 1px solid #dcdfe6;
-    height: 40px;
-    line-height: 40px;
-    width: 100%;
-    font-size: 16px;
-  }
-
   .text-area {
     position: relative;
     height: 100%;
@@ -70,32 +59,13 @@ $textarea-padding-right: 15px;
 
 <template>
   <div class="text-preview">
-    <input
-      v-model="title"
-      type="text"
-      class="title-input mousetrap"
-      placeholder="段落小标题"
-      maxlength="30"
-    >
     <div class="text-area">
       <textarea
-        v-model="text"
+        v-model.trim="text"
         class="focus-textarea mousetrap"
         placeholder="添加文字内容"
       />
     </div>
-    <!--
-    <div class="footer">
-      <el-button
-        :loading="saving"
-        size="small"
-        type="primary"
-        round
-        class="save-btn"
-        @click="emitSave"
-      >保存</el-button>
-    </div>
-    -->
   </div>
 </template>
 
@@ -121,16 +91,6 @@ export default {
       set(value) {
         this.$store.commit('editor/UPDATE_SECTION_TEXT', {
           value: value.replace(/\n/g, '<br>')
-        })
-      }
-    },
-    title: {
-      get() {
-        return this.item.title
-      },
-      set(value) {
-        this.$store.commit('editor/UPDATE_SECTION_TITLE', {
-          value
         })
       }
     }

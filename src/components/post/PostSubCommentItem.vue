@@ -89,7 +89,7 @@
         :id="comment.id"
         type="post_reply"
       >举报</report-dialog>
-      <v-time v-model="comment.created_at"/>
+      <v-time :datetime="comment.created_at"/>
       <button
         v-if="canDelete"
         @click="deleteComment"

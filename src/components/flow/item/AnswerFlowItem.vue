@@ -138,7 +138,7 @@
           placement="top"
           effect="dark"
         >
-          <v-time v-model="item.published_at"/>
+          <v-time :datetime="item.published_at"/>
         </el-tooltip>
       </span>
       &nbsp;·&nbsp;

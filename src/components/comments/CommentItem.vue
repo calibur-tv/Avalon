@@ -86,7 +86,7 @@
         font-size: 14px;
       }
 
-      .liked {
+      .icon-dianzan-active {
         color: $color-blue-normal;
       }
 
@@ -176,15 +176,15 @@
           placement="top"
           effect="dark"
         >
-          <v-time v-model="comment.created_at"/>
+          <v-time :datetime="comment.created_at"/>
         </el-tooltip>
         <button
           class="like-btn"
           @click="toggleLike"
         >
           <i
-            :class="{ liked: comment.liked }"
-            class="iconfont icon-dianzan"
+            :class="[comment.liked ? 'icon-dianzan-active' : 'icon-dianzan']"
+            class="iconfont"
           />
           <span
             v-if="comment.like_count"

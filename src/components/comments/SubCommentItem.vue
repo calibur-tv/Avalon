@@ -134,7 +134,7 @@
           placement="top"
           effect="dark"
         >
-          <v-time v-model="comment.created_at"/>
+          <v-time :datetime="comment.created_at"/>
         </el-tooltip>
         <button
           class="reply-btn"

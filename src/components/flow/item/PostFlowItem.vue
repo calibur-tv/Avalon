@@ -246,7 +246,7 @@
         </a>
       </el-tooltip>
       <span class="time">
-        发表于: <v-time v-model="item.created_at"/>
+        发表于: <v-time :datetime="item.created_at"/>
       </span>
       <div
         v-if="item.top_at && bangumiId"

@@ -67,22 +67,6 @@ export default {
     }
   },
 
-  timeLong(time) {
-    const formatTime = /^\d+$/.test(time)
-      ? time.toString().length === 13
-        ? parseInt((time - 0) / 1000, 10)
-        : time * 1000
-      : time.replace(/-/g, '/')
-    const date = new Date(formatTime)
-    return `${date.getFullYear()}-${`0${date.getMonth() + 1}`.substr(
-      -2
-    )}-${`0${date.getDate()}`.substr(-2)} ${`0${date.getHours()}`.substr(
-      -2
-    )}:${`0${date.getMinutes()}`.substr(-2)}:${`0${date.getSeconds()}`.substr(
-      -2
-    )}`
-  },
-
   truncate(str = '', len = 200, startIndex = 0) {
     return str.substring(startIndex, len)
   },
@@ -101,19 +85,5 @@ export default {
       }
     } while ((elem = elem.offsetParent)) // eslint-disable-line no-cond-assign
     return offsetTop
-  },
-
-  createWechatUrl(ctx) {
-    if (!ctx || !ctx.$store.state.pageData) {
-      return ''
-    }
-    const baseUrl = 'https://open.weixin.qq.com/connect/qrconnect'
-    const redirect = 'https://www.calibur.tv/callback/wechat/auth'
-
-    return `${baseUrl}?appid=${
-      ctx.$store.state.pageData.wechat_app_id
-    }&redirect_uri=${encodeURIComponent(
-      redirect
-    )}&response_type=code&scope=snsapi_login&state=sign_in#wechat_redirect`
   }
 }

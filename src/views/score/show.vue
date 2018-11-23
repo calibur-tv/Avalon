@@ -122,7 +122,7 @@
                 placement="top"
                 effect="dark"
               >
-                <v-time v-model="info.published_at"/>
+                <v-time :datetime="info.published_at"/>
               </el-tooltip>
               <template v-if="info.like_count">
                 &nbsp;·&nbsp;

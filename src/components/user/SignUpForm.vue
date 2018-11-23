@@ -44,7 +44,7 @@
       color: #3194d0;
     }
 
-    .icon-wechat-copy:hover {
+    .icon-wechat:hover {
       color: #42c02e;
     }
   }
@@ -121,7 +121,7 @@
           <i class="iconfont icon-qq"/>
         </a>
         <a href="https://api.calibur.tv/callback/oauth2/wechat?from=sign">
-          <i class="iconfont icon-wechat-copy"/>
+          <i class="iconfont icon-wechat"/>
         </a>
       </div>
       <a

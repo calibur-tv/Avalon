@@ -297,7 +297,7 @@
           </user-card>
           &nbsp;·&nbsp;
           <span>
-            发布于：<v-time v-model="info.created_at"/>
+            发布于：<v-time :datetime="info.created_at"/>
           </span>
           <report-dialog
             :id="id"

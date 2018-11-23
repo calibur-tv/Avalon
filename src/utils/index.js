@@ -3,7 +3,6 @@ import env from 'env'
 import Alias from '~/assets/js/alias'
 import Utils from '~/assets/js/utils'
 import NoSSR from '~/assets/js/nossr'
-import Time from '~/assets/js/timeago'
 import BangumiPanel from '~/components/bangumi/BangumiPanel'
 import NoContent from '~/components/NoContent'
 import Hr from '~/components/common/Hr'
@@ -20,8 +19,16 @@ import ImageLazyLoad from '~/components/common/ImageLazyLoad'
 import LoadMoreBtn from '~/components/common/LoadMoreBtn'
 import ReportDialog from '~/components/common/ReportDialog'
 import UserCard from '~/components/user/UserCard'
-
+import VueTimeago from 'vue-timeago'
 import { InfiniteScroll, Spinner } from 'mint-ui'
+
+Vue.use(VueTimeago, {
+  name: 'VTime', // Component name, `Timeago` by default
+  locale: 'zh-CN', // Default locale
+  locales: {
+    'zh-CN': require('date-fns/locale/zh_cn')
+  }
+})
 
 Vue.use(ElementUI)
 Vue.use(InfiniteScroll)
@@ -37,7 +44,6 @@ Vue.component(Layout.name, Layout)
 Vue.component(AvaDialog.name, AvaDialog)
 Vue.component(Share.name, Share)
 Vue.component(NoSSR.name, NoSSR)
-Vue.component(Time.name, Time)
 Vue.component(BangumiPanel.name, BangumiPanel)
 Vue.component(NoContent.name, NoContent)
 Vue.component(Hr.name, Hr)

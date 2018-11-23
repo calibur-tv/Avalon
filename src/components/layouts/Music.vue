@@ -375,7 +375,7 @@ $color-gray-hover: #6d757a;
                 @click="handlePlayBtnClick"
               >
                 <i
-                  :class="[ status.playing ? 'icon-icon-' : 'icon-bofang1' ]"
+                  :class="[ status.playing ? 'icon-paused' : 'icon-bofang' ]"
                   class="iconfont"
                 />
               </button>

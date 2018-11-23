@@ -255,7 +255,7 @@
               </div>
               <i
                 v-else
-                class="iconfont icon-bofang1"
+                class="iconfont icon-bofang"
               />
             </a>
             <div class="text">

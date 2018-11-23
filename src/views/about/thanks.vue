@@ -287,7 +287,7 @@
           target="_blank"
           style="color: #fff"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang"/>
         </a>
         <a
           :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/cartoon-poster.png', { width: 376, height: 232 })})` }"
@@ -296,7 +296,7 @@
           target="_blank"
           style="color: #333"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang"/>
         </a>
         <a
           :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/mc-poster.png', { width: 376, height: 232 })})` }"
@@ -305,7 +305,7 @@
           target="_blank"
           style="color: #fff"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang"/>
         </a>
       </div>
       <p class="intro">
