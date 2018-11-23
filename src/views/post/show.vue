@@ -321,7 +321,7 @@
               <div class="info-bar">
                 <span class="footer-item">1楼</span>
                 <v-time
-                  v-model="post.created_at"
+                  :datetime="post.created_at"
                   class="footer-item"
                 />
                 <report-dialog

@@ -183,7 +183,7 @@
           >删除</button>
           <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time
-            v-model="post.created_at"
+            :datetime="post.created_at"
             class="floor-count"
           />
           <report-dialog

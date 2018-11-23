@@ -100,7 +100,7 @@
         effect="dark"
       >
         <v-time
-          v-model="item.created_at"
+          :datetime="item.created_at"
           class="created-at"
         />
       </el-tooltip>

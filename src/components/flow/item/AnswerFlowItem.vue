@@ -127,9 +127,7 @@
       </span>
       <span v-if="item.created_at === item.published_at">
         发布于
-        <v-time
-          v-model="item.created_at"
-        />
+        <v-time :datetime="item.created_at"/>
       </span>
       <span v-else>
         编辑于

@@ -235,7 +235,7 @@
           />
           <v-time
             v-if="focusRoleSort === 'new'"
-            v-model="item.score"
+            :datetime="item.score"
             class="score"
           />
           <span

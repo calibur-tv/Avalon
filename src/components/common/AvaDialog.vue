@@ -90,12 +90,12 @@
           />
           <v-time
             v-if="user.created_at"
-            v-model="user.created_at"
+            :datetime="user.created_at"
             class="score"
           />
           <v-time
             v-else-if="user.score"
-            v-model="user.score"
+            :datetime="user.score"
             class="score"
           />
         </a>

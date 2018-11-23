@@ -152,7 +152,7 @@
               </a>
             </el-tooltip>
             <v-time
-              v-model="item.created_at"
+              :datetime="item.created_at"
               class="time"
             />
             <a
