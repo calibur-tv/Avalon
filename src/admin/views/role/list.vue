@@ -25,6 +25,17 @@
             @search="handleBangumiSearch"
           />
         </el-col>
+        <el-col
+          :offset="1"
+          :span="10"
+        >
+          <el-button
+            type="danger"
+            icon="delete"
+            size="medium"
+            @click="removeStar"
+          >撤销应援</el-button>
+        </el-col>
       </el-row>
     </header>
     <el-table
@@ -70,6 +81,7 @@
 
 <script>
 import Api from '~/api/flowApi'
+import AdminApi from '~/api/adminApi'
 
 export default {
   data() {
@@ -108,6 +120,29 @@ export default {
         this.bangumiId = id
         this.getData()
       }
+    },
+    removeStar() {
+      this.$prompt('请输入违规用户的 ip 地址', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
+        .then(({ value }) => {
+          if (!value) {
+            return
+          }
+          const api = new AdminApi(this)
+          api
+            .removeCartoonRoleStar({
+              ip: value
+            })
+            .then(() => {
+              this.$toast.success('操作成功')
+            })
+            .catch(e => {
+              this.$toast.error(e)
+            })
+        })
+        .catch(() => {})
     }
   }
 }

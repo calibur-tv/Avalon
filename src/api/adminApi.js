@@ -524,4 +524,8 @@ export default class extends BaseApi {
       params: { id }
     })
   }
+
+  removeCartoonRoleStar({ ip }) {
+    return this.http.post('admin/cartoon_role/remove_star', { ip })
+  }
 }
