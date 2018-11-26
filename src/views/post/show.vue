@@ -81,15 +81,23 @@
       .content {
         min-height: 300px;
 
-        .image {
-          margin-top: 12px;
-        }
-
         .text-area {
           line-height: 24px;
           font-size: 14px;
           overflow: hidden;
           word-wrap: break-word;
+
+          p {
+            margin-bottom: 10px;
+          }
+        }
+
+        .image-package {
+          margin-bottom: 20px;
+
+          .image {
+            margin-top: 12px;
+          }
         }
       }
 
