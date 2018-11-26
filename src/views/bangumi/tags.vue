@@ -62,99 +62,80 @@
 </style>
 
 <template>
-  <div
-    id="bangumi-tags"
-    class="main"
-  >
-    <v-header/>
-    <v-layout :affix-top="235">
-      <div class="breadcrumb-links">
-        <router-link :to="$alias.bangumiNews">新番放送</router-link>
-        <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-        <router-link :to="$alias.bangumiTag()">分类索引</router-link>
-      </div>
-      <div class="tags">
-        <h2 class="sub-title">标签列表</h2>
-        <ul>
-          <li
-            v-for="(tag, index) in tags"
-            :key="tag.id"
-            @click="$store.commit('bangumi/selectTag', index)"
+  <div id="bangumi-tags">
+    <div class="tags">
+      <h2 class="sub-title">标签列表</h2>
+      <ul>
+        <li
+          v-for="(tag, index) in tags"
+          :key="tag.id"
+          @click="$store.commit('bangumi/selectTag', index)"
+        >
+          <a
+            :href="$alias.bangumiTag(tag.id)"
+            :class="{ 'selected': tag.selected }"
+            class="tag-btn"
+            @click.prevent
+          >{{ tag.name }}</a>
+        </li>
+        <li>
+          <button
+            class="btn"
+            @click="refresh"
+          >点击查找</button>
+        </li>
+      </ul>
+    </div>
+    <div
+      v-if="bangumis && bangumis.length"
+      class="bangumis"
+    >
+      <h2 class="sub-title">番剧列表</h2>
+      <ul>
+        <li
+          v-for="item in bangumis"
+          :key="item.id"
+          class="bangumi"
+        >
+          <a
+            :href="$alias.bangumi(item.id)"
+            target="_blank"
+            class="avatar"
           >
-            <a
-              :href="$alias.bangumiTag(tag.id)"
-              :class="{ 'selected': tag.selected }"
-              class="tag-btn"
-              @click.prevent
-            >{{ tag.name }}</a>
-          </li>
-          <li>
-            <button
-              class="btn"
-              @click="refresh"
-            >点击查找</button>
-          </li>
-        </ul>
-      </div>
-      <div
-        v-if="bangumis && bangumis.length"
-        class="bangumis"
-      >
-        <h2 class="sub-title">番剧列表</h2>
-        <ul>
-          <li
-            v-for="item in bangumis"
-            :key="item.id"
-            class="bangumi"
-          >
+            <v-img
+              :src="item.avatar"
+              :poster="true"
+              size="90"
+            />
+          </a>
+          <div class="content">
             <a
               :href="$alias.bangumi(item.id)"
               target="_blank"
-              class="avatar"
-            >
-              <v-img
-                :src="item.avatar"
-                :poster="true"
-                size="90"
-              />
-            </a>
-            <div class="content">
-              <a
-                :href="$alias.bangumi(item.id)"
-                target="_blank"
-                class="title"
-                v-text="item.name"
-              />
-              <p
-                class="desc"
-                v-text="item.summary"
-              />
-            </div>
-          </li>
-        </ul>
-        <load-more-btn
-          :no-more="noMore"
-          :loading="loading"
-          :auto="true"
-          @fetch="loadMore"
-        />
-      </div>
-      <no-content v-else-if="id"/>
-      <template slot="aside">
-        <bangumi-recommended/>
-      </template>
-    </v-layout>
+              class="title"
+              v-text="item.name"
+            />
+            <p
+              class="desc"
+              v-text="item.summary"
+            />
+          </div>
+        </li>
+      </ul>
+      <load-more-btn
+        :no-more="noMore"
+        :loading="loading"
+        :auto="true"
+        @fetch="loadMore"
+      />
+    </div>
+    <no-content v-else-if="id"/>
   </div>
 </template>
 
 <script>
-import BangumiRecommended from '~/components/bangumi/BangumiRecommended'
-
 export default {
   name: 'BangumiTags',
-  components: {
-    BangumiRecommended
-  },
   head: {
     title: '分类索引 - 番剧'
   },

@@ -79,6 +79,10 @@ export default class extends BaseApi {
     return this.http.get('bangumi/recommended')
   }
 
+  hots() {
+    return this.http.get('bangumi/hots')
+  }
+
   all() {
     return this.http.get('search/bangumis')
   }

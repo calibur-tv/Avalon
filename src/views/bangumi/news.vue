@@ -62,103 +62,87 @@
 
 <template>
   <div id="bangumi-news">
-    <v-header/>
-    <v-layout :affix-top="235">
-      <div class="breadcrumb-links">
-        <router-link :to="$alias.bangumiNews">新番放送</router-link>
-        <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-        <a :href="$alias.bangumiTag()">分类索引</a>
-      </div>
-      <tab-container
-        :list="showtime"
-        :route="false"
-        :def="thisWeek"
-        title="新番放送表"
+    <tab-container
+      :list="showtime"
+      :route="false"
+      :def="thisWeek"
+      title="新番放送表"
+    >
+      <div
+        v-for="index in 8"
+        :key="index"
+        :slot="index - 1"
       >
-        <div
-          v-for="index in 8"
-          :key="index"
-          :slot="index - 1"
-        >
-          <ul v-if="released && released[index - 1] && released[index - 1].length">
-            <li
-              v-for="item in released[index - 1]"
-              :key="item.id"
-              class="bangumi"
+        <ul v-if="released && released[index - 1] && released[index - 1].length">
+          <li
+            v-for="item in released[index - 1]"
+            :key="item.id"
+            class="bangumi"
+          >
+            <a
+              :href="$alias.bangumi(item.id)"
+              target="_blank"
+              class="avatar"
             >
+              <img
+                :src="$resize(item.avatar, { width: 180 })"
+                :alt="item.name"
+              >
+            </a>
+            <div class="intro">
               <a
                 :href="$alias.bangumi(item.id)"
+                class="name blue-link"
                 target="_blank"
-                class="avatar"
-              >
-                <img
-                  :src="$resize(item.avatar, { width: 180 })"
-                  :alt="item.name"
-                >
-              </a>
-              <div class="intro">
+                v-text="item.name"
+              />
+              <span>
+                更新至
                 <a
-                  :href="$alias.bangumi(item.id)"
-                  class="name blue-link"
+                  v-if="item.released_video_id"
+                  :class="[item.update ? 'new' : 'old']"
+                  :href="$alias.video(item.released_video_id)"
                   target="_blank"
-                  v-text="item.name"
-                />
-                <span>
-                  更新至
-                  <a
-                    v-if="item.released_video_id"
-                    :class="[item.update ? 'new' : 'old']"
-                    :href="$alias.video(item.released_video_id)"
-                    target="_blank"
-                    class="part oneline"
-                  >
-                    {{ item.end ? '已完结' : `${item.released_part}话` }}
-                  </a>
-                  <strong
-                    v-else
-                    :class="[item.update ? 'new' : 'old']"
-                    class="part oneline"
-                  >
-                    {{ item.end ? '已完结' : `${item.released_part}话` }}
-                  </strong>
-                </span>
-              </div>
-            </li>
-          </ul>
-          <no-content v-else>
-            <el-button
-              type="primary"
-              round
-              @click="openFeedbackForResource"
-            >求资源</el-button>
-          </no-content>
-        </div>
-      </tab-container>
-      <template slot="aside">
-        <bangumi-recommended/>
-      </template>
-    </v-layout>
+                  class="part oneline"
+                >
+                  {{ item.end ? '已完结' : `${item.released_part}话` }}
+                </a>
+                <strong
+                  v-else
+                  :class="[item.update ? 'new' : 'old']"
+                  class="part oneline"
+                >
+                  {{ item.end ? '已完结' : `${item.released_part}话` }}
+                </strong>
+              </span>
+            </div>
+          </li>
+        </ul>
+        <no-content v-else>
+          <el-button
+            type="primary"
+            round
+            @click="openFeedbackForResource"
+          >求资源</el-button>
+        </no-content>
+      </div>
+    </tab-container>
   </div>
 </template>
 
 <script>
-import BangumiRecommended from '~/components/bangumi/BangumiRecommended'
 import TabContainer from '~/components/common/TabContainer'
 
 export default {
   name: 'BangumiNews',
   components: {
-    TabContainer,
-    BangumiRecommended
+    TabContainer
   },
   head: {
     title: '新番放送 - 番剧'
   },
   async asyncData({ store, ctx }) {
-    await Promise.all([
-      store.dispatch('bangumi/getReleased', ctx),
-      store.dispatch('bangumi/getRecommended')
-    ])
+    await store.dispatch('bangumi/getReleased', ctx)
   },
   data() {
     return {

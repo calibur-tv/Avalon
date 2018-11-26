@@ -38,6 +38,7 @@ const state = () => ({
   score: null,
   scoreFetchId: 0,
   recommended: [],
+  hots: [],
   all: []
 })
 
@@ -55,6 +56,9 @@ const mutations = {
       return result
     }
     state.recommended = shuffle(data)
+  },
+  SET_HOTS(state, data) {
+    state.hots = data
   },
   FETCH_SOCIAL_USERS(state, { type, result }) {
     const prefix = state.info[`${type}_users`]
@@ -283,6 +287,11 @@ const actions = {
     const api = new Api(this)
     const data = await api.recommended()
     commit('SET_RECOMMENDED', data)
+  },
+  async getHots({ commit }) {
+    const api = new Api(this)
+    const data = await api.hots()
+    commit('SET_HOTS', data)
   }
 }
 

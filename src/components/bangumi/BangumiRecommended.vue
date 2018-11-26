@@ -1,5 +1,7 @@
 <style lang="scss">
 #bangumi-recommended {
+  margin-bottom: 15px;
+
   .sub-title {
     font-size: 15px;
     margin-left: 0 !important;
@@ -47,9 +49,8 @@
     }
 
     img {
-      width: 60px;
-      height: 60px;
-      margin-right: 5px;
+      width: 40px;
+      height: 40px;
       border-radius: 5px;
       float: left;
     }
@@ -63,7 +64,6 @@
       line-height: 18px;
       height: 18px;
       font-size: 12px;
-      margin-bottom: 3px;
       color: #222;
     }
 
@@ -104,7 +104,7 @@
           :href="$alias.bangumi(item.id)"
           target="_blank"
         >
-          <img :src="$resize(item.avatar, { width: 120 })">
+          <img :src="$resize(item.avatar, { width: 80 })">
           <div>
             <p
               class="oneline"

@@ -63,23 +63,6 @@ export function createRouter() {
             ]
           },
           {
-            path: 'bangumi/news',
-            component: () => import('~/views/bangumi/news')
-          },
-          {
-            path: 'bangumi/rank',
-            component: () => import('~/views/bangumi/rank')
-          },
-          {
-            path: 'bangumi/timeline',
-            component: () => import('~/views/bangumi/time')
-          },
-          {
-            name: 'bangumi-tags',
-            path: 'bangumi/tags/:id?',
-            component: () => import('~/views/bangumi/tags')
-          },
-          {
             path: 'bangumi/:id(\\d+)',
             component: () => import('~/views/bangumi/show/layout'),
             children: [
@@ -127,6 +110,25 @@ export function createRouter() {
                 path: 'setting',
                 name: 'bangumi-setting',
                 component: () => import('~/views/bangumi/show/setting')
+              }
+            ]
+          },
+          {
+            path: 'bangumi',
+            component: () => import('~/views/bangumi/layout'),
+            children: [
+              {
+                path: 'news',
+                component: () => import('~/views/bangumi/news')
+              },
+              {
+                path: 'timeline',
+                component: () => import('~/views/bangumi/time')
+              },
+              {
+                name: 'bangumi-tags',
+                path: 'tags/:id?',
+                component: () => import('~/views/bangumi/tags')
               }
             ]
           },
