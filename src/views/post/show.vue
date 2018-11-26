@@ -71,8 +71,7 @@
 
     .body {
       background: #fff;
-      padding: 22px 0 14px;
-      border-top: 1px solid #e5e9ef;
+      padding: 18px 0 14px;
       overflow: hidden;
 
       .main {
@@ -83,12 +82,11 @@
         min-height: 300px;
 
         .image {
-          margin-bottom: 12px;
+          margin-top: 12px;
         }
 
         .text-area {
           line-height: 24px;
-          padding: 2px 0;
           font-size: 14px;
           overflow: hidden;
           word-wrap: break-word;
