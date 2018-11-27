@@ -90,7 +90,7 @@
           />
           <v-time
             v-if="user.created_at"
-            :datetime="user.created_at"
+            :datetime="user.created_at * 1000"
             class="score"
           />
           <v-time
