@@ -166,12 +166,33 @@ export default {
     },
     getPureContent() {
       let result = ''
+      const convertList = str => {
+        if (!str) {
+          return []
+        }
+        while (/\n\n/.test(str)) {
+          str = str.replace(/\n\n/g, '\n')
+        }
+        return str.split('\n')
+      }
       this.sections.forEach(item => {
         if (item.type === 'txt' && item.text) {
-          result += item.text.replace(/<br>/g, '\n')
+          result += `${item.text.replace(/<br>/g, '\n')} `
+        }
+        if (item.type === 'title' && item.text) {
+          result += `${item.text} `
+        }
+        if (item.type === 'use' && item.text) {
+          result += `${item.text.replace(/<br>/g, '\n')} `
+        }
+        if (item.type === 'list' && item.text) {
+          const strArr = convertList(item.text)
+          strArr.forEach((p, index) => {
+            result += `${index + 1}:${p} `
+          })
         }
       })
-      return result
+      return result.slice(0, -1)
     },
     handleItemPreview({ index }) {
       this.$store.commit('editor/SWITCH_SECTION', { index })
