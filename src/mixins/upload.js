@@ -57,7 +57,7 @@ export default {
 
       this.uploadHeaders.key = this.$utils.createFileName({
         userId: this.$store.state.user.id,
-        type: this.$route.fullPath,
+        type: this.$route.path,
         file
       })
 
