@@ -121,7 +121,7 @@
 
 <script>
 export default {
-  name: "SearchItemBangumi",
+  name: 'SearchItemBangumi',
   props: {
     item: {
       required: true,
@@ -133,5 +133,5 @@ export default {
       default: false
     }
   }
-};
+}
 </script>

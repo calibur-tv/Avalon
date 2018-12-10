@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "SvgIcon",
+  name: 'SvgIcon',
   props: {
     iconClass: {
       type: String,
@@ -12,15 +12,15 @@ export default {
     },
     className: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   computed: {
     computeClass() {
       return this.iconClass.replace(/[A-Z]/g, i => {
-        return "-" + i.toLowerCase();
-      });
+        return '-' + i.toLowerCase()
+      })
     }
   }
-};
+}
 </script>

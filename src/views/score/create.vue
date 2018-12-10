@@ -131,18 +131,18 @@
 </template>
 
 <script>
-import JsonEditor from "~/components/jsonEditor/index";
-import Api from "~/api/scoreApi";
+import JsonEditor from '~/components/jsonEditor/index'
+import Api from '~/api/scoreApi'
 
 export default {
-  name: "ScoreCreate",
+  name: 'ScoreCreate',
   async asyncData({ store, route, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     if (id) {
-      await store.dispatch("editor/getData", {
+      await store.dispatch('editor/getData', {
         api: new Api(ctx),
         id
-      });
+      })
     }
   },
   components: {
@@ -150,23 +150,23 @@ export default {
   },
   data() {
     const labelMap = {
-      lol: "笑点",
-      cry: "泪点",
-      fight: "燃点",
-      moe: "萌点",
-      sound: "音乐",
-      vision: "画面",
-      story: "情节",
-      role: "人设",
-      express: "内涵",
-      style: "美感"
-    };
+      lol: '笑点',
+      cry: '泪点',
+      fight: '燃点',
+      moe: '萌点',
+      sound: '音乐',
+      vision: '画面',
+      story: '情节',
+      role: '人设',
+      express: '内涵',
+      style: '美感'
+    }
     return {
       openTips: false,
       labelMap,
       columns: Object.keys(labelMap),
-      bangumiId: "",
-      title: "",
+      bangumiId: '',
+      title: '',
       is_creator: true,
       form: {
         lol: 0,
@@ -180,106 +180,110 @@ export default {
         express: 0,
         style: 0
       }
-    };
+    }
   },
   computed: {
     id() {
-      return +(this.$route.params.id || 0);
+      return +(this.$route.params.id || 0)
     },
     resource() {
-      const result = {};
+      const result = {}
       Object.keys(this.$store.state.editor.resource).forEach(key => {
-        const value = this.$store.state.editor.resource[key];
-        result[key] = this.columns.indexOf(key) !== -1 ? +value : value;
-      });
-      return result;
+        const value = this.$store.state.editor.resource[key]
+        result[key] = this.columns.indexOf(key) !== -1 ? +value : value
+      })
+      return result
     },
     disabled() {
-      return !!this.id;
+      return !!this.id
     },
     bid() {
-      return this.$route.query.bid;
+      return this.$route.query.bid
     }
   },
   mounted() {
     if (this.id) {
-      this.loadEditContent();
+      this.loadEditContent()
     }
     if (this.bid) {
-      this.bangumiId = +this.bid;
-      this.handleBangumiSearch(this.bangumiId);
+      this.bangumiId = +this.bid
+      this.handleBangumiSearch(this.bangumiId)
     }
   },
   methods: {
     handleBangumiSearch(bangumiId) {
       if (this.id) {
-        return;
+        return
       }
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .check({
           id: bangumiId
         })
         .then(id => {
           if (id) {
-            this.$confirm("你已经给该番剧评过分了，不能重复评分", "提示", {
-              confirmButtonText: "查看我的评分",
-              cancelButtonText: "换一个番剧",
-              type: "warning"
+            this.$confirm('你已经给该番剧评过分了，不能重复评分', '提示', {
+              confirmButtonText: '查看我的评分',
+              cancelButtonText: '换一个番剧',
+              type: 'warning'
             })
               .then(() => {
-                window.location.href = this.$alias.score(id);
+                window.location.href = this.$alias.score(id)
               })
               .catch(() => {
-                this.bangumiId = "";
-              });
+                this.bangumiId = ''
+              })
           }
-        });
+        })
     },
     beforeSubmit(richContent) {
       if (!this.bangumiId) {
-        this.$toast.error("请先选择要评价的番剧");
-        return;
+        this.$toast.error('请先选择要评价的番剧')
+        return
       }
       if (!this.title) {
-        this.$toast.error("标题为必填的");
-        return;
+        this.$toast.error('标题为必填的')
+        return
       }
       if (richContent.publish && richContent.desc.length < 400) {
-        this.$toast.error("漫评至少400字");
-        return;
+        this.$toast.error('漫评至少400字')
+        return
       }
-      const scores = {};
-      let total = 0;
+      const scores = {}
+      let total = 0
       Object.keys(this.form).forEach(key => {
-        const value = this.form[key];
-        scores[key] = value * 2;
-        total += value;
-      });
+        const value = this.form[key]
+        scores[key] = value * 2
+        total += value
+      })
       if (!total) {
-        this.$toast.error("请先选择各维度分值");
-        return;
+        this.$toast.error('请先选择各维度分值')
+        return
       }
       if (total === 100) {
-        this.$toast.error("请认真考虑后再发表");
-        return;
+        this.$toast.error('请认真考虑后再发表')
+        return
       }
       if (richContent.id) {
-        this.submit(richContent, scores);
+        this.submit(richContent, scores)
       } else {
         this.$captcha({
           success: ({ data }) => {
-            this.submit(richContent, scores, data);
+            this.submit(richContent, scores, data)
           },
           error: e => {
-            this.$toast.error(e);
+            this.$toast.error(e)
           }
-        });
+        })
       }
     },
     async submit(richContent, scores, geetest = {}) {
-      this.$channel.$emit("write-submit", true);
-      const api = new Api(this);
+      if (richContent.auto) {
+        this.$channel.$emit('auto-save', true)
+      } else {
+        this.$channel.$emit('write-submit', true)
+      }
+      const api = new Api(this)
       try {
         const form = Object.assign({}, scores, {
           title: this.title,
@@ -289,60 +293,66 @@ export default {
           do_publish: richContent.publish,
           is_creator: this.is_creator,
           geetest
-        });
-        let newId = richContent.id;
-        let result;
+        })
+        let newId = richContent.id
+        let result
         if (newId) {
-          form.id = newId;
-          await api.update(form);
+          form.id = newId
+          await api.update(form)
         } else {
-          result = await api.create(form);
-          newId = result.data;
+          result = await api.create(form)
+          newId = result.data
         }
         if (richContent.publish) {
           this.$confirm(
-            typeof result !== "undefined" ? result.message : "发布成功",
-            "提示",
+            typeof result !== 'undefined' ? result.message : '发布成功',
+            '提示',
             {
-              confirmButtonText: "点击查看",
-              cancelButtonText: "继续编辑",
-              type: "warning"
+              confirmButtonText: '点击查看',
+              cancelButtonText: '继续编辑',
+              type: 'warning'
             }
           )
             .then(() => {
-              window.location.href = this.$alias.score(newId);
+              window.location.href = this.$alias.score(newId)
             })
-            .catch(() => {});
+            .catch(() => {})
         } else {
-          this.$toast.success("保存成功");
+          if (!richContent.auto) {
+            this.$toast.success('保存成功')
+          }
           if (!richContent.id) {
             setTimeout(() => {
-              window.location = this.$alias.editScore(newId);
-            }, 1000);
+              window.location = this.$alias.editScore(newId)
+            }, 1000)
           }
         }
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.$channel.$emit("write-save-done");
-        this.$channel.$emit("write-submit", false);
+        this.$channel.$emit('write-save-done')
+        if (richContent.auto) {
+          this.$channel.$emit('auto-save', false)
+        } else {
+          this.$channel.$emit('write-submit', false)
+        }
       }
     },
     loadEditContent() {
       if (!this.resource) {
-        this.$toast.error("不能编辑他人的内容");
+        this.$toast.error('不能编辑他人的内容')
         setTimeout(() => {
-          window.location.href = "/review/create";
-        }, 1000);
-        return;
+          window.location.href = '/review/create'
+        }, 1000)
+        return
       }
-      this.bangumiId = +this.resource.bangumi_id;
-      this.title = this.resource.title;
-      this.is_creator = this.resource.is_creator;
+      this.bangumiId = +this.resource.bangumi_id
+      this.title = this.resource.title
+      this.is_creator = this.resource.is_creator
       this.columns.forEach(key => {
-        this.form[key] = this.resource[key];
-      });
+        this.form[key] = this.resource[key]
+      })
     }
   }
-};
+}
 </script>

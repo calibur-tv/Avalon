@@ -5,16 +5,16 @@
 
 <script>
 export default {
-  name: "VideoFlowItem",
+  name: 'VideoFlowItem',
   components: {},
   props: {},
   data() {
-    return {};
+    return {}
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {}
-};
+}
 </script>

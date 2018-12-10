@@ -25,6 +25,17 @@
             @search="handleBangumiSearch"
           />
         </el-col>
+        <el-col
+          :offset="1"
+          :span="10"
+        >
+          <el-button
+            type="danger"
+            icon="delete"
+            size="medium"
+            @click="removeStar"
+          >撤销应援</el-button>
+        </el-col>
       </el-row>
     </header>
     <el-table
@@ -69,7 +80,8 @@
 </template>
 
 <script>
-import Api from "~/api/flowApi";
+import Api from '~/api/flowApi'
+import AdminApi from '~/api/adminApi'
 
 export default {
   data() {
@@ -77,38 +89,61 @@ export default {
       bangumiId: 0,
       list: [],
       loading: false
-    };
+    }
   },
   methods: {
     async getData() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api();
+      this.loading = true
+      const api = new Api()
       try {
         const data = await api.fetch({
-          type: "role",
-          sort: "hot",
+          type: 'role',
+          sort: 'hot',
           take: 1000,
-          seenIds: "",
+          seenIds: '',
           page: 0,
-          userZone: "",
+          userZone: '',
           bangumiId: this.bangumiId
-        });
-        this.list = data.list;
+        })
+        this.list = data.list
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     handleBangumiSearch(id) {
       if (this.bangumiId !== id) {
-        this.bangumiId = id;
-        this.getData();
+        this.bangumiId = id
+        this.getData()
       }
+    },
+    removeStar() {
+      this.$prompt('请输入违规用户的 ip 地址', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
+        .then(({ value }) => {
+          if (!value) {
+            return
+          }
+          const api = new AdminApi(this)
+          api
+            .removeCartoonRoleStar({
+              ip: value
+            })
+            .then(() => {
+              this.$toast.success('操作成功')
+            })
+            .catch(e => {
+              this.$toast.error(e)
+            })
+        })
+        .catch(() => {})
     }
   }
-};
+}
 </script>

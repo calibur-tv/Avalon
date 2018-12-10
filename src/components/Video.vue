@@ -268,15 +268,15 @@ $tool-btn-width: 40px;
 </template>
 
 <script>
-import Chimee from "chimee";
-import chimeePluginControlbar from "chimee-plugin-controlbar";
+import Chimee from 'chimee'
+import chimeePluginControlbar from 'chimee-plugin-controlbar'
 
 export default {
-  name: "VVideo",
+  name: 'VVideo',
   props: {
     source: {
       type: [String, Object],
-      default: "",
+      default: '',
       required: true
     },
     otherSrc: {
@@ -301,7 +301,7 @@ export default {
     },
     next: {
       type: String,
-      default: ""
+      default: ''
     },
     debug: {
       type: Boolean,
@@ -317,7 +317,7 @@ export default {
     },
     poster: {
       type: String,
-      default: ""
+      default: ''
     },
     mustReward: {
       type: Boolean,
@@ -334,55 +334,55 @@ export default {
       notMove: false,
       timer: 0,
       isFull: false
-    };
+    }
   },
   computed: {
     isFlv() {
       return (
         this.source
-          .split("?")[0]
-          .split(".")
+          .split('?')[0]
+          .split('.')
           .pop()
-          .toLowerCase() === "flv"
-      );
+          .toLowerCase() === 'flv'
+      )
     },
     showLevelThrottle() {
       if (this.$store.state.login) {
-        return this.$store.state.user.exp.level < this.needMinLevel;
+        return this.$store.state.user.exp.level < this.needMinLevel
       }
-      return true;
+      return true
     }
   },
   mounted() {
     if (this.otherSrc || this.isGuest) {
-      return;
+      return
     }
     if (this.showLevelThrottle || this.mustReward) {
-      return;
+      return
     }
-    Chimee.install(chimeePluginControlbar);
-    import("chimee-plugin-center-state").then(chimeePluginCenterState => {
-      Chimee.install(chimeePluginCenterState);
+    Chimee.install(chimeePluginControlbar)
+    import('chimee-plugin-center-state').then(chimeePluginCenterState => {
+      Chimee.install(chimeePluginCenterState)
       if (this.isFlv) {
-        import("chimee-kernel-flv").then(module => {
+        import('chimee-kernel-flv').then(module => {
           this.initVideo({
             flvKernel: module,
             statePlugin: chimeePluginCenterState
-          });
-        });
+          })
+        })
       } else {
         this.initVideo({
           flvKernel: null,
           statePlugin: chimeePluginCenterState
-        });
+        })
       }
-    });
+    })
   },
   methods: {
     initVideo({ flvKernel, statePlugin }) {
-      const self = this;
+      const self = this
       this.player = new Chimee({
-        wrapper: "#video-wrap",
+        wrapper: '#video-wrap',
         src: this.source,
         poster: this.poster,
         controls: true,
@@ -392,31 +392,31 @@ export default {
         plugin: [
           {
             name: chimeePluginControlbar.name,
-            majorColor: "#99a2aa",
-            hoverColor: "#6d757a",
+            majorColor: '#99a2aa',
+            hoverColor: '#6d757a',
             children: self.next
               ? {
                   play: true,
                   next: {
-                    tag: "chimee-next",
+                    tag: 'chimee-next',
                     html: `<i class="iconfont icon-skip_next"></i>`,
                     event: {
                       click() {
-                        window.location = self.next;
+                        window.location = self.next
                       }
                     }
                   },
                   progressBar: {
-                    layout: "one-line"
+                    layout: 'one-line'
                   },
                   progressTime: true,
                   volume: true,
                   playbackrate: {
                     list: [
-                      { name: "0.5", value: 0.5 },
-                      { name: "1.0", value: 1, default: true },
-                      { name: "1.2", value: 1.2 },
-                      { name: "2.0", value: 2 }
+                      { name: '0.5', value: 0.5 },
+                      { name: '1.0', value: 1, default: true },
+                      { name: '1.2', value: 1.2 },
+                      { name: '2.0', value: 2 }
                     ]
                   },
                   screen: true
@@ -424,16 +424,16 @@ export default {
               : {
                   play: true,
                   progressBar: {
-                    layout: "one-line"
+                    layout: 'one-line'
                   },
                   progressTime: true,
                   volume: true,
                   playbackrate: {
                     list: [
-                      { name: "0.5", value: 0.5 },
-                      { name: "1.0", value: 1, default: true },
-                      { name: "1.2", value: 1.2 },
-                      { name: "2.0", value: 2 }
+                      { name: '0.5', value: 0.5 },
+                      { name: '1.0', value: 1, default: true },
+                      { name: '1.2', value: 1.2 },
+                      { name: '2.0', value: 2 }
                     ]
                   },
                   screen: true
@@ -443,78 +443,78 @@ export default {
             name: statePlugin.name
           }
         ]
-      });
+      })
 
-      this.player.on("playing", () => {
-        this.$emit("playing");
-      });
+      this.player.on('playing', () => {
+        this.$emit('playing')
+      })
 
-      document.addEventListener("fullscreenchange", () => {
-        this.handleFullScreen();
-      });
-      document.addEventListener("mozfullscreenchange", () => {
-        this.handleFullScreen();
-      });
-      document.addEventListener("webkitfullscreenchange", () => {
-        this.handleFullScreen();
-      });
-      document.addEventListener("msfullscreenchange", () => {
-        this.handleFullScreen();
-      });
+      document.addEventListener('fullscreenchange', () => {
+        this.handleFullScreen()
+      })
+      document.addEventListener('mozfullscreenchange', () => {
+        this.handleFullScreen()
+      })
+      document.addEventListener('webkitfullscreenchange', () => {
+        this.handleFullScreen()
+      })
+      document.addEventListener('msfullscreenchange', () => {
+        this.handleFullScreen()
+      })
     },
     cursorMoveFunc() {
-      this.notMove = false;
+      this.notMove = false
       document
-        .getElementsByTagName("video")[0]
-        .classList.remove("hidden-cursor");
+        .getElementsByTagName('video')[0]
+        .classList.remove('hidden-cursor')
     },
     handleFullScreen() {
-      const isFull = this.checkIsFullScreen();
-      this.isFull = isFull;
-      const video = document.getElementsByTagName("video")[0];
+      const isFull = this.checkIsFullScreen()
+      this.isFull = isFull
+      const video = document.getElementsByTagName('video')[0]
       if (isFull) {
-        document.body.addEventListener("mousemove", this.cursorMoveFunc);
+        document.body.addEventListener('mousemove', this.cursorMoveFunc)
         setInterval(() => {
-          this.notMove = true;
+          this.notMove = true
           setTimeout(() => {
             if (this.notMove && this.checkIsFullScreen()) {
-              video.classList.add("hidden-cursor");
+              video.classList.add('hidden-cursor')
             }
-          }, 1000);
-        }, 2000);
+          }, 1000)
+        }, 2000)
       } else {
-        video.classList.remove("hidden-cursor");
-        document.body.removeEventListener("mousemove", this.cursorMoveFunc);
+        video.classList.remove('hidden-cursor')
+        document.body.removeEventListener('mousemove', this.cursorMoveFunc)
         if (this.timer) {
-          clearInterval(this.timer);
+          clearInterval(this.timer)
         }
       }
     },
     checkIsFullScreen() {
       return !!(
-        this.invokeFieldOrMethod(document, "FullScreen") ||
-        this.invokeFieldOrMethod(document, "IsFullScreen") ||
+        this.invokeFieldOrMethod(document, 'FullScreen') ||
+        this.invokeFieldOrMethod(document, 'IsFullScreen') ||
         document.IsFullScreen
-      );
+      )
     },
     invokeFieldOrMethod(ele, method) {
-      let usablePrefixMethod;
-      ["webkit", "moz", "ms", "o", ""].forEach(function(prefix) {
-        if (usablePrefixMethod) return;
-        if (prefix === "") {
-          method = method.slice(0, 1).toLowerCase() + method.slice(1);
+      let usablePrefixMethod
+      ;['webkit', 'moz', 'ms', 'o', ''].forEach(function(prefix) {
+        if (usablePrefixMethod) return
+        if (prefix === '') {
+          method = method.slice(0, 1).toLowerCase() + method.slice(1)
         }
-        let typePrefixMethod = typeof ele[prefix + method];
-        if (typePrefixMethod + "" !== "undefined") {
-          if (typePrefixMethod === "function") {
-            usablePrefixMethod = ele[prefix + method]();
+        let typePrefixMethod = typeof ele[prefix + method]
+        if (typePrefixMethod + '' !== 'undefined') {
+          if (typePrefixMethod === 'function') {
+            usablePrefixMethod = ele[prefix + method]()
           } else {
-            usablePrefixMethod = ele[prefix + method];
+            usablePrefixMethod = ele[prefix + method]
           }
         }
-      });
-      return usablePrefixMethod;
+      })
+      return usablePrefixMethod
     }
   }
-};
+}
 </script>

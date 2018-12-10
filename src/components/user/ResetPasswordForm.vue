@@ -60,63 +60,63 @@
 </template>
 
 <script>
-import UserApi from "~/api/userApi";
+import UserApi from '~/api/userApi'
 
 export default {
-  name: "ResetPasswordForm",
+  name: 'ResetPasswordForm',
   data() {
     const validateAccess = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("请填写手机号"));
+        return callback(new Error('请填写手机号'))
       }
       if (value.length !== 11) {
-        return callback(new Error("请填写11位手机号"));
+        return callback(new Error('请填写11位手机号'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateSecret = (rule, value, callback) => {
-      if (value === "") {
-        return callback(new Error("请填写登录密码"));
+      if (value === '') {
+        return callback(new Error('请填写登录密码'))
       }
       if (value.length < 6) {
-        return callback(new Error("密码不能小于6位"));
+        return callback(new Error('密码不能小于6位'))
       }
       if (value.length > 16) {
-        return callback(new Error("密码不能大于16位"));
+        return callback(new Error('密码不能大于16位'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       form: {
-        access: "",
-        secret: "",
-        authCode: ""
+        access: '',
+        secret: '',
+        authCode: ''
       },
       rule: {
-        access: [{ validator: validateAccess, trigger: "blur" }],
-        secret: [{ validator: validateSecret, trigger: "blur" }]
+        access: [{ validator: validateAccess, trigger: 'blur' }],
+        secret: [{ validator: validateSecret, trigger: 'blur' }]
       },
       step: 0,
       timeout: 0
-    };
+    }
   },
   computed: {
     submitBtnText() {
       if (this.step === 0) {
-        return "立即重置";
+        return '立即重置'
       } else if (this.step === 1) {
-        return "提交中...";
+        return '提交中...'
       } else if (this.step === 2) {
-        return "短信已发送";
+        return '短信已发送'
       } else if (this.step === 3) {
-        return "已重置";
+        return '已重置'
       }
     },
     submitBtnLoading() {
-      return this.step === 1 || this.step === 3;
+      return this.step === 1 || this.step === 3
     },
     submitBtnDisabled() {
-      return (this.timeout !== 0 && this.step === 0) || this.step === 3;
+      return (this.timeout !== 0 && this.step === 0) || this.step === 3
     }
   },
   methods: {
@@ -124,89 +124,89 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.step === 0) {
-            this.getResetAuthCode();
+            this.getResetAuthCode()
           }
           if (this.step === 2) {
-            this.openConfirmModal();
+            this.openConfirmModal()
           }
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     getResetAuthCode() {
-      this.step = 1;
+      this.step = 1
       this.$captcha({
         success: async ({ data }) => {
-          const api = new UserApi();
+          const api = new UserApi()
           try {
             await api.sendMessage({
-              type: "forgot_password",
+              type: 'forgot_password',
               phone_number: this.form.access,
               geetest: data
-            });
-            this.step = 2;
-            this.openConfirmModal();
+            })
+            this.step = 2
+            this.openConfirmModal()
           } catch (err) {
-            this.$toast.error(err);
-            this.step = 0;
+            this.$toast.error(err)
+            this.step = 0
           } finally {
-            this.timeout = 60;
+            this.timeout = 60
             const timer = setInterval(() => {
               if (!--this.timeout) {
-                this.step = 0;
-                clearInterval(timer);
+                this.step = 0
+                clearInterval(timer)
               }
-            }, 1000);
+            }, 1000)
           }
         },
         close: () => {
-          this.step = 0;
+          this.step = 0
         },
         error: err => {
-          this.step = 0;
-          this.$toast.error(err);
+          this.step = 0
+          this.$toast.error(err)
         }
-      });
+      })
     },
     openConfirmModal() {
-      this.$prompt("请输入收到的验证码", "短信已发送", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入收到的验证码', '短信已发送', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^\d{6}$/,
-        inputErrorMessage: "验证码格式不正确"
+        inputErrorMessage: '验证码格式不正确'
       })
         .then(({ value }) => {
-          this.form.authCode = value;
-          this.step = 3;
-          this.signReset();
+          this.form.authCode = value
+          this.step = 3
+          this.signReset()
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     async signReset() {
-      const api = new UserApi();
+      const api = new UserApi()
       try {
         const res = await api.resetPassword({
           access: this.form.access,
           authCode: this.form.authCode,
           secret: this.form.secret
-        });
-        this.$toast.success(res);
-        this.showLogin();
+        })
+        this.$toast.success(res)
+        this.showLogin()
       } catch (err) {
-        this.$toast.error(err);
+        this.$toast.error(err)
       } finally {
-        this.step = 0;
+        this.step = 0
       }
     },
     showLogin() {
-      this.$emit("to-login");
-      this.$refs.form.resetFields();
+      this.$emit('to-login')
+      this.$refs.form.resetFields()
     },
     showRegister() {
-      this.$emit("to-register");
-      this.$refs.form.resetFields();
+      this.$emit('to-register')
+      this.$refs.form.resetFields()
     }
   }
-};
+}
 </script>

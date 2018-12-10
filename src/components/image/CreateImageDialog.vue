@@ -28,21 +28,21 @@
 </template>
 
 <script>
-import UploadImageForm from "~/components/image/UploadImageForm";
-import CreateAlbumForm from "~/components/image/CreateAlbumForm";
+import UploadImageForm from '~/components/image/UploadImageForm'
+import CreateAlbumForm from '~/components/image/CreateAlbumForm'
 
 export default {
-  name: "CreateImageDialog",
+  name: 'CreateImageDialog',
   components: {
     UploadImageForm,
     CreateAlbumForm
   },
   data() {
     return {
-      selectedAlbumId: "",
+      selectedAlbumId: '',
       createdAlbum: [],
       uploadHeaders: {
-        token: ""
+        token: ''
       },
       bangumiRoles: {},
       bangumis: [],
@@ -54,48 +54,48 @@ export default {
       show: false,
       submitting: false,
       form: {
-        bangumiId: "",
-        size: "",
-        tags: "",
-        roleId: "",
-        albumId: "",
+        bangumiId: '',
+        size: '',
+        tags: '',
+        roleId: '',
+        albumId: '',
         creator: false,
         images: []
       },
       albumForm: {
-        name: "",
-        bangumiId: "",
+        name: '',
+        bangumiId: '',
         poster: [],
         isCartoon: false,
         creator: false
       },
-      action: "上传图片",
+      action: '上传图片',
       exceed: 10,
       pendingUpload: 0
-    };
+    }
   },
   computed: {
     albums() {
-      return this.$store.state.image.albums;
+      return this.$store.state.image.albums
     },
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user
     },
     zone() {
-      return this.user.zone;
+      return this.user.zone
     }
   },
   mounted() {
-    this.$channel.$on("show-upload-image-modal", () => {
-      this.show = true;
-    });
+    this.$channel.$on('show-upload-image-modal', () => {
+      this.show = true
+    })
   },
   methods: {
     handleAlbumCreated(album) {
-      this.createdAlbum.unshift(album);
-      this.selectedAlbumId = album.id;
-      this.action = "上传图片";
+      this.createdAlbum.unshift(album)
+      this.selectedAlbumId = album.id
+      this.action = '上传图片'
     }
   }
-};
+}
 </script>

@@ -62,171 +62,152 @@
 </style>
 
 <template>
-  <div
-    id="bangumi-tags"
-    class="main"
-  >
-    <v-header/>
-    <v-layout :affix-top="235">
-      <div class="breadcrumb-links">
-        <router-link :to="$alias.bangumiNews">新番放送</router-link>
-        <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-        <router-link :to="$alias.bangumiTag()">分类索引</router-link>
-      </div>
-      <div class="tags">
-        <h2 class="sub-title">标签列表</h2>
-        <ul>
-          <li
-            v-for="(tag, index) in tags"
-            :key="tag.id"
-            @click="$store.commit('bangumi/selectTag', index)"
+  <div id="bangumi-tags">
+    <div class="tags">
+      <h2 class="sub-title">标签列表</h2>
+      <ul>
+        <li
+          v-for="(tag, index) in tags"
+          :key="tag.id"
+          @click="$store.commit('bangumi/selectTag', index)"
+        >
+          <a
+            :href="$alias.bangumiTag(tag.id)"
+            :class="{ 'selected': tag.selected }"
+            class="tag-btn"
+            @click.prevent
+          >{{ tag.name }}</a>
+        </li>
+        <li>
+          <button
+            class="btn"
+            @click="refresh"
+          >点击查找</button>
+        </li>
+      </ul>
+    </div>
+    <div
+      v-if="bangumis && bangumis.length"
+      class="bangumis"
+    >
+      <h2 class="sub-title">番剧列表</h2>
+      <ul>
+        <li
+          v-for="item in bangumis"
+          :key="item.id"
+          class="bangumi"
+        >
+          <a
+            :href="$alias.bangumi(item.id)"
+            target="_blank"
+            class="avatar"
           >
-            <a
-              :href="$alias.bangumiTag(tag.id)"
-              :class="{ 'selected': tag.selected }"
-              class="tag-btn"
-              @click.prevent
-            >{{ tag.name }}</a>
-          </li>
-          <li>
-            <button
-              class="btn"
-              @click="refresh"
-            >点击查找</button>
-          </li>
-        </ul>
-      </div>
-      <div
-        v-if="bangumis && bangumis.length"
-        class="bangumis"
-      >
-        <h2 class="sub-title">番剧列表</h2>
-        <ul>
-          <li
-            v-for="item in bangumis"
-            :key="item.id"
-            class="bangumi"
-          >
+            <v-img
+              :src="item.avatar"
+              :poster="true"
+              size="90"
+            />
+          </a>
+          <div class="content">
             <a
               :href="$alias.bangumi(item.id)"
               target="_blank"
-              class="avatar"
-            >
-              <v-img
-                :src="item.avatar"
-                :poster="true"
-                size="90"
-              />
-            </a>
-            <div class="content">
-              <a
-                :href="$alias.bangumi(item.id)"
-                target="_blank"
-                class="title"
-                v-text="item.name"
-              />
-              <p
-                class="desc"
-                v-text="item.summary"
-              />
-            </div>
-          </li>
-        </ul>
-        <load-more-btn
-          :no-more="noMore"
-          :loading="loading"
-          :auto="true"
-          @fetch="loadMore"
-        />
-      </div>
-      <no-content v-else-if="id"/>
-      <template slot="aside">
-        <bangumi-recommended/>
-      </template>
-    </v-layout>
+              class="title"
+              v-text="item.name"
+            />
+            <p
+              class="desc"
+              v-text="item.summary"
+            />
+          </div>
+        </li>
+      </ul>
+      <load-more-btn
+        :no-more="noMore"
+        :loading="loading"
+        :auto="true"
+        @fetch="loadMore"
+      />
+    </div>
+    <no-content v-else-if="id"/>
   </div>
 </template>
 
 <script>
-import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
-
 export default {
-  name: "BangumiTags",
-  components: {
-    BangumiRecommended
-  },
+  name: 'BangumiTags',
   head: {
-    title: "分类索引 - 番剧"
+    title: '分类索引 - 番剧'
   },
   async asyncData({ route, store, ctx }) {
-    const id = route.query.id;
+    const id = route.query.id
     const arr = [
-      store.dispatch("bangumi/getTags", { id, ctx }),
-      store.dispatch("bangumi/getRecommended")
-    ];
+      store.dispatch('bangumi/getTags', { id, ctx }),
+      store.dispatch('bangumi/getRecommended')
+    ]
     if (
       id &&
       (/^\d+$/.test(id) ||
-        (id.indexOf("-") !== -1 &&
-          id.split("-").every(item => /^\d+$/.test(item))))
+        (id.indexOf('-') !== -1 &&
+          id.split('-').every(item => /^\d+$/.test(item))))
     ) {
       arr.push(
-        store.dispatch("bangumi/getCategory", {
+        store.dispatch('bangumi/getCategory', {
           id,
           ctx
         })
-      );
+      )
     }
-    await Promise.all(arr);
+    await Promise.all(arr)
   },
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     id() {
-      return this.$route.query.id;
+      return this.$route.query.id
     },
     bangumis() {
-      return this.$store.state.bangumi.category.data;
+      return this.$store.state.bangumi.category.data
     },
     tags() {
-      return this.$store.state.bangumi.tags;
+      return this.$store.state.bangumi.tags
     },
     noMore() {
-      return this.$store.state.bangumi.category.noMore;
+      return this.$store.state.bangumi.category.noMore
     }
   },
   methods: {
     refresh() {
-      const selected = [];
+      const selected = []
       this.tags.forEach(tag => {
         if (tag.selected) {
-          selected.push(tag.id);
+          selected.push(tag.id)
         }
-      });
+      })
       if (selected.length) {
-        window.location = this.$alias.bangumiTag(selected.join("-"));
+        window.location = this.$alias.bangumiTag(selected.join('-'))
       }
     },
     async loadMore() {
       if (this.notFetch) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
 
       try {
-        await this.$store.dispatch("bangumi/getCategory", {
+        await this.$store.dispatch('bangumi/getCategory', {
           id: this.$route.query.id,
           ctx: this
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

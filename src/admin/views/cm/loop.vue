@@ -164,52 +164,52 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
-import uploadMixin from "~/mixins/upload";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
+import uploadMixin from '~/mixins/upload'
 
 const defaultForm = {
-  title: "",
-  desc: "",
-  poster: "",
-  link: "",
-  begin_at: "",
-  end_at: "",
-  time_range: ""
-};
+  title: '',
+  desc: '',
+  poster: '',
+  link: '',
+  begin_at: '',
+  end_at: '',
+  time_range: ''
+}
 
 export default {
-  name: "CmLoop",
+  name: 'CmLoop',
   mixins: [pageMixin, uploadMixin],
   data() {
     return {
       pickerOptions: {
         shortcuts: [
           {
-            text: "一天",
+            text: '一天',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              end.setTime(start.getTime() + 3600 * 1000 * 24);
-              picker.$emit("pick", [start, end]);
+              const end = new Date()
+              const start = new Date()
+              end.setTime(start.getTime() + 3600 * 1000 * 24)
+              picker.$emit('pick', [start, end])
             }
           },
           {
-            text: "一周",
+            text: '一周',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              end.setTime(start.getTime() + 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
+              const end = new Date()
+              const start = new Date()
+              end.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
             }
           },
           {
-            text: "一月",
+            text: '一月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              end.setTime(start.getTime() + 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
+              const end = new Date()
+              const start = new Date()
+              end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
             }
           }
         ]
@@ -217,25 +217,26 @@ export default {
       showCreateModal: false,
       form: null,
       submitting: false
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getUpToken()
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
-      const data = await api.getCMLoop();
-      this.pageState.cur = 1;
-      this.pageState.size = 15;
-      this.pageState.total = data.length;
-      this.pageList = data;
-      this.pageLoading = false;
+      this.pageLoading = true
+      const api = new Api(this)
+      const data = await api.getCMLoop()
+      this.pageState.cur = 1
+      this.pageState.size = 15
+      this.pageState.total = data.length
+      this.pageList = data
+      this.pageLoading = false
     },
     createProcess() {
-      this.form = _.merge({}, defaultForm);
-      this.showCreateModal = true;
+      this.form = _.merge({}, defaultForm)
+      this.showCreateModal = true
     },
     updateProcess(index, row) {
       this.form = _.merge(
@@ -243,62 +244,62 @@ export default {
           time_range: [row.begin_at, row.end_at]
         },
         row
-      );
-      this.showCreateModal = true;
+      )
+      this.showCreateModal = true
     },
     handleImageUploadSuccess(res) {
-      this.form.poster = `${this.imagePrefix}${res.data.url}`;
+      this.form.poster = `${this.imagePrefix}${res.data.url}`
     },
     async onSubmit() {
       if (!this.form.title) {
-        this.$toast.error("标题不能为空！");
-        return;
+        this.$toast.error('标题不能为空！')
+        return
       }
       if (!this.form.time_range) {
-        this.$toast.error("时间点不能为空");
-        return;
+        this.$toast.error('时间点不能为空')
+        return
       }
       if (!this.form.link || !/^https?:\/\//i.test(this.form.link)) {
-        this.$toast.error("请输入合法链接");
-        return;
+        this.$toast.error('请输入合法链接')
+        return
       }
       if (this.submitting) {
-        return;
+        return
       }
-      this.submitting = true;
+      this.submitting = true
       this.form.begin_at = parseInt(
         new Date(this.form.time_range[0]).getTime() / 1000
-      );
+      )
       this.form.end_at = parseInt(
         new Date(this.form.time_range[1]).getTime() / 1000
-      );
+      )
       try {
-        const api = new Api(this);
+        const api = new Api(this)
         if (this.form.id) {
-          api.updateCMLoop(this.form);
-          this.$toast.success("操作成功").then(() => {
-            window.location.reload();
-          });
+          api.updateCMLoop(this.form)
+          this.$toast.success('操作成功').then(() => {
+            window.location.reload()
+          })
         } else {
-          const result = await api.createCMLoop(this.form);
-          this.pageList.unshift(result);
-          this.showCreateModal = false;
-          this.$toast.success("操作成功");
+          const result = await api.createCMLoop(this.form)
+          this.pageList.unshift(result)
+          this.showCreateModal = false
+          this.$toast.success('操作成功')
         }
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.submitting = false;
+        this.submitting = false
       }
     },
     async remove(index, row) {
-      this.$confirm("确定要下架吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定要下架吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteCMLoop({
               id: row.id
@@ -307,38 +308,38 @@ export default {
               this.pageList.splice(
                 (this.pageState.cur - 1) * this.pageState.size + index,
                 1
-              );
-              this.$toast.success("操作成功");
+              )
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     async sort(index, row) {
-      this.$confirm("确定要置顶吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定要置顶吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .sortCMLoop({
               id: row.id
             })
             .then(() => {
-              this.$toast.success("操作成功").then(() => {
-                window.location.reload();
-              });
+              this.$toast.success('操作成功').then(() => {
+                window.location.reload()
+              })
             })
             .catch(e => {
-              this.$message.error(e);
-            });
+              this.$message.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

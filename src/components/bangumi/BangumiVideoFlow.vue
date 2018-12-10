@@ -128,49 +128,49 @@
 
 <script>
 export default {
-  name: "BangumiVideoFlow",
+  name: 'BangumiVideoFlow',
   data() {
     return {
       state: {
         loading: false,
         fetched: false
       }
-    };
+    }
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     },
     videos() {
-      return this.$store.state.bangumi.videos;
+      return this.$store.state.bangumi.videos
     }
   },
   methods: {
     async getData() {
       if (this.state.loading) {
-        return;
+        return
       }
-      this.state.loading = true;
+      this.state.loading = true
 
       try {
-        await this.$store.dispatch("bangumi/getVideos", {
+        await this.$store.dispatch('bangumi/getVideos', {
           ctx: this,
           id: this.info.id
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.state.loading = false;
-        this.state.fetched = true;
+        this.state.loading = false
+        this.state.fetched = true
       }
     },
     openFeedback() {
-      this.$channel.$emit("open-feedback", {
+      this.$channel.$emit('open-feedback', {
         type: 5,
         desc: `我想看《${this.info.name}》的视频第 {?} 集`,
-        placeholder: "请填写你想看的集数"
-      });
+        placeholder: '请填写你想看的集数'
+      })
     }
   }
-};
+}
 </script>

@@ -100,7 +100,7 @@
         effect="dark"
       >
         <v-time
-          v-model="item.created_at"
+          :datetime="item.created_at"
           class="created-at"
         />
       </el-tooltip>
@@ -119,7 +119,7 @@
             class="user-avatar"
           />
           <span
-            class="name href-fade-blue"
+            class="name blue-link"
             v-text="item.user.nickname"
           />
         </user-card>
@@ -135,7 +135,7 @@
             class="bangumi-avatar"
           />
           <span
-            class="name href-fade-blue"
+            class="name blue-link"
             v-text="item.bangumi.name"
           />
         </a>
@@ -194,7 +194,7 @@
 
 <script>
 export default {
-  name: "ScoreFlowItem",
+  name: 'ScoreFlowItem',
   props: {
     item: {
       required: true,
@@ -206,18 +206,18 @@ export default {
     },
     userZone: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       noScore: 0
-    };
+    }
   },
   computed: {
     starCount() {
-      return this.item.total / 2;
+      return this.item.total / 2
     }
   }
-};
+}
 </script>

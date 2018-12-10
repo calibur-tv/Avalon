@@ -153,58 +153,58 @@
 </template>
 
 <script>
-import VideoApi from "~/api/videoApi";
-import vVideo from "~/components/Video";
-import vPart from "~/components/lists/Parts";
-import CommentMain from "~/components/comments/CommentMain";
-import SocialPanel from "~/components/common/SocialPanel";
+import VideoApi from '~/api/videoApi'
+import vVideo from '~/components/Video'
+import vPart from '~/components/lists/Parts'
+import CommentMain from '~/components/comments/CommentMain'
+import SocialPanel from '~/components/common/SocialPanel'
 
 export default {
-  name: "VideoShow",
+  name: 'VideoShow',
   head() {
-    let resultPart = this.video.part;
-    let season = "";
-    let title = "";
+    let resultPart = this.video.part
+    let season = ''
+    let title = ''
     if (this.season) {
       this.list.forEach((videos, index) => {
         videos.data.forEach(video => {
           if (video.id === this.video.id) {
-            resultPart = video.part - videos.base;
-            season = this.season.name[index];
+            resultPart = video.part - videos.base
+            season = this.season.name[index]
           }
-        });
-      });
+        })
+      })
     }
     if (season) {
       if (season === this.video.name) {
-        title = `${this.bangumi.name} : ${season} - 视频`;
+        title = `${this.bangumi.name} : ${season} - 视频`
       } else {
         title = `${this.bangumi.name} : ${season} : 第${resultPart}话 ${
           this.video.name
-        } - 视频`;
+        } - 视频`
       }
     } else {
       title = `${this.bangumi.name} : 第${resultPart}话 ${
         this.video.name
-      } - 视频`;
+      } - 视频`
     }
     return {
       title,
       meta: [
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content: this.bangumi.summary
         },
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `${this.bangumi.name}，第${this.video.part}话，${
             this.video.name
           }，在线观看 动画片大全 动漫在线播放 日本动漫 好看的动漫 二次元网站`
         }
       ]
-    };
+    }
   },
   components: {
     vVideo,
@@ -213,96 +213,96 @@ export default {
     SocialPanel
   },
   async asyncData({ route, store, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("video/getShow", { id, ctx }),
-      store.dispatch("comment/getMainComments", {
+      store.dispatch('video/getShow', { id, ctx }),
+      store.dispatch('comment/getMainComments', {
         ctx,
         id,
-        type: "video",
-        seeReplyId: route.query["comment-id"]
+        type: 'video',
+        seeReplyId: route.query['comment-id']
       })
-    ]);
+    ])
   },
   data() {
     return {
       showAll: false,
       firstPlay: true
-    };
+    }
   },
   computed: {
     id() {
-      return parseInt(this.$route.params.id, 10);
+      return parseInt(this.$route.params.id, 10)
     },
     isGuest() {
-      return !this.$store.state.login;
+      return !this.$store.state.login
     },
     videoPackage() {
-      return this.$store.state.video;
+      return this.$store.state.video
     },
     video() {
-      return this.videoPackage.info;
+      return this.videoPackage.info
     },
     list() {
-      return this.videoPackage.list.videos;
+      return this.videoPackage.list.videos
     },
     videos() {
       if (!this.season) {
-        return this.list[0].data;
+        return this.list[0].data
       }
-      let result = [];
+      let result = []
       this.list.forEach(videos => {
-        result = result.concat(videos.data);
-      });
-      return result;
+        result = result.concat(videos.data)
+      })
+      return result
     },
     bangumi() {
-      return this.videoPackage.bangumi;
+      return this.videoPackage.bangumi
     },
     season() {
-      return this.$store.state.video.season;
+      return this.$store.state.video.season
     },
     nextPartVideo() {
-      let nextId = 0;
+      let nextId = 0
       this.videos.forEach((video, index) => {
         if (video.id === this.id && index !== this.videos.length - 1) {
-          nextId = this.videos[index + 1].id;
+          nextId = this.videos[index + 1].id
         }
-      });
-      return nextId ? this.$alias.video(nextId) : "";
+      })
+      return nextId ? this.$alias.video(nextId) : ''
     },
     useOtherSiteSource() {
-      return this.video.other_site;
+      return this.video.other_site
     },
     computeVideoSrc() {
-      return this.video.src;
+      return this.video.src
     }
   },
   methods: {
     handlePlaying() {
       if (this.firstPlay) {
-        this.firstPlay = false;
-        const api = new VideoApi(this);
-        api.playing(this.id);
+        this.firstPlay = false
+        const api = new VideoApi(this)
+        api.playing(this.id)
       }
     },
     handleVideoReportClick() {
-      this.$channel.$emit("open-feedback", {
+      this.$channel.$emit('open-feedback', {
         type: 4,
         desc: `【PC】-《${this.bangumi.name}》视频有错误，视频 id：${
           this.id
         }：错误详情为：{?}`,
-        placeholder: "请填写错误详情"
-      });
+        placeholder: '请填写错误详情'
+      })
     },
     handleFollowAction(result) {
-      this.$store.commit("video/FOLLOW_ALBUM_BANGUMI", { result });
+      this.$store.commit('video/FOLLOW_ALBUM_BANGUMI', { result })
     },
     handleRewardAction() {
       if (this.videoPackage.mustReward) {
-        window.location.reload();
+        window.location.reload()
       }
     }
   }
-};
+}
 </script>

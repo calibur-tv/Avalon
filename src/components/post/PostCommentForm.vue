@@ -72,10 +72,10 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
+import uploadMixin from '~/mixins/upload'
 
 export default {
-  name: "PostCommentForm",
+  name: 'PostCommentForm',
   mixins: [uploadMixin],
   props: {
     id: {
@@ -90,7 +90,7 @@ export default {
   data() {
     return {
       forms: {
-        content: ""
+        content: ''
       },
       rules: {
         content: [
@@ -98,102 +98,105 @@ export default {
             required: true,
             min: 1,
             max: 1000,
-            message: "内容不能为空，1000字以内",
-            trigger: "submit"
+            message: '内容不能为空，1000字以内',
+            trigger: 'submit'
           }
         ]
       },
       images: [],
       exceed: 5
-    };
+    }
   },
   computed: {
     isGuest() {
-      return !this.$store.state.login;
+      return !this.$store.state.login
     },
     formatImages() {
-      return this.images.map(item => item.img);
+      return this.images.map(item => item.img)
     },
     submitting() {
-      return this.$store.state.comment.submitting;
+      return this.$store.state.comment.submitting
     }
+  },
+  mounted() {
+    this.getUpToken()
   },
   methods: {
     submit() {
       if (this.isGuest) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
       this.$refs.forms.validate(async valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.$store.commit("comment/SET_SUBMITTING", { result: true });
+          this.$store.commit('comment/SET_SUBMITTING', { result: true })
           try {
             const result = await this.$store.dispatch(
-              "comment/createMainComment",
+              'comment/createMainComment',
               {
                 content: this.forms.content,
                 images: this.formatImages,
-                type: "post",
+                type: 'post',
                 id: this.id,
                 ctx: this
               }
-            );
+            )
             this.forms = {
-              content: ""
-            };
-            this.images = [];
-            this.$refs.uploader.clearFiles();
-            this.$toast.success(result.message);
-            this.$store.commit("UPDATE_USER_EXP", result.exp);
+              content: ''
+            }
+            this.images = []
+            this.$refs.uploader.clearFiles()
+            this.$toast.success(result.message)
+            this.$store.commit('UPDATE_USER_EXP', result.exp)
             setTimeout(() => {
-              const dom = document.getElementById(`comment-${result.data.id}`);
-              dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600);
-            }, 400);
+              const dom = document.getElementById(`comment-${result.data.id}`)
+              dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600)
+            }, 400)
           } catch (e) {
-            this.$toast.error(e);
+            this.$toast.error(e)
           } finally {
-            this.$store.commit("comment/SET_SUBMITTING", { result: false });
+            this.$store.commit('comment/SET_SUBMITTING', { result: false })
           }
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     handleRemove(file) {
       this.images.forEach((item, index) => {
         if (item.id === file.uid) {
-          this.images.splice(index, 1);
+          this.images.splice(index, 1)
         }
-      });
+      })
     },
     handleSuccess(res, file) {
       this.images.push({
         id: file.uid,
         img: res.data
-      });
+      })
     },
     handleExceed() {
-      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`);
+      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
     },
     beforeUpload(file) {
       if (this.isGuest) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
 
-      this.uploadConfig.max = 5;
+      this.uploadConfig.max = 5
       this.uploadConfig.params = {
         userId: this.$store.state.user.id,
         id: this.id,
-        type: "post"
-      };
+        type: 'post'
+      }
 
-      return this.beforeImageUpload(file);
+      return this.beforeImageUpload(file)
     }
   }
-};
+}
 </script>

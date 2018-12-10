@@ -6,7 +6,7 @@
     margin-left: -$time-size / 2;
 
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       display: block;
       left: 14.5px;
@@ -31,7 +31,7 @@
         margin-top: 20px;
 
         &:before {
-          content: "";
+          content: '';
           position: absolute;
           left: 0;
           top: 0;
@@ -43,7 +43,7 @@
         }
 
         &:after {
-          content: "";
+          content: '';
           position: absolute;
           left: 7px;
           top: 7px;
@@ -91,109 +91,90 @@
 
 <template>
   <div id="bangumi-timeline">
-    <v-header/>
-    <v-layout :affix-top="235">
-      <div class="breadcrumb-links">
-        <router-link :to="$alias.bangumiNews">新番放送</router-link>
-        <router-link :to="$alias.bangumiTimeline">时间轴</router-link>
-        <a :href="$alias.bangumiTag()">分类索引</a>
-      </div>
-      <h2 class="sub-title">时间轴</h2>
-      <ul class="collections">
-        <ul
-          v-for="col in timeline"
-          :key="col.date"
-          class="collection"
+    <h2 class="sub-title">时间轴</h2>
+    <ul class="collections">
+      <ul
+        v-for="col in timeline"
+        :key="col.date"
+        class="collection"
+      >
+        <h3
+          class="time"
+          v-text="col.date"
+        />
+        <li
+          v-for="item in col.list"
+          :key="item.id"
+          class="bangumi"
         >
-          <h3
-            class="time"
-            v-text="col.date"
-          />
-          <li
-            v-for="item in col.list"
-            :key="item.id"
-            class="bangumi"
+          <a
+            :href="$alias.bangumi(item.id)"
+            target="_blank"
+            class="avatar"
           >
+            <v-img
+              :src="item.avatar"
+              :poster="true"
+              size="90"
+            />
+          </a>
+          <div class="content">
             <a
               :href="$alias.bangumi(item.id)"
               target="_blank"
-              class="avatar"
-            >
-              <v-img
-                :src="item.avatar"
-                :poster="true"
-                size="90"
-              />
-            </a>
-            <div class="content">
-              <a
-                :href="$alias.bangumi(item.id)"
-                target="_blank"
-                class="title"
-                v-text="item.name"
-              />
-              <p
-                class="desc"
-                v-text="item.summary"
-              />
-            </div>
-          </li>
-        </ul>
+              class="title"
+              v-text="item.name"
+            />
+            <p
+              class="desc"
+              v-text="item.summary"
+            />
+          </div>
+        </li>
       </ul>
-      <load-more-btn
-        :no-more="noMore"
-        :loading="loading"
-        :auto="true"
-        @fetch="loadMore"
-      />
-      <template slot="aside">
-        <bangumi-recommended/>
-      </template>
-    </v-layout>
+    </ul>
+    <load-more-btn
+      :no-more="noMore"
+      :loading="loading"
+      :auto="true"
+      @fetch="loadMore"
+    />
   </div>
 </template>
 
 <script>
-import BangumiRecommended from "~/components/bangumi/BangumiRecommended";
-
 export default {
-  name: "BangumiTimeline",
-  components: {
-    BangumiRecommended
-  },
+  name: 'BangumiTimeline',
   async asyncData({ store, ctx }) {
-    await Promise.all([
-      store.dispatch("bangumi/getTimeline", ctx),
-      store.dispatch("bangumi/getRecommended")
-    ]);
+    await store.dispatch('bangumi/getTimeline', ctx)
   },
   head: {
-    title: "时间轴 - 番剧"
+    title: '时间轴 - 番剧'
   },
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     timeline() {
-      return this.$store.state.bangumi.timeline.data;
+      return this.$store.state.bangumi.timeline.data
     },
     noMore() {
-      return this.$store.state.bangumi.timeline.noMore;
+      return this.$store.state.bangumi.timeline.noMore
     }
   },
   methods: {
     async loadMore() {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("bangumi/getTimeline");
+        await this.$store.dispatch('bangumi/getTimeline')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

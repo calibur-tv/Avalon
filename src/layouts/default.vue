@@ -22,18 +22,18 @@
 </template>
 
 <script>
-import vFooter from "~/components/layouts/Footer";
-import vMusic from "~/components/layouts/Music";
-import vCreator from "~/components/layouts/Creator";
-import SideTools from "~/components/layouts/Tools";
+import vFooter from '~/components/layouts/Footer'
+import vMusic from '~/components/layouts/Music'
+import vCreator from '~/components/layouts/Creator'
+import SideTools from '~/components/layouts/Tools'
 
 export default {
-  name: "DefaultLayout",
+  name: 'DefaultLayout',
   components: {
     vFooter,
     vCreator,
     SideTools,
     vMusic
   }
-};
+}
 </script>

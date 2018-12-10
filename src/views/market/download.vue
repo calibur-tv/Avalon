@@ -80,10 +80,10 @@
 </template>
 
 <script>
-import VueParticles from "~/components/particles/index.vue";
+import VueParticles from '~/components/particles/index.vue'
 
 export default {
-  name: "AppDownload",
+  name: 'AppDownload',
   /*
   async asyncData({ store }) {
     await Promise.all([
@@ -101,5 +101,5 @@ export default {
   components: {
     VueParticles
   }
-};
+}
 </script>

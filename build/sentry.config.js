@@ -1,9 +1,9 @@
-const config = require("../.env").sentry;
+const config = require('../.env').sentry
 
 module.exports = {
-  url: "https://sentry.io/api/0/projects",
-  org: "falstack",
+  url: 'https://sentry.io/api/0/projects',
+  org: 'falstack',
   include: /\.js(\.map)?$/,
-  project: "RhoAias",
+  project: 'RhoAias',
   token: config.token
-};
+}

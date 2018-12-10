@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import CartoonRoleApi from "~/api/cartoonRoleApi";
+import CartoonRoleApi from '~/api/cartoonRoleApi'
 
 export default {
-  name: "CartoonRoleBtn",
+  name: 'CartoonRoleBtn',
   props: {
     id: {
       type: Number,
@@ -38,24 +38,24 @@ export default {
   methods: {
     async handleStarRole() {
       if (!this.$store.state.login) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (!this.$store.state.user.coin) {
-        this.$toast.error("团子不足");
-        return;
+        this.$toast.error('团子不足')
+        return
       }
       try {
-        const api = new CartoonRoleApi(this);
+        const api = new CartoonRoleApi(this)
         await api.star({
           roleId: this.id
-        });
-        this.$store.commit("USE_COIN");
-        this.$emit("success");
+        })
+        this.$store.commit('USE_COIN')
+        this.$emit('success')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     }
   }
-};
+}
 </script>

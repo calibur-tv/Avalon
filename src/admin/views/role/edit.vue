@@ -123,117 +123,118 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import uploadMixin from "~/mixins/upload";
+import Api from '~/api/adminApi'
+import uploadMixin from '~/mixins/upload'
 
 export default {
   mixins: [uploadMixin],
   data() {
     const validateAlias = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入番剧别名"));
+      if (value === '') {
+        callback(new Error('请输入番剧别名'))
       } else if (value.split(/,/).length <= 1) {
-        callback(new Error("请输入多个别名，用英文逗号分隔"));
+        callback(new Error('请输入多个别名，用英文逗号分隔'))
       } else {
-        callback();
+        callback()
       }
-    };
-    const id = +(this.$route.params.id || 0);
+    }
+    const id = +(this.$route.params.id || 0)
     return {
       loading: !!id,
       form: null,
       rules: {
-        name: [{ required: true, message: "请输入角色名称", trigger: "blur" }],
-        avatar: [{ required: true, message: "头像是必填", trigger: "change" }],
-        alias: [{ validator: validateAlias, trigger: "blur" }],
+        name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        avatar: [{ required: true, message: '头像是必填', trigger: 'change' }],
+        alias: [{ validator: validateAlias, trigger: 'blur' }],
         intro: [
-          { required: true, message: "简介不能为空", trigger: "blur" },
-          { min: 1, max: 250, message: "最多250字", trigger: "blur" }
+          { required: true, message: '简介不能为空', trigger: 'blur' },
+          { min: 1, max: 250, message: '最多250字', trigger: 'blur' }
         ],
-        bangumi_id: [{ required: true, message: "番剧是必选", trigger: "blur" }]
+        bangumi_id: [{ required: true, message: '番剧是必选', trigger: 'blur' }]
       },
       submitting: false
-    };
+    }
   },
   computed: {
     id() {
-      return +(this.$route.params.id || 0);
+      return +(this.$route.params.id || 0)
     }
   },
   watch: {
     $route() {
-      this.getRoleById();
+      this.getRoleById()
     }
   },
   created() {
-    this.getRoleById();
+    this.getUpToken()
+    this.getRoleById()
   },
   methods: {
     async getRoleById() {
       if (!this.id) {
         this.form = {
-          name: "",
-          alias: "",
-          bangumi_id: "",
-          avatar: "",
-          intro: ""
-        };
-        this.uploadConfig.pathPrefix = `bangumi/role/`;
-        return;
+          name: '',
+          alias: '',
+          bangumi_id: '',
+          avatar: '',
+          intro: ''
+        }
+        this.uploadConfig.pathPrefix = `bangumi/role/`
+        return
       }
 
-      const api = new Api(this);
+      const api = new Api(this)
       try {
         const data = await api.cartoonRoleInfo({
           id: this.id
-        });
+        })
         this.form = Object.assign(data, {
-          avatar: data.avatar.split("calibur.tv/").pop()
-        });
+          avatar: data.avatar.split('calibur.tv/').pop()
+        })
         this.uploadConfig.pathPrefix = `bangumi/${data.bangumi_id}/role/${
           this.id
-        }`;
+        }`
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     handleAvatarSuccess(res) {
-      this.$toast.success("上传成功");
-      this.form.avatar = res.data.url;
+      this.$toast.success('上传成功')
+      this.form.avatar = res.data.url
     },
     submitForm() {
       this.$refs.form.validate(async valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
-          const api = new Api(this);
-          let jumpId = this.id;
+          this.submitting = true
+          const api = new Api(this)
+          let jumpId = this.id
           try {
             if (jumpId) {
-              await api.cartoonRoleEdit(this.form);
+              await api.cartoonRoleEdit(this.form)
             } else {
-              jumpId = await api.cartoonRoleCreate(this.form);
+              jumpId = await api.cartoonRoleCreate(this.form)
             }
             if (!this.id) {
-              this.$refs.form.resetFields();
+              this.$refs.form.resetFields()
             }
-            this.$toast.success("操作成功");
-            this.uploadConfig.pathPrefix = `bangumi/role/`;
+            this.$toast.success('操作成功')
+            this.uploadConfig.pathPrefix = `bangumi/role/`
             setTimeout(() => {
-              window.open(this.$alias.cartoonRole(jumpId));
-            }, 2000);
+              window.open(this.$alias.cartoonRole(jumpId))
+            }, 2000)
           } catch (e) {
-            this.$toast.error(e);
+            this.$toast.error(e)
           } finally {
-            this.submitting = false;
+            this.submitting = false
           }
         }
-      });
+      })
     }
   }
-};
+}
 </script>

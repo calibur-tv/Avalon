@@ -35,12 +35,18 @@
         v-if="item.url"
         class="wrapper"
       >
-        <img :src="$resize(item.url)">
+        <v-img
+          :src="item.url"
+          :width="item.width"
+          :height="item.height"
+          :full="true"
+          :lazy="false"
+        />
         <el-input
-          v-model="desc"
+          v-model.trim="desc"
           maxlength="45"
           placeholder="添加图片描述"
-          class="focus-textarea"
+          class="focus-textarea mousetrap"
         />
       </div>
       <el-upload
@@ -87,10 +93,10 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
+import uploadMixin from '~/mixins/upload'
 
 export default {
-  name: "ImgPreview",
+  name: 'ImgPreview',
   mixins: [uploadMixin],
   props: {
     item: {
@@ -101,46 +107,47 @@ export default {
   data() {
     return {
       saving: false
-    };
+    }
   },
   computed: {
     desc: {
       get() {
-        return this.item.text;
+        return this.item.text
       },
       set(value) {
-        this.$store.commit("editor/UPDATE_SECTION_TEXT", { value });
+        this.$store.commit('editor/UPDATE_SECTION_TEXT', { value })
       }
     }
   },
   mounted() {
-    this.$channel.$on("write-save-done", () => {
-      this.saving = false;
-    });
+    this.getUpToken()
+    this.$channel.$on('write-save-done', () => {
+      this.saving = false
+    })
   },
   methods: {
     handleImageUploadSuccess(res) {
-      this.$store.commit("editor/UPDATE_SECTION_IMAGE", {
+      this.$store.commit('editor/UPDATE_SECTION_IMAGE', {
         url: res.data.url,
         width: res.data.width,
         height: res.data.height,
         size: res.data.size,
         mime: res.data.type
-      });
-      this.$toast.success("上传成功");
+      })
+      this.$toast.success('上传成功')
     },
     beforeUpload(file) {
-      this.uploadConfig.max = 5;
-      this.uploadConfig.pathPrefix = `user/${this.$store.state.user.id}/create`;
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 5
+      this.uploadConfig.pathPrefix = `user/${this.$store.state.user.id}/create`
+      return this.beforeImageUpload(file)
     },
     emitSave() {
       if (!this.item.url) {
-        return;
+        return
       }
-      this.$channel.$emit("write-save");
-      this.saving = true;
+      this.$channel.$emit('write-save')
+      this.saving = true
     }
   }
-};
+}
 </script>

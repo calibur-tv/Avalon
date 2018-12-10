@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import Croppa from "vue-croppa";
-import "vue-croppa/dist/vue-croppa.css";
+import Croppa from 'vue-croppa'
+import 'vue-croppa/dist/vue-croppa.css'
 
 export default {
-  name: "ImageCropper",
+  name: 'ImageCropper',
   components: {
     croppa: Croppa.component
   },
@@ -76,12 +76,12 @@ export default {
     },
     initImage: {
       type: String,
-      default: ""
+      default: ''
     },
     type: {
       type: String,
-      default: "normal",
-      validator: val => ~["avatar", "normal"].indexOf(val)
+      default: 'normal',
+      validator: val => ~['avatar', 'normal'].indexOf(val)
     },
     uploading: {
       type: Boolean,
@@ -91,24 +91,24 @@ export default {
   data() {
     return {
       croppa: {}
-    };
+    }
   },
   methods: {
     onInit() {
-      if (this.type === "avatar") {
+      if (this.type === 'avatar') {
         this.croppa.addClipPlugin(function(ctx, x, y, w, h) {
-          ctx.beginPath();
-          ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true);
-          ctx.closePath();
-        });
+          ctx.beginPath()
+          ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
+          ctx.closePath()
+        })
       }
     },
     async generateImage() {
-      const blob = await this.croppa.promisedBlob();
-      const formData = new FormData();
-      formData.append("file", blob);
-      this.$emit("submit", formData);
+      const blob = await this.croppa.promisedBlob()
+      const formData = new FormData()
+      formData.append('file', blob)
+      this.$emit('submit', formData)
     }
   }
-};
+}
 </script>

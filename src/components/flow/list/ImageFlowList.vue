@@ -25,24 +25,24 @@
 </template>
 
 <script>
-import flowMixin from "./_flowListMixin";
-import ImageWaterfallFlow from "~/components/image/ImageWaterfallFlow";
+import flowMixin from './_flowListMixin'
+import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
 
 export default {
-  name: "ImageFlowList",
+  name: 'ImageFlowList',
   components: {
     ImageWaterfallFlow
   },
   mixins: [flowMixin],
   data() {
     return {
-      flowType: "image"
-    };
+      flowType: 'image'
+    }
   },
   methods: {
     openUploadImageModal() {
-      this.$channel.$emit("show-upload-image-modal");
+      this.$channel.$emit('show-upload-image-modal')
     }
   }
-};
+}
 </script>

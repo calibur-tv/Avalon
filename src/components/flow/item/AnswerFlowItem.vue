@@ -127,9 +127,7 @@
       </span>
       <span v-if="item.created_at === item.published_at">
         发布于
-        <v-time
-          v-model="item.created_at"
-        />
+        <v-time :datetime="item.created_at"/>
       </span>
       <span v-else>
         编辑于
@@ -138,7 +136,7 @@
           placement="top"
           effect="dark"
         >
-          <v-time v-model="item.published_at"/>
+          <v-time :datetime="item.published_at"/>
         </el-tooltip>
       </span>
       &nbsp;·&nbsp;
@@ -238,14 +236,14 @@
 </template>
 
 <script>
-import JsonContent from "~/components/jsonEditor/JsonContent";
-import VoteButton from "~/components/common/VoteButton";
-import CommentMain from "~/components/comments/CommentMain";
-import SocialPanel from "~/components/common/SocialPanel";
-import Api from "~/api/questionApi";
+import JsonContent from '~/components/jsonEditor/JsonContent'
+import VoteButton from '~/components/common/VoteButton'
+import CommentMain from '~/components/comments/CommentMain'
+import SocialPanel from '~/components/common/SocialPanel'
+import Api from '~/api/questionApi'
 
 export default {
-  name: "AnswerFlowItem",
+  name: 'AnswerFlowItem',
   components: {
     JsonContent,
     VoteButton,
@@ -261,57 +259,57 @@ export default {
   data() {
     return {
       showCommentModal: false
-    };
+    }
   },
   computed: {
     qaq() {
-      return this.$store.state.question.qaq;
+      return this.$store.state.question.qaq
     },
     isMine() {
       return this.$store.state.login
         ? this.$store.state.user.id === this.item.user.id
-        : false;
+        : false
     }
   },
   methods: {
     handleVoted(result) {
-      this.$store.commit("question/TOGGLE_ANSWER_VOTE", {
+      this.$store.commit('question/TOGGLE_ANSWER_VOTE', {
         id: this.item.id,
         data: result
-      });
+      })
     },
     loadAnswerComment() {
-      this.showCommentModal = true;
+      this.showCommentModal = true
       this.$nextTick(() => {
-        this.$channel.$emit(`fire-load-comment-answer-${this.item.id}`);
-      });
+        this.$channel.$emit(`fire-load-comment-answer-${this.item.id}`)
+      })
     },
     deleteAnswer() {
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(async () => {
-          const api = new Api(this);
+          const api = new Api(this)
           try {
             await api.deleteAnswer({
               id: this.item.id
-            });
-            window.location.reload();
+            })
+            window.location.reload()
           } catch (e) {
-            this.$toast.error(e);
+            this.$toast.error(e)
           }
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     handleCommentChange(count) {
-      this.$store.commit("question/COMMENT_CHANGE_COUNT", {
+      this.$store.commit('question/COMMENT_CHANGE_COUNT', {
         id: this.item.id,
-        key: "answer",
+        key: 'answer',
         value: count
-      });
+      })
     }
   }
-};
+}
 </script>

@@ -50,15 +50,15 @@
 </template>
 
 <script>
-import Api from "~/api/toggleApi";
+import Api from '~/api/toggleApi'
 
 export default {
-  name: "VoteButton",
+  name: 'VoteButton',
   props: {
     type: {
       required: true,
       type: String,
-      validator: val => ~["answer"].indexOf(val)
+      validator: val => ~['answer'].indexOf(val)
     },
     id: {
       required: true,
@@ -84,47 +84,47 @@ export default {
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     currentUserId() {
       if (this.$store.state.login) {
-        return this.$store.state.user.id;
+        return this.$store.state.user.id
       }
-      return 0;
+      return 0
     }
   },
   methods: {
     async voteAction(is_agree) {
       if (this.disabled) {
-        return;
+        return
       }
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.currentUserId === this.authorId) {
-        this.$toast.error(is_agree ? "不能给自己点赞" : "不能给自己点反对");
-        return;
+        this.$toast.error(is_agree ? '不能给自己点赞' : '不能给自己点反对')
+        return
       }
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         const result = await api.vote({
           type: this.type,
           id: this.id,
           is_agree
-        });
-        this.$emit("vote", result);
+        })
+        this.$emit('vote', result)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

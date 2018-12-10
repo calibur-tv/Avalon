@@ -1,19 +1,19 @@
 module.exports = {
   apps: [
     {
-      name: "Avalon",
-      script: "./server.js",
+      name: 'Avalon',
+      script: './server.js',
       watch: false,
-      ignore_watch: "node_modules",
+      ignore_watch: 'node_modules',
       env: {
-        NODE_ENV: "development"
+        NODE_ENV: 'development'
       },
       env_staging: {
-        NODE_ENV: "staging"
+        NODE_ENV: 'staging'
       },
       env_production: {
-        NODE_ENV: "production"
+        NODE_ENV: 'production'
       }
     }
   ]
-};
+}

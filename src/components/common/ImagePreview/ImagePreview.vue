@@ -183,7 +183,7 @@
 
 <script>
 export default {
-  name: "ImagePreview",
+  name: 'ImagePreview',
   props: {
     images: {
       type: Array,
@@ -191,7 +191,7 @@ export default {
     },
     query: {
       type: String,
-      default: ""
+      default: ''
     },
     download: {
       type: Boolean,
@@ -214,51 +214,51 @@ export default {
           _
         )
       )
-    };
+    }
   },
   computed: {
     total() {
-      return this.images.length;
+      return this.images.length
     },
     currentImage() {
       if (this.currentIndex === -1) {
-        return null;
+        return null
       }
-      return this.displayImages[this.currentIndex];
+      return this.displayImages[this.currentIndex]
     }
   },
   mounted() {
-    this.getScreenSize();
-    window.addEventListener("resize", this.getScreenSize);
+    this.getScreenSize()
+    window.addEventListener('resize', this.getScreenSize)
   },
   methods: {
     handleClose() {
-      this.show = false;
+      this.show = false
     },
     handleClick(e) {
       if (!this.total) {
-        return;
+        return
       }
-      const target = e.target;
-      const isIMG = target.tagName.toLowerCase() === "img";
+      const target = e.target
+      const isIMG = target.tagName.toLowerCase() === 'img'
       if (!this.query && !isIMG) {
-        return;
+        return
       }
       if (this.query && target.className.indexOf(this.query) === -1) {
-        return;
+        return
       }
-      let imageUrl = "";
+      let imageUrl = ''
       if (isIMG) {
-        imageUrl = target.getAttribute("src").split("?")[0];
+        imageUrl = target.getAttribute('src').split('?')[0]
       } else {
-        const img = target.querySelector("img");
+        const img = target.querySelector('img')
         if (!img) {
-          return;
+          return
         }
-        imageUrl = img.getAttribute("src").split("?")[0];
+        imageUrl = img.getAttribute('src').split('?')[0]
       }
-      this.getClickImageIndex(imageUrl);
-      this.computeDisplaySize(this.currentIndex);
+      this.getClickImageIndex(imageUrl)
+      this.computeDisplaySize(this.currentIndex)
       /*
       if (this.total <= 3) {
         this.computeDisplaySize(0);
@@ -270,91 +270,91 @@ export default {
         this.computeDisplaySize(index[2]);
       }
       */
-      this.show = true;
+      this.show = true
     },
     getClickImageIndex(src) {
       this.images.forEach((image, index) => {
         if (image.url === src) {
-          this.currentIndex = index;
+          this.currentIndex = index
         }
-      });
+      })
     },
     getScreenSize() {
-      this.maxWidth = window.innerWidth;
-      this.maxHeight = window.innerHeight - 88;
+      this.maxWidth = window.innerWidth
+      this.maxHeight = window.innerHeight - 88
     },
     switchImage(isNext) {
       if (isNext && this.currentIndex === this.total - 1) {
-        return;
+        return
       }
       if (!isNext && this.currentIndex === 0) {
-        return;
+        return
       }
-      const newIndex = isNext ? this.currentIndex + 1 : this.currentIndex - 1;
-      this.computeDisplaySize(newIndex);
-      this.currentIndex = newIndex;
+      const newIndex = isNext ? this.currentIndex + 1 : this.currentIndex - 1
+      this.computeDisplaySize(newIndex)
+      this.currentIndex = newIndex
     },
     getSiblingsIndex(currentIndex) {
-      let prevIndex;
-      let nextIndex;
+      let prevIndex
+      let nextIndex
       if (this.currentIndex === 0) {
-        prevIndex = this.total - 1;
-        nextIndex = 1;
+        prevIndex = this.total - 1
+        nextIndex = 1
       } else if (this.currentIndex === this.total - 1) {
-        prevIndex = this.total - 2;
-        nextIndex = 0;
+        prevIndex = this.total - 2
+        nextIndex = 0
       } else {
-        prevIndex = this.currentIndex - 1;
-        nextIndex = this.currentIndex + 1;
+        prevIndex = this.currentIndex - 1
+        nextIndex = this.currentIndex + 1
       }
-      return [prevIndex, currentIndex, nextIndex];
+      return [prevIndex, currentIndex, nextIndex]
     },
     computeDisplaySize(index) {
-      if (typeof this.images[index] === "undefined") {
-        return;
+      if (typeof this.images[index] === 'undefined') {
+        return
       }
-      const image = this.images[index];
+      const image = this.images[index]
       if (image.finalWidth && image.finalHeight) {
-        return;
+        return
       }
-      const imageWidth = image.width;
-      const imageHeight = image.height;
-      const maxWidth = this.maxWidth;
-      const maxHeight = this.maxHeight;
-      let finalWidth;
-      let finalHeight;
+      const imageWidth = image.width
+      const imageHeight = image.height
+      const maxWidth = this.maxWidth
+      const maxHeight = this.maxHeight
+      let finalWidth
+      let finalHeight
       if (maxWidth >= imageWidth && maxHeight >= imageHeight) {
         // 小图，展示原图大小
-        finalWidth = imageWidth;
-        finalHeight = imageHeight;
+        finalWidth = imageWidth
+        finalHeight = imageHeight
       } else if (maxWidth < imageWidth && maxHeight < imageHeight) {
         // 超大图，计算一个缩放比例
-        const widthRadio = imageWidth / maxHeight;
-        const heightRadio = imageHeight / maxHeight;
+        const widthRadio = imageWidth / maxHeight
+        const heightRadio = imageHeight / maxHeight
         if (widthRadio >= heightRadio) {
-          finalWidth = maxWidth;
-          finalHeight = parseInt(imageHeight / widthRadio, 10);
+          finalWidth = maxWidth
+          finalHeight = parseInt(imageHeight / widthRadio, 10)
         } else {
-          finalWidth = parseInt(imageWidth / heightRadio, 10);
-          finalHeight = maxHeight;
+          finalWidth = parseInt(imageWidth / heightRadio, 10)
+          finalHeight = maxHeight
         }
       } else if (imageHeight < maxHeight) {
         // 超宽图
-        const widthRadio = imageWidth / maxHeight;
-        finalWidth = maxWidth;
-        finalHeight = parseInt(imageHeight / widthRadio, 10);
+        const widthRadio = imageWidth / maxHeight
+        finalWidth = maxWidth
+        finalHeight = parseInt(imageHeight / widthRadio, 10)
       } else {
         // 超宽图
-        const heightRadio = imageHeight / maxHeight;
-        finalWidth = parseInt(imageWidth / heightRadio, 10);
-        finalHeight = maxHeight;
+        const heightRadio = imageHeight / maxHeight
+        finalWidth = parseInt(imageWidth / heightRadio, 10)
+        finalHeight = maxHeight
       }
-      this.displayImages[index].finalWidth = finalWidth || maxWidth;
-      this.displayImages[index].finalHeight = finalHeight || maxHeight;
+      this.displayImages[index].finalWidth = finalWidth || maxWidth
+      this.displayImages[index].finalHeight = finalHeight || maxHeight
     },
     handleSwitch(oldVal, val) {
-      this.currentIndex = val;
+      this.currentIndex = val
     }
   }
-};
+}
 </script>

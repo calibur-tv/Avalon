@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import FollowButton from "~/components/common/FollowButton";
+import FollowButton from '~/components/common/FollowButton'
 
 export default {
-  name: "VBangumiPanel",
+  name: 'VBangumiPanel',
   components: {
     FollowButton
   },
@@ -98,8 +98,8 @@ export default {
   },
   methods: {
     handleFollow(result) {
-      this.$emit("follow", result);
+      this.$emit('follow', result)
     }
   }
-};
+}
 </script>

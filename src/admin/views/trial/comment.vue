@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
+import Api from '~/api/adminApi'
 
 export default {
   data() {
@@ -230,92 +230,90 @@ export default {
       types: [],
       loading: true,
       batching: false
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
-      this.loading = true;
-      this.list = [];
-      const api = new Api(this);
+      this.loading = true
+      this.list = []
+      const api = new Api(this)
       api
         .getTrialComments()
         .then(data => {
-          this.list = data.comments;
-          this.types = data.types;
-          this.loading = false;
+          this.list = data.comments
+          this.types = data.types
+          this.loading = false
         })
         .catch(e => {
-          this.$toast.error(e);
-          this.loading = false;
-        });
+          this.$toast.error(e)
+          this.loading = false
+        })
     },
     computeCommentLink(comment) {
-      let aliasName = comment.type;
-      if (aliasName === "cartoon_role") {
-        aliasName = "cartoonRole";
+      let aliasName = comment.type
+      if (aliasName === 'cartoon_role') {
+        aliasName = 'cartoonRole'
       }
-      if (comment.parent_id !== "0") {
+      if (comment.parent_id !== '0') {
         return `${this.$alias[aliasName](comment.modal_id)}?comment-id=${
           comment.parent_id
-        }&reply-id=${comment.id}`;
+        }&reply-id=${comment.id}`
       }
       return `${this.$alias[aliasName](comment.modal_id)}?comment-id=${
         comment.id
-      }`;
+      }`
     },
     checkIsHTML(content) {
-      return content.startsWith("[{");
+      return content.startsWith('[{')
     },
     transformerContent(content) {
       try {
-        return JSON.parse(content);
+        return JSON.parse(content)
       } catch (e) {
-        return [];
+        return []
       }
     },
     passComment(item, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .passComment({
           id: item.id,
           type: item.type
         })
         .then(() => {
-          this.$message.success("操作成功");
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "comments"
-          });
+          this.$message.success('操作成功')
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments'
+          })
         })
         .catch(err => {
-          console.log(err);
-          this.$Message.error(err);
-        });
+          this.$Message.error(err)
+        })
     },
     approveComment(item, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .approveComment({
           id: item.id,
           type: item.type
         })
         .then(() => {
-          this.$message.success("操作成功");
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "comments"
-          });
+          this.$message.success('操作成功')
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments'
+          })
         })
         .catch(err => {
-          console.log(err);
-          this.$Message.error(err);
-        });
+          this.$Message.error(err)
+        })
     },
     rejectComment(item, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .rejectComment({
           id: item.id,
@@ -323,167 +321,164 @@ export default {
           parent_id: item.parent_id
         })
         .then(() => {
-          this.$message.success("操作成功");
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "comments"
-          });
+          this.$message.success('操作成功')
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments'
+          })
         })
         .catch(err => {
-          console.log(err);
-          this.$Message.error(err);
-        });
+          this.$Message.error(err)
+        })
     },
     deleteComment(item, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .deleteComment({
           id: item.id,
           type: item.type
         })
         .then(() => {
-          this.$message.success("操作成功");
-          this.list.splice(index, 1);
-          this.$channel.$emit("admin-trial-do", {
-            type: "comments"
-          });
+          this.$message.success('操作成功')
+          this.list.splice(index, 1)
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments'
+          })
         })
         .catch(err => {
-          console.log(err);
-          this.$Message.error(err);
-        });
+          this.$Message.error(err)
+        })
     },
     quickDelete() {
-      this.$prompt("输入 type 和 id，用 - 分割", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('输入 type 和 id，用 - 分割', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
-          const data = value.split("-");
+          const data = value.split('-')
           if (data.length !== 2) {
-            this.$toast.error("错误的格式");
-            return;
+            this.$toast.error('错误的格式')
+            return
           }
           if (this.types.indexOf(data[0]) === -1) {
-            this.$toast.error("错误的类型");
-            return;
+            this.$toast.error('错误的类型')
+            return
           }
           if (!/^\d+$/.test(data[1])) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteComment({
               id: data[1],
               type: data[0]
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     batchDelete() {
-      this.$prompt("输入 type 和 user_id，用 - 分割", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('输入 type 和 user_id，用 - 分割', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
-          const data = value.split("-");
+          const data = value.split('-')
           if (data.length !== 2) {
-            this.$toast.error("错误的格式");
-            return;
+            this.$toast.error('错误的格式')
+            return
           }
           if (this.types.indexOf(data[0]) === -1) {
-            this.$toast.error("错误的类型");
-            return;
+            this.$toast.error('错误的类型')
+            return
           }
           if (!/^\d+$/.test(data[1])) {
-            this.$toast.error("非法的id");
-            return;
+            this.$toast.error('非法的id')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .batchDeleteComment({
               user_id: data[1],
               type: data[0]
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     computeArea(type) {
       switch (type) {
-        case "post":
-          return "帖子";
-          break;
-        case "image":
-          return "图片";
-          break;
-        case "video":
-          return "视频";
-          break;
-        case "question":
-          return "提问";
-          break;
-        case "answer":
-          return "回答";
-          break;
-        case "role":
-          return "偶像";
-          break;
-        case "cartoon_role":
-          return "偶像";
-          break;
+        case 'post':
+          return '帖子'
+          break
+        case 'image':
+          return '图片'
+          break
+        case 'video':
+          return '视频'
+          break
+        case 'question':
+          return '提问'
+          break
+        case 'answer':
+          return '回答'
+          break
+        case 'role':
+          return '偶像'
+          break
+        case 'cartoon_role':
+          return '偶像'
+          break
       }
-      return type;
+      return type
     },
     batchPass() {
       if (this.batching || !this.list.length) {
-        return;
+        return
       }
-      this.batching = true;
-      const api = new Api(this);
+      this.batching = true
+      const api = new Api(this)
       api
         .batchPassComment({
           pass_arr: this.list.filter(_ => !_.deleted_at).map(_ => {
             return {
               id: _.id,
               type: _.type
-            };
+            }
           }),
           approve_arr: this.list.filter(_ => !!_.deleted_at).map(_ => {
             return {
               id: _.id,
               type: _.type
-            };
+            }
           })
         })
         .then(() => {
-          this.batching = false;
-          this.$message.success("操作成功");
-          this.$channel.$emit("admin-trial-do", {
-            type: "comments",
+          this.batching = false
+          this.$message.success('操作成功')
+          this.$channel.$emit('admin-trial-do', {
+            type: 'comments',
             count: this.list.length
-          });
-          this.getData();
-          this.$channel.$emit("admin-get-to-do");
+          })
+          this.getData()
+          this.$channel.$emit('admin-get-to-do')
         })
         .catch(err => {
-          console.log(err);
-          this.batching = false;
-          this.$Message.error(err);
-        });
+          this.batching = false
+          this.$Message.error(err)
+        })
     }
   }
-};
+}
 </script>

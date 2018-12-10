@@ -37,12 +37,12 @@
 
 <script>
 export default {
-  name: "JsonContentImgParser",
+  name: 'JsonContentImgParser',
   props: {
     item: {
       type: Object,
       required: true
     }
   }
-};
+}
 </script>

@@ -80,7 +80,7 @@
 
 <script>
 export default {
-  name: "CreateCommentForm",
+  name: 'CreateCommentForm',
   props: {
     type: {
       type: String,
@@ -97,68 +97,68 @@ export default {
   },
   data() {
     return {
-      content: ""
-    };
+      content: ''
+    }
   },
   computed: {
     isGuest() {
-      return !this.$store.state.login;
+      return !this.$store.state.login
     },
     submitting() {
-      return this.$store.state.comment.submitting;
+      return this.$store.state.comment.submitting
     },
     userAvatar() {
       return this.isGuest
         ? `${this.$cdn.image}default/user-avatar`
-        : this.$store.state.user.avatar;
+        : this.$store.state.user.avatar
     }
   },
   methods: {
     async submit() {
       if (this.isGuest) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
       if (!this.content) {
-        return;
+        return
       }
       if (this.submitting) {
-        return;
+        return
       }
-      this.$store.commit("comment/SET_SUBMITTING", { result: true });
+      this.$store.commit('comment/SET_SUBMITTING', { result: true })
       try {
-        const result = await this.$store.dispatch("comment/createMainComment", {
+        const result = await this.$store.dispatch('comment/createMainComment', {
           content: this.content,
           images: [],
           type: this.type,
           id: this.id,
           ctx: this
-        });
-        this.content = "";
+        })
+        this.content = ''
         if (this.withImage) {
-          this.$refs.uploader.clearFiles();
+          this.$refs.uploader.clearFiles()
         }
-        this.$toast.success(result.message);
-        this.$store.commit("UPDATE_USER_EXP", result.exp);
+        this.$toast.success(result.message)
+        this.$store.commit('UPDATE_USER_EXP', result.exp)
         if (!window.__closeImageLazy__) {
           setTimeout(() => {
-            const dom = document.getElementById(`comment-${result.data.id}`);
-            dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600);
-          }, 400);
+            const dom = document.getElementById(`comment-${result.data.id}`)
+            dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600)
+          }, 400)
         }
-        this.$emit("submit");
+        this.$emit('submit')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.$store.commit("comment/SET_SUBMITTING", { result: false });
+        this.$store.commit('comment/SET_SUBMITTING', { result: false })
       }
     },
     handleTextAreaFocus() {
       if (this.isGuest) {
-        this.$channel.$emit("sign-in");
+        this.$channel.$emit('sign-in')
       }
     }
   }
-};
+}
 </script>

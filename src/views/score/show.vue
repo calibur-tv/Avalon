@@ -122,7 +122,7 @@
                 placement="top"
                 effect="dark"
               >
-                <v-time v-model="info.published_at"/>
+                <v-time :datetime="info.published_at"/>
               </el-tooltip>
               <template v-if="info.like_count">
                 &nbsp;·&nbsp;
@@ -201,28 +201,28 @@
 </template>
 
 <script>
-import ToggleApi from "~/api/toggleApi";
-import ScoreApi from "~/api/scoreApi";
-import CommentMain from "~/components/comments/CommentMain";
-import JsonContent from "~/components/jsonEditor/JsonContent";
-import SocialPanel from "~/components/common/SocialPanel";
+import ToggleApi from '~/api/toggleApi'
+import ScoreApi from '~/api/scoreApi'
+import CommentMain from '~/components/comments/CommentMain'
+import JsonContent from '~/components/jsonEditor/JsonContent'
+import SocialPanel from '~/components/common/SocialPanel'
 
 export default {
-  name: "ScoreShow",
+  name: 'ScoreShow',
   async asyncData({ store, route, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("score/getShow", {
+      store.dispatch('score/getShow', {
         ctx,
         id
       }),
-      store.dispatch("comment/getMainComments", {
+      store.dispatch('comment/getMainComments', {
         ctx,
         id,
-        type: "score",
-        seeReplyId: route.query["comment-id"]
+        type: 'score',
+        seeReplyId: route.query['comment-id']
       })
-    ]);
+    ])
   },
   components: {
     CommentMain,
@@ -234,100 +234,100 @@ export default {
       title: `${this.info.title} - 漫评`,
       meta: [
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,漫评,天下漫友是一家,${this.info.title},${
             this.bangumi.name
           }`
         }
       ]
-    };
+    }
   },
   data() {
     const labelMap = {
-      lol: "笑点",
-      cry: "泪点",
-      fight: "燃点",
-      moe: "萌点",
-      sound: "音乐",
-      vision: "画面",
-      story: "情节",
-      role: "人设",
-      express: "内涵",
-      style: "美感"
-    };
+      lol: '笑点',
+      cry: '泪点',
+      fight: '燃点',
+      moe: '萌点',
+      sound: '音乐',
+      vision: '画面',
+      story: '情节',
+      role: '人设',
+      express: '内涵',
+      style: '美感'
+    }
     return {
       labelMap,
       columns: Object.keys(labelMap),
       loadingToggleLike: false
-    };
+    }
   },
   computed: {
     info() {
-      const result = {};
+      const result = {}
       Object.keys(this.$store.state.score.show).forEach(key => {
-        const value = this.$store.state.score.show[key];
-        result[key] = this.columns.indexOf(key) !== -1 ? +value : value;
-      });
-      return result;
+        const value = this.$store.state.score.show[key]
+        result[key] = this.columns.indexOf(key) !== -1 ? +value : value
+      })
+      return result
     },
     bangumi() {
-      return this.info.bangumi;
+      return this.info.bangumi
     },
     user() {
-      return this.info.user;
+      return this.info.user
     },
     currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0;
+      return this.$store.state.login ? this.$store.state.user.id : 0
     },
     isMine() {
-      return this.currentUserId === this.user.id;
+      return this.currentUserId === this.user.id
     }
   },
   methods: {
     async toggleLike() {
       if (this.loadingToggleLike) {
-        return;
+        return
       }
-      this.loadingToggleLike = true;
-      const api = new ToggleApi(this);
+      this.loadingToggleLike = true
+      const api = new ToggleApi(this)
       try {
         const result = await api.like({
-          type: "score",
+          type: 'score',
           id: this.info.id
-        });
-        this.$store.commit("score/LIKE_SCORE", result);
+        })
+        this.$store.commit('score/LIKE_SCORE', result)
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingToggleLike = false;
+        this.loadingToggleLike = false
       }
     },
     handleBangumiFollow(result) {
-      this.$store.commit("score/FOLLOW_BANGUMI", result);
+      this.$store.commit('score/FOLLOW_BANGUMI', result)
     },
     deleteScore() {
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(async () => {
-          const api = new ScoreApi(this);
+          const api = new ScoreApi(this)
           try {
             await api.delete({
               id: this.info.id
-            });
-            this.$toast.success("操作成功");
+            })
+            this.$toast.success('操作成功')
             setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+              window.location.reload()
+            }, 1000)
           } catch (e) {
-            this.$toast.error(e);
+            this.$toast.error(e)
           }
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

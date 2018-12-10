@@ -197,10 +197,10 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import getImageGray from "@/utils/imageGray";
-import pageMixin from "~/mixins/page";
-import uploadMixin from "~/mixins/upload";
+import Api from '~/api/adminApi'
+import getImageGray from '@/utils/imageGray'
+import pageMixin from '~/mixins/page'
+import uploadMixin from '~/mixins/upload'
 
 export default {
   mixins: [pageMixin, uploadMixin],
@@ -210,39 +210,40 @@ export default {
       showCreateModal: false,
       modalLoading: false,
       form: {}
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getUpToken()
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
+      this.pageLoading = true
+      const api = new Api(this)
       try {
-        const data = await api.indexBannerList();
-        this.pageState.cur = 1;
-        this.pageState.size = 12;
-        this.pageState.total = data.length;
-        this.pageList = data;
+        const data = await api.indexBannerList()
+        this.pageState.cur = 1
+        this.pageState.size = 12
+        this.pageState.total = data.length
+        this.pageList = data
       } finally {
-        this.pageLoading = false;
+        this.pageLoading = false
       }
     },
     getImageGrayLevel() {
-      this.form.gray = getImageGray(this.$refs.another, 100);
+      this.form.gray = getImageGray(this.$refs.another, 100)
     },
     handleSwitch(item) {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .indexBannerToggle(item.id)
         .then(result => {
-          item.use = result;
-          this.$toast.success("操作成功");
+          item.use = result
+          this.$toast.success('操作成功')
         })
         .catch(e => {
-          this.$toast.error(e);
-        });
+          this.$toast.error(e)
+        })
     },
     openEditModal(item) {
       this.form = {
@@ -251,72 +252,72 @@ export default {
         user_id: item.user_id,
         user_zone: item.user_zone,
         user_nickname: item.user_nickname,
-        gray: ""
-      };
-      this.showEditModal = true;
+        gray: ''
+      }
+      this.showEditModal = true
     },
     openCreateModal() {
       this.form = {
         bangumi_id: 0,
         user_id: 0,
-        url: ""
-      };
-      this.showCreateModal = true;
-      this.uploadConfig.pathPrefix = "banner";
+        url: ''
+      }
+      this.showCreateModal = true
+      this.uploadConfig.pathPrefix = 'banner'
     },
     async handleBannerEditSubmit() {
       if (this.modalLoading) {
-        return;
+        return
       }
-      this.modalLoading = true;
-      const api = new Api(this);
+      this.modalLoading = true
+      const api = new Api(this)
       try {
         await api.indexBannerEdit({
           id: this.form.id,
           bangumi_id: this.form.bangumi_id,
           user_id: this.form.user_id
-        });
-        this.$toast.success("操作成功");
-        this.showEditModal = false;
-        this.form = {};
+        })
+        this.$toast.success('操作成功')
+        this.showEditModal = false
+        this.form = {}
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.modalLoading = false;
+        this.modalLoading = false
       }
     },
     async handleBannerCreateSubmit() {
       if (!this.form.url) {
-        this.$toast.error("请先上传图片");
-        return;
+        this.$toast.error('请先上传图片')
+        return
       }
-      if (this.form.gray === "") {
-        this.$toast.error("图片处理中...");
+      if (this.form.gray === '') {
+        this.$toast.error('图片处理中...')
       }
       if (this.modalLoading) {
-        return;
+        return
       }
-      this.modalLoading = true;
-      const api = new Api(this);
+      this.modalLoading = true
+      const api = new Api(this)
       try {
         await api.indexBannerUpload({
           url: this.form.url,
           bangumi_id: this.form.bangumi_id,
           user_id: this.form.user_id,
           gray: this.form.gray
-        });
-        this.$toast.success("操作成功");
-        this.showCreateModal = false;
-        window.location.reload();
+        })
+        this.$toast.success('操作成功')
+        this.showCreateModal = false
+        window.location.reload()
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.modalLoading = false;
+        this.modalLoading = false
       }
     },
     handleImageUploadSuccess(res) {
-      this.form.url = res.data.url;
+      this.form.url = res.data.url
     }
   }
-};
+}
 </script>

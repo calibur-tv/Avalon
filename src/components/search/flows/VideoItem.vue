@@ -121,7 +121,7 @@
 
 <script>
 export default {
-  name: "SearchItemVideo",
+  name: 'SearchItemVideo',
   props: {
     item: {
       required: true,
@@ -133,5 +133,5 @@ export default {
       default: false
     }
   }
-};
+}
 </script>

@@ -148,7 +148,7 @@ $placeholder-color: #ddd;
 </template>
 
 <script>
-import utils from "./utils";
+import utils from './utils'
 
 // TODO large height image cropper & click show all
 // TODO large GIF click load
@@ -156,12 +156,12 @@ import utils from "./utils";
 // TODO watch src change
 
 export default {
-  name: "VImg",
+  name: 'VImg',
   props: {
     src: {
       required: true,
       type: String,
-      default: ""
+      default: ''
     },
     width: {
       type: [Number, String],
@@ -181,7 +181,7 @@ export default {
     },
     mime: {
       type: String,
-      default: ""
+      default: ''
     },
     lazy: {
       type: Boolean,
@@ -201,15 +201,15 @@ export default {
       loaded: false,
       error: false,
       containerWidth: 0,
-      message: "",
-      placeholderImage: "",
-      errorPlaceholder: "",
-      errorMessage: "",
-      retryMessage: "",
+      message: '',
+      placeholderImage: '',
+      errorPlaceholder: '',
+      errorMessage: '',
+      retryMessage: '',
       heightLimit: 0,
       loadLimit: 0,
       retryLimit: 0
-    };
+    }
   },
   computed: {
     lazyFullStyle() {
@@ -217,42 +217,42 @@ export default {
         width: `${this.width}px`,
         height: this.computeContainerHeight
           ? `${this.computeContainerHeight}px`
-          : "auto"
-      };
+          : 'auto'
+      }
     },
     computeContainerHeight() {
       if (this.$isServer) {
-        return 0;
+        return 0
       }
       if (this.width >= this.containerWidth) {
-        return parseInt((this.height / this.width) * this.containerWidth, 10);
+        return parseInt((this.height / this.width) * this.containerWidth, 10)
       }
-      return this.height;
+      return this.height
     },
     fullImagePaddingShim() {
       if (this.width >= this.containerWidth) {
         return {
           paddingTop: `${(this.height / this.width) * 100}%`
-        };
+        }
       }
       return {
         paddingTop: `${(this.height / this.containerWidth) * 100}%`
-      };
+      }
     },
     computeShimWidth() {
-      return this.width >= this.containerWidth ? "100%" : `${this.width}px`;
+      return this.width >= this.containerWidth ? '100%' : `${this.width}px`
     },
     convertImageReallyWidth() {
       const numberWidth = +this.width
         .toString()
-        .replace("px", "")
-        .replace("%", "");
+        .replace('px', '')
+        .replace('%', '')
       return parseInt(
         /%$/.test(this.width)
           ? (this.containerWidth / 50) * numberWidth
           : numberWidth * 2,
         10
-      );
+      )
     },
     normalImageStyle() {
       return this.size
@@ -263,7 +263,7 @@ export default {
         : {
             width: this.convertSize(this.width),
             height: this.convertSize(this.height)
-          };
+          }
     },
     shouldClickToLoad() {
       return !!(
@@ -272,30 +272,30 @@ export default {
         this.loadLimit &&
         /gif/i.test(this.mime) &&
         this.size - this.loadLimit > 0
-      );
+      )
     },
     fullImageSrc() {
-      let resultWidth;
-      let resultHeight;
+      let resultWidth
+      let resultHeight
       if (this.width > this.containerWidth) {
-        resultWidth = this.containerWidth * 2;
-        resultHeight = this.computeContainerHeight * 2;
+        resultWidth = this.containerWidth * 2
+        resultHeight = this.computeContainerHeight * 2
       } else {
-        resultWidth = this.width;
-        resultHeight = this.height;
+        resultWidth = this.width
+        resultHeight = this.height
       }
       if (resultWidth > 9999) {
-        resultHeight = parseInt((9999 / resultWidth) * resultHeight, 10);
-        resultWidth = 9999;
+        resultHeight = parseInt((9999 / resultWidth) * resultHeight, 10)
+        resultWidth = 9999
       }
       if (resultHeight > 9999) {
-        resultWidth = parseInt((9999 / resultHeight) * resultWidth, 10);
-        resultHeight = 9999;
+        resultWidth = parseInt((9999 / resultHeight) * resultWidth, 10)
+        resultHeight = 9999
       }
       return this.$resize(this.src, {
         width: resultWidth,
         height: resultHeight
-      });
+      })
     },
     flowImageSrc() {
       if (this.full) {
@@ -307,7 +307,7 @@ export default {
           : this.$resize(this.src, {
               width: this.width,
               height: this.height
-            });
+            })
       }
       return this.$resize(
         this.src,
@@ -315,7 +315,7 @@ export default {
           ? {
               width: +this.size * 2
             }
-          : this.width === "auto"
+          : this.width === 'auto'
             ? {
                 height: +this.height * 2,
                 mode: 2
@@ -324,73 +324,73 @@ export default {
                 width: this.convertImageReallyWidth,
                 height: +this.height * 2
               }
-      );
+      )
     }
   },
   mounted() {
-    this.containerWidth = this.$el.parentNode.offsetWidth;
+    this.containerWidth = this.$el.parentNode.offsetWidth
     if (
       !this.lazy ||
       window.__closeImageLazy__ ||
       utils.checkInView(this.$el)
     ) {
-      this.loadImageResource();
+      this.loadImageResource()
     } else {
-      this.bindLazyEvent();
+      this.bindLazyEvent()
     }
   },
   methods: {
     bindLazyEvent() {
       const eventId = utils.on(
         document,
-        "scroll",
+        'scroll',
         this.$utils.throttle(() => {
           if (utils.checkInView(this.$el)) {
-            this.loadImageResource(false);
-            utils.off(eventId);
+            this.loadImageResource(false)
+            utils.off(eventId)
           }
         }, 200),
         false
-      );
+      )
     },
     bindRetryEvent() {
       const eventId = utils.on(
         this.$el,
-        "click",
+        'click',
         e => {
-          this.retryLimit--;
-          this.message = this.retryMessage;
-          this.loadImageResource(true);
-          utils.off(eventId);
-          e.stopPropagation();
+          this.retryLimit--
+          this.message = this.retryMessage
+          this.loadImageResource(true)
+          utils.off(eventId)
+          e.stopPropagation()
         },
         false
-      );
+      )
     },
     loadImageResource(force) {
       if (!this.shouldClickToLoad || force) {
-        this.loaded = true;
+        this.loaded = true
       }
     },
     convertSize(size) {
       if (/px$/.test(size)) {
-        return size;
+        return size
       }
       if (/%$/.test(size)) {
-        return size;
+        return size
       }
-      return `${size}px`;
+      return `${size}px`
     },
     handleImageLoadSuccess() {
-      this.error = false;
+      this.error = false
     },
     handleImageLoadError() {
-      this.error = true;
+      this.error = true
       if (this.full && this.retryLimit >= 0) {
-        this.message = this.errorMessage;
-        this.bindRetryEvent();
+        this.message = this.errorMessage
+        this.bindRetryEvent()
       }
     }
   }
-};
+}
 </script>

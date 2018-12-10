@@ -166,14 +166,14 @@
 </template>
 
 <script>
-import vCreator from "./Creator.vue";
-import vFeedback from "~/components/user/Feedback";
-import CreatePostDialog from "~/components/post/CreatePostDialog";
-import CreateImageDialog from "~/components/image/CreateImageDialog";
-import CreateQuestionDialog from "~/components/question/CreateQuestionDialog";
+import vCreator from './Creator.vue'
+import vFeedback from '~/components/user/Feedback'
+import CreatePostDialog from '~/components/post/CreatePostDialog'
+import CreateImageDialog from '~/components/image/CreateImageDialog'
+import CreateQuestionDialog from '~/components/question/CreateQuestionDialog'
 
 export default {
-  name: "SideTools",
+  name: 'SideTools',
   components: {
     vCreator,
     vFeedback,
@@ -184,79 +184,79 @@ export default {
   data() {
     return {
       showToTop: false
-    };
+    }
   },
   computed: {
     isGuest() {
-      return !this.$store.state.login;
+      return !this.$store.state.login
     },
     show() {
-      return ["homepage", "invite-user"].indexOf(this.$route.name) === -1;
+      return ['homepage', 'invite-user'].indexOf(this.$route.name) === -1
     },
     userLevel() {
       if (this.isGuest) {
-        return 0;
+        return 0
       }
-      return this.$store.state.user.exp.level;
+      return this.$store.state.user.exp.level
     }
   },
   mounted() {
-    this.computeShow();
+    this.computeShow()
     document.addEventListener(
-      "scroll",
+      'scroll',
       this.$utils.throttle(() => {
-        this.computeShow();
+        this.computeShow()
       }, 500)
-    );
+    )
     window.addEventListener(
-      "resize",
+      'resize',
       this.$utils.throttle(() => {
-        this.computeShow();
+        this.computeShow()
       }, 500)
-    );
+    )
   },
   methods: {
     handlePostClick() {
       if (!this.$store.state.login) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
-      this.$channel.$emit("show-create-post-modal");
+      this.$channel.$emit('show-create-post-modal')
     },
     handleQuestionClick() {
       if (!this.$store.state.login) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.userLevel < 3) {
-        this.$toast.info("3级以后才能提问");
-        return;
+        this.$toast.info('3级以后才能提问')
+        return
       }
-      this.$channel.$emit("show-create-question-modal");
+      this.$channel.$emit('show-create-question-modal')
     },
     handleScoreClick() {
-      window.location = this.$alias.createScore;
+      window.location = this.$alias.createScore
     },
     handleImageClick() {
       if (!this.$store.state.login) {
-        this.$toast.info("继续操作前请先登录");
-        this.$channel.$emit("sign-in");
-        return;
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
       }
-      this.$channel.$emit("show-upload-image-modal");
+      this.$channel.$emit('show-upload-image-modal')
     },
     handleFeedbackClick() {
-      this.$channel.$emit("open-feedback", {
-        type: "",
-        desc: "{?}",
-        placeholder: "非常感谢您的反馈，请填写详细信息方便我们解决"
-      });
+      this.$channel.$emit('open-feedback', {
+        type: '',
+        desc: '{?}',
+        placeholder: '非常感谢您的反馈，请填写详细信息方便我们解决'
+      })
     },
     computeShow() {
-      this.showToTop = window.scrollY > window.innerHeight;
+      this.showToTop = window.scrollY > window.innerHeight
     }
   }
-};
+}
 </script>

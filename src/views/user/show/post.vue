@@ -1,17 +1,9 @@
 <style lang="scss">
 #user-post {
-  .posts-of-mine {
-    margin-left: 10px;
-
-    #no-content {
-      margin-left: -10px;
-    }
-  }
-
   .posts-of-reply {
     li {
       float: none;
-      padding: 10px;
+      padding: 10px 10px 10px 0;
       position: relative;
 
       &:not(:last-child) {
@@ -87,7 +79,7 @@
           float: left;
 
           &:after {
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             top: 0;
@@ -110,10 +102,6 @@
         }
       }
     }
-
-    .load-more-btn {
-      margin-left: 10px;
-    }
   }
 
   #no-content {
@@ -132,16 +120,14 @@
       <el-radio-button label="发表"/>
       <el-radio-button label="回复"/>
     </el-radio-group>
-    <post-flow-list
-      v-show="tab === '发表'"
-      :user-zone="zone"
-      class="posts-of-mine"
-    />
-    <div
-      v-show="tab === '回复'"
-      class="posts-of-reply"
-    >
-      <ul>
+    <template v-if="tab === '发表'">
+      <post-flow-list
+        :user-zone="zone"
+        class="posts-of-mine"
+      />
+    </template>
+    <template v-else-if="tab === '回复'">
+      <ul class="posts-of-reply">
         <li
           v-for="item in list"
           :key="item.id"
@@ -166,12 +152,12 @@
               </a>
             </el-tooltip>
             <v-time
-              v-model="item.created_at"
+              :datetime="item.created_at"
               class="time"
             />
             <a
               :href="$alias.post(item.post.id, { 'comment-id': item.id })"
-              class="title href-fade-blue oneline"
+              class="title blue-link oneline"
               target="_blank"
               v-text="item.post.title"
             />
@@ -230,74 +216,74 @@
         :loading="loading"
         @fetch="getUserPosts(false)"
       />
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
-import PostFlowList from "~/components/flow/list/PostFlowList";
-import Api from "~/api/userApi";
+import PostFlowList from '~/components/flow/list/PostFlowList'
+import Api from '~/api/userApi'
 
 export default {
-  name: "UserPost",
+  name: 'UserPost',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "post",
-      sort: "news",
+    await store.dispatch('flow/initData', {
+      type: 'post',
+      sort: 'news',
       userZone: route.params.zone,
       ctx
-    });
+    })
   },
   components: {
     PostFlowList
   },
   data() {
     return {
-      tab: "发表",
-      postListType: "reply",
+      tab: '发表',
+      postListType: 'reply',
       list: [],
       loading: false,
       fetched: false,
       noMore: false,
       page: 0
-    };
+    }
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     }
   },
   methods: {
     handleTabSwitch(label) {
-      if (label === "回复") {
-        this.getUserPosts(true);
+      if (label === '回复') {
+        this.getUserPosts(true)
       }
     },
     async getUserPosts(init = false) {
       if (init && this.fetched) {
-        return;
+        return
       }
       if (this.loading || this.noMore) {
-        return;
+        return
       }
-      this.loading = true;
-      const api = new Api(this);
+      this.loading = true
+      const api = new Api(this)
       try {
         const data = await api.replyPosts({
           take: 10,
           page: this.page,
           zone: this.zone
-        });
-        this.fetched = true;
-        this.list = this.list.concat(data.list);
-        this.noMore = data.noMore;
-        this.page++;
+        })
+        this.fetched = true
+        this.list = this.list.concat(data.list)
+        this.noMore = data.noMore
+        this.page++
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

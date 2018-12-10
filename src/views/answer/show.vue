@@ -69,16 +69,16 @@
 </template>
 
 <script>
-import QuestionPanel from "~/components/question/QuestionPanel";
-import AnswerFlowItem from "~/components/flow/item/AnswerFlowItem";
+import QuestionPanel from '~/components/question/QuestionPanel'
+import AnswerFlowItem from '~/components/flow/item/AnswerFlowItem'
 
 export default {
-  name: "AnswerShow",
+  name: 'AnswerShow',
   async asyncData({ route, store, ctx }) {
-    await store.dispatch("question/getAnswer", {
+    await store.dispatch('question/getAnswer', {
       ctx,
       id: route.params.id
-    });
+    })
   },
   components: {
     QuestionPanel,
@@ -89,32 +89,32 @@ export default {
       title: `${this.qaq.title} - 回答`,
       meta: [
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content: this.$utils.truncate(
             this.answer ? this.answer.intro : this.qaq.intro
           )
         },
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,回答,天下漫友是一家,${
             this.answer ? this.answer.intro : this.qaq.intro
           }`
         }
       ]
-    };
+    }
   },
   computed: {
     id() {
-      return +this.$route.params.id;
+      return +this.$route.params.id
     },
     qaq() {
-      return this.$store.state.question.qaq;
+      return this.$store.state.question.qaq
     },
     answer() {
-      return this.$store.state.question.answers.list[0];
+      return this.$store.state.question.answers.list[0]
     }
   }
-};
+}
 </script>

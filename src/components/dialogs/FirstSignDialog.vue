@@ -1,6 +1,6 @@
 <style lang="scss">
 .first-sign-dialog {
-  background-image: url("~img/first-sign-dialog-bg.svg");
+  background-image: url('~img/first-sign-dialog-bg.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -87,29 +87,29 @@
 
 <script>
 export default {
-  name: "FirstSignDialog",
+  name: 'FirstSignDialog',
   data() {
     return {
       show: false
-    };
+    }
   },
   computed: {
     currentUser() {
-      return this.$store.state.user;
+      return this.$store.state.user
     }
   },
   mounted() {
-    if (!this.$cookie.get("display-first-sign-dialog")) {
+    if (!this.$cookie.get('display-first-sign-dialog')) {
       try {
-        if (!localStorage.getItem("display-first-sign-dialog")) {
-          this.show = true;
-          this.$cookie.set("display-first-sign-dialog", 1, {
+        if (!localStorage.getItem('display-first-sign-dialog')) {
+          this.show = true
+          this.$cookie.set('display-first-sign-dialog', 1, {
             expires: 7
-          });
-          localStorage.setItem("display-first-sign-dialog", 1);
+          })
+          localStorage.setItem('display-first-sign-dialog', 1)
         }
       } catch (e) {}
     }
   }
-};
+}
 </script>

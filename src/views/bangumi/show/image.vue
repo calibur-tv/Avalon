@@ -7,25 +7,25 @@
 </template>
 
 <script>
-import ImageFlowList from "~/components/flow/list/ImageFlowList";
+import ImageFlowList from '~/components/flow/list/ImageFlowList'
 
 export default {
-  name: "BangumiImage",
+  name: 'BangumiImage',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "image",
-      sort: "active",
+    await store.dispatch('flow/initData', {
+      type: 'image',
+      sort: 'active',
       bangumiId: route.params.id,
       ctx
-    });
+    })
   },
   components: {
     ImageFlowList
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     }
   }
-};
+}
 </script>

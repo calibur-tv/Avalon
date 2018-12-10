@@ -6,51 +6,51 @@ export default {
     },
     userZone: {
       type: String,
-      default: ""
+      default: ''
     },
     bangumiName: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   computed: {
     fetchMoreAction() {
       if (this.bangumiId || this.userZone) {
-        return "flow/getData";
+        return 'flow/getData'
       }
-      return "world/getData";
+      return 'world/getData'
     },
     fetchInitAction() {
       if (this.bangumiId || this.userZone) {
-        return "flow/initData";
+        return 'flow/initData'
       }
-      return "world/initData";
+      return 'world/initData'
     },
     fetchStore() {
       if (this.bangumiId || this.userZone) {
-        return "flow";
+        return 'flow'
       }
-      return "world";
+      return 'world'
     },
     fetchSort() {
       if (this.userZone) {
-        return "news";
+        return 'news'
       }
-      if (this.flowType === "role") {
-        return "hot";
+      if (this.flowType === 'role') {
+        return 'hot'
       }
-      return "active";
+      return 'active'
     },
     source() {
-      return this.$store.state[this.fetchStore][this.flowType][this.fetchSort];
+      return this.$store.state[this.fetchStore][this.flowType][this.fetchSort]
     },
     showNoContentTips() {
-      return this.bangumiId || this.isMe;
+      return this.bangumiId || this.isMe
     },
     isMe() {
       return this.$store.state.login
         ? this.$store.state.user.zone === this.userZone
-        : false;
+        : false
     }
   },
   methods: {
@@ -62,9 +62,9 @@ export default {
           sort: this.fetchSort,
           userZone: this.userZone,
           bangumiId: this.bangumiId
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     async loadMore() {
@@ -75,10 +75,10 @@ export default {
           sort: this.fetchSort,
           userZone: this.userZone,
           bangumiId: this.bangumiId
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     }
   }
-};
+}

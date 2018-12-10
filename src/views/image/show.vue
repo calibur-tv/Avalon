@@ -297,7 +297,7 @@
           </user-card>
           &nbsp;·&nbsp;
           <span>
-            发布于：<v-time v-model="info.created_at"/>
+            发布于：<v-time :datetime="info.created_at"/>
           </span>
           <report-dialog
             :id="id"
@@ -312,7 +312,7 @@
           v-model="showAllPart"
         >
           <span slot-scope="{ item }">
-            {{ item.part }}：{{ item.name }}
+            {{ parseFloat(item.part) }}：{{ item.name }}
           </span>
         </v-parts>
         <social-panel
@@ -350,27 +350,27 @@
 </template>
 
 <script>
-import Api from "~/api/imageApi";
-import vParts from "~/components/lists/Parts";
-import CommentMain from "~/components/comments/CommentMain";
-import EditAlbumForm from "~/components/image/EditAlbumForm";
-import EditImageForm from "~/components/image/EditImageForm";
-import SocialPanel from "~/components/common/SocialPanel";
-import ImagePreview from "~/components/common/ImagePreview/ImagePreview";
+import Api from '~/api/imageApi'
+import vParts from '~/components/lists/Parts'
+import CommentMain from '~/components/comments/CommentMain'
+import EditAlbumForm from '~/components/image/EditAlbumForm'
+import EditImageForm from '~/components/image/EditImageForm'
+import SocialPanel from '~/components/common/SocialPanel'
+import ImagePreview from '~/components/common/ImagePreview/ImagePreview'
 
 export default {
-  name: "ImageShow",
+  name: 'ImageShow',
   async asyncData({ store, route, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("image/show", { ctx, id }),
-      store.dispatch("comment/getMainComments", {
+      store.dispatch('image/show', { ctx, id }),
+      store.dispatch('comment/getMainComments', {
         ctx,
         id,
-        type: "image",
-        seeReplyId: route.query["comment-id"]
+        type: 'image',
+        seeReplyId: route.query['comment-id']
       })
-    ]);
+    ])
   },
   components: {
     vParts,
@@ -385,14 +385,14 @@ export default {
       title: `${this.info.name} - ${this.albumType}`,
       meta: [
         {
-          hid: "keywords",
-          name: "keywords",
+          hid: 'keywords',
+          name: 'keywords',
           content: `calibur,相册,天下漫友是一家,${this.info.name},${
-            this.bangumi ? this.bangumi.name : ""
+            this.bangumi ? this.bangumi.name : ''
           }`
         }
       ]
-    };
+    }
   },
   data() {
     return {
@@ -400,128 +400,128 @@ export default {
       loadingEditImages: false,
       showAllPart: false,
       openEditModal: false
-    };
+    }
   },
   computed: {
     id() {
-      return +this.$route.params.id;
+      return +this.$route.params.id
     },
     info() {
-      return this.$store.state.image.show;
+      return this.$store.state.image.show
     },
     user() {
-      return this.info.user;
+      return this.info.user
     },
     source() {
-      return this.info.source;
+      return this.info.source
     },
     images() {
-      return this.info.images;
+      return this.info.images
     },
     bangumi() {
-      return this.info.bangumi;
+      return this.info.bangumi
     },
     cartoon() {
-      return [];
+      return []
     },
     isMine() {
       return this.$store.state.login
         ? this.user.id === this.$store.state.user.id
-        : false;
+        : false
     },
     editable() {
       return this.$store.state.login
         ? this.user.id === this.$store.state.user.id
-        : false;
+        : false
     },
     albumType() {
       if (!this.info.is_album) {
-        return "图片";
+        return '图片'
       }
       if (this.info.is_cartoon) {
-        return "漫画";
+        return '漫画'
       }
-      return "相册";
+      return '相册'
     }
   },
   methods: {
     handleFollowAction(result) {
-      this.$store.commit("image/SHOW_FOLLOW_BANGUMI", { result });
+      this.$store.commit('image/SHOW_FOLLOW_BANGUMI', { result })
     },
     async handleSortBtnClick(index, toNext) {
       if (this.loadingEditImages) {
-        this.$toast.error("正在操作，请稍候...");
-        return;
+        this.$toast.error('正在操作，请稍候...')
+        return
       }
-      this.loadingEditImages = true;
+      this.loadingEditImages = true
       try {
-        await this.$store.dispatch("image/sortAlbumImage", {
+        await this.$store.dispatch('image/sortAlbumImage', {
           prev: toNext ? index : index - 1,
           next: toNext ? index + 1 : index,
           ctx: this,
           id: this.id
-        });
-        this.$toast.success("操作成功");
+        })
+        this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingEditImages = false;
+        this.loadingEditImages = false
       }
     },
     handleImageDelete(index) {
       if (this.loadingEditImages) {
-        this.$toast.error("正在操作，请稍候...");
-        return;
+        this.$toast.error('正在操作，请稍候...')
+        return
       }
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(async () => {
-          this.loadingEditImages = true;
+          this.loadingEditImages = true
           try {
-            await this.$store.dispatch("image/deleteAlbumImage", {
+            await this.$store.dispatch('image/deleteAlbumImage', {
               index,
               ctx: this,
               id: this.id
-            });
-            this.$toast.success("操作成功");
+            })
+            this.$toast.success('操作成功')
           } catch (e) {
-            this.$toast.error(e);
+            this.$toast.error(e)
           } finally {
-            this.loadingEditImages = false;
+            this.loadingEditImages = false
           }
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     handleDeleteAlbum() {
-      this.$prompt(`请输入${this.albumType}的名字`, "删除确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt(`请输入${this.albumType}的名字`, '删除确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
           if (value !== this.info.name) {
-            this.$toast.error("名字不对");
-            return;
+            this.$toast.error('名字不对')
+            return
           }
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .deleteAlbum({
               id: this.info.id
             })
             .then(() => {
-              this.$toast.success("操作成功");
+              this.$toast.success('操作成功')
               setTimeout(() => {
-                window.location.reload();
-              }, 1000);
+                window.location.reload()
+              }, 1000)
             })
             .catch(err => {
-              this.$toast.error(err);
-            });
+              this.$toast.error(err)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

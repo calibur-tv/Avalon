@@ -36,8 +36,8 @@
   <div class="text-preview">
     <div class="text-area use-area">
       <textarea
-        v-model="text"
-        class="focus-textarea"
+        v-model.trim="text"
+        class="focus-textarea mousetrap"
         placeholder="添加文字内容"
       />
     </div>
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: "UsePreview",
+  name: 'UsePreview',
   props: {
     item: {
       required: true,
@@ -56,48 +56,48 @@ export default {
   data() {
     return {
       saving: false
-    };
+    }
   },
   computed: {
     text: {
       get() {
-        return this.item.text.replace(/<br>/g, "\n");
+        return this.item.text.replace(/<br>/g, '\n')
       },
       set(value) {
-        this.$store.commit("editor/UPDATE_SECTION_TEXT", {
-          value: value.replace(/\n/g, "<br>")
-        });
+        this.$store.commit('editor/UPDATE_SECTION_TEXT', {
+          value: value.replace(/\n/g, '<br>')
+        })
       }
     },
     title: {
       get() {
-        return this.item.title;
+        return this.item.title
       },
       set(value) {
-        this.$store.commit("editor/UPDATE_SECTION_TITLE", {
+        this.$store.commit('editor/UPDATE_SECTION_TITLE', {
           value
-        });
+        })
       }
     }
   },
   mounted() {
-    this.$channel.$on("write-save-done", () => {
-      this.saving = false;
-    });
+    this.$channel.$on('write-save-done', () => {
+      this.saving = false
+    })
   },
   methods: {
     textAreaFocus() {
       if (this.text.length < 100) {
-        document.body.scrollTop = 0;
+        document.body.scrollTop = 0
       }
     },
     emitSave() {
-      if (!this.text.replace(/\n/g, "")) {
-        return;
+      if (!this.text.replace(/\n/g, '')) {
+        return
       }
-      this.$channel.$emit("write-save");
-      this.saving = true;
+      this.$channel.$emit('write-save')
+      this.saving = true
     }
   }
-};
+}
 </script>

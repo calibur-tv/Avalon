@@ -201,15 +201,15 @@
 </template>
 
 <script>
-import vSearch from "~/components/search/Input";
+import vSearch from '~/components/search/Input'
 
 export default {
-  name: "Homepage",
+  name: 'Homepage',
   components: {
     vSearch
   },
   async asyncData({ store, ctx }) {
-    await store.dispatch("homepage/getBanners", ctx);
+    await store.dispatch('homepage/getBanners', ctx)
   },
   data() {
     return {
@@ -223,44 +223,43 @@ export default {
         height: 0,
         mode: 0
       },
-      query: ""
-    };
+      query: ''
+    }
   },
   computed: {
     banners() {
-      return this.$store.state.homepage.banners || [];
+      return this.$store.state.homepage.banners || []
     },
     curBanner() {
-      return this.toggle ? this.banner1 : this.banner2;
+      return this.toggle ? this.banner1 : this.banner2
     }
   },
   created() {
-    this.banner1 = this.banners[0];
+    this.banner1 = this.banners[0]
   },
   mounted() {
-    this.loopBanner();
+    this.loopBanner()
   },
   beforeDestroy() {
     if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+      clearInterval(this.timer)
+      this.timer = null
     }
   },
   methods: {
     loopBanner() {
       this.timer = setInterval(() => {
         if (!this.banners) {
-          return;
+          return
         }
-        this.index =
-          1 + this.index === this.banners.length ? 0 : this.index + 1;
-        const data = this.banners[this.index];
-        this.toggle ? (this.banner2 = data) : (this.banner1 = data);
+        this.index = 1 + this.index === this.banners.length ? 0 : this.index + 1
+        const data = this.banners[this.index]
+        this.toggle ? (this.banner2 = data) : (this.banner1 = data)
         setTimeout(() => {
-          this.toggle = !this.toggle;
-        }, 7500);
-      }, 15000);
+          this.toggle = !this.toggle
+        }, 7500)
+      }, 15000)
     }
   }
-};
+}
 </script>

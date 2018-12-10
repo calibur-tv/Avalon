@@ -71,10 +71,10 @@
 </template>
 
 <script>
-import Api from "~/api/toggleApi";
+import Api from '~/api/toggleApi'
 
 export default {
-  name: "SocialPanel",
+  name: 'SocialPanel',
   props: {
     isCreator: {
       required: true,
@@ -104,7 +104,7 @@ export default {
       required: true,
       type: String,
       validator: val =>
-        ~["post", "video", "image", "score", "answer", "video"].indexOf(val)
+        ~['post', 'video', 'image', 'score', 'answer', 'video'].indexOf(val)
     },
     likeUsers: {
       required: true,
@@ -120,11 +120,11 @@ export default {
     },
     userCommitPath: {
       type: String,
-      default: ""
+      default: ''
     },
     socialCommitPath: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
@@ -133,123 +133,123 @@ export default {
       loadingReward: false,
       loadingLike: false,
       loadingMark: false
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0;
+      return this.$store.state.login ? this.$store.state.user.id : 0
     },
     isMine() {
-      return this.userId === this.currentUserId;
+      return this.userId === this.currentUserId
     }
   },
   methods: {
     toggleReward() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.isMine) {
-        this.$toast.info("不能给自己打赏");
-        return;
+        this.$toast.info('不能给自己打赏')
+        return
       }
       this.$confirm(
         this.rewarded
-          ? "即使取消投食你的团子也不会回到你的钱包, 是否继续?"
-          : "向TA投食需要消耗你一个团子，是否继续?",
-        "提示",
+          ? '即使取消投食你的团子也不会回到你的钱包, 是否继续?'
+          : '向TA投食需要消耗你一个团子，是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
       )
         .then(async () => {
           if (this.loadingReward) {
-            return;
+            return
           }
-          this.loadingReward = true;
-          const api = new Api(this);
+          this.loadingReward = true
+          const api = new Api(this)
           try {
             const result = await api.reward({
               id: this.id,
               type: this.type
-            });
+            })
             if (result) {
-              this.$store.commit("USE_COIN");
+              this.$store.commit('USE_COIN')
             }
-            this.commitResult("reward", result);
-            this.$emit("reward-callback");
-            this.$toast.success("操作成功");
+            this.commitResult('reward', result)
+            this.$emit('reward-callback')
+            this.$toast.success('操作成功')
           } catch (e) {
-            this.$toast.error(e);
+            this.$toast.error(e)
           } finally {
-            this.loadingReward = false;
+            this.loadingReward = false
           }
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     async toggleLike() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.isMine) {
-        this.$toast.info("不能喜欢自己的内容");
-        return;
+        this.$toast.info('不能喜欢自己的内容')
+        return
       }
       if (this.loadingLike) {
-        return;
+        return
       }
-      this.loadingLike = true;
-      const api = new Api(this);
+      this.loadingLike = true
+      const api = new Api(this)
       try {
         const result = await api.like({
           id: this.id,
           type: this.type
-        });
-        this.commitResult("like", result);
-        this.$toast.success("操作成功");
+        })
+        this.commitResult('like', result)
+        this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingLike = false;
+        this.loadingLike = false
       }
     },
     async toggleMark() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.isMine) {
-        this.$toast.info("不能收藏自己的内容");
-        return;
+        this.$toast.info('不能收藏自己的内容')
+        return
       }
       if (this.loadingMark) {
-        return;
+        return
       }
-      this.loadingMark = true;
-      const api = new Api(this);
+      this.loadingMark = true
+      const api = new Api(this)
       try {
         const result = await api.mark({
           id: this.id,
           type: this.type
-        });
-        this.commitResult("mark", result);
-        this.$toast.success("操作成功");
+        })
+        this.commitResult('mark', result)
+        this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingMark = false;
+        this.loadingMark = false
       }
     },
     async fetchUsers() {
       if (this.loadingUsers) {
-        return;
+        return
       }
-      this.loadingUsers = true;
-      const api = new Api(this);
-      const type = this.isCreator ? "reward" : "like";
+      this.loadingUsers = true
+      const api = new Api(this)
+      const type = this.isCreator ? 'reward' : 'like'
       try {
         const result = await api.users({
           id: this.id,
@@ -259,7 +259,7 @@ export default {
           last_id: this.isCreator
             ? this.rewardUsers.list[this.rewardUsers.list.length - 1].id
             : this.likeUsers.list[this.likeUsers.list.length - 1].id
-        });
+        })
         this.$store.commit(
           this.userCommitPath || `${this.type}/FETCH_SOCIAL_USERS`,
           {
@@ -267,16 +267,16 @@ export default {
             type,
             result
           }
-        );
+        )
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingUsers = false;
+        this.loadingUsers = false
       }
     },
     commitResult(key, value) {
-      const user = this.$store.state.user;
-      const type = this.type;
+      const user = this.$store.state.user
+      const type = this.type
       this.$store.commit(this.socialCommitPath || `${type}/SOCIAL_TOGGLE`, {
         id: this.id,
         key,
@@ -287,8 +287,8 @@ export default {
           nickname: user.nickname,
           avatar: user.avatar
         }
-      });
+      })
     }
   }
-};
+}
 </script>

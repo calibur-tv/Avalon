@@ -1,10 +1,5 @@
 <style lang="scss">
 #user-question {
-  .el-radio-group {
-    margin-left: 0 !important;
-    margin-top: 6px;
-  }
-
   #no-content {
     margin-top: 25px;
   }
@@ -48,19 +43,19 @@
 </template>
 
 <script>
-import QuestionFlowList from "~/components/flow/list/QuestionFlowList";
-import QuestionFlowItem from "~/components/flow/item/QuestionFlowItem";
-import Api from "~/api/flowApi";
+import QuestionFlowList from '~/components/flow/list/QuestionFlowList'
+import QuestionFlowItem from '~/components/flow/item/QuestionFlowItem'
+import Api from '~/api/flowApi'
 
 export default {
-  name: "UserQuestion",
+  name: 'UserQuestion',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "question",
-      sort: "news",
+    await store.dispatch('flow/initData', {
+      type: 'question',
+      sort: 'news',
       userZone: route.params.zone,
       ctx
-    });
+    })
   },
   components: {
     QuestionFlowList,
@@ -68,55 +63,55 @@ export default {
   },
   data() {
     return {
-      active: "提问",
+      active: '提问',
       answerList: [],
       loadingAnswer: false,
       fetchedAnswer: false,
       noMoreAnswer: false,
       page: 0
-    };
+    }
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     }
   },
   methods: {
     handleTabSwitch(label) {
-      if (label === "回答") {
-        this.getUserAnswers(true);
+      if (label === '回答') {
+        this.getUserAnswers(true)
       }
     },
     async getUserAnswers(init = false) {
       if (init && this.fetchedAnswer) {
-        return;
+        return
       }
       if (this.loadingAnswer) {
-        return;
+        return
       }
-      this.loadingAnswer = true;
-      const api = new Api(this);
+      this.loadingAnswer = true
+      const api = new Api(this)
       try {
         const data = await api.fetch({
-          sort: "news",
-          type: "answer",
+          sort: 'news',
+          type: 'answer',
           take: 10,
           page: this.page,
           minId: 0,
-          seenIds: "",
+          seenIds: '',
           bangumiId: 0,
           userZone: this.zone
-        });
-        this.fetchedAnswer = true;
-        this.answerList = this.answerList.concat(data.list);
-        this.noMoreAnswer = data.noMore;
-        this.page++;
+        })
+        this.fetchedAnswer = true
+        this.answerList = this.answerList.concat(data.list)
+        this.noMoreAnswer = data.noMore
+        this.page++
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loadingAnswer = false;
+        this.loadingAnswer = false
       }
     }
   }
-};
+}
 </script>

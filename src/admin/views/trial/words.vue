@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
 
 export default {
   mixins: [pageMixin],
@@ -82,81 +82,81 @@ export default {
     return {
       showModal: false,
       isDelete: false,
-      words: ""
-    };
+      words: ''
+    }
   },
   computed: {
     isKing() {
-      return this.$store.state.user.id === 1;
+      return this.$store.state.user.id === 1
     }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
-      const data = await api.getTrialWords();
-      this.pageState.cur = 1;
-      this.pageState.size = 50;
-      this.pageState.total = data.length;
-      this.pageList = data;
-      this.pageLoading = false;
+      this.pageLoading = true
+      const api = new Api(this)
+      const data = await api.getTrialWords()
+      this.pageState.cur = 1
+      this.pageState.size = 50
+      this.pageState.total = data.length
+      this.pageList = data
+      this.pageLoading = false
     },
     async handleDelete(tag, index) {
-      const api = new Api(this);
+      const api = new Api(this)
       try {
         await api.deleteTrialWords({
           words: [tag]
-        });
-        this.$toast.success("操作成功");
+        })
+        this.$toast.success('操作成功')
         this.pageList.splice(
           (this.pageState - 1) * this.pageState.size + index,
           1
-        );
+        )
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     },
     openCreateModal() {
-      this.words = "";
-      this.isDelete = false;
-      this.showModal = true;
+      this.words = ''
+      this.isDelete = false
+      this.showModal = true
     },
     openDeleteModal() {
-      this.words = "";
-      this.isDelete = true;
-      this.showModal = true;
+      this.words = ''
+      this.isDelete = true
+      this.showModal = true
     },
     async submitWordsChange() {
       if (!this.words) {
-        return;
+        return
       }
-      const words = this.words.split("\n").filter(_ => _);
-      const api = new Api(this);
+      const words = this.words.split('\n').filter(_ => _)
+      const api = new Api(this)
       try {
         if (this.isDelete) {
           await api.deleteTrialWords({
             words
-          });
+          })
         } else {
           await api.addTrialWords({
             words
-          });
+          })
         }
         if (this.isDelete) {
-          this.pageList = this.pageList.filter(_ => words.indexOf(_) === -1);
-          this.pageState.total = this.pageList.length;
+          this.pageList = this.pageList.filter(_ => words.indexOf(_) === -1)
+          this.pageState.total = this.pageList.length
         } else {
-          this.pageList = words.concat(this.pageList);
+          this.pageList = words.concat(this.pageList)
         }
-        this.$toast.success("操作成功");
-        this.showModal = false;
+        this.$toast.success('操作成功')
+        this.showModal = false
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     }
   }
-};
+}
 </script>

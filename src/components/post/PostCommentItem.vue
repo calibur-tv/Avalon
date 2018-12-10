@@ -183,7 +183,7 @@
           >删除</button>
           <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time
-            v-model="post.created_at"
+            :datetime="post.created_at"
             class="floor-count"
           />
           <report-dialog
@@ -198,10 +198,10 @@
 </template>
 
 <script>
-import PostSubCommentList from "./PostSubCommentList.vue";
+import PostSubCommentList from './PostSubCommentList.vue'
 
 export default {
-  name: "PostCommentItem",
+  name: 'PostCommentItem',
   components: {
     PostSubCommentList
   },
@@ -219,68 +219,68 @@ export default {
     return {
       deleting: false,
       liking: false
-    };
+    }
   },
   computed: {
     currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0;
+      return this.$store.state.login ? this.$store.state.user.id : 0
     },
     isMine() {
-      return this.currentUserId === this.post["from_user_id"];
+      return this.currentUserId === this.post['from_user_id']
     },
     canDelete() {
-      return this.isMine || this.currentUserId === this.masterId;
+      return this.isMine || this.currentUserId === this.masterId
     },
     focusThisComment() {
-      return parseInt(this.$route.query["comment-id"]) === this.post.id;
+      return parseInt(this.$route.query['comment-id']) === this.post.id
     }
   },
   methods: {
     async toggleLike() {
       if (!this.currentUserId) {
-        this.$channel.$emit("sign-in");
-        return;
+        this.$channel.$emit('sign-in')
+        return
       }
       if (this.liking) {
-        return;
+        return
       }
-      this.liking = true;
+      this.liking = true
       try {
-        await this.$store.dispatch("comment/toggleLikeMainComment", {
+        await this.$store.dispatch('comment/toggleLikeMainComment', {
           ctx: this,
-          type: "post",
+          type: 'post',
           id: this.post.id
-        });
+        })
       } catch (e) {
       } finally {
-        this.liking = false;
+        this.liking = false
       }
     },
     deleteComment() {
       if (this.deleting) {
-        return;
+        return
       }
-      this.deleting = true;
-      this.$confirm("删除后无法找回, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.deleting = true
+      this.$confirm('删除后无法找回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.$store.dispatch("comment/deleteMainComment", {
-            type: "post",
+          this.$store.dispatch('comment/deleteMainComment', {
+            type: 'post',
             ctx: this,
             id: this.post.id
-          });
+          })
         })
         .catch(e => {
-          this.deleting = false;
-          if (e === "cancel") {
-            return;
+          this.deleting = false
+          if (e === 'cancel') {
+            return
           }
-          this.$toast.error(e);
-        });
+          this.$toast.error(e)
+        })
     }
   }
-};
+}
 </script>

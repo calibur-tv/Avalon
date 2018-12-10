@@ -41,24 +41,24 @@
 </template>
 
 <script>
-import flowMixin from "./_flowListMixin";
-import QuestionFlowItem from "../item/QuestionFlowItem";
+import flowMixin from './_flowListMixin'
+import QuestionFlowItem from '../item/QuestionFlowItem'
 
 export default {
-  name: "QuestionFlowList",
+  name: 'QuestionFlowList',
   components: {
     QuestionFlowItem
   },
   mixins: [flowMixin],
   data() {
     return {
-      flowType: "question"
-    };
+      flowType: 'question'
+    }
   },
   methods: {
     openCreateQAQModal() {
-      this.$channel.$emit("show-create-question-modal");
+      this.$channel.$emit('show-create-question-modal')
     }
   }
-};
+}
 </script>

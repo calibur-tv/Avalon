@@ -294,21 +294,21 @@
 </template>
 
 <script>
-import TabContainer from "~/components/common/TabContainer";
-import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
-import CartoonRoleBtn from "~/components/buttons/CartoonRoleBtn";
+import TabContainer from '~/components/common/TabContainer'
+import CartoonRoleFlowList from '~/components/flow/list/CartoonRoleFlowList'
+import CartoonRoleBtn from '~/components/buttons/CartoonRoleBtn'
 
 export default {
-  name: "TrendingRole",
+  name: 'TrendingRole',
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch("cartoonRole/getTodayActivity"),
-      store.dispatch("cartoonRole/getDalaoUsers"),
-      store.dispatch("cartoonRole/getNewbieUsers")
-    ]);
+      store.dispatch('cartoonRole/getTodayActivity'),
+      store.dispatch('cartoonRole/getDalaoUsers'),
+      store.dispatch('cartoonRole/getNewbieUsers')
+    ])
   },
   head: {
-    title: "角色排行榜"
+    title: '角色排行榜'
   },
   components: {
     CartoonRoleBtn,
@@ -319,64 +319,64 @@ export default {
     return {
       pages: [
         {
-          label: "24小时热榜"
+          label: '24小时热榜'
         },
         {
-          label: "总榜"
+          label: '总榜'
         }
       ],
       loadingActivity: false,
       timer: 0,
       index: 0
-    };
+    }
   },
   computed: {
     todayActivity() {
-      return this.$store.state.cartoonRole.todayActivity;
+      return this.$store.state.cartoonRole.todayActivity
     },
     dalaoUsers() {
-      return this.$store.state.cartoonRole.dalao;
+      return this.$store.state.cartoonRole.dalao
     },
     newbieUsers() {
-      return this.$store.state.cartoonRole.newbie;
+      return this.$store.state.cartoonRole.newbie
     }
   },
   mounted() {
-    this.timer = setInterval(this.getTodayActivity, 5000);
+    this.timer = setInterval(this.getTodayActivity, 5000)
   },
   beforeDestroy() {
     if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = 0;
+      clearInterval(this.timer)
+      this.timer = 0
     }
   },
   methods: {
     changeTab(index) {
       if (index === 0) {
-        this.getTodayActivity();
+        this.getTodayActivity()
       } else if (index === 1) {
-        this.getTrending();
+        this.getTrending()
       }
-      this.index = index;
+      this.index = index
     },
     async getTodayActivity() {
       if (this.loadingActivity || this.index) {
-        return;
+        return
       }
-      this.loadingActivity = true;
-      await this.$store.dispatch("cartoonRole/getTodayActivity");
-      this.loadingActivity = false;
+      this.loadingActivity = true
+      await this.$store.dispatch('cartoonRole/getTodayActivity')
+      this.loadingActivity = false
     },
     async getTrending() {
-      await this.$store.dispatch("world/initData", {
-        type: "role",
-        sort: "hot",
+      await this.$store.dispatch('world/initData', {
+        type: 'role',
+        sort: 'hot',
         ctx: this
-      });
+      })
     },
     handleSuccess() {
-      this.$toast.success("应援成功!");
+      this.$toast.success('应援成功!')
     }
   }
-};
+}
 </script>

@@ -210,26 +210,26 @@
 </template>
 
 <script>
-import UserRecommended from "~/components/user/UserRecommended";
+import UserRecommended from '~/components/user/UserRecommended'
 
 export default {
-  name: "TheWorld",
+  name: 'TheWorld',
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch("users/getRecommended"),
-      store.dispatch("cm/getCmLoop")
-    ]);
+      store.dispatch('users/getRecommended'),
+      store.dispatch('cm/getCmLoop')
+    ])
   },
   head: {
-    title: "站内热点"
+    title: '站内热点'
   },
   components: {
     UserRecommended
   },
   computed: {
     loops() {
-      return this.$store.state.cm.loops;
+      return this.$store.state.cm.loops
     }
   }
-};
+}
 </script>

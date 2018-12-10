@@ -105,7 +105,7 @@
       float: left;
 
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         top: 0;
@@ -246,7 +246,7 @@
         </a>
       </el-tooltip>
       <span class="time">
-        发表于: <v-time v-model="item.created_at"/>
+        发表于: <v-time :datetime="item.created_at"/>
       </span>
       <div
         v-if="item.top_at && bangumiId"
@@ -263,7 +263,7 @@
       <div class="title oneline">
         <a
           :href="$alias.post(item.id)"
-          class="href-fade-blue"
+          class="blue-link"
           target="_blank"
           v-text="item.title"
         />
@@ -373,10 +373,10 @@
 </template>
 
 <script>
-import ImagePreview from "~/components/common/ImagePreview/ImagePreview";
+import ImagePreview from '~/components/common/ImagePreview/ImagePreview'
 
 export default {
-  name: "PostShowItem",
+  name: 'PostShowItem',
   components: {
     ImagePreview
   },
@@ -391,8 +391,8 @@ export default {
     },
     userZone: {
       type: String,
-      default: ""
+      default: ''
     }
   }
-};
+}
 </script>

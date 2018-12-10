@@ -12,11 +12,11 @@
 
 <script>
 export default {
-  name: "Error401",
+  name: 'Error401',
   methods: {
     sign() {
-      this.$channel.$emit("sign-in");
+      this.$channel.$emit('sign-in')
     }
   }
-};
+}
 </script>

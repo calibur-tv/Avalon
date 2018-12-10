@@ -51,9 +51,9 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
-import UAParser from "ua-parser-js";
+import Api from '~/api/adminApi'
+import pageMixin from '~/mixins/page'
+import UAParser from 'ua-parser-js'
 
 export default {
   mixins: [pageMixin],
@@ -61,90 +61,90 @@ export default {
     return {
       options: [
         {
-          label: "功能建议",
+          label: '功能建议',
           value: 1
         },
         {
-          label: "遇到错误",
+          label: '遇到错误',
           value: 2
         },
         {
-          label: "资源报错",
+          label: '资源报错',
           value: 4
         },
         {
-          label: "求资源",
+          label: '求资源',
           value: 5
         },
         {
-          label: "求偶像",
+          label: '求偶像',
           value: 6
         },
         {
-          label: "其它问题",
+          label: '其它问题',
           value: 3
         }
       ]
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData() {
-      this.pageLoading = true;
-      const api = new Api(this);
-      const data = await api.getUserFeedback();
-      this.pageState.cur = 1;
-      this.pageState.size = 15;
-      this.pageState.total = data.length;
-      this.pageList = data;
-      this.pageLoading = false;
+      this.pageLoading = true
+      const api = new Api(this)
+      const data = await api.getUserFeedback()
+      this.pageState.cur = 1
+      this.pageState.size = 15
+      this.pageState.total = data.length
+      this.pageList = data
+      this.pageLoading = false
     },
     computeType(type) {
-      let result = "";
+      let result = ''
       this.options.forEach(item => {
         if (item.value === parseInt(type, 10)) {
-          result = item.label;
+          result = item.label
         }
-      });
-      return result;
+      })
+      return result
     },
     computeUA(ua) {
       if (/-----/.test(ua)) {
-        const arr = ua.split("-----");
-        let result = `厂商：${arr[0]}<br>型号：${arr[1]}`;
+        const arr = ua.split('-----')
+        let result = `厂商：${arr[0]}<br>型号：${arr[1]}`
         if (arr[2]) {
-          result = `${result}<br>App版本：${arr[2]}`;
+          result = `${result}<br>App版本：${arr[2]}`
         }
         if (arr[3]) {
-          result = `${result}<br>系统版本：${arr[3]}`;
+          result = `${result}<br>系统版本：${arr[3]}`
         }
-        return result;
+        return result
       }
-      const parser = new UAParser();
-      parser.setUA(ua);
-      const result = parser.getResult();
+      const parser = new UAParser()
+      parser.setUA(ua)
+      const result = parser.getResult()
       return `系统：${result.os.name} - ${result.os.version}<br>浏览器：${
         result.browser.name
-      } - ${result.browser.version}`;
+      } - ${result.browser.version}`
     },
     async remove(index, id) {
-      const api = new Api(this);
+      const api = new Api(this)
       try {
-        await api.readFeedback({ id });
+        await api.readFeedback({ id })
         this.pageList.splice(
           (this.pageState.cur - 1) * this.pageState.size + index,
           1
-        );
-        this.$channel.$emit("admin-trial-do", {
-          type: "feedback"
-        });
-        this.$toast.success("操作成功");
+        )
+        this.$channel.$emit('admin-trial-do', {
+          type: 'feedback'
+        })
+        this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     }
   }
-};
+}
 </script>

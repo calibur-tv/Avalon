@@ -141,31 +141,31 @@
 </template>
 
 <script>
-import vSearch from "~/components/search/Input";
-import UserItem from "~/components/search/flows/UserItem";
-import BangumiItem from "~/components/search/flows/BangumiItem";
-import VideoItem from "~/components/search/flows/VideoItem";
-import PostItem from "~/components/flow/item/PostFlowItem";
-import RoleItem from "~/components/flow/item/CartoonRoleFlowItem";
-import ScoreItem from "~/components/flow/item/ScoreFlowItem";
-import NothingAll from "~/components/search/nothing/NothingAll";
-import NothingUser from "~/components/search/nothing/NothingUser";
-import NothingBangumi from "~/components/search/nothing/NothingBangumi";
-import NothingVideo from "~/components/search/nothing/NothingVideo";
-import NothingPost from "~/components/search/nothing/NothingPost";
-import NothingRole from "~/components/search/nothing/NothingRole";
-import NothingScore from "~/components/search/nothing/NothingScore";
+import vSearch from '~/components/search/Input'
+import UserItem from '~/components/search/flows/UserItem'
+import BangumiItem from '~/components/search/flows/BangumiItem'
+import VideoItem from '~/components/search/flows/VideoItem'
+import PostItem from '~/components/flow/item/PostFlowItem'
+import RoleItem from '~/components/flow/item/CartoonRoleFlowItem'
+import ScoreItem from '~/components/flow/item/ScoreFlowItem'
+import NothingAll from '~/components/search/nothing/NothingAll'
+import NothingUser from '~/components/search/nothing/NothingUser'
+import NothingBangumi from '~/components/search/nothing/NothingBangumi'
+import NothingVideo from '~/components/search/nothing/NothingVideo'
+import NothingPost from '~/components/search/nothing/NothingPost'
+import NothingRole from '~/components/search/nothing/NothingRole'
+import NothingScore from '~/components/search/nothing/NothingScore'
 
 export default {
-  name: "SearchIndex",
+  name: 'SearchIndex',
   async asyncData({ store, route, ctx }) {
-    const args = route.query;
-    const type = args.type || "all";
-    await store.dispatch("search/fetchData", {
+    const args = route.query
+    const type = args.type || 'all'
+    await store.dispatch('search/fetchData', {
       ctx,
       type,
       q: args.q
-    });
+    })
   },
   components: {
     vSearch,
@@ -185,47 +185,47 @@ export default {
   },
   data() {
     return {
-      selectedType: this.$route.query.type || "all",
+      selectedType: this.$route.query.type || 'all',
       words: this.$route.query.q
-    };
+    }
   },
   computed: {
     resource() {
-      return this.$store.state.search.resource[this.selectedType];
+      return this.$store.state.search.resource[this.selectedType]
     },
     loading() {
-      return this.resource.loading;
+      return this.resource.loading
     },
     list() {
-      return this.resource.list;
+      return this.resource.list
     },
     noMore() {
-      return this.resource.noMore;
+      return this.resource.noMore
     },
     total() {
-      return this.resource.total;
+      return this.resource.total
     },
     tabs() {
-      return this.$store.state.search.tabs;
+      return this.$store.state.search.tabs
     }
   },
   methods: {
     handleTabClick(tab) {
       this.$router.push({
-        name: "search-index",
+        name: 'search-index',
         query: { q: this.words, type: tab.name }
-      });
+      })
     },
     async loadMore() {
       try {
-        await this.$store.dispatch("search/fetchMore", {
+        await this.$store.dispatch('search/fetchMore', {
           ctx: this,
           type: this.selectedType
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       }
     }
   }
-};
+}
 </script>

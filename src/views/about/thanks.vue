@@ -51,6 +51,11 @@
     font-size: 14px;
     color: $color-text-normal;
   }
+
+  .emoji-package {
+    display: flex;
+    flex-direction: row;
+  }
 }
 </style>
 
@@ -287,7 +292,7 @@
           target="_blank"
           style="color: #fff"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang"/>
         </a>
         <a
           :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/cartoon-poster.png', { width: 376, height: 232 })})` }"
@@ -296,7 +301,7 @@
           target="_blank"
           style="color: #333"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang"/>
         </a>
         <a
           :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/mc-poster.png', { width: 376, height: 232 })})` }"
@@ -305,7 +310,7 @@
           target="_blank"
           style="color: #fff"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang"/>
         </a>
       </div>
       <p class="intro">
@@ -325,6 +330,56 @@
           target="_blank"
         >艾了个拉</a>
       </p>
+      <h3 class="sub-title">表情包</h3>
+      <div class="panel">
+        <div class="emoji-package">
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/01.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/02.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/03.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/04.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/05.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/06.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+          <v-img
+            src="https://image.calibur.tv/owner/emoji-package/07.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/webp"
+            width="100"
+            height="100"
+          />
+        </div>
+      </div>
+      <p class="intro">
+        <strong>作者：</strong>
+        <span>热心网友</span>，
+        <strong>下载：</strong>
+        <a
+          href="https://image.calibur.tv/owner/emoji-package/emoji.zip"
+          target="_blank"
+          download="calibur-emoji"
+        >点击下载共24张</a>
+      </p>
       <template slot="aside">&nbsp;</template>
     </v-layout>
   </div>
@@ -332,6 +387,6 @@
 
 <script>
 export default {
-  name: "AboutThanks"
-};
+  name: 'AboutThanks'
+}
 </script>

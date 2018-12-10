@@ -1,119 +1,89 @@
 export default {
   shortenNumber(num) {
-    return num > 1000 ? `${Math.floor((num / 1000) * 10) / 10}k` : num;
+    return num > 1000 ? `${Math.floor((num / 1000) * 10) / 10}k` : num
   },
 
   camelize(string, uppercaseFirstLetter = true) {
     const camelizeString = string.replace(
       /(?:^|[-])(\w)/g,
-      (_, c) => (c ? c.toUpperCase() : "")
-    );
+      (_, c) => (c ? c.toUpperCase() : '')
+    )
     if (uppercaseFirstLetter) {
-      return camelizeString;
+      return camelizeString
     }
-    return camelizeString[0].toLowerCase() + camelizeString.substring(1);
+    return camelizeString[0].toLowerCase() + camelizeString.substring(1)
   },
 
   setStyle(element, styleName, value) {
-    if (!element || !styleName) return;
+    if (!element || !styleName) return
 
-    if (typeof styleName === "object") {
+    if (typeof styleName === 'object') {
       for (const prop in styleName) {
         if (styleName.hasOwnProperty(prop)) {
-          this.setStyle(element, prop, styleName[prop]);
+          this.setStyle(element, prop, styleName[prop])
         }
       }
     } else {
-      styleName = this.camelize(styleName, false); // eslint-disable-line no-param-reassign
-      if (styleName === "opacity" && Number(document.documentMode) < 9) {
+      styleName = this.camelize(styleName, false) // eslint-disable-line no-param-reassign
+      if (styleName === 'opacity' && Number(document.documentMode) < 9) {
         element.style.filter = isNaN(value)
-          ? ""
-          : `alpha(opacity=${value * 100})`;
+          ? ''
+          : `alpha(opacity=${value * 100})`
       } else {
-        element.style[styleName] = value;
+        element.style[styleName] = value
       }
     }
   },
 
   throttle(func, wait, options) {
-    let context, args, result;
-    let timeout = null;
-    let previous = 0;
-    if (!options) options = {};
+    let context, args, result
+    let timeout = null
+    let previous = 0
+    if (!options) options = {}
     let later = function() {
-      previous = options.leading === false ? 0 : Date.now();
-      timeout = null;
-      result = func.apply(context, args);
-      if (!timeout) context = args = null;
-    };
+      previous = options.leading === false ? 0 : Date.now()
+      timeout = null
+      result = func.apply(context, args)
+      if (!timeout) context = args = null
+    }
     return function() {
-      let now = Date.now();
-      if (!previous && options.leading === false) previous = now;
-      let remaining = wait - (now - previous);
-      context = this;
-      args = arguments;
+      let now = Date.now()
+      if (!previous && options.leading === false) previous = now
+      let remaining = wait - (now - previous)
+      context = this
+      args = arguments
       if (remaining <= 0 || remaining > wait) {
         if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
+          clearTimeout(timeout)
+          timeout = null
         }
-        previous = now;
-        result = func.apply(context, args);
-        if (!timeout) context = args = null;
+        previous = now
+        result = func.apply(context, args)
+        if (!timeout) context = args = null
       } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
+        timeout = setTimeout(later, remaining)
       }
-      return result;
-    };
+      return result
+    }
   },
 
-  timeLong(time) {
-    const formatTime = /^\d+$/.test(time)
-      ? time.toString().length === 13
-        ? parseInt((time - 0) / 1000, 10)
-        : time * 1000
-      : time.replace(/-/g, "/");
-    const date = new Date(formatTime);
-    return `${date.getFullYear()}-${`0${date.getMonth() + 1}`.substr(
-      -2
-    )}-${`0${date.getDate()}`.substr(-2)} ${`0${date.getHours()}`.substr(
-      -2
-    )}:${`0${date.getMinutes()}`.substr(-2)}:${`0${date.getSeconds()}`.substr(
-      -2
-    )}`;
+  truncate(str = '', len = 200, startIndex = 0) {
+    return str.substring(startIndex, len)
   },
 
-  truncate(str = "", len = 200, startIndex = 0) {
-    return str.substring(startIndex, len);
-  },
-
-  createFileName({ userId, type, id, file }) {
-    return `user/${userId}/${type}/${id}/${new Date().getTime()}-${Math.random()
+  createFileName({ userId, type, file }) {
+    return `user/${userId}/${type}/${new Date().getTime()}-${Math.random()
       .toString(36)
-      .substring(3, 6)}.${file.type.split("/").pop()}`;
+      .substring(3, 6)}.${file.type.split('/').pop()}`
   },
 
   getOffsetTop(elem) {
-    let offsetTop = 0;
+    let offsetTop = 0
     do {
       if (!isNaN(elem.offsetTop)) {
-        offsetTop += elem.offsetTop;
+        offsetTop += elem.offsetTop
       }
-    } while ((elem = elem.offsetParent)); // eslint-disable-line no-cond-assign
-    return offsetTop;
-  },
-
-  createWechatUrl(ctx) {
-    if (!ctx || !ctx.$store.state.pageData) {
-      return "";
-    }
-    const baseUrl = "https://open.weixin.qq.com/connect/qrconnect";
-    const redirect = "https://www.calibur.tv/callback/wechat/auth";
-
-    return `${baseUrl}?appid=${
-      ctx.$store.state.pageData.wechat_app_id
-    }&redirect_uri=${encodeURIComponent(
-      redirect
-    )}&response_type=code&scope=snsapi_login&state=sign_in#wechat_redirect`;
+    } while ((elem = elem.offsetParent)) // eslint-disable-line no-cond-assign
+    return offsetTop
   }
-};
+}

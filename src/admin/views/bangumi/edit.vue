@@ -279,326 +279,327 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import BangumiApi from "~/api/bangumiApi";
-import uploadMixin from "~/mixins/upload";
+import Api from '~/api/adminApi'
+import BangumiApi from '~/api/bangumiApi'
+import uploadMixin from '~/mixins/upload'
 
 export default {
   mixins: [uploadMixin],
   data() {
-    const id = +(this.$route.params.id || 0);
+    const id = +(this.$route.params.id || 0)
     const validateTags = (rule, value, callback) => {
       if (!value || !value.length) {
-        return callback(new Error("至少保留 1 个标签"));
+        return callback(new Error('至少保留 1 个标签'))
       }
       if (value.length > 10) {
-        return callback(new Error("最多选择 10 个标签"));
+        return callback(new Error('最多选择 10 个标签'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateAlias = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入番剧别名"));
+      if (value === '') {
+        callback(new Error('请输入番剧别名'))
       } else if (value.split(/,|，/).length <= 1) {
-        callback(new Error("请输入多个别名，用逗号分隔"));
+        callback(new Error('请输入多个别名，用逗号分隔'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validateSeason = (rule, value, callback) => {
-      if (value === "") {
-        callback();
+      if (value === '') {
+        callback()
       } else {
         try {
-          const season = JSON.parse(value);
-          const name = season.name;
-          const part = season.part;
-          const time = season.time;
+          const season = JSON.parse(value)
+          const name = season.name
+          const part = season.part
+          const time = season.time
           if (!name) {
-            callback(new Error("缺少季度名称"));
+            callback(new Error('缺少季度名称'))
           }
           if (!part) {
-            callback(new Error("缺少季度集数"));
+            callback(new Error('缺少季度集数'))
           }
           if (!time) {
-            callback(new Error("缺少季度日期"));
+            callback(new Error('缺少季度日期'))
           }
           if (!Array.isArray(time)) {
-            callback(new Error("日期必须是数组（区间）"));
+            callback(new Error('日期必须是数组（区间）'))
           }
           if (!Array.isArray(part)) {
-            callback(new Error("集数必须是数组（区间）"));
+            callback(new Error('集数必须是数组（区间）'))
           }
           if (!Array.isArray(name)) {
-            callback(new Error("名称必须是数组（区间）"));
+            callback(new Error('名称必须是数组（区间）'))
           }
           if (!time.every(eif => /^\d{4}\.\d{1,2}$/.test(eif))) {
             callback(
               new Error(
-                "时间的格式应精确到月份，年与月用点号隔开，如 2018.10 或 2018.2"
+                '时间的格式应精确到月份，年与月用点号隔开，如 2018.10 或 2018.2'
               )
-            );
+            )
           }
-          if (!part.every(item => typeof item === "number")) {
-            callback(new Error("集数必须都是数字"));
+          if (!part.every(item => typeof item === 'number')) {
+            callback(new Error('集数必须都是数字'))
           }
           if (time.length !== name.length) {
-            callback(new Error("名称的个数必须和日期的个数相同"));
+            callback(new Error('名称的个数必须和日期的个数相同'))
           }
           if (part.length < 2) {
-            callback(new Error("集数至少是两位数"));
+            callback(new Error('集数至少是两位数'))
           }
           if (part.length !== time.length + 1) {
-            callback(new Error("集数的个数要比时间和名称的个数多一个"));
+            callback(new Error('集数的个数要比时间和名称的个数多一个'))
           }
           if (
             !part.every((item, index, arr) => {
               if (index) {
                 if (index === arr.length - 1) {
-                  return item === -1 || item > arr[index - 1];
+                  return item === -1 || item > arr[index - 1]
                 }
-                return item > arr[index - 1];
+                return item > arr[index - 1]
               }
-              return item === 0;
+              return item === 0
             })
           ) {
-            callback(new Error("part 要从 0 开始，升序排列，最后一项可为 -1"));
+            callback(new Error('part 要从 0 开始，升序排列，最后一项可为 -1'))
           }
           if (!season.re) {
-            callback();
-            return;
+            callback()
+            return
           }
-          if (typeof season.re !== "number" && !Array.isArray(season.re)) {
-            callback(new Error("re 必须是数字 0 和 1 或者一个数组"));
-            return;
+          if (typeof season.re !== 'number' && !Array.isArray(season.re)) {
+            callback(new Error('re 必须是数字 0 和 1 或者一个数组'))
+            return
           }
           if (
-            typeof season.re === "number" &&
+            typeof season.re === 'number' &&
             (season.re !== 0 && season.re !== 1)
           ) {
-            callback(new Error("re 必须是数字 0 和 1 或者一个数组"));
-            return;
+            callback(new Error('re 必须是数字 0 和 1 或者一个数组'))
+            return
           }
           if (Array.isArray(season.re)) {
             if (season.re.length !== time.length) {
-              callback(new Error("re 的个数要和时间的个数相同"));
-              return;
+              callback(new Error('re 的个数要和时间的个数相同'))
+              return
             }
             if (
               season.re.some(_ => {
-                return _ !== 0 && _ !== 1;
+                return _ !== 0 && _ !== 1
               })
             ) {
-              callback(new Error("re 的每一项都必须是 0 或 1"));
-              return;
+              callback(new Error('re 的每一项都必须是 0 或 1'))
+              return
             }
           }
-          callback();
+          callback()
         } catch (e) {
-          callback(new Error("不是标准的JSON格式"));
+          callback(new Error('不是标准的JSON格式'))
         }
       }
-    };
+    }
     const validatePublish = (rule, value, callback) => {
-      if (value === 0 || value === "") {
-        callback(new Error("请选择上映日期"));
+      if (value === 0 || value === '') {
+        callback(new Error('请选择上映日期'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loading: !!id,
       tags: [],
       releaseWeekly: [
         {
           id: 0,
-          name: "不连载"
+          name: '不连载'
         },
         {
           id: 1,
-          name: "周一"
+          name: '周一'
         },
         {
           id: 2,
-          name: "周二"
+          name: '周二'
         },
         {
           id: 3,
-          name: "周三"
+          name: '周三'
         },
         {
           id: 4,
-          name: "周四"
+          name: '周四'
         },
         {
           id: 5,
-          name: "周五"
+          name: '周五'
         },
         {
           id: 6,
-          name: "周六"
+          name: '周六'
         },
         {
           id: 7,
-          name: "周日"
+          name: '周日'
         }
       ],
       form: null,
       rules: {
-        name: [{ required: true, message: "请输入番剧名称", trigger: "blur" }],
-        alias: [{ validator: validateAlias, trigger: "blur" }],
-        published_at: [{ validator: validatePublish, trigger: "change" }],
-        tags: [{ validator: validateTags, trigger: "change" }],
-        season: [{ validator: validateSeason, trigger: "blur" }],
+        name: [{ required: true, message: '请输入番剧名称', trigger: 'blur' }],
+        alias: [{ validator: validateAlias, trigger: 'blur' }],
+        published_at: [{ validator: validatePublish, trigger: 'change' }],
+        tags: [{ validator: validateTags, trigger: 'change' }],
+        season: [{ validator: validateSeason, trigger: 'blur' }],
         summary: [
-          { required: true, message: "简介不能为空", trigger: "blur" },
-          { min: 1, max: 250, message: "最多250字", trigger: "blur" }
+          { required: true, message: '简介不能为空', trigger: 'blur' },
+          { min: 1, max: 250, message: '最多250字', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   computed: {
     id() {
-      return +(this.$route.params.id || 0);
+      return +(this.$route.params.id || 0)
     }
   },
   watch: {
     $route() {
-      this.getBangumiById();
+      this.getBangumiById()
     }
   },
   created() {
-    this.getBangumiById();
-    this.getBangumiTags();
+    this.getBangumiById()
+    this.getBangumiTags()
+    this.getUpToken()
   },
   methods: {
     getBangumiById() {
       if (!this.id) {
         this.form = {
-          name: "",
-          alias: "",
+          name: '',
+          alias: '',
           released_at: 0,
-          published_at: "",
+          published_at: '',
           tags: [],
-          avatar: "",
-          banner: "",
-          season: "",
-          summary: "",
+          avatar: '',
+          banner: '',
+          season: '',
+          summary: '',
           others_site_video: false,
           end: false,
           has_video: true,
           has_cartoon: false
-        };
-        return;
+        }
+        return
       }
 
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .bangumiInfo({
           id: this.id
         })
         .then(resp => {
           this.form = Object.assign(resp, {
-            banner: resp.banner.split(".calibur.tv/").pop(),
-            avatar: resp.avatar.split(".calibur.tv/").pop(),
+            banner: resp.banner.split('.calibur.tv/').pop(),
+            avatar: resp.avatar.split('.calibur.tv/').pop(),
             tags: resp.tags.map(_ => _.id)
-          });
-          this.loading = false;
+          })
+          this.loading = false
         })
         .catch(err => {
-          this.$toast.error(err);
-          this.loading = false;
-        });
+          this.$toast.error(err)
+          this.loading = false
+        })
     },
     getBangumiTags() {
-      const api = new BangumiApi();
+      const api = new BangumiApi()
       api.tags().then(data => {
-        this.tags = data;
-      });
+        this.tags = data
+      })
     },
     beforeAvatarUpload(file) {
-      this.uploadConfig.max = 1;
-      this.uploadConfig.pathPrefix = "bangumi/avatar";
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 1
+      this.uploadConfig.pathPrefix = 'bangumi/avatar'
+      return this.beforeImageUpload(file)
     },
     beforeBannerUpload(file) {
-      this.uploadConfig.max = 3;
-      this.uploadConfig.pathPrefix = "bangumi/banner";
-      return this.beforeImageUpload(file);
+      this.uploadConfig.max = 3
+      this.uploadConfig.pathPrefix = 'bangumi/banner'
+      return this.beforeImageUpload(file)
     },
     handleAvatarSuccess(res) {
-      this.$toast.success("上传成功");
-      this.form.avatar = res.data.url;
+      this.$toast.success('上传成功')
+      this.form.avatar = res.data.url
     },
     handleBannerSuccess(res) {
-      this.$toast.success("上传成功");
-      this.form.banner = res.data.url;
+      this.$toast.success('上传成功')
+      this.form.banner = res.data.url
     },
     submitForm() {
       this.$refs.form.validate(async valid => {
         if (valid) {
-          const api = new Api(this);
+          const api = new Api(this)
           const params = Object.assign({}, this.form, {
             published_at: new Date(this.form.published_at).getTime() / 1000
-          });
-          let jumpId = this.id;
+          })
+          let jumpId = this.id
           try {
             if (jumpId) {
-              await api.bangumiEdit(params);
+              await api.bangumiEdit(params)
             } else {
-              jumpId = await api.bangumiCreate(params);
+              jumpId = await api.bangumiCreate(params)
             }
-            this.$toast.success("操作成功");
+            this.$toast.success('操作成功')
             setTimeout(() => {
-              window.open(this.$alias.bangumi(jumpId));
-            }, 2000);
+              window.open(this.$alias.bangumi(jumpId))
+            }, 2000)
           } catch (e) {
-            this.$toast.error("操作失败");
+            this.$toast.error('操作失败')
           }
         }
-      });
+      })
     },
     updateRelease() {
-      this.$prompt("请输入视频id", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入视频id', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         inputPattern: /^([1-9][0-9]*)$/,
-        inputErrorMessage: "id 格式不正确"
+        inputErrorMessage: 'id 格式不正确'
       })
         .then(({ value }) => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .bangumiRelease({
               bangumi_id: this.id,
               video_id: value
             })
             .then(() => {
-              this.$toast.success("更新成功");
+              this.$toast.success('更新成功')
             })
             .catch(e => {
-              this.$toast.error(e);
-            });
+              this.$toast.error(e)
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     handleDelete() {
-      this.$confirm("确认要执行该操作吗?", "提示")
+      this.$confirm('确认要执行该操作吗?', '提示')
         .then(() => {
-          const api = new Api(this);
+          const api = new Api(this)
           api
             .bangumiDelete({
               id: this.form.id
             })
             .then(() => {
-              this.$toast.success("操作成功");
-              this.form.deleted_at = !this.form.deleted_at;
+              this.$toast.success('操作成功')
+              this.form.deleted_at = !this.form.deleted_at
             })
             .catch(() => {
-              this.$toast.error("操作失败");
-            });
+              this.$toast.error('操作失败')
+            })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

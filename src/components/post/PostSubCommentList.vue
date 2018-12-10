@@ -93,11 +93,11 @@
 </template>
 
 <script>
-import PostSubCommentItem from "~/components/post/PostSubCommentItem";
-import CommentReplyForm from "~/components/comments/CommentReplyForm";
+import PostSubCommentItem from '~/components/post/PostSubCommentItem'
+import CommentReplyForm from '~/components/comments/CommentReplyForm'
 
 export default {
-  name: "PostSubCommentList",
+  name: 'PostSubCommentList',
   components: {
     PostSubCommentItem,
     CommentReplyForm
@@ -113,62 +113,62 @@ export default {
       collapsed: false,
       showReplyArea: false,
       loading: false
-    };
+    }
   },
   computed: {
     comments() {
-      return this.parentComment.comments;
+      return this.parentComment.comments
     },
     parentId() {
-      return this.parentComment.id;
+      return this.parentComment.id
     },
     authorId() {
-      return this.parentComment.from_user_id;
+      return this.parentComment.from_user_id
     },
     computeCollapsedBtnText() {
       if (this.hasComment) {
         if (this.collapsed) {
-          return `回复(${this.comments.total})`;
+          return `回复(${this.comments.total})`
         }
-        return "收起回复";
+        return '收起回复'
       }
       if (this.showReplyArea) {
-        return "收起";
+        return '收起'
       }
-      return "回复";
+      return '回复'
     },
     hasComment() {
-      return !!this.comments.list.length;
+      return !!this.comments.list.length
     }
   },
   methods: {
     clickCollapsedBtn() {
       if (this.hasComment) {
-        this.collapsed = !this.collapsed;
+        this.collapsed = !this.collapsed
       } else {
-        this.showReplyArea = !this.showReplyArea;
+        this.showReplyArea = !this.showReplyArea
       }
     },
     toggleCommentArea() {
-      this.showReplyArea = !this.showReplyArea;
+      this.showReplyArea = !this.showReplyArea
     },
     async loadMore() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("comment/getSubComments", {
+        await this.$store.dispatch('comment/getSubComments', {
           ctx: this,
-          type: "post",
+          type: 'post',
           id: this.parentId
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

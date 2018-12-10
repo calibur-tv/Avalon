@@ -159,12 +159,12 @@
 </template>
 
 <script>
-import { Dialog } from "element-ui";
+import { Dialog } from 'element-ui'
 
 export default {
-  name: "VDialog",
+  name: 'VDialog',
   components: {
-    "el-dialog": Dialog
+    'el-dialog': Dialog
   },
   props: {
     value: {
@@ -174,7 +174,7 @@ export default {
     },
     customClass: {
       type: String,
-      default: ""
+      default: ''
     },
     close: {
       type: Boolean,
@@ -182,15 +182,15 @@ export default {
     },
     width: {
       type: String,
-      default: "720px"
+      default: '720px'
     },
     height: {
       type: String,
-      default: ""
+      default: ''
     },
     title: {
       type: String,
-      default: "提示"
+      default: '提示'
     },
     header: {
       type: Boolean,
@@ -202,11 +202,11 @@ export default {
     },
     submitText: {
       type: String,
-      default: "确定"
+      default: '确定'
     },
     cancelText: {
       type: String,
-      default: "取消"
+      default: '取消'
     },
     scroll: {
       type: Function,
@@ -230,71 +230,71 @@ export default {
     },
     theme: {
       type: String,
-      validator: val => ~["success", "danger"].indexOf(val),
-      default: "success"
+      validator: val => ~['success', 'danger'].indexOf(val),
+      default: 'success'
     }
   },
   data() {
     return {
       dialogVisible: this.value
-    };
+    }
   },
   computed: {
     computeDialogHeight() {
       if (this.height) {
         return {
           height: this.height
-        };
+        }
       }
       if (this.scroll) {
         return {
-          height: "600px"
-        };
+          height: '600px'
+        }
       }
       return {
-        height: "auto"
-      };
+        height: 'auto'
+      }
     }
   },
   mounted() {
-    this.$watch("value", val => {
-      this.dialogVisible = val;
-      window.__closeImageLazy__ = val;
-    });
-    this.$watch("dialogVisible", val => {
-      this.$emit("input", val);
-      window.__closeImageLazy__ = val;
-    });
+    this.$watch('value', val => {
+      this.dialogVisible = val
+      window.__closeImageLazy__ = val
+    })
+    this.$watch('dialogVisible', val => {
+      this.$emit('input', val)
+      window.__closeImageLazy__ = val
+    })
   },
   methods: {
     beforeClose(done) {
-      done();
-      this.$emit("cancel");
-      this.dialogVisible = false;
+      done()
+      this.$emit('cancel')
+      this.dialogVisible = false
     },
     cancel() {
-      this.$emit("cancel");
-      this.dialogVisible = false;
+      this.$emit('cancel')
+      this.dialogVisible = false
     },
     submit() {
-      this.$emit("submit");
+      this.$emit('submit')
     },
     handleScroll(evt) {
       if (!this.scroll || this.loading || this.noMore) {
-        return;
+        return
       }
-      const ul = this.$refs.ul;
+      const ul = this.$refs.ul
       if (!ul) {
-        return;
+        return
       }
-      const main = evt.currentTarget || evt.target;
+      const main = evt.currentTarget || evt.target
       if (
         this.$refs.ul.clientHeight - main.clientHeight - main.scrollTop <
         30
       ) {
-        this.scroll();
+        this.scroll()
       }
     }
   }
-};
+}
 </script>

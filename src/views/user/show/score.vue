@@ -3,25 +3,25 @@
 </template>
 
 <script>
-import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
+import ScoreFlowList from '~/components/flow/list/ScoreFlowList'
 
 export default {
-  name: "UserScore",
+  name: 'UserScore',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "score",
-      sort: "news",
+    await store.dispatch('flow/initData', {
+      type: 'score',
+      sort: 'news',
       userZone: route.params.zone,
       ctx
-    });
+    })
   },
   components: {
     ScoreFlowList
   },
   computed: {
     zone() {
-      return this.$route.params.zone;
+      return this.$route.params.zone
     }
   }
-};
+}
 </script>

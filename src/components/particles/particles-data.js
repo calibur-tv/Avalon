@@ -8,19 +8,19 @@ const particlesData = {
       }
     },
     color: {
-      value: "#9E9E9E"
+      value: '#9E9E9E'
     },
     shape: {
-      type: "circle",
+      type: 'circle',
       stroke: {
         width: 0,
-        color: "#000000"
+        color: '#000000'
       },
       polygon: {
         nb_sides: 5
       },
       image: {
-        src: "img/github.svg",
+        src: 'img/github.svg',
         width: 100,
         height: 100
       }
@@ -48,7 +48,7 @@ const particlesData = {
     line_linked: {
       enable: true,
       distance: 150,
-      color: "#ffffff",
+      color: '#ffffff',
       opacity: 0.4,
       width: 1
     },
@@ -56,10 +56,10 @@ const particlesData = {
     move: {
       enable: true,
       speed: 2,
-      direction: "none",
+      direction: 'none',
       random: false,
       straight: false,
-      out_mode: "out",
+      out_mode: 'out',
       attract: {
         enable: false,
         rotateX: 600,
@@ -68,15 +68,15 @@ const particlesData = {
     }
   },
   interactivity: {
-    detect_on: "canvas",
+    detect_on: 'canvas',
     events: {
       onhover: {
         enable: true,
-        mode: "grab"
+        mode: 'grab'
       },
       onclick: {
         enable: true,
-        mode: "push"
+        mode: 'push'
       },
       resize: true
     },
@@ -109,12 +109,12 @@ const particlesData = {
   retina_detect: true,
   config_demo: {
     hide_card: false,
-    background_color: "#b61924",
-    background_image: "",
-    background_position: "50% 50%",
-    background_repeat: "no-repeat",
-    background_size: "cover"
+    background_color: '#b61924',
+    background_image: '',
+    background_position: '50% 50%',
+    background_repeat: 'no-repeat',
+    background_size: 'cover'
   }
-};
+}
 
-export { particlesData };
+export { particlesData }

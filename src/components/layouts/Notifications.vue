@@ -96,66 +96,66 @@
 
 <script>
 export default {
-  name: "HeaderNotifications",
+  name: 'HeaderNotifications',
   data() {
     return {
       loading: false
-    };
+    }
   },
   computed: {
     list() {
-      return this.$store.state.users.notifications.list;
+      return this.$store.state.users.notifications.list
     },
     notFetch() {
-      return this.loading || this.$store.state.users.notifications.noMore;
+      return this.loading || this.$store.state.users.notifications.noMore
     },
     notificationsCount() {
       const result =
         this.$store.state.user.notification -
-        this.$store.state.users.notifications.checked;
-      return result < 0 ? 0 : result;
+        this.$store.state.users.notifications.checked
+      return result < 0 ? 0 : result
     }
   },
   methods: {
     readMsg(id) {
-      this.$store.dispatch("users/readMessage", {
+      this.$store.dispatch('users/readMessage', {
         id,
         ctx: this
-      });
+      })
     },
     async loadMore() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
 
       try {
-        await this.$store.dispatch("users/getNotifications", {
+        await this.$store.dispatch('users/getNotifications', {
           ctx: this,
           init: false
-        });
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     readAll() {
       if (!this.notificationsCount) {
-        return;
+        return
       }
-      this.$store.dispatch("users/readAllMessage", this);
+      this.$store.dispatch('users/readAllMessage', this)
     },
     handleMessageClick(evt, msg) {
       if (!msg.link) {
-        return;
+        return
       }
       if (/user/.test(evt.target.classList)) {
-        window.open(this.$alias.user(msg.user.zone));
-        return;
+        window.open(this.$alias.user(msg.user.zone))
+        return
       }
-      window.open(msg.link);
+      window.open(msg.link)
     }
   }
-};
+}
 </script>

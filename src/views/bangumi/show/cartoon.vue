@@ -3,31 +3,31 @@
 </template>
 
 <script>
-import BangumiCartoonFlow from "~/components/bangumi/BangumiCartoonFlow";
+import BangumiCartoonFlow from '~/components/bangumi/BangumiCartoonFlow'
 
 export default {
-  name: "BangumiCartoon",
+  name: 'BangumiCartoon',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("bangumi/getCartoons", {
+    await store.dispatch('bangumi/getCartoons', {
       ctx,
       bangumiId: route.params.id,
       init: true
-    });
+    })
   },
   components: {
     BangumiCartoonFlow
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     }
   },
   mounted() {
     if (!this.info.has_cartoon) {
       this.$router.replace({
-        name: "bangumi-post"
-      });
+        name: 'bangumi-post'
+      })
     }
   }
-};
+}
 </script>

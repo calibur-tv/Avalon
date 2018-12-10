@@ -74,25 +74,25 @@
 </template>
 
 <script>
-import vHeader from "~/components/layouts/Header";
-import vFooter from "~/components/layouts/Footer";
+import vHeader from '~/components/layouts/Header'
+import vFooter from '~/components/layouts/Footer'
 
 export default {
-  name: "ErrorLayout",
+  name: 'ErrorLayout',
   components: {
     vHeader,
     vFooter
   },
   computed: {
     params() {
-      return this.$route.query;
+      return this.$route.query
     },
     message() {
-      return this.params.message;
+      return this.params.message
     },
     from() {
-      return decodeURIComponent(this.params.redirect);
+      return decodeURIComponent(this.params.redirect)
     }
   }
-};
+}
 </script>

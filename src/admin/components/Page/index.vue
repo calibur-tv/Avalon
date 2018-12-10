@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "VPage",
+  name: 'VPage',
   props: {
     state: {
       required: true,
@@ -33,5 +33,5 @@ export default {
       type: Function
     }
   }
-};
+}
 </script>

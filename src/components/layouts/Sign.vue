@@ -46,9 +46,9 @@ $input-height: 40px;
         user-select: none;
       }
 
-      input[type="text"],
-      input[type="password"],
-      input[type="number"] {
+      input[type='text'],
+      input[type='password'],
+      input[type='number'] {
         width: 100%;
         height: $input-height;
         font-size: 12px;
@@ -137,14 +137,14 @@ $input-height: 40px;
           position: relative;
         }
 
-        input[type="text"],
-        input[type="password"],
-        input[type="number"] {
+        input[type='text'],
+        input[type='password'],
+        input[type='number'] {
           border-radius: 4px;
           border: 1px solid $color-gray-deep;
         }
 
-        input[type="checkbox"] {
+        input[type='checkbox'] {
           margin-left: 5px;
         }
       }
@@ -257,13 +257,13 @@ $input-height: 40px;
 </template>
 
 <script>
-import SignInForm from "~/components/user/SignInForm";
-import SignUpForm from "~/components/user/SignUpForm";
-import ResetPasswordForm from "~/components/user/ResetPasswordForm";
-import FirstSignDialog from "~/components/dialogs/FirstSignDialog";
+import SignInForm from '~/components/user/SignInForm'
+import SignUpForm from '~/components/user/SignUpForm'
+import ResetPasswordForm from '~/components/user/ResetPasswordForm'
+import FirstSignDialog from '~/components/dialogs/FirstSignDialog'
 
 export default {
-  name: "VSign",
+  name: 'VSign',
   components: {
     SignUpForm,
     SignInForm,
@@ -276,11 +276,11 @@ export default {
       showSignIn: false,
       showSignUp: false,
       showReset: false
-    };
+    }
   },
   computed: {
     isGuest() {
-      return !this.$store.state.login;
+      return !this.$store.state.login
     }
   },
   watch: {
@@ -289,35 +289,35 @@ export default {
         ? this.$backdrop.show({
             ele: this.$refs.wrap
           })
-        : this.$backdrop.hide();
+        : this.$backdrop.hide()
     }
   },
   beforeMount() {
-    this.$channel.$on("sign-in", () => {
-      this.showLogin();
-    });
-    this.$channel.$on("sign-up", () => {
-      this.showRegister();
-    });
+    this.$channel.$on('sign-in', () => {
+      this.showLogin()
+    })
+    this.$channel.$on('sign-up', () => {
+      this.showRegister()
+    })
   },
   methods: {
     showLogin() {
-      this.showReset = false;
-      this.showModal = true;
-      this.showSignIn = true;
-      this.showSignUp = false;
+      this.showReset = false
+      this.showModal = true
+      this.showSignIn = true
+      this.showSignUp = false
     },
     showRegister() {
-      this.showModal = true;
-      this.showSignUp = true;
-      this.showSignIn = false;
+      this.showModal = true
+      this.showSignUp = true
+      this.showSignIn = false
     },
     hiddenSign() {
-      this.showModal = false;
-      this.showSignIn = false;
-      this.showSignUp = false;
-      this.showReset = false;
+      this.showModal = false
+      this.showSignIn = false
+      this.showSignUp = false
+      this.showReset = false
     }
   }
-};
+}
 </script>

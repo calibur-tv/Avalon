@@ -99,97 +99,99 @@
 </template>
 
 <script>
-import uploadMixin from "~/mixins/upload";
-import Api from "~/api/questionApi";
+import uploadMixin from '~/mixins/upload'
+import Api from '~/api/questionApi'
 
 export default {
-  name: "CreateQuestionDialog",
+  name: 'CreateQuestionDialog',
   mixins: [uploadMixin],
   data() {
     const validateTitle = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入问题标题"));
+        callback(new Error('请输入问题标题'))
       }
       if (value.length > 30) {
-        callback(new Error("标题最多 30 个字"));
+        callback(new Error('标题最多 30 个字'))
       }
-      callback();
-    };
+      callback()
+    }
     const validateTag = (rule, value, callback) => {
       if (!value.length) {
-        callback(new Error("至少选择一个相关番剧"));
+        callback(new Error('至少选择一个相关番剧'))
       }
       if (value.length > 5) {
-        callback(new Error("最多 5 个话题"));
+        callback(new Error('最多 5 个话题'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       showQuestionModal: false,
       form: {
-        title: "",
+        title: '',
         tags: [],
-        content: ""
+        content: ''
       },
       rules: {
-        title: [{ validator: validateTitle, trigger: "change" }],
-        tags: [{ validator: validateTag, trigger: "submit" }]
+        title: [{ validator: validateTitle, trigger: 'change' }],
+        tags: [{ validator: validateTag, trigger: 'submit' }]
       },
       images: [],
       exceed: 7,
       submitting: false
-    };
+    }
   },
   mounted() {
-    this.$channel.$on("show-create-question-modal", () => {
-      this.$store.state.login
-        ? (this.showQuestionModal = true)
-        : this.$channel.$emit("sign-in");
-    });
+    this.$channel.$on('show-create-question-modal', () => {
+      if (this.$store.state.login) {
+        this.showQuestionModal = true
+        this.getUpToken()
+      } else {
+        this.$channel.$emit('sign-in')
+      }
+    })
   },
   methods: {
     beforeUpload(file) {
-      this.uploadConfig.max = 5;
+      this.uploadConfig.max = 5
       this.uploadConfig.pathPrefix = `user/${
         this.$store.state.user.id
-      }/question`;
-      return this.beforeImageUpload(file);
+      }/question`
+      return this.beforeImageUpload(file)
     },
     handleError(err, file) {
-      console.log(err);
       this.images.forEach((item, index) => {
         if (item.id === file.uid) {
-          this.images.splice(index, 1);
+          this.images.splice(index, 1)
         }
-      });
-      this.$toast.error(`图片：${file.name} 上传失败`);
+      })
+      this.$toast.error(`图片：${file.name} 上传失败`)
     },
     handleRemove(file) {
       this.images.forEach((item, index) => {
         if (item.id === file.uid) {
-          this.images.splice(index, 1);
+          this.images.splice(index, 1)
         }
-      });
+      })
     },
     handleExceed() {
-      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`);
+      this.$toast.error(`最多可上传 ${this.exceed} 张图片!`)
     },
     handleSuccess(res, file) {
       this.images.push({
         id: file.uid,
         img: res.data
-      });
+      })
     },
     submit() {
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.submitting) {
-            return;
+            return
           }
-          this.submitting = true;
+          this.submitting = true
           this.$captcha({
             success: async ({ data }) => {
-              const api = new Api(this);
+              const api = new Api(this)
               try {
                 const result = await api.createQuestion({
                   title: this.form.title,
@@ -198,32 +200,32 @@ export default {
                   content: this.form.content,
                   images: this.images.map(item => item.img),
                   geetest: data
-                });
-                this.images = [];
-                this.$refs.form.resetFields();
-                this.$emit("submit");
-                this.submitting = false;
+                })
+                this.images = []
+                this.$refs.form.resetFields()
+                this.$emit('submit')
+                this.submitting = false
                 this.$toast.success(result.message).then(() => {
-                  window.location = this.$alias.question(result.data);
-                });
+                  window.location = this.$alias.question(result.data)
+                })
               } catch (err) {
-                this.$toast.error(err);
-                this.submitting = false;
+                this.$toast.error(err)
+                this.submitting = false
               }
             },
             error: e => {
-              this.submitting = false;
-              this.$toast.error(e);
+              this.submitting = false
+              this.$toast.error(e)
             },
             close: () => {
-              this.submitting = false;
+              this.submitting = false
             }
-          });
+          })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>

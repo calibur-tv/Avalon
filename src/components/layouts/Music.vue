@@ -315,7 +315,7 @@ $color-gray-hover: #6d757a;
   font-size: 12px;
 
   &:after {
-    content: "•";
+    content: '•';
     color: $color-gray;
   }
 }
@@ -375,7 +375,7 @@ $color-gray-hover: #6d757a;
                 @click="handlePlayBtnClick"
               >
                 <i
-                  :class="[ status.playing ? 'icon-icon-' : 'icon-bofang1' ]"
+                  :class="[ status.playing ? 'icon-paused' : 'icon-bofang' ]"
                   class="iconfont"
                 />
               </button>
@@ -472,7 +472,7 @@ $color-gray-hover: #6d757a;
 </template>
 
 <script>
-import vRange from "~/components/common/Range";
+import vRange from '~/components/common/Range'
 
 export default {
   components: {
@@ -483,303 +483,303 @@ export default {
       source: [
         {
           id: 1,
-          src: "https://image.calibur.tv/owner/music/1.mp3",
-          name: "Life Is Like A Boat",
-          player: "Rie Fu",
+          src: 'https://image.calibur.tv/owner/music/1.mp3',
+          name: 'Life Is Like A Boat',
+          player: 'Rie Fu',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=4251145607,2531835868&fm=85&s=A8036E93E24A56EE1AE5A153030010F3"
+            'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=4251145607,2531835868&fm=85&s=A8036E93E24A56EE1AE5A153030010F3'
         },
         {
           id: 2,
-          src: "https://image.calibur.tv/owner/music/2.mp3",
-          name: "だんご大家族",
-          player: "茶太",
+          src: 'https://image.calibur.tv/owner/music/2.mp3',
+          name: 'だんご大家族',
+          player: '茶太',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2980366584,2187856484&fm=171&s=15982F77831E40694CD1DC7E03001039&w=121&h=91&img.JPEG&bpow=448&bpoh=252"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2980366584,2187856484&fm=171&s=15982F77831E40694CD1DC7E03001039&w=121&h=91&img.JPEG&bpow=448&bpoh=252'
         },
         {
           id: 3,
-          src: "https://image.calibur.tv/owner/music/3.mp3",
-          name: "Memories",
-          player: "大槻マキ",
+          src: 'https://image.calibur.tv/owner/music/3.mp3',
+          name: 'Memories',
+          player: '大槻マキ',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=3414694364,2917711924&fm=85&s=5402FABE5E1261F5DA2E41640300F061"
+            'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=3414694364,2917711924&fm=85&s=5402FABE5E1261F5DA2E41640300F061'
         },
         {
           id: 4,
-          src: "https://image.calibur.tv/owner/music/4.mp3",
-          name: "残酷な天使のテーゼ",
-          player: "高橋洋子",
+          src: 'https://image.calibur.tv/owner/music/4.mp3',
+          name: '残酷な天使のテーゼ',
+          player: '高橋洋子',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2570708825,3778744992&fm=58&bpow=932&bpoh=1067"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2570708825,3778744992&fm=58&bpow=932&bpoh=1067'
         },
         {
           id: 5,
-          src: "https://image.calibur.tv/owner/music/5.mp3",
-          name: "Theme of ONE PUNCH MAN",
-          player: "宮崎誠",
+          src: 'https://image.calibur.tv/owner/music/5.mp3',
+          name: 'Theme of ONE PUNCH MAN',
+          player: '宮崎誠',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=3502363312,3220031789&fm=85&s=15C3FDA65EF29DF51C3CF938030010C3"
+            'https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=3502363312,3220031789&fm=85&s=15C3FDA65EF29DF51C3CF938030010C3'
         },
         {
           id: 6,
-          src: "https://image.calibur.tv/owner/music/6.mp3",
-          name: "Butter-Fly",
-          player: "和田光司",
+          src: 'https://image.calibur.tv/owner/music/6.mp3',
+          name: 'Butter-Fly',
+          player: '和田光司',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3750807320,2770026803&fm=58"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3750807320,2770026803&fm=58'
         },
         {
           id: 7,
-          src: "https://image.calibur.tv/owner/music/7.mp3",
-          name: "時代を越える想い",
-          player: "和田薫",
+          src: 'https://image.calibur.tv/owner/music/7.mp3',
+          name: '時代を越える想い',
+          player: '和田薫',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=3085520176,2847306273&fm=58&bpow=644&bpoh=768"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=3085520176,2847306273&fm=58&bpow=644&bpoh=768'
         },
         {
           id: 8,
-          src: "https://image.calibur.tv/owner/music/8.mp3",
-          name: "Continued Story",
-          player: "黒石ひとみ",
+          src: 'https://image.calibur.tv/owner/music/8.mp3',
+          name: 'Continued Story',
+          player: '黒石ひとみ',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3073230744,4164198060&fm=58"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3073230744,4164198060&fm=58'
         },
         {
           id: 9,
-          src: "https://image.calibur.tv/owner/music/9.mp3",
-          name: "あなたがいた森",
-          player: "樹海",
+          src: 'https://image.calibur.tv/owner/music/9.mp3',
+          name: 'あなたがいた森',
+          player: '樹海',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2475402386,230787783&fm=58"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2475402386,230787783&fm=58'
         },
         {
           id: 10,
-          src: "https://image.calibur.tv/owner/music/10.mp3",
-          name: "翼をください ",
-          player: "林原めぐみ",
+          src: 'https://image.calibur.tv/owner/music/10.mp3',
+          name: '翼をください ',
+          player: '林原めぐみ',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1225371658,1348139348&fm=172&app=19&f=JPEG?w=121&h=91&s=DB9503C64E4636515857D7B20300D00F&bpow=400&bpoh=250"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1225371658,1348139348&fm=172&app=19&f=JPEG?w=121&h=91&s=DB9503C64E4636515857D7B20300D00F&bpow=400&bpoh=250'
         },
         {
           id: 11,
-          src: "https://image.calibur.tv/owner/music/11.mp3",
-          name: "secret base ~君がくれたもの~ ",
-          player: "茅野愛衣",
+          src: 'https://image.calibur.tv/owner/music/11.mp3',
+          name: 'secret base ~君がくれたもの~ ',
+          player: '茅野愛衣',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3257225204,3825220231&fm=58"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3257225204,3825220231&fm=58'
         },
         {
           id: 12,
-          src: "https://image.calibur.tv/owner/music/12.mp3",
+          src: 'https://image.calibur.tv/owner/music/12.mp3',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=4023072402,3220604678&fm=58&bpow=1280&bpoh=1254",
-          player: "平野绫",
-          name: "God knows..."
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=4023072402,3220604678&fm=58&bpow=1280&bpoh=1254',
+          player: '平野绫',
+          name: 'God knows...'
         },
         {
           id: 13,
-          src: "https://image.calibur.tv/owner/music/13.mp3",
-          name: "Gamble Rumble",
-          player: "日本群星",
+          src: 'https://image.calibur.tv/owner/music/13.mp3',
+          name: 'Gamble Rumble',
+          player: '日本群星',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=898061995,2496832578&fm=58"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=898061995,2496832578&fm=58'
         },
         {
           id: 14,
-          src: "https://image.calibur.tv/owner/music/14.mp3",
-          name: "遠い空へ",
-          player: "三輪学",
+          src: 'https://image.calibur.tv/owner/music/14.mp3',
+          name: '遠い空へ',
+          player: '三輪学',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=840459020,736145682&fm=58"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=840459020,736145682&fm=58'
         },
         {
           id: 15,
-          src: "https://image.calibur.tv/owner/music/15.mp3",
-          name: "雪どけのあの川の流れのように",
-          player: "三枝夕夏 IN db",
+          src: 'https://image.calibur.tv/owner/music/15.mp3',
+          name: '雪どけのあの川の流れのように',
+          player: '三枝夕夏 IN db',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2108051172,1763104311&fm=58"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2108051172,1763104311&fm=58'
         },
         {
           id: 16,
-          src: "https://image.calibur.tv/owner/music/16.mp3",
-          name: "One more time, One more chance",
-          player: "山崎まさよし",
+          src: 'https://image.calibur.tv/owner/music/16.mp3',
+          name: 'One more time, One more chance',
+          player: '山崎まさよし',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1618533673,3779234904&fm=58"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1618533673,3779234904&fm=58'
         },
         {
           id: 17,
-          src: "https://image.calibur.tv/owner/music/17.mp3",
-          name: "ヒカリ",
-          player: "樹海",
+          src: 'https://image.calibur.tv/owner/music/17.mp3',
+          name: 'ヒカリ',
+          player: '樹海',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3633046244,4153138975&fm=58"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3633046244,4153138975&fm=58'
         },
         {
           id: 18,
-          src: "https://image.calibur.tv/owner/music/18.mp3",
-          name: "地球ぎ",
-          player: "松澤由美",
+          src: 'https://image.calibur.tv/owner/music/18.mp3',
+          name: '地球ぎ',
+          player: '松澤由美',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3923877014,165725923&fm=58&bpow=480&bpoh=728"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3923877014,165725923&fm=58&bpow=480&bpoh=728'
         },
         {
           id: 19,
-          src: "https://image.calibur.tv/owner/music/19.mp3",
-          name: "Wind",
-          player: "Akeboshi",
+          src: 'https://image.calibur.tv/owner/music/19.mp3',
+          name: 'Wind',
+          player: 'Akeboshi',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3287911437,3680177977&fm=58&bpow=571&bpoh=421"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3287911437,3680177977&fm=58&bpow=571&bpoh=421'
         },
         {
           id: 20,
-          src: "https://image.calibur.tv/owner/music/20.mp3",
-          name: "Brothers",
-          player: "群星",
+          src: 'https://image.calibur.tv/owner/music/20.mp3',
+          name: 'Brothers',
+          player: '群星',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1079743037,4016790706&fm=85&s=80006FB706434AED2C29256303007078"
+            'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1079743037,4016790706&fm=85&s=80006FB706434AED2C29256303007078'
         },
         {
           id: 21,
-          src: "https://image.calibur.tv/owner/music/21.mp3",
-          name: "コネクト",
-          player: "ClariS",
+          src: 'https://image.calibur.tv/owner/music/21.mp3',
+          name: 'コネクト',
+          player: 'ClariS',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1043104536,2579742317&fm=58"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1043104536,2579742317&fm=58'
         },
         {
           id: 22,
-          src: "https://image.calibur.tv/owner/music/22.mp3",
-          name: "Glassy Sky",
-          player: "Donna Burke",
+          src: 'https://image.calibur.tv/owner/music/22.mp3',
+          name: 'Glassy Sky',
+          player: 'Donna Burke',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2790305043,3258702299&fm=58"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2790305043,3258702299&fm=58'
         },
         {
           id: 23,
-          src: "https://image.calibur.tv/owner/music/23.mp3",
-          name: "My Song",
-          player: "Yui",
+          src: 'https://image.calibur.tv/owner/music/23.mp3',
+          name: 'My Song',
+          player: 'Yui',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1802538637,158839725&fm=171&app=20&f=JPEG?w=121&h=91&s=C41AC43951767C39DC7918DA030080B4&bpow=480&bpoh=270"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1802538637,158839725&fm=171&app=20&f=JPEG?w=121&h=91&s=C41AC43951767C39DC7918DA030080B4&bpow=480&bpoh=270'
         },
         {
           id: 24,
-          src: "https://image.calibur.tv/owner/music/24.mp3",
-          name: "NEXT TO YOU",
-          player: "Ken Arai",
+          src: 'https://image.calibur.tv/owner/music/24.mp3',
+          name: 'NEXT TO YOU',
+          player: 'Ken Arai',
           selected: true,
           playing: false,
           img:
-            "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1307757296,4262664801&fm=179&app=42&f=JPEG?w=150&h=150"
+            'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1307757296,4262664801&fm=179&app=42&f=JPEG?w=150&h=150'
         },
         {
           id: 25,
-          src: "https://image.calibur.tv/owner/music/25.mp3",
-          name: "町, 時の流れ, 人",
-          player: "Key Sounds Label",
+          src: 'https://image.calibur.tv/owner/music/25.mp3',
+          name: '町, 時の流れ, 人',
+          player: 'Key Sounds Label',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1488271269,3385060447&fm=58"
+            'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1488271269,3385060447&fm=58'
         },
         {
           id: 26,
-          src: "https://image.calibur.tv/owner/music/26.mp3",
-          name: "Dear Friends",
-          player: "TRIPLANE",
+          src: 'https://image.calibur.tv/owner/music/26.mp3',
+          name: 'Dear Friends',
+          player: 'TRIPLANE',
           selected: true,
           playing: false,
           img:
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2627866346,475109417&fm=27&gp=0.jpg"
+            'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2627866346,475109417&fm=27&gp=0.jpg'
         },
         {
           id: 27,
-          src: "https://image.calibur.tv/owner/music/27.mp3",
-          name: "世界が終るまでは…",
-          player: "WANDS",
+          src: 'https://image.calibur.tv/owner/music/27.mp3',
+          name: '世界が終るまでは…',
+          player: 'WANDS',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=712966633,2295645920&fm=58"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=712966633,2295645920&fm=58'
         },
         {
           id: 28,
-          src: "https://image.calibur.tv/owner/music/28.mp3",
-          name: "again",
-          player: "Yui",
+          src: 'https://image.calibur.tv/owner/music/28.mp3',
+          name: 'again',
+          player: 'Yui',
           selected: true,
           playing: false,
           img:
-            "https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=3860908664,40817184&fm=85&s=EA9B6E8FC66366B45E3125670300C042"
+            'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=3860908664,40817184&fm=85&s=EA9B6E8FC66366B45E3125670300C042'
         },
         {
           id: 29,
-          src: "https://image.calibur.tv/owner/music/29.mp3",
-          name: "潮鳴り",
-          player: "Key Sounds Label",
+          src: 'https://image.calibur.tv/owner/music/29.mp3',
+          name: '潮鳴り',
+          player: 'Key Sounds Label',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=351792085,464043388&fm=179&app=42&f=JPEG?w=121&h=140"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=351792085,464043388&fm=179&app=42&f=JPEG?w=121&h=140'
         },
         {
           id: 30,
-          src: "https://image.calibur.tv/owner/music/30.mp3",
-          name: "想い出は遠くの日々",
-          player: "天門",
+          src: 'https://image.calibur.tv/owner/music/30.mp3',
+          name: '想い出は遠くの日々',
+          player: '天門',
           selected: true,
           playing: false,
           img:
-            "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1618533673,3779234904&fm=58"
+            'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1618533673,3779234904&fm=58'
         }
       ],
       open: false,
@@ -793,136 +793,136 @@ export default {
         duration: 0
       },
       time: {
-        cur: "00:00",
-        all: "00:00"
+        cur: '00:00',
+        all: '00:00'
       },
       now: {},
       player: null
-    };
+    }
   },
   computed: {
     musics() {
-      const array = this.source.map(_ => _);
+      const array = this.source.map(_ => _)
       for (let i = array.length; i; i--) {
-        let j = Math.floor(Math.random() * i);
-        [array[i - 1], array[j]] = [array[j], array[i - 1]];
+        let j = Math.floor(Math.random() * i)
+        ;[array[i - 1], array[j]] = [array[j], array[i - 1]]
       }
 
-      return array;
+      return array
     }
   },
   mounted() {
-    const audio = this.$refs.audio;
-    this.player = audio;
-    audio.volume = 0.5;
+    const audio = this.$refs.audio
+    this.player = audio
+    audio.volume = 0.5
 
-    audio.addEventListener("ended", () => {
-      this.status.playing = false;
-      this.next(true);
-    });
+    audio.addEventListener('ended', () => {
+      this.status.playing = false
+      this.next(true)
+    })
 
-    audio.addEventListener("durationchange", () => {
-      const duration = audio.duration;
-      const timeArr = this.formatSeconds(duration);
-      this.status.duration = duration;
+    audio.addEventListener('durationchange', () => {
+      const duration = audio.duration
+      const timeArr = this.formatSeconds(duration)
+      this.status.duration = duration
       this.time.all = timeArr[0]
         ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
-        : `${timeArr[1]}:${timeArr[2]}`;
-    });
+        : `${timeArr[1]}:${timeArr[2]}`
+    })
 
-    audio.addEventListener("timeupdate", () => {
-      const current = audio.currentTime;
-      const timeArr = this.formatSeconds(current);
-      this.status.current = current;
+    audio.addEventListener('timeupdate', () => {
+      const current = audio.currentTime
+      const timeArr = this.formatSeconds(current)
+      this.status.current = current
       this.time.cur = timeArr[0]
         ? `${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`
-        : `${timeArr[1]}:${timeArr[2]}`;
-    });
+        : `${timeArr[1]}:${timeArr[2]}`
+    })
 
-    audio.addEventListener("error", () => {
-      this.next(true);
-    });
+    audio.addEventListener('error', () => {
+      this.next(true)
+    })
   },
   methods: {
     musicToggle() {
-      this.open = !this.open;
+      this.open = !this.open
       if (this.needInit) {
-        this.needInit = false;
-        this.loadSource(this.musics[0], false);
+        this.needInit = false
+        this.loadSource(this.musics[0], false)
       }
     },
     next(isNext) {
-      const musicCount = this.musics.length;
+      const musicCount = this.musics.length
       if (!musicCount) {
-        return;
+        return
       }
-      const id = this.now.id;
-      let resultIndex = -1;
+      const id = this.now.id
+      let resultIndex = -1
       this.musics.forEach((item, index) => {
         if (item.id === id) {
           if (isNext) {
             if (index === musicCount - 1) {
-              resultIndex = 0;
+              resultIndex = 0
             } else {
-              resultIndex = index + 1;
+              resultIndex = index + 1
             }
           } else {
             if (!index) {
-              resultIndex = musicCount - 1;
+              resultIndex = musicCount - 1
             } else {
-              resultIndex = index - 1;
+              resultIndex = index - 1
             }
           }
         }
-      });
+      })
       if (resultIndex !== -1) {
-        this.loadSource(this.musics[resultIndex]);
+        this.loadSource(this.musics[resultIndex])
       }
     },
     volume(val) {
-      this.player.muted = !val;
-      this.status.voice = val;
-      this.player.volume = val / 100;
+      this.player.muted = !val
+      this.status.voice = val
+      this.player.volume = val / 100
     },
     loadSource(item, autoPlay = true) {
       if (this.now.playing !== undefined) {
         if (this.now.id === item.id) {
-          return;
+          return
         }
-        this.now.playing = false;
+        this.now.playing = false
       }
-      item.playing = true;
-      this.now = item;
-      this.player.setAttribute("src", this.now.src);
+      item.playing = true
+      this.now = item
+      this.player.setAttribute('src', this.now.src)
       if (autoPlay) {
-        this.player.play();
-        this.status.playing = true;
+        this.player.play()
+        this.status.playing = true
       }
     },
     formatSeconds(second) {
-      let [h, m, s] = [0, 0, 0];
+      let [h, m, s] = [0, 0, 0]
       if (second > 60) {
-        m = parseInt(second / 60);
-        s = (second % 60).toFixed(0);
+        m = parseInt(second / 60)
+        s = (second % 60).toFixed(0)
         if (m > 60) {
-          h = parseInt(m / 60);
-          m = parseInt(m % 60);
+          h = parseInt(m / 60)
+          m = parseInt(m % 60)
         }
       } else {
-        s = parseInt(second);
+        s = parseInt(second)
       }
-      s = s < 10 ? "0" + s : s;
-      m = m < 10 ? "0" + m : m;
-      return [h, m, s];
+      s = s < 10 ? '0' + s : s
+      m = m < 10 ? '0' + m : m
+      return [h, m, s]
     },
     handleMuteBtnClick() {
-      this.status.silent = !this.status.silent;
-      this.player.muted = !this.player.muted;
+      this.status.silent = !this.status.silent
+      this.player.muted = !this.player.muted
     },
     handlePlayBtnClick() {
-      this.status.playing = !this.status.playing;
-      this.player.paused ? this.player.play() : this.player.pause();
+      this.status.playing = !this.status.playing
+      this.player.paused ? this.player.play() : this.player.pause()
     }
   }
-};
+}
 </script>

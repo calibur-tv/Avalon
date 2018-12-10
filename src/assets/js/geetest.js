@@ -1,202 +1,202 @@
 /* eslint-disable */
 /* v0.4.6 Geetest Inc. */
 
-(function(window) {
-  "use strict";
-  if (typeof window === "undefined") {
-    throw new Error("Geetest requires browser environment");
+;(function(window) {
+  'use strict'
+  if (typeof window === 'undefined') {
+    throw new Error('Geetest requires browser environment')
   }
 
-  var document = window.document;
-  var Math = window.Math;
-  var head = document.getElementsByTagName("head")[0];
+  var document = window.document
+  var Math = window.Math
+  var head = document.getElementsByTagName('head')[0]
 
   function _Object(obj) {
-    this._obj = obj;
+    this._obj = obj
   }
 
   _Object.prototype = {
     _each: function(process) {
-      var _obj = this._obj;
+      var _obj = this._obj
       for (var k in _obj) {
         if (_obj.hasOwnProperty(k)) {
-          process(k, _obj[k]);
+          process(k, _obj[k])
         }
       }
-      return this;
+      return this
     }
-  };
+  }
 
   function Config(config) {
-    var self = this;
+    var self = this
     new _Object(config)._each(function(key, value) {
-      self[key] = value;
-    });
+      self[key] = value
+    })
   }
 
   Config.prototype = {
-    api_server: "api.geetest.com",
-    protocol: "http://",
-    typePath: "/gettype.php",
+    api_server: 'api.geetest.com',
+    protocol: 'http://',
+    typePath: '/gettype.php',
     fallback_config: {
       slide: {
-        static_servers: ["static.geetest.com", "dn-staticdown.qbox.me"],
-        type: "slide",
-        slide: "/static/js/geetest.0.0.0.js"
+        static_servers: ['static.geetest.com', 'dn-staticdown.qbox.me'],
+        type: 'slide',
+        slide: '/static/js/geetest.0.0.0.js'
       },
       fullpage: {
-        static_servers: ["static.geetest.com", "dn-staticdown.qbox.me"],
-        type: "fullpage",
-        fullpage: "/static/js/fullpage.0.0.0.js"
+        static_servers: ['static.geetest.com', 'dn-staticdown.qbox.me'],
+        type: 'fullpage',
+        fullpage: '/static/js/fullpage.0.0.0.js'
       }
     },
     _get_fallback_config: function() {
-      var self = this;
+      var self = this
       if (isString(self.type)) {
-        return self.fallback_config[self.type];
+        return self.fallback_config[self.type]
       } else if (self.new_captcha) {
-        return self.fallback_config.fullpage;
+        return self.fallback_config.fullpage
       } else {
-        return self.fallback_config.slide;
+        return self.fallback_config.slide
       }
     },
     _extend: function(obj) {
-      var self = this;
+      var self = this
       new _Object(obj)._each(function(key, value) {
-        self[key] = value;
-      });
+        self[key] = value
+      })
     }
-  };
+  }
   var isNumber = function(value) {
-    return typeof value === "number";
-  };
+    return typeof value === 'number'
+  }
   var isString = function(value) {
-    return typeof value === "string";
-  };
+    return typeof value === 'string'
+  }
   var isBoolean = function(value) {
-    return typeof value === "boolean";
-  };
+    return typeof value === 'boolean'
+  }
   var isObject = function(value) {
-    return typeof value === "object" && value !== null;
-  };
+    return typeof value === 'object' && value !== null
+  }
   var isFunction = function(value) {
-    return typeof value === "function";
-  };
+    return typeof value === 'function'
+  }
 
-  var callbacks = {};
-  var status = {};
+  var callbacks = {}
+  var status = {}
 
   var random = function() {
-    return parseInt(Math.random() * 10000) + new Date().valueOf();
-  };
+    return parseInt(Math.random() * 10000) + new Date().valueOf()
+  }
 
   var loadScript = function(url, cb) {
-    var script = document.createElement("script");
-    script.charset = "UTF-8";
-    script.async = true;
+    var script = document.createElement('script')
+    script.charset = 'UTF-8'
+    script.async = true
 
     script.onerror = function() {
-      cb(true);
-    };
-    var loaded = false;
+      cb(true)
+    }
+    var loaded = false
     script.onload = script.onreadystatechange = function() {
       if (
         !loaded &&
         (!script.readyState ||
-          script.readyState === "loaded" ||
-          script.readyState === "complete")
+          script.readyState === 'loaded' ||
+          script.readyState === 'complete')
       ) {
-        loaded = true;
+        loaded = true
         setTimeout(function() {
-          cb(false);
-        }, 0);
+          cb(false)
+        }, 0)
       }
-    };
-    script.src = url;
-    head.appendChild(script);
-  };
+    }
+    script.src = url
+    head.appendChild(script)
+  }
 
   var normalizeDomain = function(domain) {
     // special domain: uems.sysu.edu.cn/jwxt/geetest/
     // return domain.replace(/^https?:\/\/|\/.*$/g, ''); uems.sysu.edu.cn
-    return domain.replace(/^https?:\/\/|\/$/g, ""); // uems.sysu.edu.cn/jwxt/geetest
-  };
+    return domain.replace(/^https?:\/\/|\/$/g, '') // uems.sysu.edu.cn/jwxt/geetest
+  }
   var normalizePath = function(path) {
-    path = path.replace(/\/+/g, "/");
-    if (path.indexOf("/") !== 0) {
-      path = "/" + path;
+    path = path.replace(/\/+/g, '/')
+    if (path.indexOf('/') !== 0) {
+      path = '/' + path
     }
-    return path;
-  };
+    return path
+  }
   var normalizeQuery = function(query) {
     if (!query) {
-      return "";
+      return ''
     }
-    var q = "?";
+    var q = '?'
     new _Object(query)._each(function(key, value) {
       if (isString(value) || isNumber(value) || isBoolean(value)) {
-        q = q + encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
+        q = q + encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&'
       }
-    });
-    if (q === "?") {
-      q = "";
+    })
+    if (q === '?') {
+      q = ''
     }
-    return q.replace(/&$/, "");
-  };
+    return q.replace(/&$/, '')
+  }
   var makeURL = function(protocol, domain, path, query) {
-    domain = normalizeDomain(domain);
+    domain = normalizeDomain(domain)
 
-    var url = normalizePath(path) + normalizeQuery(query);
+    var url = normalizePath(path) + normalizeQuery(query)
     if (domain) {
-      url = protocol + domain + url;
+      url = protocol + domain + url
     }
 
-    return url;
-  };
+    return url
+  }
 
   var load = function(protocol, domains, path, query, cb) {
     var tryRequest = function(at) {
-      var url = makeURL(protocol, domains[at], path, query);
+      var url = makeURL(protocol, domains[at], path, query)
       loadScript(url, function(err) {
         if (err) {
           if (at >= domains.length - 1) {
-            cb(true);
+            cb(true)
           } else {
-            tryRequest(at + 1);
+            tryRequest(at + 1)
           }
         } else {
-          cb(false);
+          cb(false)
         }
-      });
-    };
-    tryRequest(0);
-  };
+      })
+    }
+    tryRequest(0)
+  }
 
   var jsonp = function(domains, path, config, callback) {
     if (isObject(config.getLib)) {
-      config._extend(config.getLib);
-      callback(config);
-      return;
+      config._extend(config.getLib)
+      callback(config)
+      return
     }
     if (config.offline) {
-      callback(config._get_fallback_config());
-      return;
+      callback(config._get_fallback_config())
+      return
     }
 
-    var cb = "geetest_" + random();
+    var cb = 'geetest_' + random()
     window[cb] = function(data) {
-      if (data.status === "success") {
-        callback(data.data);
+      if (data.status === 'success') {
+        callback(data.data)
       } else if (!data.status) {
-        callback(data);
+        callback(data)
       } else {
-        callback(config._get_fallback_config());
+        callback(config._get_fallback_config())
       }
-      window[cb] = undefined;
+      window[cb] = undefined
       try {
-        delete window[cb];
+        delete window[cb]
       } catch (e) {}
-    };
+    }
     load(
       config.protocol,
       domains,
@@ -207,61 +207,61 @@
       },
       function(err) {
         if (err) {
-          callback(config._get_fallback_config());
+          callback(config._get_fallback_config())
         }
       }
-    );
-  };
+    )
+  }
 
   var throwError = function(errorType, config) {
     var errors = {
-      networkError: "网络错误",
-      gtTypeError: "gt字段不是字符串类型"
-    };
-    if (typeof config.onError === "function") {
-      config.onError(errors[errorType]);
-    } else {
-      throw new Error(errors[errorType]);
+      networkError: '网络错误',
+      gtTypeError: 'gt字段不是字符串类型'
     }
-  };
+    if (typeof config.onError === 'function') {
+      config.onError(errors[errorType])
+    } else {
+      throw new Error(errors[errorType])
+    }
+  }
 
   var detect = function() {
-    return window.Geetest || document.getElementById("gt_lib");
-  };
+    return window.Geetest || document.getElementById('gt_lib')
+  }
 
   if (detect()) {
-    status.slide = "loaded";
+    status.slide = 'loaded'
   }
 
   window.initGeetest = function(userConfig, callback) {
-    var config = new Config(userConfig);
+    var config = new Config(userConfig)
 
     if (userConfig.https) {
-      config.protocol = "https://";
+      config.protocol = 'https://'
     } else if (!userConfig.protocol) {
-      config.protocol = window.location.protocol + "//";
+      config.protocol = window.location.protocol + '//'
     }
 
     if (isObject(userConfig.getType)) {
-      config._extend(userConfig.getType);
+      config._extend(userConfig.getType)
     }
     jsonp(
       [config.api_server || config.apiserver],
       config.typePath,
       config,
       function(newConfig) {
-        var type = newConfig.type;
+        var type = newConfig.type
         var init = function() {
-          config._extend(newConfig);
-          callback(new window.Geetest(config));
-        };
+          config._extend(newConfig)
+          callback(new window.Geetest(config))
+        }
 
-        callbacks[type] = callbacks[type] || [];
-        var s = status[type] || "init";
-        if (s === "init") {
-          status[type] = "loading";
+        callbacks[type] = callbacks[type] || []
+        var s = status[type] || 'init'
+        if (s === 'init') {
+          status[type] = 'loading'
 
-          callbacks[type].push(init);
+          callbacks[type].push(init)
 
           load(
             config.protocol,
@@ -270,29 +270,29 @@
             null,
             function(err) {
               if (err) {
-                status[type] = "fail";
-                throwError("networkError", config);
+                status[type] = 'fail'
+                throwError('networkError', config)
               } else {
-                status[type] = "loaded";
-                var cbs = callbacks[type];
+                status[type] = 'loaded'
+                var cbs = callbacks[type]
                 for (var i = 0, len = cbs.length; i < len; i = i + 1) {
-                  var cb = cbs[i];
+                  var cb = cbs[i]
                   if (isFunction(cb)) {
-                    cb();
+                    cb()
                   }
                 }
-                callbacks[type] = [];
+                callbacks[type] = []
               }
             }
-          );
-        } else if (s === "loaded") {
-          init();
-        } else if (s === "fail") {
-          throwError("networkError", config);
-        } else if (s === "loading") {
-          callbacks[type].push(init);
+          )
+        } else if (s === 'loaded') {
+          init()
+        } else if (s === 'fail') {
+          throwError('networkError', config)
+        } else if (s === 'loading') {
+          callbacks[type].push(init)
         }
       }
-    );
-  };
-})(window);
+    )
+  }
+})(window)

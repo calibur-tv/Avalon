@@ -1,105 +1,225 @@
+<style lang="scss">
+.bangumi-list {
+  .bangumi {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .managers {
+    margin-bottom: 20px;
+    line-height: 24px;
+    font-size: 14px;
+
+    p {
+      margin-left: 8px;
+    }
+
+    a {
+      display: inline-block;
+      width: 200px;
+      color: $color-blue-normal;
+    }
+
+    span {
+      display: inline-block;
+      width: 200px;
+    }
+
+    li {
+      list-style-type: disc;
+      margin-left: 2em;
+      cursor: default;
+
+      &:hover {
+        background-color: $color-gray-normal;
+      }
+    }
+  }
+}
+
+.user-list {
+  .user {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 5px;
+
+    a {
+      width: 200px;
+      display: inline-block;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    span {
+      display: inline-block;
+      width: 200px;
+    }
+  }
+
+  .bangumis {
+    margin-bottom: 20px;
+    line-height: 24px;
+    font-size: 14px;
+
+    p {
+      margin-left: 8px;
+    }
+
+    a {
+      display: inline-block;
+      width: 300px;
+      color: $color-blue-normal;
+    }
+
+    span {
+      display: inline-block;
+      width: 200px;
+    }
+
+    li {
+      list-style-type: disc;
+      margin-left: 2em;
+      cursor: default;
+
+      &:hover {
+        background-color: $color-gray-normal;
+      }
+    }
+  }
+}
+</style>
+
 <template>
   <div
-    v-loading="pageLoading"
+    v-loading="loading"
     id="bangumi-list"
   >
-    <el-table
-      :data="pageData"
-      border
-      fit
-      highlight-current-row
+    <el-button
+      type="primary"
+      round
+      @click="switchPage"
+    >{{ sort === 'bangumi' ? '切换到番剧视角' : '切换到版主视角' }}</el-button>
+    <ul
+      v-if="sort === 'bangumi'"
+      class="bangumi-list"
     >
-      <el-table-column label="番剧">
-        <template slot-scope="scope">
+      <li
+        v-for="list in source"
+        :key="list.data.id"
+      >
+        <div class="bangumi">
           <a
-            :href="$alias.bangumi(scope.row.bangumi.id)"
-            target="_blank"
-          >{{ scope.row.bangumi.name }}</a>
-        </template>
-      </el-table-column>
-      <el-table-column label="版主">
-        <template slot-scope="scope">
-          <span>{{ scope.row.is_leader !== '0' ? '【大】' : '【小】' }}</span>
-          <a
-            :href="$alias.user(scope.row.user.zone)"
-            target="_blank"
-          >{{ scope.row.user.nickname }}</a>
-        </template>
-      </el-table-column>
-      <el-table-column label="番剧活跃度">
-        <template slot-scope="scope">
-          <span>{{ scope.row.bangumi.power }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户战斗力">
-        <template slot-scope="scope">
-          <span>{{ scope.row.user.power }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="授权时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_at }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <a
-            :href="`/admin/user/show?zone=${scope.row.user.zone}`"
+            :href="$alias.bangumi(list.data.id)"
             target="_blank"
           >
-            <el-button
-              size="small"
-              type="primary"
-              icon="edit"
-            >查看用户</el-button>
+            《{{ list.data.name }}》
           </a>
-        </template>
-      </el-table-column>
-    </el-table>
-    <v-page
-      :change="getData"
-      :state="pageState"
-    />
+          <span>活跃度：{{ list.power }}</span>
+        </div>
+        <ul class="managers">
+          <p>管理员：</p>
+          <li
+            v-for="item in list.list"
+            :key="item.id"
+          >
+            【<strong :style="[ item.is_leader ? { color: 'red' } : '' ]">{{ item.is_leader ? '大' : '小' }}</strong>】
+            <a
+              :href="$alias.user(item.zone)"
+              target="_blank"
+              v-text="item.nickname"
+            />
+            <span>战斗力：{{ item.power }}</span>
+            <span>邀请码：{{ item.id }}</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul
+      v-else
+      class="user-list"
+    >
+      <li
+        v-for="list in source"
+        :key="list.data.id"
+      >
+        <div class="user">
+          <a
+            :href="$alias.user(list.data.zone)"
+            target="_blank"
+          >
+            {{ list.data.nickname }}
+          </a>
+          <span>战斗力：{{ list.power }}</span>
+          <span>邀请码：{{ list.data.id }}</span>
+        </div>
+        <ul class="bangumis">
+          <p>番剧：</p>
+          <li
+            v-for="item in list.list"
+            :key="item.id"
+          >
+            【<strong :style="[ item.is_leader ? { color: 'red' } : '' ]">{{ item.is_leader ? '大' : '小' }}</strong>】
+            <a
+              :href="$alias.bangumi(item.id)"
+              target="_blank"
+              v-text="item.name"
+            />
+            <span>活跃度：{{ item.power }}</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import pageMixin from "~/mixins/page";
+import Api from '~/api/adminApi'
 
 export default {
-  mixins: [pageMixin],
+  data() {
+    return {
+      source: [],
+      loading: false,
+      sort: 'user'
+    }
+  },
   mounted() {
-    this.getData(1);
+    this.getData()
   },
   methods: {
-    async getData(page) {
-      if (page <= this.pageState.max) {
-        this.pageState.cur = page;
-        return;
+    async getData() {
+      if (this.loading) {
+        return
       }
-      if (this.pageLoading) {
-        return;
-      }
-      this.pageLoading = true;
-      this.pageState.size = 15;
-      const api = new Api(this);
       try {
-        const data = await api.getBangumiManagers({
-          to_page: page,
-          cur_page: this.pageState.cur,
-          take: this.pageState.size
-        });
-        this.pageState.total = data.total;
-        this.pageState.cur = page;
-        this.pageState.max = page;
-        this.pageList = this.pageList.concat(data.list);
+        const api = new Api(this)
+        this.source = await api.getBangumiManagers({
+          sort: this.sort
+        })
       } catch (e) {
-        this.$toast.error(e);
+        this.$toast.error(e)
       } finally {
-        this.pageLoading = false;
+        this.loading = false
       }
+    },
+    switchPage() {
+      if (this.sort === 'bangumi') {
+        this.sort = 'user'
+      } else {
+        this.sort = 'bangumi'
+      }
+      this.getData()
     }
   }
-};
+}
 </script>

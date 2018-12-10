@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "SearchNothingScore"
-};
+  name: 'SearchNothingScore'
+}
 </script>

@@ -7,25 +7,25 @@
 </template>
 
 <script>
-import CartoonRoleFlowList from "~/components/flow/list/CartoonRoleFlowList";
+import CartoonRoleFlowList from '~/components/flow/list/CartoonRoleFlowList'
 
 export default {
-  name: "BangumiCartoonRole",
+  name: 'BangumiCartoonRole',
   async asyncData({ store, route, ctx }) {
-    await store.dispatch("flow/initData", {
-      type: "role",
-      sort: "hot",
+    await store.dispatch('flow/initData', {
+      type: 'role',
+      sort: 'hot',
       bangumiId: route.params.id,
       ctx
-    });
+    })
   },
   components: {
     CartoonRoleFlowList
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     }
   }
-};
+}
 </script>

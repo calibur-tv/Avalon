@@ -6,82 +6,80 @@
 </template>
 
 <script>
-import { cdn, script, env } from "env";
-import vSign from "~/components/layouts/Sign";
+import { cdn, script, env } from 'env'
+import vSign from '~/components/layouts/Sign'
 
 export default {
-  name: "Entry",
+  name: 'Entry',
   head: {
-    title: "天下漫友是一家",
+    title: '天下漫友是一家',
     titleTemplate: titleChunk => {
-      return titleChunk
-        ? `${titleChunk} - calibur`
-        : "天下漫友是一家 - calibur";
+      return titleChunk ? `${titleChunk} - calibur` : '天下漫友是一家 - calibur'
     },
     htmlAttrs: {
-      lang: "zh-CN"
+      lang: 'zh-CN'
     },
     bodyAttrs: {
-      id: "calibur-tv"
+      id: 'calibur-tv'
     },
     meta: [
-      { charset: "utf-8" },
+      { charset: 'utf-8' },
       {
-        name: "viewport",
-        content: "width=device-width,initial-scale=1,maximum-scale=1"
+        name: 'viewport',
+        content: 'width=device-width,initial-scale=1,maximum-scale=1'
       },
-      { "http-equiv": "X-UA-Compatible", content: "IE=edge,chrome=1" },
-      { name: "force-rendering", content: "webkit" },
+      { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge,chrome=1' },
+      { name: 'force-rendering', content: 'webkit' },
       {
-        hid: "description",
-        name: "description",
-        content: "一个兴趣使然的二次元综合网站"
+        hid: 'description',
+        name: 'description',
+        content: '一个兴趣使然的二次元综合网站'
       },
       {
-        hid: "keywords",
-        name: "keywords",
+        hid: 'keywords',
+        name: 'keywords',
         content:
-          "calibur，咖喱棒, 动漫，ACG，二次元，视频，番剧，动画，新番，神作, 排行榜, 贴吧, 盖楼, 应援, 帖子, 在线"
+          'calibur，咖喱棒, 动漫，ACG，二次元，视频，番剧，动画，新番，神作, 排行榜, 贴吧, 盖楼, 应援, 帖子, 在线'
       }
     ],
     link: [
       {
-        rel: "shortcut icon",
-        type: "image/x-icon",
-        href: `${cdn.static}/favicon.ico`
+        rel: 'shortcut icon',
+        type: 'image/x-icon',
+        href: `${cdn.static}favicon.ico`
       },
       {
-        rel: "search",
-        type: "application/opensearchdescription+xml",
-        title: "calibur",
-        href: `${cdn.static}/owner/pc/search.xml`
+        rel: 'search',
+        type: 'application/opensearchdescription+xml',
+        title: 'calibur',
+        href: `${cdn.static}owner/pc/search.xml`
       }
     ],
     script: [
-      env !== "development"
-        ? { innerHTML: script.baiduStat, type: "text/javascript", async: true }
-        : "",
-      env !== "development"
-        ? { innerHTML: script.baiduPush, type: "text/javascript", async: true }
-        : "",
+      env !== 'development'
+        ? { innerHTML: script.baiduStat, type: 'text/javascript', async: true }
+        : '',
+      env !== 'development'
+        ? { innerHTML: script.baiduPush, type: 'text/javascript', async: true }
+        : '',
       {
-        src: "//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js",
-        type: "text/javascript"
+        src: '//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js',
+        type: 'text/javascript'
       }
     ].filter(_ => _),
-    __dangerouslyDisableSanitizers: "script"
+    __dangerouslyDisableSanitizers: 'script'
   },
   components: {
     vSign
   },
   created() {
     if (this.$isServer) {
-      return;
+      return
     }
-    M.vueHub = this.$channel;
+    M.vueHub = this.$channel
   },
   mounted() {
-    this.$store.dispatch("bangumi/getAllBangumi");
+    this.$store.dispatch('bangumi/getAllBangumi')
   }
-};
+}
 </script>

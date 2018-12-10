@@ -181,9 +181,9 @@
 </template>
 
 <script>
-import Api from "~/api/adminApi";
-import Breadcrumb from "@/components/Breadcrumb";
-import Hamburger from "@/components/Hamburger";
+import Api from '~/api/adminApi'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
@@ -193,52 +193,52 @@ export default {
   data() {
     return {
       todo: null
-    };
+    }
   },
   computed: {
     sidebar() {
-      return this.$store.state.admin.sidebar;
+      return this.$store.state.admin.sidebar
     },
     todoCount() {
-      let result = 0;
+      let result = 0
       if (!this.todo) {
-        return result;
+        return result
       }
 
       Object.keys(this.todo).forEach(key => {
-        result += this.todo[key];
-      });
+        result += this.todo[key]
+      })
 
-      return result;
+      return result
     }
   },
   watch: {
     $route() {
-      this.getTodo();
+      this.getTodo()
     }
   },
   mounted() {
-    this.getTodo();
-    this.$channel.$on("admin-trial-do", ({ type, count = 1 }) => {
-      this.todo[type] = this.todo[type] - count;
-    });
-    this.$channel.$on("admin-get-to-do", () => {
-      this.getTodo();
-    });
+    this.getTodo()
+    this.$channel.$on('admin-trial-do', ({ type, count = 1 }) => {
+      this.todo[type] = this.todo[type] - count
+    })
+    this.$channel.$on('admin-get-to-do', () => {
+      this.getTodo()
+    })
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch("admin/ToggleSideBar");
+      this.$store.dispatch('admin/ToggleSideBar')
     },
     getTodo() {
-      const api = new Api(this);
+      const api = new Api(this)
       api
         .getTodo()
         .then(data => {
-          this.todo = data;
+          this.todo = data
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>

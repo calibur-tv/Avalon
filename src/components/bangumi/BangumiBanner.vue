@@ -134,27 +134,27 @@
 </template>
 
 <script>
-import FollowButton from "~/components/common/FollowButton";
+import FollowButton from '~/components/common/FollowButton'
 
 export default {
-  name: "BangumiBanner",
+  name: 'BangumiBanner',
   components: {
     FollowButton
   },
   data() {
     return {
       loadingFollow: false
-    };
+    }
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     }
   },
   methods: {
     handleFollowAction(result) {
-      this.$store.commit("bangumi/SET_FOLLOW", { result });
+      this.$store.commit('bangumi/SET_FOLLOW', { result })
     }
   }
-};
+}
 </script>

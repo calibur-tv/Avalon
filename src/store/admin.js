@@ -6,8 +6,8 @@ const state = () => ({
   search: {
     bangumis: []
   },
-  device: "desktop"
-});
+  device: 'desktop'
+})
 
 const mutations = {
   TOGGLE_SIDEBAR: state => {
@@ -16,26 +16,26 @@ const mutations = {
     } else {
       // Cookies.set('sidebarStatus', 0)
     }
-    state.sidebar.opened = !state.sidebar.opened;
-    state.sidebar.withoutAnimation = false;
+    state.sidebar.opened = !state.sidebar.opened
+    state.sidebar.withoutAnimation = false
   },
   CLOSE_SIDEBAR: (state, withoutAnimation) => {
     // Cookies.set('sidebarStatus', 1)
-    state.sidebar.opened = false;
-    state.sidebar.withoutAnimation = withoutAnimation;
+    state.sidebar.opened = false
+    state.sidebar.withoutAnimation = withoutAnimation
   }
-};
+}
 
 const actions = {
   ToggleSideBar: ({ commit }) => {
-    commit("TOGGLE_SIDEBAR");
+    commit('TOGGLE_SIDEBAR')
   },
   CloseSideBar({ commit }, { withoutAnimation }) {
-    commit("CLOSE_SIDEBAR", withoutAnimation);
+    commit('CLOSE_SIDEBAR', withoutAnimation)
   }
-};
+}
 
-const getters = {};
+const getters = {}
 
 export default {
   namespaced: true,
@@ -43,4 +43,4 @@ export default {
   actions,
   mutations,
   getters
-};
+}

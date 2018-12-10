@@ -1,40 +1,40 @@
-let isDragging = false;
+let isDragging = false
 
 export default function(element, options) {
   const moveFn = function(event) {
     if (options.drag) {
-      options.drag(event);
+      options.drag(event)
     }
-  };
+  }
 
   const endFn = function(event) {
-    document.removeEventListener("mousemove", moveFn);
-    document.removeEventListener("mouseup", endFn);
-    document.onselectstart = null;
-    document.ondragstart = null;
+    document.removeEventListener('mousemove', moveFn)
+    document.removeEventListener('mouseup', endFn)
+    document.onselectstart = null
+    document.ondragstart = null
 
-    isDragging = false;
+    isDragging = false
 
     if (options.end) {
-      options.end(event);
+      options.end(event)
     }
-  };
+  }
 
-  element.addEventListener("mousedown", event => {
-    if (isDragging) return;
-    event.preventDefault();
+  element.addEventListener('mousedown', event => {
+    if (isDragging) return
+    event.preventDefault()
     document.onselectstart = function() {
-      return false;
-    };
+      return false
+    }
     document.ondragstart = function() {
-      return false;
-    };
-    document.addEventListener("mousemove", moveFn);
-    document.addEventListener("mouseup", endFn);
-    isDragging = true;
+      return false
+    }
+    document.addEventListener('mousemove', moveFn)
+    document.addEventListener('mouseup', endFn)
+    isDragging = true
 
     if (options.start) {
-      options.start(event);
+      options.start(event)
     }
-  });
+  })
 }

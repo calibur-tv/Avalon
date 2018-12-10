@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "SearchNothingPost"
-};
+  name: 'SearchNothingPost'
+}
 </script>

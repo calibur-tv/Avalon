@@ -82,15 +82,15 @@
 
 <script>
 export default {
-  name: "ImageAlbumSelect",
+  name: 'ImageAlbumSelect',
   props: {
     placeholder: {
       type: String,
-      default: "选择一个相册"
+      default: '选择一个相册'
     },
     value: {
       type: [Number, String],
-      default: ""
+      default: ''
     },
     clear: {
       type: Boolean,
@@ -109,44 +109,44 @@ export default {
     return {
       selected: this.value,
       loading: false
-    };
+    }
   },
   computed: {
     albums() {
-      return this.$store.state.image.albums;
+      return this.$store.state.image.albums
     },
     selectionAlbum() {
       return this.filter
         ? this.filter(this.append.concat(this.albums))
-        : this.append.concat(this.albums);
+        : this.append.concat(this.albums)
     }
   },
   mounted() {
     if (!this.albums.length) {
-      this.getUserAlbum();
+      this.getUserAlbum()
     }
-    this.$watch("value", val => {
-      this.selected = val;
-    });
-    this.$watch("selected", val => {
-      this.$emit("input", val);
-      this.$emit("success", this.selectionAlbum.filter(_ => _.id === val)[0]);
-    });
+    this.$watch('value', val => {
+      this.selected = val
+    })
+    this.$watch('selected', val => {
+      this.$emit('input', val)
+      this.$emit('success', this.selectionAlbum.filter(_ => _.id === val)[0])
+    })
   },
   methods: {
     async getUserAlbum() {
       if (this.loading) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       try {
-        await this.$store.dispatch("image/userAlbum", {
+        await this.$store.dispatch('image/userAlbum', {
           ctx: this
-        });
+        })
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>

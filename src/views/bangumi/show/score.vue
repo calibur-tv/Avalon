@@ -147,22 +147,22 @@
 </template>
 
 <script>
-import BangumiScoreChart from "~/components/bangumi/charts/BangumiScoreChart";
-import ScoreFlowList from "~/components/flow/list/ScoreFlowList";
+import BangumiScoreChart from '~/components/bangumi/charts/BangumiScoreChart'
+import ScoreFlowList from '~/components/flow/list/ScoreFlowList'
 
 export default {
-  name: "BangumiScore",
+  name: 'BangumiScore',
   async asyncData({ store, route, ctx }) {
-    const id = route.params.id;
+    const id = route.params.id
     await Promise.all([
-      store.dispatch("bangumi/getBangumiScore", { ctx, id }),
-      store.dispatch("flow/initData", {
-        type: "score",
-        sort: "active",
+      store.dispatch('bangumi/getBangumiScore', { ctx, id }),
+      store.dispatch('flow/initData', {
+        type: 'score',
+        sort: 'active',
         bangumiId: id,
         ctx
       })
-    ]);
+    ])
   },
   components: {
     BangumiScoreChart,
@@ -170,20 +170,20 @@ export default {
   },
   computed: {
     info() {
-      return this.$store.state.bangumi.info;
+      return this.$store.state.bangumi.info
     },
     bangumiScore() {
-      return this.$store.state.bangumi.score;
+      return this.$store.state.bangumi.score
     },
     totalRate() {
-      return this.bangumiScore.total / 20;
+      return this.bangumiScore.total / 20
     },
     totalScore() {
-      return this.bangumiScore.total / 10;
+      return this.bangumiScore.total / 10
     },
     scores() {
-      return this.$store.state.flow.score.active;
+      return this.$store.state.flow.score.active
     }
   }
-};
+}
 </script>
