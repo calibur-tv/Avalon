@@ -1,5 +1,5 @@
 {
-  "src_dir"            :   "/Users/yuistack/Documents/calibur/Avalon/dist",
+  "src_dir"            :   "/Users/yuistack/Documents/calibur/Avalon/.nuxt/dist/client",
   "bucket"             :   "clannader",
   "overwrite"          :   true,
   "rescan_local"       :   true,
@@ -8,5 +8,6 @@
   "log_file"           :   "/Users/yuistack/Documents/calibur/Avalon/log/qiniu.log",
   "log_level"          :   "info",
   "log_stdout"         :   true,
-  "file_type"          :   0
+  "file_type"          :   0,
+  "host"               :   "https://static.calibur.tv/"
 }
