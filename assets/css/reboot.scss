@@ -1,0 +1,92 @@
+html, body, #__nuxt, #__layout {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: $color-text-deep;
+  font-size: $font-size;
+  overflow-x: hidden;
+  word-spacing: 1px;
+
+  *, *:before, *:after
+  {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  *:focus, *:active {
+    outline-width: 0;
+  }
+}
+
+ul, li {
+  list-style-type: none;
+}
+
+ul {
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+
+  &:before {
+    content: '';
+    clear: both;
+    display: table;
+  }
+}
+
+img {
+  color: transparent;
+  background-color: transparent;
+  border: 0;
+  width: 100%;
+  max-width: 100%;
+  display: inline-block;
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  font-size: inherit;
+  color: inherit;
+}
+
+input, textarea, div[contenteditable="true"] {
+  line-height: normal;
+}
+
+input {
+  vertical-align: middle;
+
+  &:-webkit-autofill {
+    box-shadow: 0 0 0 100px #fff inset !important;
+    background-color: #fff !important;
+  }
+}
+
+label[role="checkbox"], label[role="radio"] {
+  cursor: pointer;
+}
+
+::selection {
+  background-color: $color-pink-light;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: $color-pink-light;
+  color: #fff;
+}

@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 8.9.0
+  - 10.3.0
 
 cache:
   bundler: true
@@ -24,16 +24,6 @@ script:
   - yarn run test
 
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script:
-      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && npm run remove' &&
-      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && git pull' &&
-      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && yarn' &&
-      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && npm run staging' &&
-      ssh -p $PORT $USER@$STAGING_SERVER 'cd /var/www/www && pm2 startOrRestart pm2.config.js --env=staging'
-    on:
-      branch: master
   - provider: script
     skip_cleanup: true
     script:
