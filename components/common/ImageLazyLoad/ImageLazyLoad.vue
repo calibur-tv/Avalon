@@ -10,10 +10,6 @@ $placeholder-color: RGB(241, 243, 244);
     width: 100%;
     height: auto;
     display: block;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
   }
 
   &.avatar {
@@ -39,6 +35,14 @@ $placeholder-color: RGB(241, 243, 244);
     width: 100%;
     height: 100%;
     display: block;
+  }
+
+  &.retry {
+    cursor: pointer;
+
+    img {
+      display: none;
+    }
   }
 
   // padding-top 用 js 来计算
@@ -68,13 +72,71 @@ $placeholder-color: RGB(241, 243, 244);
     text-align: center;
   }
 
-  &.retry {
+  .load-gif {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
     cursor: pointer;
 
-    img {
-      display: none;
+    span {
+      color: #fff;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -25px;
+      margin-top: -25px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: solid 1px currentColor;
+      line-height: 48px;
+      text-align: center;
+      user-select: none;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: -1px;
+        top: 24px;
+        width: 50px;
+        height: 1px;
+        border-left: solid 5px currentColor;
+        border-right: solid 5px currentColor;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 24px;
+        top: -1px;
+        width: 1px;
+        height: 50px;
+        border-top: solid 5px currentColor;
+        border-bottom: solid 5px currentColor;
+      }
+    }
+
+    @include keyframes(rolling) {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .rolling:before,
+    .rolling:after {
+      animation: rolling 0.8s infinite linear;
     }
   }
+}
+
+.poster {
+  border-radius: 10%;
 }
 
 .css-blur .image-wrap {
@@ -86,17 +148,25 @@ $placeholder-color: RGB(241, 243, 244);
 }
 </style>
 
+<style lang="scss">
+.img-zoom-enter-active,
+.img-zoom-leave-active {
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.img-zoom-enter,
+.img-zoom-leave-active {
+  transform: scale(0);
+}
+</style>
+
 <template>
   <!-- block 模式，主要是富文本中的图片 -->
   <div
     v-if="full"
     :class="[
       $style.block, // block 的默认样式
-      {
-        [$style.cssFade]: !loaded && !blur, // 如果未加载，并且是默认（fade）动画
-        [$style.cssBlur]: !loaded && blur, // 如果未加载，并且是 blur 动画
-        [$style.retry]: error // 如果图片请求出错了，就展示 retry 的样式
-      }
+      blockModeClasses
     ]"
     :style="blockModeWrapStyle"
   >
@@ -122,6 +192,15 @@ $placeholder-color: RGB(241, 243, 244);
       :class="$style.message"
       v-text="retryMessage"
     />
+    <transition name="img-zoom">
+      <div
+        v-if="displayGifMask"
+        :class="$style.loadGif"
+        @click="clickToLoadGIF"
+      >
+        <span :class="{ [$style.rolling]: toggleClick }">GIF</span>
+      </div>
+    </transition>
   </div>
   <!-- inline 模式，主要是用户头像、横排图 -->
   <span
@@ -131,7 +210,8 @@ $placeholder-color: RGB(241, 243, 244);
       {
         [$style.cssFade]: !loaded && !blur, // 如果未加载，并且是默认（fade）动画
         [$style.cssBlur]: !loaded && blur, // 如果未加载，并且是 blur 动画
-        [$style.avatar]: avatar // 如果图片类型是头像，就添加样式为圆形
+        [$style.avatar]: avatar, // 如果图片类型是头像，就添加样式为圆形
+        [$style.poster]: poster
       }
     ]"
     :style="inlineModeWrapStyle"
@@ -139,6 +219,7 @@ $placeholder-color: RGB(241, 243, 244);
     <div :class="$style.imageWrap">
       <img
         :src="error ? errorPlaceholder : $isServer ? '' : loaded ? inlineModeImageSrc : computePlaceholder"
+        :style="inlineImageStyle"
         @error="handleImageLoadError"
       >
     </div>
@@ -180,6 +261,10 @@ export default {
       type: Boolean,
       default: false
     },
+    poster: {
+      type: Boolean,
+      default: false
+    },
     avatar: {
       type: Boolean,
       default: false
@@ -189,6 +274,8 @@ export default {
     return {
       loaded: false,
       error: false,
+      toggleClick: false,
+      displayGifMask: false,
       retrying: false,
       containerWidth: 0,
       placeholderImage: '',
@@ -209,15 +296,30 @@ export default {
        * 如果宽度大于父容器，我们使用了 max-width: 100% 来让它不会超出父容器，也就是缩放了图片宽度
        * 图片的高度在 computeContainerHeight 已经缩放过了
        * -----
-       * 因为服务端无法获得父容器的高度，所以 container 的 height 就设为 auto
-       * 设为 auto 的时候，高度通过一个内部元素的 padding 来撑起来
+       * container 的高度通过一个内部元素的 padding 来撑起来
        */
       return {
-        width: `${this.width}px`,
-        height: this.computeContainerHeight
-          ? `${this.computeContainerHeight}px`
-          : 'auto'
+        width: `${this.width}px`
       }
+    },
+    blockModeClasses() {
+      const result = []
+      if (this.error) {
+        result.push(this.$style.retry)
+      }
+      if (this.poster) {
+        result.pust(this.$style.poster)
+      }
+      if (!this.loaded) {
+        if (this.gifNeedClickToLoad) {
+          result.push(this.$style.cssGif)
+        } else if (this.blur) {
+          result.push(this.$style.cssBlur)
+        } else {
+          result.push(this.$style.cssFade)
+        }
+      }
+      return result
     },
     computeContainerHeight() {
       /**
@@ -239,7 +341,7 @@ export default {
        * block 模式下，在服务端无法获取父容器高度，因此要用 padding 来撑起懒加载区域
        */
       return {
-        paddingTop: `${(this.height / this.width) * 100}%`
+        paddingTop: `${parseFloat(this.height / this.width).toFixed(3) * 100}%`
       }
     },
     computePlaceholder() {
@@ -253,22 +355,26 @@ export default {
       }
       if (this.full) {
         const { width, height } = this.blockModeImageDisplaySize
+        const percent = this.gifNeedClickToLoad ? 0.5 : 3
         return this.$resize(this.src, {
-          width: parseInt(width / 3),
-          height: parseInt(height / 3)
+          width: parseInt(width / percent),
+          height: parseInt(height / percent),
+          format: 'png'
         })
       }
       return this.$resize(
         this.src,
         this.width === 'auto'
           ? {
-          height: parseInt(this.height / 3),
-          mode: 2
-        }
+              height: parseInt(this.height / 3),
+              mode: 2,
+              format: 'png'
+            }
           : {
-          width: parseInt(this.inlineModeImageDisplayWidth / 3),
-          height: parseInt(this.height / 3)
-        }
+              width: parseInt(this.inlineModeImageDisplayWidth / 3),
+              height: parseInt(this.height / 3),
+              format: 'png'
+            }
       )
     },
     inlineModeImageDisplayWidth() {
@@ -294,11 +400,32 @@ export default {
        * inline 模式下，传入的宽高值格式化后直接使用
        */
       return {
-        width: this.convertSizeToPx(this.width),
-        height: this.convertSizeToPx(this.height)
+        width: this.width ? this.convertSizeToPx(this.width) : 'auto',
+        height: this.height ? this.convertSizeToPx(this.height) : 'auto'
       }
     },
-    shouldClickToLoad() {
+    inlineImageStyle() {
+      if (this.width === 'auto') {
+        return {
+          height: '100%',
+          width: 'auto'
+        }
+      }
+      if (this.width && this.height) {
+        return {
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          '-webkit-transform': 'translate(-50%, -50%)'
+        }
+      }
+      return {}
+    },
+    gifNeedClickToLoad() {
+      /**
+       * GIF需要点击后再加载
+       */
       return !!(this.mime && /gif/i.test(this.mime))
     },
     blockModeImageDisplaySize() {
@@ -335,24 +462,28 @@ export default {
         this.src,
         this.width === 'auto'
           ? {
-          height: +this.height * 2,
-          mode: 2
-        }
+              height: +this.height * 2,
+              mode: 2
+            }
           : {
-          width: this.inlineModeImageDisplayWidth,
-          height: +this.height * 2
-        }
+              width: this.inlineModeImageDisplayWidth,
+              height: +this.height * 2
+            }
       )
     }
   },
   mounted() {
     // 获取父容器的宽度，如果父容器有 padding，就会有 bug
     this.containerWidth = this.$el.parentNode.offsetWidth
+    if (this.gifNeedClickToLoad) {
+      this.displayGifMask = true
+      return
+    }
     this.$nextTick(() => {
       if (
         !this.lazy ||
         window.__closeImageLazy__ ||
-        utils.checkInView(this.$el, 1)
+        utils.checkInView(this.$el)
       ) {
         this.loaded = true
       } else {
@@ -366,7 +497,7 @@ export default {
         document,
         'scroll',
         this.$utils.throttle(() => {
-          if (utils.checkInView(this.$el, 1)) {
+          if (utils.checkInView(this.$el)) {
             this.loaded = true
             utils.off(eventId)
           }
@@ -389,6 +520,9 @@ export default {
       )
     },
     convertSizeToPx(size) {
+      if (/auto/.test(size)) {
+        return size
+      }
       if (/px$/.test(size)) {
         return size
       }
@@ -400,6 +534,24 @@ export default {
     handleImageLoadSuccess() {
       this.error = false
       this.retrying = false
+      if (this.toggleClick) {
+        this.toggleClick = false
+        this.displayGifMask = false
+        this.bindStopGifEvent()
+      }
+    },
+    bindStopGifEvent() {
+      const eventId = utils.on(
+        this.$el,
+        'click',
+        e => {
+          this.displayGifMask = true
+          this.loaded = false
+          utils.off(eventId)
+          e.stopPropagation()
+        },
+        false
+      )
     },
     handleImageLoadError() {
       this.error = true
@@ -407,6 +559,13 @@ export default {
       if (this.full) {
         this.bindRetryEvent()
       }
+    },
+    clickToLoadGIF() {
+      if (this.toggleClick) {
+        return
+      }
+      this.toggleClick = true
+      this.loaded = true
     }
   }
 }
