@@ -166,7 +166,7 @@ module.exports = {
                 '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
               release: releaseTag,
               suppressErrors: !isDev,
-              deleteAfterCompile: true,
+              deleteAfterCompile: false,
               filenameTransform: filename => {
                 return `~/www/${filename}`
               }
