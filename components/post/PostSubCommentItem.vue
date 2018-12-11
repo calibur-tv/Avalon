@@ -62,7 +62,8 @@
     >
       <v-img
         :src="comment.from_user_avatar"
-        size="30"
+        :width="30"
+        :height="30"
         class="avatar"
       />
       <span

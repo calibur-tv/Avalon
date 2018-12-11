@@ -68,7 +68,8 @@
             <v-img
               :src="item.avatar"
               :lazy="false"
-              size="70"
+              :width="70"
+              :height="70"
               class="poster"
             />
             <figcaption class="intro">

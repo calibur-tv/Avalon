@@ -99,7 +99,8 @@
       >
         <v-img
           :src="item.user.avatar"
-          size="40"
+          :width="40"
+          :height="40"
         />
       </user-card>
       <div class="info">

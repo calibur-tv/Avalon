@@ -95,7 +95,8 @@
       >
         <v-img
           :src="item.user.avatar"
-          size="24"
+          :width="24"
+          :height="24"
         />
       </user-card>
       <a

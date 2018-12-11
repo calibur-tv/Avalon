@@ -58,7 +58,8 @@
   <div class="create-comment-form">
     <v-img
       :src="userAvatar"
-      size="48"
+      :width="48"
+      :height="48"
       class="avatar"
     />
     <div class="main-area">

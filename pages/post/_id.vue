@@ -268,7 +268,8 @@
                 :src="master.avatar"
                 :avatar="true"
                 :lazy="false"
-                size="80"
+                :width="80"
+                :height="80"
                 class="avatar"
               />
               <p

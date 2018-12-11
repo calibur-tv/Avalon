@@ -119,7 +119,8 @@
           <v-img
             :src="item.bangumi.avatar"
             :poster="true"
-            size="24"
+            :width="24"
+            :height="24"
           />
         </a>
       </el-tooltip>
