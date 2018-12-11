@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     choiceTags() {
-      if ((this.counter + 1) * this.display >= this.list.length) {
+      if ((this.counter + 1) * this.display >= this.bangumis.length) {
         this.counter = 0
       } else {
         this.counter++
