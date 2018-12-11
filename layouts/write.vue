@@ -117,7 +117,8 @@ $layout-width: 900px;
               <v-img
                 :src="user.avatar"
                 :avatar="true"
-                size="30"
+                :width="30"
+                :height="30"
               />
             </button>
           </el-tooltip>

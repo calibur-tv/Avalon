@@ -89,7 +89,7 @@ export default {
   props: {},
   computed: {
     id() {
-      return +(this.$route.params.id || 0)
+      return +(this.$route.query.id || 0)
     },
     sections() {
       return this.$store.state.editor.sections

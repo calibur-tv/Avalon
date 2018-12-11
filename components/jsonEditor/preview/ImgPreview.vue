@@ -39,6 +39,7 @@
           :src="item.url"
           :width="item.width"
           :height="item.height"
+          :blur="true"
           :full="true"
           :lazy="false"
         />

@@ -148,31 +148,29 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-      if (!isDev && !isClient) {
+      if (!isDev && isClient) {
         config.devtool = 'hidden-source-map'
       }
     },
     extractCSS: true,
     plugins: (() => {
-      const result = [
-        new LodashModuleReplacementPlugin({ shorthands: true }),
-        new SentryPlugin({
-          project: 'www-xt',
-          include: /\.js(\.map)?$/,
-          organisation: 'calibur',
-          token:
-            '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
-          release: releaseTag,
-          suppressErrors: !isDev,
-          deleteAfterCompile: true,
-          filenameTransform: filename => {
-            return `~/www/${filename}`
-          }
-        })
-      ]
+      const result = [new LodashModuleReplacementPlugin({ shorthands: true })]
       return isDev
         ? result.concat([])
         : result.concat([
+            new SentryPlugin({
+              project: 'www-xt',
+              include: /\.js(\.map)?$/,
+              organisation: 'calibur',
+              token:
+                '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
+              release: releaseTag,
+              suppressErrors: !isDev,
+              deleteAfterCompile: true,
+              filenameTransform: filename => {
+                return `~/www/${filename}`
+              }
+            }),
             new CompressionPlugin({
               test: /\.(js|css|html)$/
             }),
