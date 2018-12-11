@@ -148,6 +148,9 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      if (!isDev && !isClient) {
+        config.devtool = 'hidden-source-map'
+      }
     },
     extractCSS: true,
     plugins: (() => {
