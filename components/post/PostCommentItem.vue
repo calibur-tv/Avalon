@@ -159,6 +159,7 @@
             :src="img.url"
             :width="img.width"
             :height="img.height"
+            :mime="img.type"
             :blur="true"
             :full="true"
             class="image"

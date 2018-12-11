@@ -25,6 +25,7 @@
       :src="item.url"
       :width="item.width"
       :height="item.height"
+      :mime="item.type"
       :blur="true"
       :full="true"
     />
