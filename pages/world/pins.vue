@@ -83,6 +83,7 @@
         slot-scope="{ flow }"
         :list="flow"
       />
+      <no-content slot="nothing"/>
     </flow-list>
   </div>
 </template>

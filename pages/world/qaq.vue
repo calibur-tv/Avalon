@@ -66,6 +66,7 @@
           :item="item"
         />
       </ul>
+      <no-content slot="nothing"/>
     </flow-list>
   </div>
 </template>

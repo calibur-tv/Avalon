@@ -11,7 +11,7 @@
         :list="flow"
         :user-zone="user.zone"
       />
-
+      <no-content slot="nothing"/>
     </flow-list>
   </div>
 </template>

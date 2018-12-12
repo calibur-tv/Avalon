@@ -37,6 +37,7 @@
           :item="item"
         />
       </ul>
+      <no-content slot="nothing"/>
     </flow-list>
     <flow-list
       v-else
@@ -53,6 +54,7 @@
           :item="item"
         />
       </ul>
+      <no-content slot="nothing"/>
     </flow-list>
   </div>
 </template>

@@ -13,6 +13,7 @@
         :user-zone="user.zone"
       />
     </ul>
+    <no-content slot="nothing"/>
   </flow-list>
 </template>
 
