@@ -48,6 +48,7 @@
     border-radius: 5px;
     margin-right: 10px;
     border: 1px solid $color-gray-normal;
+    font-size: 0;
   }
 
   .summary {

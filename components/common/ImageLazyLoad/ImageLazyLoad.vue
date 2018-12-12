@@ -7,8 +7,6 @@ $placeholder-color: RGB(241, 243, 244);
   display: inline-block;
 
   img {
-    width: 100%;
-    height: auto;
     display: block;
   }
 
@@ -411,13 +409,16 @@ export default {
           width: 'auto'
         }
       }
+      const widthBiggerHeight = this.width > this.height
       if (this.width && this.height) {
         return {
           position: 'absolute',
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          '-webkit-transform': 'translate(-50%, -50%)'
+          '-webkit-transform': 'translate(-50%, -50%)',
+          width: widthBiggerHeight ? 'auto' : '100%',
+          height: widthBiggerHeight ? '100%' : 'auto'
         }
       }
       return {}
