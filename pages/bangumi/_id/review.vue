@@ -103,7 +103,7 @@
           >
             <span class="label">{{ star.key }}星</span>
             <div
-              :style="{ width: `${118 * star.val / bangumiScore.count}px` }"
+              :style="{ width: `${100 * star.val / bangumiScore.count}px` }"
               class="score"
             />
             <span

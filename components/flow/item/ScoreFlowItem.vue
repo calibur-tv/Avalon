@@ -197,7 +197,7 @@ export default {
       type: Object
     },
     bangumiId: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     userZone: {
