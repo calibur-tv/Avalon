@@ -3,6 +3,8 @@
   #bangumi-score-panel {
     .bangumi-score-wrap {
       border-right: 1px solid $color-gray-normal;
+      width: 417px;
+      height: 300px;
     }
 
     .bangumi-score-total {

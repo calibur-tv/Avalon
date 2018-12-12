@@ -2,7 +2,7 @@
   <not-ssr :style="{ height: size }">
     <ve-radar
       :data="chartData"
-      :setting="chartSettings"
+      :settings="chartSettings"
       :extend="chartExtend"
       :loading="loading"
       :width="size"
