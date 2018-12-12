@@ -102,7 +102,7 @@ export default {
     if (!this.$cookie.get('display-first-sign-dialog')) {
       try {
         if (!localStorage.getItem('display-first-sign-dialog')) {
-          this.show = true
+          this.show = false // 永远不展示了
           this.$cookie.set('display-first-sign-dialog', 1, {
             expires: 7
           })

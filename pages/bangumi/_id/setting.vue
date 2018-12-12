@@ -124,6 +124,7 @@ import BangumiPostSetting from '~/components/bangumi/forms/BangumiPostSetting'
 import UploadImageForm from '~/components/image/UploadImageForm'
 import CreateAlbumForm from '~/components/image/CreateAlbumForm'
 import ImageAlbumSelect from '~/components/image/ImageAlbumSelect'
+import { Collapse, CollapseItem } from 'element-ui'
 
 export default {
   name: 'BangumiSetting',
@@ -133,7 +134,9 @@ export default {
     BangumiPostSetting,
     UploadImageForm,
     CreateAlbumForm,
-    ImageAlbumSelect
+    ImageAlbumSelect,
+    'el-collapse': Collapse,
+    'el-collapse-item': CollapseItem
   },
   props: {
     id: {
