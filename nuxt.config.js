@@ -7,6 +7,8 @@ const CompressionPlugin = require('compression-webpack-plugin')
 const BrotliPlugin = require('brotli-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const injectScript = require('./.script')
+const SentryPlugin = require('./assets/js/webpack.sentry.plugin.js')
+const releaseTag = new Date().toLocaleString()
 
 module.exports = {
   mode: 'universal',
@@ -16,7 +18,7 @@ module.exports = {
       ? 'http://localhost:3099/'
       : 'https://api.calibur.tv/',
     SENTRY_URL: 'https://c89b4ce2cfbf44e3bab148e0b7fa31df@sentry.io/1243412',
-    RELEASE: new Date().toLocaleString()
+    RELEASE: releaseTag
   },
   /*
   ** Headers of the page
@@ -146,6 +148,9 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      if (!isDev && isClient) {
+        config.devtool = 'hidden-source-map'
+      }
     },
     extractCSS: true,
     plugins: (() => {
@@ -153,6 +158,19 @@ module.exports = {
       return isDev
         ? result.concat([])
         : result.concat([
+            new SentryPlugin({
+              project: 'www-xt',
+              include: /\.js(\.map)?$/,
+              organisation: 'calibur',
+              token:
+                '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
+              release: releaseTag,
+              suppressErrors: !isDev,
+              deleteAfterCompile: false,
+              filenameTransform: filename => {
+                return `~/www/${filename}`
+              }
+            }),
             new CompressionPlugin({
               test: /\.(js|css|html)$/
             }),

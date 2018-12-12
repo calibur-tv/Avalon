@@ -224,7 +224,8 @@
         <v-img
           :src="item.user.avatar"
           :avatar="true"
-          :size="32"
+          :width="32"
+          :height="32"
         />
       </user-card>
       <el-tooltip
@@ -241,7 +242,8 @@
           <v-img
             :src="item.bangumi.avatar"
             :poster="true"
-            size="24"
+            :width="24"
+            :height="24"
           />
         </a>
       </el-tooltip>

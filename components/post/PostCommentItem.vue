@@ -114,7 +114,8 @@
         <v-img
           :src="post.from_user_avatar"
           :avatar="true"
-          size="80"
+          :width="80"
+          :height="80"
           class="avatar"
         />
         <p
@@ -158,6 +159,7 @@
             :src="img.url"
             :width="img.width"
             :height="img.height"
+            :mime="img.type"
             :blur="true"
             :full="true"
             class="image"

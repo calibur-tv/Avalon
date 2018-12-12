@@ -1,7 +1,7 @@
 export default err => {
   if (/timeout of/.test(err.message)) {
     err.statusCode = 504
-    err.message = '网路请求超时，请稍候再试！'
+    err.message = '网络请求超时，请稍候再试！'
     return err
   }
   if (!err.response) {

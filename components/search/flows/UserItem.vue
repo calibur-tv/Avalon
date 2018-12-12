@@ -61,7 +61,8 @@
       <v-img
         :src="item.avatar"
         :avatar="true"
-        size="90"
+        :width="90"
+        :height="90"
       />
     </a>
     <div class="intro">

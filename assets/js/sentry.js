@@ -19,8 +19,19 @@ export default new class {
         environment: this.env,
         whitelistUrls: [/calibur\.tv/],
         ignoreUrls: [/^file:\/\//],
+        shouldSendCallback(data) {
+          let shouldSend = true
+          try {
+            const exception = data.exception.values[0]
+            shouldSend = exception.stacktrace.frames.length > 1
+          } catch (e) {
+            shouldSend = false
+          }
+          return shouldSend
+        },
         ignoreErrors: [
-          'Uncaught TypeError: value.hasOwnProperty is not a function'
+          'Uncaught TypeError: value.hasOwnProperty is not a function',
+          /网络/
         ]
       })
         .addPlugin(RavenVue, Vue)
@@ -102,5 +113,21 @@ export default new class {
       Raven.setExtraContext()
       Raven.setExtraContext(extra)
     } catch (e) {}
+  }
+
+  test() {
+    try {
+      const dom = undefined
+      const rect = dom.getBoundingClientRect()
+      return (
+        rect.top < window.innerHeight &&
+        rect.bottom > 0 &&
+        (rect.left < window.innerWidth && rect.right > 0)
+      )
+    } catch (e) {
+      e.message = '---------- test sentry report ----------'
+      console.log(e)
+      Raven.captureException(e)
+    }
   }
 }()

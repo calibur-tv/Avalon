@@ -116,7 +116,8 @@
         >
           <v-img
             :src="item.user.avatar"
-            size="30"
+            :width="30"
+            :height="30"
             class="user-avatar"
           />
           <span
@@ -131,7 +132,8 @@
         >
           <v-img
             :src="item.bangumi.avatar"
-            size="30"
+            :width="30"
+            :heighr="30"
             class="bangumi-avatar"
           />
           <span
