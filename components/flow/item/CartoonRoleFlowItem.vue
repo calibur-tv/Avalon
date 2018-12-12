@@ -48,6 +48,7 @@
     border-radius: 5px;
     margin-right: 10px;
     border: 1px solid $color-gray-normal;
+    font-size: 0;
   }
 
   .summary {
@@ -123,7 +124,8 @@
       <v-img
         :src="item.avatar"
         :blur="true"
-        size="98"
+        :width="98"
+        :height="98"
       />
     </a>
     <div class="summary">
@@ -150,7 +152,8 @@
           <span v-text="item.lover.nickname"/>
           <v-img
             :src="item.lover.avatar"
-            size="20"
+            :width="20"
+            :height="20"
             class="image"
           />
         </user-card>

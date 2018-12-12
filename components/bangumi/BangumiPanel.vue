@@ -22,6 +22,7 @@
     color: #333;
     font-size: 16px;
     font-weight: 600;
+    text-align: center;
     @include twoline(18px);
   }
 
@@ -50,7 +51,8 @@
         :class="$style.avatar"
         :src="avatar"
         :poster="true"
-        size="90"
+        :width="90"
+        :height="90"
       />
     </a>
     <a

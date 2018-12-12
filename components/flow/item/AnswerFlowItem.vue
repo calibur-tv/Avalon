@@ -47,6 +47,10 @@
     }
   }
 
+  .answer-content {
+    margin-bottom: 40px;
+  }
+
   .answer-footer {
     position: absolute;
     left: 0;
@@ -95,7 +99,8 @@
       >
         <v-img
           :src="item.user.avatar"
-          size="40"
+          :width="40"
+          :height="40"
         />
       </user-card>
       <div class="info">
@@ -155,7 +160,6 @@
         :score="item.voted"
         :author-id="item.user.id"
         type="answer"
-        @vote="handleVoted"
       />
       <el-button
         type="text"
@@ -259,12 +263,6 @@ export default {
     }
   },
   methods: {
-    handleVoted(result) {
-      this.$store.commit('question/TOGGLE_ANSWER_VOTE', {
-        id: this.item.id,
-        data: result
-      })
-    },
     loadAnswerComment() {
       this.showCommentModal = true
       this.$nextTick(() => {

@@ -268,7 +268,8 @@
                 :src="master.avatar"
                 :avatar="true"
                 :lazy="false"
-                size="80"
+                :width="80"
+                :height="80"
                 class="avatar"
               />
               <p
@@ -288,6 +289,7 @@
                   :src="img.url"
                   :width="img.width"
                   :height="img.height"
+                  :mime="img.type"
                   :blur="true"
                   :full="true"
                   class="image"

@@ -3,6 +3,8 @@
   #bangumi-score-panel {
     .bangumi-score-wrap {
       border-right: 1px solid $color-gray-normal;
+      width: 417px;
+      height: 300px;
     }
 
     .bangumi-score-total {
@@ -103,7 +105,7 @@
           >
             <span class="label">{{ star.key }}星</span>
             <div
-              :style="{ width: `${118 * star.val / bangumiScore.count}px` }"
+              :style="{ width: `${100 * star.val / bangumiScore.count}px` }"
               class="score"
             />
             <span

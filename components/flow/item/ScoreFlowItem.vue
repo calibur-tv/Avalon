@@ -116,7 +116,8 @@
         >
           <v-img
             :src="item.user.avatar"
-            size="30"
+            :width="30"
+            :height="30"
             class="user-avatar"
           />
           <span
@@ -131,7 +132,8 @@
         >
           <v-img
             :src="item.bangumi.avatar"
-            size="30"
+            :width="30"
+            :heighr="30"
             class="bangumi-avatar"
           />
           <span
@@ -195,7 +197,7 @@ export default {
       type: Object
     },
     bangumiId: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     userZone: {

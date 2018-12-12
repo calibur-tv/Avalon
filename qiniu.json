@@ -3,7 +3,7 @@
   "bucket"             :   "clannader",
   "overwrite"          :   true,
   "rescan_local"       :   true,
-  "skip_suffixes"      :   ".DS_Store",
+  "skip_suffixes"      :   ".DS_Store,.map",
   "key_prefix"         :   "www/",
   "log_file"           :   "/Users/yuistack/Documents/calibur/Avalon/log/qiniu.log",
   "log_level"          :   "info",

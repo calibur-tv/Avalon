@@ -31,16 +31,16 @@
 <template>
   <div class="vote-button">
     <button
-      :class="{ 'active': score > 0 }"
+      :class="{ 'active': votedScore > 0 }"
       class="vote-btn vote-up"
       @click="voteAction(true)"
     >
       <i class="el-icon-caret-top"/>
       赞同
-      {{ total }}
+      {{ totalVote }}
     </button>
     <button
-      :class="{ 'active': score < 0 }"
+      :class="{ 'active': votedScore < 0 }"
       class="vote-btn vote-down"
       @click="voteAction(false)"
     >
@@ -83,7 +83,9 @@ export default {
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      totalVote: this.total,
+      votedScore: this.score
     }
   },
   computed: {
@@ -112,13 +114,14 @@ export default {
       }
       this.loading = true
       try {
-        const result = await vote({
+        const data = await vote({
           ctx: this,
           type: this.type,
           id: this.id,
           is_agree
         })
-        this.$emit('vote', result)
+        this.totalVote = data.total
+        this.votedScore = data.result
       } catch (e) {
         this.$toast.error(e)
       } finally {

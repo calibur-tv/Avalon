@@ -96,7 +96,8 @@
           >
             <v-img
               :src="user.avatar"
-              :size="55"
+              :width="55"
+              :height="55"
               :lazy="false"
             />
           </a>
