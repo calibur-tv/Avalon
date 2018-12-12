@@ -30,7 +30,8 @@ export default new class {
           return shouldSend
         },
         ignoreErrors: [
-          'Uncaught TypeError: value.hasOwnProperty is not a function'
+          'Uncaught TypeError: value.hasOwnProperty is not a function',
+          /网络/
         ]
       })
         .addPlugin(RavenVue, Vue)
