@@ -26,6 +26,7 @@
 <script>
 export default {
   name: 'AuthSuccess',
+  layout: 'empty',
   data() {
     return {
       timer: 5
@@ -37,6 +38,9 @@ export default {
     }
   },
   mounted() {
+    this.$cookie.set('JWT-TOKEN', this.$route.query.token, {
+      expires: 365
+    })
     setInterval(() => {
       if (this.timer === 1) {
         window.location = 'https://www.calibur.tv'

@@ -26,6 +26,7 @@
 <script>
 export default {
   name: 'AuthRedirect',
+  layout: 'empty',
   data() {
     return {
       timer: 5
