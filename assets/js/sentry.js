@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import Raven from 'raven-js'
-import RavenVue from 'raven-js/plugins/vue'
+import * as Sentry from '@sentry/browser'
 
 export default new class {
   constructor() {
@@ -14,7 +13,8 @@ export default new class {
 
   init() {
     try {
-      Raven.config(this.url, {
+      Sentry.init({
+        dsn: this.url,
         release: this.version,
         environment: this.env,
         whitelistUrls: [/calibur\.tv/],
@@ -32,11 +32,11 @@ export default new class {
         ignoreErrors: [
           'Uncaught TypeError: value.hasOwnProperty is not a function',
           /网络/
-        ]
+        ],
+        integrations: [new Sentry.Integrations.Vue({ Vue })]
       })
-        .addPlugin(RavenVue, Vue)
-        .install()
-      return Raven
+
+      return Sentry
     } catch (e) {
       return null
     }
@@ -44,7 +44,7 @@ export default new class {
 
   setPageInfo(pageName, abTest = 0) {
     try {
-      Raven.setTagsContext({
+      this.Raven.setTagsContext({
         pageName,
         abTest
       })
@@ -53,7 +53,7 @@ export default new class {
 
   setExtrasData({ requestId, viaId } = {}) {
     try {
-      Raven.setTagsContext({
+      this.Raven.setTagsContext({
         'Request-Id': requestId || 'none',
         'Via-Id': viaId || 'none',
         'First-Referrer-Host': document.referrer.split('?')[0] || 'none'
@@ -66,13 +66,13 @@ export default new class {
       return
     }
     try {
-      Raven.setUserContext(user)
+      this.Raven.setUserContext(user)
     } catch (e) {}
   }
 
   setResponseStack(obj) {
     try {
-      const context = Raven.getContext()
+      const context = this.Raven.getContext()
       const extra = { ...context.extra }
       extra['Response-Stack']
         ? extra['Response-Stack'].unshift(obj)
@@ -80,14 +80,14 @@ export default new class {
       if (extra['Response-Stack'].length > 5) {
         extra['Response-Stack'].pop()
       }
-      Raven.setExtraContext()
-      Raven.setExtraContext(extra)
+      this.Raven.setExtraContext()
+      this.Raven.setExtraContext(extra)
     } catch (e) {}
   }
 
   setPageViewStack(url) {
     try {
-      const context = Raven.getContext()
+      const context = this.Raven.getContext()
       const extra = { ...context.extra }
       extra['PageView-Stack']
         ? extra['PageView-Stack'].unshift(url)
@@ -95,14 +95,14 @@ export default new class {
       if (extra['PageView-Stack'].length > 5) {
         extra['PageView-Stack'].pop()
       }
-      Raven.setExtraContext()
-      Raven.setExtraContext(extra)
+      this.Raven.setExtraContext()
+      this.Raven.setExtraContext(extra)
     } catch (e) {}
   }
 
   setRequestStack(obj) {
     try {
-      const context = Raven.getContext()
+      const context = this.Raven.getContext()
       const extra = { ...context.extra }
       extra['Request-Stack']
         ? extra['Request-Stack'].unshift(obj)
@@ -110,8 +110,8 @@ export default new class {
       if (extra['Request-Stack'].length > 5) {
         extra['Request-Stack'].pop()
       }
-      Raven.setExtraContext()
-      Raven.setExtraContext(extra)
+      this.Raven.setExtraContext()
+      this.Raven.setExtraContext(extra)
     } catch (e) {}
   }
 
@@ -126,8 +126,7 @@ export default new class {
       )
     } catch (e) {
       e.message = '---------- test sentry report ----------'
-      console.log(e)
-      Raven.captureException(e)
+      this.Raven.captureException(e)
     }
   }
 }()
