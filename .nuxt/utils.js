@@ -122,14 +122,14 @@ export async function setContext(app, context) {
   if (!app.context) {
     app.context = {
       isStatic: process.static,
-      isDev: true,
+      isDev: false,
       isHMR: false,
       app,
       store: app.store,
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"API_URL":"http://localhost:3099/","API_URL_BROWSER":"http://localhost:3099/","SENTRY_URL":"https://c89b4ce2cfbf44e3bab148e0b7fa31df@sentry.io/1243412","RELEASE":"2018-12-12 20:31:18"}
+      env: {"API_URL":"http://localhost/","API_URL_BROWSER":"https://api.calibur.tv/","SENTRY_URL":"https://c89b4ce2cfbf44e3bab148e0b7fa31df@sentry.io/1243412","RELEASE":"2018-12-13 10:03:45"}
     }
     // Only set once
     if (context.req) app.context.req = context.req
@@ -209,9 +209,6 @@ export function middlewareSeries(promises, appContext) {
 export function promisify(fn, context) {
   let promise
   if (fn.length === 2) {
-      console.warn('Callback-based asyncData, fetch or middleware calls are deprecated. ' +
-        'Please switch to promises or async/await syntax')
-
     // fn(context, callback)
     promise = new Promise((resolve) => {
       fn(context, function (err, data) {
