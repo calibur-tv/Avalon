@@ -81,6 +81,7 @@
           </a>
         </li>
       </ul>
+      <no-content slot="nothing"/>
     </flow-list>
   </div>
 </template>

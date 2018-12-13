@@ -123,6 +123,7 @@
           />
         </li>
       </ul>
+      <no-content slot="nothing"/>
     </flow-list>
     <flow-list
       v-else-if="active === '回答'"
@@ -153,6 +154,7 @@
           />
         </li>
       </ul>
+      <no-content slot="nothing"/>
     </flow-list>
   </div>
 </template>

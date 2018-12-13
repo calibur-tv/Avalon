@@ -2,10 +2,10 @@
 #user-post {
   .posts-of-mine {
     margin-left: 10px;
+  }
 
-    #no-content {
-      margin-left: -10px;
-    }
+  #no-content {
+    margin-top: 25px;
   }
 
   .posts-of-reply {
@@ -43,6 +43,7 @@
             :item="item"
           />
         </ul>
+        <no-content slot="nothing"/>
       </flow-list>
     </div>
     <div
@@ -63,6 +64,7 @@
             :item="item"
           />
         </ul>
+        <no-content slot="nothing"/>
       </flow-list>
     </div>
   </div>
