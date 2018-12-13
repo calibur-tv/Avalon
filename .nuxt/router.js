@@ -15,6 +15,9 @@ const _5b2fdcf2 = () => interopDefault(import('../pages/world/review.vue' /* web
 const _2f0f1563 = () => interopDefault(import('../pages/about/hello.vue' /* webpackChunkName: "pages/about/hello" */))
 const _59ec0df0 = () => interopDefault(import('../pages/about/thanks.vue' /* webpackChunkName: "pages/about/thanks" */))
 const _154c64b3 = () => interopDefault(import('../pages/app/download.vue' /* webpackChunkName: "pages/app/download" */))
+const _5adf79c0 = () => interopDefault(import('../pages/callback/auth-error.vue' /* webpackChunkName: "pages/callback/auth-error" */))
+const _37c80f54 = () => interopDefault(import('../pages/callback/auth-redirect.vue' /* webpackChunkName: "pages/callback/auth-redirect" */))
+const _5978aa3b = () => interopDefault(import('../pages/callback/auth-success.vue' /* webpackChunkName: "pages/callback/auth-success" */))
 const _265fccce = () => interopDefault(import('../pages/dev/sitemap.vue' /* webpackChunkName: "pages/dev/sitemap" */))
 const _2034def8 = () => interopDefault(import('../pages/error/404.vue' /* webpackChunkName: "pages/error/404" */))
 const _497f4634 = () => interopDefault(import('../pages/review/create.vue' /* webpackChunkName: "pages/review/create" */))
@@ -172,6 +175,21 @@ export function createRouter() {
       component: _154c64b3,
       props: false,
       name: "app-download"
+    }, {
+      path: "/callback/auth-error",
+      component: _5adf79c0,
+      props: false,
+      name: "callback-auth-error"
+    }, {
+      path: "/callback/auth-redirect",
+      component: _37c80f54,
+      props: false,
+      name: "callback-auth-redirect"
+    }, {
+      path: "/callback/auth-success",
+      component: _5978aa3b,
+      props: false,
+      name: "callback-auth-success"
     }, {
       path: "/dev/sitemap",
       component: _265fccce,
