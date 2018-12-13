@@ -164,29 +164,13 @@ export default {
       return this.store.total
     }
   },
-  created() {
-    if (this.$isServer) {
-      return
-    }
-    if (this.lazy) {
-      const { query } = this.$route
-      this.$store.dispatch('comment/getMainComments', {
-        id: this.id,
-        type: this.type,
-        seeReplyId: query['comment-id'],
-        onlySeeMaster: query.only ? (parseInt(query.only, 10) ? 1 : 0) : 0
-      })
-    }
-  },
   mounted() {
     if (this.auto) {
       this.$channel.$on(`fire-load-comment-${this.type}-${this.id}`, () => {
         this.loadMore(true)
       })
     }
-    this.$nextTick(() => {
-      this.scrollToReply()
-    })
+    this.lazyLoadComment()
   },
   methods: {
     async loadMore(firstRequest = false) {
@@ -207,6 +191,24 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async lazyLoadComment() {
+      if (!this.lazy) {
+        this.$nextTick(() => {
+          this.scrollToReply()
+        })
+        return
+      }
+      const { query } = this.$route
+      await this.$store.dispatch('comment/getMainComments', {
+        id: this.id,
+        type: this.type,
+        seeReplyId: query['comment-id'],
+        onlySeeMaster: query.only ? (parseInt(query.only, 10) ? 1 : 0) : 0
+      })
+      this.$nextTick(() => {
+        this.scrollToReply()
+      })
     },
     scrollToReply() {
       const replyId = this.$route.query['comment-id']

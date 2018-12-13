@@ -13,11 +13,11 @@ const releaseTag = new Date().toLocaleString()
 module.exports = {
   mode: 'universal',
   env: {
-    API_URL: isDev ? 'http://localhost:3099/' : 'http://localhost/',
+    API_URL: isDev ? 'http://118.24.118.98:8081/' : 'http://localhost/',
     API_URL_BROWSER: isDev
-      ? 'http://localhost:3099/'
+      ? 'http://118.24.118.98:8081/'
       : 'https://api.calibur.tv/',
-    SENTRY_URL: 'https://c89b4ce2cfbf44e3bab148e0b7fa31df@sentry.io/1243412',
+    SENTRY_URL: 'https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871',
     RELEASE: releaseTag
   },
   /*
