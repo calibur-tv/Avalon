@@ -171,7 +171,7 @@ export default {
       },
       loading: false,
       watchPwd: false,
-      showOAuth: false
+      showOAuth: true
     }
   },
   methods: {

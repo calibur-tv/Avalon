@@ -24,6 +24,7 @@
 <script>
 export default {
   name: 'AuthError',
+  layout: 'empty',
   computed: {
     message() {
       return this.$route.query.message
