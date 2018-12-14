@@ -11,7 +11,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 0;
+    z-index: 20;
     opacity: 0;
     transition: opacity 1s ease-in-out;
 
@@ -24,6 +24,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 20;
     transform: translate(-50%, -50%);
 
     .slogan {
@@ -99,6 +100,7 @@
     right: 8px;
     border-radius: 4px;
     background-color: rgba(#000, 0.4);
+    z-index: 20;
 
     .avatar {
       display: block;
