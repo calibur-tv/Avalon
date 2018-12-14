@@ -353,7 +353,7 @@ export default {
       }
       if (this.full) {
         const { width, height } = this.blockModeImageDisplaySize
-        const percent = this.gifNeedClickToLoad ? 0.5 : 3
+        const percent = this.gifNeedClickToLoad ? 0.5 : 5
         return this.$resize(this.src, {
           width: parseInt(width / percent),
           height: parseInt(height / percent),
@@ -364,13 +364,13 @@ export default {
         this.src,
         this.width === 'auto'
           ? {
-              height: parseInt(this.height / 3),
+              height: parseInt(this.height / 5),
               mode: 2,
               format: 'png'
             }
           : {
-              width: parseInt(this.inlineModeImageDisplayWidth / 3),
-              height: parseInt(this.height / 3),
+              width: parseInt(this.inlineModeImageDisplayWidth / 5),
+              height: parseInt(this.height / 5),
               format: 'png'
             }
       )
