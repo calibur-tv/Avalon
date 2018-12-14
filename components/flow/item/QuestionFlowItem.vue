@@ -162,18 +162,18 @@
       </a>
       <span class="stats">
         <i class="el-icon-edit"/>
-        {{ item.answer_count ? item.answer_count + ' 个回答' : '还没有回答' }}
+        {{ item.answer_count ? item.answer_count + '个回答' : '还没有回答' }}
       </span>
       <span class="stats">
-        <i class="iconfont icon-pinglun1"/>
-        {{ item.comment_count ? item.comment_count + ' 条评论' : '还没有评论' }}
+        <i class="iconfont icon-talk"/>
+        {{ item.comment_count ? item.comment_count + '条评论' : '还没有评论' }}
       </span>
       <span
         v-if="item.follow_count"
         class="stats"
       >
-        <i class="iconfont icon-buoumaotubiao44"/>
-        {{ item.follow_count }} 人关注
+        <i class="iconfont icon-mark"/>
+        {{ item.follow_count }}人关注
       </span>
       <v-share
         :url="item.answer ? $alias.answer(item.answer.id) : $alias.question(item.id)"
