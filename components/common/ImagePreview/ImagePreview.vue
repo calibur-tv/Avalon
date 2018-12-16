@@ -239,7 +239,7 @@ export default {
       if (!this.total) {
         return
       }
-      const target = e.target
+      const target = e.target || e.currentTarget
       const isIMG = target.tagName.toLowerCase() === 'img'
       if (!this.query && !isIMG) {
         return
