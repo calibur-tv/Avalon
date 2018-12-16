@@ -354,6 +354,10 @@ export default {
       this.$toast.error(`一次最多可上传 ${this.exceed} 张图片!`)
     },
     submitManyImage() {
+      if (this.form.images.some(_ => _.status !== 'success')) {
+        this.$toast.warn('请等待所有图片上传成功')
+        return
+      }
       this.$refs.form.validate(valid => {
         if (valid) {
           if (this.submitting) {
