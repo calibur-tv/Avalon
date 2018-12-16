@@ -8,7 +8,8 @@ const defaultListObj = {
   nothing: false,
   loading: false,
   error: false,
-  init: false
+  init: false,
+  total: 0
 }
 
 export const state = () => ({})
@@ -171,6 +172,7 @@ export const mutations = {
       : state.type === 'seenIds'
         ? data.length === 0
         : data.length < count
+    state[fieldName].total = data.total || 0
     state[fieldName].loading = false
     state[fieldName].error = false
   }
