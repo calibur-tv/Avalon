@@ -144,6 +144,7 @@ export default {
       return (
         this.state === 'focus' &&
         this.showSuggestion &&
+        this.word &&
         this.word.length &&
         this.typing &&
         this.filteredSelect.length

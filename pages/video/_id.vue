@@ -281,8 +281,9 @@ export default {
     },
     nextPartVideo() {
       let nextId = 0
+      const currentId = +this.id
       this.videos.forEach((video, index) => {
-        if (video.id === this.id && index !== this.videos.length - 1) {
+        if (video.id === currentId && index !== this.videos.length - 1) {
           nextId = this.videos[index + 1].id
         }
       })
