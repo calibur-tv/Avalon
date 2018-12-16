@@ -18,7 +18,10 @@
 
 <template>
   <div id="bangumi-cartoon-flow">
-    <div class="header">
+    <div
+      v-if="source && source.total"
+      class="header"
+    >
       <strong class="total">共 {{ source.total }} 集</strong>
       <el-select
         v-model="selectedSort"
