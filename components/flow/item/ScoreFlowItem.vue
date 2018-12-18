@@ -27,10 +27,6 @@
         margin-right: 8px;
       }
 
-      .user-avatar {
-        @extend %avatar;
-      }
-
       .bangumi-avatar {
         border-radius: 3px;
         border: 1px solid #e5e9ef;
@@ -125,6 +121,7 @@
             :src="item.user.avatar"
             :width="30"
             :height="30"
+            :avatar="true"
             class="user-avatar"
           />
           <span

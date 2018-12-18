@@ -12,12 +12,6 @@
   }
 }
 
-%avatar {
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid #e5e9ef;
-}
-
 @mixin iconfont($size: 16px) {
   font-family: "iconfont" !important;
   font-size: $size;

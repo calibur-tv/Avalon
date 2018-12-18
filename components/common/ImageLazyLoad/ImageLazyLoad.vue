@@ -18,7 +18,6 @@ $placeholder-color: RGB(241, 243, 244);
     width: 100%;
     height: 100%;
     transition: 1s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-    background-color: $placeholder-color;
   }
 }
 

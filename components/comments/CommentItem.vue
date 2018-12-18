@@ -12,6 +12,7 @@
 
     .avatar {
       margin-top: 22px;
+      margin-left: 5px;
     }
   }
 
