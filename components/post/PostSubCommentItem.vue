@@ -24,7 +24,6 @@
     margin-right: 10px;
     vertical-align: middle;
     display: inline-block;
-    @extend %avatar;
   }
 
   .reply-area {
@@ -64,6 +63,7 @@
         :src="comment.from_user_avatar"
         :width="30"
         :height="30"
+        :avatar="true"
         class="avatar"
       />
       <span

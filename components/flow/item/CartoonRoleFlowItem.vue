@@ -83,7 +83,6 @@
         display: inline-block;
         vertical-align: middle;
         margin-left: 10px;
-        @extend %avatar;
       }
     }
   }
@@ -154,6 +153,7 @@
             :src="item.lover.avatar"
             :width="20"
             :height="20"
+            :avatar="true"
             class="image"
           />
         </user-card>

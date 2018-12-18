@@ -105,8 +105,8 @@ export default {
     }
   },
   methods: {
-    async handleSortSwitch(item) {
-      await this.$store.dispatch('flow/initData', {
+    handleSortSwitch(item) {
+      this.$store.dispatch('flow/initData', {
         id: this.id,
         func: 'getBangumiCartoon',
         type: 'page',

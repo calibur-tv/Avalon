@@ -6,7 +6,6 @@
   .avatar {
     float: left;
     margin: 7px 32px 0 5px;
-    @extend %avatar;
   }
 
   .main-area {
@@ -60,6 +59,7 @@
       :src="userAvatar"
       :width="48"
       :height="48"
+      :avatar="true"
       class="avatar"
     />
     <div class="main-area">
