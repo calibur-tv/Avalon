@@ -3,8 +3,6 @@ module.exports = {
     {
       name: 'Baka',
       script: './server/index.js',
-      mode: 'cluster',
-      instances: 'max',
       watch: false,
       ignore_watch: 'node_modules',
       env: {
