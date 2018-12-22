@@ -68,7 +68,7 @@ async function start() {
     })
   })
 
-  config.dev ? app.listen(port) : app.listen(port, host)
+  isDev ? app.listen(port) : app.listen(port, host)
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true

@@ -75,7 +75,7 @@ export const actions = {
   // 3.set store，设置 loading
   async loadMore(
     { state, commit },
-    { type, changing = '', id = '', func, sort, count = 12 }
+    { type, changing = 'id', id = '', func, sort, count = 12 }
   ) {
     if (!type || !func) {
       const error = new Error()
