@@ -3,10 +3,10 @@ import Cookies from 'js-cookie'
 import generateRequestError from '~/assets/js/generateRequestError'
 import parseToken from '~/assets/js/parseToken'
 
-const isClient = typeof window !== 'undefined'
-const isDev = process.env.NODE_ENV === 'development'
-
 export default ({ $axios, app }) => {
+  const isClient = typeof window !== 'undefined'
+  const isDev = process.env.NODE_ENV === 'development'
+
   $axios.setHeader('Accept', 'application/x.api.latest+json')
   if (app.store.state.login) {
     $axios.setToken(app.store.state.user.token, 'Bearer')
@@ -19,6 +19,7 @@ export default ({ $axios, app }) => {
       ? process.env.API_URL_BROWSER
       : process.env.API_URL
     config.progress = false
+    config.timeout = 10000
 
     const method = config.method.toLocaleUpperCase()
     if (isClient) {
