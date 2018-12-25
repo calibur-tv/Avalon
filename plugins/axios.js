@@ -18,7 +18,6 @@ export default ({ $axios, app }) => {
     config.baseURL = isClient
       ? process.env.API_URL_BROWSER
       : process.env.API_URL
-    config.progress = false
     config.timeout = 10000
 
     const method = config.method.toLocaleUpperCase()

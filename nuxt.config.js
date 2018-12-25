@@ -107,6 +107,12 @@ module.exports = {
     '@nuxtjs/style-resources'
   ],
 
+  axios: {
+    debug: false,
+    proxyHeaders: true,
+    progress: false
+  },
+
   styleResources: {
     sass: ['./assets/css/variables.scss', './assets/css/mixins.scss']
   },
