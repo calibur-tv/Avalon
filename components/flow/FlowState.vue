@@ -63,31 +63,28 @@ $font-size: 14px;
         </div>
       </slot>
     </div>
-    <slot
-      v-else-if="nothing"
-      name="nothing"
-    >
-      <div :class="$style.nothing">
-        <span>这里什么都没有</span>
-      </div>
-    </slot>
-    <slot
-      v-else-if="noMore"
-      name="no-more"
-    >
-      <div :class="$style.noMore">
-        <span>没有更多了</span>
-      </div>
-    </slot>
-    <slot
-      v-else-if="loading"
-      name="loading"
-    >
-      <div :class="$style.loading">
-        <i/>
-        <span>加载中…</span>
-      </div>
-    </slot>
+    <div v-else-if="nothing">
+      <slot name="nothing">
+        <div :class="$style.nothing">
+          <span>这里什么都没有</span>
+        </div>
+      </slot>
+    </div>
+    <div v-else-if="noMore">
+      <slot name="no-more">
+        <div :class="$style.noMore">
+          <span>没有更多了</span>
+        </div>
+      </slot>
+    </div>
+    <div v-else-if="loading">
+      <slot name="loading">
+        <div :class="$style.loading">
+          <i/>
+          <span>加载中…</span>
+        </div>
+      </slot>
+    </div>
     <div v-else-if="!auto">
       <button
         :class="$style.fetchBtn"
