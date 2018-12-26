@@ -18,6 +18,15 @@ export const getUserInfo = (ctx, { zone }) => {
   return ctx.$axios.$get(`user/${zone}/show`)
 }
 
+export const bindPhone = (ctx, { id, phone, password, authCode }) => {
+  return ctx.$axios.$post('door/bind_phone', {
+    id,
+    phone,
+    password,
+    authCode
+  })
+}
+
 export const sendMessage = (ctx, { phone_number, type, geetest }) => {
   return ctx.$axios.$post('door/message', {
     phone_number,
