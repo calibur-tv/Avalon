@@ -352,6 +352,9 @@ export default {
       })
     },
     bindUserPhone() {
+      if (this.user.providers.bind_phone) {
+        return
+      }
       this.$prompt('请输入要绑定的手机号（11位）', '绑定手机', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -390,9 +393,6 @@ export default {
         .catch(() => {})
     },
     async submitBindPhone() {
-      if (this.user.providers.bind_phone) {
-        return
-      }
       if (this.authCode.length !== 6) {
         return this.$toast.warn('请输入正确的短信验证码')
       }

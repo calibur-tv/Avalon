@@ -107,10 +107,6 @@
       background-repeat: no-repeat;
     }
 
-    .el-carousel__item--card {
-      width: 525px;
-    }
-
     .intro {
       position: absolute;
       left: 0;
@@ -151,6 +147,7 @@
         <el-carousel
           v-if="loops.length"
           :interval="4000"
+          :autoplay="false"
           type="card"
           height="210px"
           indicator-position="none"
