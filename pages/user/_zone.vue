@@ -5,7 +5,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     color: $color-white;
     text-shadow: 0 1px 10px gray;
@@ -99,9 +99,7 @@
     }
 
     .signature {
-      margin: 30px 0 20px 0;
-      max-width: 600px;
-      @include twoline(20px);
+      max-width: 700px;
     }
 
     .buttons {
@@ -146,6 +144,10 @@
         &:before {
           opacity: 1;
         }
+      }
+
+      .signature {
+        margin-top: 15px;
       }
     }
   }
