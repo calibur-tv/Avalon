@@ -355,6 +355,10 @@ export default {
       if (this.user.providers.bind_phone) {
         return
       }
+      if (this.timeout) {
+        this.showInfoForm = true
+        return
+      }
       this.$prompt('请输入要绑定的手机号（11位）', '绑定手机', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -362,10 +366,6 @@ export default {
         inputErrorMessage: '请输入正确的手机号码'
       })
         .then(({ value }) => {
-          if (this.timeout) {
-            this.$toast.info(`${this.timeout}秒后可再发短信`)
-            return
-          }
           this.phone = value
           this.$captcha({
             ctx: this,
@@ -393,6 +393,9 @@ export default {
         .catch(() => {})
     },
     async submitBindPhone() {
+      if (this.user.providers.bind_phone) {
+        return
+      }
       if (this.authCode.length !== 6) {
         return this.$toast.warn('请输入正确的短信验证码')
       }
