@@ -101,6 +101,7 @@
         >
           <v-img
             :src="comment.from_user_avatar"
+            :avatar="true"
             :width="24"
             :height="24"
           />

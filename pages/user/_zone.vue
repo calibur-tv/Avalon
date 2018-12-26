@@ -101,6 +101,7 @@
     .signature {
       margin: 30px 0 20px 0;
       max-width: 600px;
+      @include twoline(20px);
     }
 
     .buttons {
