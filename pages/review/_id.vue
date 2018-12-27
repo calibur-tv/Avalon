@@ -1,5 +1,33 @@
 <style lang="scss">
 #score-show {
+  .score-banner {
+    &.full-size {
+      width: 100%;
+      padding-bottom: 33.3%;
+      background-size: cover;
+      background-position: center;
+      margin-top: -35px;
+      margin-bottom: 24px;
+    }
+
+    &.normal-size {
+      margin-bottom: 24px;
+    }
+  }
+
+  .center-layout {
+    position: relative;
+    width: 690px;
+    margin: 0 auto;
+
+    .bangumi-panel {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      margin-left: 20px;
+    }
+  }
+
   .score-header {
     .control-btn {
       float: right;
@@ -41,7 +69,7 @@
 
       .star-item {
         float: left;
-        margin-right: 58px;
+        margin-right: 22px;
         margin-bottom: 10px;
 
         &:nth-child(5n) {
@@ -69,8 +97,26 @@
 
 <template>
   <div id="score-show">
-    <v-header/>
-    <v-layout v-if="info">
+    <template v-if="info.banner">
+      <v-header type="pure"/>
+      <div
+        v-if="info.banner.width > 1400"
+        :style="{ backgroundImage: `url(${$resize(info.banner.url, { width: 2000 })})` }"
+        class="score-banner full-size"
+      />
+    </template>
+    <v-header v-else/>
+    <div class="center-layout">
+      <v-img
+        v-if="info.banner.width <= 1400"
+        :src="info.banner.url"
+        :width="info.banner.width"
+        :height="info.banner.height"
+        :full="true"
+        :blur="true"
+        :lazy="false"
+        class="score-banner normal-size"
+      />
       <div class="score-header">
         <div>
           <div class="total">{{ info.total }}分</div>
@@ -184,15 +230,13 @@
           type="score"
         />
       </v-lazy>
-      <template slot="aside">
-        <bangumi-panel
-          :id="bangumi.id"
-          :avatar="bangumi.avatar"
-          :name="bangumi.name"
-          :summary="bangumi.summary"
-        />
-      </template>
-    </v-layout>
+      <bangumi-panel
+        :id="bangumi.id"
+        :avatar="bangumi.avatar"
+        :name="bangumi.name"
+        :summary="bangumi.summary"
+      />
+    </div>
   </div>
 </template>
 

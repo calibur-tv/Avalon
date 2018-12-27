@@ -47,26 +47,33 @@
     }
   }
 
+  .title {
+    display: block;
+    color: #212121;
+    font-size: 16px;
+    line-height: 30px;
+    font-weight: 700;
+    transition: all 0.2s linear;
+
+    &:hover {
+      color: $color-blue-normal;
+    }
+  }
+
   .content {
     display: block;
+    margin-top: 10px;
 
-    .title {
-      color: #212121;
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 30px;
-      font-weight: 700;
-      transition: all 0.2s linear;
+    .poster {
+      float: left;
+      margin-right: 15px;
+      border-radius: 4px;
     }
 
     .intro {
+      overflow: hidden;
       font-size: 14px;
-      margin-top: 8px;
-      @include twoline(22px);
-    }
-
-    &:hover .title {
-      color: $color-blue-normal;
+      line-height: 1.6;
     }
   }
 
@@ -159,12 +166,22 @@
     </div>
     <a
       :href="$alias.score(item.id)"
-      class="content"
+      class="title"
+      target="_blank"
+      v-text="item.title"
+    />
+    <a
+      :href="$alias.score(item.id)"
+      class="content clearfix"
       target="_blank"
     >
-      <div
-        class="title"
-        v-text="item.title"
+      <v-img
+        v-if="item.banner"
+        :src="item.banner.url"
+        :width="190"
+        :height="105"
+        :blur="true"
+        class="poster"
       />
       <div
         class="intro"
