@@ -77,7 +77,8 @@
       vertical-align: middle;
       font-size: 13px;
       color: $color-text-normal;
-      margin-top: 20px;
+      margin-top: 15px;
+      margin-right: 5px;
 
       .image {
         display: inline-block;
