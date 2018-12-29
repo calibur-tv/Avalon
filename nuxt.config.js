@@ -1,6 +1,7 @@
 const qiniu = require('./qiniu')
 const webpack = require('webpack')
-const isDev = process.env.NODE_ENV === 'development'
+const buildEnv = process.env.NODE_ENV
+const isDev = buildEnv === 'development'
 const path = require('path')
 const resolve = file => path.resolve(__dirname, file)
 const CompressionPlugin = require('compression-webpack-plugin')
@@ -9,14 +10,13 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const injectScript = require('./.script')
 const SentryPlugin = require('./assets/js/webpack.sentry.plugin.js')
 const releaseTag = new Date().toLocaleString()
+const baseUrl = require('./.env').baseUrl
 
 module.exports = {
   mode: 'universal',
   env: {
-    API_URL: isDev ? 'http://localhost:3099/' : 'http://localhost/',
-    API_URL_BROWSER: isDev
-      ? 'http://localhost:3099/'
-      : 'https://api.calibur.tv/',
+    API_URL: baseUrl.API_URL[buildEnv],
+    API_URL_BROWSER: baseUrl.API_URL_BROWSER[buildEnv],
     SENTRY_URL: 'https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871',
     RELEASE: releaseTag
   },
