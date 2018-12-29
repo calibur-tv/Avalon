@@ -43,6 +43,7 @@ const _238b4e04 = () => interopDefault(import('../pages/user/_zone.vue' /* webpa
 const _1cbe4187 = () => interopDefault(import('../pages/user/_zone/index.vue' /* webpackChunkName: "pages/user/_zone/index" */))
 const _5ac304e4 = () => interopDefault(import('../pages/user/_zone/bangumi.vue' /* webpackChunkName: "pages/user/_zone/bangumi" */))
 const _39b692d6 = () => interopDefault(import('../pages/user/_zone/draft.vue' /* webpackChunkName: "pages/user/_zone/draft" */))
+const _63af9428 = () => interopDefault(import('../pages/user/_zone/mark.vue' /* webpackChunkName: "pages/user/_zone/mark" */))
 const _3c224e59 = () => interopDefault(import('../pages/user/_zone/pins.vue' /* webpackChunkName: "pages/user/_zone/pins" */))
 const _fbc3f70a = () => interopDefault(import('../pages/user/_zone/post.vue' /* webpackChunkName: "pages/user/_zone/post" */))
 const _2124de54 = () => interopDefault(import('../pages/user/_zone/qaq.vue' /* webpackChunkName: "pages/user/_zone/qaq" */))
@@ -314,6 +315,11 @@ export function createRouter() {
         component: _39b692d6,
         props: true,
         name: "user-zone-draft"
+      }, {
+        path: "mark",
+        component: _63af9428,
+        props: true,
+        name: "user-zone-mark"
       }, {
         path: "pins",
         component: _3c224e59,

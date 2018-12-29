@@ -77,12 +77,6 @@ export const actions = {
     { state, commit },
     { type, changing = 'id', id = '', func, sort, count = 12 }
   ) {
-    if (!type || !func) {
-      const error = new Error()
-      error.code = 0
-      error.message = '请求参数错误'
-      throw error
-    }
     const fieldName = `${func}-${id}-${sort}`
     const field = state[fieldName]
     if (field.loading || field.noMore) {

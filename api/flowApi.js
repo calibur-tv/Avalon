@@ -261,6 +261,12 @@ export const getUserAnswerDrafts = ({ ctx }) => {
   return ctx.$axios.$get('question/soga/drafts')
 }
 
+export const getUserBookmarks = ({ ctx, page, take, order_by }) => {
+  return ctx.$axios.$get('user/bookmarks', {
+    params: { page, take, type: order_by }
+  })
+}
+
 /* ---------- question ---------- */
 
 export const getQuestionAnswers = ({ ctx, id, count, seen_ids, order_by }) => {

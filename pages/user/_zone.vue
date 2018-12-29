@@ -153,6 +153,8 @@
   }
 
   .container {
+    min-height: 400px;
+
     .faker-tips {
       margin-left: 54px;
       margin-bottom: 25px;
@@ -592,6 +594,11 @@ export default {
           label: '偶像',
           name: 'user-zone-role',
           show: true
+        },
+        {
+          label: '收藏',
+          name: 'user-zone-mark',
+          show: this.isMe
         },
         {
           label: '草稿',
