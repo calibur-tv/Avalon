@@ -265,9 +265,10 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(params.id)
   },
-  asyncData({ app, store, params, error }) {
+  asyncData({ app, store, params, query, error }) {
     const { id } = params
-    return getScoreInfo(app, { id })
+    const { hash, time } = query
+    return getScoreInfo(app, { id, hash, time })
       .then(data => {
         const info = {}
         const { bangumi } = data

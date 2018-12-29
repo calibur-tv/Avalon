@@ -1,5 +1,7 @@
-export const getScoreInfo = (ctx, { id }) => {
-  return ctx.$axios.$get(`score/${id}/show`)
+export const getScoreInfo = (ctx, { id, hash, time }) => {
+  return ctx.$axios.$get(`score/${id}/show`, {
+    params: { hash, time }
+  })
 }
 
 export const getScoreEditData = (ctx, { id }) => {

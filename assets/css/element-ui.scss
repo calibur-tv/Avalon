@@ -222,7 +222,7 @@
         &:hover {
           color: rgba($color-blue-normal, 0.7) !important;
           border-color: $color-blue-normal;
-          background-color: rgba(66,192,46,.05) !important;
+          background-color: rgba($color-blue-normal, .05) !important;
         }
       }
     }
