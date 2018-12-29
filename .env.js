@@ -1,7 +1,7 @@
 const baseUrl = {
   API_URL: {
     development: 'http://localhost:3099/',
-    staging: 'http://localhost:9000/',
+    staging: 'http://localhost/',
     production: 'http://localhost/'
   },
   API_URL_BROWSER: {
