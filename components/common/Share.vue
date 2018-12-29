@@ -146,6 +146,8 @@
   }
 
   &.v-share-panel {
+    margin: 0 5px;
+
     .share-icon {
       position: relative;
       display: inline-block;

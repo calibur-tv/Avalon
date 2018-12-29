@@ -366,9 +366,10 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(params.id)
   },
-  async asyncData({ app, store, params, error }) {
+  async asyncData({ app, store, params, query, error }) {
     const { id } = params
-    return getImageInfo(app, { id })
+    const { hash, time } = query
+    return getImageInfo(app, { id, hash, time })
       .then(info => {
         const { bangumi } = info
         store.commit('social/SET_STATE', {

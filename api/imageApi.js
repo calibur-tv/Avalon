@@ -15,8 +15,11 @@ export const uploadToQiniu = (ctx, formData) => {
     'Content-Type': 'multipart/form-data'
   })
 }
-export const getImageInfo = (ctx, { id }) => {
-  return ctx.$axios.$get(`image/${id}/show`)
+
+export const getImageInfo = (ctx, { id, hash, query }) => {
+  return ctx.$axios.$get(`image/${id}/show`, {
+    params: { hash, query }
+  })
 }
 
 export const createAlbum = (

@@ -1,6 +1,6 @@
-export const getPostInfo = (ctx, { id, only }) => {
+export const getPostInfo = (ctx, { id, only, hash, time }) => {
   return ctx.$axios.$get(`post/${id}/show`, {
-    params: { only }
+    params: { only, hash, time }
   })
 }
 

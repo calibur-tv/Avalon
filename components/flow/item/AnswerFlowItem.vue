@@ -2,7 +2,7 @@
 .answer-flow-item {
   padding: 16px 20px;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   background-color: #fff;
   box-shadow: 0 -1px 3px rgba(26, 26, 26, 0.1);
   border-radius: 2px;

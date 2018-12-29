@@ -393,9 +393,12 @@ export default {
   },
   asyncData({ query, store, params, app, error }) {
     const { id } = params
+    const { hash, time, only } = query
     return getPostInfo(app, {
       id,
-      only: query.only ? (parseInt(query.only, 10) ? 1 : 0) : 0
+      hash,
+      time,
+      only: only ? (parseInt(only, 10) ? 1 : 0) : 0
     })
       .then(data => {
         const { post, bangumi } = data
