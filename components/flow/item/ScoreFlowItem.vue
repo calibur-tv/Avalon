@@ -74,6 +74,11 @@
       overflow: hidden;
       font-size: 14px;
       line-height: 1.6;
+
+      button {
+        color: rgba($color-blue-light, 0.7);
+        margin-left: 3px;
+      }
     }
   }
 
@@ -183,10 +188,9 @@
         :blur="true"
         class="poster"
       />
-      <div
-        class="intro"
-        v-text="item.intro"
-      />
+      <div class="intro">
+        {{ item.intro }}…<button>阅读全文<i class="el-icon-arrow-down"/></button>
+      </div>
     </a>
     <div class="footer">
       <span
