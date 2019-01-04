@@ -30,7 +30,7 @@
 
     .aside-left,
     .aside-right {
-      width: 280px;
+      width: 265px;
     }
 
     .aside-right {
@@ -47,7 +47,7 @@
 
     .aside-left,
     .aside-right {
-      width: 220px;
+      width: 245px;
     }
 
     .aside-right {
