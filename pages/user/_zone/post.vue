@@ -7,7 +7,8 @@
   }
 
   #no-content {
-    margin-top: 25px;
+    margin-top: 22px;
+    padding-top: 0;
   }
 
   .posts-of-reply {

@@ -179,10 +179,12 @@ module.exports = {
             }),
             new CompressionPlugin({
               test: /\.(js|css|html)$/
-            }),
+            })
+            /*
             new BrotliPlugin({
               test: /\.(js|css|html)$/
             })
+            */
           ])
     })(),
     loaders: {

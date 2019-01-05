@@ -33,6 +33,13 @@
       margin-bottom="0"
     />
     <question-panel :qaq="qaq"/>
+    <el-alert
+      v-if="qaq.deleted_at"
+      title="该内容已被删除"
+      type="error"
+      center
+      show-icon
+    />
     <v-layout>
       <flow-list
         :id="id"

@@ -163,6 +163,13 @@
     </v-header>
     <v-header v-else/>
     <v-layout>
+      <el-alert
+        v-if="info.deleted_at"
+        title="该内容已被删除"
+        type="error"
+        center
+        show-icon
+      />
       <nav>
         <div
           v-if="editable && isMine"
