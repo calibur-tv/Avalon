@@ -13,6 +13,7 @@ const _56591a8c = () => interopDefault(import('../pages/world/post.vue' /* webpa
 const _d17c4292 = () => interopDefault(import('../pages/world/qaq.vue' /* webpackChunkName: "pages/world/qaq" */))
 const _5b2fdcf2 = () => interopDefault(import('../pages/world/review.vue' /* webpackChunkName: "pages/world/review" */))
 const _2f0f1563 = () => interopDefault(import('../pages/about/hello.vue' /* webpackChunkName: "pages/about/hello" */))
+const _02df51dc = () => interopDefault(import('../pages/about/license.vue' /* webpackChunkName: "pages/about/license" */))
 const _59ec0df0 = () => interopDefault(import('../pages/about/thanks.vue' /* webpackChunkName: "pages/about/thanks" */))
 const _154c64b3 = () => interopDefault(import('../pages/app/download.vue' /* webpackChunkName: "pages/app/download" */))
 const _5adf79c0 = () => interopDefault(import('../pages/callback/auth-error.vue' /* webpackChunkName: "pages/callback/auth-error" */))
@@ -166,6 +167,11 @@ export function createRouter() {
       component: _2f0f1563,
       props: false,
       name: "about-hello"
+    }, {
+      path: "/about/license",
+      component: _02df51dc,
+      props: false,
+      name: "about-license"
     }, {
       path: "/about/thanks",
       component: _59ec0df0,
