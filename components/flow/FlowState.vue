@@ -72,7 +72,10 @@ $font-size: 14px;
     </div>
     <div v-else-if="noMore">
       <slot name="no-more">
-        <div :class="$style.noMore">
+        <div
+          v-show="displayNoMore"
+          :class="$style.noMore"
+        >
           <span>没有更多了</span>
         </div>
       </slot>
@@ -125,6 +128,10 @@ export default {
     fetch: {
       type: Function,
       required: true
+    },
+    displayNoMore: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {

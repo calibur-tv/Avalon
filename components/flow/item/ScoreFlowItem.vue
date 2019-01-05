@@ -76,8 +76,9 @@
       line-height: 1.6;
 
       button {
-        color: rgba($color-blue-light, 0.7);
+        color: rgba($color-blue-light, 0.9);
         margin-left: 3px;
+        font-size: 13px;
       }
     }
   }

@@ -31,7 +31,6 @@
         {{ source.reward ? '已投食' : '投食' }}{{ source.reward_users.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.reward_users.total}` : '' }}
       </el-button>
       <el-button
-        v-else
         :class="{ 'is-plain': source.like }"
         :loading="source.like_loading"
         type="danger"
@@ -118,17 +117,15 @@ export default {
         return
       }
       if (action === 'reward') {
-        this.$confirm(
-          this.source.reward
-            ? '即使取消投食你的团子也不会回到你的钱包, 是否继续?'
-            : '向TA投食需要消耗你一个团子，是否继续?',
-          '提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        )
+        if (this.source.reward) {
+          this.$toast.info('已投食过')
+          return
+        }
+        this.$confirm('向TA投食需要消耗你一个团子，是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
           .then(() => {
             this.submitAction('reward')
           })

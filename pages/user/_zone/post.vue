@@ -1,7 +1,9 @@
 <style lang="scss">
 #user-post {
   .posts-of-mine {
-    margin-left: 10px;
+    ul {
+      margin-left: 10px;
+    }
   }
 
   #no-content {
