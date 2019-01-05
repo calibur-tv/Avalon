@@ -1,7 +1,7 @@
 <style lang="scss">
 #no-content {
   img {
-    width: 200px;
+    width: auto;
     height: 200px;
     margin-right: 30px;
     vertical-align: middle;
@@ -15,7 +15,7 @@
   h3 {
     color: rgb(51, 51, 51);
     font-size: 24px;
-    margin: 20px 0;
+    margin-bottom: 20px;
     font-weight: 400;
     line-height: 24px;
   }
@@ -40,7 +40,7 @@
 <template>
   <div id="no-content">
     <img
-      :src="$resize(`https://image.calibur.tv/owner/no-content`, { width: 400 })"
+      src="~assets/img/no-content.png"
       alt="no-content"
     >
     <div>
