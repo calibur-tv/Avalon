@@ -207,6 +207,10 @@
   .user-setting-form {
     width: 750px;
   }
+
+  #no-content {
+    padding-top: 50px;
+  }
 }
 
 .avatar-cropper-modal {

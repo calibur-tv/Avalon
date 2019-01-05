@@ -107,6 +107,13 @@
     </template>
     <v-header v-else/>
     <div class="center-layout">
+      <el-alert
+        v-if="info.deleted_at"
+        title="该内容已被删除"
+        type="error"
+        center
+        show-icon
+      />
       <v-img
         v-if="info.banner.width <= 1400"
         :src="info.banner.url"

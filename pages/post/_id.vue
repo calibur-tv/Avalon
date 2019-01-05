@@ -222,6 +222,13 @@
   <div id="post-show">
     <v-header/>
     <v-layout>
+      <el-alert
+        v-if="post.deleted_at"
+        title="该内容已被删除"
+        type="error"
+        center
+        show-icon
+      />
       <header>
         <div class="title-wrap">
           <div class="control">
