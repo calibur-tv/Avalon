@@ -75,6 +75,15 @@ export const getUserCard = (ctx, { id }) => {
   })
 }
 
+export const getUserBadgeDetail = (ctx, { user_id, badge_id }) => {
+  return ctx.$axios.$get('user/badge/item', {
+    params: {
+      user_id,
+      badge_id
+    }
+  })
+}
+
 export const report = (ctx, { id, type, model, message }) => {
   return ctx.$axios.$post('report/send', {
     id,
