@@ -59,6 +59,15 @@
       }
     }
   }
+
+  .user-badges {
+    margin-top: 10px;
+    margin-bottom: -5px;
+
+    .user-badge {
+      margin-bottom: 5px;
+    }
+  }
 }
 
 .user-card-loading {
@@ -123,6 +132,17 @@
               class="signature"
               v-text="user.signature"
             />
+            <ul
+              v-if="user.badge.length"
+              class="user-badges"
+            >
+              <user-badge
+                v-for="item in user.badge"
+                :key="item.id"
+                :item="item"
+                :user-id="user.id"
+              />
+            </ul>
           </div>
         </div>
       </template>
@@ -141,6 +161,7 @@
 
 <script>
 import UserSex from '~/components/user/UserSex'
+import UserBadge from '~/components/user/UserBadge'
 import { Spinner } from 'mint-ui'
 import { getUserCard } from '~/api/userApi'
 
@@ -148,6 +169,7 @@ export default {
   name: 'UserCard',
   components: {
     UserSex,
+    UserBadge,
     'mt-spinner': Spinner
   },
   props: {

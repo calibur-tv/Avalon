@@ -204,6 +204,18 @@
     }
   }
 
+  .user-badge {
+    padding-bottom: 5px;
+
+    &:not(:first-child) {
+      padding-top: 5px;
+    }
+
+    &:hover span {
+      color: $color-blue-deep;
+    }
+  }
+
   #no-content {
     padding-top: 56px;
   }
@@ -462,7 +474,17 @@
         </div>
       </div>
       <template slot="aside">
-        &nbsp;
+        <template v-if="badges.length">
+          <h2 class="sub-title">TA的徽章</h2>
+          <ul>
+            <user-badge
+              v-for="item in badges"
+              :key="item.id"
+              :item="item"
+              :user-id="user.id"
+            />
+          </ul>
+        </template>
       </template>
     </v-layout>
   </div>
@@ -472,6 +494,7 @@
 import ImageCropper from '~/components/common/ImageCropper'
 import TabContainer from '~/components/common/TabContainer'
 import UserSex from '~/components/user/UserSex'
+import UserBadge from '~/components/user/UserBadge'
 import { Progress } from 'element-ui'
 import { settingImage, getUserInfo } from '~/api/userApi'
 import { uploadToQiniu } from '~/api/imageApi'
@@ -513,6 +536,7 @@ export default {
     TabContainer,
     ImageCropper,
     UserSex,
+    UserBadge,
     'el-progress': Progress
   },
   data() {
@@ -552,6 +576,9 @@ export default {
     },
     user() {
       return this.isMe ? this.self : this.$store.state.users.show
+    },
+    badges() {
+      return this.$store.state.users.show.badge
     },
     daySigned() {
       return this.self.daySign

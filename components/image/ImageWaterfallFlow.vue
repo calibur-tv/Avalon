@@ -234,6 +234,7 @@
                     :src="item.bangumi.avatar"
                     :width="30"
                     :height="30"
+                    :lazy="false"
                   />
                 </a>
                 <div class="info">
@@ -254,6 +255,7 @@
                   :src="item.user.avatar"
                   :width="30"
                   :height="30"
+                  :lazy="false"
                   class="user-avatar"
                 />
                 <span
@@ -271,6 +273,7 @@
                     :src="item.bangumi.avatar"
                     :width="30"
                     :height="30"
+                    :lazy="false"
                   />
                 </a>
                 <div class="info">
