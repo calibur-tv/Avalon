@@ -21,8 +21,6 @@
   img {
     width: 70px;
     height: 70px;
-    margin-bottom: 5px;
-    margin-top: 5px;
   }
 
   strong {
@@ -30,6 +28,10 @@
     font-size: 14px;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  p {
+    line-height: 22px;
   }
 }
 </style>
@@ -70,7 +72,7 @@
           <strong>持有人数</strong>
           <p v-text="info.user_count"/>
         </div>
-        <div>
+        <div v-if="info.user_count > 1">
           <strong>该用户持有数</strong>
           <p v-text="info.user_get_count"/>
         </div>
@@ -79,7 +81,7 @@
           <p v-text="info.intro"/>
         </div>
         <div v-if="info.user_spec_intro">
-          <strong>赠言</strong>
+          <strong>小纸条</strong>
           <p v-text="info.user_spec_intro"/>
         </div>
       </div>
