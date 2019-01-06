@@ -9,6 +9,7 @@
       <image-waterfall-flow
         slot-scope="{ flow }"
         :list="flow"
+        :width="168"
         :user-zone="user.zone"
       />
       <no-content slot="nothing"/>
