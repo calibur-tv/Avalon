@@ -1,11 +1,5 @@
 <style lang="scss">
 #user-setting {
-  margin-right: 150px;
-
-  .el-radio-group {
-    margin-top: 0 !important;
-  }
-
   .el-icon-question {
     color: $color-gray-deep;
     margin-left: 10px;

@@ -152,7 +152,7 @@
     }
   }
 
-  .container {
+  .flow-container {
     min-height: 400px;
 
     .faker-tips {
@@ -177,7 +177,7 @@
 
     .user-flows-wrap {
       position: relative;
-      min-height: 320px;
+      min-height: 360px;
 
       .tab-container {
         position: absolute;
@@ -190,26 +190,22 @@
       }
 
       .el-tabs__header {
-        width: 100px;
-        margin-right: 50px;
+        width: 101px;
+        margin-right: 34px;
       }
 
       .el-radio-group {
-        margin-left: 10px;
+        margin-top: 6px;
       }
 
       .route-container {
-        margin-left: 150px;
+        margin-left: 135px;
       }
     }
   }
 
-  .user-setting-form {
-    width: 750px;
-  }
-
   #no-content {
-    padding-top: 50px;
+    padding-top: 56px;
   }
 }
 
@@ -434,7 +430,7 @@
         />
       </div>
     </v-header>
-    <div class="container">
+    <v-layout class="flow-container">
       <div
         v-if="user.faker"
         class="faker-tips"
@@ -465,7 +461,10 @@
           <router-view/>
         </div>
       </div>
-    </div>
+      <template slot="aside">
+        &nbsp;
+      </template>
+    </v-layout>
   </div>
 </template>
 

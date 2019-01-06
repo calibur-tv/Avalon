@@ -1,20 +1,12 @@
 <style lang="scss">
 #user-post {
-  .posts-of-mine {
-    ul {
-      margin-left: 10px;
-    }
-  }
-
   #no-content {
     margin-top: 22px;
     padding-top: 0;
   }
 
   .posts-of-reply {
-    .load-more-btn {
-      margin-left: 10px;
-    }
+    margin-left: -10px;
   }
 }
 </style>
