@@ -7,6 +7,10 @@
 
   .posts-of-reply {
     margin-left: -10px;
+
+    #no-content {
+      margin-left: 10px;
+    }
   }
 }
 </style>
