@@ -42,7 +42,7 @@
     >
       <nav>
         <h1
-          v-if="bangumi && video"
+          v-if="bangumi && info"
           class="breadcrumb"
         >
           <a
@@ -54,17 +54,17 @@
             target="_blank"
             v-text="bangumi.name"
           />
-          第{{ video.part }}话&nbsp;{{ video.name }}
+          第{{ info.part }}话&nbsp;{{ info.name }}
         </h1>
       </nav>
-      <template v-if="season && showAll">
+      <template v-if="list.has_season && showAll">
         <div
-          v-for="(items, idx) in list"
+          v-for="(items, idx) in list.videos"
           :key="idx"
         >
           <h6
             class="season-title"
-            v-text="season.name[idx]"
+            v-text="items.name"
           />
           <v-part
             :list="items.data"
@@ -97,20 +97,20 @@
       <v-video
         :source="computeVideoSrc"
         :other-src="useOtherSiteSource"
-        :video="`${bangumi.name} 第 ${video.part} 话 ${video.name}`"
-        :poster="$resize(video.poster, { width: 800 })"
+        :video="`${bangumi.name} 第 ${info.part} 话 ${info.name}`"
+        :poster="$resize(info.poster, { width: 800 })"
         :next="nextPartVideo"
         :is-guest="isGuest"
-        :blocked="info.ip_blocked"
-        :must-reward="info.must_reward && !video.rewarded"
-        :need-min-level="info.need_min_level"
+        :blocked="ip_blocked"
+        :must-reward="must_reward && !info.rewarded"
+        :need-min-level="need_min_level"
         @playing="handlePlaying"
       />
       <!-- 视频底部 -->
       <div class="video-info">
         <social-panel
-          :id="video.id"
-          :is-creator="video.is_creator"
+          :id="info.id"
+          :is-creator="info.is_creator"
           :is-mine="isMine"
           type="video"
           @reward-callback="handleRewardAction"
@@ -128,7 +128,7 @@
       <v-lazy>
         <comment-main
           :id="id"
-          :master-id="video.user_id"
+          :master-id="info.user_id"
           :lazy="true"
           type="video"
         />
@@ -182,13 +182,7 @@ export default {
             follow: bangumi.followed
           }
         })
-        return {
-          info: data,
-          video: info,
-          list: data.list.videos,
-          season: data.season,
-          bangumi
-        }
+        return data
       })
       .catch(error)
   },
@@ -205,31 +199,31 @@ export default {
     }
   },
   head() {
-    let resultPart = this.video.part
-    let season = ''
+    const { bangumi, info, list } = this
+    const hasSeason = list.has_season
+    const bangumiName = bangumi.name
+    const videoName = info.name
+    let resultPart = info.part
+    let seasonName = ''
     let title = ''
-    if (this.season) {
-      this.list.forEach((videos, index) => {
-        videos.data.forEach(video => {
-          if (video.id === this.video.id) {
-            resultPart = video.part - videos.base
-            season = this.season.name[index]
+    if (hasSeason) {
+      list.videos.forEach(videos => {
+        videos.data.forEach(item => {
+          if (item.id === info.id) {
+            resultPart = item.part - videos.base
+            seasonName = list.name
           }
         })
       })
     }
-    if (season) {
-      if (season === this.video.name) {
-        title = `${this.bangumi.name} : ${season} - 视频`
+    if (seasonName) {
+      if (seasonName === videoName) {
+        title = `${bangumiName} : ${seasonName} - 视频`
       } else {
-        title = `${this.bangumi.name} : ${season} : 第${resultPart}话 ${
-          this.video.name
-        } - 视频`
+        title = `${bangumiName} : ${seasonName} : 第${resultPart}话 ${videoName} - 视频`
       }
     } else {
-      title = `${this.bangumi.name} : 第${resultPart}话 ${
-        this.video.name
-      } - 视频`
+      title = `${bangumiName} : 第${resultPart}话 ${videoName} - 视频`
     }
     return {
       title,
@@ -237,14 +231,12 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.bangumi.summary
+          content: bangumi.summary
         },
         {
           hid: 'keywords',
           name: 'keywords',
-          content: `${this.bangumi.name}，第${this.video.part}话，${
-            this.video.name
-          }，在线观看 动画片大全 动漫在线播放 日本动漫 好看的动漫 二次元网站`
+          content: `${bangumiName}，第${resultPart}话，${videoName}，在线观看 动画片大全 动漫在线播放 日本动漫 好看的动漫 二次元网站`
         }
       ]
     }
@@ -254,10 +246,11 @@ export default {
       showAll: false,
       firstPlay: true,
       info: null,
-      video: null,
       bangumi: null,
-      season: null,
-      list: []
+      list: [],
+      ip_blocked: false,
+      must_reward: false,
+      need_min_level: 0
     }
   },
   computed: {
@@ -266,15 +259,12 @@ export default {
     },
     isMine() {
       return this.$store.state.login
-        ? this.video.user_id === this.$store.state.user.id
+        ? this.info.user_id === this.$store.state.user.id
         : false
     },
     videos() {
-      if (!this.season) {
-        return this.list[0].data
-      }
       let result = []
-      this.list.forEach(videos => {
+      this.list.videos.forEach(videos => {
         result = result.concat(videos.data)
       })
       return result
@@ -290,10 +280,10 @@ export default {
       return nextId ? this.$alias.video(nextId) : ''
     },
     useOtherSiteSource() {
-      return this.video.other_site
+      return this.info.other_site
     },
     computeVideoSrc() {
-      return this.video.src
+      return this.info.src
     }
   },
   methods: {
