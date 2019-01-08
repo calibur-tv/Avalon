@@ -485,6 +485,7 @@
             />
           </ul>
         </template>
+        &nbsp;
       </template>
     </v-layout>
   </div>
