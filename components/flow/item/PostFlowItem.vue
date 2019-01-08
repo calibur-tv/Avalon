@@ -216,7 +216,7 @@
   <li class="post-flow-item">
     <div class="header clearfix">
       <user-card
-        v-if="item.user"
+        v-if="!userZone"
         :id="item.user.id"
         :zone="item.user.zone"
         custom-class="user-avatar"
@@ -229,7 +229,7 @@
         />
       </user-card>
       <el-tooltip
-        v-else-if="item.bangumi"
+        v-else
         :content="item.bangumi.name"
         effect="dark"
         placement="top"
@@ -357,7 +357,7 @@
       </div>
       <div class="tags oneline">
         <a
-          v-if="!bangumiId && !userZone"
+          v-if="!bangumiId"
           :href="$alias.bangumi(item.bangumi.id)"
           target="_blank"
         >
