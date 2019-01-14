@@ -146,7 +146,7 @@
   }
 
   &.panel-type {
-    .share-icon {
+    .fen-think-icon {
       position: relative;
       display: inline-block;
       width: 32px;
@@ -375,23 +375,23 @@
       </div>
     </el-popover>
     <button
-      class="share-icon ic-weibo"
+      class="fen-think-icon ic-weibo"
       @click="makeUrl('weibo')"
     />
     <button
-      class="share-icon ic-qq"
+      class="fen-think-icon ic-qq"
       @click="makeUrl('qq')"
     />
     <button
       v-popover:popover
-      class="share-icon ic-wechat"
+      class="fen-think-icon ic-wechat"
     />
     <button
-      class="share-icon ic-douban"
+      class="fen-think-icon ic-douban"
       @click="makeUrl('douban')"
     />
     <button
-      class="share-icon ic-qzone"
+      class="fen-think-icon ic-qzone"
       @click="makeUrl('qzone')"
     />
     <el-tooltip
@@ -403,7 +403,7 @@
     >
       <button
         v-clipboard="shareUrl"
-        class="share-icon ic-link"
+        class="fen-think-icon ic-link"
         @click="handleCopySuccess"
       />
     </el-tooltip>
