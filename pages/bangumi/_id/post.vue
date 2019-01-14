@@ -14,6 +14,15 @@
           :item="item"
         />
       </ul>
+      <no-content
+        slot="nothing"
+      >
+        <el-button
+          :round="true"
+          type="primary"
+          @click="handlePostClick"
+        >发表《{{ bangumi.name }}》的第一个帖子</el-button>
+      </no-content>
     </flow-list>
   </div>
 </template>
@@ -52,9 +61,24 @@ export default {
       topic: []
     }
   },
+  computed: {
+    bangumi() {
+      return this.$store.state.bangumi.show
+    }
+  },
   methods: {
     computeFlow(flow) {
       return this.topic.concat(flow)
+    },
+    handlePostClick() {
+      if (!this.$store.state.login) {
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
+      }
+      this.$channel.$emit('show-create-post-modal', {
+        bangumiId: this.id
+      })
     }
   }
 }

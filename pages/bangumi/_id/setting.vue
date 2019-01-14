@@ -89,9 +89,7 @@
           </el-alert>
           <el-row v-if="showSelectAlbum">
             <el-col :span="20">
-              <image-album-select
-                @success="setSelectedAlbum"
-              />
+              <image-album-select @success="setSelectedAlbum"/>
             </el-col>
             <el-col
               :span="3"

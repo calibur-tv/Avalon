@@ -13,6 +13,24 @@
         :bangumi-id="id"
       />
     </ul>
+    <no-content
+      slot="nothing"
+    >
+      <el-button
+        :round="true"
+        type="primary"
+        @click="handleRoleClick"
+      >求偶像</el-button>
+    </no-content>
+    <no-content
+      slot="no-more"
+    >
+      <el-button
+        :round="true"
+        type="primary"
+        @click="handleRoleClick"
+      >求偶像</el-button>
+    </no-content>
   </flow-list>
 </template>
 
@@ -36,6 +54,20 @@ export default {
     id: {
       required: true,
       type: String
+    }
+  },
+  computed: {
+    bangumi() {
+      return this.$store.state.bangumi.show
+    }
+  },
+  methods: {
+    handleRoleClick() {
+      this.$channel.$emit('open-feedback', {
+        type: 6,
+        desc: `我想为《${this.bangumi.name}》的{?}应援`,
+        placeholder: '请填写你想要应援的偶像'
+      })
     }
   }
 }

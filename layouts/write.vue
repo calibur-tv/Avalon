@@ -199,9 +199,13 @@ $layout-width: 900px;
 
 <script>
 import JsonContent from '~/components/jsonEditor/JsonContent'
+import { Loading } from 'element-ui'
 
 export default {
   name: 'WriteLayout',
+  directives: {
+    Loading
+  },
   components: {
     JsonContent
   },
