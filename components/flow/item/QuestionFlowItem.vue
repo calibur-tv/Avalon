@@ -65,7 +65,7 @@
   .footer {
     color: $color-text-normal;
 
-    .v-share {
+    .fen-think {
       display: inline-block;
     }
 

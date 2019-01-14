@@ -20,7 +20,7 @@
     padding-top: 60px;
     margin-bottom: 20px;
 
-    .v-share {
+    .fen-think {
       height: 40px;
       float: right;
     }
@@ -303,7 +303,7 @@ export default {
       })
     },
     handleRewardAction() {
-      if (this.info.must_reward) {
+      if (this.must_reward) {
         window.location.reload()
       }
     }

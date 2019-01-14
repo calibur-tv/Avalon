@@ -32,7 +32,7 @@
       transform: translateY(-50%);
     }
 
-    .v-share {
+    .fen-think {
       position: absolute;
       right: 40px;
       bottom: 10px;

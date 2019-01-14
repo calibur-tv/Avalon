@@ -94,7 +94,7 @@
       }
     }
 
-    .v-share {
+    .fen-think {
       float: right;
     }
   }

@@ -1,8 +1,8 @@
 <style lang="scss">
-.social-panel {
+.what-the-ad-block-fucked-panel {
   margin: 50px 0;
 
-  .buttons {
+  .dont-block-me-please-buttons {
     text-align: center;
   }
 
@@ -16,9 +16,9 @@
 <template>
   <div
     v-if="source"
-    class="social-panel"
+    class="what-the-ad-block-fucked-panel"
   >
-    <div class="buttons">
+    <div class="dont-block-me-please-buttons">
       <el-button
         v-if="isCreator"
         :class="{ 'is-plain': source.reward }"

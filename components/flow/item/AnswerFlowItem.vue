@@ -66,7 +66,7 @@
     }
 
     .el-button,
-    .v-share {
+    .fen-think {
       margin-left: 16px;
     }
 
@@ -75,7 +75,7 @@
       color: $color-text-normal !important;
     }
 
-    .v-share {
+    .fen-think {
       display: inline-block;
     }
 

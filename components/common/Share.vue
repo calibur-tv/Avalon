@@ -1,5 +1,5 @@
 <style lang="scss">
-.v-share {
+.fen-think {
   .iconfont {
     font-size: 16px;
     margin-right: 4px;
@@ -130,7 +130,7 @@
     }
   }
 
-  &.v-share-button {
+  &.button-type {
     button {
       display: block;
       width: 100%;
@@ -145,9 +145,7 @@
     }
   }
 
-  &.v-share-panel {
-    margin: 0 5px;
-
+  &.panel-type {
     .share-icon {
       position: relative;
       display: inline-block;
@@ -309,14 +307,14 @@
 <template>
   <div
     v-if="type === 'button'"
-    class="v-share"
+    class="fen-think"
   >
     <el-popover
       ref="popover2"
       placement="top"
       width="120"
       trigger="click"
-      popper-class="v-share v-share-button"
+      popper-class="fen-think button-type"
     >
       <button
         v-clipboard="shareUrl"
@@ -355,7 +353,7 @@
   </div>
   <div
     v-else-if="type === 'panel'"
-    class="v-share v-share-panel"
+    class="fen-think panel-type"
   >
     <el-popover
       ref="popover"
