@@ -176,7 +176,7 @@
     .stats {
       float: right;
 
-      .v-share {
+      .fen-think {
         display: inline-block;
 
         .share-btn {

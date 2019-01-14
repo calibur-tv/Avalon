@@ -91,7 +91,7 @@
           margin-right: 20px;
         }
 
-        .v-share {
+        .fen-think {
           float: right;
         }
       }

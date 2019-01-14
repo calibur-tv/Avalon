@@ -11,10 +11,12 @@
 
   .main-left {
     padding-left: 15px;
+    padding-right: 5px;
   }
 
   .main-right {
     padding-right: 15px;
+    padding-left: 5px;
   }
 
   .aside-left {
