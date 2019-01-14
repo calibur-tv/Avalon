@@ -386,11 +386,16 @@ export default {
               this.$refs.manyUpload.clearFiles()
               this.$toast.success('上传成功')
               this.submitting = false
-              if (
-                this.$route.name === 'image-show' &&
-                !(this.$route.params.id - albumId)
-              ) {
-                window.location.reload()
+              if (this.isCartoon) {
+                this.$confirm('是否前往漫画页面?', '提示', {
+                  confirmButtonText: '前往查看',
+                  cancelButtonText: '留在这里',
+                  type: 'warning'
+                })
+                  .then(() => {
+                    window.location = this.$alias.image(albumId)
+                  })
+                  .catch(() => {})
               } else {
                 window.location = this.$alias.image(albumId)
               }

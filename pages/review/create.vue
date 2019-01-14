@@ -194,6 +194,9 @@ export default {
       return this.$route.query.id
     },
     resource() {
+      if (!this.id) {
+        return {}
+      }
       const result = {}
       Object.keys(this.$store.state.editor.resource).forEach(key => {
         const value = this.$store.state.editor.resource[key]
@@ -215,6 +218,22 @@ export default {
     if (this.bid) {
       this.bangumiId = +this.bid
       this.handleBangumiSearch(this.bangumiId)
+    }
+    if (!this.id) {
+      window.isCloseHint = true
+      window.onbeforeunload = function(e) {
+        if (window.isCloseHint) {
+          e = e || window.event
+
+          // For IE and Firefox prior to version 4
+          if (e) {
+            e.returnValue = '确定要关闭该页面吗?'
+          }
+
+          // For Safari
+          return '确定要关闭该页面吗?'
+        }
+      }
     }
   },
   methods: {
@@ -302,6 +321,7 @@ export default {
           result = await createScore(this, form)
           newId = result.data
         }
+        window.isCloseHint = false
         if (richContent.publish) {
           this.$confirm(
             typeof result !== 'undefined' ? result.message : '发布成功',

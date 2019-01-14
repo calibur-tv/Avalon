@@ -11,6 +11,15 @@
         :bangumi-id="id"
         :list="flow"
       />
+      <no-content
+        slot="nothing"
+      >
+        <el-button
+          :round="true"
+          type="primary"
+          @click="handleImageClick"
+        >上传《{{ bangumi.name }}》的第一张美图</el-button>
+      </no-content>
     </flow-list>
   </div>
 </template>
@@ -35,6 +44,23 @@ export default {
     id: {
       required: true,
       type: String
+    }
+  },
+  computed: {
+    bangumi() {
+      return this.$store.state.bangumi.show
+    }
+  },
+  methods: {
+    handleImageClick() {
+      if (!this.$store.state.login) {
+        this.$toast.info('继续操作前请先登录')
+        this.$channel.$emit('sign-in')
+        return
+      }
+      this.$channel.$emit('show-upload-image-modal', {
+        bangumiId: this.id
+      })
     }
   }
 }

@@ -28,7 +28,7 @@
   }
 
   button {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   a {
