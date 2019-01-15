@@ -179,7 +179,7 @@
       .fen-think {
         display: inline-block;
 
-        .share-btn {
+        .fen-think-btn {
           color: $color-text-light;
           font-size: 12px;
         }

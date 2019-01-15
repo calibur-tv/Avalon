@@ -63,7 +63,7 @@
     .footer {
       padding: 20px;
 
-      .copy-share-btn {
+      .fen-think-btn {
         float: right;
         margin-left: 10px;
       }
@@ -115,7 +115,7 @@
             >
               <el-button
                 v-clipboard="`【calibur.tv】一个纯粹的二次元社区网站，致力于实现'天下漫友是一家'！站内海量动漫资源在线播放，更有看漫画、cosplay、发帖、为偶像应援等功能，每天签到送团子（1团子 = 1人民币）！快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv`"
-                :class="$style.copyShareBtn"
+                :class="$style.fenThinkBtn"
                 type="primary"
                 size="small"
                 @success="handleCopySuccess"
