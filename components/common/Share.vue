@@ -344,7 +344,7 @@
     <slot>
       <button
         v-popover:popover2
-        class="share-btn"
+        class="fen-think-btn"
       >
         <i class="iconfont icon-fenxiang"/>
         <span v-if="showText">分享</span>

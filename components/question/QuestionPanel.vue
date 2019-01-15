@@ -67,7 +67,7 @@
       }
 
       .el-button--text,
-      .share-btn {
+      .fen-think-btn {
         color: $color-text-normal !important;
       }
 

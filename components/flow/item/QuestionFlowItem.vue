@@ -69,7 +69,7 @@
       display: inline-block;
     }
 
-    .share-btn {
+    .fen-think-btn {
       color: $color-text-normal;
     }
 
