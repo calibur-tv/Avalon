@@ -6,6 +6,11 @@
 
   li {
     list-style-type: none !important;
+
+    a {
+      color: $color-text-deep !important;
+      font-size: 12px !important;
+    }
   }
 }
 </style>

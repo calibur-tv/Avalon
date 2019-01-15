@@ -110,6 +110,10 @@ export const readMessage = (ctx, { id }) => {
   return ctx.$axios.$post('user/notification/read', { id })
 }
 
+export const readNotice = (ctx, { id }) => {
+  return ctx.$axios.$post('user/notice/mark', { id })
+}
+
 export const getNotifications = (ctx, { minId }) => {
   return ctx.$axios.$get('user/notification/list', {
     params: { minId }
@@ -118,4 +122,8 @@ export const getNotifications = (ctx, { minId }) => {
 
 export const getNotificationCount = ctx => {
   return ctx.$axios.$get('user/notification/count')
+}
+
+export const getSystemNotice = ctx => {
+  return ctx.$axios.$get('user/notice/list')
 }

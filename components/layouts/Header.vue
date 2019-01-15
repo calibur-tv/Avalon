@@ -512,37 +512,20 @@ $search-height: 32px;
           </div>
           <template v-if="isAuth">
             <template v-if="isLogin">
-              <el-popover
-                ref="popover"
-                width="320"
-                placement="bottom-end"
-                trigger="click"
-              >
-                <v-notifications v-if="showNotification"/>
-                <span v-else/>
-              </el-popover>
               <el-badge
-                v-if="notificationsCount"
                 :value="notificationsCount"
+                :hidden="!notificationsCount"
                 :max="99"
                 class="item"
               >
                 <a
-                  v-popover:popover
                   :class="$style.navLink"
-                  @click="showNotification = true"
+                  target="_blank"
+                  href="/my/notification"
                 >
                   <span>消息</span>
                 </a>
               </el-badge>
-              <a
-                v-popover:popover
-                v-else
-                :class="$style.navLink"
-                @click="showNotification = true"
-              >
-                <span>消息</span>
-              </a>
               <el-dropdown
                 :class="$style.userSection"
                 placement="bottom"
@@ -633,7 +616,6 @@ $search-height: 32px;
 <script>
 import vSearch from '~/components/search/Input'
 import vSearchHistory from '~/components/search/History'
-import vNotifications from '~/components/layouts/Notifications'
 import { logout } from '~/api/userApi'
 import { Badge } from 'element-ui'
 
@@ -642,7 +624,6 @@ export default {
   components: {
     vSearch,
     vSearchHistory,
-    vNotifications,
     'el-badge': Badge
   },
   props: {
@@ -666,8 +647,7 @@ export default {
   },
   data() {
     return {
-      scrollFlag: false,
-      showNotification: false
+      scrollFlag: false
     }
   },
   computed: {

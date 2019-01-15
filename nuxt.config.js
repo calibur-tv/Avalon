@@ -145,6 +145,8 @@ module.exports = {
   */
   build: {
     extend(config, { isDev, isClient }) {
+      config.output.filename = '[name].[hash:8].js'
+      config.output.chunkFilename = '[name].chunk.[chunkhash:8].js'
       // Run ESLint on save
       if (isDev && isClient) {
         config.module.rules.push({
