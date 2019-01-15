@@ -67,6 +67,11 @@ $avatar-height: 36px;
             margin-top: ($header-height - $avatar-height) / 2;
           }
         }
+
+        .faker-user-section {
+          display: inline-block;
+          width: 89px;
+        }
       }
 
       $logo-size: 30px;
@@ -510,7 +515,7 @@ $search-height: 32px;
             </v-search>
             <v-search-history/>
           </div>
-          <template v-if="isAuth">
+          <template v-if="haveAuthToken">
             <template v-if="isLogin">
               <el-badge
                 :value="notificationsCount"
@@ -552,17 +557,26 @@ $search-height: 32px;
               </el-dropdown>
             </template>
             <template v-else>
-              <button
-                :class="[$style.signBtn, $style.signIn]"
-                class="sign-in"
-                @click="signIn"
-              ><span>登录</span></button>
-              <button
-                :class="[$style.signBtn, $style.signUp]"
-                class="sign-up"
-                @click="signUp"
-              ><span>注册</span></button>
+              <a
+                :class="$style.navLink"
+                href="javascript:;"
+              >
+                <span>消息</span>
+              </a>
+              <span :class="$style.fakerUserSection"/>
             </template>
+          </template>
+          <template v-else>
+            <button
+              :class="[$style.signBtn, $style.signIn]"
+              class="sign-in"
+              @click="signIn"
+            ><span>登录</span></button>
+            <button
+              :class="[$style.signBtn, $style.signUp]"
+              class="sign-up"
+              @click="signUp"
+            ><span>注册</span></button>
           </template>
         </div>
       </div>
@@ -716,6 +730,9 @@ export default {
     },
     isAuth() {
       return this.$store.state.isAuth
+    },
+    haveAuthToken() {
+      return this.$store.state.haveAuthToken
     },
     user() {
       return this.$store.state.user

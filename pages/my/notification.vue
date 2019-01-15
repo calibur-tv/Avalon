@@ -34,6 +34,10 @@
       margin: 0 3px;
     }
   }
+
+  #no-content {
+    margin-top: 30px;
+  }
 }
 </style>
 
@@ -57,6 +61,7 @@
         :display-no-more="false"
         :fetch="loadMore"
         :no-more="noMore"
+        :nothing="noMore && !list.length"
         :loading="loading"
       >
         <no-content slot="nothing"/>

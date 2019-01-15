@@ -101,11 +101,13 @@ export default {
       list: []
     }
   },
+  mounted() {
+    this.$store.dispatch('users/readNotice', {
+      id: this.list[0].id
+    })
+  },
   methods: {
     openNotice(item) {
-      this.$store.dispatch('users/readNotice', {
-        id: this.list[0].id
-      })
       window.open(`/app/notice/${item.id}`)
     }
   }
