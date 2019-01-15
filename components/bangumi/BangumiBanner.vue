@@ -39,7 +39,7 @@
     .console {
       text-align: center;
 
-      .follow-button {
+      .focus-button {
         border: 1px solid;
         font-weight: 500;
         border-radius: 20px;
@@ -122,7 +122,7 @@
       <div class="console">
         <button
           :class="[ followState.follow ? 'is-followed' : 'not-follow' ]"
-          class="follow-button"
+          class="focus-button"
           @click="handleFollowAction"
         >
           <i class="iconfont icon-follow"/>
