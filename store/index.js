@@ -2,13 +2,14 @@ import Vue from 'vue'
 import { getPageData } from '~/api/carouselApi'
 import { getLoginUser, getNotificationCount } from '~/api/userApi'
 import { getUpToken } from '~/api/imageApi'
-import Cookies from 'js-cookie'
+import parseToken from '~/assets/js/parseToken'
 
 export const state = () => ({
   isAuth: false,
   user: null,
   login: false,
-  pageData: null
+  pageData: null,
+  haveAuthToken: false
 })
 
 export const mutations = {
@@ -16,6 +17,13 @@ export const mutations = {
     state.user = user
     state.login = !!user.id
     state.isAuth = true
+  },
+  SET_AUTH_TOKEN(state, token) {
+    const bool = !!token
+    state.haveAuthToken = bool
+    if (!bool) {
+      state.isAuth = true
+    }
   },
   SET_PAGE_DATA(state, data) {
     state.pageData = data
@@ -58,21 +66,27 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit({ commit }) {
+  async nuxtServerInit({ commit }, { req }) {
     const data = await getPageData(this)
+    commit('SET_AUTH_TOKEN', parseToken(req))
     commit('SET_PAGE_DATA', data)
   },
   async initAuth({ state, commit }) {
     if (state.user) {
       return
     }
-    if (!Cookies.get('JWT-TOKEN')) {
+    if (!state.haveAuthToken) {
       commit('SET_USER', {})
       return
     }
     try {
       const data = await getLoginUser(this)
       commit('SET_USER', data)
+      const notification = await getNotificationCount(this)
+      commit('UPDATE_USER_INFO', {
+        key: 'notification',
+        value: notification
+      })
     } catch (e) {
       commit('SET_USER', {})
     }

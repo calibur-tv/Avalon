@@ -5,6 +5,9 @@ import { interopDefault } from './utils'
 const _669203af = () => interopDefault(import('../pages/bangumi/index.vue' /* webpackChunkName: "pages/bangumi/index" */))
 const _59d1c263 = () => interopDefault(import('../pages/bangumi/index/news.vue' /* webpackChunkName: "pages/bangumi/index/news" */))
 const _4b9b4eae = () => interopDefault(import('../pages/bangumi/index/tags.vue' /* webpackChunkName: "pages/bangumi/index/tags" */))
+const _a8e8662e = () => interopDefault(import('../pages/my.vue' /* webpackChunkName: "pages/my" */))
+const _3dfcc76e = () => interopDefault(import('../pages/my/notice.vue' /* webpackChunkName: "pages/my/notice" */))
+const _f102fcfe = () => interopDefault(import('../pages/my/notification.vue' /* webpackChunkName: "pages/my/notification" */))
 const _2346d328 = () => interopDefault(import('../pages/search/index.vue' /* webpackChunkName: "pages/search/index" */))
 const _8ea89736 = () => interopDefault(import('../pages/world.vue' /* webpackChunkName: "pages/world" */))
 const _20b69b28 = () => interopDefault(import('../pages/world/index.vue' /* webpackChunkName: "pages/world/index" */))
@@ -24,6 +27,7 @@ const _2034def8 = () => interopDefault(import('../pages/error/404.vue' /* webpac
 const _497f4634 = () => interopDefault(import('../pages/review/create.vue' /* webpackChunkName: "pages/review/create" */))
 const _0285bb1e = () => interopDefault(import('../pages/role/trending.vue' /* webpackChunkName: "pages/role/trending" */))
 const _f5da0a1a = () => interopDefault(import('../pages/about/invite/_id.vue' /* webpackChunkName: "pages/about/invite/_id" */))
+const _76b887ee = () => interopDefault(import('../pages/app/notice/_id.vue' /* webpackChunkName: "pages/app/notice/_id" */))
 const _00db25d7 = () => interopDefault(import('../pages/bangumi/_id.vue' /* webpackChunkName: "pages/bangumi/_id" */))
 const _7853af1a = () => interopDefault(import('../pages/bangumi/_id/index.vue' /* webpackChunkName: "pages/bangumi/_id/index" */))
 const _dd816894 = () => interopDefault(import('../pages/bangumi/_id/cartoon.vue' /* webpackChunkName: "pages/bangumi/_id/cartoon" */))
@@ -128,6 +132,22 @@ export function createRouter() {
         name: "bangumi-index-tags"
       }]
     }, {
+      path: "/my",
+      component: _a8e8662e,
+      props: false,
+      name: "my",
+      children: [{
+        path: "notice",
+        component: _3dfcc76e,
+        props: false,
+        name: "my-notice"
+      }, {
+        path: "notification",
+        component: _f102fcfe,
+        props: false,
+        name: "my-notification"
+      }]
+    }, {
       path: "/search",
       component: _2346d328,
       props: false,
@@ -222,6 +242,11 @@ export function createRouter() {
       component: _f5da0a1a,
       props: true,
       name: "about-invite-id"
+    }, {
+      path: "/app/notice/:id?",
+      component: _76b887ee,
+      props: true,
+      name: "app-notice-id"
     }, {
       path: "/bangumi/:id",
       component: _00db25d7,

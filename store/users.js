@@ -1,4 +1,9 @@
-import { getNotifications, daySignAction, readMessage } from '~/api/userApi'
+import {
+  getNotifications,
+  daySignAction,
+  readMessage,
+  readNotice
+} from '~/api/userApi'
 
 export const state = () => ({
   show: null,
@@ -7,7 +12,9 @@ export const state = () => ({
     take: 10,
     list: [],
     noMore: false,
-    total: 0
+    total: 0,
+    system_count: 0,
+    user_count: 0
   }
 })
 
@@ -20,6 +27,9 @@ export const mutations = {
     state.notifications.total = data.total
     state.notifications.noMore = data.noMore
     state.notifications.checked = 0
+    if (data.system_count) {
+      state.notifications.system_count = data.system_count
+    }
   },
   READ_NOTIFICATION(state, id) {
     state.notifications.list.forEach((message, index) => {
@@ -34,6 +44,10 @@ export const mutations = {
       state.notifications.list[index].checked = true
     })
     state.notifications.checked = 88888888
+  },
+  CLEAR_NOTICE(state) {
+    state.notifications.checked += state.notifications.system_count
+    state.notifications.system_count = 0
   }
 }
 
@@ -66,5 +80,12 @@ export const actions = {
       await readMessage(this, { id })
       commit('READ_NOTIFICATION', id)
     }
+  },
+  async readNotice({ state, commit }, { id }) {
+    if (!state.notifications.system_count) {
+      return
+    }
+    await readNotice(this, { id })
+    commit('CLEAR_NOTICE')
   }
 }
