@@ -58,7 +58,6 @@
         :fetch="loadMore"
         :no-more="noMore"
         :loading="loading"
-        :auto="true"
       >
         <no-content slot="nothing"/>
       </flow-state>
