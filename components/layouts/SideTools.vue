@@ -140,7 +140,6 @@
       </el-tooltip>
     </div>
     <template v-if="!isGuest">
-      <create-post-dialog/>
       <create-question-dialog/>
       <create-image-dialog/>
     </template>
@@ -151,7 +150,6 @@
 <script>
 import vCreator from './Creator.vue'
 import vFeedback from '~/components/user/Feedback'
-import CreatePostDialog from '~/components/post/CreatePostDialog'
 import CreateImageDialog from '~/components/image/CreateImageDialog'
 import CreateQuestionDialog from '~/components/question/CreateQuestionDialog'
 
@@ -160,7 +158,6 @@ export default {
   components: {
     vCreator,
     vFeedback,
-    CreatePostDialog,
     CreateImageDialog,
     CreateQuestionDialog
   },
@@ -209,7 +206,7 @@ export default {
         this.$channel.$emit('sign-in')
         return
       }
-      this.$channel.$emit('show-create-post-modal')
+      window.location = '/post/create'
     },
     handleQuestionClick() {
       if (!this.$store.state.login) {
