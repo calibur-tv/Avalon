@@ -24,6 +24,7 @@ const _37c80f54 = () => interopDefault(import('../pages/callback/auth-redirect.v
 const _5978aa3b = () => interopDefault(import('../pages/callback/auth-success.vue' /* webpackChunkName: "pages/callback/auth-success" */))
 const _265fccce = () => interopDefault(import('../pages/dev/sitemap.vue' /* webpackChunkName: "pages/dev/sitemap" */))
 const _2034def8 = () => interopDefault(import('../pages/error/404.vue' /* webpackChunkName: "pages/error/404" */))
+const _a69f1d44 = () => interopDefault(import('../pages/post/create.vue' /* webpackChunkName: "pages/post/create" */))
 const _497f4634 = () => interopDefault(import('../pages/review/create.vue' /* webpackChunkName: "pages/review/create" */))
 const _0285bb1e = () => interopDefault(import('../pages/role/trending.vue' /* webpackChunkName: "pages/role/trending" */))
 const _f5da0a1a = () => interopDefault(import('../pages/about/invite/_id.vue' /* webpackChunkName: "pages/about/invite/_id" */))
@@ -227,6 +228,11 @@ export function createRouter() {
       component: _2034def8,
       props: false,
       name: "error-404"
+    }, {
+      path: "/post/create",
+      component: _a69f1d44,
+      props: false,
+      name: "post-create"
     }, {
       path: "/review/create",
       component: _497f4634,
