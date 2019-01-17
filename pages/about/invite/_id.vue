@@ -1,6 +1,6 @@
 <style lang="scss">
 #invite-user {
-  background-image: url('https://image.calibur.tv/Fu09P6XyZuIvE4WfsE9ipu5BtCO6?imageMogr2/auto-orient/strip|imageView2/0/w/2048');
+  background-image: url('https://image.calibur.tv/Fu09P6XyZuIvE4WfsE9ipu5BtCO6');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -54,7 +54,14 @@
 </style>
 
 <template>
-  <div id="invite-user">
+  <div
+    id="invite-user"
+    :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/Fu09P6XyZuIvE4WfsE9ipu5BtCO6', {
+      width: 2048,
+      height: 0,
+      mode: 0
+    })})` }"
+  >
     <v-header type="mask"/>
     <div
       v-if="isAuth"
