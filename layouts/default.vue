@@ -1,6 +1,16 @@
+<style lang="scss">
+.default-layout {
+  height: 100vh;
+
+  .main-view {
+    min-height: 100%;
+  }
+}
+</style>
+
 <template>
-  <div>
-    <nuxt/>
+  <div class="default-layout">
+    <nuxt class="main-view"/>
     <v-footer/>
     <v-music/>
     <not-ssr>

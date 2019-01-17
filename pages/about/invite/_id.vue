@@ -60,7 +60,7 @@
       v-if="isAuth"
       class="container"
     >
-      <template v-if="user.id">
+      <template v-if="user && user.id">
         <p class="signed">
           你已经是注册用户了 (￣3￣)
           <br>
