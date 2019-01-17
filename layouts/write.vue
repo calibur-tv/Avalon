@@ -2,11 +2,6 @@
 $layout-width: 900px;
 
 #layout-write {
-  min-height: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
   > header {
     position: fixed;
     left: 0;
@@ -70,8 +65,6 @@ $layout-width: 900px;
   }
 
   .main-view {
-    flex-grow: 1;
-    height: 100%;
     width: $layout-width;
     margin: 0 auto;
     padding-top: 100px;
