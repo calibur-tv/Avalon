@@ -26,7 +26,6 @@ export const mutations = {
     state.notifications.list = state.notifications.list.concat(data.list)
     state.notifications.total = data.total
     state.notifications.noMore = data.noMore
-    state.notifications.checked = 0
     if (data.system_count) {
       state.notifications.system_count = data.system_count
     }

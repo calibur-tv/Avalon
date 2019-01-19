@@ -137,6 +137,16 @@ module.exports = {
         path: '*',
         component: resolve('pages/error/404.vue')
       })
+    },
+    scrollBehavior: function(to, from, savedPosition) {
+      if (savedPosition) {
+        return savedPosition
+      }
+      let position = { x: 0, y: 0 }
+      if (to.hash) {
+        position = { selector: to.hash }
+      }
+      return position
     }
   },
 
@@ -157,7 +167,7 @@ module.exports = {
         })
       }
       if (!isDev && isClient) {
-        config.devtool = 'hidden-source-map'
+        config.devtool = '#source-map'
       }
     },
     extractCSS: true,
