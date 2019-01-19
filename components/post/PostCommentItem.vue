@@ -208,7 +208,7 @@
               type="post_comment"
             >举报</report-dialog>
             <button
-              v-clipboard="`https://www.calibur.tv/post/${post.modal_id}?comment-id=${post.id}/`"
+              v-clipboard="`https://www.calibur.tv/post/${post.modal_id}?comment-id=${post.id}`"
               class="fen-think-btn"
               @success="handleCopySuccess"
             >复制评论链接</button>
