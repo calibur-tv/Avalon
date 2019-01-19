@@ -494,12 +494,6 @@ $search-height: 32px;
           </nuxt-link>
           <nuxt-link
             :class="$style.navLink"
-            to="/about/hello"
-          >
-            <span>功能简介</span>
-          </nuxt-link>
-          <nuxt-link
-            :class="$style.navLink"
             to="/app/download"
           >
             <span>下载APP</span>

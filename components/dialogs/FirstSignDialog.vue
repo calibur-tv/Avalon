@@ -68,7 +68,7 @@
     <div class="control">
       <a href="/about/hello">
         <button style="background-color: #00ce72">
-          查看金币规则
+          查看团子规则
           <i class="el-icon-arrow-right"/>
         </button>
       </a>

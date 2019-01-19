@@ -222,15 +222,9 @@ $tool-btn-width: 40px;
           由于你消耗的视频流量过高，被系统判定为机器人恶意攻击，已被禁止看视频功能
           <br>
           如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
+          <br>
+          如果你是因为在站内发表了「无意义」的内容被禁言了，抱歉神也救不了你！
         </p>
-        <a
-          href="https://www.calibur.tv/post/2282"
-          target="_blank"
-        >&nbsp;&nbsp;为什么要限流？</a>
-        <a
-          href="/about/hello"
-          target="_blank"
-        >查看加群方式</a>
       </div>
       <div
         v-else-if="mustReward"
@@ -239,16 +233,8 @@ $tool-btn-width: 40px;
         <p>
           由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
           <br>
-          团子可通过签到等方式获得
+          团子可通过签到等方式获得，点击页面右下角悬浮球查看详情
         </p>
-        <a
-          href="https://www.calibur.tv/post/2282"
-          target="_blank"
-        >&nbsp;&nbsp;为什么要限流？</a>
-        <a
-          href="/about/hello"
-          target="_blank"
-        >&nbsp;&nbsp;什么是团子？</a>
       </div>
       <div
         v-else-if="showLevelThrottle"

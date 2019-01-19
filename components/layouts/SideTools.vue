@@ -37,7 +37,8 @@
     }
   }
 
-  .top-btn {
+  .top-btn,
+  .coin-intro-btn {
     bottom: 110px;
   }
 
@@ -59,6 +60,64 @@
 
   .creator-btn.el-icon-edit {
     background-color: RGB(60, 134, 247);
+  }
+}
+
+.intro-coin-dialog {
+  .intro-slide {
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    float: left;
+
+    .bg {
+      background-color: #f7f9fa;
+      width: 110%;
+      height: 110%;
+      position: absolute;
+      left: -5%;
+      top: -5%;
+      transition: background-image 0.2s ease;
+      background: linear-gradient(223deg, #9ce8dd, #a993da, #f0cb54, #6d93a3);
+      background-size: 600% 600%;
+      animation: bg-generator 50s ease infinite;
+    }
+
+    @include keyframes(bg-generator) {
+      0% {
+        background-position: 0 84%;
+      }
+      50% {
+        background-position: 100% 17%;
+      }
+      100% {
+        background-position: 0 84%;
+      }
+    }
+  }
+
+  .intro-content {
+    margin-top: 40px;
+
+    p {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    ul {
+      margin-bottom: 15px;
+    }
+
+    li {
+      list-style-type: circle;
+      margin-left: 1.4em;
+      line-height: 22px;
+    }
   }
 }
 </style>
@@ -123,27 +182,74 @@
           <i class="el-icon-service"/>
         </button>
       </el-tooltip>
-      <el-tooltip
-        placement="right"
-        effect="dark"
-        content="返回"
-      >
-        <transition name="el-fade-in">
+      <transition name="el-fade-in">
+        <el-tooltip
+          v-if="showToTop"
+          placement="right"
+          effect="dark"
+          content="返回"
+        >
           <button
-            v-show="showToTop"
             class="tool-btn top-btn"
             @click="$scrollToY(0)"
           >
             <i class="el-icon-arrow-up"/>
           </button>
-        </transition>
-      </el-tooltip>
+        </el-tooltip>
+        <el-tooltip
+          v-else
+          placement="right"
+          effect="dark"
+          content="团子"
+        >
+          <button
+            class="tool-btn coin-intro-btn"
+            @click="showCoinDialog = true"
+          >
+            <i class="iconfont icon-fantuan"/>
+          </button>
+        </el-tooltip>
+      </transition>
     </div>
     <template v-if="!isGuest">
       <create-question-dialog/>
       <create-image-dialog/>
     </template>
     <v-feedback/>
+    <v-dialog
+      v-model="showCoinDialog"
+      :header="false"
+      :footer="false"
+      :close="false"
+      width="450px"
+      title="什么是团子和光玉？"
+      class="intro-coin-dialog"
+    >
+      <div class="intro-slide">
+        <div class="bg"/>
+      </div>
+      <div class="intro-content">
+        <p>什么是团子？</p>
+        <ul>
+          <li>团子是 calibur 站内的一种虚拟币</li>
+          <li>1团子 = 1人民币</li>
+          <li>大家可通过每日签到、邀请注册、站内活跃来获得团子</li>
+          <li>团子是无法提现的，现阶段团子可以用来：</li>
+          <li>—— 观看最新一集的新番</li>
+          <li>—— 为自己喜欢的偶像应援</li>
+          <li>—— 给其他人发表的原创内容投食</li>
+          <li>未来会开发出电商系统，到时候团子可以用来购买商品</li>
+        </ul>
+        <p>什么是光玉？</p>
+        <ul>
+          <li>光玉就是可提现的团子</li>
+          <li>1光玉 = 1人民币</li>
+          <li>目前获得光玉的途径只能是获得其他人的投食</li>
+          <li>只有原创内容才能给开启投食功能</li>
+          <li>如果你集齐了100个光玉，就来召唤站长提现吧！</li>
+        </ul>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -163,7 +269,8 @@ export default {
   },
   data() {
     return {
-      showToTop: false
+      showToTop: false,
+      showCoinDialog: false
     }
   },
   computed: {

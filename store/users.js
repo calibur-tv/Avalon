@@ -19,6 +19,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  USER_SIGN(state) {
+    state.show.banlance.coin_count++
+  },
   SET_USER_INFO(state, data) {
     state.show = data
   },
@@ -51,10 +54,11 @@ export const mutations = {
 }
 
 export const actions = {
-  async daySign({ rootState }) {
+  async daySign({ rootState, commit }) {
     if (rootState.user.signed) {
       return
     }
+    commit('USER_SIGN')
     return await daySignAction(this)
   },
   async getNotifications({ state, commit }, { init }) {

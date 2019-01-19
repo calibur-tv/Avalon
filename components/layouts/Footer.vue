@@ -82,9 +82,9 @@
         <li class="card-item">
           <p>calibur - 天下漫友是一家</p>
           <a
-            href="/about/hello"
+            href="/app/notice/1"
             target="_blank"
-          >功能简介</a>
+          >团子简介</a>
           <a
             href="javascript:;"
             @click="openShareModal"
