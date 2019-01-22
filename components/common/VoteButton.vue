@@ -122,8 +122,6 @@ export default {
         })
         this.totalVote = data.total
         this.votedScore = data.result
-      } catch (e) {
-        this.$toast.error(e)
       } finally {
         this.loading = false
       }

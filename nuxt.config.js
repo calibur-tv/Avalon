@@ -1,15 +1,14 @@
 const qiniu = require('./qiniu')
-const webpack = require('webpack')
 const buildEnv = process.env.NODE_ENV
 const isDev = buildEnv === 'development'
 const path = require('path')
 const resolve = file => path.resolve(__dirname, file)
 const CompressionPlugin = require('compression-webpack-plugin')
-const BrotliPlugin = require('brotli-webpack-plugin')
+// const BrotliPlugin = require('brotli-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const injectScript = require('./.script')
 const SentryPlugin = require('./assets/js/webpack.sentry.plugin.js')
-const releaseTag = new Date().toLocaleString()
+const releaseTag = new Date().toLocaleString().replace(/( |:)/g, '-')
 const baseUrl = require('./.env').baseUrl
 
 module.exports = {

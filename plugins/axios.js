@@ -44,6 +44,12 @@ export default ({ $axios, app }) => {
         code: 200
       })
     }
+    const newToken = resp.headers.authorization
+    if (newToken) {
+      Object.assign(resp.data.data, {
+        token: newToken.split('Bearer ').pop()
+      })
+    }
     return resp.data
   })
 
