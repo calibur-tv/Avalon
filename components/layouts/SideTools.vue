@@ -46,6 +46,34 @@
     bottom: 175px;
   }
 
+  .mint-main-button {
+    background-color: red;
+    color: #fff;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+
+  .feedback-btn {
+    background-color: #9266f9;
+    color: #fff;
+
+    &:hover {
+      background-color: #9266f9;
+    }
+  }
+
+  .top-btn,
+  .coin-intro-btn {
+    background-color: #16c2c2;
+    color: #fff;
+
+    &:hover {
+      background-color: #16c2c2;
+    }
+  }
+
   .creator-btn.el-icon-picture-outline {
     background-color: #ec414d;
   }
