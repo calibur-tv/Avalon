@@ -125,13 +125,21 @@ export const getBangumiImage = ({
   })
 }
 
-export const getBangumiRole = ({ ctx, id, page, count, order_by }) => {
+export const getBangumiRole = ({
+  ctx,
+  id,
+  seen_ids,
+  page,
+  count,
+  order_by
+}) => {
   return getFlowList(ctx, {
     type: 'role',
     bangumiId: id,
     sort: order_by,
     take: count,
-    page
+    page,
+    seenIds: seen_ids
   })
 }
 
