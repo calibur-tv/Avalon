@@ -1,3 +1,18 @@
+<style lang="scss">
+.no-more-box {
+  text-align: center;
+}
+// .no-more-text {
+//   display: inline-block;
+//   width: 100%;
+//   font-size: 13px;
+//   color: $color-text-normal;
+//   text-align: center;
+//   margin-bottom: 15px;
+//   margin-top: 30px;
+// }
+</style>
+
 <template>
   <flow-list
     :id="id"
@@ -22,15 +37,17 @@
         @click="handleRoleClick"
       >求偶像</el-button>
     </no-content>
-    <no-content
-      slot="no-more"
-    >
+    <div 
+      slot="no-more" 
+      class="no-more-box">
+      <!-- <span class="no-more-text">没有更多了</span> -->
+      <br>
       <el-button
         :round="true"
         type="primary"
         @click="handleRoleClick"
       >求偶像</el-button>
-    </no-content>
+    </div>
   </flow-list>
 </template>
 
