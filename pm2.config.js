@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'Baka',
+      name: 'Avalon',
       script: './server/index.js',
       watch: false,
       ignore_watch: 'node_modules',

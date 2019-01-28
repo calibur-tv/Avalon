@@ -1,18 +1,16 @@
-<style lang="scss" module>
-.layout-default {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+<style lang="scss">
+.default-layout {
+  height: 100vh;
 
   .main-view {
-    flex-grow: 1;
+    min-height: 100%;
   }
 }
 </style>
 
 <template>
-  <div :class="$style.layoutDefault">
-    <nuxt :class="$style.mainView"/>
+  <div class="default-layout">
+    <nuxt class="main-view"/>
     <v-footer/>
     <v-music/>
     <not-ssr>

@@ -4,6 +4,12 @@
     background-color: rgba($color-blue-light, 0.1);
   }
 
+  &:hover {
+    .hover-box {
+      display: inline-block;
+    }
+  }
+
   .user {
     position: relative;
     width: 180px;
@@ -91,11 +97,18 @@
           margin-right: 20px;
         }
 
-        .fen-think {
-          float: right;
+        .fen-think-btn {
+          color: #99a2aa;
+          line-height: 26px;
+          font-size: 12px;
+          margin-left: 20px;
         }
       }
     }
+  }
+
+  .hover-box {
+    display: none;
   }
 }
 </style>
@@ -189,10 +202,17 @@
             :datetime="post.created_at"
             class="floor-count"
           />
-          <report-dialog
-            :id="post.id"
-            type="post_comment"
-          >举报</report-dialog>
+          <div class="hover-box">
+            <report-dialog
+              :id="post.id"
+              type="post_comment"
+            >举报</report-dialog>
+            <button
+              v-clipboard="`https://www.calibur.tv/post/${post.modal_id}?comment-id=${post.id}`"
+              class="fen-think-btn"
+              @success="handleCopySuccess"
+            >复制评论链接</button>
+          </div>
         </div>
       </div>
     </div>
@@ -283,6 +303,9 @@ export default {
           }
           this.$toast.error(e)
         })
+    },
+    handleCopySuccess() {
+      this.$toast.success('复制成功')
     }
   }
 }

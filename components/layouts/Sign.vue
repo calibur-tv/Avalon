@@ -250,9 +250,6 @@ $input-height: 40px;
         </div>
       </div>
     </div>
-    <template v-else>
-      <first-sign-dialog/>
-    </template>
   </div>
 </template>
 
@@ -260,15 +257,13 @@ $input-height: 40px;
 import SignInForm from '~/components/user/SignInForm'
 import SignUpForm from '~/components/user/SignUpForm'
 import ResetPasswordForm from '~/components/user/ResetPasswordForm'
-import FirstSignDialog from '~/components/dialogs/FirstSignDialog'
 
 export default {
   name: 'VSign',
   components: {
     SignUpForm,
     SignInForm,
-    ResetPasswordForm,
-    FirstSignDialog
+    ResetPasswordForm
   },
   data() {
     return {

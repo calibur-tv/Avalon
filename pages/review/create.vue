@@ -1,5 +1,7 @@
 <style lang="scss">
 #score-create {
+  height: 100vh;
+
   .bangumi-search,
   .title-input {
     margin-bottom: 20px;

@@ -95,21 +95,11 @@
     .exp-container {
       width: 200px;
       margin-top: 10px;
-      margin-bottom: 10px;
     }
 
     .signature {
-      max-width: 700px;
-    }
-
-    .buttons {
       margin-top: 10px;
-      text-align: center;
-      position: relative;
-
-      > * {
-        margin: 0 5px;
-      }
+      max-width: 700px;
     }
 
     &.my-banner {
@@ -213,6 +203,86 @@
 
     &:hover span {
       color: $color-blue-deep;
+    }
+  }
+
+  .coin-panel {
+    margin-bottom: 20px;
+
+    .item {
+      width: 49%;
+      display: inline-block;
+      text-align: center;
+      margin-bottom: 10px;
+
+      strong {
+        color: #6d757a;
+        font-weight: 700;
+        font-size: 30px;
+      }
+
+      div {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      &:first-child {
+        border-right: 1px solid $color-gray-normal;
+      }
+    }
+
+    .sign-btn {
+      background-color: #f25d8e;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+      width: 76px;
+      line-height: 30px;
+      margin-top: -3px;
+      float: right;
+
+      &:hover {
+        background-color: #ff85ad;
+      }
+
+      &.day-signed {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .intro {
+      font-size: 12px;
+      color: $color-text-light;
+
+      p {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .invite-code {
+    button {
+      width: 100%;
+      background-color: #f25d8e;
+      border-radius: 4px;
+      box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 50px;
+      padding: 0 24px;
+      margin-bottom: 20px;
+
+      &:hover {
+        background-color: #ff709f;
+      }
+    }
+
+    p {
+      font-size: 12px;
+      color: $color-text-light;
+      margin-bottom: 20px;
     }
   }
 
@@ -396,46 +466,6 @@
             />
           </div>
         </el-popover>
-        <div class="buttons">
-          <template v-if="isMe">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              placement="bottom"
-            >
-              <div slot="content">
-                团子可提现额度：{{ withdrawCoinCount }}
-                <br>
-                (排除签到所得的团子)
-              </div>
-              <el-button
-                :loading="signDayLoading"
-                type="primary"
-                size="small"
-                @click="handleDaySign"
-              >
-                {{ daySigned ? '已签到' : '签到' }}{{ coinCount ? ` (${coinCount})` : '' }}
-              </el-button>
-            </el-tooltip>
-            <el-tooltip
-              class="item"
-              effect="dark"
-              placement="bottom"
-            >
-              <div slot="content">
-                点击复制我的邀请地址
-                <br>
-                邀请小伙伴们注册赚团子
-              </div>
-              <el-button
-                v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
-                type="warning"
-                size="small"
-                @success="handleCopySuccess"
-              >邀请码：{{ user.id }}</el-button>
-            </el-tooltip>
-          </template>
-        </div>
         <p
           class="signature"
           v-text="user.signature"
@@ -474,8 +504,41 @@
         </div>
       </div>
       <template slot="aside">
+        <div class="coin-panel">
+          <h2 class="sub-title">
+            虚拟币
+            <button
+              v-if="isMe"
+              :class="{ 'day-signed': daySigned }"
+              class="sign-btn"
+              @click="handleDaySign"
+            >{{ daySigned ? '已签到' : '签到' }}</button>
+          </h2>
+          <div>
+            <div class="item">
+              <strong>{{ coinCount }}</strong>
+              <div>团子</div>
+            </div>
+            <div class="item">
+              <strong>{{ lightCount }}</strong>
+              <div>光玉</div>
+            </div>
+          </div>
+          <div class="intro">
+            <p>团子类似于Q币，1团子=1人民币，可在站内流通</p>
+            <p>光玉就像可提现的Q币，通过他人投食给你得到</p>
+          </div>
+        </div>
+        <div class="invite-code">
+          <h2 class="sub-title">邀请码</h2>
+          <button
+            v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
+            @success="handleCopySuccess"
+          >点击复制邀请码</button>
+          <p>其他人使用你的邀请码注册，你就能获得团子奖励</p>
+        </div>
         <template v-if="badges.length">
-          <h2 class="sub-title">TA的徽章</h2>
+          <h2 class="sub-title">徽章墙</h2>
           <ul>
             <user-badge
               v-for="item in badges"
@@ -485,7 +548,6 @@
             />
           </ul>
         </template>
-        &nbsp;
       </template>
     </v-layout>
   </div>
@@ -555,8 +617,7 @@ export default {
         showBar: false,
         loading: false
       },
-      signDayLoading: false,
-      doSign: false
+      signDayLoading: false
     }
   },
   computed: {
@@ -569,14 +630,17 @@ export default {
     self() {
       return this.$store.state.user
     },
+    showUser() {
+      return this.$store.state.users.show
+    },
     blockedAt() {
-      return this.$store.state.users.show.banned_to
+      return this.showUser.banned_to
     },
     userPower() {
-      return this.$store.state.users.show.power
+      return this.showUser.power
     },
     user() {
-      return this.isMe ? this.self : this.$store.state.users.show
+      return this.isMe ? this.self : this.showUser
     },
     badges() {
       return this.$store.state.users.show.badge
@@ -585,14 +649,10 @@ export default {
       return this.self.daySign
     },
     coinCount() {
-      return this.self.coin
+      return this.showUser.banlance.coin_count
     },
-    withdrawCoinCount() {
-      let result = this.user.coin - this.user.coin_from_sign
-      if (this.doSign) {
-        result -= 1
-      }
-      return result < 0 ? 0 : result
+    lightCount() {
+      return this.showUser.banlance.light_count
     },
     cards() {
       return [
@@ -791,9 +851,8 @@ export default {
           key: 'coin',
           value: this.coinCount + 1
         })
-        this.doSign = true
-        this.$toast.success(result.message)
         this.$store.commit('UPDATE_USER_EXP', result.exp)
+        this.$toast.success(result.message)
       } catch (e) {
         this.$toast.error(e)
       } finally {
@@ -801,7 +860,7 @@ export default {
       }
     },
     handleCopySuccess() {
-      this.$toast.success('复制成功')
+      this.$toast.success('邀请链接已复制，快去分享吧~')
     },
     convertUserSex(sex) {
       let $res = ''
