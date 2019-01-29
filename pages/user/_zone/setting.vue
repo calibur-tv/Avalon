@@ -250,6 +250,9 @@ export default {
     user() {
       return this.$store.state.user
     },
+    isMine() {
+      return this.user.zone === this.$route.params.zone
+    },
     nickname: {
       get() {
         return this.user.nickname
@@ -315,6 +318,13 @@ export default {
           value
         })
       }
+    }
+  },
+  mounted() {
+    if (this.isMine) {
+      this.$router.push({
+        path: `/user/${this.user.zone}/bangumi`
+      })
     }
   },
   methods: {
