@@ -150,6 +150,18 @@ export default {
       selectedAlbum: null
     }
   },
+  computed: {
+    bangumi() {
+      return this.$store.state.bangumi.show
+    }
+  },
+  mounted() {
+    if (!this.bangumi.is_master) {
+      this.$router.push({
+        path: `/bangumi/${this.id}/post`
+      })
+    }
+  },
   methods: {
     setSelectedAlbum(album) {
       this.selectedAlbum = album
