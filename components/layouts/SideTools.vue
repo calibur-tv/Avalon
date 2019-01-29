@@ -47,11 +47,11 @@
   }
 
   .mint-main-button {
-    background-color: red;
+    background-color: #f56c6c;
     color: #fff;
 
     &:hover {
-      background-color: red;
+      background-color: #f56c6c;
     }
   }
 
