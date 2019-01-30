@@ -320,13 +320,6 @@ export default {
       }
     }
   },
-  mounted() {
-    if (this.isMine) {
-      this.$router.push({
-        path: `/user/${this.user.zone}/bangumi`
-      })
-    }
-  },
   methods: {
     submit() {
       this.$refs.form.validate(async valid => {
