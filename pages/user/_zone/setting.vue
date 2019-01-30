@@ -35,8 +35,8 @@
       color: #3194d0;
     }
 
-    .icon-wechat.is-bind,
-    .icon-wechat:hover {
+    .icon-v-chat.is-bind,
+    .icon-v-chat:hover {
       color: #42c02e;
     }
 
@@ -143,7 +143,7 @@
           <a :href="`https://api.calibur.tv/callback/oauth2/wechat?from=bind&id=${user.id}&zone=${user.zone}`">
             <i
               :class="{ 'is-bind': user.providers.bind_wechat }"
-              class="iconfont icon-wechat"
+              class="iconfont icon-v-chat"
             />
           </a>
           <a
