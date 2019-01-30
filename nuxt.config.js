@@ -176,7 +176,7 @@ module.exports = {
         ? result.concat([])
         : result.concat([
             new SentryPlugin({
-              project: 'www-xt',
+              project: 'www',
               include: /\.js(\.map)?$/,
               organisation: 'calibur',
               token:

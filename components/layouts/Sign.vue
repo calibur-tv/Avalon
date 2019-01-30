@@ -215,9 +215,10 @@ $input-height: 40px;
             class="form-container"
           >
             <img
+              :src="$resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png', { width: 600, height: 200 })"
               class="logo"
-              src="https://image.calibur.tv/owner/sign-logo.jpeg?imageMogr2/auto-orient/strip"
               alt="sign-logo"
+              style="margin-top: -13px"
             >
             <reset-password-form
               @to-login="showReset = false"
