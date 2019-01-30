@@ -32,7 +32,7 @@
       <el-form-item prop="secret">
         <el-input
           v-model.trim="form.secret"
-          type="password"
+          type="text"
           placeholder="新密码"
           auto-complete="off"
         />
