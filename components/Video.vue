@@ -27,6 +27,7 @@ $tool-btn-width: 40px;
     text-align: center;
     z-index: 999;
     overflow: hidden;
+    background-color: #000;
 
     p {
       width: 100%;
@@ -227,16 +228,6 @@ $tool-btn-width: 40px;
         </p>
       </div>
       <div
-        v-else-if="mustReward"
-        class="not-play-screen"
-      >
-        <p>
-          由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
-          <br>
-          团子可通过签到等方式获得，点击页面右下角悬浮球查看详情
-        </p>
-      </div>
-      <div
         v-else-if="showLevelThrottle"
         class="not-play-screen"
       >
@@ -257,6 +248,15 @@ $tool-btn-width: 40px;
         id="video-wrap"
         :class="[isFull ? '' : 'chimee-control-fixed']"
       />
+      <div
+        v-if="showRewardBg"
+        class="not-play-screen"
+      >
+        <br>
+        <br>
+        <br>
+        <p>由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放</p>
+      </div>
     </template>
   </div>
 </template>
@@ -328,7 +328,8 @@ export default {
       player: null,
       notMove: false,
       timer: 0,
-      isFull: false
+      isFull: false,
+      showRewardBg: false
     }
   },
   computed: {
@@ -357,7 +358,7 @@ export default {
       if (this.isGuest || this.isFlv || this.otherSrc) {
         return
       }
-      if (this.showLevelThrottle || this.mustReward) {
+      if (this.showLevelThrottle) {
         return
       }
       this.$nextTick(() => {
@@ -435,6 +436,14 @@ export default {
 
       this.player.on('playing', () => {
         this.$emit('playing')
+      })
+
+      this.player.on('timeupdate', function() {
+        if (this.currentTime > 300 && self.mustReward) {
+          self.player.pause()
+          self.$emit('reward')
+          self.showRewardBg = true
+        }
       })
 
       document.addEventListener('fullscreenchange', () => {

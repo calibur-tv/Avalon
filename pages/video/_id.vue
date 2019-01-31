@@ -30,6 +30,133 @@
       margin-top: 2px;
     }
   }
+
+  .wallet {
+    margin-bottom: 20px;
+
+    .item {
+      width: 49%;
+      display: inline-block;
+      text-align: center;
+      margin-bottom: 10px;
+
+      strong {
+        color: #6d757a;
+        font-weight: 700;
+        font-size: 30px;
+      }
+
+      div {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      &:first-child {
+        border-right: 1px solid $color-gray-normal;
+      }
+    }
+
+    .sign-btn {
+      background-color: #f25d8e;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+      width: 76px;
+      line-height: 30px;
+      margin-top: -3px;
+      float: right;
+
+      &:hover {
+        background-color: #ff85ad;
+      }
+
+      &.day-signed {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .intro {
+      font-size: 12px;
+      color: $color-text-light;
+
+      p {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .invite-code {
+    button {
+      width: 100%;
+      background-color: #f25d8e;
+      border-radius: 4px;
+      box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 50px;
+      padding: 0 24px;
+      margin-bottom: 20px;
+
+      &:hover {
+        background-color: #ff709f;
+      }
+    }
+
+    p {
+      font-size: 12px;
+      color: $color-text-light;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.need-coin-modal {
+  text-align: center;
+
+  h2 {
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+
+  p,
+  li {
+    line-height: 24px;
+  }
+
+  a {
+    color: $color-blue-normal;
+  }
+
+  ul {
+    margin-left: 135px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+
+  li {
+    text-align: left;
+    list-style-type: disc;
+  }
+
+  .invite-btn {
+    width: 350px;
+    margin: 0 auto;
+    background-color: #f25d8e;
+    border-radius: 4px;
+    box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 50px;
+    padding: 0 24px;
+    margin-bottom: 5px;
+
+    &:hover {
+      background-color: #ff709f;
+    }
+  }
 }
 </style>
 
@@ -105,6 +232,7 @@
         :must-reward="must_reward && !info.rewarded"
         :need-min-level="need_min_level"
         @playing="handlePlaying"
+        @reward="showRewardDialog = true"
       />
       <!-- 视频底部 -->
       <div class="video-info">
@@ -135,6 +263,34 @@
       </v-lazy>
       <!-- 侧边栏 -->
       <template slot="aside">
+        <template v-if="!isGuest">
+          <div class="wallet">
+            <h3 class="sub-title">虚拟币</h3>
+            <div>
+              <div class="item">
+                <strong>{{ coinCount }}</strong>
+                <div>团子</div>
+              </div>
+              <div class="item">
+                <strong>{{ lightCount }}</strong>
+                <div>光玉</div>
+              </div>
+            </div>
+            <div class="intro">
+              <p>团子类似于Q币，1团子=1Q币，可在站内流通</p>
+              <p>光玉就是可提现的团子，只能从别人的投食中获得</p>
+            </div>
+          </div>
+          <div class="invite-code">
+            <h2 class="sub-title">邀请码</h2>
+            <button
+              v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
+              @success="$toast.success('复制成功~快去发送给好友吧')"
+            >点击复制你的邀请码</button>
+            <p>其他人使用你的邀请码注册，你就能获得团子奖励</p>
+          </div>
+        </template>
+        <h3 class="sub-title">番剧</h3>
         <bangumi-panel
           :id="bangumi.id"
           :name="bangumi.name"
@@ -142,6 +298,52 @@
           :summary="bangumi.summary"
         />
       </template>
+      <!-- 邀请弹窗 -->
+      <v-dialog
+        v-model="showRewardDialog"
+        :header="false"
+        :footer="false"
+        :close="false"
+        width="560px"
+        class="need-coin-modal"
+      >
+        <div
+          v-if="!isGuest"
+          class="content"
+        >
+          <h2>非常抱歉，为了降低流量压力，需要投食才能看番</h2>
+          <p>
+            <span>点击视频下方</span>
+            <el-button
+              type="warning"
+              size="mini"
+              round
+            >投食</el-button>
+            <span>按钮即可继续观看</span>
+          </p>
+          <p>
+            <span>投食会消耗你一枚</span>
+            <a
+              href="/app/notice/1"
+              target="_blank"
+            >
+              「团子」
+            </a>
+          </p>
+          <p>如果你已经没有团子了，你可以：</p>
+          <ul>
+            <li>每天签到可以获得一枚团子</li>
+            <li>每天在站内发言、活跃就会获得团子</li>
+            <li>邀请别人注册 calibur，你与注册者都会获得团子</li>
+            <li>calibur 目前还不支持氪金，请见谅</li>
+          </ul>
+          <button
+            v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
+            class="invite-btn"
+            @success="$toast.success('复制成功~快去发送给好友吧')"
+          >点击生成你的专属邀请码，获得团子</button>
+        </div>
+      </v-dialog>
     </v-layout>
   </div>
 </template>
@@ -250,7 +452,8 @@ export default {
       list: [],
       ip_blocked: false,
       must_reward: false,
-      need_min_level: 0
+      need_min_level: 0,
+      showRewardDialog: false
     }
   },
   computed: {
@@ -284,6 +487,21 @@ export default {
     },
     computeVideoSrc() {
       return this.info.src
+    },
+    user() {
+      return this.$store.state.user
+    },
+    coinCount() {
+      if (this.isGuest) {
+        return 0
+      }
+      return this.user.banlance.coin_count
+    },
+    lightCount() {
+      if (this.isGuest) {
+        return 0
+      }
+      return this.user.banlance.light_count
     }
   },
   methods: {

@@ -117,10 +117,10 @@
     >
       <div class="provider">
         <span>社交账号注册</span>
-        <a href="https://api.calibur.tv/callback/oauth2/qq?from=sign">
+        <a :href="qqRegisterLink">
           <i class="iconfont icon-qq"/>
         </a>
-        <a href="https://api.calibur.tv/callback/oauth2/wechat?from=sign">
+        <a :href="wechatRegisterLink">
           <i class="iconfont icon-v-chat"/>
         </a>
       </div>
@@ -139,7 +139,7 @@ export default {
   name: 'SignUpForm',
   props: {
     inviteCode: {
-      type: String,
+      type: [String, Number],
       default: ''
     }
   },
@@ -242,6 +242,34 @@ export default {
     },
     submitBtnDisabled() {
       return (this.timeout !== 0 && this.step === 0) || this.step === 3
+    },
+    query() {
+      return this.$route.query
+    },
+    paramsIsOK() {
+      return !!(
+        this.query.uid &&
+        /^\d+$/.test(this.query.uid) &&
+        this.query.time &&
+        /^\d+$/.test(this.query.time) &&
+        Date.now() <= this.query.time * 1000 &&
+        this.query.key ===
+          this.$md5(`${this.query.uid}-the-world-${this.query.time}`)
+      )
+    },
+    qqRegisterLink() {
+      let link = 'https://api.calibur.tv/callback/oauth2/qq?from=sign'
+      if (this.paramsIsOK) {
+        link = `${link}&invite=${this.query.uid}`
+      }
+      return link
+    },
+    wechatRegisterLink() {
+      let link = 'https://api.calibur.tv/callback/oauth2/wechat?from=sign'
+      if (this.paramsIsOK) {
+        link = `${link}&invite=${this.query.uid}`
+      }
+      return link
     }
   },
   methods: {

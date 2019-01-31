@@ -19,6 +19,9 @@
     <not-ssr>
       <v-sign/>
     </not-ssr>
+    <not-ssr>
+      <gift-modal/>
+    </not-ssr>
   </div>
 </template>
 
@@ -27,6 +30,7 @@ import vFooter from '~/components/layouts/Footer'
 import vMusic from '~/components/layouts/Music'
 import SideTools from '~/components/layouts/SideTools'
 import vSign from '~/components/layouts/Sign'
+import GiftModal from '~/components/common/GiftModal'
 
 export default {
   name: 'DefaultLayout',
@@ -34,6 +38,7 @@ export default {
     vFooter,
     SideTools,
     vMusic,
+    GiftModal,
     vSign
   },
   mounted() {
