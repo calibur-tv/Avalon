@@ -19,6 +19,7 @@ module.exports = {
     SENTRY_URL: 'https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871',
     RELEASE: releaseTag
   },
+  buildDir: isDev ? '.nuxt-dev' : '.nuxt',
   /*
   ** Headers of the page
   */

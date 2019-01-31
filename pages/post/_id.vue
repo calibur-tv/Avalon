@@ -431,7 +431,8 @@ export default {
         return {
           post,
           bangumi,
-          master: data.user
+          master: data.user,
+          shareData: data.share_data
         }
       })
       .catch(error)

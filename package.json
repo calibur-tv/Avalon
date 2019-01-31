@@ -21,6 +21,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@sentry/browser": "^4.4.1",
     "@sentry/node": "^4.4.1",
+    "blueimp-md5": "^2.10.0",
     "chimee": "^0.11.0",
     "chimee-kernel-flv": "^1.4.10",
     "chimee-plugin-center-state": "^0.0.12",

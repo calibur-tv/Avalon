@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import { MessageBox } from 'element-ui'
 import QRCode from '~/assets/js/qrcode'
 import Toast from '~/assets/js/toast'
+import md5 from 'blueimp-md5'
 
 // TODO：精简这里，没必要 global 的就去掉
 Vue.use({
@@ -19,6 +20,8 @@ Vue.use({
     Vue.prototype.$channel = new Vue()
 
     Vue.prototype.$toast = Toast
+
+    Vue.prototype.$md5 = md5
 
     Vue.prototype.$QRCode = (el, text, options = { width: 170, height: 170 }) =>
       new QRCode(el, {
