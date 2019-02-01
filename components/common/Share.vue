@@ -449,8 +449,17 @@ export default {
   computed: {
     shareUrl() {
       return this.url
-        ? `${window.location.origin}${this.url}`
-        : `${window.location.origin}${this.$route.fullPath}`
+        ? `${window.location.origin}${this.url}${this.query}`
+        : `${window.location.origin}${this.$route.path}${this.query}`
+    },
+    query() {
+      if (!this.$store.state.login) {
+        return ''
+      }
+      const userId = this.$store.state.user.id
+      const time = parseInt(Date.now() / 1000) + 3600
+      const hash = this.$md5(userId + '-the-world-' + time)
+      return `?uid=${userId}&time=${time}&key=${hash}`
     }
   },
   mounted() {

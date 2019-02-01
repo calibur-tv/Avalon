@@ -19,6 +19,7 @@
     class="what-the-ad-block-fucked-panel"
   >
     <div class="dont-block-me-please-buttons">
+      <slot/>
       <el-button
         v-if="isCreator"
         :class="{ 'is-plain': source.reward }"

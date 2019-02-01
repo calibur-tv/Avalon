@@ -7,3 +7,9 @@ export const markPlaying = (ctx, { id }) => {
     id
   })
 }
+
+export const buyVideoPackage = (ctx, { season_id }) => {
+  return ctx.$axios.$post('video/buy', {
+    season_id
+  })
+}

@@ -242,7 +242,16 @@
           :is-mine="isMine"
           type="video"
           @reward-callback="handleRewardAction"
-        />
+        >
+          <el-button
+            :plain="buyed"
+            type="primary"
+            round
+            @click="handleBuyVideoClick"
+          >
+            {{ buyed ? '已承包' : '10个团子承包本季度' }}
+          </el-button>
+        </social-panel>
         <v-share type="panel"/>
         <el-button
           type="warning"
@@ -284,10 +293,10 @@
           <div class="invite-code">
             <h2 class="sub-title">邀请码</h2>
             <button
-              v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
+              v-clipboard="share_data.link"
               @success="$toast.success('复制成功~快去发送给好友吧')"
-            >点击复制你的邀请码</button>
-            <p>其他人使用你的邀请码注册，你就能获得团子奖励</p>
+            >点此复制链接分享本资源</button>
+            <p>别人使用你分享的链接注册，你就能获得团子奖励</p>
           </div>
         </template>
         <h3 class="sub-title">番剧</h3>
@@ -353,7 +362,7 @@ import vVideo from '~/components/Video'
 import vPart from '~/components/lists/Parts'
 import CommentMain from '~/components/comments/CommentMain'
 import SocialPanel from '~/components/common/SocialPanel'
-import { getVideoInfo, markPlaying } from '~/api/videoApi'
+import { getVideoInfo, markPlaying, buyVideoPackage } from '~/api/videoApi'
 
 export default {
   name: 'VideoShow',
@@ -453,7 +462,12 @@ export default {
       ip_blocked: false,
       must_reward: false,
       need_min_level: 0,
-      showRewardDialog: false
+      season_id: 0,
+      share_data: {
+        link: `http://calibur.tv/video/${this.id}`
+      },
+      showRewardDialog: false,
+      buying: false
     }
   },
   computed: {
@@ -524,6 +538,35 @@ export default {
       if (this.must_reward) {
         window.location.reload()
       }
+    },
+    handleBuyVideoClick() {
+      if (this.buyed) {
+        this.$toast.success('无需重复购买')
+        return
+      }
+      if (this.buying) {
+        return
+      }
+      this.$confirm('这会消耗你10个虚拟币，确认吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.buying = true
+          buyVideoPackage(this, {
+            season_id: this.season_id
+          })
+            .then(() => {
+              this.$toast.success('购买成功，正在刷新页面').then(() => {
+                window.location.reload()
+              })
+            })
+            .catch(() => {
+              this.buying = false
+            })
+        })
+        .catch(() => {})
     }
   }
 }
