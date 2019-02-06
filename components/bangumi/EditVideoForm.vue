@@ -167,8 +167,8 @@ export default {
       callback()
     }
     const validateSrc = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('请填写视频链接'))
+      if (value === '') {
+        return callback()
       }
       if (
         !/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(

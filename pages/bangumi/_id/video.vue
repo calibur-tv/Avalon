@@ -6,7 +6,7 @@
       title=""
       style="margin-bottom:15px"
     >
-      版主和代行者有权限上传百度云资源的视频，请勿引用包含广告的资源，违者抹杀（笑&nbsp;
+      版主有权限上传百度云资源的视频，请勿引用包含广告的资源，违者抹杀（笑&nbsp;
       <el-button
         type="primary"
         size="mini"
