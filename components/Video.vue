@@ -48,6 +48,36 @@ $tool-btn-width: 40px;
     }
   }
 
+  .baidu-cloud-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 999;
+    overflow: hidden;
+    background-color: $color-gray-light;
+
+    p {
+      width: 100%;
+      margin-top: 150px;
+      line-height: 24px;
+    }
+
+    a {
+      display: inline-block;
+      border-radius: 5px;
+      border: 1px solid #000;
+      padding: 10px 15px;
+      margin: 20px 8px 0;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
   container {
     position: relative;
     display: block;
@@ -193,6 +223,20 @@ $tool-btn-width: 40px;
         <p>这个资源消失了_〆(´Д｀ )</p>
       </div>
       <div
+        v-else-if="isBaiduCloud"
+        class="baidu-cloud-mask"
+      >
+        <p>该资源是百度云链接，点击下方链接跳转播放，如果资源挂了，请发帖反馈</p>
+        <a
+          v-if="baiduCloudPwd"
+          href="javascript:;"
+        >密码：{{ baiduCloudPwd }}</a>
+        <a
+          :href="source"
+          target="_blank"
+        >点击跳转播放</a>
+      </div>
+      <div
         v-else-if="isFlv"
         class="not-play-screen"
       >
@@ -321,6 +365,14 @@ export default {
     needMinLevel: {
       type: Number,
       default: 0
+    },
+    isBaiduCloud: {
+      type: Boolean,
+      default: false
+    },
+    baiduCloudPwd: {
+      type: String,
+      default: ''
     }
   },
   data() {

@@ -70,7 +70,7 @@ export default {
       }
 
       const createFileName = ({ userId, page, file }) => {
-        return `admin/${userId}${page}/${new Date().getTime()}-${Math.random()
+        return `user/${userId}${page}/${new Date().getTime()}-${Math.random()
           .toString(36)
           .substring(3, 6)}.${file.type.split('/').pop()}`
       }

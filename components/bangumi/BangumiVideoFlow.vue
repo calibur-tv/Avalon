@@ -137,7 +137,8 @@ export default {
       state: {
         loading: false,
         fetched: false
-      }
+      },
+      showDialog: false
     }
   },
   methods: {
@@ -165,6 +166,9 @@ export default {
         desc: `我想看《${this.info.name}》的视频第 {?} 集`,
         placeholder: '请填写你想看的集数'
       })
+    },
+    openCreateDialog() {
+      this.showDialog = true
     }
   }
 }

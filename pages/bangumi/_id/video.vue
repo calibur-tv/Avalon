@@ -1,5 +1,22 @@
 <template>
   <div id="bangumi-video-flow">
+    <el-alert
+      v-if="bangumi.is_leader"
+      type="info"
+      title=""
+      style="margin-bottom:15px"
+    >
+      版主和代行者有权限上传百度云资源的视频，请勿引用包含广告的资源，违者抹杀（笑&nbsp;
+      <el-button
+        type="primary"
+        size="mini"
+        plain
+        round
+        @click="openCreateDialog"
+      >
+        添加视频
+      </el-button>
+    </el-alert>
     <section v-if="source.total">
       <div v-if="source.has_season">
         <div
@@ -29,12 +46,23 @@
         />
       </ul>
     </section>
+    <v-dialog
+      v-model="showDialog"
+      :footer="false"
+      title="新建视频"
+    >
+      <edit-video-form
+        :bangumi-id="id"
+        :season="computedSeason"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { getBangumiVideos } from '~/api/bangumiApi'
 import VideoFlowItem from '~/components/flow/item/VideoFlowItem'
+import EditVideoForm from '~/components/bangumi/EditVideoForm'
 
 export default {
   name: 'BangumiVideo',
@@ -48,6 +76,7 @@ export default {
       .catch(error)
   },
   components: {
+    EditVideoForm,
     VideoFlowItem
   },
   props: {
@@ -58,7 +87,26 @@ export default {
   },
   data() {
     return {
-      source: null
+      source: null,
+      showDialog: false
+    }
+  },
+  computed: {
+    computedSeason() {
+      const result = this.source.season.map(_ => _)
+      this.source.videos.forEach((videos, index) => {
+        const lastVideo = videos.data[videos.data.length - 1]
+        result[index]['last_part'] = lastVideo ? +lastVideo['episode'] + 1 : 0
+      })
+      return result
+    },
+    bangumi() {
+      return this.$store.state.bangumi.show
+    }
+  },
+  methods: {
+    openCreateDialog() {
+      this.showDialog = true
     }
   }
 }

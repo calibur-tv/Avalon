@@ -13,3 +13,11 @@ export const buyVideoPackage = (ctx, { season_id }) => {
     season_id
   })
 }
+
+export const createVideo = (ctx, form) => {
+  return ctx.$axios.$post('video/create', form)
+}
+
+export const updateVideo = (ctx, id, form) => {
+  return ctx.$axios.$post(`video/${id}/update`, form)
+}

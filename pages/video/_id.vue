@@ -26,7 +26,6 @@
     }
 
     .video-report {
-      margin-right: 15px;
       margin-top: 2px;
     }
   }
@@ -228,6 +227,8 @@
         :poster="$resize(info.poster, { width: 800 })"
         :next="nextPartVideo"
         :is-guest="isGuest"
+        :is-baidu-cloud="info.is_baidu_cloud"
+        :baidu-cloud-pwd="info.baidu_cloud_pwd"
         :blocked="ip_blocked"
         :must-reward="must_reward && !info.rewarded"
         :need-min-level="need_min_level"
@@ -238,12 +239,13 @@
       <div class="video-info">
         <social-panel
           :id="info.id"
-          :is-creator="info.is_creator"
+          :is-creator="!useOtherSiteSource"
           :is-mine="isMine"
           type="video"
           @reward-callback="handleRewardAction"
         >
           <el-button
+            v-if="!useOtherSiteSource"
             :plain="buyed"
             type="primary"
             round
@@ -260,6 +262,25 @@
           round
           @click="handleVideoReportClick"
         >资源报错</el-button>
+        <template v-if="is_manager">
+          <el-button
+            size="medium"
+            round
+            @click="openEditVideo = true"
+          >编辑视频</el-button>
+          <v-dialog
+            v-model="openEditVideo"
+            :footer="false"
+            title="编辑视频"
+          >
+            <edit-video-form
+              :season-id="season_id"
+              :bangumi-id="bangumi.id"
+              :video-id="id"
+              :video="info"
+            />
+          </v-dialog>
+        </template>
       </div>
       <!-- 评论区 -->
       <v-lazy>
@@ -363,6 +384,7 @@ import vPart from '~/components/lists/Parts'
 import CommentMain from '~/components/comments/CommentMain'
 import SocialPanel from '~/components/common/SocialPanel'
 import { getVideoInfo, markPlaying, buyVideoPackage } from '~/api/videoApi'
+import EditVideoForm from '~/components/bangumi/EditVideoForm'
 
 export default {
   name: 'VideoShow',
@@ -401,7 +423,8 @@ export default {
     vVideo,
     vPart,
     CommentMain,
-    SocialPanel
+    SocialPanel,
+    EditVideoForm
   },
   props: {
     id: {
@@ -467,7 +490,9 @@ export default {
         link: `http://calibur.tv/video/${this.id}`
       },
       showRewardDialog: false,
-      buying: false
+      buying: false,
+      is_manager: false,
+      openEditVideo: false
     }
   },
   computed: {

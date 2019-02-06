@@ -92,7 +92,7 @@
           :loading="submitting"
           size="small"
           round
-        >选择封面</el-button>
+        >上传封面</el-button>
       </el-upload>
     </el-form-item>
     <el-form-item>
