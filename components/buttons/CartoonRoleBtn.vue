@@ -52,17 +52,22 @@ export default {
         inputErrorMessage: '必须是正整数'
       })
         .then(async ({ value }) => {
-          if (value < 0) {
+          const amount = +value
+          if (amount < 0) {
             this.$toast.error('必须是正整数')
+            return
+          }
+          if (this.$store.state.user.coin < amount) {
+            this.$toast.error('团子不足')
             return
           }
           try {
             await starRoleAction(this, {
               id: this.id,
-              amount: value
+              amount
             })
-            this.$store.commit('USE_COIN', +value)
-            this.$emit('success', +value)
+            this.$store.commit('USE_COIN', amount)
+            this.$emit('success', amount)
           } catch (e) {
             this.$toast.error(e)
           }
