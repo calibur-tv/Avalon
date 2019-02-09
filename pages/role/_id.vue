@@ -390,6 +390,9 @@ export default {
         'hot',
         this.id
       )
+    },
+    currentUserId() {
+      return this.$store.state.login ? this.$store.state.user.id : 0
     }
   },
   mounted() {
@@ -397,6 +400,12 @@ export default {
   },
   methods: {
     handleStarCallback(count) {
+      if (!this.role.hasStar) {
+        this.role.fans_count++
+      }
+      if (this.role.lover && this.currentUserId === this.role.lover.id) {
+        this.role.lover.score += count
+      }
       this.role.hasStar += count
       this.role.star_count += count
       this.$toast.success(`+${this.role.hasStar}s`)
