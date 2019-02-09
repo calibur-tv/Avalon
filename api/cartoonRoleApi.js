@@ -18,8 +18,10 @@ export const newbieUsers = ctx => {
   return ctx.$axios.$get('cartoon_role/list/newbie')
 }
 
-export const starRoleAction = (ctx, { id }) => {
-  return ctx.$axios.$post(`cartoon_role/${id}/star`)
+export const starRoleAction = (ctx, { id, amount }) => {
+  return ctx.$axios.$post(`cartoon_role/${id}/star`, {
+    amount
+  })
 }
 
 export const createRole = (ctx, { bangumi_id, name, intro, avatar, alias }) => {

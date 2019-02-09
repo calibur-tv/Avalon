@@ -45,15 +45,29 @@ export default {
         this.$toast.error('团子不足')
         return
       }
-      try {
-        await starRoleAction(this, {
-          id: this.id
+      this.$prompt('请输入要应援的数额', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^\d+$/,
+        inputErrorMessage: '必须是正整数'
+      })
+        .then(async ({ value }) => {
+          if (value < 0) {
+            this.$toast.error('必须是正整数')
+            return
+          }
+          try {
+            await starRoleAction(this, {
+              id: this.id,
+              amount: value
+            })
+            this.$store.commit('USE_COIN', +value)
+            this.$emit('success', +value)
+          } catch (e) {
+            this.$toast.error(e)
+          }
         })
-        this.$store.commit('USE_COIN')
-        this.$emit('success')
-      } catch (e) {
-        this.$toast.error(e)
-      }
+        .catch(() => {})
     }
   }
 }

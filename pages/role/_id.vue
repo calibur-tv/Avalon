@@ -396,9 +396,9 @@ export default {
     this.initFansList('new')
   },
   methods: {
-    handleStarCallback() {
-      this.role.hasStar++
-      this.role.star_count++
+    handleStarCallback(count) {
+      this.role.hasStar += count
+      this.role.star_count += count
       this.$toast.success(`+${this.role.hasStar}s`)
     },
     cartoonRoleEditSuccess() {

@@ -57,11 +57,11 @@ export const mutations = {
       }
     }
   },
-  USE_COIN(state) {
+  USE_COIN(state, amount = 1) {
     if (!state.login) {
       return
     }
-    state.user.coin--
+    state.user.coin -= amount
   }
 }
 
