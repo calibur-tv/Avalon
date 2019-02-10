@@ -30,6 +30,33 @@
     }
   }
 
+  .uploader {
+    margin-bottom: 15px;
+    @extend %clearfix;
+
+    .avatar {
+      float: left;
+      margin-right: 10px;
+    }
+
+    .info {
+      overflow: hidden;
+
+      .nickname {
+        font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+      }
+
+      .intro {
+        @include twoline(18px);
+        font-size: 12px;
+        color: $color-text-light;
+      }
+    }
+  }
+
   .wallet {
     margin-bottom: 20px;
 
@@ -239,7 +266,7 @@
       <div class="video-info">
         <social-panel
           :id="info.id"
-          :is-creator="!useOtherSiteSource"
+          :is-creator="true"
           :is-mine="isMine"
           type="video"
           @reward-callback="handleRewardAction"
@@ -293,6 +320,33 @@
       </v-lazy>
       <!-- 侧边栏 -->
       <template slot="aside">
+        <div
+          v-if="upload_user"
+          class="uploader"
+        >
+          <h3 class="sub-title">UP主</h3>
+          <div>
+            <div class="avatar">
+              <v-img
+                :src="upload_user.avatar"
+                :lazy="false"
+                :avatar="true"
+                :width="70"
+                :height="70"
+              />
+            </div>
+            <div class="info">
+              <p
+                class="nickname"
+                v-text="upload_user.nickname"
+              />
+              <p
+                class="intro"
+                v-text="upload_user.signature"
+              />
+            </div>
+          </div>
+        </div>
         <template v-if="!isGuest">
           <div class="wallet">
             <h3 class="sub-title">虚拟币</h3>
@@ -480,6 +534,7 @@ export default {
       showAll: false,
       firstPlay: true,
       info: null,
+      upload_user: null,
       bangumi: null,
       list: [],
       ip_blocked: false,

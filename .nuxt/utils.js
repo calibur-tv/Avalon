@@ -129,7 +129,7 @@ export async function setContext(app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"API_URL":"http://localhost/","API_URL_BROWSER":"https://api.calibur.tv/","SENTRY_URL":"https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871","RELEASE":"2019-2-9-12-01-28"}
+      env: {"API_URL":"http://localhost/","API_URL_BROWSER":"https://api.calibur.tv/","SENTRY_URL":"https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871","RELEASE":"2019-2-10-09-39-22"}
     }
     // Only set once
     if (context.req) app.context.req = context.req

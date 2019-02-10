@@ -228,8 +228,10 @@ $tool-btn-width: 40px;
       >
         <p>该资源是百度云链接，点击下方链接跳转播放，如果资源挂了，请发帖反馈</p>
         <a
+          v-clipboard="baiduCloudPwd"
           v-if="baiduCloudPwd"
           href="javascript:;"
+          @success="$toast.success('密码已复制到剪贴板')"
         >密码：{{ baiduCloudPwd }}</a>
         <a
           :href="source"
