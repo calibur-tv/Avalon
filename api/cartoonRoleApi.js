@@ -1,5 +1,5 @@
 export const getCartoonRoleInfo = (ctx, { id }) => {
-  return ctx.$axios.$get(`cartoon_role/${id}/show`)
+  return ctx.$axios.$get(`cartoon_role/${id}/stock_show`)
 }
 
 export const getTodayActivity = ctx => {
@@ -19,7 +19,7 @@ export const newbieUsers = ctx => {
 }
 
 export const starRoleAction = (ctx, { id, amount }) => {
-  return ctx.$axios.$post(`cartoon_role/${id}/star`, {
+  return ctx.$axios.$post(`cartoon_role/${id}/get_stock`, {
     amount
   })
 }
@@ -34,16 +34,10 @@ export const createRole = (ctx, { bangumi_id, name, intro, avatar, alias }) => {
   })
 }
 
-export const editRole = (
-  ctx,
-  { id, bangumi_id, name, intro, avatar, alias }
-) => {
-  return ctx.$axios.$post('cartoon_role/manager/edit', {
-    id,
-    bangumi_id,
-    name,
-    intro,
-    avatar,
-    alias
-  })
+export const editRole = (ctx, form) => {
+  return ctx.$axios.$post('cartoon_role/manager/edit', form)
+}
+
+export const createCartoonRole = (ctx, form) => {
+  return ctx.$axios.$post('cartoon_role/manager/user_create', form)
 }

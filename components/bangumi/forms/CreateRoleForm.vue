@@ -59,9 +59,21 @@
     >
       <el-input
         v-model.trim="form.intro"
-        :rows="5"
+        :rows="10"
         type="textarea"
         placeholder="请输入角色简介"
+      />
+    </el-form-item>
+    <el-form-item
+      v-if="isBoss"
+      label="股价"
+      prop="stock_price"
+    >
+      <el-input-number
+        v-model="form.stock_price"
+        :step="0.01"
+        :min="1"
+        :max="10"
       />
     </el-form-item>
     <el-form-item>
@@ -97,18 +109,22 @@ export default {
     role: {
       type: Object,
       default: null
+    },
+    isBoss: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     const validateAlias = (rule, value, callback) => {
       if (!value || !value.length) {
-        return callback(new Error('至少选择 1 个标签'))
+        return callback(new Error('至少填写 1 个别名'))
       }
       if (value.length > 5) {
-        return callback(new Error('最多选择 5 个标签'))
+        return callback(new Error('最多填写 5 个别名'))
       }
-      if (value.join('').length > 120) {
-        return callback(new Error('最多 120 字'))
+      if (value.join('').length > 200) {
+        return callback(new Error('最多 200 字'))
       }
       callback()
     }
@@ -125,8 +141,8 @@ export default {
       if (!value) {
         return callback(new Error('请先填写角色简介'))
       }
-      if (value.length > 200) {
-        return callback(new Error('简介最多 200 个字'))
+      if (value.length > 400) {
+        return callback(new Error('简介最多 400 个字'))
       }
       callback()
     }
@@ -142,7 +158,8 @@ export default {
         name: this.role ? this.role.name : '',
         alias: this.role ? this.role.alias.split(',') : [],
         avatar: this.role ? this.role.avatar : '',
-        intro: this.role ? this.role.intro : ''
+        intro: this.role ? this.role.intro : '',
+        stock_price: this.role ? this.role.stock_price : ''
       },
       rules: {
         name: [{ validator: validateName, trigger: 'submit' }],
@@ -172,11 +189,14 @@ export default {
                 .concat(this.form.alias.filter(_ => _ !== name))
                 .toString()
             }
+            if (this.form.stock_price) {
+              params.stock_price = this.form.stock_price
+            }
             if (this.isCreate) {
               const id = await createRole(this, params)
               this.$refs.form.resetFields()
               this.$refs.upload.clearFiles()
-              this.$toast.success('添加成功').then(() => {
+              this.$toast.success('创建成功').then(() => {
                 window.open(this.$alias.cartoonRole(id))
               })
             } else {

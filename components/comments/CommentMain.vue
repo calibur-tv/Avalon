@@ -32,7 +32,10 @@
   <div id="comment-wrap">
     <!-- 主列表的头部 -->
     <slot name="header">
-      <h3 class="sub-title">评论{{ total ? `(${total})` : '' }}</h3>
+      <h3
+        v-if="showHeader"
+        class="sub-title"
+      >评论{{ total ? `(${total})` : '' }}</h3>
       <comment-create-form
         :id="id"
         :type="type"
@@ -143,6 +146,10 @@ export default {
     lazy: {
       type: Boolean,
       default: false
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

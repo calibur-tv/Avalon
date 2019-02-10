@@ -294,3 +294,9 @@ export const cartoonRoleFans = ({ ctx, id, seen_ids, max_id, order_by }) => {
     params: { seenIds: seen_ids, minId: max_id, sort: order_by }
   })
 }
+
+export const virtualIdolOwners = ({ ctx, id, seen_ids, max_id, order_by }) => {
+  return ctx.$axios.$get(`cartoon_role/${id}/owners`, {
+    params: { seenIds: seen_ids, minId: max_id, sort: order_by }
+  })
+}

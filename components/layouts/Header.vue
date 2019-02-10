@@ -475,6 +475,12 @@ $search-height: 32px;
             <span>首页</span>
           </nuxt-link>
           <nuxt-link
+            :to="$alias.roleTrending"
+            :class="$style.navLink"
+          >
+            <span>股市</span>
+          </nuxt-link>
+          <nuxt-link
             :class="$style.navLink"
             to="/world"
           >
@@ -485,12 +491,6 @@ $search-height: 32px;
             :to="$alias.bangumiNews"
           >
             <span>番剧</span>
-          </nuxt-link>
-          <nuxt-link
-            :to="$alias.roleTrending"
-            :class="$style.navLink"
-          >
-            <span>偶像</span>
           </nuxt-link>
           <nuxt-link
             :class="$style.navLink"
