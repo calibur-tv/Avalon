@@ -19,7 +19,7 @@ export const newbieUsers = ctx => {
 }
 
 export const starRoleAction = (ctx, { id, amount }) => {
-  return ctx.$axios.$post(`cartoon_role/${id}/get_stock`, {
+  return ctx.$axios.$post(`cartoon_role/${id}/buy_stock`, {
     amount
   })
 }
@@ -40,4 +40,20 @@ export const editRole = (ctx, form) => {
 
 export const createCartoonRole = (ctx, form) => {
   return ctx.$axios.$post('cartoon_role/manager/user_create', form)
+}
+
+export const getCartoonRoleDeal = (ctx, { id }) => {
+  return ctx.$axios.$get(`cartoon_role/${id}/get_deal`)
+}
+
+export const createCartoonRoleDeal = (ctx, form) => {
+  return ctx.$axios.$post('cartoon_role/create_deal', form)
+}
+
+export const makeCartoonRoleDeal = (ctx, form) => {
+  return ctx.$axios.$post('cartoon_role/make_deal', form)
+}
+
+export const deleteCartoonRoleDeal = (ctx, { id }) => {
+  return ctx.$axios.$post('cartoon_role/delete_deal', { id })
 }

@@ -300,3 +300,16 @@ export const virtualIdolOwners = ({ ctx, id, seen_ids, max_id, order_by }) => {
     params: { seenIds: seen_ids, minId: max_id, sort: order_by }
   })
 }
+
+export const virtualIdolList = ({ ctx, id, seen_ids, order_by }) => {
+  const arr = order_by.split('-')
+  return ctx.$axios.$get('cartoon_role/list/idols', {
+    params: { seenIds: seen_ids, type: arr[0], sort: arr[1], state: arr[2], id }
+  })
+}
+
+export const getVirtualIdolDealList = ({ ctx, seen_ids }) => {
+  return ctx.$axios.$get('cartoon_role/deal_list', {
+    params: { seenIds: seen_ids }
+  })
+}

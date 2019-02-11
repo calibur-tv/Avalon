@@ -12,7 +12,6 @@
       <el-form-item
         label="名称"
         prop="name"
-        required
       >
         <el-col :span="16">
           <el-input
@@ -100,7 +99,6 @@
       <el-form-item
         label="简介"
         prop="intro"
-        required
       >
         <el-input
           v-model.trim="form.intro"
@@ -153,14 +151,21 @@ export default {
         intro: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        name: [
+          { required: true, message: '请输入角色名称', trigger: 'submit' }
+        ],
         avatar: [
           { required: true, message: '头像不能为空', trigger: 'change' }
         ],
         alias: [{ validator: validateAlias, trigger: 'submit' }],
         intro: [
-          { required: true, message: '简介不能为空', trigger: 'blur' },
-          { min: 20, max: 400, message: '最少20字，最多400字', trigger: 'blur' }
+          {
+            required: true,
+            min: 20,
+            max: 400,
+            message: '最少20字，最多400字',
+            trigger: 'submit'
+          }
         ],
         bangumi_id: [{ required: true, message: '番剧是必选', trigger: 'blur' }]
       },

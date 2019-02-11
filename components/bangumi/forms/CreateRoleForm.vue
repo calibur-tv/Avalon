@@ -1,5 +1,17 @@
+<style lang="scss">
+#edit-role-form {
+  .edit-btn-wrap {
+    height: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>
+
 <template>
   <el-form
+    id="edit-role-form"
     ref="form"
     :model="form"
     :rules="rules"
@@ -64,18 +76,55 @@
         placeholder="请输入角色简介"
       />
     </el-form-item>
-    <el-form-item
-      v-if="isBoss"
-      label="股价"
-      prop="stock_price"
-    >
-      <el-input-number
-        v-model="form.stock_price"
-        :step="0.01"
-        :min="1"
-        :max="10"
-      />
-    </el-form-item>
+    <template v-if="isBoss && role">
+      <el-row>
+        <el-col :span="18">
+          <el-form-item
+            label="股价"
+            prop="stock_price"
+          >
+            <el-input
+              v-if="role.is_locked"
+              v-model="form.stock_price"
+              :disabled="true"
+            >
+              <template slot="prepend">每股售价</template>
+              <template slot="append">个虚拟币</template>
+            </el-input>
+            <el-input-number
+              v-else
+              v-model="form.stock_price"
+              :step="0.01"
+              :min="1"
+              :max="10"
+            />
+          </el-form-item>
+          <el-form-item
+            label="股数"
+            prop="max_stock_count"
+          >
+            <el-input
+              v-model="form.max_stock_count"
+              :disabled="true"
+            >
+              <template slot="prepend">总共发行</template>
+              <template slot="append">股</template>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :span="6"
+          class="edit-btn-wrap"
+        >
+          <el-button
+            round
+            @click="openEditStockDialog"
+          >
+            点击增发股份
+          </el-button>
+        </el-col>
+      </el-row>
+    </template>
     <el-form-item>
       <el-button
         :loading="submitting"
@@ -83,6 +132,58 @@
         @click="submit"
       >确认提交</el-button>
     </el-form-item>
+    <v-dialog
+      v-if="editStockForm"
+      v-model="showEditStockDialog"
+      title="修改股份发行信息"
+      width="560px"
+      @submit="handleStockChange"
+    >
+      <el-alert
+        :closable="false"
+        type="info"
+        title="当前数据"
+        style="margin-bottom:15px"
+      >
+        <p>当前每股的价格：{{ editStockForm.stock_price }}</p>
+        <p>当前总发行股份：{{ editStockForm.max_stock_count || '未设上限' }}</p>
+        <p>当前已售出股份：{{ editStockForm.star_count }}</p>
+      </el-alert>
+      <el-alert
+        :closable="false"
+        type="info"
+        title="发行规则"
+        style="margin-bottom:15px"
+      >
+        <p>每次增发的股份，不能小于 1000 股</p>
+        <p>现阶段，不支持以每股价格低于 1.00 或高于 10.00 的售价进行发售</p>
+        <p>若已售出股份小于 4000，则每次发行的股值不能低于总市值的 25%，否则发行的股值不能低于总市值的 10%</p>
+      </el-alert>
+      <el-form label-width="80px">
+        <el-form-item
+          label="每股股价"
+          prop="stock_price"
+        >
+          <el-input-number
+            v-model="editStockForm.new_price"
+            :min="1"
+            :max="10"
+            :step="0.01"
+          />
+        </el-form-item>
+        <el-form-item
+          label="增发数额"
+          prop="max_stock_count"
+        >
+          <el-input-number
+            v-model="editStockForm.add_stock_count"
+            :step="1"
+            :min="1000"
+          />
+        </el-form-item>
+        <p>最低发售价值：{{ minAddPrice }}&nbsp;，当前发售价值：{{ curAddPrice }}</p>
+      </el-form>
+    </v-dialog>
   </el-form>
 </template>
 
@@ -159,18 +260,67 @@ export default {
         alias: this.role ? this.role.alias.split(',') : [],
         avatar: this.role ? this.role.avatar : '',
         intro: this.role ? this.role.intro : '',
-        stock_price: this.role ? this.role.stock_price : ''
+        stock_price: this.role ? this.role.stock_price : '',
+        max_stock_count: this.role ? +this.role.max_stock_count || '未设置' : ''
       },
+      editStockForm: this.role
+        ? {
+            star_count: this.role.star_count,
+            stock_price: +this.role.stock_price,
+            max_stock_count: +this.role.max_stock_count,
+            market_price: +this.role.market_price,
+            new_price: this.role.stock_price,
+            add_stock_count: 1000
+          }
+        : null,
       rules: {
         name: [{ validator: validateName, trigger: 'submit' }],
         intro: [{ validator: validateDesc, trigger: 'submit' }],
         avatar: [{ validator: validateAvatar, trigger: 'submit' }],
         alias: [{ validator: validateAlias, trigger: 'submit' }]
       },
-      submitting: false
+      submitting: false,
+      showEditStockDialog: false
+    }
+  },
+  computed: {
+    minAddPrice() {
+      if (!this.editStockForm) {
+        return 0
+      }
+      let result
+      if (this.editStockForm.star_count < 4000) {
+        result = this.editStockForm.market_price * 0.25
+      } else {
+        result = this.editStockForm.market_price * 0.1
+      }
+      if (result < 1000) {
+        return parseFloat(1000).toFixed(2)
+      }
+      return parseFloat(result).toFixed(2)
+    },
+    curAddPrice() {
+      return parseFloat(
+        this.editStockForm.new_price * this.editStockForm.add_stock_count
+      ).toFixed(2)
     }
   },
   methods: {
+    handleStockChange() {
+      if (this.curAddPrice - this.minAddPrice < 0) {
+        this.$toast.error('不能定价太低')
+        return
+      }
+      this.form.stock_price = this.editStockForm.new_price
+      if (typeof this.form.max_stock_count === 'string') {
+        this.form.max_stock_count = this.editStockForm.add_stock_count
+      } else {
+        this.form.max_stock_count =
+          this.form.max_stock_count + this.editStockForm.add_stock_count
+      }
+      this.showEditStockDialog = false
+      this.$toast.success('保存成功，提交之后生效')
+    },
     submit() {
       this.$refs.form.validate(async valid => {
         if (valid) {
@@ -191,6 +341,7 @@ export default {
             }
             if (this.form.stock_price) {
               params.stock_price = this.form.stock_price
+              params.max_stock_count = this.form.max_stock_count
             }
             if (this.isCreate) {
               const id = await createRole(this, params)
@@ -217,6 +368,17 @@ export default {
           return false
         }
       })
+    },
+    openEditStockDialog() {
+      if (!this.role.is_locked) {
+        this.$toast.error('上次增发的股份停牌之前，不能再增发')
+        return
+      }
+      this.form.stock_price = this.role ? this.role.stock_price : ''
+      this.form.max_stock_count = this.role
+        ? +this.role.max_stock_count || '未设置'
+        : ''
+      this.showEditStockDialog = true
     },
     beforeAvatarUpload(file) {
       this.uploadConfig.max = 1

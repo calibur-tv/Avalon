@@ -1,6 +1,10 @@
 <style lang="scss" module>
+.wrap {
+  display: inline-block;
+}
+
 .cartoon-role-btn {
-  width: 90px;
+  width: 80px;
   height: 32px;
   font-size: 14px;
   line-height: 30px;
@@ -10,6 +14,15 @@
   box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
   color: #fff;
 
+  &.locked {
+    background-color: rgba(0, 0, 0, 0.3);
+    box-shadow: none;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
   &:hover {
     background-color: #ff709f;
   }
@@ -17,11 +30,11 @@
 </style>
 
 <template>
-  <span>
+  <span :class="$style.wrap">
     <button
-      :class="$style.cartoonRoleBtn"
+      :class="[$style.cartoonRoleBtn, { [$style.locked]: locked }]"
       @click="handleStarRole"
-    >入股</button>
+    >{{ locked ? '已停牌' : '入股' }}</button>
     <v-dialog
       v-model="showDialog"
       :title="`入股 - ${name}`"
@@ -41,13 +54,13 @@
         <el-form-item label="购入上限">
           <el-input
             :disabled="true"
-            placeholder="暂无"
+            :placeholder="maxCanBuy"
           />
         </el-form-item>
         <el-form-item label="购入份额">
           <el-input-number
             v-model="count"
-            :min="1"
+            :min="maxCount < 1 ? 0.01 : 1"
             :step="0.01"
             :max="maxCount"
           />
@@ -80,6 +93,18 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    max: {
+      type: Number,
+      required: true
+    },
+    buyed: {
+      type: Number,
+      required: true
+    },
+    locked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -97,8 +122,22 @@ export default {
       const banlance = this.$store.state.user.banlance
       return banlance.coin_count + banlance.light_count
     },
+    maxCanBuy() {
+      if (!this.max) {
+        return '无上限'
+      }
+      return this.max - this.buyed
+    },
     maxCount() {
-      return parseFloat(this.price) * this.pocket
+      const result = parseFloat(this.price) * this.pocket
+      if (!this.max) {
+        return result
+      }
+      const last = this.max - this.buyed
+      if (last < result) {
+        return last
+      }
+      return result
     },
     needPay() {
       return (parseFloat(this.price) * this.count).toFixed(2)
@@ -106,6 +145,10 @@ export default {
   },
   methods: {
     async handleStarRole() {
+      if (this.locked) {
+        this.$toast.error('已经停牌了，等待下次挂牌吧')
+        return
+      }
       if (!this.$store.state.login) {
         this.$channel.$emit('sign-in')
         return

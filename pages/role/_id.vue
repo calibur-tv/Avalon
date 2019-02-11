@@ -14,8 +14,8 @@
 
       .avatar {
         margin-top: 10px;
-        width: 150px;
-        height: 150px;
+        width: 180px;
+        height: 180px;
         display: block;
         border-bottom-left-radius: 225px 15px;
         border-bottom-right-radius: 15px 255px;
@@ -138,14 +138,25 @@
         <p class="sub-title">偶像信息</p>
         <div class="avatar-wrap">
           <img
-            :src="$resize(role.avatar, { width: 200 })"
+            :src="$resize(role.avatar, { width: 360 })"
             class="avatar"
           >
           <cartoon-role-btn
             :id="id"
             :price="role.stock_price"
+            :locked="role.is_locked"
+            :max="+role.max_stock_count"
+            :buyed="+role.star_count"
             :name="role.name"
             @success="handleStarCallback"
+          />
+          <idol-exchange-btn
+            :id="id"
+            :name="role.name"
+            :count="role.has_star"
+            :price="role.stock_price"
+            :locked="role.is_locked"
+            :state="role.company_state"
           />
         </div>
         <div class="info">
@@ -166,12 +177,17 @@
           </ul>
           <div class="coin">
             <p><strong>当前市值：</strong>{{ role.company_state ? role.market_price : '未上市' }}</p>
-            <p><strong>每股股价：</strong>{{ role.stock_price }}</p>
+            <p><strong>每股股价：</strong>￥{{ role.stock_price }}</p>
             <p><strong>持股人数：</strong>{{ role.fans_count }}</p>
-            <p><strong>发行股数：</strong>{{ role.star_count }}</p>
+            <p><strong>已认购股数：</strong>{{ role.star_count }}</p>
+            <p><strong>总发行股数：</strong>{{ hasLimited ? role.max_stock_count : '无上限' }}</p>
+          </div>
+          <div class="coin">
+            <p><strong>我持有的股数：</strong>{{ hasBuyStock ? role.has_star : '未入股' }}</p>
           </div>
           <div class="coin">
             <p><strong>注册时间：</strong>{{ role.created_at }}</p>
+            <p v-if="role.iop_at"><strong>上市时间：</strong>{{ role.iop_at }}</p>
           </div>
         </div>
       </div>
@@ -239,6 +255,7 @@
             <no-content slot="nothing">
               <el-button
                 round
+                @click="$toast.warn('Orz')"
               >可怜的「{{ role.name }}」还没有人入股</el-button>
             </no-content>
           </flow-list>
@@ -368,6 +385,7 @@
 import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
 import CommentMain from '~/components/comments/CommentMain'
 import CartoonRoleBtn from '~/components/buttons/CartoonRoleBtn'
+import IdolExchangeBtn from '~/components/idol/IdolExchangeBtn'
 import TabContainer from '~/components/common/TabContainer'
 import FlowList from '~/components/flow/FlowList'
 import { getCartoonRoleInfo } from '~/api/cartoonRoleApi'
@@ -418,7 +436,8 @@ export default {
     CartoonRoleBtn,
     CommentMain,
     TabContainer,
-    FlowList
+    FlowList,
+    IdolExchangeBtn
   },
   props: {
     id: {
@@ -457,6 +476,12 @@ export default {
     },
     isBoss() {
       return this.role.boss ? this.role.boss.id === this.currentUserId : false
+    },
+    hasLimited() {
+      return this.role.max_stock_count !== '0.00'
+    },
+    hasBuyStock() {
+      return this.role.has_star !== '0.00'
     }
   },
   mounted() {
@@ -508,7 +533,6 @@ export default {
     },
     async initNewestFans() {
       if (!this.role.fans_count) {
-        this.loadedFans = true
         return
       }
       await this.$store.dispatch('flow/initData', {
