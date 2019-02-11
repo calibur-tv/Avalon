@@ -181,6 +181,22 @@
           </el-table-column>
         </el-table>
       </div>
+      <no-content slot="nothing">
+        <nuxt-link to="/role/trending/newbie">
+          <el-button
+            size="mini"
+          >
+            查看融资中的公司
+          </el-button>
+        </nuxt-link>
+        <nuxt-link to="/role/trending/register">
+          <el-button
+            size="mini"
+          >
+            自己注册公司
+          </el-button>
+        </nuxt-link>
+      </no-content>
     </flow-list>
     <v-dialog
       v-if="deal"

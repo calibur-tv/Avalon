@@ -313,3 +313,7 @@ export const getVirtualIdolDealList = ({ ctx, seen_ids }) => {
     params: { seenIds: seen_ids }
   })
 }
+
+export const myVirtualIdolDeals = ({ ctx }) => {
+  return ctx.$axios.$get('cartoon_role/my_deal')
+}

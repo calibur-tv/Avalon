@@ -6,7 +6,7 @@ const tabs = {
   video: '视频',
   post: '帖子',
   score: '漫评',
-  role: '偶像',
+  role: '股市',
   user: '用户'
   // image: "相册",
 }

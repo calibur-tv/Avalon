@@ -25,7 +25,8 @@
     :multiple="multiple"
     :multiple-limit="limit"
     :remote="true"
-    placeholder="输入番剧名称搜索"
+    :size="size"
+    :placeholder="placeholder"
     style="width: 100%"
   >
     <el-option
@@ -63,7 +64,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: '搜索番剧'
+      default: '输入番剧名称搜索'
     },
     disabled: {
       type: Boolean,
@@ -72,6 +73,10 @@ export default {
     followed: {
       type: Boolean,
       default: false
+    },
+    size: {
+      type: String,
+      default: ''
     }
   },
   data() {

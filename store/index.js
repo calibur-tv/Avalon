@@ -73,11 +73,11 @@ export const actions = {
   },
   async initAuth({ state, commit }) {
     if (state.user) {
-      return
+      return true
     }
     if (!state.haveAuthToken) {
       commit('SET_USER', {})
-      return
+      return false
     }
     try {
       const data = await getLoginUser(this)
@@ -87,8 +87,10 @@ export const actions = {
         key: 'notification',
         value: notification
       })
+      return true
     } catch (e) {
       commit('SET_USER', {})
+      return false
     }
   },
   async getNotification({ state, commit }) {

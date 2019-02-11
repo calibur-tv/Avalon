@@ -85,7 +85,7 @@
         <p>认购股数：{{ item.star_count }}</p>
       </div>
       <div class="control">
-        <button>马上入股</button>
+        <button>{{ sort === 'mine' ? '查看数据' : '马上入股' }}</button>
       </div>
       <div class="extra">
         <p v-if="item.ipo_at">上市时间：{{ item.ipo_at.split(' ')[0] }}</p>
@@ -98,7 +98,6 @@
 <script>
 export default {
   name: 'VirtualIdolItem',
-  components: {},
   props: {
     item: {
       type: Object,
@@ -108,14 +107,6 @@ export default {
       type: String,
       required: true
     }
-  },
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  }
 }
 </script>

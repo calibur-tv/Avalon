@@ -171,7 +171,7 @@
       >
         <span>粉丝: {{ item.fans_count }}</span>
         ·
-        <span>金币: {{ item.star_count }}</span>
+        <span>团子: {{ item.star_count }}</span>
         ·
         <span>贡献: {{ item.has_star }}</span>
       </div>
@@ -184,7 +184,7 @@
           {{ $utils.shortenNumber(item.fans_count) }}
         </span>
         <span>
-          金币:
+          团子:
           {{ $utils.shortenNumber(item.star_count) }}
         </span>
         <template v-if="!bangumiId && index !== -1">

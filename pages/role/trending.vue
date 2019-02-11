@@ -1,10 +1,23 @@
+<style lang="scss">
+#trending-role {
+  #main-content {
+    main {
+      padding-left: 0 !important;
+    }
+  }
+}
+</style>
+
 <template>
   <div id="trending-role">
     <v-header type="pure"/>
-    <v-layout>
+    <div
+      id="main-content"
+      class="container"
+    >
       <tab-container :list="pages"/>
       <nuxt-child/>
-    </v-layout>
+    </div>
   </div>
 </template>
 
@@ -19,9 +32,9 @@ export default {
   components: {
     TabContainer
   },
-  data() {
-    return {
-      pages: [
+  computed: {
+    pages() {
+      const result = [
         {
           label: '已上市',
           name: 'role-trending-listed'
@@ -39,6 +52,13 @@ export default {
           name: 'role-trending-register'
         }
       ]
+      if (this.$store.state.login) {
+        result.push({
+          label: '我的数据',
+          name: 'role-trending-mine'
+        })
+      }
+      return result
     }
   }
 }

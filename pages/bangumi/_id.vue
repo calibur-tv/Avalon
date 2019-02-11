@@ -80,7 +80,7 @@ export default {
           show: info.has_cartoon
         },
         {
-          label: '偶像',
+          label: '股市',
           name: 'bangumi-id-role',
           show: true
         },

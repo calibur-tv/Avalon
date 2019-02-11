@@ -50,7 +50,11 @@ export default {
       } catch (e) {}
     },
     handleImageUploadError(err, file) {
-      this.$toast.error(`图片：${file.name} 上传失败`)
+      if (this.$store.state.login) {
+        this.$toast.error(`图片：${file.name} 上传失败`)
+      } else {
+        this.$toast.error('继续操作前请先登录')
+      }
     },
     beforeImageUpload(file) {
       const isFormat = ~this.imageUploadAccept.split(',').indexOf(file.type)
