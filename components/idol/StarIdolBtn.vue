@@ -67,8 +67,8 @@
         </el-form-item>
         <el-form-item label="账单计算">
           <div class="pocket">
-            <strong>钱包余额：</strong><span>{{ pocket - needPay }}</span>&nbsp;&nbsp;
-            <strong>预计支付：</strong><span>{{ needPay }}</span>
+            <strong>预计支付：</strong><span>{{ needPay }}</span>&nbsp;&nbsp;
+            <strong>购买后钱包余额：</strong><span>{{ parseFloat(pocket - needPay).toFixed(2) }}</span>
           </div>
         </el-form-item>
       </el-form>

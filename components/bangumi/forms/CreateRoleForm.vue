@@ -294,8 +294,8 @@ export default {
       } else {
         result = this.editStockForm.market_price * 0.1
       }
-      if (result < 1000) {
-        return parseFloat(1000).toFixed(2)
+      if (result < 500) {
+        return parseFloat(500).toFixed(2)
       }
       return parseFloat(result).toFixed(2)
     },

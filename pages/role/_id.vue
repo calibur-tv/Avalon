@@ -166,7 +166,7 @@
             :src="$resize(role.avatar, { width: 360 })"
             class="avatar"
           >
-          <cartoon-role-btn
+          <star-idol-btn
             :id="id"
             :price="role.stock_price"
             :locked="role.is_locked"
@@ -417,8 +417,8 @@
 <script>
 import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
 import CommentMain from '~/components/comments/CommentMain'
-import CartoonRoleBtn from '~/components/buttons/CartoonRoleBtn'
 import IdolExchangeBtn from '~/components/idol/IdolExchangeBtn'
+import StarIdolBtn from '~/components/idol/StarIdolBtn'
 import TabContainer from '~/components/common/TabContainer'
 import FlowList from '~/components/flow/FlowList'
 import { getCartoonRoleInfo } from '~/api/cartoonRoleApi'
@@ -466,11 +466,11 @@ export default {
   },
   components: {
     CreateRoleForm,
-    CartoonRoleBtn,
     CommentMain,
     TabContainer,
     FlowList,
-    IdolExchangeBtn
+    IdolExchangeBtn,
+    StarIdolBtn
   },
   props: {
     id: {
