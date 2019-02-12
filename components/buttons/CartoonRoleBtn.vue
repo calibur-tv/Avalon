@@ -15,11 +15,13 @@
   color: #fff;
 
   &.locked {
-    background-color: rgba(0, 0, 0, 0.3);
-    box-shadow: none;
+    background-color: $color-dark-light;
+    border-radius: 4px;
+    box-shadow: 0 4px 4px rgba($color-dark-light, 0.3);
+    color: #fff;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: $color-gray-deep;
     }
   }
 

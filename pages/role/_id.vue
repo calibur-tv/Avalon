@@ -249,7 +249,7 @@
           <flow-list
             :id="id"
             func="virtualIdolOwners"
-            type="lastId"
+            type="seenIds"
             sort="biggest"
           >
             <ul
