@@ -44,7 +44,7 @@ export default {
           name: 'role-trending-newbie'
         },
         {
-          label: '交易大厅',
+          label: '交易所',
           name: 'role-trending-hall'
         },
         {

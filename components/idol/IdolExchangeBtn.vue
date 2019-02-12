@@ -157,8 +157,8 @@ export default {
         await createCartoonRoleDeal(this, this.deal)
         this.$toast.success(
           this.deal.id
-            ? '交易修改成功，可到交易大厅查看'
-            : '交易创建成功，可到交易大厅查看'
+            ? '交易修改成功，可到交易所查看'
+            : '交易创建成功，可到交易所查看'
         )
         this.showDialog = false
       } catch (err) {

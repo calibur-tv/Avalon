@@ -339,6 +339,9 @@ export default {
                 .concat(this.form.alias.filter(_ => _ !== name))
                 .toString()
             }
+            if (typeof params.alias !== 'string') {
+              params.alias = params.alias.join(',')
+            }
             if (this.form.stock_price) {
               params.stock_price = this.form.stock_price
               params.max_stock_count = this.form.max_stock_count
