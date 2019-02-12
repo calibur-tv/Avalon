@@ -78,7 +78,6 @@ typings/
 
 # IDE
 .idea
-.env.js
 
 # Mac
 .DS_Store
