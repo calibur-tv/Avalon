@@ -201,8 +201,21 @@ export default {
             return
           }
           this.submitting = true
+          const name = this.form.name
           try {
-            const id = await createCartoonRole(this, this.form)
+            const params = {
+              bangumi_id: this.form.bangumi_id,
+              name,
+              intro: this.form.intro,
+              avatar: this.form.avatar,
+              alias: [name]
+                .concat(this.form.alias.filter(_ => _ !== name))
+                .toString()
+            }
+            if (typeof params.alias !== 'string') {
+              params.alias = params.alias.join(',')
+            }
+            const id = await createCartoonRole(this, params)
             this.$toast.success('偶像创建成功')
             setTimeout(() => {
               window.location = this.$alias.cartoonRole(id)
