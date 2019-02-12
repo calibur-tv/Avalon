@@ -111,7 +111,7 @@ export default {
     await store.dispatch('flow/initData', {
       func: 'virtualIdolList',
       type: 'seenIds',
-      sort: 'trending-newest-0'
+      sort: 'trending-star_count-0'
     })
   },
   components: {
@@ -123,16 +123,16 @@ export default {
       nameQuery: '',
       sorts: [
         {
-          label: '最新注册',
-          value: 'newest'
-        },
-        {
           label: '最多入股',
           value: 'star_count'
+        },
+        {
+          label: '最新注册',
+          value: 'newest'
         }
       ],
-      sort_selected: 'newest',
-      current_sort: 'trending-newest-0'
+      sort_selected: 'star_count',
+      current_sort: 'trending-star_count-0'
     }
   },
   methods: {
