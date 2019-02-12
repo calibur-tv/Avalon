@@ -152,7 +152,7 @@ export default {
         this.$channel.$emit('sign-in')
         return
       }
-      if (!this.$store.state.user.coin) {
+      if (!this.pocket) {
         this.$toast.error('团子不足')
         return
       }
