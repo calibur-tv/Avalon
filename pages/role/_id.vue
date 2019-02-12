@@ -201,7 +201,7 @@
             />
           </ul>
           <div class="coin">
-            <p><strong>当前市值：</strong>{{ role.company_state ? role.market_price : '未上市' }}</p>
+            <p><strong>当前市值：</strong>￥{{ role.company_state ? role.market_price : '未上市' }}</p>
             <p><strong>每股股价：</strong>￥{{ role.stock_price }}</p>
             <p><strong>持股人数：</strong>{{ role.fans_count }}</p>
             <p><strong>已认购股数：</strong>{{ role.star_count }}</p>
@@ -549,7 +549,7 @@ export default {
     loadMoreFans() {
       this.$store.dispatch('flow/loadMore', {
         func: 'virtualIdolOwners',
-        type: 'seenIds',
+        type: 'lastId',
         sort: 'newest',
         id: this.id
       })
@@ -558,7 +558,7 @@ export default {
       if (index === 1) {
         this.$store.dispatch('flow/initData', {
           func: 'virtualIdolOwners',
-          type: 'lastId',
+          type: 'seenIds',
           sort: 'biggest',
           id: this.id
         })
@@ -570,7 +570,7 @@ export default {
       }
       await this.$store.dispatch('flow/initData', {
         func: 'virtualIdolOwners',
-        type: 'seenIds',
+        type: 'lastId',
         sort: 'newest',
         id: this.id
       })

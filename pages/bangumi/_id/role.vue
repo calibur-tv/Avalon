@@ -10,7 +10,7 @@
         v-for="item in flow"
         :key="item.id"
         :item="item"
-        :sort="sort_selected"
+        sort="bangumi"
       />
     </ul>
     <no-content slot="nothing">

@@ -16,9 +16,7 @@
 
   &.locked {
     background-color: $color-dark-light;
-    border-radius: 4px;
     box-shadow: 0 4px 4px rgba($color-dark-light, 0.3);
-    color: #fff;
 
     &:hover {
       background-color: $color-gray-deep;
@@ -127,18 +125,18 @@ export default {
       if (!this.max) {
         return '无上限'
       }
-      return this.max - this.buyed
+      return parseFloat(this.max - this.buyed).toFixed(2)
     },
     maxCount() {
       const result = parseFloat(this.price) * this.pocket
       if (!this.max) {
-        return result
+        return parseFloat(result).toFixed(2)
       }
       const last = this.max - this.buyed
       if (last < result) {
-        return last
+        return parseFloat(last).toFixed(2)
       }
-      return result
+      return parseFloat(result).toFixed(2)
     },
     needPay() {
       return (parseFloat(this.price) * this.count).toFixed(2)

@@ -54,7 +54,7 @@ export const actions = {
       params.page = 0
     } else if (type === 'seenIds') {
       params.seen_ids = ''
-    } else if (type === 'maxId') {
+    } else if (type === 'lastId') {
       params.max_id = ''
     }
     if (id) {
@@ -100,7 +100,7 @@ export const actions = {
           result = result[key]
         })
       }
-      params.max = result
+      params.max_id = result
     } else if (type === 'seenIds') {
       params.seen_ids = field.list
         .map(_ => {
