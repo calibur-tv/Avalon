@@ -212,7 +212,7 @@
           </div>
           <div class="coin">
             <p><strong>注册时间：</strong>{{ role.created_at }}</p>
-            <p v-if="role.iop_at"><strong>上市时间：</strong>{{ role.iop_at }}</p>
+            <p v-if="role.ipo_at"><strong>上市时间：</strong>{{ role.ipo_at }}</p>
           </div>
         </div>
       </div>
