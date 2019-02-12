@@ -61,7 +61,7 @@ export const mutations = {
     if (!state.login) {
       return
     }
-    state.user.coin -= amount
+    state.user.pocket -= amount
   }
 }
 

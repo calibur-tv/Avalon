@@ -119,8 +119,7 @@ export default {
       if (!this.$store.state.login) {
         return 0
       }
-      const banlance = this.$store.state.user.banlance
-      return banlance.coin_count + banlance.light_count
+      return +this.$store.state.user.pocket
     },
     maxCanBuy() {
       if (!this.max) {

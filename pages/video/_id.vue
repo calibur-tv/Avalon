@@ -371,7 +371,7 @@
               v-clipboard="share_data.link"
               @success="$toast.success('复制成功~快去发送给好友吧')"
             >点此复制链接分享本资源</button>
-            <p>别人使用你分享的链接注册，你就能获得团子奖励</p>
+            <p>使用你分享的链接注册，你们都能获得团子奖励</p>
           </div>
         </template>
         <h3 class="sub-title">番剧</h3>

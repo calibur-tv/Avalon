@@ -28,6 +28,13 @@ const _2034def8 = () => interopDefault(import('../pages/error/404.vue' /* webpac
 const _a69f1d44 = () => interopDefault(import('../pages/post/create.vue' /* webpackChunkName: "pages/post/create" */))
 const _497f4634 = () => interopDefault(import('../pages/review/create.vue' /* webpackChunkName: "pages/review/create" */))
 const _0285bb1e = () => interopDefault(import('../pages/role/trending.vue' /* webpackChunkName: "pages/role/trending" */))
+const _3e485034 = () => interopDefault(import('../pages/role/trending/index.vue' /* webpackChunkName: "pages/role/trending/index" */))
+const _4aed9f47 = () => interopDefault(import('../pages/role/trending/hall.vue' /* webpackChunkName: "pages/role/trending/hall" */))
+const _bb479e64 = () => interopDefault(import('../pages/role/trending/intro.vue' /* webpackChunkName: "pages/role/trending/intro" */))
+const _d739b56a = () => interopDefault(import('../pages/role/trending/listed.vue' /* webpackChunkName: "pages/role/trending/listed" */))
+const _06e7333e = () => interopDefault(import('../pages/role/trending/mine.vue' /* webpackChunkName: "pages/role/trending/mine" */))
+const _1a1a4e6c = () => interopDefault(import('../pages/role/trending/newbie.vue' /* webpackChunkName: "pages/role/trending/newbie" */))
+const _6a9a5db1 = () => interopDefault(import('../pages/role/trending/register.vue' /* webpackChunkName: "pages/role/trending/register" */))
 const _f5da0a1a = () => interopDefault(import('../pages/about/invite/_id.vue' /* webpackChunkName: "pages/about/invite/_id" */))
 const _76b887ee = () => interopDefault(import('../pages/app/notice/_id.vue' /* webpackChunkName: "pages/app/notice/_id" */))
 const _00db25d7 = () => interopDefault(import('../pages/bangumi/_id.vue' /* webpackChunkName: "pages/bangumi/_id" */))
@@ -212,7 +219,42 @@ export function createRouter() {
       path: "/role/trending",
       component: _0285bb1e,
       props: false,
-      name: "role-trending"
+      children: [{
+        path: "",
+        component: _3e485034,
+        props: false,
+        name: "role-trending"
+      }, {
+        path: "hall",
+        component: _4aed9f47,
+        props: false,
+        name: "role-trending-hall"
+      }, {
+        path: "intro",
+        component: _bb479e64,
+        props: false,
+        name: "role-trending-intro"
+      }, {
+        path: "listed",
+        component: _d739b56a,
+        props: false,
+        name: "role-trending-listed"
+      }, {
+        path: "mine",
+        component: _06e7333e,
+        props: false,
+        name: "role-trending-mine"
+      }, {
+        path: "newbie",
+        component: _1a1a4e6c,
+        props: false,
+        name: "role-trending-newbie"
+      }, {
+        path: "register",
+        component: _6a9a5db1,
+        props: false,
+        name: "role-trending-register"
+      }]
     }, {
       path: "/about/invite/:id?",
       component: _f5da0a1a,

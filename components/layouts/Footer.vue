@@ -82,6 +82,10 @@
         <li class="card-item">
           <p>calibur - 天下漫友是一家</p>
           <a
+            href="/about/hello"
+            target="_blank"
+          >欢迎</a>
+          <a
             href="/app/notice/1"
             target="_blank"
           >团子简介</a>

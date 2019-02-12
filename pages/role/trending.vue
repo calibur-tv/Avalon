@@ -50,6 +50,10 @@ export default {
         {
           label: '注册公司',
           name: 'role-trending-register'
+        },
+        {
+          label: '股市简介',
+          name: 'role-trending-intro'
         }
       ]
       if (this.$store.state.login) {

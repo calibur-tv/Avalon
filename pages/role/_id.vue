@@ -127,6 +127,31 @@
       }
     }
   }
+
+  .invite-code {
+    button {
+      width: 100%;
+      background-color: #f25d8e;
+      border-radius: 4px;
+      box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 50px;
+      padding: 0 24px;
+      margin-bottom: 20px;
+
+      &:hover {
+        background-color: #ff709f;
+      }
+    }
+
+    p {
+      font-size: 12px;
+      color: $color-text-light;
+      margin-bottom: 20px;
+    }
+  }
 }
 </style>
 
@@ -295,6 +320,14 @@
         </template>
       </tab-container>
       <template slot="aside">
+        <div class="invite-code">
+          <h2 class="sub-title">邀请链接</h2>
+          <button
+            v-clipboard="share_data.link"
+            @success="$toast.success('复制成功~快去发送给好友吧')"
+          >点击邀请朋友炒股</button>
+          <p>使用你分享的链接注册，你们都能获得团子奖励</p>
+        </div>
         <div class="bangumi">
           <p class="sub-title">所属番剧</p>
           <bangumi-panel
