@@ -191,7 +191,7 @@ export default {
         this.$channel.$emit('sign-in')
         return
       }
-      if (this.user.banlance.coin_count + this.user.banlance.light_count < 10) {
+      if (+this.user.pocket < 10) {
         this.$toast.info('你没有足够的虚拟币')
         return
       }

@@ -43,6 +43,15 @@
         line-height: 24px;
         font-size: 14px;
         margin-bottom: 10px;
+
+        &.collapsed {
+          @include twoline(24px);
+        }
+
+        button {
+          color: $color-blue-normal;
+          font-size: 14px;
+        }
       }
 
       .alias {
@@ -57,7 +66,6 @@
         li {
           float: left;
           margin-right: 10px;
-          text-decoration: underline;
         }
       }
 
@@ -189,8 +197,12 @@
             class="name"
             v-text="role.name"
           />
-          <p class="summary">
-            <strong>简介：</strong>{{ role.intro }}
+          <p
+            :class="{ 'collapsed': collapsed }"
+            class="summary"
+          >
+            <strong>简介：</strong>{{ collapsed ? `${role.intro.substr(0, 30)}...` : role.intro }}
+            <button @click="collapsed = !collapsed">{{ collapsed ? '全文' : '收起' }}</button>
           </p>
           <ul class="alias">
             <strong>别名：</strong>
@@ -483,6 +495,7 @@ export default {
       role: null,
       bangumi: null,
       share_data: null,
+      collapsed: true,
       showFansDialog: false,
       loadedFans: false,
       pages: [

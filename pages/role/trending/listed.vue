@@ -76,7 +76,7 @@
             v-for="item in flow"
             :key="item.id"
             :item="item"
-            :sort="sort_selected"
+            sort="listed"
           />
         </ul>
         <no-content slot="nothing">

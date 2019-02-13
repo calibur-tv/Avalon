@@ -55,6 +55,15 @@
       &:hover {
         background-color: rgba(#f25d8e, 0.1);
       }
+
+      &.locked {
+        color: $color-dark-light;
+        border-color: $color-dark-light;
+
+        &:hover {
+          background-color: rgba($color-dark-light, 0.1);
+        }
+      }
     }
   }
 
@@ -79,13 +88,18 @@
         <p class="oneline">{{ item.name }}</p>
       </div>
       <div class="intro">
-        <p>当前市值：{{ item.company_state ? item.market_price : '未上市' }}</p>
-        <p>每股股价：{{ item.stock_price }}</p>
+        <p>当前市值：{{ item.company_state ? `￥${item.market_price}` : '未上市' }}</p>
+        <p>每股股价：￥{{ item.stock_price }}</p>
         <p>投资人数：{{ item.fans_count }}</p>
         <p>认购股数：{{ item.star_count }}</p>
       </div>
       <div class="control">
-        <button>{{ sort === 'mine' ? '查看数据' : '马上入股' }}</button>
+        <template v-if="sort === 'mine'">
+          <button>查看数据</button>
+        </template>
+        <template v-else>
+          <button :class="{ 'locked': item.is_locked }">{{ item.is_locked ? '已停牌' : '马上入股' }}</button>
+        </template>
       </div>
       <div class="extra">
         <p v-if="item.ipo_at">上市时间：{{ item.ipo_at.split(' ')[0] }}</p>
