@@ -1,3 +1,21 @@
+<style lang="scss">
+#edit-idol-form {
+  .el-alert__content {
+    span {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 20px;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+  }
+}
+</style>
+
 <template>
   <div id="edit-idol-form">
     <template v-if="isBoss">
@@ -23,10 +41,13 @@
       </el-alert>
       <el-alert
         :closable="false"
-        title="一周只能修改一次"
         style="margin-bottom:15px"
+        title="变更方式"
         type="warning"
-      />
+      >
+        <p>确认之后，将会发布一条公开提案，只要有超过 2/3 的票数表决同意，就会自动增发股票</p>
+        <p>2/3 的票数指的是每个持股人的权重不同，不是按照投票的人数来，而是按照持有股份的份额来决定</p>
+      </el-alert>
       <el-form label-width="80px">
         <el-form-item
           label="每股股价"
@@ -57,7 +78,7 @@
             :loading="submitting"
             type="primary"
             @click="changeIdolStock"
-          >确认提交</el-button>
+          >确认发布提案</el-button>
         </el-form-item>
       </el-form>
     </template>
@@ -147,7 +168,11 @@
 
 <script>
 import uploadMixin from '~/mixins/upload'
-import { createRole, editRole, changeStockPrice } from '~/api/cartoonRoleApi'
+import {
+  createRole,
+  editRole,
+  createMarketPriceDraft
+} from '~/api/cartoonRoleApi'
 
 export default {
   name: 'CreateRoleForm',
@@ -338,7 +363,7 @@ export default {
       this.$toast.success('上传成功')
       this.form.avatar = res.data.url
     },
-    changeIdolStock() {
+    async changeIdolStock() {
       if (!this.curAddPrice) {
         this.$toast.error('请先定价')
         return
@@ -350,26 +375,20 @@ export default {
       if (this.submitting) {
         return
       }
-      this.$confirm('一周只能修改一次，确认增发吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(async () => {
-          this.submitting = true
-          await changeStockPrice(this, {
-            idol_id: this.role.id,
-            max_stock_count: this.maxStockCount,
-            stock_price: this.editStockForm.new_price
-          })
-          this.$toast.success('修改成功')
-          setTimeout(() => {
-            window.location.reload()
-          }, 1000)
+      this.submitting = true
+      try {
+        await createMarketPriceDraft(this, {
+          idol_id: this.role.id,
+          add_stock_count: this.editStockForm.add_stock_count,
+          stock_price: this.editStockForm.new_price
         })
-        .catch(() => {
-          this.submitting = false
-        })
+        this.$toast.success('修改成功')
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
+      } catch (e) {
+        this.submitting = false
+      }
     }
   }
 }

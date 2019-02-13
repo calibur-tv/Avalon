@@ -72,3 +72,15 @@ export const changeStockPrice = (
 export const getStockMarketMeta = ctx => {
   return ctx.$axios.$get('cartoon_role/stock_meta')
 }
+
+export const createMarketPriceDraft = (ctx, form) => {
+  return ctx.$axios.$post('cartoon_role/create_market_price_draft', form)
+}
+
+export const marketPriceVote = (ctx, { is_agree, idol_id, draft_id }) => {
+  return ctx.$axios.$post('cartoon_role/vote_market_price_draft', {
+    is_agree,
+    idol_id,
+    draft_id
+  })
+}

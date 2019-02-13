@@ -183,7 +183,7 @@
             :name="role.name"
             @success="handleStarCallback"
           />
-          <idol-exchange-btn
+          <idol-deal-btn
             :id="id"
             :name="role.name"
             :count="role.has_star"
@@ -258,44 +258,11 @@
           />
         </template>
         <template slot="1">
-          <flow-list
+          <idol-owner-list
             :id="id"
-            func="virtualIdolOwners"
-            type="seenIds"
-            sort="biggest"
-          >
-            <ul
-              slot-scope="{ flow }"
-              class="likes-modal"
-            >
-              <li
-                v-for="item in flow"
-                :key="item.id"
-              >
-                <a
-                  :href="$alias.user(item.zone)"
-                  class="user"
-                  target="_blank"
-                >
-                  <img
-                    :src="$resize(item.avatar, { width: 80 })"
-                    class="avatar"
-                  >
-                  <span
-                    class="nickname"
-                    v-text="item.nickname"
-                  />
-                  <span class="score">持有{{ item.score }}股，占比{{ computedPercent(item.score) }}</span>
-                </a>
-              </li>
-            </ul>
-            <no-content slot="nothing">
-              <el-button
-                round
-                @click="$toast.warn('Orz')"
-              >可怜的「{{ role.name }}」还没有人入股</el-button>
-            </no-content>
-          </flow-list>
+            :name="role.name"
+            :star="role.star_count"
+          />
         </template>
         <template slot="2">
           <div class="rules">
@@ -305,7 +272,9 @@
             >
               <ul>
                 <li>新注册的公司，只要至少有20人参股，就可以自动上市</li>
+                <!--
                 <li>新注册的公司，若未能在指定时间期限内上市，则会倒闭，所有投资人的将无法获得收益</li>
+                -->
                 <li>上市之后，占股最多的人将成为最大的股东</li>
                 <li>最大的股东并非实时变更，会在每天夜里重新指定</li>
                 <li>最大的股东可以修改偶像的简介，以及修改「每股股价」来提高市值</li>
@@ -316,19 +285,18 @@
           </div>
         </template>
         <template slot="3">
+          <idol-market-price-draft
+            :is-boss="isBoss"
+            :idol="role"
+          />
+        </template>
+        <template slot="4">
           <create-role-form
-            v-if="isBoss || bangumi.is_master"
             :role="role"
             :is-master="bangumi.is_master"
             :is-boss="isBoss"
             :bangumi-id="bangumi.id"
             @success="cartoonRoleEditSuccess"
-          />
-          <el-alert
-            v-else
-            show-icon
-            title="只有该番剧的管理员或者该偶像的大股东才能编辑偶像的信息"
-            type="warning"
           />
         </template>
       </tab-container>
@@ -350,91 +318,20 @@
             :summary="bangumi.summary"
           />
         </div>
-        <div
-          v-if="loadedFans"
-          class="fans"
-        >
-          <p class="sub-title">投资者{{ role.fans_count ? `（${role.fans_count}）` : '' }}</p>
-          <template v-if="latestFans.nothing">
-            <span>还没有人入股</span>
-          </template>
-          <ul
-            v-else
-            class="newest-owners"
-          >
-            <li
-              v-for="user in latestFans.list.slice(0, 6)"
-              :key="user.id"
-              class="user-face"
-            >
-              <el-tooltip
-                :content="user.nickname"
-                class="item"
-                effect="dark"
-                placement="top"
-              >
-                <a
-                  :href="$alias.user(user.zone)"
-                  target="_blank"
-                >
-                  <img :src="$resize(user.avatar, { width: 80 })">
-                </a>
-              </el-tooltip>
-            </li>
-            <button
-              v-if="latestFans.list.length > 6"
-              class="el-icon-more"
-              @click="showFansDialog = true"
-            />
-          </ul>
-        </div>
       </template>
     </v-layout>
-    <v-dialog
-      v-if="latestFans"
-      v-model="showFansDialog"
-      :footer="false"
-      :title="`${role.name} · 的投资者`"
-      :scroll="loadMoreFans"
-      :loading="latestFans.loading"
-      :no-more="latestFans.noMore"
-      class="likes-modal"
-    >
-      <li
-        v-for="item in latestFans.list"
-        :key="item.id"
-      >
-        <a
-          :href="$alias.user(item.zone)"
-          class="user"
-          target="_blank"
-        >
-          <img
-            :src="$resize(item.avatar, { width: 80 })"
-            class="avatar"
-          >
-          <span
-            class="nickname"
-            v-text="item.nickname"
-          />
-          <v-time
-            v-model="item.score"
-            class="score"
-          />
-        </a>
-      </li>
-    </v-dialog>
   </div>
 </template>
 
 <script>
-import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
-import CommentMain from '~/components/comments/CommentMain'
-import IdolExchangeBtn from '~/components/idol/IdolExchangeBtn'
-import StarIdolBtn from '~/components/idol/StarIdolBtn'
-import TabContainer from '~/components/common/TabContainer'
-import FlowList from '~/components/flow/FlowList'
 import { getCartoonRoleInfo } from '~/api/cartoonRoleApi'
+import TabContainer from '~/components/common/TabContainer'
+import CommentMain from '~/components/comments/CommentMain'
+import CreateRoleForm from '~/components/bangumi/forms/CreateRoleForm'
+import IdolDealBtn from '~/components/idol/IdolDealBtn'
+import StarIdolBtn from '~/components/idol/StarIdolBtn'
+import IdolOwnerList from '~/components/idol/IdolOwnerList'
+import IdolMarketPriceDraft from '~/components/idol/IdolMarketPriceDraft'
 
 export default {
   name: 'RoleShow',
@@ -481,9 +378,10 @@ export default {
     CreateRoleForm,
     CommentMain,
     TabContainer,
-    FlowList,
-    IdolExchangeBtn,
-    StarIdolBtn
+    IdolDealBtn,
+    StarIdolBtn,
+    IdolOwnerList,
+    IdolMarketPriceDraft
   },
   props: {
     id: {
@@ -496,27 +394,26 @@ export default {
       role: null,
       bangumi: null,
       share_data: null,
-      collapsed: true,
-      showFansDialog: false,
-      loadedFans: false,
-      pages: [
-        { label: '留言板' },
-        { label: '股东列表' },
-        { label: '公司章程' },
-        { label: '编辑信息' }
-      ]
+      collapsed: true
     }
   },
   computed: {
+    pages() {
+      const result = [
+        { label: '留言板' },
+        { label: '董事会' },
+        { label: '公司章程' },
+        { label: '大事记' }
+      ]
+      if (this.isBoss || this.isManager) {
+        result.push({
+          label: '信息变更'
+        })
+      }
+      return result
+    },
     computeRoleAlias() {
       return this.role.alias.split(',')
-    },
-    latestFans() {
-      return this.$store.getters['flow/getFlow'](
-        'virtualIdolOwners',
-        'newest',
-        this.id
-      )
     },
     currentUserId() {
       return this.$store.state.login ? this.$store.state.user.id : 0
@@ -524,15 +421,15 @@ export default {
     isBoss() {
       return this.role.boss ? this.role.boss.id === this.currentUserId : false
     },
+    isManager() {
+      return this.currentUserId === this.bangumi.is_master
+    },
     hasLimited() {
       return this.role.max_stock_count !== '0.00'
     },
     hasBuyStock() {
       return this.role.has_star !== '0.00'
     }
-  },
-  mounted() {
-    this.initNewestFans()
   },
   methods: {
     handleStarCallback({ count, amount }) {
@@ -560,14 +457,6 @@ export default {
       this.$toast.success('编辑成功')
       window.location.reload()
     },
-    loadMoreFans() {
-      this.$store.dispatch('flow/loadMore', {
-        func: 'virtualIdolOwners',
-        type: 'lastId',
-        sort: 'newest',
-        id: this.id
-      })
-    },
     handleTabSwitch(index) {
       if (index === 1) {
         this.$store.dispatch('flow/initData', {
@@ -577,21 +466,14 @@ export default {
           id: this.id
         })
       }
-    },
-    async initNewestFans() {
-      if (!this.role.fans_count) {
-        return
+      if (index === 3) {
+        this.$store.dispatch('flow/initData', {
+          func: 'getIdolDraftList',
+          type: 'page',
+          sort: 'new',
+          id: this.id
+        })
       }
-      await this.$store.dispatch('flow/initData', {
-        func: 'virtualIdolOwners',
-        type: 'lastId',
-        sort: 'newest',
-        id: this.id
-      })
-      this.loadedFans = true
-    },
-    computedPercent(score) {
-      return `${parseFloat((score / this.role.star_count) * 100).toFixed(2)}%`
     }
   }
 }
