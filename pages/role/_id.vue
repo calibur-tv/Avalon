@@ -319,6 +319,7 @@
           <create-role-form
             v-if="isBoss || bangumi.is_master"
             :role="role"
+            :is-master="bangumi.is_master"
             :is-boss="isBoss"
             :bangumi-id="bangumi.id"
             @success="cartoonRoleEditSuccess"

@@ -57,3 +57,14 @@ export const makeCartoonRoleDeal = (ctx, form) => {
 export const deleteCartoonRoleDeal = (ctx, { id }) => {
   return ctx.$axios.$post('cartoon_role/delete_deal', { id })
 }
+
+export const changeStockPrice = (
+  ctx,
+  { idol_id, stock_price, max_stock_count }
+) => {
+  return ctx.$axios.$post('cartoon_role/manager/change_price', {
+    idol_id,
+    stock_price,
+    max_stock_count
+  })
+}

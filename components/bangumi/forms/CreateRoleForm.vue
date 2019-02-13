@@ -1,145 +1,16 @@
-<style lang="scss">
-#edit-role-form {
-  .edit-btn-wrap {
-    height: 105px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-</style>
-
 <template>
-  <el-form
-    id="edit-role-form"
-    ref="form"
-    :model="form"
-    :rules="rules"
-    :disabled="submitting"
-    label-width="40px"
-  >
-    <el-form-item
-      v-if="isCreate || isAdmin"
-      label="名称"
-      prop="name"
-    >
-      <el-input
-        v-model.trim="form.name"
-        placeholder="角色的中文名"
-      />
-    </el-form-item>
-    <el-form-item
-      label="别名"
-      prop="alias"
-    >
-      <el-select
-        v-model="form.alias"
-        multiple
-        filterable
-        allow-create
-        default-first-option
-        placeholder="角色的其它名字，如：英文名、日文名"
-        style="width: 100%"
-      />
-    </el-form-item>
-    <el-form-item
-      label="头像"
-      prop="avatar"
-    >
-      <img
-        v-if="form.avatar"
-        :src="$resize(form.avatar, { width: 200 })"
-        class="avatar"
-        style="width: 100px;height: 100px;"
+  <div id="edit-idol-form">
+    <template v-if="isBoss">
+      <el-alert
+        :closable="false"
+        type="info"
+        title="发行规则"
+        style="margin-bottom:15px"
       >
-      <el-upload
-        ref="upload"
-        :data="uploadHeaders"
-        :action="imageUploadAction"
-        :accept="imageUploadAccept"
-        :on-error="handleImageUploadError"
-        :before-upload="beforeAvatarUpload"
-        :on-success="handleAvatarSuccess"
-        :show-file-list="false"
-      >
-        <el-button size="mini">点击上传</el-button>
-      </el-upload>
-    </el-form-item>
-    <el-form-item
-      label="简介"
-      prop="intro"
-    >
-      <el-input
-        v-model.trim="form.intro"
-        :rows="10"
-        type="textarea"
-        placeholder="请输入角色简介"
-      />
-    </el-form-item>
-    <template v-if="isBoss && role">
-      <el-row>
-        <el-col :span="18">
-          <el-form-item
-            label="股价"
-            prop="stock_price"
-          >
-            <el-input
-              v-if="role.is_locked"
-              v-model="form.stock_price"
-              :disabled="true"
-            >
-              <template slot="prepend">每股售价</template>
-              <template slot="append">个虚拟币</template>
-            </el-input>
-            <el-input-number
-              v-else
-              v-model="form.stock_price"
-              :step="0.01"
-              :min="1"
-              :max="10"
-              :disabled="true"
-            />
-          </el-form-item>
-          <el-form-item
-            label="股数"
-            prop="max_stock_count"
-          >
-            <el-input
-              v-model="form.max_stock_count"
-              :disabled="true"
-            >
-              <template slot="prepend">总共发行</template>
-              <template slot="append">股</template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col
-          :span="6"
-          class="edit-btn-wrap"
-        >
-          <el-button
-            round
-            @click="openEditStockDialog"
-          >
-            点击增发股份
-          </el-button>
-        </el-col>
-      </el-row>
-    </template>
-    <el-form-item>
-      <el-button
-        :loading="submitting"
-        type="primary"
-        @click="submit"
-      >确认提交</el-button>
-    </el-form-item>
-    <v-dialog
-      v-if="editStockForm"
-      v-model="showEditStockDialog"
-      title="修改股份发行信息"
-      width="560px"
-      @submit="handleStockChange"
-    >
+        <p>每次增发的股份，不能小于 {{ minLevel }} 股</p>
+        <p>现阶段，不支持以每股价格低于 1.00 或高于 10.00 的价格进行增发</p>
+        <p>若已售出股份小于 4000，则每次发行的股值不能低于总市值的 25%，否则发行的股值不能低于总市值的 10%</p>
+      </el-alert>
       <el-alert
         :closable="false"
         type="info"
@@ -152,14 +23,10 @@
       </el-alert>
       <el-alert
         :closable="false"
-        type="info"
-        title="发行规则"
+        title="一周只能修改一次"
         style="margin-bottom:15px"
-      >
-        <p>每次增发的股份，不能小于 {{ minLevel }} 股</p>
-        <p>现阶段，不支持以每股价格低于 1.00 或高于 10.00 的价格进行增发</p>
-        <p>若已售出股份小于 4000，则每次发行的股值不能低于总市值的 25%，否则发行的股值不能低于总市值的 10%</p>
-      </el-alert>
+        type="warning"
+      />
       <el-form label-width="80px">
         <el-form-item
           label="每股股价"
@@ -182,23 +49,113 @@
             :min="minLevel"
           />
         </el-form-item>
-        <p>最低增发价值：{{ minAddPrice }}&nbsp;，当前增发价值：{{ curAddPrice }}</p>
+        <el-form-item>
+          <p>最低增发市值：￥{{ minAddPrice }}&nbsp;，当前增发市值：￥{{ curAddPrice }}&nbsp;，增发后总市值：￥{{ totalMarketPrice }}</p>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            :loading="submitting"
+            type="primary"
+            @click="changeIdolStock"
+          >确认提交</el-button>
+        </el-form-item>
       </el-form>
-    </v-dialog>
-  </el-form>
+    </template>
+    <template v-if="isMaster">
+      <el-alert
+        :closable="false"
+        title="目前只有版主可以编辑偶像"
+        style="margin-bottom:15px"
+        type="warning"
+      />
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :disabled="submitting"
+        label-width="80px"
+      >
+        <el-form-item
+          v-if="isCreate"
+          label="偶像名称"
+          prop="name"
+        >
+          <el-input
+            v-model.trim="form.name"
+            placeholder="偶像的中文名"
+          />
+        </el-form-item>
+        <el-form-item
+          label="偶像别名"
+          prop="alias"
+        >
+          <el-select
+            v-model="form.alias"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="角色的其它名字，如：英文名、日文名"
+            style="width: 100%"
+          />
+        </el-form-item>
+        <el-form-item
+          label="偶像头像"
+          prop="avatar"
+        >
+          <img
+            v-if="form.avatar"
+            :src="$resize(form.avatar, { width: 200 })"
+            class="avatar"
+            style="width: 100px;height: 100px;"
+          >
+          <el-upload
+            ref="upload"
+            :data="uploadHeaders"
+            :action="imageUploadAction"
+            :accept="imageUploadAccept"
+            :on-error="handleImageUploadError"
+            :before-upload="beforeAvatarUpload"
+            :on-success="handleAvatarSuccess"
+            :show-file-list="false"
+          >
+            <el-button size="mini">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item
+          label="偶像简介"
+          prop="intro"
+        >
+          <el-input
+            v-model.trim="form.intro"
+            :rows="10"
+            type="textarea"
+            placeholder="请输入角色简介"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            :loading="submitting"
+            type="primary"
+            @click="submitEditProfile"
+          >确认提交</el-button>
+        </el-form-item>
+      </el-form>
+    </template>
+  </div>
 </template>
 
 <script>
 import uploadMixin from '~/mixins/upload'
-import { createRole, editRole } from '~/api/cartoonRoleApi'
+import { createRole, editRole, changeStockPrice } from '~/api/cartoonRoleApi'
 
 export default {
   name: 'CreateRoleForm',
   mixins: [uploadMixin],
   props: {
-    isAdmin: {
+    isMaster: {
       type: Boolean,
-      default: false
+      default: true
     },
     isCreate: {
       type: Boolean,
@@ -284,8 +241,7 @@ export default {
         avatar: [{ validator: validateAvatar, trigger: 'submit' }],
         alias: [{ validator: validateAlias, trigger: 'submit' }]
       },
-      submitting: false,
-      showEditStockDialog: false
+      submitting: false
     }
   },
   computed: {
@@ -311,29 +267,22 @@ export default {
       return parseFloat(
         this.editStockForm.new_price * this.editStockForm.add_stock_count
       ).toFixed(2)
+    },
+    totalMarketPrice() {
+      if (!this.role) {
+        return 0
+      }
+      return parseFloat(+this.role.market_price + +this.curAddPrice).toFixed(2)
+    },
+    maxStockCount() {
+      if (!this.role) {
+        return 0
+      }
+      return +this.role.max_stock_count + this.editStockForm.add_stock_count
     }
   },
   methods: {
-    handleStockChange() {
-      if (!this.curAddPrice) {
-        this.$toast.error('请先定价')
-        return
-      }
-      if (this.curAddPrice - this.minAddPrice < 0) {
-        this.$toast.error('不能定价太低')
-        return
-      }
-      this.form.stock_price = this.editStockForm.new_price
-      if (typeof this.form.max_stock_count === 'string') {
-        this.form.max_stock_count = this.editStockForm.add_stock_count
-      } else {
-        this.form.max_stock_count =
-          this.form.max_stock_count + this.editStockForm.add_stock_count
-      }
-      this.showEditStockDialog = false
-      this.$toast.success('保存成功，提交之后生效')
-    },
-    submit() {
+    submitEditProfile() {
       this.$refs.form.validate(async valid => {
         if (valid) {
           if (this.submitting) {
@@ -353,10 +302,6 @@ export default {
             }
             if (typeof params.alias !== 'string') {
               params.alias = params.alias.join(',')
-            }
-            if (this.form.stock_price) {
-              params.stock_price = this.form.stock_price
-              params.max_stock_count = this.form.max_stock_count
             }
             if (this.isCreate) {
               const id = await createRole(this, params)
@@ -384,13 +329,6 @@ export default {
         }
       })
     },
-    openEditStockDialog() {
-      this.form.stock_price = this.role ? this.role.stock_price : ''
-      this.form.max_stock_count = this.role
-        ? +this.role.max_stock_count || '未设置'
-        : ''
-      this.showEditStockDialog = true
-    },
     beforeAvatarUpload(file) {
       this.uploadConfig.max = 1
       this.uploadConfig.pathPrefix = `bangumi/${this.bangumiId}/role`
@@ -399,6 +337,39 @@ export default {
     handleAvatarSuccess(res) {
       this.$toast.success('上传成功')
       this.form.avatar = res.data.url
+    },
+    changeIdolStock() {
+      if (!this.curAddPrice) {
+        this.$toast.error('请先定价')
+        return
+      }
+      if (this.curAddPrice - this.minAddPrice < 0) {
+        this.$toast.error('不能定价太低')
+        return
+      }
+      if (this.submitting) {
+        return
+      }
+      this.$confirm('一周只能修改一次，确认增发吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          this.submitting = true
+          await changeStockPrice(this, {
+            idol_id: this.role.id,
+            max_stock_count: this.maxStockCount,
+            stock_price: this.editStockForm.new_price
+          })
+          this.$toast.success('修改成功')
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000)
+        })
+        .catch(() => {
+          this.submitting = false
+        })
     }
   }
 }
