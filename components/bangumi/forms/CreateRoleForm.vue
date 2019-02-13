@@ -305,6 +305,9 @@ export default {
       return parseFloat(result).toFixed(2)
     },
     curAddPrice() {
+      if (!this.editStockForm.new_price) {
+        return 0
+      }
       return parseFloat(
         this.editStockForm.new_price * this.editStockForm.add_stock_count
       ).toFixed(2)
@@ -312,6 +315,10 @@ export default {
   },
   methods: {
     handleStockChange() {
+      if (!this.curAddPrice) {
+        this.$toast.error('请先定价')
+        return
+      }
       if (this.curAddPrice - this.minAddPrice < 0) {
         this.$toast.error('不能定价太低')
         return
