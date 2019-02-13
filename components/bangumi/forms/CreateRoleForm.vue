@@ -156,8 +156,8 @@
         title="发行规则"
         style="margin-bottom:15px"
       >
-        <p>每次增发的股份，不能小于 1000 股</p>
-        <p>现阶段，不支持以每股价格低于 1.00 或高于 10.00 的售价进行发售</p>
+        <p>每次增发的股份，不能小于 {{ minLevel }} 股</p>
+        <p>现阶段，不支持以每股价格低于 1.00 或高于 10.00 的价格进行增发</p>
         <p>若已售出股份小于 4000，则每次发行的股值不能低于总市值的 25%，否则发行的股值不能低于总市值的 10%</p>
       </el-alert>
       <el-form label-width="80px">
@@ -179,10 +179,10 @@
           <el-input-number
             v-model="editStockForm.add_stock_count"
             :step="1"
-            :min="500"
+            :min="minLevel"
           />
         </el-form-item>
-        <p>最低发售价值：{{ minAddPrice }}&nbsp;，当前发售价值：{{ curAddPrice }}</p>
+        <p>最低增发价值：{{ minAddPrice }}&nbsp;，当前增发价值：{{ curAddPrice }}</p>
       </el-form>
     </v-dialog>
   </el-form>
@@ -215,6 +215,10 @@ export default {
     isBoss: {
       type: Boolean,
       default: false
+    },
+    minLevel: {
+      type: Number,
+      default: 500
     }
   },
   data() {
@@ -271,7 +275,7 @@ export default {
             max_stock_count: +this.role.max_stock_count,
             market_price: +this.role.market_price,
             new_price: this.role.stock_price,
-            add_stock_count: 500
+            add_stock_count: this.minLevel
           }
         : null,
       rules: {
@@ -295,8 +299,8 @@ export default {
       } else {
         result = this.editStockForm.market_price * 0.1
       }
-      if (result < 500) {
-        return parseFloat(500).toFixed(2)
+      if (result < this.minLevel) {
+        return parseFloat(this.minLevel).toFixed(2)
       }
       return parseFloat(result).toFixed(2)
     },
