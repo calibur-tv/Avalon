@@ -1,5 +1,37 @@
 <style lang="scss">
 #role-trending-hall {
+  .page-header {
+    .el-alert--info {
+      background-color: $color-gray-normal;
+    }
+
+    .badge {
+      position: relative;
+      height: 34px;
+      line-height: 34px;
+      padding: 0 10px;
+      border-radius: 4px;
+      text-align: center;
+      background-color: $color-gray-normal;
+      white-space: nowrap;
+
+      span {
+        line-height: 34px;
+        font-size: 12px;
+        color: $color-text-normal;
+      }
+
+      em {
+        display: inline-block;
+        border-left: 1px solid $color-dark-light;
+        height: 10px;
+        line-height: 10px;
+        margin: 12px 5px 0;
+        vertical-align: top;
+      }
+    }
+  }
+
   .table {
     .idol {
       display: flex;
@@ -39,12 +71,29 @@
 
 <template>
   <div id="role-trending-hall">
-    <el-alert
-      :closable="false"
-      type="info"
-      show-icon
-      title="已上市的公司，投资人可以在这里出售自己持有的股份"
-    />
+    <el-row class="page-header">
+      <el-col :span="16">
+        <el-alert
+          :closable="false"
+          type="info"
+          show-icon
+          title="已上市的公司，投资人可以在这里出售自己持有的股份"
+        />
+      </el-col>
+      <el-col
+        :span="6"
+        :offset="2"
+      >
+        <div
+          v-if="meta"
+          class="badge"
+        >
+          <span>成交次数：{{ meta.deal_count }}</span>
+          <em/>
+          <span>总成交额：￥{{ parseFloat(meta.exchang_money_count).toFixed(2) }}</span>
+        </div>
+      </el-col>
+    </el-row>
     <flow-list
       func="getVirtualIdolDealList"
       type="seenIds"
@@ -240,7 +289,8 @@ import FlowList from '~/components/flow/FlowList'
 import { Table, TableColumn, Tag } from 'element-ui'
 import {
   makeCartoonRoleDeal,
-  deleteCartoonRoleDeal
+  deleteCartoonRoleDeal,
+  getStockMarketMeta
 } from '~/api/cartoonRoleApi'
 
 export default {
@@ -264,7 +314,8 @@ export default {
       showDealDialog: false,
       submitting: false,
       buyCount: 0.01,
-      minBuyCount: 0
+      minBuyCount: 0,
+      meta: null
     }
   },
   computed: {
@@ -299,7 +350,13 @@ export default {
       return parseFloat(this.buyCount * this.deal.product_price).toFixed(2)
     }
   },
+  mounted() {
+    this.getMetaInfo()
+  },
   methods: {
+    async getMetaInfo() {
+      this.meta = await getStockMarketMeta(this)
+    },
     computePriceText(row) {
       const result = row.product_price - row.idol.stock_price
       if (result > 0) {

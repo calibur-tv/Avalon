@@ -88,7 +88,7 @@ $font-size: 14px;
         </div>
       </slot>
     </div>
-    <div v-else-if="!auto">
+    <div v-else-if="!auto && showLoadMore">
       <button
         :class="$style.fetchBtn"
         @click="fetch"

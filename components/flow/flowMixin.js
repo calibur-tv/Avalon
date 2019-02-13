@@ -23,6 +23,10 @@ export default {
     auto: {
       type: Boolean,
       default: true
+    },
+    showLoadMore: {
+      type: Boolean,
+      default: true
     }
   }
 }

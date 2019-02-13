@@ -317,3 +317,11 @@ export const getVirtualIdolDealList = ({ ctx, seen_ids }) => {
 export const myVirtualIdolDeals = ({ ctx }) => {
   return ctx.$axios.$get('cartoon_role/my_deal')
 }
+
+export const getRecentDealList = ({ ctx }) => {
+  return ctx.$axios.$get('cartoon_role/recent_deal')
+}
+
+export const getRecentBuyList = ({ ctx }) => {
+  return ctx.$axios.$get('cartoon_role/recent_buy')
+}

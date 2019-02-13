@@ -68,3 +68,7 @@ export const changeStockPrice = (
     max_stock_count
   })
 }
+
+export const getStockMarketMeta = ctx => {
+  return ctx.$axios.$get('cartoon_role/stock_meta')
+}

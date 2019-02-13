@@ -96,7 +96,7 @@
           </nuxt-link>
         </no-content>
       </flow-list>
-      <template slot="aside">&nbsp;</template>
+      <idol-trending-aside slot="aside"/>
     </v-layout>
   </div>
 </template>
@@ -104,6 +104,7 @@
 <script>
 import FlowList from '~/components/flow/FlowList'
 import VirtualIdolItem from '~/components/idol/VirtualIdolItem'
+import IdolTrendingAside from '~/components/idol/IdolTrendingAside'
 
 export default {
   name: 'RoleTrendingNewbie',
@@ -116,7 +117,8 @@ export default {
   },
   components: {
     FlowList,
-    VirtualIdolItem
+    VirtualIdolItem,
+    IdolTrendingAside
   },
   data() {
     return {
