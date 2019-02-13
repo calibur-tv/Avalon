@@ -139,6 +139,9 @@ export default {
       return parseFloat(result).toFixed(2)
     },
     needPay() {
+      if (!this.count) {
+        return 0
+      }
       return (parseFloat(this.price) * this.count).toFixed(2)
     }
   },
@@ -159,6 +162,10 @@ export default {
       this.showDialog = true
     },
     async submit() {
+      if (!this.needPay) {
+        this.$toast.error('未选择份额')
+        return
+      }
       if (this.submitting) {
         return
       }
