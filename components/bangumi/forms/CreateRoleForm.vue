@@ -178,7 +178,7 @@
           <el-input-number
             v-model="editStockForm.add_stock_count"
             :step="1"
-            :min="1000"
+            :min="500"
           />
         </el-form-item>
         <p>最低发售价值：{{ minAddPrice }}&nbsp;，当前发售价值：{{ curAddPrice }}</p>
@@ -270,7 +270,7 @@ export default {
             max_stock_count: +this.role.max_stock_count,
             market_price: +this.role.market_price,
             new_price: this.role.stock_price,
-            add_stock_count: 1000
+            add_stock_count: 500
           }
         : null,
       rules: {
@@ -373,10 +373,6 @@ export default {
       })
     },
     openEditStockDialog() {
-      if (!this.role.is_locked) {
-        this.$toast.error('上次增发的股份停牌之前，不能再增发')
-        return
-      }
       this.form.stock_price = this.role ? this.role.stock_price : ''
       this.form.max_stock_count = this.role
         ? +this.role.max_stock_count || '未设置'
