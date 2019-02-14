@@ -217,28 +217,8 @@
             <p v-html="computedHtmlIntro"/>
             <button @click="collapsed = true">收起</button>
           </div>
-          <ul class="alias">
-            <strong>别名：</strong>
-            <li
-              v-for="(name, index) in computeRoleAlias"
-              :key="index"
-              v-text="name"
-            />
-          </ul>
-          <div class="coin">
-            <p><strong>当前市值：</strong>￥{{ role.company_state ? role.market_price : '未上市' }}</p>
-            <p><strong>每股股价：</strong>￥{{ role.stock_price }}</p>
-            <p><strong>持股人数：</strong>{{ role.fans_count }}</p>
-            <p><strong>已认购股份：</strong>{{ role.star_count }}</p>
-            <p><strong>总发行股份：</strong>{{ hasLimited ? role.max_stock_count : '无上限' }}</p>
-          </div>
-          <div class="coin">
-            <p><strong>我持有的股份：</strong>{{ hasBuyStock ? role.has_star : '未入股' }}</p>
-          </div>
-          <div class="coin">
-            <p><strong>注册时间：</strong>{{ role.created_at }}</p>
-            <p v-if="role.ipo_at"><strong>上市时间：</strong>{{ role.ipo_at }}</p>
-          </div>
+          <strong>股市行情：</strong>
+          <idol-stock-chart :idol="role"/>
         </div>
       </div>
       <div
@@ -381,6 +361,7 @@ import IdolMarketPriceDraft from '~/components/idol/IdolMarketPriceDraft'
 import CreatePriceMarketDraft from '~/components/idol/CreatePriceMarketDraft'
 import ChangeIdolProfile from '~/components/idol/ChangeIdolProfile'
 import { Collapse, CollapseItem } from 'element-ui'
+import IdolStockChart from '~/components/idol/IdolStockChart'
 
 export default {
   name: 'RoleShow',
@@ -433,6 +414,7 @@ export default {
     IdolMarketPriceDraft,
     CreatePriceMarketDraft,
     ChangeIdolProfile,
+    IdolStockChart,
     'el-collapse': Collapse,
     'el-collapse-item': CollapseItem
   },
