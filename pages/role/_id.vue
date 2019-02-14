@@ -52,6 +52,11 @@
           color: $color-blue-normal;
           font-size: 14px;
         }
+
+        p {
+          line-height: 24px;
+          font-size: 14px;
+        }
       }
 
       .alias {
@@ -198,12 +203,20 @@
             v-text="role.name"
           />
           <p
-            :class="{ 'collapsed': collapsed }"
+            v-if="collapsed"
+            class="summary collapsed"
+          >
+            <strong>简介：</strong>{{ role.intro.substr(0, 30) }}
+            <button @click="collapsed = false">全文</button>
+          </p>
+          <div
+            v-else
             class="summary"
           >
-            <strong>简介：</strong>{{ collapsed ? `${role.intro.substr(0, 30)}...` : role.intro }}
-            <button @click="collapsed = !collapsed">{{ collapsed ? '全文' : '收起' }}</button>
-          </p>
+            <strong>简介：</strong>
+            <p v-html="computedHtmlIntro"/>
+            <button @click="collapsed = true">收起</button>
+          </div>
           <ul class="alias">
             <strong>别名：</strong>
             <li
@@ -265,6 +278,12 @@
           />
         </template>
         <template slot="2">
+          <idol-market-price-draft
+            :is-boss="isBoss"
+            :idol="role"
+          />
+        </template>
+        <template slot="3">
           <div class="rules">
             <el-alert
               type="info"
@@ -276,19 +295,13 @@
                 <li>新注册的公司，若未能在指定时间期限内上市，则会倒闭，所有投资人的将无法获得收益</li>
                 -->
                 <li>上市之后，占股最多的人将成为最大的股东</li>
-                <li>最大的股东并非实时变更，会在每天夜里重新指定</li>
-                <li>最大的股东可以修改偶像的简介，以及修改「每股股价」来提高市值</li>
-                <li>之后所有的持股人可以在「交易所」进行股权交易，以赚取虚拟币</li>
-                <li>在未来，会开发出更多的方式，让股东可以获得分红</li>
+                <li>最大的股东并非实时变更，会在一定周期内自动变更为持股最多的人</li>
+                <li>最大的股东可以发起「增发提案」来修改股价</li>
+                <li>上市后所有的持股人可以在「交易所」进行股权交易，以赚取虚拟币</li>
+                <li>在未来，会开发出更多的方式，让公司能够健康发展</li>
               </ul>
             </el-alert>
           </div>
-        </template>
-        <template slot="3">
-          <idol-market-price-draft
-            :is-boss="isBoss"
-            :idol="role"
-          />
         </template>
         <template slot="4">
           <create-role-form
@@ -402,10 +415,10 @@ export default {
       const result = [
         { label: '留言板' },
         { label: '董事会' },
-        { label: '公司章程' },
-        { label: '大事记' }
+        { label: '大事记' },
+        { label: '公司章程' }
       ]
-      if (this.isBoss || this.isManager) {
+      if (this.isBoss || this.bangumi.is_master) {
         result.push({
           label: '信息变更'
         })
@@ -415,14 +428,14 @@ export default {
     computeRoleAlias() {
       return this.role.alias.split(',')
     },
+    computedHtmlIntro() {
+      return this.role.intro.replace(/\n/g, '<br>')
+    },
     currentUserId() {
       return this.$store.state.login ? this.$store.state.user.id : 0
     },
     isBoss() {
       return this.role.boss ? this.role.boss.id === this.currentUserId : false
-    },
-    isManager() {
-      return this.currentUserId === this.bangumi.is_master
     },
     hasLimited() {
       return this.role.max_stock_count !== '0.00'
@@ -466,7 +479,7 @@ export default {
           id: this.id
         })
       }
-      if (index === 3) {
+      if (index === 2) {
         this.$store.dispatch('flow/initData', {
           func: 'getIdolDraftList',
           type: 'page',

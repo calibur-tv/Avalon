@@ -648,10 +648,10 @@ export default {
       return this.self.daySign
     },
     coinCount() {
-      return this.showUser.banlance.coin_count
+      return parseFloat(this.showUser.banlance.coin_count).toFixed(2)
     },
     lightCount() {
-      return this.showUser.banlance.light_count
+      return parseFloat(this.showUser.banlance.light_count).toFixed(2)
     },
     cards() {
       return [

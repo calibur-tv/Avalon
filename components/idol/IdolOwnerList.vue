@@ -42,12 +42,15 @@
           </a>
         </li>
       </ul>
-      <no-content slot="nothing">
-        <el-button
-          round
-          @click="$toast.warn('Orz')"
-        >可怜的「{{ name }}」还没有人入股</el-button>
-      </no-content>
+      <template slot="nothing">
+        <br>
+        <no-content>
+          <el-button
+            round
+            @click="$toast.warn('Orz')"
+          >可怜的「{{ name }}」还没有人入股</el-button>
+        </no-content>
+      </template>
     </flow-list>
     <flow-list
       v-show="active === '按最新入股排序'"
@@ -84,12 +87,15 @@
           </a>
         </li>
       </ul>
-      <no-content slot="nothing">
-        <el-button
-          round
-          @click="$toast.warn('Orz')"
-        >可怜的「{{ name }}」还没有人入股</el-button>
-      </no-content>
+      <template slot="nothing">
+        <br>
+        <no-content>
+          <el-button
+            round
+            @click="$toast.warn('Orz')"
+          >可怜的「{{ name }}」还没有人入股</el-button>
+        </no-content>
+      </template>
     </flow-list>
   </div>
 </template>

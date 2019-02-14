@@ -589,13 +589,13 @@ export default {
       if (this.isGuest) {
         return 0
       }
-      return this.user.banlance.coin_count
+      return parseFloat(this.user.banlance.coin_count).toFixed(2)
     },
     lightCount() {
       if (this.isGuest) {
         return 0
       }
-      return this.user.banlance.light_count
+      return parseFloat(this.user.banlance.light_count).toFixed(2)
     }
   },
   methods: {
