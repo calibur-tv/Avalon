@@ -70,11 +70,11 @@ export default {
         this.$toast.error('留言给我缩减至20字以内重说！')
         return
       }
-      if (!this.lover_words || !this.qq_group) {
+      if (!this.lover_words && !this.qq_group) {
         this.$toast.error('内容不能为空')
         return
       }
-      if (!/^\d+$/.test(this.qq_group)) {
+      if (this.qq_group && !/^\d+$/.test(this.qq_group)) {
         this.$toast.error('QQ群号必须是数字')
         return
       }
