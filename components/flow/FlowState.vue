@@ -132,6 +132,10 @@ export default {
     displayNoMore: {
       type: Boolean,
       default: false
+    },
+    showLoadMore: {
+      type: Boolean,
+      default: true
     }
   },
   mounted() {
@@ -151,7 +155,7 @@ export default {
         document,
         ['scroll', 'resize'],
         this.$utils.throttle(() => {
-          if (this.noMore || !this.auto) {
+          if (!this.auto) {
             Utils.off(id)
             return
           }
