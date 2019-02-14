@@ -84,3 +84,14 @@ export const marketPriceVote = (ctx, { is_agree, idol_id, draft_id }) => {
     draft_id
   })
 }
+
+export const changeCartoonRoleProfile = (
+  ctx,
+  { idol_id, qq_group, lover_words }
+) => {
+  return ctx.$axios.$post('cartoon_role/change_idol_profile', {
+    idol_id,
+    qq_group,
+    lover_words
+  })
+}

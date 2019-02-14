@@ -91,7 +91,7 @@
         <p>当前市值：{{ item.company_state ? `￥${item.market_price}` : '未上市' }}</p>
         <p>每股股价：￥{{ item.stock_price }}</p>
         <p>投资人数：{{ item.fans_count }}</p>
-        <p>认购股数：{{ item.star_count }}</p>
+        <p>认购股份：{{ item.star_count }}</p>
       </div>
       <div class="control">
         <template v-if="sort === 'mine'">

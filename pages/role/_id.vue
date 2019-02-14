@@ -229,11 +229,11 @@
             <p><strong>当前市值：</strong>￥{{ role.company_state ? role.market_price : '未上市' }}</p>
             <p><strong>每股股价：</strong>￥{{ role.stock_price }}</p>
             <p><strong>持股人数：</strong>{{ role.fans_count }}</p>
-            <p><strong>已认购股数：</strong>{{ role.star_count }}</p>
-            <p><strong>总发行股数：</strong>{{ hasLimited ? role.max_stock_count : '无上限' }}</p>
+            <p><strong>已认购股份：</strong>{{ role.star_count }}</p>
+            <p><strong>总发行股份：</strong>{{ hasLimited ? role.max_stock_count : '无上限' }}</p>
           </div>
           <div class="coin">
-            <p><strong>我持有的股数：</strong>{{ hasBuyStock ? role.has_star : '未入股' }}</p>
+            <p><strong>我持有的股份：</strong>{{ hasBuyStock ? role.has_star : '未入股' }}</p>
           </div>
           <div class="coin">
             <p><strong>注册时间：</strong>{{ role.created_at }}</p>
@@ -256,6 +256,14 @@
           </div>
           <span v-text="role.boss.nickname"/>
         </a>
+        <span>：{{ role.lover_words || 'TA还什么都没说！' }}</span>
+      </div>
+      <div>
+        <p class="sub-title">应援群</p>
+        <div class="coin">
+          <p><strong>QQ群号：</strong>{{ role.qq_group || '106402736' }}</p>
+          <br>
+        </div>
       </div>
       <tab-container
         :list="pages"
@@ -297,6 +305,7 @@
                 <li>上市之后，占股最多的人将成为最大的股东</li>
                 <li>最大的股东并非实时变更，会在一定周期内自动变更为持股最多的人</li>
                 <li>最大的股东可以发起「增发提案」来修改股价</li>
+                <li>最大的股东可以留下自己的个人寄语，第一个大股东可以创建应援群</li>
                 <li>上市后所有的持股人可以在「交易所」进行股权交易，以赚取虚拟币</li>
                 <li>在未来，会开发出更多的方式，让公司能够健康发展</li>
               </ul>
@@ -304,10 +313,34 @@
           </div>
         </template>
         <template slot="4">
+          <template v-if="isBoss">
+            <el-collapse
+              v-model="activeName"
+              accordion
+            >
+              <el-collapse-item name="0">
+                <p
+                  slot="title"
+                  class="title"
+                >
+                  信息修改
+                </p>
+                <change-idol-profile :idol="role"/>
+              </el-collapse-item>
+              <el-collapse-item name="1">
+                <p
+                  slot="title"
+                  class="title"
+                >
+                  股权变更
+                </p>
+                <create-price-market-draft :role="role"/>
+              </el-collapse-item>
+            </el-collapse>
+          </template>
           <create-role-form
+            v-if="bangumi.is_master"
             :role="role"
-            :is-master="bangumi.is_master"
-            :is-boss="isBoss"
             :bangumi-id="bangumi.id"
             @success="cartoonRoleEditSuccess"
           />
@@ -345,6 +378,9 @@ import IdolDealBtn from '~/components/idol/IdolDealBtn'
 import StarIdolBtn from '~/components/idol/StarIdolBtn'
 import IdolOwnerList from '~/components/idol/IdolOwnerList'
 import IdolMarketPriceDraft from '~/components/idol/IdolMarketPriceDraft'
+import CreatePriceMarketDraft from '~/components/idol/CreatePriceMarketDraft'
+import ChangeIdolProfile from '~/components/idol/ChangeIdolProfile'
+import { Collapse, CollapseItem } from 'element-ui'
 
 export default {
   name: 'RoleShow',
@@ -394,7 +430,11 @@ export default {
     IdolDealBtn,
     StarIdolBtn,
     IdolOwnerList,
-    IdolMarketPriceDraft
+    IdolMarketPriceDraft,
+    CreatePriceMarketDraft,
+    ChangeIdolProfile,
+    'el-collapse': Collapse,
+    'el-collapse-item': CollapseItem
   },
   props: {
     id: {
@@ -407,7 +447,8 @@ export default {
       role: null,
       bangumi: null,
       share_data: null,
-      collapsed: true
+      collapsed: true,
+      activeName: ''
     }
   },
   computed: {
