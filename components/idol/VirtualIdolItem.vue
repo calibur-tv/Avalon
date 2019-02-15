@@ -35,6 +35,34 @@
 
   .intro {
     line-height: 20px;
+
+    .price,
+    .meta {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      strong {
+        font-size: 20px;
+      }
+
+      span {
+        font-size: 12px;
+        user-select: none;
+        color: $color-text-light;
+      }
+    }
+
+    .meta {
+      text-align: center;
+      line-height: 30px;
+      color: $color-text-light;
+    }
+  }
+
+  .trend-placeholder {
+    height: 42px;
   }
 
   .control {
@@ -69,10 +97,23 @@
 
   .extra {
     border-top: 1px solid #eaeaea;
-    font-size: 12px;
     margin-top: 15px;
     padding-top: 15px;
-    line-height: 16px;
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: block;
+      float: right;
+    }
+
+    .time {
+      overflow: hidden;
+      font-size: 12px;
+      line-height: 24px;
+      color: $color-text-light;
+    }
   }
 }
 </style>
@@ -88,10 +129,27 @@
         <p class="oneline">{{ item.name }}</p>
       </div>
       <div class="intro">
-        <p>当前市值：{{ item.company_state ? `￥${item.market_price}` : '未上市' }}</p>
-        <p>每股股价：￥{{ item.stock_price }}</p>
-        <p>投资人数：{{ item.fans_count }}</p>
-        <p>认购股份：{{ item.star_count }}</p>
+        <p class="price">
+          <span>市值:</span>
+          <strong>{{ item.company_state ? `￥${item.market_price}` : '未上市' }}</strong>
+        </p>
+        <p class="meta">
+          <span>股价:</span>
+          <span>￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span>
+        </p>
+        <div class="trend-placeholder">
+          <no-ssr>
+            <v-trend
+              :data="trendData"
+              :gradient="['#ffafc9', '#ff8eb3', '#f25d8e']"
+              :auto-draw-duration="400"
+              :height="42"
+              :padding="0"
+              auto-draw
+              smooth
+            />
+          </no-ssr>
+        </div>
       </div>
       <div class="control">
         <template v-if="sort === 'mine'">
@@ -102,16 +160,27 @@
         </template>
       </div>
       <div class="extra">
-        <p v-if="item.ipo_at">上市时间：{{ item.ipo_at.split(' ')[0] }}</p>
-        <p v-else>注册时间：{{ item.created_at.split(' ')[0] }}</p>
+        <img
+          v-if="item.boss"
+          :src="$resize(item.boss.avatar, { width: 50, height: 50 })"
+        >
+        <div class="time">
+          <p v-if="item.ipo_at">上市时间：{{ item.ipo_at.split(' ')[0] }}</p>
+          <p v-else>创办时间：{{ item.created_at.split(' ')[0] }}</p>
+        </div>
       </div>
     </a>
   </li>
 </template>
 
 <script>
+import Trend from 'vuetrend'
+
 export default {
   name: 'VirtualIdolItem',
+  components: {
+    'v-trend': Trend
+  },
   props: {
     item: {
       type: Object,
@@ -120,6 +189,11 @@ export default {
     sort: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    trendData() {
+      return this.item.market_trend.map(_ => +_.value).reverse()
     }
   }
 }
