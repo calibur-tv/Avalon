@@ -63,6 +63,13 @@
 
   .trend-placeholder {
     height: 42px;
+
+    p {
+      line-height: 42px;
+      text-align: center;
+      font-size: 12px;
+      color: $color-text-light;
+    }
   }
 
   .control {
@@ -138,7 +145,7 @@
           <span>￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span>
         </p>
         <div class="trend-placeholder">
-          <no-ssr>
+          <no-ssr v-if="trendData.length">
             <v-trend
               :data="trendData"
               :gradient="['#ffafc9', '#ff8eb3', '#f25d8e']"
@@ -149,6 +156,7 @@
               smooth
             />
           </no-ssr>
+          <p v-else>暂无数据</p>
         </div>
       </div>
       <div class="control">
