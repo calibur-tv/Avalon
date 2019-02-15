@@ -11,7 +11,7 @@
       :no-more="source.noMore"
       :nothing="source.nothing"
       :error="source.error"
-      :load-more="loadMore"
+      :show-load-more="showLoadMore"
       :fetch="loadMore"
     >
       <slot
