@@ -112,9 +112,6 @@ export default {
   },
   methods: {
     drawChart() {
-      if (!this.idol.chart.length) {
-        return
-      }
       const chart = new F2.Chart({
         id: 'chart-node',
         pixelRatio: window.devicePixelRatio
