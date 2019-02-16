@@ -48,7 +48,7 @@
       <el-alert
         show-icon
         type="warning"
-        title="提案项在通过或反对占比大于「66.66%」之后，会由系统自动增发股票/或关闭提案（做多延迟5分钟）"
+        title="提案项在通过或反对占比大于「50%」之后，会由系统自动增发股票/或关闭提案（做多延迟5分钟）"
       />
       <div class="draft-control">
         <div class="text-wrap">
