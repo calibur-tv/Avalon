@@ -95,3 +95,7 @@ export const changeCartoonRoleProfile = (
     lover_words
   })
 }
+
+export const getUserWorkSchedule = ctx => {
+  return ctx.$axios.$get('cartoon_role/user_draft_work')
+}

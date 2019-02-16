@@ -23,6 +23,8 @@
 
 <script>
 import TabContainer from '~/components/common/TabContainer'
+import { getUserWorkSchedule } from '~/api/cartoonRoleApi'
+import { Notification } from 'element-ui'
 
 export default {
   name: 'TrendingRole',
@@ -32,7 +34,15 @@ export default {
   components: {
     TabContainer
   },
+  data() {
+    return {
+      todo: []
+    }
+  },
   computed: {
+    isLogin() {
+      return this.$store.state.login
+    },
     pages() {
       const result = [
         {
@@ -56,13 +66,39 @@ export default {
           name: 'role-trending-intro'
         }
       ]
-      if (this.$store.state.login) {
+      if (this.isLogin) {
         result.push({
           label: '我的数据',
           name: 'role-trending-mine'
         })
       }
       return result
+    }
+  },
+  mounted() {
+    const canceler = this.$watch('isLogin', () => {
+      canceler()
+      this.getUserNeedTodo()
+    })
+  },
+  methods: {
+    async getUserNeedTodo() {
+      const data = await getUserWorkSchedule(this)
+      this.todo = data
+      data.forEach(item => {
+        setTimeout(() => {
+          Notification({
+            title: '会议提醒',
+            type: 'warning',
+            dangerouslyUseHTMLString: true,
+            message: `<a target="_blank" href="${this.$alias.cartoonRole(
+              item.id
+            )}">正在召开「${item.name}」的股东大会</a>`,
+            offset: 50,
+            duration: 0
+          })
+        }, 100)
+      })
     }
   }
 }
