@@ -36,11 +36,11 @@ export default {
     pages() {
       const result = [
         {
-          label: '已上市',
+          label: '上市榜',
           name: 'role-trending-listed'
         },
         {
-          label: '融资中',
+          label: '新创榜',
           name: 'role-trending-newbie'
         },
         {
