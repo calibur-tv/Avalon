@@ -125,23 +125,23 @@ export default {
       nameQuery: '',
       sorts: [
         {
-          label: '最高市值',
+          label: '按市值排序',
           value: 'market_price'
         },
         {
-          label: '最多投资',
+          label: '按人数排序',
           value: 'fans_count'
         },
         {
-          label: '最高股价',
+          label: '按股价排序',
           value: 'stock_price'
         },
         {
-          label: '最新上市',
+          label: '按时间排序',
           value: 'newest'
         },
         {
-          label: '最近活跃',
+          label: '按活跃排序',
           value: 'activity'
         }
       ],

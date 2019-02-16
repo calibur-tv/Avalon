@@ -64,7 +64,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>￥{{ idol.company_state ? idol.market_price : '未上市' }}</td>
+            <td>{{ idol.company_state ? `￥${idol.market_price}` : '未上市' }}</td>
             <td>￥{{ idol.stock_price }}</td>
             <td>{{ idol.fans_count }}人</td>
           </tr>
