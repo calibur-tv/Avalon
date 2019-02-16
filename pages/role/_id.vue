@@ -172,13 +172,21 @@
   <div id="role-show">
     <v-header/>
     <v-layout>
-      <div v-if="role.has_market_price_draft && !role.market_price_draft_voted">
+      <div v-if="role.has_market_price_draft">
         <p class="sub-title">重要提醒</p>
         <el-alert
+          v-if="role.market_price_draft_voted"
+          :closable="false"
+          :description="`你已投「${role.market_price_draft_voted > 0 ? '同意' : '反对'}」票`"
+          title="正在召开股东大会"
+          type="info"
+        />
+        <el-alert
+          v-else
+          :closable="false"
           title="正在召开股东大会"
           type="warning"
           description="股东大会召开中，请全体股东到本页面「大事记」一栏进行会议投票"
-          show-icon
         />
         <br>
       </div>
