@@ -140,10 +140,6 @@ export default {
           value: 'stock_price'
         },
         {
-          label: '按时间排序',
-          value: 'newest'
-        },
-        {
           label: '按活跃排序',
           value: 'activity'
         }

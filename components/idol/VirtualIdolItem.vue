@@ -37,7 +37,8 @@
     line-height: 20px;
 
     .price,
-    .meta {
+    .meta_1,
+    .meta_2 {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -54,9 +55,15 @@
       }
     }
 
-    .meta {
+    .meta_1 {
       text-align: center;
       line-height: 30px;
+      color: $color-text-light;
+    }
+
+    .meta_2 {
+      text-align: center;
+      line-height: 18px;
       color: $color-text-light;
     }
   }
@@ -140,9 +147,23 @@
           <span>市值:</span>
           <strong>{{ item.company_state ? `￥${item.market_price}` : '未上市' }}</strong>
         </p>
-        <p class="meta">
+        <p class="meta_1">
           <span>股价:</span>
           <span>￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span>
+        </p>
+        <p
+          v-if="sort === 'mine'"
+          class="meta_2"
+        >
+          <span>持有：</span>
+          <span>{{ item.has_star }}股，占比 {{ computedPercent }}</span>
+        </p>
+        <p
+          v-else
+          class="meta_2"
+        >
+          <span>发行：</span>
+          <span>{{ item.star_count }}股</span>
         </p>
         <div class="trend-placeholder">
           <no-ssr v-if="trendData.length">
@@ -202,6 +223,11 @@ export default {
   computed: {
     trendData() {
       return this.item.market_trend.map(_ => +_.value).reverse()
+    },
+    computedPercent() {
+      return `${parseFloat(
+        (this.item.has_star / this.item.star_count) * 100
+      ).toFixed(2)}%`
     }
   }
 }

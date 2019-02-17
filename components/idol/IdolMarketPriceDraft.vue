@@ -50,6 +50,12 @@
         type="warning"
         title="提案项在通过或反对占比大于「50%」之后，会由系统自动增发股票/或关闭提案（做多延迟5分钟）"
       />
+      <br>
+      <el-alert
+        show-icon
+        type="warning"
+        title="若股东超过两天仍未投票，则视为弃权，将会用已投票的数据通过或驳回增发提案"
+      />
       <div class="draft-control">
         <div class="text-wrap">
           <p>
@@ -141,7 +147,7 @@
           v-for="item in source.list"
           :key="item.id"
           :status="item.result === 0 ? 'finish' : item.result === 1 ? 'success' : 'error'"
-          :description="`本提案由「${item.user.nickname}」发起，发行「${item.add_stock_count}」股，每股「￥${item.stock_price}」` + (item.result === 0 ? '董事会正在投票' : item.result === 1 ? '董事会表决通过' : '董事会表决未通过')"
+          :description="`${item.created_at} - 本提案由「${item.user.nickname}」发起，发行「${item.add_stock_count}」股，每股「￥${item.stock_price}」，` + (item.result === 0 ? '董事会正在投票' : item.result === 1 ? '董事会表决通过' : '董事会表决未通过')"
           title="增发提案"
         />
         <el-step
