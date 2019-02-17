@@ -1,25 +1,47 @@
 <style lang="scss">
 #reward {
   .center-content {
-    margin: 0 auto;
     width: 600px;
+  }
 
-    h3 {
-      font-size: 16px;
-      margin: 15px 0;
+  .calibur {
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .qr-code {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .alipay,
+  .wechat {
+    padding: 30px;
+    margin: 0 30px;
+
+    img {
+      width: 150px;
+      height: 150px;
+      display: block;
+      margin: 0 auto;
     }
 
     p {
-      font-size: 14px;
-      line-height: 20px;
-      text-indent: 2em;
-      margin-bottom: 5px;
+      margin-top: 20px;
+      text-align: center;
+      color: #fff;
+      font-weight: bold;
     }
+  }
 
-    img {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
+  .alipay {
+    background-color: RGB(31, 144, 230);
+  }
+
+  .wechat {
+    background-color: RGB(81, 181, 86);
   }
 }
 </style>
@@ -27,38 +49,22 @@
 <template>
   <div id="reward">
     <v-header/>
-    <div class="center-content">
-      <h3>谢谢，对不起</h3>
-      <p>谢谢各位长久以来的陪伴，对我的支持、期待。calibur 正是因为有你的加入，所以我才坚持到了现在。</p>
-      <p>最近心情有点抑郁，有点缓不过来，有点想要放弃，无论是 calibur 还是我自己。</p>
-      <p>其实，这几天，我在草稿里写了好多篇几千字的文章，企图诉说我做 calibur 的初衷，坚持的理由，付出的努力，失去的东西，以及最重要的是祈求大家同意让我放弃。</p>
-      <p>但把我的那些伤疤揭开，相信大家也没什么兴趣吧，到最后也是落得自己无病呻吟。</p>
-      <p>对不起，我真的好想放弃，我好累。</p>
-      <h3>我最大的压力</h3>
-      <p>我最大的压力，其实并不来源于资金。虽然我现在没钱是事实，但是钱这种东西，只要努力就能得来的。</p>
-      <p>但有些东西，是我再怎么努力也换不回来的，那就是团队成员对我的期望，以及对 calibur 抱有一定期待，付出了很多努力的漫友们。我最怕的是辜负他们对我的期待。</p>
-      <p>我并不喜欢我自己的性格，也不认为自己有什么了不起，所以我并不介意自己悄悄的失败。</p>
-      <p>我只是害怕辜负别人对我的期望，要是从一开始我没那么做，那该多好。</p>
-      <h3>还有一些想说的，但算了</h3>
-      <p>上面说的这些，是说得出口的，还有一些，我说不出口，说多了就是借口。</p>
-      <p>总之，我又要逃避了。</p>
-      <h3>打算</h3>
-      <p>我打算辞掉现在的工作，重新思考一下自己活着的意义。</p>
-      <p>我在 calibur 上花光了我近年的所有积蓄，现在希望大家能帮帮我。</p>
-      <p>施舍一点，让我支付最近的房租和欠款，以及接下来一段时间的饭钱。</p>
-      <p>我得想办法让自己度过这个「低谷期」，想办法让自己活下去。</p>
-      <h3>对不起，最后这么难堪</h3>
-      <p>我应该更坚强一点的。</p>
-      <p>我还有好多话，说不出口，想求助，但是不敢。</p>
-      <p>我应该更坚强一点的。</p>
-      <p>还有很多话我说不出口，总之是我的错。</p>
-      <p>谢谢你们长久以来的陪伴，忘不忘我都没关系，忘不忘 calibur 都没关系。</p>
-      <p>请给我一点温暖，让我有活下去的勇气。</p>
-      <img src="~assets/img/wechat.png">
-      <img src="~assets/img/alipay.png">
-      <p>我本应表现的更坚强的，在你们面前。到此为止吧。</p>
-      <p>也请不要嘲笑我，我没做好，对不起。</p>
-      <p>也请不要来关心我，我不配吧。</p>
+    <div class="container">
+      <h3 class="sub-title">
+        就算是1块钱的捐助，也能让 calibur 更好的发展
+      </h3>
+      <div class="qr-code">
+        <div class="alipay">
+          <img src="~assets/img/alipay.png">
+          <p>支付宝</p>
+        </div>
+        <div class="wechat">
+          <img src="~assets/img/wechat.png">
+          <p>微信</p>
+        </div>
+      </div>
+      <br>
+      <p>若您因为种种原因无法捐款，您仍可以通过其他方式为 calibur 的发展做出贡献（帮助宣传等）</p>
       <br>
     </div>
   </div>
@@ -66,6 +72,9 @@
 
 <script>
 export default {
-  name: 'Reward'
+  name: 'Reward',
+  head: {
+    title: '捐赠'
+  }
 }
 </script>

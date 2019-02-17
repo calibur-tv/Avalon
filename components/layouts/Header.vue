@@ -498,6 +498,12 @@ $search-height: 32px;
           >
             <span>下载APP</span>
           </nuxt-link>
+          <nuxt-link
+            :class="$style.navLink"
+            to="/about/reward"
+          >
+            <span>捐赠</span>
+          </nuxt-link>
         </v-layout>
         <div :class="$style.right">
           <div class="search-container">
