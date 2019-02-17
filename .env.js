@@ -1,11 +1,11 @@
 const baseUrl = {
   API_URL: {
-    development: 'http://localhost:3099/',
+    development: 'https://api.calibur.tv/',
     staging: 'http://localhost/',
     production: 'http://localhost/'
   },
   API_URL_BROWSER: {
-    development: 'http://localhost:3099/',
+    development: 'https://api.calibur.tv/',
     staging: 'http://t-api.calibur.tv/',
     production: 'https://api.calibur.tv/'
   }

@@ -77,7 +77,7 @@
           :closable="false"
           type="info"
           show-icon
-          title="已上市的公司，投资人可以在这里出售自己持有的股份"
+          title="已上市的公司，投资人可以在这里出售自己持有的股份（一周内无人购买的交易会被系统删除）"
         />
       </el-col>
       <el-col
@@ -110,6 +110,8 @@
         >
           <el-table-column
             label="交易编号"
+            prop="id"
+            sortable
           >
             <template slot-scope="scope">
               <span># {{ scope.row.id }}</span>
@@ -131,6 +133,8 @@
           </el-table-column>
           <el-table-column
             label="公司市值"
+            prop="idol.market_price"
+            sortable
           >
             <template slot-scope="scope">
               <span>￥{{ scope.row.idol.market_price }}</span>
@@ -144,7 +148,10 @@
             </template>
           </el-table-column>
           <el-table-column
+            :filters="[{ text: '已停牌', value: true }, { text: '挂牌中', value: false }]"
+            :filter-method="filterState"
             label="发行股数"
+            prop="idol.is_locked"
           >
             <template slot-scope="scope">
               <div>{{ scope.row.idol.star_count }}</div>
@@ -161,7 +168,10 @@
             </template>
           </el-table-column>
           <el-table-column
+            :filters="[{ text: '低于市场价', value: -1 }, { text: '高于市场价', value: 1 }, { text: '等于市场价', value: 0 }]"
+            :filter-method="filterPrice"
             label="出售价格"
+            prop="product_price"
           >
             <div
               slot-scope="scope"
@@ -186,6 +196,9 @@
             </template>
           </el-table-column>
           <el-table-column
+            :filters="[{ text: '有成交额', value: 1 }]"
+            :filter-method="filterDeal"
+            prop="last_count"
             label="已成交"
           >
             <template slot-scope="scope">
@@ -194,6 +207,8 @@
           </el-table-column>
           <el-table-column
             label="交易人"
+            prop="user.id"
+            sortable
           >
             <a
               slot-scope="scope"
@@ -431,6 +446,22 @@ export default {
         this.$toast.error(err)
         this.submitting = false
       }
+    },
+    filterState(value, row) {
+      return row.idol.is_locked === value
+    },
+    filterPrice(value, row) {
+      const result = row.product_price - row.idol.stock_price
+      if (value === 0) {
+        return result === 0
+      }
+      if (value === 1) {
+        return result > 0
+      }
+      return result < 0
+    },
+    filterDeal(value, row) {
+      return row.product_count !== row.last_count
     }
   }
 }
