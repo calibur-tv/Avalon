@@ -162,7 +162,7 @@
           v-else
           class="meta_2"
         >
-          <span>发行：</span>
+          <span>认购：</span>
           <span>{{ item.star_count }}股</span>
         </p>
         <div class="trend-placeholder">
