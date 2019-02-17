@@ -120,6 +120,9 @@ export default {
     VirtualIdolItem,
     IdolTrendingAside
   },
+  head: {
+    title: '上市公司'
+  },
   data() {
     return {
       nameQuery: '',

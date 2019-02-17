@@ -200,6 +200,9 @@ export default {
     'el-table-column': TableColumn
   },
   mixins: [serverAuth],
+  head: {
+    title: '我的公司'
+  },
   data() {
     return {
       selected: '我入股的公司',

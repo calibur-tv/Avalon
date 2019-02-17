@@ -89,6 +89,9 @@ export default {
   components: {
     QuestionFlowItem
   },
+  head: {
+    title: '问答区'
+  },
   data() {
     return {
       showTips: false

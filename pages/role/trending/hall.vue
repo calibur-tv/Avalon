@@ -308,6 +308,9 @@ export default {
     'el-table': Table,
     'el-table-column': TableColumn
   },
+  head: {
+    title: '交易所'
+  },
   data() {
     return {
       deal: null,

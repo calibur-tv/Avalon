@@ -418,16 +418,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.info.name} - ${this.albumType}`,
-      meta: [
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: `calibur,相册,天下漫友是一家,${this.info.name},${
-            this.bangumi ? this.bangumi.name : ''
-          }`
-        }
-      ]
+      title: this.info.name
     }
   },
   props: {

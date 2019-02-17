@@ -317,16 +317,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.info.title} - 漫评`,
-      meta: [
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: `calibur,漫评,天下漫友是一家,${this.info.title},${
-            this.bangumi.name
-          }`
-        }
-      ]
+      title: this.info.title
     }
   },
   props: {

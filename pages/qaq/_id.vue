@@ -107,24 +107,8 @@ export default {
     })
   },
   head() {
-    const { qaq } = this
-    if (!qaq) {
-      return
-    }
     return {
-      title: `${qaq.title} - 提问`,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: this.$utils.truncate(qaq.intro)
-        },
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: `calibur,提问,天下漫友是一家,${qaq.intro}`
-        }
-      ]
+      title: this.qaq.title
     }
   },
   components: {

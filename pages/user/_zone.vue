@@ -573,25 +573,8 @@ export default {
       .catch(error)
   },
   head() {
-    if (!this.zone) {
-      return
-    }
     return {
-      title: `${this.user.nickname} - 用户`,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: this.user.signature
-        },
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: `calibur,用户,天下漫友是一家,${this.user.zone},${
-            this.user.nickname
-          }`
-        }
-      ]
+      title: this.user.nickname
     }
   },
   components: {

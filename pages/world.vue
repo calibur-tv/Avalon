@@ -203,9 +203,6 @@ export default {
       loops: data[1]
     }
   },
-  head: {
-    title: '站内热点'
-  },
   data() {
     return {
       recommendedUsers: [],

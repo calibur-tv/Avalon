@@ -139,6 +139,9 @@ import { createPost, getPostTags } from '~/api/postApi'
 export default {
   name: 'PostCreate',
   mixins: [uploadMixin],
+  head: {
+    title: '发帖'
+  },
   data() {
     const validateTags = (rule, value, callback) => {
       if (value.length > 3) {

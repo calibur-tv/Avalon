@@ -140,7 +140,7 @@ export default {
     TabContainer
   },
   head: {
-    title: '新番放送 - 番剧'
+    title: '新番放送'
   },
   async asyncData({ app }) {
     const released = await getReleasedBangumis(app)

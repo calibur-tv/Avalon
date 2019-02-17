@@ -86,6 +86,9 @@ export default {
   name: 'AppDownload',
   components: {
     VueParticles
+  },
+  head: {
+    title: 'APP下载'
   }
 }
 </script>

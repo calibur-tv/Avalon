@@ -146,7 +146,7 @@ export default {
     }
   },
   head: {
-    title: '分类索引 - 番剧'
+    title: '动画标签'
   },
   data() {
     return {

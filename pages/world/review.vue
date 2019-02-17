@@ -105,6 +105,9 @@ export default {
   components: {
     ScoreFlowItem
   },
+  head: {
+    title: '漫评区'
+  },
   data() {
     return {
       showTips: false

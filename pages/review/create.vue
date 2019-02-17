@@ -157,6 +157,9 @@ export default {
   components: {
     JsonEditor
   },
+  head: {
+    title: '写漫评'
+  },
   data() {
     const labelMap = {
       lol: '笑点',

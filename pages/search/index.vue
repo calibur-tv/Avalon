@@ -181,6 +181,11 @@ export default {
     NothingRole,
     NothingScore
   },
+  head() {
+    return {
+      title: this.$route.query.q ? `搜索结果：${this.$route.query.q}` : '搜索'
+    }
+  },
   data() {
     return {
       selectedType: this.$route.query.type || 'all',

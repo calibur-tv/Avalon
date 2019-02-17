@@ -55,14 +55,8 @@ export default {
   components: {
     CreateRoleForm
   },
-  props: {},
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  head: {
+    title: '注册公司'
+  }
 }
 </script>

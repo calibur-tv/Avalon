@@ -411,15 +411,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.role.name} - 偶像`,
-      meta: [
-        { hid: 'description', name: 'description', content: this.role.intro },
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: `calibur,偶像,天下漫友是一家,${this.role.alias}`
-        }
-      ]
+      title: this.role.name
     }
   },
   components: {

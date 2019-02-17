@@ -506,27 +506,15 @@ export default {
     }
     if (seasonName) {
       if (seasonName === videoName) {
-        title = `${bangumiName} : ${seasonName} - 视频`
+        title = `${bangumiName}：${seasonName}`
       } else {
-        title = `${bangumiName} : ${seasonName} : 第${resultPart}话 ${videoName} - 视频`
+        title = `${seasonName}：第${resultPart}话 ${videoName}`
       }
     } else {
-      title = `${bangumiName} : 第${resultPart}话 ${videoName} - 视频`
+      title = `${bangumiName}：第${resultPart}话 ${videoName}`
     }
     return {
-      title,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: bangumi.summary
-        },
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: `${bangumiName}，第${resultPart}话，${videoName}，在线观看 动画片大全 动漫在线播放 日本动漫 好看的动漫 二次元网站`
-        }
-      ]
+      title
     }
   },
   data() {

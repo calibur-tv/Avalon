@@ -118,15 +118,8 @@
 <script>
 export default {
   name: 'RoleTrendingIntro',
-  components: {},
-  props: {},
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  head: {
+    title: '游戏规则'
+  }
 }
 </script>

@@ -267,15 +267,8 @@
 <script>
 export default {
   name: 'AboutLicense',
-  components: {},
-  props: {},
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  head: {
+    title: '条款'
+  }
 }
 </script>

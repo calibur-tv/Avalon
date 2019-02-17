@@ -42,10 +42,8 @@ export default {
     TabContainer
   },
   head() {
-    const { info } = this
     return {
-      title: `${info.name} - 番剧`,
-      meta: [{ hid: 'description', name: 'description', content: info.summary }]
+      title: this.info.name
     }
   },
   props: {

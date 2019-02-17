@@ -106,6 +106,9 @@ export default {
   components: {
     ImageWaterfallFlow
   },
+  head: {
+    title: '相册区'
+  },
   data() {
     return {
       showTips: false

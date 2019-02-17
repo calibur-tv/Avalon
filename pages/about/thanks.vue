@@ -316,11 +316,6 @@
         >冲锋的小卡卡</a>，
         <strong>视频2作者：</strong>
         <a
-          href="https://www.calibur.tv/user/chun-feng-bu-ji-lei-mu-xiao"
-          target="_blank"
-        >指绘君</a>，
-        <strong>视频3作者：</strong>
-        <a
           href="https://www.calibur.tv/user/yu-yuan-lin-yin-7/bangumi"
           target="_blank"
         >艾了个拉</a>
