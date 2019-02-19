@@ -126,7 +126,7 @@
         prop="signature"
       >
         <el-input
-          v-model.trim="signature"
+          v-model="signature"
           :rows="5"
           type="textarea"
           placeholder="用简单的言语，表达深刻的心"
@@ -315,7 +315,7 @@ export default {
       set(value) {
         this.$store.commit('UPDATE_USER_INFO', {
           key: 'signature',
-          value
+          value: value.trim()
         })
       }
     }

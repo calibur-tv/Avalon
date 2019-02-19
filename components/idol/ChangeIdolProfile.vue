@@ -25,7 +25,7 @@
   <div id="change-idol-profile">
     <p class="tips">修改特殊留言（一周只能修改一次，20字以内）：</p>
     <el-input
-      v-model.trim="lover_words"
+      v-model="lover_words"
       :rows="3"
       type="textarea"
       placeholder="用简单的文字表达你的爱吧！"
@@ -66,11 +66,12 @@ export default {
       if (this.submitting) {
         return
       }
-      if (this.lover_words.length > 20) {
+      const words = this.lover_words.trim()
+      if (words.length > 20) {
         this.$toast.error('留言给我缩减至20字以内重说！')
         return
       }
-      if (!this.lover_words && !this.qq_group) {
+      if (!words && !this.qq_group) {
         this.$toast.error('内容不能为空')
         return
       }
@@ -98,7 +99,7 @@ export default {
         await changeCartoonRoleProfile(this, {
           idol_id: this.idol.id,
           qq_group: this.qq_group,
-          lover_words: this.lover_words
+          lover_words: words
         })
         this.$toast.success('修改成功')
         setTimeout(() => {

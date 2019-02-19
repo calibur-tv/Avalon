@@ -83,7 +83,7 @@
         prop="intro"
       >
         <el-input
-          v-model.trim="form.intro"
+          v-model="form.intro"
           :rows="10"
           type="textarea"
           placeholder="请输入角色简介"
@@ -190,7 +190,7 @@ export default {
             const params = {
               bangumi_id: this.form.bangumi_id,
               name: name,
-              intro: this.form.intro,
+              intro: this.form.intro.trim(),
               avatar: this.form.avatar.split('.calibur.tv/').pop(),
               alias: [name]
                 .concat(this.form.alias.filter(_ => _ !== name))

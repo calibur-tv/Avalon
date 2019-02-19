@@ -67,7 +67,7 @@
       prop="summary"
     >
       <el-input
-        v-model.trim="summary"
+        v-model="summary"
         :rows="5"
         type="textarea"
         placeholder="请输入番剧简介"
@@ -160,7 +160,7 @@ export default {
       set(value) {
         this.$store.commit('bangumi/SET_BANGUMI_INFO', {
           key: 'summary',
-          value
+          value: value.trim()
         })
       }
     },

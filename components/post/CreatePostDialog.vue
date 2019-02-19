@@ -113,7 +113,7 @@
         prop="content"
       >
         <el-input
-          v-model.trim="forms.content"
+          v-model="forms.content"
           :rows="7"
           type="textarea"
           placeholder="1000字以内"
@@ -226,8 +226,8 @@ export default {
                   title: this.forms.title,
                   bangumiId: this.forms.bangumiId,
                   tags: this.forms.tags,
-                  desc: this.forms.content.substring(0, 120),
-                  content: this.forms.content,
+                  desc: this.forms.content.trim().substring(0, 120),
+                  content: this.forms.content.trim(),
                   images: this.images.map(item => item.img),
                   is_creator: this.forms.is_creator,
                   geetest: data

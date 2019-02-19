@@ -35,7 +35,7 @@
   >
     <el-form-item prop="content">
       <el-input
-        v-model.trim="forms.content"
+        v-model="forms.content"
         :rows="3"
         type="textarea"
         placeholder="1000字以内"
@@ -135,7 +135,7 @@ export default {
             const result = await this.$store.dispatch(
               'comment/createMainComment',
               {
-                content: this.forms.content,
+                content: this.forms.content.trim(),
                 images: this.formatImages,
                 type: 'post',
                 id: this.id,

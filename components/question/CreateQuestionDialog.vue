@@ -62,7 +62,7 @@
         prop="content"
       >
         <el-input
-          v-model.trim="form.content"
+          v-model="form.content"
           :rows="5"
           placeholder="问题背景，条件等详细信息"
           type="textarea"
@@ -194,8 +194,8 @@ export default {
                 const result = await createQuestion(this, {
                   title: this.form.title,
                   tags: this.form.tags,
-                  intro: this.form.content.substring(0, 120),
-                  content: this.form.content,
+                  intro: this.form.content.trim().substring(0, 120),
+                  content: this.form.content.trim(),
                   images: this.images.map(item => item.img),
                   geetest: data
                 })

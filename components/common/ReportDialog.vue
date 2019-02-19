@@ -61,7 +61,7 @@
       <template v-if="needContent">
         <h3>留言：</h3>
         <el-input
-          v-model.trim="content"
+          v-model="content"
           :rows="3"
           resize="none"
           type="textarea"
@@ -127,7 +127,8 @@ export default {
         this.$toast.error('请选择正确的分类')
         return
       }
-      if (this.needContent && !this.content) {
+      const content = this.content.trim()
+      if (this.needContent && !content) {
         this.$toast.error('请填写具体情况')
         return
       }
@@ -138,7 +139,7 @@ export default {
       try {
         report(this, {
           id: this.id,
-          message: this.content,
+          message: content,
           type: this.selectedType,
           model: this.type
         })

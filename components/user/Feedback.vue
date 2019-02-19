@@ -33,7 +33,7 @@
         prop="desc"
       >
         <el-input
-          v-model.trim="forms.desc"
+          v-model="forms.desc"
           :rows="6"
           :placeholder="placeholder"
           type="textarea"
@@ -136,7 +136,7 @@ export default {
         if (valid) {
           await feedback(this, {
             type: this.forms.type,
-            desc: this.preContent.replace('{?}', this.forms.desc),
+            desc: this.preContent.replace('{?}', this.forms.desc.trim()),
             ua: navigator.userAgent
           })
           this.show = false
