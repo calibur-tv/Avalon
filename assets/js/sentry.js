@@ -30,7 +30,10 @@ export default new class {
           return shouldSend
         },
         ignoreErrors: [
-          'Uncaught TypeError: value.hasOwnProperty is not a function',
+          'value.hasOwnProperty is not a function',
+          'JSON Parse error',
+          '$ is not defined',
+          'The play() request was interrupted by a call to pause()',
           /网络/
         ],
         integrations: [new Sentry.Integrations.Vue({ Vue })]

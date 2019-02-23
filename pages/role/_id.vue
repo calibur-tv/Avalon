@@ -247,6 +247,10 @@
           <span v-text="role.manager.nickname" />
         </a>
       </div>
+      <div v-if="role.company_state" class="lover">
+        <p class="sub-title">可支配资产</p>
+        <span>￥{{ computedIdolMoney }}</span>
+      </div>
       <div>
         <p class="sub-title">应援群</p>
         <div class="coin">
@@ -398,8 +402,17 @@ export default {
       }
       return result
     },
-    computeRoleAlias() {
-      return this.role.alias.split(',')
+    computedIdolMoney() {
+      const market_price = +this.role.market_price
+      const star_count = +this.role.star_count
+      const total_income = +this.role.total_income
+      const total_pay = +this.role.total_pay
+      return parseFloat(
+        market_price -
+        star_count +
+        total_income -
+        total_pay
+      ).toFixed(2)
     },
     computedHtmlIntro() {
       return this.role.intro.replace(/\n/g, '<br>')

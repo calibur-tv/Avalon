@@ -154,6 +154,17 @@
     </template>
     <template v-else-if="selected === '我的采购请求'">
       <v-layout>
+        <el-alert
+          type="info"
+          title="当有经纪人采购你的帖子时，将会在这个地方展示订单"
+        >
+          <p>
+            每个帖子，只能出售一次，交易达成后会自动拒绝掉帖子的其它交易
+          </p>
+          <p>
+            经纪人会主动寻找相关番剧下的原创帖子进行采购，你只需要等待订单即可
+          </p>
+        </el-alert>
         <flow-list func="getUserProductOrders" type="page" sort="news">
           <ul slot-scope="{ flow }">
             <idol-product-order-item

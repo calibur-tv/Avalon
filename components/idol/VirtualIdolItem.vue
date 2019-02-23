@@ -123,10 +123,12 @@
         border-radius: 50%;
         position: relative;
         border: 1px solid hsla(0, 0%, 71%, 0.1);
+        float: right;
       }
 
       .manager {
         z-index: 1;
+        margin-right: -13px;
 
         &:hover {
           z-index: 3;
@@ -134,7 +136,6 @@
       }
 
       .boss {
-        margin-left: -20px;
         z-index: 2;
       }
     }
@@ -205,14 +206,14 @@
       <div class="extra">
         <div class="user">
           <img
-            v-if="item.manager"
-            :src="$resize(item.manager.avatar, { width: 50, height: 50 })"
-            class="manager"
-          />
-          <img
             v-if="item.boss"
             :src="$resize(item.boss.avatar, { width: 50, height: 50 })"
             class="boss"
+          />
+          <img
+            v-if="item.manager"
+            :src="$resize(item.manager.avatar, { width: 50, height: 50 })"
+            class="manager"
           />
         </div>
         <div class="time">
