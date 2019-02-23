@@ -1,6 +1,6 @@
 <template>
   <div class="search-nothing-video">
-    <no-content/>
+    <no-content />
   </div>
 </template>
 

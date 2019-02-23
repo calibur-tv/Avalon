@@ -16,11 +16,7 @@
 
 <template>
   <div class="reset-password-form">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rule"
-    >
+    <el-form ref="form" :model="form" :rules="rule">
       <el-form-item prop="access">
         <el-input
           v-model.trim="form.access"
@@ -111,6 +107,7 @@ export default {
       } else if (this.step === 3) {
         return '已重置'
       }
+      return '立即重置'
     },
     submitBtnLoading() {
       return this.step === 1 || this.step === 3

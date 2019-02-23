@@ -31,20 +31,20 @@
 <template>
   <div class="vote-button">
     <button
-      :class="{ 'active': votedScore > 0 }"
+      :class="{ active: votedScore > 0 }"
       class="vote-btn vote-up"
       @click="voteAction(true)"
     >
-      <i class="el-icon-caret-top"/>
+      <i class="el-icon-caret-top" />
       赞同
       {{ totalVote }}
     </button>
     <button
-      :class="{ 'active': votedScore < 0 }"
+      :class="{ active: votedScore < 0 }"
       class="vote-btn vote-down"
       @click="voteAction(false)"
     >
-      <i class="el-icon-caret-bottom"/>
+      <i class="el-icon-caret-bottom" />
     </button>
   </div>
 </template>

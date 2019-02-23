@@ -73,13 +73,9 @@
 <template>
   <div id="user-draft">
     <div>
-      <el-radio-group
-        v-model="active"
-        size="mini"
-        @change="handleTabSwitch"
-      >
-        <el-radio-button label="漫评"/>
-        <el-radio-button label="回答"/>
+      <el-radio-group v-model="active" size="mini" @change="handleTabSwitch">
+        <el-radio-button label="漫评" />
+        <el-radio-button label="回答" />
       </el-radio-group>
     </div>
     <flow-list
@@ -89,18 +85,14 @@
       sort="news"
     >
       <ul slot-scope="{ flow }">
-        <li
-          v-for="item in flow"
-          :key="item.id"
-          class="score-draft"
-        >
+        <li v-for="item in flow" :key="item.id" class="score-draft">
           <div class="header">
             <a
               :href="$alias.bangumi(item.bangumi.id)"
               class="bangumi"
               target="_blank"
             >
-              <img :src="$resize(item.bangumi.avatar, { width: 60 })">
+              <img :src="$resize(item.bangumi.avatar, { width: 60 })" />
             </a>
             <div class="title">
               <a
@@ -119,7 +111,7 @@
           />
         </li>
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
     <flow-list
       v-else-if="active === '回答'"
@@ -128,19 +120,9 @@
       sort="news"
     >
       <ul slot-scope="{ flow }">
-        <li
-          v-for="item in flow"
-          :key="item.id"
-          class="answer-draft"
-        >
-          <a
-            :href="$alias.question(item.question.id)"
-            target="_blank"
-          >
-            <h5
-              class="title"
-              v-text="item.question.title"
-            />
+        <li v-for="item in flow" :key="item.id" class="answer-draft">
+          <a :href="$alias.question(item.question.id)" target="_blank">
+            <h5 class="title" v-text="item.question.title" />
           </a>
           <a
             :href="$alias.answer(item.id)"
@@ -150,7 +132,7 @@
           />
         </li>
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -158,17 +140,17 @@
 <script>
 export default {
   name: 'UserDraft',
+  data() {
+    return {
+      active: '漫评'
+    }
+  },
   async asyncData({ store }) {
     await store.dispatch('flow/initData', {
       func: 'getUserScoreDrafts',
       type: 'page',
       sort: 'news'
     })
-  },
-  data() {
-    return {
-      active: '漫评'
-    }
   },
   methods: {
     handleTabSwitch(label) {

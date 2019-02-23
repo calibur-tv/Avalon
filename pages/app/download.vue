@@ -59,23 +59,23 @@
 
 <template>
   <div id="app-download">
-    <v-header type="pure"/>
+    <v-header type="pure" />
     <div class="content">
       <img
         class="qr-code"
         src="https://image.calibur.tv/owner/download-qr.png?imageMogr2/auto-orient/strip"
-      >
+      />
       <div class="info">
         <img
           src="https://image.calibur.tv/owner/logo-new/logo.png?imageMogr2/auto-orient/strip|imageView2/1/w/200/h/200/format/jpg"
-        >
+        />
         <div class="text">
           calibur.tv
           <p>天下漫友是一家</p>
         </div>
       </div>
     </div>
-    <vue-particles/>
+    <vue-particles />
   </div>
 </template>
 

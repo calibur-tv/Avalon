@@ -77,13 +77,10 @@ $textarea-padding-right: 15px;
   <div class="list-preview">
     <div class="sort-wrap">
       <span>顺序：{{ sort ? '有序' : '无序' }}</span>
-      <el-switch v-model="sort"/>
+      <el-switch v-model="sort" />
     </div>
     <div class="content-wrap">
-      <pre
-        class="shim"
-        v-html="item.text"
-      />
+      <pre class="shim" v-html="item.text" />
       <textarea
         v-model.trim="text"
         class="focus-textarea mousetrap"

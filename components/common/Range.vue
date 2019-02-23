@@ -68,14 +68,8 @@
     @touchmove.stop
     @click.stop
   >
-    <div
-      ref="content"
-      class="vue-pwa-range"
-    >
-      <div
-        class="vue-pwa-range-runway"
-        @click.stop="handleClick"
-      />
+    <div ref="content" class="vue-pwa-range">
+      <div class="vue-pwa-range-runway" @click.stop="handleClick" />
       <div
         v-if="loading"
         :style="loadingStyle"

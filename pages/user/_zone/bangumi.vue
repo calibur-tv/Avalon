@@ -53,18 +53,9 @@
       type="page"
       sort="news"
     >
-      <ul
-        slot-scope="{ flow }"
-        class="bangumis"
-      >
-        <li
-          v-for="item in flow"
-          :key="item.id"
-        >
-          <a
-            :href="$alias.bangumi(item.id)"
-            target="_blank"
-          >
+      <ul slot-scope="{ flow }" class="bangumis">
+        <li v-for="item in flow" :key="item.id">
+          <a :href="$alias.bangumi(item.id)" target="_blank">
             <v-img
               :src="item.avatar"
               :lazy="false"
@@ -73,15 +64,12 @@
               class="poster"
             />
             <figcaption class="intro">
-              <p
-                class="name"
-                v-text="item.name"
-              />
+              <p class="name" v-text="item.name" />
             </figcaption>
           </a>
         </li>
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -89,6 +77,11 @@
 <script>
 export default {
   name: 'UserBangumi',
+  computed: {
+    user() {
+      return this.$store.state.users.show
+    }
+  },
   async asyncData({ store, params }) {
     await store.dispatch('flow/initData', {
       func: 'getUserFollowBangumis',
@@ -97,11 +90,6 @@ export default {
       count: 9999,
       id: params.zone
     })
-  },
-  computed: {
-    user() {
-      return this.$store.state.users.show
-    }
   }
 }
 </script>

@@ -1,19 +1,10 @@
 <template>
-  <el-form
-    :disabled="submitting"
-    label-width="45px"
-  >
+  <el-form :disabled="submitting" label-width="45px">
     <el-form-item label="名字">
-      <el-input
-        v-model="form.name"
-        placeholder="给图片起个名字"
-      />
+      <el-input v-model="form.name" placeholder="给图片起个名字" />
     </el-form-item>
     <el-form-item label="番剧">
-      <bangumi-search
-        v-model="form.bangumi_id"
-        :clear="false"
-      />
+      <bangumi-search v-model="form.bangumi_id" :clear="false" />
     </el-form-item>
     <el-form-item>
       <el-button
@@ -21,7 +12,8 @@
         type="primary"
         size="small"
         @click="submit"
-      >确认编辑</el-button>
+        >确认编辑</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

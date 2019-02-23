@@ -32,7 +32,7 @@
       canvas-color="rgba(0, 0, 0, .05)"
       @init="onInit"
     />
-    <div class="tools"/>
+    <div class="tools" />
     <el-button
       :loading="uploading"
       class="submit-btn"
@@ -40,7 +40,8 @@
       size="small"
       round
       @click="generateImage"
-    >确认</el-button>
+      >确认</el-button
+    >
   </div>
 </template>
 

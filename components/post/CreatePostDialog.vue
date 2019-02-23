@@ -42,29 +42,17 @@
       label-width="42px"
       class="create-post-form"
     >
-      <el-form-item
-        label="标题"
-        prop="title"
-      >
-        <el-input
-          v-model.trim="forms.title"
-          placeholder="请填写帖子标题"
-        />
+      <el-form-item label="标题" prop="title">
+        <el-input v-model.trim="forms.title" placeholder="请填写帖子标题" />
       </el-form-item>
-      <el-form-item
-        label="番剧"
-        prop="bangumiId"
-      >
+      <el-form-item label="番剧" prop="bangumiId">
         <bangumi-search
           v-model="forms.bangumiId"
           :followed="true"
           placeholder="请选择要投稿的番剧"
         />
       </el-form-item>
-      <el-form-item
-        label="标签"
-        prop="tags"
-      >
+      <el-form-item label="标签" prop="tags">
         <el-select
           v-model="forms.tags"
           multiple
@@ -80,14 +68,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="原创">
-        <el-switch v-model="forms.is_creator"/>
+        <el-switch v-model="forms.is_creator" />
         <el-tooltip
           class="item"
           effect="dark"
           content="如果帖子是转载的，请不要勾选"
           placement="top"
         >
-          <i class="el-icon-question"/>
+          <i class="el-icon-question" />
         </el-tooltip>
       </el-form-item>
       <el-form-item label="图片">
@@ -105,13 +93,10 @@
           multiple
           list-type="picture-card"
         >
-          <i class="el-icon-plus"/>
+          <i class="el-icon-plus" />
         </el-upload>
       </el-form-item>
-      <el-form-item
-        label="内容"
-        prop="content"
-      >
+      <el-form-item label="内容" prop="content">
         <el-input
           v-model="forms.content"
           :rows="7"
@@ -121,11 +106,9 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button
-          :loading="submitting"
-          type="primary"
-          @click="submit"
-        >发布</el-button>
+        <el-button :loading="submitting" type="primary" @click="submit"
+          >发布</el-button
+        >
       </el-form-item>
     </el-form>
   </v-dialog>
@@ -304,12 +287,16 @@ export default {
           this.tags = list
           return
         }
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
       try {
         const tags = await getPostTags(this)
         this.tags = tags
         sessionStorage.setItem('cache-post-tags', JSON.stringify(tags))
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
     }
   }
 }

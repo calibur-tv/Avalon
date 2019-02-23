@@ -151,16 +151,12 @@
 
 <template>
   <div id="user-mark">
-    <el-radio-group
-      v-model="selectedTab"
-      size="mini"
-      @change="handleTabSwitch"
-    >
-      <el-radio-button label="帖子"/>
-      <el-radio-button label="相册"/>
-      <el-radio-button label="答案"/>
-      <el-radio-button label="漫评"/>
-      <el-radio-button label="视频"/>
+    <el-radio-group v-model="selectedTab" size="mini" @change="handleTabSwitch">
+      <el-radio-button label="帖子" />
+      <el-radio-button label="相册" />
+      <el-radio-button label="答案" />
+      <el-radio-button label="漫评" />
+      <el-radio-button label="视频" />
     </el-radio-group>
     <main>
       <flow-list
@@ -169,23 +165,17 @@
         type="page"
         sort="post"
       >
-        <ul
-          slot-scope="{ flow }"
-          class="posts"
-        >
-          <li
-            v-for="item in flow"
-            :key="item.id"
-          >
+        <ul slot-scope="{ flow }" class="posts">
+          <li v-for="item in flow" :key="item.id">
             <a
               :href="item.deleted_at ? 'javascript:;' : $alias.post(item.id)"
-              :class="[ item.deleted_at ? 'deleted' : 'blue-link' ]"
+              :class="[item.deleted_at ? 'deleted' : 'blue-link']"
               target="_blank"
               v-text="item.title"
             />
           </li>
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
       <flow-list
         v-else-if="type === 'image'"
@@ -193,31 +183,18 @@
         type="page"
         sort="image"
       >
-        <ul
-          slot-scope="{ flow }"
-          class="images"
-        >
-          <li
-            v-for="item in flow"
-            :key="item.id"
-          >
+        <ul slot-scope="{ flow }" class="images">
+          <li v-for="item in flow" :key="item.id">
             <a
               :href="item.deleted_at ? 'javascript:;' : $alias.image(item.id)"
               target="_blank"
             >
-              <v-img
-                :src="item.url"
-                :width="190"
-                :height="300"
-              />
-              <div
-                v-if="item.deleted_at"
-                class="delete-mask"
-              >该相册已删除</div>
+              <v-img :src="item.url" :width="190" :height="300" />
+              <div v-if="item.deleted_at" class="delete-mask">该相册已删除</div>
             </a>
           </li>
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
       <flow-list
         v-else-if="type === 'answer'"
@@ -225,23 +202,17 @@
         type="page"
         sort="answer"
       >
-        <ul
-          slot-scope="{ flow }"
-          class="answers"
-        >
-          <li
-            v-for="item in flow"
-            :key="item.id"
-          >
+        <ul slot-scope="{ flow }" class="answers">
+          <li v-for="item in flow" :key="item.id">
             <a
               :href="item.deleted_at ? 'javascript:;' : $alias.answer(item.id)"
-              :class="[ item.deleted_at ? 'deleted' : 'blue-link' ]"
+              :class="[item.deleted_at ? 'deleted' : 'blue-link']"
               target="_blank"
               v-text="item.intro || '[图片]'"
             />
           </li>
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
       <flow-list
         v-else-if="type === 'score'"
@@ -249,24 +220,18 @@
         type="page"
         sort="score"
       >
-        <ul
-          slot-scope="{ flow }"
-          class="scores"
-        >
-          <li
-            v-for="item in flow"
-            :key="item.id"
-          >
+        <ul slot-scope="{ flow }" class="scores">
+          <li v-for="item in flow" :key="item.id">
             <a
               :href="item.deleted_at ? 'javascript:;' : $alias.score(item.id)"
-              :class="[ item.deleted_at ? 'deleted' : 'blue-link' ]"
+              :class="[item.deleted_at ? 'deleted' : 'blue-link']"
               target="_blank"
               v-text="item.title"
             />
-            <p v-text="item.intro || '[图片]'"/>
+            <p v-text="item.intro || '[图片]'" />
           </li>
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
       <flow-list
         v-else-if="type === 'video'"
@@ -274,34 +239,18 @@
         type="page"
         sort="video"
       >
-        <ul
-          slot-scope="{ flow }"
-          class="videos"
-        >
-          <li
-            v-for="item in flow"
-            :key="item.id"
-          >
+        <ul slot-scope="{ flow }" class="videos">
+          <li v-for="item in flow" :key="item.id">
             <a
               :href="item.deleted_at ? 'javascript:;' : $alias.video(item.id)"
               class="poster"
               target="_blank"
             >
-              <v-img
-                :src="item.poster"
-                :width="190"
-                :height="119"
-              />
-              <div
-                v-if="item.deleted_at"
-                class="delete-mask"
-              >
+              <v-img :src="item.poster" :width="190" :height="119" />
+              <div v-if="item.deleted_at" class="delete-mask">
                 视频已失效
               </div>
-              <i
-                v-else
-                class="iconfont icon-bofang"
-              />
+              <i v-else class="iconfont icon-bofang" />
             </a>
             <div class="text">
               <a
@@ -313,7 +262,7 @@
             </div>
           </li>
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
     </main>
   </div>
@@ -324,14 +273,6 @@ import FlowList from '~/components/flow/FlowList'
 
 export default {
   name: 'UserMark',
-  async asyncData({ store }) {
-    await store.dispatch('flow/initData', {
-      func: 'getUserBookmarks',
-      type: 'page',
-      sort: 'post',
-      count: 9999
-    })
-  },
   components: {
     FlowList
   },
@@ -340,6 +281,14 @@ export default {
       selectedTab: '帖子',
       type: 'post'
     }
+  },
+  async asyncData({ store }) {
+    await store.dispatch('flow/initData', {
+      func: 'getUserBookmarks',
+      type: 'page',
+      sort: 'post',
+      count: 9999
+    })
   },
   methods: {
     handleTabSwitch(label) {

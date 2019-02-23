@@ -42,7 +42,7 @@
       .summary {
         line-height: 24px;
         font-size: 14px;
-        margin-bottom: 10px;
+        margin-bottom: 17px;
 
         &.collapsed {
           @include twoline(24px);
@@ -170,14 +170,16 @@
 
 <template>
   <div id="role-show">
-    <v-header/>
+    <v-header />
     <v-layout>
       <div v-if="role.has_market_price_draft">
         <p class="sub-title">重要提醒</p>
         <el-alert
           v-if="role.market_price_draft_voted"
           :closable="false"
-          :description="`你已投「${role.market_price_draft_voted > 0 ? '同意' : '反对'}」票`"
+          :description="
+            `你已投「${role.market_price_draft_voted > 0 ? '同意' : '反对'}」票`
+          "
           title="正在召开股东大会"
           type="info"
         />
@@ -188,15 +190,12 @@
           type="warning"
           description="股东大会召开中，请全体股东到本页面「大事记」一栏进行会议投票"
         />
-        <br>
+        <br />
       </div>
       <div class="intro clearfix">
-        <p class="sub-title">偶像信息</p>
+        <p class="sub-title">{{ role.name }}</p>
         <div class="avatar-wrap">
-          <img
-            :src="$resize(role.avatar, { width: 360 })"
-            class="avatar"
-          >
+          <img :src="$resize(role.avatar, { width: 360 })" class="avatar" />
           <star-idol-btn
             :id="id"
             :price="role.stock_price"
@@ -216,59 +215,55 @@
           />
         </div>
         <div class="info">
-          <h1
-            class="name"
-            v-text="role.name"
-          />
-          <p
-            v-if="collapsed"
-            class="summary collapsed"
-          >
+          <p v-if="collapsed" class="summary collapsed">
             <strong>简介：</strong>{{ role.intro.substr(0, 30) }}
             <button @click="collapsed = false">全文</button>
           </p>
-          <div
-            v-else
-            class="summary"
-          >
+          <div v-else class="summary">
             <strong>简介：</strong>
-            <p v-html="computedHtmlIntro"/>
+            <p v-html="computedHtmlIntro" />
             <button @click="collapsed = true">收起</button>
           </div>
           <strong>股市行情：</strong>
-          <idol-stock-chart :idol="role"/>
+          <idol-stock-chart :idol="role" />
         </div>
       </div>
-      <div
-        v-if="role.boss"
-        class="lover"
-      >
+      <div v-if="role.boss" class="lover">
         <p class="sub-title">大股东</p>
-        <a
-          :href="$alias.user(role.boss.zone)"
-          class="user"
-          target="_blank"
-        >
+        <a :href="$alias.user(role.boss.zone)" class="user" target="_blank">
           <div class="avatar">
-            <img :src="$resize(role.boss.avatar, { width: 80 })">
+            <img :src="$resize(role.boss.avatar, { width: 80 })" />
           </div>
-          <span v-text="role.boss.nickname"/>
+          <span v-text="role.boss.nickname" />
         </a>
         <span>：{{ role.lover_words || 'TA还什么都没说！' }}</span>
+      </div>
+      <div v-if="role.manager" class="lover">
+        <p class="sub-title">经纪人</p>
+        <a :href="$alias.user(role.manager.zone)" class="user" target="_blank">
+          <div class="avatar">
+            <img :src="$resize(role.manager.avatar, { width: 80 })" />
+          </div>
+          <span v-text="role.manager.nickname" />
+        </a>
       </div>
       <div>
         <p class="sub-title">应援群</p>
         <div class="coin">
           <p><strong>QQ群号：</strong>{{ role.qq_group || '106402736' }}</p>
-          <br>
+          <br />
         </div>
       </div>
       <tab-container
         :list="pages"
         :route="false"
+        def="1"
         @change="handleTabSwitch"
       >
         <template slot="0">
+          <idol-product-area :idol-id="id" :state="role.company_state" />
+        </template>
+        <template slot="1">
           <comment-main
             :id="id"
             :master-id="1"
@@ -276,63 +271,29 @@
             type="role"
           />
         </template>
-        <template slot="1">
-          <idol-owner-list
-            :id="id"
-            :name="role.name"
-            :star="role.star_count"
-          />
-        </template>
         <template slot="2">
-          <idol-market-price-draft
-            :is-boss="isBoss"
-            :idol="role"
-          />
+          <idol-owner-list :id="id" :name="role.name" :star="role.star_count" />
         </template>
         <template slot="3">
-          <div class="rules">
-            <el-alert
-              type="info"
-              title="目前还没有开放自定义公司章程，以下为功能简介："
-            >
-              <ul>
-                <li>新注册的公司，只要至少有20人参股，就可以自动上市</li>
-                <!--
-                <li>新注册的公司，若未能在指定时间期限内上市，则会倒闭，所有投资人的将无法获得收益</li>
-                -->
-                <li>上市之后，占股最多的人将成为最大的股东</li>
-                <li>最大的股东并非实时变更，会在一定周期内自动变更为持股最多的人</li>
-                <li>最大的股东可以发起「增发提案」来修改股价</li>
-                <li>最大的股东可以留下自己的个人寄语，第一个大股东可以创建应援群</li>
-                <li>上市后所有的持股人可以在「交易所」进行股权交易，以赚取虚拟币</li>
-                <li>在未来，会开发出更多的方式，让公司能够健康发展</li>
-              </ul>
-            </el-alert>
-          </div>
+          <idol-market-price-draft :is-boss="isBoss" :idol="role" />
         </template>
         <template slot="4">
+          <idol-product-order-list :idol-id="id" />
+        </template>
+        <template slot="5">
           <template v-if="isBoss">
-            <el-collapse
-              v-model="activeName"
-              accordion
-            >
+            <el-collapse v-model="activeName" accordion>
               <el-collapse-item name="0">
-                <p
-                  slot="title"
-                  class="title"
-                >
+                <p slot="title" class="title">
                   信息修改
                 </p>
-                <change-idol-profile :idol="role"/>
+                <change-idol-profile :idol="role" />
               </el-collapse-item>
               <el-collapse-item name="1">
-                <p
-                  slot="title"
-                  class="title"
-                >
+                <p slot="title" class="title">
                   股权变更
                 </p>
-                <create-price-market-draft :role="role"/>
+                <create-price-market-draft :role="role" />
               </el-collapse-item>
             </el-collapse>
           </template>
@@ -350,7 +311,9 @@
           <button
             v-clipboard="share_data.link"
             @success="$toast.success('复制成功~快去发送给好友吧')"
-          >点击邀请朋友炒股</button>
+          >
+            点击邀请朋友炒股
+          </button>
           <p>使用你分享的链接注册，你们都能获得团子奖励</p>
         </div>
         <div class="bangumi">
@@ -380,39 +343,13 @@ import CreatePriceMarketDraft from '~/components/idol/CreatePriceMarketDraft'
 import ChangeIdolProfile from '~/components/idol/ChangeIdolProfile'
 import { Collapse, CollapseItem } from 'element-ui'
 import IdolStockChart from '~/components/idol/IdolStockChart'
+import IdolProductOrderList from '~/components/idol/IdolProductOrderList'
+import IdolProductArea from '~/components/idol/IdolProductArea'
 
 export default {
   name: 'RoleShow',
   validate({ params }) {
     return /^\d+$/.test(params.id)
-  },
-  async asyncData({ app, store, params, error }) {
-    const { id } = params
-    return getCartoonRoleInfo(app, { id })
-      .then(data => {
-        const { bangumi } = data
-        store.commit('social/SET_STATE', {
-          type: 'bangumi',
-          id: bangumi.id,
-          data: {
-            follow: bangumi.followed
-          }
-        })
-        return { ...data }
-      })
-      .catch(error)
-  },
-  async fetch({ store, params, query }) {
-    await store.dispatch('comment/getMainComments', {
-      id: params.id,
-      type: 'role',
-      seeReplyId: query['comment-id']
-    })
-  },
-  head() {
-    return {
-      title: this.role.name
-    }
   },
   components: {
     CreateRoleForm,
@@ -425,6 +362,8 @@ export default {
     CreatePriceMarketDraft,
     ChangeIdolProfile,
     IdolStockChart,
+    IdolProductOrderList,
+    IdolProductArea,
     'el-collapse': Collapse,
     'el-collapse-item': CollapseItem
   },
@@ -446,10 +385,11 @@ export default {
   computed: {
     pages() {
       const result = [
+        { label: '产品区' },
         { label: '留言板' },
         { label: '董事会' },
         { label: '大事记' },
-        { label: '公司章程' }
+        { label: '采购表' }
       ]
       if (this.isBoss || this.bangumi.is_master) {
         result.push({
@@ -475,6 +415,39 @@ export default {
     },
     hasBuyStock() {
       return this.role.has_star !== '0.00'
+    }
+  },
+  async asyncData({ app, store, params, error }) {
+    const { id } = params
+    return getCartoonRoleInfo(app, { id })
+      .then(data => {
+        const { bangumi } = data
+        store.commit('social/SET_STATE', {
+          type: 'bangumi',
+          id: bangumi.id,
+          data: {
+            follow: bangumi.followed
+          }
+        })
+        return { ...data }
+      })
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
+  },
+  async fetch({ store, params, query }) {
+    await store.dispatch('comment/getMainComments', {
+      id: params.id,
+      type: 'role',
+      seeReplyId: query['comment-id']
+    })
+  },
+  head() {
+    return {
+      title: this.role.name
     }
   },
   methods: {
@@ -504,7 +477,15 @@ export default {
       window.location.reload()
     },
     handleTabSwitch(index) {
-      if (index === 1) {
+      if (index === 0) {
+        this.$store.dispatch('flow/initData', {
+          func: 'getIdolProducts',
+          type: 'lastId',
+          sort: 'news',
+          id: this.id
+        })
+      }
+      if (index === 2) {
         this.$store.dispatch('flow/initData', {
           func: 'virtualIdolOwners',
           type: 'seenIds',
@@ -512,11 +493,19 @@ export default {
           id: this.id
         })
       }
-      if (index === 2) {
+      if (index === 3) {
         this.$store.dispatch('flow/initData', {
           func: 'getIdolDraftList',
           type: 'page',
           sort: 'new',
+          id: this.id
+        })
+      }
+      if (index === 4) {
+        this.$store.dispatch('flow/initData', {
+          func: 'getIdolProductOrders',
+          type: 'page',
+          sort: 'news',
           id: this.id
         })
       }

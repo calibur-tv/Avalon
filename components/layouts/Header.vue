@@ -453,10 +453,7 @@ $search-height: 32px;
 </style>
 
 <template>
-  <div
-    id="page-header"
-    :class="$style.header"
-  >
+  <div id="page-header" :class="$style.header">
     <div :class="navClassList">
       <div :class="$style.text">
         <v-layout>
@@ -465,55 +462,33 @@ $search-height: 32px;
             :class="$style.logo"
             to="/"
           >
-            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })">
+            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })" />
           </nuxt-link>
-          <nuxt-link
-            v-else
-            :class="[$style.navLink, $style.first]"
-            to="/"
-          >
+          <nuxt-link v-else :class="[$style.navLink, $style.first]" to="/">
             <span>首页</span>
           </nuxt-link>
-          <nuxt-link
-            :to="$alias.roleTrending"
-            :class="$style.navLink"
-          >
+          <nuxt-link :to="$alias.roleTrending" :class="$style.navLink">
             <span>股市</span>
           </nuxt-link>
-          <nuxt-link
-            :class="$style.navLink"
-            to="/world"
-          >
+          <nuxt-link :class="$style.navLink" to="/world">
             <span>社区</span>
           </nuxt-link>
-          <nuxt-link
-            :class="$style.navLink"
-            :to="$alias.bangumiNews"
-          >
+          <nuxt-link :class="$style.navLink" :to="$alias.bangumiNews">
             <span>番剧</span>
           </nuxt-link>
-          <nuxt-link
-            :class="$style.navLink"
-            to="/app/download"
-          >
+          <nuxt-link :class="$style.navLink" to="/app/download">
             <span>下载APP</span>
           </nuxt-link>
-          <nuxt-link
-            :class="$style.navLink"
-            to="/about/reward"
-          >
+          <nuxt-link :class="$style.navLink" to="/about/reward">
             <span>捐赠</span>
           </nuxt-link>
         </v-layout>
         <div :class="$style.right">
           <div class="search-container">
             <v-search :show-suggestion="false">
-              <i
-                slot="submit-btn"
-                class="iconfont icon-sousuo"
-              />
+              <i slot="submit-btn" class="iconfont icon-sousuo" />
             </v-search>
-            <v-search-history/>
+            <v-search-history />
           </div>
           <template v-if="haveAuthToken">
             <template v-if="isLogin">
@@ -531,10 +506,7 @@ $search-height: 32px;
                   <span>消息</span>
                 </a>
               </el-badge>
-              <el-dropdown
-                :class="$style.userSection"
-                placement="bottom"
-              >
+              <el-dropdown :class="$style.userSection" placement="bottom">
                 <a
                   :href="$alias.user(user.zone)"
                   target="_blank"
@@ -557,13 +529,10 @@ $search-height: 32px;
               </el-dropdown>
             </template>
             <template v-else>
-              <a
-                :class="$style.navLink"
-                href="javascript:;"
-              >
+              <a :class="$style.navLink" href="javascript:;">
                 <span>消息</span>
               </a>
-              <span :class="$style.fakerUserSection"/>
+              <span :class="$style.fakerUserSection" />
             </template>
           </template>
           <template v-else>
@@ -571,40 +540,35 @@ $search-height: 32px;
               :class="[$style.signBtn, $style.signIn]"
               class="sign-in"
               @click="signIn"
-            ><span>登录</span></button>
+            >
+              <span>登录</span>
+            </button>
             <button
               :class="[$style.signBtn, $style.signUp]"
               class="sign-up"
               @click="signUp"
-            ><span>注册</span></button>
+            >
+              <span>注册</span>
+            </button>
           </template>
         </div>
       </div>
       <template v-if="type !== 'pure' && !scrollFlag">
-        <div
-          v-if="type === 'banner'"
-          :class="$style.bannerBgContainer"
-        >
-          <div
-            :class="$style.bannerBgImg"
-            :style="normalBannerBgStyle"
-          />
+        <div v-if="type === 'banner'" :class="$style.bannerBgContainer">
+          <div :class="$style.bannerBgImg" :style="normalBannerBgStyle" />
         </div>
-        <div
-          v-if="type === 'mask'"
-          :class="$style.maskBg"
-        />
+        <div v-if="type === 'mask'" :class="$style.maskBg" />
       </template>
     </div>
     <div
       v-if="type === 'banner'"
-      :style="[ { height, marginBottom }, bannerImage ]"
+      :style="[{ height, marginBottom }, bannerImage]"
       :class="$style.normalBanner"
     >
       <div class="container">
-        <div :class="$style.calibur"/>
+        <div :class="$style.calibur" />
       </div>
-      <slot/>
+      <slot />
     </div>
     <template v-else-if="type === 'mask'">
       <div
@@ -612,18 +576,11 @@ $search-height: 32px;
         :style="{ height, marginBottom }"
         :class="$style.maskBanner"
       >
-        <div
-          :class="$style.maskBannerImg"
-          :style="[ { height }, bannerImage ]"
-        />
-        <slot/>
+        <div :class="$style.maskBannerImg" :style="[{ height }, bannerImage]" />
+        <slot />
       </div>
     </template>
-    <div
-      v-else
-      :class="$style.navShim"
-      :style="{ marginBottom }"
-    />
+    <div v-else :class="$style.navShim" :style="{ marginBottom }" />
   </div>
 </template>
 
@@ -685,8 +642,8 @@ export default {
           type === 'mask'
             ? this.$style.navMask
             : type === 'banner'
-              ? this.$style.navBanner
-              : this.$style.navPure
+            ? this.$style.navBanner
+            : this.$style.navPure
         )
         result.push(`nav-${type}`)
       }

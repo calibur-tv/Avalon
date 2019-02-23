@@ -331,3 +331,21 @@ export const getIdolDraftList = ({ ctx, page, count, id }) => {
     params: { page, count, idol_id: id }
   })
 }
+
+export const getIdolProductOrders = ({ ctx, page, count, id }) => {
+  return ctx.$axios.$get('cartoon_role/get_idol_request_list', {
+    params: { page, take: count, idol_id: id }
+  })
+}
+
+export const getUserProductOrders = ({ ctx, page, count }) => {
+  return ctx.$axios.$get('cartoon_role/get_my_product_request_list', {
+    params: { page, take: count }
+  })
+}
+
+export const getIdolProducts = ({ ctx, max_id, id }) => {
+  return ctx.$axios.$get('cartoon_role/products', {
+    params: { last_id: max_id, idol_id: id }
+  })
+}

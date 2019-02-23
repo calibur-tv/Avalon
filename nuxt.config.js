@@ -21,9 +21,11 @@ module.exports = {
   },
   buildDir: isDev ? '.nuxt-dev' : '.nuxt',
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
+    titleTemplate: 'calibur 二次元股市',
+    /*
     titleTemplate: title => {
       if (!title) {
         return 'calibur 二次元股市'
@@ -33,6 +35,7 @@ module.exports = {
       }
       return `${title} | calibur 二次元股市`
     },
+    */
     htmlAttrs: {
       lang: 'zh-CN'
     },
@@ -81,18 +84,18 @@ module.exports = {
   },
 
   /*
-  ** Customize the progress-bar color
-  */
+   ** Customize the progress-bar color
+   */
   loading: { color: '#00a1d6' },
 
   /*
-  ** Global CSS
-  */
+   ** Global CSS
+   */
   css: ['~/assets/css/global.scss', 'normalize.css'],
 
   /*
-  ** Plugins to load before mounting the App
-  */
+   ** Plugins to load before mounting the App
+   */
   plugins: [
     '~/plugins/axios',
     '~/plugins/element-ui',
@@ -103,8 +106,8 @@ module.exports = {
   ],
 
   /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
@@ -155,8 +158,8 @@ module.exports = {
   },
 
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     extend(config, { isDev, isClient }) {
       config.output.filename = '[name].[hash:8].js'
@@ -212,7 +215,7 @@ module.exports = {
     publicPath: isDev ? '/_nuxt/' : `${qiniu.host}${qiniu.key_prefix}`,
     babel: {
       plugins: [
-        'babel-plugin-lodash',
+        'lodash',
         [
           'component',
           {

@@ -16,9 +16,7 @@
 
 <template>
   <div id="auth-success">
-    <p>
-      {{ message }},（{{ timer }}s后自动跳转）
-    </p>
+    <p>{{ message }},（{{ timer }}s后自动跳转）</p>
     <a href="/">点击返回首页</a>
   </div>
 </template>

@@ -85,27 +85,24 @@ $layout-width: 900px;
 </style>
 
 <template>
-  <div
-    v-loading="submitting"
-    id="layout-write"
-  >
+  <div id="layout-write" v-loading="submitting">
     <header>
       <div class="header-container">
         <img
-          :src="$resize('https://image.calibur.tv/owner/logo-new/logo.png', { width: 80 })"
+          :src="
+            $resize('https://image.calibur.tv/owner/logo-new/logo.png', {
+              width: 80
+            })
+          "
           class="logo"
           alt="logo"
-        >
+        />
         <div class="slogan">
           <p>calibur.tv</p>
           <p>天下漫友是一家</p>
         </div>
         <template v-if="user">
-          <el-tooltip
-            :content="user.nickname"
-            placement="bottom"
-            effect="dark"
-          >
+          <el-tooltip :content="user.nickname" placement="bottom" effect="dark">
             <button class="avatar">
               <v-img
                 :src="user.avatar"
@@ -122,7 +119,8 @@ $layout-width: 900px;
             round
             plain
             @click="emitPublish"
-          >{{ id ? '发布更新' : '发布' }}</el-button>
+            >{{ id ? '发布更新' : '发布' }}</el-button
+          >
           <el-button
             v-if="!published"
             size="small"
@@ -131,7 +129,8 @@ $layout-width: 900px;
             plain
             round
             @click="emitSave"
-          >保存</el-button>
+            >保存</el-button
+          >
           <el-button
             size="small"
             icon="el-icon-view"
@@ -139,9 +138,16 @@ $layout-width: 900px;
             plain
             round
             @click="emitPreview"
-          >预览</el-button>
+            >预览</el-button
+          >
           <span class="saving-flag">
-            {{ saving === false ? '已保存' : saving === true ? '正在保存中...' : '' }}
+            {{
+              saving === false
+                ? '已保存'
+                : saving === true
+                ? '正在保存中...'
+                : ''
+            }}
           </span>
           <!--
           <el-button
@@ -159,7 +165,7 @@ $layout-width: 900px;
     </header>
     <template v-if="isAuth">
       <template v-if="user">
-        <nuxt class="main-view"/>
+        <nuxt class="main-view" />
         <v-dialog
           v-model="preview"
           :fullscreen="true"
@@ -167,22 +173,12 @@ $layout-width: 900px;
           :footer="false"
         >
           <div style="max-width: 700px;margin: 20px auto;">
-            <json-content
-              :show="preview"
-              :content="sections"
-            />
+            <json-content :show="preview" :content="sections" />
           </div>
         </v-dialog>
       </template>
-      <div
-        v-else
-        class="main-view not-login"
-      >
-        <el-button
-          type="primary"
-          round
-          @click="$channel.$emit('sign-in')"
-        >
+      <div v-else class="main-view not-login">
+        <el-button type="primary" round @click="$channel.$emit('sign-in')">
           继续操作前请先登录
         </el-button>
       </div>

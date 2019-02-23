@@ -56,17 +56,14 @@
     class="search-input-wrap"
     @submit.prevent="submit"
   >
-    <button
-      type="submit"
-      class="search-input-btn"
-    >
+    <button type="submit" class="search-input-btn">
       <slot name="submit-btn">搜索</slot>
     </button>
     <div class="search-input-text">
       <input
+        v-model.trim="word"
         :placeholder="placeholder"
         :autofocus="autofocus"
-        v-model.trim="word"
         class="search-input"
         type="text"
         name="q"
@@ -82,20 +79,17 @@
         @blur="handleInputBlur"
         @keyup.up="handleKeyUp"
         @keyup.down="handleKeyDown"
-      >
+      />
     </div>
-    <ul
-      v-show="displaySuggestion"
-      class="search-suggestions"
-    >
+    <ul v-show="displaySuggestion" class="search-suggestions">
       <li
         v-for="(item, index) in filteredSelect"
         :key="item.id"
         :class="{ active: index === selectedIndex }"
         @click="clickToSearch(index)"
       >
-        <img :src="$resize(item.avatar, { width: 60 })">
-        <span v-text="item.name"/>
+        <img :src="$resize(item.avatar, { width: 60 })" />
+        <span v-text="item.name" />
       </li>
     </ul>
   </form>

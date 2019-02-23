@@ -133,10 +133,7 @@
 </style>
 
 <template>
-  <div
-    v-if="info"
-    id="image-show"
-  >
+  <div v-if="info" id="image-show">
     <v-header
       v-if="info.is_cartoon"
       :banner="source.url"
@@ -154,14 +151,13 @@
               target="_blank"
               v-text="user.nickname"
             />
-            &nbsp;·&nbsp;
-            共：{{ info.image_count }}张
+            &nbsp;·&nbsp; 共：{{ info.image_count }}张
           </p>
         </div>
       </div>
-      <v-share type="panel"/>
+      <v-share type="panel" />
     </v-header>
-    <v-header v-else/>
+    <v-header v-else />
     <v-layout>
       <el-alert
         v-if="info.deleted_at"
@@ -171,10 +167,7 @@
         show-icon
       />
       <nav>
-        <div
-          v-if="editable && isMine"
-          class="edit-area"
-        >
+        <div v-if="editable && isMine" class="edit-area">
           <el-button
             round
             plain
@@ -204,49 +197,36 @@
               :album-id="info.id"
               :album="info"
             />
-            <edit-image-form
-              v-else
-              :image="info"
-            />
+            <edit-image-form v-else :image="info" />
           </v-dialog>
         </div>
         <h1 class="breadcrumb">
-          <a
-            href="/"
-            target="_blank"
-          >主站</a>
+          <a href="/" target="_blank">主站</a>
           <a
             v-if="bangumi"
             :href="$alias.bangumi(bangumi.id)"
             target="_blank"
             v-text="bangumi.name"
           />
-          <a
-            v-if="!info.is_album"
-            href="javascript:;"
-          >图片</a>
+          <a v-if="!info.is_album" href="javascript:;">图片</a>
           <a
             v-else-if="info.is_cartoon"
             :href="$alias.bangumi(bangumi.id, 'cartoon')"
             target="_blank"
-          >漫画</a>
-          <a
-            v-else
-            :href="$alias.bangumi(bangumi.id, 'pins')"
-            target="_blank"
-          >相册</a>
+            >漫画</a
+          >
+          <a v-else :href="$alias.bangumi(bangumi.id, 'pins')" target="_blank"
+            >相册</a
+          >
           {{ info.name }}
         </h1>
       </nav>
       <div class="images-wrap">
-        <image-preview
-          v-if="info.is_album"
-          :images="images"
-        >
+        <image-preview v-if="info.is_album" :images="images">
           <div
             v-for="(img, idx) in images"
-            :key="img.id"
             :id="`image-${img.id}`"
+            :key="img.id"
             class="image-package"
           >
             <v-img
@@ -273,17 +253,11 @@
               />
             </template>
           </div>
-          <p
-            v-if="!info.image_count"
-            class="no-image"
-          >
+          <p v-if="!info.image_count" class="no-image">
             还没有上传图片
           </p>
         </image-preview>
-        <image-preview
-          v-else
-          :images="[source]"
-        >
+        <image-preview v-else :images="[source]">
           <div class="image-package">
             <v-img
               :src="source.url"
@@ -300,31 +274,21 @@
       <div class="album-footer">
         <div class="publish-time">
           UP：
-          <user-card
-            :id="user.id"
-            :zone="user.zone"
-          >
+          <user-card :id="user.id" :zone="user.zone">
             {{ user.nickname }}
           </user-card>
           &nbsp;·&nbsp;
-          <span>
-            发布于：<v-time v-model="info.created_at"/>
-          </span>
-          <report-dialog
-            :id="id"
-            type="image"
-          >举报</report-dialog>
+          <span> 发布于：<v-time v-model="info.created_at" /> </span>
+          <report-dialog :id="id" type="image">举报</report-dialog>
         </div>
         <v-parts
           v-if="info.is_cartoon"
+          v-model="showAllPart"
           :list="info.parts"
           :alias="$alias.image"
           :all-data="info.parts"
-          v-model="showAllPart"
         >
-          <span slot-scope="{ item }">
-            {{ item.part }}：{{ item.name }}
-          </span>
+          <span slot-scope="{ item }"> {{ item.part }}：{{ item.name }} </span>
         </v-parts>
         <social-panel
           :id="info.id"
@@ -334,12 +298,7 @@
         />
       </div>
       <v-lazy>
-        <comment-main
-          :id="id"
-          :master-id="user.id"
-          :lazy="true"
-          type="image"
-        />
+        <comment-main :id="id" :master-id="user.id" :lazy="true" type="image" />
       </v-lazy>
       <template slot="aside">
         <h3 class="sub-title">所属番剧</h3>
@@ -373,41 +332,6 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(params.id)
   },
-  async asyncData({ app, store, params, query, error }) {
-    const { id } = params
-    const { hash, time } = query
-    return getImageInfo(app, { id, hash, time })
-      .then(info => {
-        const { bangumi } = info
-        store.commit('social/SET_STATE', {
-          type: 'image',
-          id,
-          data: {
-            like: info.liked,
-            reward: info.rewarded,
-            mark: info.marked,
-            like_users: info.like_users,
-            mark_users: info.mark_users,
-            reward_users: info.reward_users
-          }
-        })
-        store.commit('social/SET_STATE', {
-          type: 'bangumi',
-          id: bangumi.id,
-          data: {
-            follow: bangumi.followed
-          }
-        })
-        return {
-          info,
-          bangumi,
-          user: info.user,
-          source: info.source,
-          images: info.images
-        }
-      })
-      .catch(error)
-  },
   components: {
     vParts,
     CommentMain,
@@ -415,11 +339,6 @@ export default {
     EditImageForm,
     SocialPanel,
     ImagePreview
-  },
-  head() {
-    return {
-      title: this.info.name
-    }
   },
   props: {
     id: {
@@ -461,6 +380,51 @@ export default {
         return '漫画'
       }
       return '相册'
+    }
+  },
+  async asyncData({ app, store, params, query, error }) {
+    const { id } = params
+    const { hash, time } = query
+    return getImageInfo(app, { id, hash, time })
+      .then(info => {
+        const { bangumi } = info
+        store.commit('social/SET_STATE', {
+          type: 'image',
+          id,
+          data: {
+            like: info.liked,
+            reward: info.rewarded,
+            mark: info.marked,
+            like_users: info.like_users,
+            mark_users: info.mark_users,
+            reward_users: info.reward_users
+          }
+        })
+        store.commit('social/SET_STATE', {
+          type: 'bangumi',
+          id: bangumi.id,
+          data: {
+            follow: bangumi.followed
+          }
+        })
+        return {
+          info,
+          bangumi,
+          user: info.user,
+          source: info.source,
+          images: info.images
+        }
+      })
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
+  },
+  head() {
+    return {
+      title: this.info.name
     }
   },
   methods: {

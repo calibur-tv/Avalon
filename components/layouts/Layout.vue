@@ -67,27 +67,21 @@
   <section :class="[$style.container, customClass]">
     <template v-if="left">
       <aside :class="$style.asideRight">
-        <slot name="aside"/>
+        <slot name="aside" />
       </aside>
       <main :class="$style.mainLeft">
-        <slot/>
+        <slot />
       </main>
     </template>
     <template v-else>
       <aside :class="$style.asideLeft">
-        <v-affix
-          v-if="fixed"
-          :offset-top="affixTop"
-        >
-          <slot name="aside"/>
+        <v-affix v-if="fixed" :offset-top="affixTop">
+          <slot name="aside" />
         </v-affix>
-        <slot
-          v-else
-          name="aside"
-        />
+        <slot v-else name="aside" />
       </aside>
       <main :class="$style.mainRight">
-        <slot/>
+        <slot />
       </main>
     </template>
   </section>

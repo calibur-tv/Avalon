@@ -1,10 +1,7 @@
 <template>
   <div v-if="source">
-    <slot
-      :source="source"
-      name="header"
-    />
-    <slot :flow="source.list"/>
+    <slot :source="source" name="header" />
+    <slot :flow="source.list" />
     <flow-state
       :auto="auto"
       :loading="source.loading"
@@ -14,22 +11,10 @@
       :show-load-more="showLoadMore"
       :fetch="loadMore"
     >
-      <slot
-        slot="error"
-        name="error"
-      />
-      <slot
-        slot="nothing"
-        name="nothing"
-      />
-      <slot
-        slot="no-more"
-        name="no-more"
-      />
-      <slot
-        slot="loading"
-        name="loading"
-      />
+      <slot slot="error" name="error" />
+      <slot slot="nothing" name="nothing" />
+      <slot slot="no-more" name="no-more" />
+      <slot slot="loading" name="loading" />
     </flow-state>
   </div>
 </template>

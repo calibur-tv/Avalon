@@ -27,12 +27,7 @@
 </style>
 
 <template>
-  <el-form
-    ref="forms"
-    :model="forms"
-    :rules="rules"
-    class="post-comment-form"
-  >
+  <el-form ref="forms" :model="forms" :rules="rules" class="post-comment-form">
     <el-form-item prop="content">
       <el-input
         v-model="forms.content"
@@ -57,7 +52,7 @@
         multiple
         list-type="picture-card"
       >
-        <i class="el-icon-plus"/>
+        <i class="el-icon-plus" />
       </el-upload>
     </el-form-item>
     <el-form-item>
@@ -66,7 +61,8 @@
         type="primary"
         class="submit-btn"
         @click="submit"
-      >发表评论</el-button>
+        >发表评论</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

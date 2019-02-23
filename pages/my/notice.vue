@@ -55,10 +55,7 @@
 
 <template>
   <div id="system-notice">
-    <li
-      v-for="(item, index) in list"
-      :key="index"
-    >
+    <li v-for="(item, index) in list" :key="index">
       <header>
         <v-img
           :src="item.user.avatar"
@@ -67,20 +64,14 @@
           :avatar="true"
           class="avatar"
         />
-        <span
-          class="nickname"
-          v-text="item.user.nickname" />
+        <span class="nickname" v-text="item.user.nickname" />
         <span>发了通知</span>
         &nbsp;&nbsp;·&nbsp;&nbsp;
         <v-time v-model="item.created_at" />
       </header>
       <main @click="openNotice(item)">
-        <img 
-          :src="$resize(item.banner, { width: 200 })"
-          class="banner" >
-        <div 
-          class="title" 
-          v-text="item.title" />
+        <img :src="$resize(item.banner, { width: 200 })" class="banner" />
+        <div class="title" v-text="item.title" />
       </main>
     </li>
   </div>
@@ -91,15 +82,15 @@ import { getSystemNotice } from '~/api/userApi'
 
 export default {
   name: 'Notice',
-  asyncData({ app }) {
-    return getSystemNotice(app).then(list => {
-      return { list }
-    })
-  },
   data() {
     return {
       list: []
     }
+  },
+  asyncData({ app }) {
+    return getSystemNotice(app).then(list => {
+      return { list }
+    })
   },
   mounted() {
     this.$store.dispatch('users/readNotice', {

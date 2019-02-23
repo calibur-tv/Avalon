@@ -6,20 +6,9 @@
     cancel-text=""
     @submit="submit"
   >
-    <el-form
-      ref="forms"
-      :model="forms"
-      :rules="rules"
-      label-width="55px"
-    >
-      <el-form-item
-        label="类型"
-        prop="type"
-      >
-        <el-select
-          v-model="forms.type"
-          placeholder="反馈类型"
-        >
+    <el-form ref="forms" :model="forms" :rules="rules" label-width="55px">
+      <el-form-item label="类型" prop="type">
+        <el-select v-model="forms.type" placeholder="反馈类型">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -28,10 +17,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        label="详情"
-        prop="desc"
-      >
+      <el-form-item label="详情" prop="desc">
         <el-input
           v-model="forms.desc"
           :rows="6"

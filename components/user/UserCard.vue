@@ -89,21 +89,19 @@
     @show="handleHover"
   >
     <div class="content">
-      <mt-spinner
-        v-if="loading"
-        type="triple-bounce"
-      />
+      <mt-spinner v-if="loading" type="triple-bounce" />
       <template v-else-if="user">
         <div
-          :style="{ backgroundImage: `url(${$resize(user.banner, { width: 750, height: 240 })})` }"
+          :style="{
+            backgroundImage: `url(${$resize(user.banner, {
+              width: 750,
+              height: 240
+            })})`
+          }"
           class="background"
         />
         <div class="profile">
-          <a
-            :href="$alias.user(zone)"
-            target="_blank"
-            class="avatar"
-          >
+          <a :href="$alias.user(zone)" target="_blank" class="avatar">
             <v-img
               :src="user.avatar"
               :width="55"
@@ -119,23 +117,12 @@
                 target="_blank"
                 v-text="user.nickname"
               />
-              <user-sex
-                :sex="user.sex"
-                :secret="user.sexSecret"
-              />
-              <span class="level">
-                Lv{{ user.level }}
-              </span>
+              <user-sex :sex="user.sex" :secret="user.sexSecret" />
+              <span class="level"> Lv{{ user.level }} </span>
               <span class="power">-&nbsp;战斗力：{{ user.power }}</span>
             </p>
-            <p
-              class="signature"
-              v-text="user.signature"
-            />
-            <ul
-              v-if="user.badge.length"
-              class="user-badges"
-            >
+            <p class="signature" v-text="user.signature" />
+            <ul v-if="user.badge.length" class="user-badges">
               <user-badge
                 v-for="item in user.badge"
                 :key="item.id"
@@ -154,7 +141,7 @@
       target="_blank"
       class="avatar-slot"
     >
-      <slot/>
+      <slot />
     </a>
   </el-popover>
 </template>
@@ -204,7 +191,9 @@ export default {
     getUserFromLocal() {
       try {
         this.user = JSON.parse(sessionStorage.getItem(`user-card-${this.id}`))
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
     },
     async getUserFromServer() {
       if (this.loading) {

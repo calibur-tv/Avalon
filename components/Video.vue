@@ -216,92 +216,66 @@ $tool-btn-width: 40px;
 <template>
   <div class="vue-pwa-video">
     <template v-if="isAuth">
-      <div
-        v-if="!source"
-        class="not-play-screen"
-      >
+      <div v-if="!source" class="not-play-screen">
         <p>这个资源消失了_〆(´Д｀ )</p>
       </div>
-      <div
-        v-else-if="isBaiduCloud"
-        class="baidu-cloud-mask"
-      >
-        <p>该资源是百度云链接，点击下方链接跳转播放，如果资源挂了，请发帖反馈</p>
+      <div v-else-if="isBaiduCloud" class="baidu-cloud-mask">
+        <p>
+          该资源是百度云链接，点击下方链接跳转播放，如果资源挂了，请发帖反馈
+        </p>
         <a
-          v-clipboard="baiduCloudPwd"
           v-if="baiduCloudPwd"
+          v-clipboard="baiduCloudPwd"
           href="javascript:;"
           @success="$toast.success('密码已复制到剪贴板')"
-        >密码：{{ baiduCloudPwd }}</a>
-        <a
-          :href="source"
-          target="_blank"
-        >点击跳转播放</a>
+          >密码：{{ baiduCloudPwd }}</a
+        >
+        <a :href="source" target="_blank">点击跳转播放</a>
       </div>
-      <div
-        v-else-if="isFlv"
-        class="not-play-screen"
-      >
+      <div v-else-if="isFlv" class="not-play-screen">
         <p>暂时关闭了对 flv 视频格式的支持 (´Д｀ )</p>
       </div>
-      <div
-        v-else-if="otherSrc"
-        class="not-play-screen"
-      >
+      <div v-else-if="otherSrc" class="not-play-screen">
         <p>应版权方要求 (⇀‸↼‶)，该视频暂不提供站内播放</p>
-        <a
-          :href="source"
-          target="_blank"
-        >播放链接</a>
+        <a :href="source" target="_blank">播放链接</a>
       </div>
-      <div
-        v-else-if="isGuest"
-        class="not-play-screen"
-      >
+      <div v-else-if="isGuest" class="not-play-screen">
         <p>流量压力太大了 (ಥ_ಥ)，需要登录才能看番</p>
         <a @click="$channel.$emit('sign-in')">立即登录</a>
       </div>
-      <div
-        v-else-if="blocked"
-        class="not-play-screen"
-      >
+      <div v-else-if="blocked" class="not-play-screen">
         <p>
           由于你消耗的视频流量过高，被系统判定为机器人恶意攻击，已被禁止看视频功能
-          <br>
+          <br />
           如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
-          <br>
+          <br />
           如果你是因为在站内发表了「无意义」的内容被禁言了，抱歉神也救不了你！
         </p>
       </div>
-      <div
-        v-else-if="showLevelThrottle"
-        class="not-play-screen"
-      >
+      <div v-else-if="showLevelThrottle" class="not-play-screen">
         <p>
-          由于站内视频流量过大，站长资金难以维持，该视频需要你的等级至少 {{ needMinLevel }} 才能播放
+          由于站内视频流量过大，站长资金难以维持，该视频需要你的等级至少
+          {{ needMinLevel }} 才能播放
         </p>
-        <a
-          href="https://www.calibur.tv/post/2282"
-          target="_blank"
-        >&nbsp;&nbsp;为什么要限流？</a>
-        <a
-          href="https://www.calibur.tv/post/2279"
-          target="_blank"
-        >&nbsp;&nbsp;如何升级？</a>
+        <a href="https://www.calibur.tv/post/2282" target="_blank"
+          >&nbsp;&nbsp;为什么要限流？</a
+        >
+        <a href="https://www.calibur.tv/post/2279" target="_blank"
+          >&nbsp;&nbsp;如何升级？</a
+        >
       </div>
       <div
         v-else
         id="video-wrap"
         :class="[isFull ? '' : 'chimee-control-fixed']"
       />
-      <div
-        v-if="showRewardBg"
-        class="not-play-screen"
-      >
-        <br>
-        <br>
-        <br>
-        <p>由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放</p>
+      <div v-if="showRewardBg" class="not-play-screen">
+        <br />
+        <br />
+        <br />
+        <p>
+          由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
+        </p>
       </div>
     </template>
   </div>

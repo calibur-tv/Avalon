@@ -46,12 +46,9 @@
     width="500px"
     class="invite-gift-modal"
   >
-    <div
-      v-if="user"
-      class="content"
-    >
+    <div v-if="user" class="content">
       <div class="avatar">
-        <img :src="user.avatar">
+        <img :src="user.avatar" />
       </div>
       <div class="tips">
         <p>
@@ -65,10 +62,7 @@
         </p>
         <p>
           在这里注册，你们都将会获得
-          <a
-            href="/app/notice/1"
-            target="_blank"
-          >
+          <a href="/app/notice/1" target="_blank">
             「团子」
           </a>
           奖励
@@ -76,10 +70,10 @@
         <p>团子可以用来看视频，或经过转化之后提现，1团子相当于1人民币</p>
         <p>更重要的是，calibur 的发展需要你，请加入我们吧</p>
       </div>
-      <sign-up-form :invite-code="user.id"/>
+      <sign-up-form :invite-code="user.id" />
       <p class="expired">
         <span>该邀请将于</span>
-        <v-time v-model="query.time"/>
+        <v-time v-model="query.time" />
         <span>失效</span>
       </p>
     </div>

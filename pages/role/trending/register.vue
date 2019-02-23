@@ -19,9 +19,7 @@
   <div class="role-trending-register">
     <v-layout>
       <div class="create-role-tips">
-        <el-alert
-          type="info"
-        >
+        <el-alert type="info">
           <ul>
             <li>创办公司，需要交纳10个虚拟币（团子或光玉）作为注册资本</li>
             <li>请勿创建与番剧无关的角色，违者删除角色并禁言一周</li>
@@ -31,18 +29,17 @@
             <li>
               其它详情，请查看
               <nuxt-link to="/role/trending/intro">
-                <el-button
-                  round
-                  size="mini"
-                >股市介绍</el-button>
+                <el-button round size="mini">股市介绍</el-button>
               </nuxt-link>
               页面
             </li>
           </ul>
         </el-alert>
       </div>
-      <create-role-form/>
-      <template slot="aside">&nbsp;</template>
+      <create-role-form />
+      <template slot="aside"
+        >&nbsp;</template
+      >
     </v-layout>
   </div>
 </template>

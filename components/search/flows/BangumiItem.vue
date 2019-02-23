@@ -85,25 +85,17 @@
       <img
         :src="$resize(item.avatar, { width: 180, height: 240 })"
         :alt="item.name"
-      >
+      />
     </a>
-    <a
-      v-else
-      :href="$alias.bangumi(item.id)"
-      target="_blank"
-      class="avatar"
-    >
+    <a v-else :href="$alias.bangumi(item.id)" target="_blank" class="avatar">
       <img
         :src="$resize(item.avatar, { width: 252, height: 336 })"
         :alt="item.name"
-      >
+      />
     </a>
     <div class="intro">
       <div class="head">
-        <span
-          v-if="inCommon"
-          class="badge"
-        >番剧</span>
+        <span v-if="inCommon" class="badge">番剧</span>
         <a
           :href="$alias.bangumi(item.id)"
           target="_blank"
@@ -111,10 +103,7 @@
           v-text="item.name"
         />
       </div>
-      <p
-        class="summary"
-        v-text="item.summary"
-      />
+      <p class="summary" v-text="item.summary" />
     </div>
   </div>
 </template>

@@ -1,19 +1,10 @@
 <template>
   <div id="bangumi-question-flow">
-    <flow-list
-      :id="id"
-      func="getBangumiQAQ"
-      type="seenIds"
-      sort="active"
-    >
+    <flow-list :id="id" func="getBangumiQAQ" type="seenIds" sort="active">
       <ul slot-scope="{ flow }">
-        <question-flow-item
-          v-for="item in flow"
-          :key="item.id"
-          :item="item"
-        />
+        <question-flow-item v-for="item in flow" :key="item.id" :item="item" />
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -23,14 +14,6 @@ import QuestionFlowItem from '~/components/flow/item/QuestionFlowItem'
 
 export default {
   name: 'BangumiQuestionFlow',
-  async asyncData({ store, params }) {
-    await store.dispatch('flow/initData', {
-      id: params.id,
-      func: 'getBangumiQAQ',
-      type: 'seenIds',
-      sort: 'active'
-    })
-  },
   components: {
     QuestionFlowItem
   },
@@ -39,6 +22,14 @@ export default {
       required: true,
       type: String
     }
+  },
+  async asyncData({ store, params }) {
+    await store.dispatch('flow/initData', {
+      id: params.id,
+      func: 'getBangumiQAQ',
+      type: 'seenIds',
+      sort: 'active'
+    })
   }
 }
 </script>

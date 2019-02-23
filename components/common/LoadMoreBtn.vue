@@ -10,15 +10,15 @@
 </style>
 
 <template>
-  <button
-    class="load-more-btn"
-    @click="loadMore"
-  >
-    <i
-      v-show="loading"
-      class="el-icon-loading"
-    />
-    {{ noMore ? '没有更多了，休息一下吧ヾ(*￣▽￣*)/' : loading ? '加载中' : '加载更多' }}
+  <button class="load-more-btn" @click="loadMore">
+    <i v-show="loading" class="el-icon-loading" />
+    {{
+      noMore
+        ? '没有更多了，休息一下吧ヾ(*￣▽￣*)/'
+        : loading
+        ? '加载中'
+        : '加载更多'
+    }}
   </button>
 </template>
 

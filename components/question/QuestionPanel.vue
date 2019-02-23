@@ -100,20 +100,11 @@
 </style>
 
 <template>
-  <div
-    v-if="qaq"
-    id="question-panel"
-  >
+  <div v-if="qaq" id="question-panel">
     <v-layout>
-      <div
-        class="qaq-question"
-      >
+      <div class="qaq-question">
         <ul class="qaq-tags">
-          <li
-            v-for="tag in qaq.tags"
-            :key="tag.id"
-            class="tag"
-          >
+          <li v-for="tag in qaq.tags" :key="tag.id" class="tag">
             <a
               :href="$alias.bangumi(tag.id)"
               class="tag-btn"
@@ -123,28 +114,18 @@
           </li>
         </ul>
         <div class="title">
-          <h1 v-text="qaq.title"/>
+          <h1 v-text="qaq.title" />
         </div>
         <div class="content">
-          <div
-            v-if="collapsed"
-            class="collapsed-content"
-          >
+          <div v-if="collapsed" class="collapsed-content">
             {{ collapsedContent }}
-            <el-button
-              type="text"
-              size="mini"
-              @click="collapsed = false"
-            >
+            <el-button type="text" size="mini" @click="collapsed = false">
               显示全部
-              <i class="el-icon-arrow-down"/>
+              <i class="el-icon-arrow-down" />
             </el-button>
           </div>
           <template v-else>
-            <div
-              class="text-area"
-              v-html="qaq.content"
-            />
+            <div class="text-area" v-html="qaq.content" />
             <div
               v-for="(img, idx) in qaq.images"
               :key="idx"
@@ -180,7 +161,7 @@
                 type="primary"
                 @click="editMyAnswer"
               >
-                <i class="el-icon-edit"/>
+                <i class="el-icon-edit" />
                 编辑回答
               </el-button>
               <a
@@ -188,11 +169,8 @@
                 :href="$alias.answer(qaq.my_answer.id)"
                 target="_blank"
               >
-                <el-button
-                  plain
-                  size="medium"
-                >
-                  <i class="el-icon-view"/>
+                <el-button plain size="medium">
+                  <i class="el-icon-view" />
                   查看回答
                 </el-button>
               </a>
@@ -203,11 +181,8 @@
                 :href="$alias.answer(qaq.my_answer.id)"
                 target="_blank"
               >
-                <el-button
-                  plain
-                  size="medium"
-                >
-                  <i class="el-icon-view"/>
+                <el-button plain size="medium">
+                  <i class="el-icon-view" />
                   查看回答
                 </el-button>
               </a>
@@ -218,26 +193,17 @@
                 type="primary"
                 @click="editMyAnswer"
               >
-                <i class="el-icon-edit"/>
+                <i class="el-icon-edit" />
                 编辑回答
               </el-button>
             </template>
           </template>
-          <el-button
-            v-else
-            plain
-            size="medium"
-            @click="beginWriteAnswer"
-          >
-            <i class="el-icon-edit"/>
+          <el-button v-else plain size="medium" @click="beginWriteAnswer">
+            <i class="el-icon-edit" />
             写回答
           </el-button>
-          <el-button
-            type="text"
-            size="medium"
-            @click="loadQAQComment"
-          >
-            <i class="iconfont icon-pinglun1"/>
+          <el-button type="text" size="medium" @click="loadQAQComment">
+            <i class="iconfont icon-pinglun1" />
             {{ qaq.comment_count ? qaq.comment_count + ' 条评论' : '添加评论' }}
           </el-button>
           <v-share
@@ -246,15 +212,10 @@
             :desc="qaq.intro"
             type="button"
           />
-          <report-dialog
-            :id="id"
-            type="question"
-          >
-            <el-button
-              type="text"
-              size="medium"
-              icon="el-icon-phone"
-            >举报</el-button>
+          <report-dialog :id="id" type="question">
+            <el-button type="text" size="medium" icon="el-icon-phone"
+              >举报</el-button
+            >
           </report-dialog>
           <el-button
             v-if="!collapsed"
@@ -263,7 +224,7 @@
             class="fr"
             @click="collapsedQAQ"
           >
-            <i class="el-icon-arrow-up"/>
+            <i class="el-icon-arrow-up" />
             收起
           </el-button>
         </div>
@@ -286,14 +247,9 @@
           />
         </v-dialog>
       </div>
-      <div
-        slot="aside"
-        class="question-aside"
-      >
+      <div slot="aside" class="question-aside">
         <div class="meta-item">
-          <div class="meta-text">
-            被浏览 {{ qaq.view_count }}
-          </div>
+          <div class="meta-text">被浏览 {{ qaq.view_count }}</div>
         </div>
         <div class="meta-item">
           <div class="meta-text">
@@ -301,8 +257,8 @@
           </div>
           <ava-dialog
             v-if="followState.follow_users.total"
-            :title="`《${followState.follow_users.total}》人关注了`"
             :id="id"
+            :title="`《${followState.follow_users.total}》人关注了`"
             type="question"
             action="follow"
           />

@@ -85,25 +85,17 @@
       <img
         :src="$resize(item.poster, { width: 180, height: 102 })"
         :alt="item.name"
-      >
+      />
     </a>
-    <a
-      v-else
-      :href="$alias.video(item.id)"
-      target="_blank"
-      class="avatar"
-    >
+    <a v-else :href="$alias.video(item.id)" target="_blank" class="avatar">
       <img
         :src="$resize(item.poster, { width: 320, height: 200 })"
         :alt="item.name"
-      >
+      />
     </a>
     <div class="intro">
       <div class="head">
-        <span
-          v-if="inCommon"
-          class="badge"
-        >视频</span>
+        <span v-if="inCommon" class="badge">视频</span>
         <a
           :href="$alias.video(item.id)"
           target="_blank"
@@ -111,10 +103,7 @@
           v-text="item.name"
         />
       </div>
-      <p
-        class="summary"
-        v-text="item.summary"
-      />
+      <p class="summary" v-text="item.summary" />
     </div>
   </div>
 </template>

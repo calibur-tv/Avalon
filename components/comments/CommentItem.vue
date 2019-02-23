@@ -128,10 +128,7 @@
     class="def-comment-item"
   >
     <div class="user">
-      <user-card
-        :id="comment.from_user_id"
-        :zone="comment.from_user_zone"
-      >
+      <user-card :id="comment.from_user_id" :zone="comment.from_user_zone">
         <v-img
           :src="comment.from_user_avatar"
           :avatar="true"
@@ -156,7 +153,7 @@
           effect="dark"
           content="版主"
         >
-          <i class="iconfont icon-leader"/>
+          <i class="iconfont icon-leader" />
         </el-tooltip>
         <el-tooltip
           v-else-if="comment.is_master"
@@ -164,64 +161,37 @@
           effect="dark"
           content="代行者"
         >
-          <i class="iconfont icon-master"/>
+          <i class="iconfont icon-master" />
         </el-tooltip>
       </div>
-      <div
-        class="content"
-        v-html="comment.content"
-      />
+      <div class="content" v-html="comment.content" />
       <div class="footer">
         <span class="floor-count">#{{ comment.floor_count - 1 }}</span>
-        <el-tooltip
-          :content="comment.created_at"
-          placement="top"
-          effect="dark"
-        >
-          <v-time :datetime="comment.created_at"/>
+        <el-tooltip :content="comment.created_at" placement="top" effect="dark">
+          <v-time :datetime="comment.created_at" />
         </el-tooltip>
-        <button
-          class="like-btn"
-          @click="toggleLike"
-        >
+        <button class="like-btn" @click="toggleLike">
           <i
             :class="[comment.liked ? 'icon-dianzan-active' : 'icon-dianzan']"
             class="iconfont"
           />
-          <span
-            v-if="comment.like_count"
-            v-text="comment.like_count"
-          />
+          <span v-if="comment.like_count" v-text="comment.like_count" />
         </button>
-        <button
-          class="reply-btn"
-          @click="replyComment"
-        >回复</button>
-        <button
-          v-if="canDelete"
-          class="delete-btn"
-          @click="deleteComment"
-        >
-          <i class="iconfont icon-shanchu"/>
+        <button class="reply-btn" @click="replyComment">回复</button>
+        <button v-if="canDelete" class="delete-btn" @click="deleteComment">
+          <i class="iconfont icon-shanchu" />
         </button>
-        <report-dialog
-          v-else
-          :id="comment.id"
-          :type="type + '_comment'"
-        >
+        <report-dialog v-else :id="comment.id" :type="type + '_comment'">
           <button class="reply-btn main-comment-report-btn">举报</button>
         </report-dialog>
       </div>
       <comment-reply-form
-        v-model="showReplyArea"
         :id="comment.id"
+        v-model="showReplyArea"
         :to-user-id="authorId"
         :type="type"
       />
-      <sub-comment-list
-        :parent-comment="comment"
-        :type="type"
-      />
+      <sub-comment-list :parent-comment="comment" :type="type" />
     </div>
   </div>
 </template>
@@ -292,6 +262,7 @@ export default {
           id: this.comment.id
         })
       } catch (e) {
+        // do nothing
       } finally {
         this.liking = false
       }

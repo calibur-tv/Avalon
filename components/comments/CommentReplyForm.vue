@@ -22,23 +22,16 @@
 </style>
 
 <template>
-  <div
-    v-if="open"
-    class="comment-reply-form"
-  >
+  <div v-if="open" class="comment-reply-form">
     <div class="btn-group">
-      <el-button
-        size="mini"
-        type="info"
-        plain
-        @click="cancel"
-      >取消</el-button>
+      <el-button size="mini" type="info" plain @click="cancel">取消</el-button>
       <el-button
         :loading="submitting"
         size="mini"
         type="primary"
         @click="submit"
-      >发表</el-button>
+        >发表</el-button
+      >
     </div>
     <div class="input-wrap">
       <input
@@ -47,7 +40,7 @@
         type="text"
         placeholder="请缩减至100字以内"
         maxlength="100"
-      >
+      />
     </div>
   </div>
 </template>

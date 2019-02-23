@@ -92,29 +92,25 @@
   <div id="creator-button-wrap">
     <div class="creator-button-box">
       <div
-        :class="{ expand: expanded, 'mint-palette-button-active': transforming }"
+        :class="{
+          expand: expanded,
+          'mint-palette-button-active': transforming
+        }"
         class="mint-palette-button"
         @animationend="onMainAnimationEnd"
         @webkitAnimationEnd="onMainAnimationEnd"
         @mozAnimationEnd="onMainAnimationEnd"
       >
-        <div
-          class="mint-sub-button-container"
-          @click="collapse"
-        >
-          <slot/>
+        <div class="mint-sub-button-container" @click="collapse">
+          <slot />
         </div>
-        <el-tooltip
-          placement="right"
-          effect="dark"
-          content="创作"
-        >
+        <el-tooltip placement="right" effect="dark" content="创作">
           <button
             :style="mainButtonStyle"
             class="mint-main-button"
             @click="toggle"
           >
-            <i class="el-icon-edit-outline"/>
+            <i class="el-icon-edit-outline" />
           </button>
         </el-tooltip>
       </div>

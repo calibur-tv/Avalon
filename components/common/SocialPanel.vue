@@ -14,12 +14,9 @@
 </style>
 
 <template>
-  <div
-    v-if="source"
-    class="what-the-ad-block-fucked-panel"
-  >
+  <div v-if="source" class="what-the-ad-block-fucked-panel">
     <div class="dont-block-me-please-buttons">
-      <slot/>
+      <slot />
       <el-button
         v-if="isCreator"
         :class="{ 'is-plain': source.reward }"
@@ -29,7 +26,12 @@
         round
         @click="toggleAction('reward')"
       >
-        {{ source.reward ? '已投食' : '投食' }}{{ source.reward_users.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.reward_users.total}` : '' }}
+        {{ source.reward ? '已投食' : '投食'
+        }}{{
+          source.reward_users.total
+            ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.reward_users.total}`
+            : ''
+        }}
       </el-button>
       <el-button
         :class="{ 'is-plain': source.like }"
@@ -39,7 +41,12 @@
         round
         @click="toggleAction('like')"
       >
-        {{ source.like ? '已喜欢' : '喜欢' }}{{ source.like_users.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.like_users.total}` : '' }}
+        {{ source.like ? '已喜欢' : '喜欢'
+        }}{{
+          source.like_users.total
+            ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.like_users.total}`
+            : ''
+        }}
       </el-button>
       <el-button
         :class="{ 'is-plain': source.mark }"
@@ -49,7 +56,12 @@
         round
         @click="toggleAction('mark')"
       >
-        {{ source.mark ? '已收藏' : '收藏' }}{{ source.mark_users.total ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.mark_users.total}` : '' }}
+        {{ source.mark ? '已收藏' : '收藏'
+        }}{{
+          source.mark_users.total
+            ? `&nbsp;&nbsp;|&nbsp;&nbsp;${source.mark_users.total}`
+            : ''
+        }}
       </el-button>
     </div>
     <div class="users">

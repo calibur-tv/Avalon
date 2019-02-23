@@ -232,10 +232,7 @@
       :style="iconSize ? { fontSize: `${iconSize}px` } : {}"
       class="iconfont"
     />
-    <span
-      v-if="text"
-      v-text="text"
-    />
+    <span v-if="text" v-text="text" />
     <i
       v-if="icon && !loading && iconRight"
       :class="`ic-${icon}`"

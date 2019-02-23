@@ -1,0 +1,1 @@
+{"version":3,"file":"pages/user/_zone/index.chunk.9c889189.js","sources":["webpack:///pages/user/_zone/index.vue"],"sourcesContent":["<script>\nexport default {\n  fetch({ redirect, params }) {\n    return redirect(`/user/${params.zone}/bangumi`)\n  }\n}\n</script>\n"],"mappings":"AACA","sourceRoot":""}

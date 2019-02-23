@@ -305,10 +305,7 @@
 </style>
 
 <template>
-  <div
-    v-if="type === 'button'"
-    class="fen-think"
-  >
+  <div v-if="type === 'button'" class="fen-think">
     <el-popover
       ref="popover2"
       placement="top"
@@ -317,44 +314,38 @@
       popper-class="fen-think button-type"
     >
       <button
-        v-clipboard="shareUrl"
         v-if="canRender"
+        v-clipboard="shareUrl"
         @click="handleCopySuccess"
       >
-        <i class="iconfont ic-link"/>
+        <i class="iconfont ic-link" />
         <span>复制链接</span>
       </button>
       <button @click="makeUrl('weibo')">
-        <i class="iconfont ic-weibo"/>
+        <i class="iconfont ic-weibo" />
         <span>微博</span>
       </button>
       <button @click="makeUrl('qq')">
-        <i class="iconfont ic-qq"/>
+        <i class="iconfont ic-qq" />
         <span>QQ</span>
       </button>
       <button @click="makeUrl('douban')">
-        <i class="iconfont ic-douban"/>
+        <i class="iconfont ic-douban" />
         <span>豆瓣</span>
       </button>
       <button @click="makeUrl('qzone')">
-        <i class="iconfont ic-qzone"/>
+        <i class="iconfont ic-qzone" />
         <span>QQ空间</span>
       </button>
     </el-popover>
     <slot>
-      <button
-        v-popover:popover2
-        class="fen-think-btn"
-      >
-        <i class="iconfont icon-fenxiang"/>
+      <button v-popover:popover2 class="fen-think-btn">
+        <i class="iconfont icon-fenxiang" />
         <span v-if="showText">分享</span>
       </button>
     </slot>
   </div>
-  <div
-    v-else-if="type === 'panel'"
-    class="fen-think panel-type"
-  >
+  <div v-else-if="type === 'panel'" class="fen-think panel-type">
     <el-popover
       ref="popover"
       placement="top"
@@ -364,36 +355,18 @@
       popper-class="share-popover"
     >
       <div>
-        <div
-          ref="qr"
-          class="qr-code"
-        />
+        <div ref="qr" class="qr-code" />
         <div class="help">
           <p>微信里点“发现”，扫一下</p>
           <p>二维码便可将本页面分享至朋友圈</p>
         </div>
       </div>
     </el-popover>
-    <button
-      class="fen-think-icon ic-weibo"
-      @click="makeUrl('weibo')"
-    />
-    <button
-      class="fen-think-icon ic-qq"
-      @click="makeUrl('qq')"
-    />
-    <button
-      v-popover:popover
-      class="fen-think-icon ic-wechat"
-    />
-    <button
-      class="fen-think-icon ic-douban"
-      @click="makeUrl('douban')"
-    />
-    <button
-      class="fen-think-icon ic-qzone"
-      @click="makeUrl('qzone')"
-    />
+    <button class="fen-think-icon ic-weibo" @click="makeUrl('weibo')" />
+    <button class="fen-think-icon ic-qq" @click="makeUrl('qq')" />
+    <button v-popover:popover class="fen-think-icon ic-wechat" />
+    <button class="fen-think-icon ic-douban" @click="makeUrl('douban')" />
+    <button class="fen-think-icon ic-qzone" @click="makeUrl('qzone')" />
     <el-tooltip
       v-if="canRender"
       class="item"

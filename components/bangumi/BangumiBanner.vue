@@ -109,23 +109,17 @@
     height="400px"
     class="bangumi-banner"
   >
-    <div class="banner-mask"/>
+    <div class="banner-mask" />
     <div class="info">
-      <h1
-        class="title"
-        v-text="info.name"
-      />
-      <p
-        class="summary"
-        v-text="info.summary"
-      />
+      <h1 class="title" v-text="info.name" />
+      <p class="summary" v-text="info.summary" />
       <div class="console">
         <button
-          :class="[ followState.follow ? 'is-followed' : 'not-follow' ]"
+          :class="[followState.follow ? 'is-followed' : 'not-follow']"
           class="focus-button"
           @click="handleFollowAction"
         >
-          <i class="iconfont icon-follow"/>
+          <i class="iconfont icon-follow" />
           {{ followState.follow ? '已关注' : '关注' }}
         </button>
       </div>
@@ -133,10 +127,12 @@
     <div class="bangumi-header-bottom">
       <v-layout>
         <div class="meta">
-          <span v-if="info.follow_users">关注人数：{{ info.follow_users.total }}</span>
+          <span v-if="info.follow_users"
+            >关注人数：{{ info.follow_users.total }}</span
+          >
           <span v-if="info.power">活跃度：{{ info.power }}</span>
         </div>
-        <v-share type="panel"/>
+        <v-share type="panel" />
       </v-layout>
     </div>
   </v-header>

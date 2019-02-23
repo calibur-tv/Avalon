@@ -57,28 +57,18 @@ $meta-margin-bottom: 8px;
 </style>
 
 <template>
-  <ul
-    v-if="maxWidth"
-    class="v-parts"
-  >
-    <li
-      v-for="item in filterList"
-      :key="item.id"
-    >
+  <ul v-if="maxWidth" class="v-parts">
+    <li v-for="item in filterList" :key="item.id">
       <a
-        :class="{ 'active' : id === item.id }"
+        :class="{ active: id === item.id }"
         :style="{ width: `${maxWidth}px` }"
         :href="alias(item.id)"
         class="oneline"
       >
-        <slot :item="item"/>
+        <slot :item="item" />
       </a>
     </li>
-    <button
-      v-if="showMoreBtn"
-      class="more"
-      @click="handleFilter"
-    >
+    <button v-if="showMoreBtn" class="more" @click="handleFilter">
       {{ showAll ? '收起' : '展开' }}
     </button>
   </ul>

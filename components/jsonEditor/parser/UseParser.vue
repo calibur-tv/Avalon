@@ -15,7 +15,7 @@
 
 <template>
   <div class="json-content-txt-parser">
-    <blockquote v-html="item.text"/>
+    <blockquote v-html="item.text" />
   </div>
 </template>
 

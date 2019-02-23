@@ -112,24 +112,11 @@
 <template>
   <div class="score-flow-item">
     <div class="header">
-      <el-tooltip
-        :content="item.created_at"
-        placement="top"
-        effect="dark"
-      >
-        <v-time
-          v-model="item.created_at"
-          class="created-at"
-        />
+      <el-tooltip :content="item.created_at" placement="top" effect="dark">
+        <v-time v-model="item.created_at" class="created-at" />
       </el-tooltip>
-      <div
-        class="about"
-      >
-        <user-card
-          v-if="bangumiId"
-          :id="item.user.id"
-          :zone="item.user.zone"
-        >
+      <div class="about">
+        <user-card v-if="bangumiId" :id="item.user.id" :zone="item.user.zone">
           <v-img
             :src="item.user.avatar"
             :width="30"
@@ -137,37 +124,19 @@
             :avatar="true"
             class="user-avatar"
           />
-          <span
-            class="name href-fade-blue"
-            v-text="item.user.nickname"
-          />
+          <span class="name href-fade-blue" v-text="item.user.nickname" />
         </user-card>
-        <a
-          v-else
-          :href="$alias.bangumi(item.bangumi.id)"
-          target="_blank"
-        >
+        <a v-else :href="$alias.bangumi(item.bangumi.id)" target="_blank">
           <v-img
             :src="item.bangumi.avatar"
             :width="30"
             :heighr="30"
             class="bangumi-avatar"
           />
-          <span
-            class="name href-fade-blue"
-            v-text="item.bangumi.name"
-          />
+          <span class="name href-fade-blue" v-text="item.bangumi.name" />
         </a>
-        <el-rate
-          v-if="starCount"
-          v-model="starCount"
-          disabled
-        />
-        <el-rate
-          v-else
-          v-model="noScore"
-          disabled
-        />
+        <el-rate v-if="starCount" v-model="starCount" disabled />
+        <el-rate v-else v-model="noScore" disabled />
       </div>
     </div>
     <a
@@ -176,11 +145,7 @@
       target="_blank"
       v-text="item.title"
     />
-    <a
-      :href="$alias.score(item.id)"
-      class="content clearfix"
-      target="_blank"
-    >
+    <a :href="$alias.score(item.id)" class="content clearfix" target="_blank">
       <v-img
         v-if="item.banner"
         :src="item.banner.url"
@@ -190,30 +155,26 @@
         class="poster"
       />
       <div class="intro">
-        {{ item.intro }}…<button>阅读全文<i class="el-icon-arrow-down"/></button>
+        {{ item.intro }}…<button>
+          阅读全文<i class="el-icon-arrow-down" />
+        </button>
       </div>
     </a>
     <div class="footer">
-      <span
-        v-if="item.is_creator"
-        class="meta"
-      >
-        <i class="iconfont icon-fantuan"/>
+      <span v-if="item.is_creator" class="meta">
+        <i class="iconfont icon-fantuan" />
         <span>投食&nbsp;({{ item.reward_count }})</span>
       </span>
-      <span
-        v-else
-        class="meta"
-      >
-        <i class="iconfont icon-fantuan"/>
+      <span v-else class="meta">
+        <i class="iconfont icon-fantuan" />
         <span>喜欢&nbsp;({{ item.like_count }})</span>
       </span>
       <span class="meta">
-        <i class="iconfont icon-mark"/>
+        <i class="iconfont icon-mark" />
         <span>收藏&nbsp;({{ item.mark_count }})</span>
       </span>
       <span class="meta">
-        <i class="iconfont icon-talk"/>
+        <i class="iconfont icon-talk" />
         <span>评论&nbsp;({{ item.comment_count }})</span>
       </span>
     </div>

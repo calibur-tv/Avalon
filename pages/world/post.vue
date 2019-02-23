@@ -73,19 +73,11 @@
       </div>
     </div>
     -->
-    <flow-list
-      func="getWorldPost"
-      type="seenIds"
-      sort="active"
-    >
+    <flow-list func="getWorldPost" type="seenIds" sort="active">
       <ul slot-scope="{ flow }">
-        <post-flow-item
-          v-for="item in flow"
-          :key="item.id"
-          :item="item"
-        />
+        <post-flow-item v-for="item in flow" :key="item.id" :item="item" />
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -95,6 +87,14 @@ import PostFlowItem from '~/components/flow/item/PostFlowItem'
 
 export default {
   name: 'PostWorld',
+  components: {
+    PostFlowItem
+  },
+  data() {
+    return {
+      showTips: false
+    }
+  },
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('flow/initData', {
@@ -105,16 +105,8 @@ export default {
       // store.dispatch('flow/getMeta', { type: 'post' })
     ])
   },
-  components: {
-    PostFlowItem
-  },
   head: {
     title: '帖子区'
-  },
-  data() {
-    return {
-      showTips: false
-    }
   },
   methods: {
     openCreatePost() {

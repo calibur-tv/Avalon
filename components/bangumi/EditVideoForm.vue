@@ -22,35 +22,22 @@
       :disabled="submitting"
       label-width="45px"
     >
-      <el-form-item
-        label="名字"
-        prop="name"
-      >
+      <el-form-item label="名字" prop="name">
         <el-input
           v-model="form.name"
           placeholder="填写这一话的名字"
           style="width:450px"
         />
       </el-form-item>
-      <el-form-item
-        label="集数"
-        prop="episode"
-      >
-        <el-input-number
-          v-model="form.episode"
-          :min="minPart"
-          :step="0.5"
-        />
+      <el-form-item label="集数" prop="episode">
+        <el-input-number v-model="form.episode" :min="minPart" :step="0.5" />
       </el-form-item>
       <el-form-item
         v-if="!videoId && season.length > 1"
         label="季度"
         prop="season_id"
       >
-        <el-select
-          v-model="form.season_id"
-          placeholder="请选择季度"
-        >
+        <el-select v-model="form.season_id" placeholder="请选择季度">
           <el-option
             v-for="item in season"
             :key="item.id"
@@ -59,10 +46,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        label="封面"
-        prop="poster"
-      >
+      <el-form-item label="封面" prop="poster">
         <el-upload
           ref="upload"
           :data="uploadHeaders"
@@ -73,31 +57,28 @@
           :action="imageUploadAction"
           :accept="imageUploadAccept"
         >
-          <el-button
-            :loading="submitting"
-            size="small"
-            round
-          >上传封面图</el-button>
+          <el-button :loading="submitting" size="small" round
+            >上传封面图</el-button
+          >
         </el-upload>
         <div
           v-if="form.poster"
-          :style="{ backgroundImage: `url(${$resize(form.poster, { width: 400, mode: 2 })})` }"
+          :style="{
+            backgroundImage: `url(${$resize(form.poster, {
+              width: 400,
+              mode: 2
+            })})`
+          }"
           class="preview-poster"
         />
       </el-form-item>
-      <el-form-item
-        label="链接"
-        prop="baidu_cloud_src"
-      >
+      <el-form-item label="链接" prop="baidu_cloud_src">
         <el-input
           v-model="form.baidu_cloud_src"
           placeholder="填写百度云视频链接"
         />
       </el-form-item>
-      <el-form-item
-        label="密码"
-        prop="baidu_cloud_pwd"
-      >
+      <el-form-item label="密码" prop="baidu_cloud_pwd">
         <el-input
           v-model="form.baidu_cloud_pwd"
           placeholder="填写百度云视频密码，最长6位，可空"
@@ -109,7 +90,8 @@
           type="primary"
           size="small"
           @click="submit"
-        >确认提交</el-button>
+          >确认提交</el-button
+        >
       </el-form-item>
     </el-form>
   </div>

@@ -63,10 +63,7 @@
       class="avatar"
     />
     <div class="main-area">
-      <button
-        class="submit-btn"
-        @click="submit"
-      >发表<br>评论</button>
+      <button class="submit-btn" @click="submit">发表<br />评论</button>
       <div class="text-wrap">
         <textarea
           v-model.trim="content"

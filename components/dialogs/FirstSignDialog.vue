@@ -61,24 +61,21 @@
   >
     <h3 class="title">欢迎来到「calibur.tv」</h3>
     <p class="content">
-      使用你的“邀请码”带朋友一起来玩吧！<br>
-      每邀请一个朋友加入，你就可以获得一枚金币<br>
+      使用你的“邀请码”带朋友一起来玩吧！<br />
+      每邀请一个朋友加入，你就可以获得一枚金币<br />
       1金币=1人民币，满100就可以提现噢！
     </p>
     <div class="control">
       <a href="/about/hello">
         <button style="background-color: #00ce72">
           查看团子规则
-          <i class="el-icon-arrow-right"/>
+          <i class="el-icon-arrow-right" />
         </button>
       </a>
-      <a
-        :href="'/about/invite/' + currentUser.id"
-        target="_blank"
-      >
+      <a :href="'/about/invite/' + currentUser.id" target="_blank">
         <button style="background-color: gold">
           我的邀请码
-          <i class="el-icon-arrow-right"/>
+          <i class="el-icon-arrow-right" />
         </button>
       </a>
     </div>
@@ -108,7 +105,9 @@ export default {
           })
           localStorage.setItem('display-first-sign-dialog', 1)
         }
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
     }
   }
 }

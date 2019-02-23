@@ -74,16 +74,9 @@
       </div>
     </div>
     -->
-    <flow-list
-      func="getWorldImage"
-      type="seenIds"
-      sort="active"
-    >
-      <image-waterfall-flow
-        slot-scope="{ flow }"
-        :list="flow"
-      />
-      <no-content slot="nothing"/>
+    <flow-list func="getWorldImage" type="seenIds" sort="active">
+      <image-waterfall-flow slot-scope="{ flow }" :list="flow" />
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -93,6 +86,14 @@ import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
 
 export default {
   name: 'ImageWorld',
+  components: {
+    ImageWaterfallFlow
+  },
+  data() {
+    return {
+      showTips: false
+    }
+  },
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('flow/initData', {
@@ -103,16 +104,8 @@ export default {
       // store.dispatch('flow/getMeta', { type: 'image' })
     ])
   },
-  components: {
-    ImageWaterfallFlow
-  },
   head: {
     title: '相册区'
-  },
-  data() {
-    return {
-      showTips: false
-    }
   },
   methods: {
     openFeedback() {

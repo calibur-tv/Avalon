@@ -127,23 +127,31 @@
 
 <template>
   <div id="homepage">
-    <v-header type="mask"/>
+    <v-header type="mask" />
     <div
       v-if="banner1"
-      :class="{'show' : toggle}"
-      :style="{ backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : '' }"
+      :class="{ show: toggle }"
+      :style="{
+        backgroundImage: banner1 ? `url(${$resize(banner1.url, options)})` : ''
+      }"
       class="banner bg"
     />
     <div
       v-if="banner2"
-      :class="{'show' : !toggle}"
-      :style="{ backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : '' }"
+      :class="{ show: !toggle }"
+      :style="{
+        backgroundImage: banner2 ? `url(${$resize(banner2.url, options)})` : ''
+      }"
       class="banner bg"
     />
     <div class="index-panel">
       <div
-        :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/slogan.png')})` }"
-        :class="{ 'invert' : curBanner && curBanner.gray > 165 }"
+        :style="{
+          backgroundImage: `url(${$resize(
+            'https://image.calibur.tv/owner/slogan.png'
+          )})`
+        }"
+        :class="{ invert: curBanner && curBanner.gray > 165 }"
         class="slogan bg"
       />
       <v-search
@@ -151,16 +159,10 @@
         :autofocus="true"
         placeholder="搜索二次元的一切"
       >
-        <i
-          slot="submit-btn"
-          class="iconfont icon-sousuo"
-        />
+        <i slot="submit-btn" class="iconfont icon-sousuo" />
       </v-search>
     </div>
-    <div
-      v-if="curBanner"
-      class="banner-card"
-    >
+    <div v-if="curBanner" class="banner-card">
       <a
         v-if="curBanner.user_id"
         :href="$alias.user(curBanner.user_zone)"
@@ -169,13 +171,15 @@
         <img
           :src="$resize(curBanner.user_avatar, { width: 80 })"
           class="avatar"
-        >
+        />
       </a>
       <img
         v-else
-        :src="$resize('https://image.calibur.tv/default/user-avatar', { width: 80 })"
+        :src="
+          $resize('https://image.calibur.tv/default/user-avatar', { width: 80 })
+        "
         class="avatar"
-      >
+      />
       <div class="content">
         <p class="oneline">
           作者：
@@ -211,13 +215,6 @@ export default {
   components: {
     vSearch
   },
-  async asyncData({ app }) {
-    const data = await getBanners(app)
-    return {
-      banners: data,
-      banner1: data[0]
-    }
-  },
   data() {
     return {
       banners: [],
@@ -237,6 +234,13 @@ export default {
   computed: {
     curBanner() {
       return this.toggle ? this.banner1 : this.banner2
+    }
+  },
+  async asyncData({ app }) {
+    const data = await getBanners(app)
+    return {
+      banners: data,
+      banner1: data[0]
     }
   },
   mounted() {

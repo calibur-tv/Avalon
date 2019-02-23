@@ -36,8 +36,8 @@
       :value="item.id"
       class="bangumi-search-item"
     >
-      <img :src="$resize(item.avatar, { width: 48 })">
-      <span v-text="item.name"/>
+      <img :src="$resize(item.avatar, { width: 48 })" />
+      <span v-text="item.name" />
     </el-option>
   </el-select>
 </template>

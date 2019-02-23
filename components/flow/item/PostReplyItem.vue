@@ -106,11 +106,7 @@
   <li class="post-reply-item">
     <div class="header clearfix">
       <span class="prefix">回复：</span>
-      <el-tooltip
-        :content="item.bangumi.name"
-        effect="dark"
-        placement="top"
-      >
+      <el-tooltip :content="item.bangumi.name" effect="dark" placement="top">
         <a
           :href="$alias.bangumi(item.bangumi.id)"
           class="avatar"
@@ -124,10 +120,7 @@
           />
         </a>
       </el-tooltip>
-      <v-time
-        v-model="item.created_at"
-        class="time"
-      />
+      <v-time v-model="item.created_at" class="time" />
       <a
         :href="$alias.post(item.post.id, { 'comment-id': item.id })"
         class="title href-fade-blue oneline"
@@ -136,48 +129,26 @@
       />
     </div>
     <div class="origin">
-      <div
-        class="content"
-        v-html="item.post.content"
-      />
-      <div
-        v-if="item.post.images.length"
-        class="images clearfix"
-      >
+      <div class="content" v-html="item.post.content" />
+      <div v-if="item.post.images.length" class="images clearfix">
         <div
           v-for="(image, index) in item.post.images"
           :key="index"
           class="image-box"
         >
-          <v-img
-            :src="image.url"
-            :blur="true"
-            width="auto"
-            height="90"
-          />
+          <v-img :src="image.url" :blur="true" width="auto" height="90" />
         </div>
       </div>
     </div>
     <div class="reply">
-      <div
-        class="content"
-        v-html="item.content"
-      />
-      <div
-        v-if="item.images.length"
-        class="images clearfix"
-      >
+      <div class="content" v-html="item.content" />
+      <div v-if="item.images.length" class="images clearfix">
         <div
           v-for="(image, index) in item.images"
           :key="index"
           class="image-box"
         >
-          <v-img
-            :src="image.url"
-            :blur="true"
-            width="auto"
-            height="90"
-          />
+          <v-img :src="image.url" :blur="true" width="auto" height="90" />
         </div>
       </div>
     </div>

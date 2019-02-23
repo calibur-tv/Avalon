@@ -111,8 +111,8 @@ export async function getRouteData(route) {
   // Send back a copy of route with meta based on Component definition
   return {
     ...route,
-    meta: getMatchedComponents(route).map((Component) => {
-      return Component.options.meta || {}
+    meta: getMatchedComponents(route).map((Component, index) => {
+      return { ...Component.options.meta, ...(route.matched[index] || {}).meta }
     })
   }
 }
@@ -129,7 +129,7 @@ export async function setContext(app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"API_URL":"http://localhost/","API_URL_BROWSER":"https://api.calibur.tv/","SENTRY_URL":"https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871","RELEASE":"2019-2-20-08-57-50"}
+      env: {"API_URL":"http://localhost/","API_URL_BROWSER":"https://api.calibur.tv/","SENTRY_URL":"https://5c1d2b169b09423abb6a74227a64c3c4@sentry.io/1352871","RELEASE":"2019-2-23-10-12-51"}
     }
     // Only set once
     if (context.req) app.context.req = context.req
@@ -280,6 +280,7 @@ export function normalizeError(err) {
     message = err.message || err
   }
   return {
+    ...err,
     message: message,
     statusCode: (err.statusCode || err.status || (err.response && err.response.status) || 500)
   }

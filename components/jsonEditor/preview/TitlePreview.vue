@@ -24,7 +24,7 @@
       class="title-input focus-textarea mousetrap"
       placeholder="段落小标题"
       maxlength="30"
-    >
+    />
   </div>
 </template>
 

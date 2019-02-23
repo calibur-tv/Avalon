@@ -15,13 +15,9 @@
 <template>
   <div id="user-faq">
     <div>
-      <el-radio-group
-        v-model="active"
-        size="mini"
-        @change="handleTabSwitch"
-      >
-        <el-radio-button label="回答"/>
-        <el-radio-button label="提问"/>
+      <el-radio-group v-model="active" size="mini" @change="handleTabSwitch">
+        <el-radio-button label="回答" />
+        <el-radio-button label="提问" />
       </el-radio-group>
     </div>
     <flow-list
@@ -32,30 +28,15 @@
       sort="news"
     >
       <ul slot-scope="{ flow }">
-        <question-flow-item
-          v-for="item in flow"
-          :key="item.id"
-          :item="item"
-        />
+        <question-flow-item v-for="item in flow" :key="item.id" :item="item" />
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
-    <flow-list
-      v-else
-      :id="user.zone"
-      func="getUserQAQ"
-      type="page"
-      sort="news"
-    >
-
+    <flow-list v-else :id="user.zone" func="getUserQAQ" type="page" sort="news">
       <ul slot-scope="{ flow }">
-        <question-flow-item
-          v-for="item in flow"
-          :key="item.id"
-          :item="item"
-        />
+        <question-flow-item v-for="item in flow" :key="item.id" :item="item" />
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -65,14 +46,6 @@ import QuestionFlowItem from '~/components/flow/item/QuestionFlowItem'
 
 export default {
   name: 'UserFAQ',
-  async asyncData({ store, params }) {
-    await store.dispatch('flow/initData', {
-      func: 'getUserAnswer',
-      type: 'page',
-      sort: 'news',
-      id: params.zone
-    })
-  },
   components: {
     QuestionFlowItem
   },
@@ -85,6 +58,14 @@ export default {
     user() {
       return this.$store.state.users.show
     }
+  },
+  async asyncData({ store, params }) {
+    await store.dispatch('flow/initData', {
+      func: 'getUserAnswer',
+      type: 'page',
+      sort: 'news',
+      id: params.zone
+    })
   },
   methods: {
     handleTabSwitch(label) {

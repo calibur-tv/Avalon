@@ -100,3 +100,32 @@ export const changeCartoonRoleProfile = (
 export const getUserWorkSchedule = ctx => {
   return ctx.$axios.$get('cartoon_role/user_draft_work')
 }
+
+export const getCurrentIdolIncome = ctx => {
+  return ctx.$axios.$get('cartoon_role/can_use_income')
+}
+
+export const createIdolOrder = (ctx, { product_id, product_type, amount }) => {
+  return ctx.$axios.$post('cartoon_role/create_buy_request', {
+    product_id,
+    product_type,
+    amount
+  })
+}
+
+export const checkOrder = (ctx, { order_id, result }) => {
+  return ctx.$axios.$post('cartoon_role/check_product_request', {
+    order_id,
+    result
+  })
+}
+
+export const deleteOrder = (ctx, { order_id }) => {
+  return ctx.$axios.$post('cartoon_role/delete_buy_request', {
+    order_id
+  })
+}
+
+export const getMineProductOrderCount = ctx => {
+  return ctx.$axios.$get('cartoon_role/get_mine_product_orders')
+}

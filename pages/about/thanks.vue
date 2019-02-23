@@ -56,130 +56,169 @@
 
 <template>
   <div id="about-thanks">
-    <v-header type="pure"/>
+    <v-header type="pure" />
     <v-layout>
       <h3 class="sub-title">logo</h3>
-      <div
-        class="panel"
-        style="height: 130px"
-      >
-        <el-tooltip
-          effect="dark"
-          content="团子 ♪"
-          placement="top"
-        >
+      <div class="panel" style="height: 130px">
+        <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 260, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 260,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 260, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 260,
+                  webP: false
+                })
+              "
               height="130"
               alt="260"
-            >
+            />
           </a>
         </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          content="团子 ♪"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 220, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 220,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 220, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 220,
+                  webP: false
+                })
+              "
               height="110"
               alt="220"
-            >
+            />
           </a>
         </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          content="团子 ♪"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 180, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 180,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 180, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 180,
+                  webP: false
+                })
+              "
               height="90"
               alt="180"
-            >
+            />
           </a>
         </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          content="团子 ♪"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 140, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 140,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 140, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 140,
+                  webP: false
+                })
+              "
               height="70"
               alt="140"
-            >
+            />
           </a>
         </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          content="团子 ♪"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 100, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 100,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 100, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 100,
+                  webP: false
+                })
+              "
               height="50"
               alt="100"
-            >
+            />
           </a>
         </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          content="团子 ♪"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 60, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 60,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 60, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 60,
+                  webP: false
+                })
+              "
               height="30"
               alt="60"
-            >
+            />
           </a>
         </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          content="团子大家族 ♪"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="团子大家族 ♪" placement="top">
           <a
-            :href="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 220, webP: false })"
+            :href="
+              $resize('https://image.calibur.tv/owner/logo/max.png', {
+                width: 220,
+                webP: false
+              })
+            "
             target="_blank"
             class="logo"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/max.png', { width: 220, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/max.png', {
+                  width: 220,
+                  webP: false
+                })
+              "
               height="110"
               alt="220"
-            >
+            />
           </a>
         </el-tooltip>
       </div>
@@ -190,31 +229,42 @@
         众漫友
       </p>
       <h3 class="sub-title">域名</h3>
-      <div
-        class="panel"
-        style="margin-left: -13px;height: 70px"
-      >
+      <div class="panel" style="margin-left: -13px;height: 70px">
         <a
-          :href="$resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png')"
+          :href="
+            $resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png')
+          "
           class="logo"
           target="_blank"
         >
           <img
-            :src="$resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png', { width: 630, height: 210, webP: false })"
+            :src="
+              $resize(
+                'https://image.calibur.tv/owner/logo/calibur-blue-new.png',
+                { width: 630, height: 210, webP: false }
+              )
+            "
             height="70"
             alt="pink-logo"
-          >
+          />
         </a>
         <a
-          :href="$resize('https://image.calibur.tv/owner/logo/calibur-pink-new.png')"
+          :href="
+            $resize('https://image.calibur.tv/owner/logo/calibur-pink-new.png')
+          "
           class="logo"
           target="_blank"
         >
           <img
-            :src="$resize('https://image.calibur.tv/owner/logo/calibur-pink-new.png', { width: 630, height: 210, webP: false })"
+            :src="
+              $resize(
+                'https://image.calibur.tv/owner/logo/calibur-pink-new.png',
+                { width: 630, height: 210, webP: false }
+              )
+            "
             height="70"
             alt="pink-logo"
-          >
+          />
         </a>
         <a
           :href="$resize('https://image.calibur.tv/owner/logo/animate.gif')"
@@ -222,28 +272,29 @@
           target="_blank"
         >
           <img
-            :src="$resize('https://image.calibur.tv/owner/logo/animate.gif', { width: 630, height: 210, webP: false })"
+            :src="
+              $resize('https://image.calibur.tv/owner/logo/animate.gif', {
+                width: 630,
+                height: 210,
+                webP: false
+              })
+            "
             height="70"
             alt="animate-logo"
-          >
+          />
         </a>
       </div>
       <p class="intro">
         <strong>灵感来源：</strong>
         《Fate/stay night》—— 石中剑，
         <strong>图标作者：</strong>
-        <a
-          href="https://www.calibur.tv/user/yu-yuan-lin-yin-7"
-          target="_blank"
-        >艾拉</a>
+        <a href="https://www.calibur.tv/user/yu-yuan-lin-yin-7" target="_blank"
+          >艾拉</a
+        >
       </p>
       <h3 class="sub-title">站娘</h3>
       <div class="panel">
-        <el-tooltip
-          effect="dark"
-          content="c.c"
-          placement="top"
-        >
+        <el-tooltip effect="dark" content="c.c" placement="top">
           <a
             :href="$resize('https://image.calibur.tv/owner/logo/girl.png')"
             target="_blank"
@@ -251,10 +302,15 @@
             style="margin-left: -30px;float: left"
           >
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/girl.png', { width: 600, webP: false })"
+              :src="
+                $resize('https://image.calibur.tv/owner/logo/girl.png', {
+                  width: 600,
+                  webP: false
+                })
+              "
               height="300"
               alt="c.c"
-            >
+            />
           </a>
         </el-tooltip>
         <div class="context">
@@ -273,54 +329,70 @@
         <strong>灵感来源：</strong>
         站长の幻想，
         <strong>图标作者：</strong>
-        <a
-          href="https://www.calibur.tv/user/jian-pao-zhi-yuan"
-          target="_blank"
-        >JPZY</a>
+        <a href="https://www.calibur.tv/user/jian-pao-zhi-yuan" target="_blank"
+          >JPZY</a
+        >
       </p>
       <h3 class="sub-title">宣传片</h3>
       <div class="panel">
         <a
-          :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/user/1/post/0/1533826373648-y0q.jpeg', { width: 376, height: 232 })})` }"
+          :style="{
+            backgroundImage: `url(${$resize(
+              'https://image.calibur.tv/user/1/post/0/1533826373648-y0q.jpeg',
+              { width: 376, height: 232 }
+            )})`
+          }"
           href="https://static.calibur.tv/owner/video/02.mp4"
           class="video-item"
           target="_blank"
           style="color: #fff"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang1" />
         </a>
         <a
-          :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/cartoon-poster.png', { width: 376, height: 232 })})` }"
+          :style="{
+            backgroundImage: `url(${$resize(
+              'https://image.calibur.tv/owner/video/cartoon-poster.png',
+              { width: 376, height: 232 }
+            )})`
+          }"
           href="https://image.calibur.tv/owner/video/cartoon.mp4"
           class="video-item"
           target="_blank"
           style="color: #333"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang1" />
         </a>
         <a
-          :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/owner/video/mc-poster.png', { width: 376, height: 232 })})` }"
+          :style="{
+            backgroundImage: `url(${$resize(
+              'https://image.calibur.tv/owner/video/mc-poster.png',
+              { width: 376, height: 232 }
+            )})`
+          }"
           href="https://static.calibur.tv/owner/video/mc.mp4"
           class="video-item"
           target="_blank"
           style="color: #fff"
         >
-          <i class="iconfont icon-bofang1"/>
+          <i class="iconfont icon-bofang1" />
         </a>
       </div>
       <p class="intro">
         <strong>视频1作者：</strong>
-        <a
-          href="https://www.calibur.tv/user/cfdxkk"
-          target="_blank"
-        >冲锋的小卡卡</a>，
+        <a href="https://www.calibur.tv/user/cfdxkk" target="_blank"
+          >冲锋的小卡卡</a
+        >，
         <strong>视频2作者：</strong>
         <a
           href="https://www.calibur.tv/user/yu-yuan-lin-yin-7/bangumi"
           target="_blank"
-        >艾了个拉</a>
+          >艾了个拉</a
+        >
       </p>
-      <template slot="aside">&nbsp;</template>
+      <template slot="aside"
+        >&nbsp;</template
+      >
     </v-layout>
   </div>
 </template>

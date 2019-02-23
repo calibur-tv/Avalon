@@ -63,15 +63,9 @@
     :close="false"
     width="100%"
   >
-    <div
-      id="create-answer-form"
-      class="container"
-    >
-      <h1
-        class="qaq-title"
-        v-text="title"
-      />
-      <json-editor @submit="beforeSubmit"/>
+    <div id="create-answer-form" class="container">
+      <h1 class="qaq-title" v-text="title" />
+      <json-editor @submit="beforeSubmit" />
     </div>
     <div class="qaq-editor-footer">
       <div class="container">
@@ -81,11 +75,7 @@
           class="source-url"
           size="medium"
         />
-        <el-button
-          type="text"
-          size="medium"
-          @click="closeEditor"
-        >
+        <el-button type="text" size="medium" @click="closeEditor">
           取消
         </el-button>
         <el-button
@@ -102,7 +92,10 @@
           size="medium"
           type="primary"
           @click="$channel.$emit('write-publish')"
-        >{{ published ? '更新回答' : id ? '发布回答' : '提交回答' }}</el-button>
+          >{{
+            published ? '更新回答' : id ? '发布回答' : '提交回答'
+          }}</el-button
+        >
       </div>
     </div>
   </v-dialog>

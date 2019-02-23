@@ -98,14 +98,16 @@
 <template>
   <div id="score-show">
     <template v-if="info.banner">
-      <v-header type="pure"/>
+      <v-header type="pure" />
       <div
         v-if="info.banner.width > 1400"
-        :style="{ backgroundImage: `url(${$resize(info.banner.url, { width: 2000 })})` }"
+        :style="{
+          backgroundImage: `url(${$resize(info.banner.url, { width: 2000 })})`
+        }"
         class="score-banner full-size"
       />
     </template>
-    <v-header v-else/>
+    <v-header v-else />
     <div class="center-layout">
       <el-alert
         v-if="info.deleted_at"
@@ -135,7 +137,8 @@
               class="control-btn"
               size="mini"
               @click="deleteScore"
-            >删除</el-button>
+              >删除</el-button
+            >
             <a :href="$alias.editScore(info.id)">
               <el-button
                 round
@@ -143,20 +146,15 @@
                 type="primary"
                 class="control-btn"
                 size="mini"
-              >编辑</el-button>
+                >编辑</el-button
+              >
             </a>
           </template>
           <div class="title">
-            <h1
-              class="sub-title"
-              v-text="info.title"
-            />
+            <h1 class="sub-title" v-text="info.title" />
             <div class="user">
               作者：
-              <user-card
-                :id="user.id"
-                :zone="user.zone"
-              >
+              <user-card :id="user.id" :zone="user.zone">
                 <v-img
                   :src="user.avatar"
                   :avatar="true"
@@ -164,64 +162,44 @@
                   :height="30"
                   class="avatar"
                 />
-                <span
-                  class="name"
-                  v-text="user.nickname"
-                />
+                <span class="name" v-text="user.nickname" />
               </user-card>
-              &nbsp;·&nbsp;
-              发表于：
+              &nbsp;·&nbsp; 发表于：
               <el-tooltip
                 :content="info.published_at"
                 placement="top"
                 effect="dark"
               >
-                <v-time v-model="info.published_at"/>
+                <v-time v-model="info.published_at" />
               </el-tooltip>
               <template v-if="info.like_count">
-                &nbsp;·&nbsp;
-                赞：{{ info.like_count }}
+                &nbsp;·&nbsp; 赞：{{ info.like_count }}
               </template>
               <template v-if="info.comment_count">
-                &nbsp;·&nbsp;
-                评论：{{ info.comment_count }}
+                &nbsp;·&nbsp; 评论：{{ info.comment_count }}
               </template>
               &nbsp;·&nbsp;
-              <report-dialog
-                :id="info.id"
-                type="score"
-              >
+              <report-dialog :id="info.id" type="score">
                 举报
               </report-dialog>
             </div>
           </div>
         </div>
         <div class="star-row">
-          <div
-            v-for="(item, index) in columns"
-            :key="index"
-            class="star-item"
-          >
-            <div
-              class="label"
-              v-text="labelMap[item]"
-            />
+          <div v-for="(item, index) in columns" :key="index" class="star-item">
+            <div class="label" v-text="labelMap[item]" />
             <el-tooltip
               :content="`${info[item] * 2}分`"
               placement="top"
               effect="dark"
             >
-              <el-rate
-                v-model="info[item]"
-                disabled
-                allow-half
-              />
+              <el-rate v-model="info[item]" disabled allow-half />
             </el-tooltip>
           </div>
         </div>
       </div>
       <div class="score-body">
-        <json-content :content="info.content"/>
+        <json-content :content="info.content" />
       </div>
       <social-panel
         :id="info.id"
@@ -272,6 +250,34 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(params.id)
   },
+  components: {
+    CommentMain,
+    JsonContent,
+    SocialPanel
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      info: null,
+      bangumi: null,
+      user: null,
+      labelMap,
+      columns
+    }
+  },
+  computed: {
+    currentUserId() {
+      return this.$store.state.login ? this.$store.state.user.id : 0
+    },
+    isMine() {
+      return this.currentUserId === this.user.id
+    }
+  },
   asyncData({ app, store, params, query, error }) {
     const { id } = params
     const { hash, time } = query
@@ -308,39 +314,16 @@ export default {
           info
         }
       })
-      .catch(error)
-  },
-  components: {
-    CommentMain,
-    JsonContent,
-    SocialPanel
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
   },
   head() {
     return {
       title: this.info.title
-    }
-  },
-  props: {
-    id: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      info: null,
-      bangumi: null,
-      user: null,
-      labelMap,
-      columns
-    }
-  },
-  computed: {
-    currentUserId() {
-      return this.$store.state.login ? this.$store.state.user.id : 0
-    },
-    isMine() {
-      return this.currentUserId === this.user.id
     }
   },
   methods: {

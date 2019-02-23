@@ -1,10 +1,10 @@
 <template>
   <section class="bangumi-layout">
-    <bangumi-banner/>
+    <bangumi-banner />
     <v-layout>
-      <tab-container :list="cards"/>
-      <nuxt-child/>
-      <bangumi-aside slot="aside"/>
+      <tab-container :list="cards" />
+      <nuxt-child />
+      <bangumi-aside slot="aside" />
     </v-layout>
   </section>
 </template>
@@ -20,31 +20,10 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(params.id)
   },
-  asyncData({ app, store, params, error }) {
-    const { id } = params
-    return getBangumiInfo(app, { id })
-      .then(data => {
-        store.commit('social/SET_STATE', {
-          type: 'bangumi',
-          id,
-          data: {
-            follow: data.followed,
-            follow_users: data.follow_users
-          }
-        })
-        store.commit('bangumi/SET_BANGUMI_DATA', data)
-      })
-      .catch(error)
-  },
   components: {
     BangumiBanner,
     BangumiAside,
     TabContainer
-  },
-  head() {
-    return {
-      title: this.info.name
-    }
   },
   props: {
     id: {
@@ -103,6 +82,32 @@ export default {
           show: info.is_master
         }
       ].filter(_ => _.show)
+    }
+  },
+  asyncData({ app, store, params, error }) {
+    const { id } = params
+    return getBangumiInfo(app, { id })
+      .then(data => {
+        store.commit('social/SET_STATE', {
+          type: 'bangumi',
+          id,
+          data: {
+            follow: data.followed,
+            follow_users: data.follow_users
+          }
+        })
+        store.commit('bangumi/SET_BANGUMI_DATA', data)
+      })
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
+  },
+  head() {
+    return {
+      title: this.info.name
     }
   }
 }

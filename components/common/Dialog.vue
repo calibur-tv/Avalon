@@ -91,23 +91,18 @@
       :close-on-press-escape="clickClose"
     >
       <section :class="$style.container">
-        <header
-          v-if="header"
-          slot="header"
-          :class="$style.header"
-        >
+        <header v-if="header" slot="header" :class="$style.header">
           <slot name="title">
-            <h4
-              :class="$style.title"
-              v-text="title"
-            />
+            <h4 :class="$style.title" v-text="title" />
           </slot>
         </header>
         <button
           v-if="!clickClose || close"
           :class="$style.close"
           @click="cancel"
-        >&times;</button>
+        >
+          &times;
+        </button>
         <main
           :style="computeDialogHeight"
           :class="$style.content"
@@ -115,29 +110,18 @@
         >
           <template v-if="scroll">
             <ul ref="ul">
-              <slot/>
+              <slot />
             </ul>
-            <slot
-              v-if="loading"
-              :class="$style.loading"
-              name="loading"
-            >
+            <slot v-if="loading" :class="$style.loading" name="loading">
               <p :class="$style.loading">加载中...</p>
             </slot>
-            <slot
-              v-else-if="noMore"
-              :class="$style.noMore"
-              name="nomore"
-            >
+            <slot v-else-if="noMore" :class="$style.noMore" name="nomore">
               <p :class="$style.noMore">没有更多了</p>
             </slot>
           </template>
-          <slot v-else/>
+          <slot v-else />
         </main>
-        <footer
-          v-if="footer"
-          :class="$style.footer"
-        >
+        <footer v-if="footer" :class="$style.footer">
           <slot name="footer">
             <button
               v-if="cancelText"

@@ -194,41 +194,37 @@ $input-height: 40px;
     <div
       v-if="isGuest"
       id="space3D"
-      :class="[ showModal ? 'space-enter' : 'space-leave' ]"
+      :class="[showModal ? 'space-enter' : 'space-leave']"
       @click="hiddenSign"
     >
-      <div
-        ref="wrap"
-        class="sign-modal-wrap abs"
-      >
+      <div ref="wrap" class="sign-modal-wrap abs">
         <div
           :class="{
-            'sign-in-init' : !showSignIn && !showSignUp,
-            'sign-in-show' : showSignIn && !showSignUp,
-            'sign-in-turn' : !showSignIn && showSignUp
+            'sign-in-init': !showSignIn && !showSignUp,
+            'sign-in-show': showSignIn && !showSignUp,
+            'sign-in-turn': !showSignIn && showSignUp
           }"
           class="sign-modal sign-in-modal"
           @click.stop
         >
-          <div
-            v-show="showReset"
-            class="form-container"
-          >
+          <div v-show="showReset" class="form-container">
             <img
-              :src="$resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png', { width: 600, height: 200 })"
+              :src="
+                $resize(
+                  'https://image.calibur.tv/owner/logo/calibur-blue-new.png',
+                  { width: 600, height: 200 }
+                )
+              "
               class="logo"
               alt="sign-logo"
               style="margin-top: -13px"
-            >
+            />
             <reset-password-form
               @to-login="showReset = false"
               @to-register="showRegister"
             />
           </div>
-          <div
-            v-show="!showReset"
-            class="form-container"
-          >
+          <div v-show="!showReset" class="form-container">
             <sign-in-form
               @to-reset="showReset = true"
               @to-register="showRegister"
@@ -237,16 +233,16 @@ $input-height: 40px;
         </div>
         <div
           :class="{
-            'sign-up-init' : !showSignUp && !showSignIn,
-            'sign-up-show' : showSignUp && !showSignIn,
-            'sign-up-turn' : !showSignUp && showSignIn
+            'sign-up-init': !showSignUp && !showSignIn,
+            'sign-up-show': showSignUp && !showSignIn,
+            'sign-up-turn': !showSignUp && showSignIn
           }"
           class="sign-modal sign-up-modal"
           @click.stop
         >
-          <div class="slogan"/>
+          <div class="slogan" />
           <div class="form-container">
-            <sign-up-form @to-login="showLogin"/>
+            <sign-up-form @to-login="showLogin" />
           </div>
         </div>
       </div>

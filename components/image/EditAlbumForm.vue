@@ -1,37 +1,21 @@
 <template>
-  <el-form
-    :disabled="submitting"
-    label-width="45px"
-  >
-    <el-form-item
-      label="名字"
-      prop="name"
-    >
+  <el-form :disabled="submitting" label-width="45px">
+    <el-form-item label="名字" prop="name">
       <el-input
         v-model="form.name"
         :placeholder="isCartoon ? '填写这一话的名字' : '给相册起一个名字'"
       />
     </el-form-item>
-    <el-form-item
-      v-if="isCartoon"
-      label="集数"
-      prop="part"
-    >
-      <el-input-number
-        v-model="form.part"
-        :min="1"
-      />
+    <el-form-item v-if="isCartoon" label="集数" prop="part">
+      <el-input-number v-model="form.part" :min="1" />
     </el-form-item>
-    <el-form-item
-      label="封面"
-      prop="poster"
-    >
+    <el-form-item label="封面" prop="poster">
       <img
         v-if="form.poster"
         :src="$resize(form.poster.url)"
         height="200"
         style="width: auto;"
-      >
+      />
       <el-upload
         ref="upload"
         :data="uploadHeaders"
@@ -42,11 +26,7 @@
         :action="imageUploadAction"
         :accept="imageUploadAccept"
       >
-        <el-button
-          :loading="submitting"
-          size="small"
-          round
-        >上传封面</el-button>
+        <el-button :loading="submitting" size="small" round>上传封面</el-button>
       </el-upload>
     </el-form-item>
     <el-form-item>
@@ -55,7 +35,8 @@
         type="primary"
         size="small"
         @click="submit"
-      >确认提交</el-button>
+        >确认提交</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

@@ -1,13 +1,9 @@
 <template>
   <div id="idol-owner-list">
     <div>
-      <el-radio-group
-        v-model="active"
-        size="mini"
-        @change="handleTabSwitch"
-      >
-        <el-radio-button label="按持股由多到少"/>
-        <el-radio-button label="按最新入股排序"/>
+      <el-radio-group v-model="active" size="mini" @change="handleTabSwitch">
+        <el-radio-button label="按持股由多到少" />
+        <el-radio-button label="按最新入股排序" />
       </el-radio-group>
     </div>
     <flow-list
@@ -17,38 +13,25 @@
       type="seenIds"
       sort="biggest"
     >
-      <ul
-        slot-scope="{ flow }"
-        class="likes-modal"
-      >
-        <li
-          v-for="item in flow"
-          :key="item.id"
-        >
-          <a
-            :href="$alias.user(item.zone)"
-            class="user"
-            target="_blank"
-          >
-            <img
-              :src="$resize(item.avatar, { width: 80 })"
-              class="avatar"
+      <ul slot-scope="{ flow }" class="likes-modal">
+        <li v-for="item in flow" :key="item.id">
+          <a :href="$alias.user(item.zone)" class="user" target="_blank">
+            <img :src="$resize(item.avatar, { width: 80 })" class="avatar" />
+            <span class="nickname" v-text="item.nickname" />
+            <span class="score"
+              >持有{{ item.score }}股，占比{{
+                computedPercent(item.score)
+              }}</span
             >
-            <span
-              class="nickname"
-              v-text="item.nickname"
-            />
-            <span class="score">持有{{ item.score }}股，占比{{ computedPercent(item.score) }}</span>
           </a>
         </li>
       </ul>
       <template slot="nothing">
-        <br>
+        <br />
         <no-content>
-          <el-button
-            round
-            @click="$toast.warn('Orz')"
-          >可怜的「{{ name }}」还没有人入股</el-button>
+          <el-button round @click="$toast.warn('Orz')"
+            >可怜的「{{ name }}」还没有人入股</el-button
+          >
         </no-content>
       </template>
     </flow-list>
@@ -59,41 +42,21 @@
       type="lastId"
       sort="newest"
     >
-      <ul
-        slot-scope="{ flow }"
-        class="likes-modal"
-      >
-        <li
-          v-for="item in flow"
-          :key="item.id"
-        >
-          <a
-            :href="$alias.user(item.zone)"
-            class="user"
-            target="_blank"
-          >
-            <img
-              :src="$resize(item.avatar, { width: 80 })"
-              class="avatar"
-            >
-            <span
-              class="nickname"
-              v-text="item.nickname"
-            />
-            <v-time
-              v-model="item.score"
-              class="score"
-            />
+      <ul slot-scope="{ flow }" class="likes-modal">
+        <li v-for="item in flow" :key="item.id">
+          <a :href="$alias.user(item.zone)" class="user" target="_blank">
+            <img :src="$resize(item.avatar, { width: 80 })" class="avatar" />
+            <span class="nickname" v-text="item.nickname" />
+            <v-time v-model="item.score" class="score" />
           </a>
         </li>
       </ul>
       <template slot="nothing">
-        <br>
+        <br />
         <no-content>
-          <el-button
-            round
-            @click="$toast.warn('Orz')"
-          >可怜的「{{ name }}」还没有人入股</el-button>
+          <el-button round @click="$toast.warn('Orz')"
+            >可怜的「{{ name }}」还没有人入股</el-button
+          >
         </no-content>
       </template>
     </flow-list>

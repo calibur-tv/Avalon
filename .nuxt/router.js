@@ -34,6 +34,7 @@ const _bb479e64 = () => interopDefault(import('../pages/role/trending/intro.vue'
 const _d739b56a = () => interopDefault(import('../pages/role/trending/listed.vue' /* webpackChunkName: "pages/role/trending/listed" */))
 const _06e7333e = () => interopDefault(import('../pages/role/trending/mine.vue' /* webpackChunkName: "pages/role/trending/mine" */))
 const _1a1a4e6c = () => interopDefault(import('../pages/role/trending/newbie.vue' /* webpackChunkName: "pages/role/trending/newbie" */))
+const _636d5351 = () => interopDefault(import('../pages/role/trending/product.vue' /* webpackChunkName: "pages/role/trending/product" */))
 const _6a9a5db1 = () => interopDefault(import('../pages/role/trending/register.vue' /* webpackChunkName: "pages/role/trending/register" */))
 const _f5da0a1a = () => interopDefault(import('../pages/about/invite/_id.vue' /* webpackChunkName: "pages/about/invite/_id" */))
 const _76b887ee = () => interopDefault(import('../pages/app/notice/_id.vue' /* webpackChunkName: "pages/app/notice/_id" */))
@@ -249,6 +250,11 @@ export function createRouter() {
         component: _1a1a4e6c,
         props: false,
         name: "role-trending-newbie"
+      }, {
+        path: "product",
+        component: _636d5351,
+        props: false,
+        name: "role-trending-product"
       }, {
         path: "register",
         component: _6a9a5db1,

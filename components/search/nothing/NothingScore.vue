@@ -1,6 +1,6 @@
 <template>
   <div class="search-nothing-score">
-    <no-content/>
+    <no-content />
   </div>
 </template>
 

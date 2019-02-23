@@ -48,7 +48,9 @@ export default new class {
         pageName,
         abTest
       })
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 
   setExtrasData({ requestId, viaId } = {}) {
@@ -58,7 +60,9 @@ export default new class {
         'Via-Id': viaId || 'none',
         'First-Referrer-Host': document.referrer.split('?')[0] || 'none'
       })
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 
   setUserInfo(user) {
@@ -67,7 +71,9 @@ export default new class {
     }
     try {
       this.Raven.setUserContext(user)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 
   setResponseStack(obj) {
@@ -82,7 +88,9 @@ export default new class {
       }
       this.Raven.setExtraContext()
       this.Raven.setExtraContext(extra)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 
   setPageViewStack(url) {
@@ -97,7 +105,9 @@ export default new class {
       }
       this.Raven.setExtraContext()
       this.Raven.setExtraContext(extra)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 
   setRequestStack(obj) {
@@ -112,7 +122,9 @@ export default new class {
       }
       this.Raven.setExtraContext()
       this.Raven.setExtraContext(extra)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 
   test() {

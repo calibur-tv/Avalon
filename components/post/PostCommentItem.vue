@@ -120,10 +120,7 @@
     class="post-comment-item"
   >
     <div class="user">
-      <user-card
-        :id="post.from_user_id"
-        :zone="post.from_user_zone"
-      >
+      <user-card :id="post.from_user_id" :zone="post.from_user_zone">
         <v-img
           :src="post.from_user_avatar"
           :avatar="true"
@@ -131,10 +128,7 @@
           :height="80"
           class="avatar"
         />
-        <p
-          class="nickname oneline"
-          v-text="post.from_user_name"
-        />
+        <p class="nickname oneline" v-text="post.from_user_name" />
       </user-card>
       <el-tooltip
         v-if="post.is_owner"
@@ -142,7 +136,7 @@
         effect="dark"
         content="楼主"
       >
-        <i class="iconfont icon-owner"/>
+        <i class="iconfont icon-owner" />
       </el-tooltip>
       <el-tooltip
         v-if="post.is_leader"
@@ -150,7 +144,7 @@
         effect="dark"
         content="版主"
       >
-        <i class="iconfont icon-leader"/>
+        <i class="iconfont icon-leader" />
       </el-tooltip>
       <el-tooltip
         v-else-if="post.is_master"
@@ -158,16 +152,12 @@
         effect="dark"
         content="代行者"
       >
-        <i class="iconfont icon-master"/>
+        <i class="iconfont icon-master" />
       </el-tooltip>
     </div>
     <div class="content">
       <div class="main">
-        <div
-          v-for="(img, idx) in post.images"
-          :key="idx"
-          class="image-package"
-        >
+        <div v-for="(img, idx) in post.images" :key="idx" class="image-package">
           <v-img
             :src="img.url"
             :width="img.width"
@@ -178,45 +168,39 @@
             class="image"
           />
         </div>
-        <div
-          class="text-package"
-          v-html="post.content"
-        />
+        <div class="text-package" v-html="post.content" />
       </div>
       <div class="footer">
         <div class="info-bar">
-          <button
-            class="like-btn"
-            @click="toggleLike"
-          >
+          <button class="like-btn" @click="toggleLike">
             {{ post.liked ? '已赞' : '赞' }}
             <span v-if="post.like_count">({{ post.like_count }})</span>
           </button>
-          <button
-            v-if="canDelete"
-            class="delete-btn"
-            @click="deleteComment"
-          >删除</button>
+          <button v-if="canDelete" class="delete-btn" @click="deleteComment">
+            删除
+          </button>
           <span class="floor-count">{{ post.floor_count }}楼</span>
-          <v-time
-            :datetime="post.created_at"
-            class="floor-count"
-          />
+          <v-time :datetime="post.created_at" class="floor-count" />
           <div class="hover-box">
-            <report-dialog
-              :id="post.id"
-              type="post_comment"
-            >举报</report-dialog>
+            <report-dialog :id="post.id" type="post_comment"
+              >举报</report-dialog
+            >
             <button
-              v-clipboard="`https://www.calibur.tv/post/${post.modal_id}?comment-id=${post.id}`"
+              v-clipboard="
+                `https://www.calibur.tv/post/${post.modal_id}?comment-id=${
+                  post.id
+                }`
+              "
               class="fen-think-btn"
               @success="handleCopySuccess"
-            >复制评论链接</button>
+            >
+              复制评论链接
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <post-sub-comment-list :parent-comment="post"/>
+    <post-sub-comment-list :parent-comment="post" />
   </div>
 </template>
 
@@ -275,6 +259,7 @@ export default {
           id: this.post.id
         })
       } catch (e) {
+        // do nothing
       } finally {
         this.liking = false
       }

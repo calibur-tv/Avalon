@@ -28,11 +28,8 @@
 
 <template>
   <div id="question-show">
-    <v-header
-      type="pure"
-      margin-bottom="0"
-    />
-    <question-panel :qaq="qaq"/>
+    <v-header type="pure" margin-bottom="0" />
+    <question-panel :qaq="qaq" />
     <el-alert
       v-if="qaq.deleted_at"
       title="该内容已被删除"
@@ -47,15 +44,9 @@
         sort="active"
         type="seenIds"
       >
-        <div
-          v-if="qaq.answer_count"
-          slot="header"
-          class="answers"
-        >
+        <div v-if="qaq.answer_count" slot="header" class="answers">
           <div class="answers-title">
-            <h2>
-              {{ qaq.answer_count }} 个回答
-            </h2>
+            <h2>{{ qaq.answer_count }} 个回答</h2>
           </div>
         </div>
         <ul slot-scope="{ flow }">
@@ -67,7 +58,9 @@
           />
         </ul>
       </flow-list>
-      <template slot="aside">&nbsp;</template>
+      <template slot="aside"
+        >&nbsp;</template
+      >
     </v-layout>
   </div>
 </template>
@@ -81,6 +74,21 @@ export default {
   name: 'QuestionShow',
   validate({ params }) {
     return /^\d+$/.test(params.id)
+  },
+  components: {
+    AnswerFlowItem,
+    QuestionPanel
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      qaq: null
+    }
   },
   async asyncData({ app, store, params, error }) {
     const { id } = params
@@ -96,7 +104,12 @@ export default {
         })
         return { qaq }
       })
-      .catch(error)
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
   },
   async fetch({ store, params }) {
     await store.dispatch('flow/initData', {
@@ -109,21 +122,6 @@ export default {
   head() {
     return {
       title: this.qaq.title
-    }
-  },
-  components: {
-    AnswerFlowItem,
-    QuestionPanel
-  },
-  props: {
-    id: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      qaq: null
     }
   }
 }

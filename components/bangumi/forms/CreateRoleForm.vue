@@ -31,20 +31,10 @@
       :disabled="submitting"
       label-width="80px"
     >
-      <el-form-item
-        v-if="isCreate"
-        label="偶像名称"
-        prop="name"
-      >
-        <el-input
-          v-model.trim="form.name"
-          placeholder="偶像的中文名"
-        />
+      <el-form-item v-if="isCreate" label="偶像名称" prop="name">
+        <el-input v-model.trim="form.name" placeholder="偶像的中文名" />
       </el-form-item>
-      <el-form-item
-        label="偶像别名"
-        prop="alias"
-      >
+      <el-form-item label="偶像别名" prop="alias">
         <el-select
           v-model="form.alias"
           multiple
@@ -55,16 +45,13 @@
           style="width: 100%"
         />
       </el-form-item>
-      <el-form-item
-        label="偶像头像"
-        prop="avatar"
-      >
+      <el-form-item label="偶像头像" prop="avatar">
         <img
           v-if="form.avatar"
           :src="$resize(form.avatar, { width: 200 })"
           class="avatar"
           style="width: 100px;height: 100px;"
-        >
+        />
         <el-upload
           ref="upload"
           :data="uploadHeaders"
@@ -78,10 +65,7 @@
           <el-button size="mini">点击上传</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item
-        label="偶像简介"
-        prop="intro"
-      >
+      <el-form-item label="偶像简介" prop="intro">
         <el-input
           v-model="form.intro"
           :rows="10"
@@ -94,7 +78,8 @@
           :loading="submitting"
           type="primary"
           @click="submitEditProfile"
-        >确认提交</el-button>
+          >确认提交</el-button
+        >
       </el-form-item>
     </el-form>
   </div>

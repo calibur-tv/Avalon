@@ -25,18 +25,10 @@
 <template>
   <div class="json-content-list-parser">
     <ol v-if="item.sort === '1'">
-      <li
-        v-for="(li, index) in list"
-        :key="index"
-        v-text="li"
-      />
+      <li v-for="(li, index) in list" :key="index" v-text="li" />
     </ol>
     <ul v-else>
-      <li
-        v-for="(li, index) in list"
-        :key="index"
-        v-text="li"
-      />
+      <li v-for="(li, index) in list" :key="index" v-text="li" />
     </ul>
   </div>
 </template>

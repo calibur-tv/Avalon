@@ -56,31 +56,31 @@
 <template>
   <div
     id="invite-user"
-    :style="{ backgroundImage: `url(${$resize('https://image.calibur.tv/Fu09P6XyZuIvE4WfsE9ipu5BtCO6', {
-      width: 2048,
-      height: 0,
-      mode: 0
-    })})` }"
+    :style="{
+      backgroundImage: `url(${$resize(
+        'https://image.calibur.tv/Fu09P6XyZuIvE4WfsE9ipu5BtCO6',
+        {
+          width: 2048,
+          height: 0,
+          mode: 0
+        }
+      )})`
+    }"
   >
-    <v-header type="mask"/>
-    <div
-      v-if="isAuth"
-      class="container"
-    >
+    <v-header type="mask" />
+    <div v-if="isAuth" class="container">
       <template v-if="user && user.id">
         <p class="signed">
           你已经是注册用户了 (￣3￣)
-          <br>
+          <br />
           把这个网址链接发给小伙伴，或者告诉TA你的邀请码就行啦
-          <br>
+          <br />
           快来邀请小伙伴一起加入 calibur 吧
-          <br>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            placement="bottom"
-          >
-            <div slot="content">点击复制我的邀请地址<br>邀请小伙伴们注册赚团子</div>
+          <br />
+          <el-tooltip class="item" effect="dark" placement="bottom">
+            <div slot="content">
+              点击复制我的邀请地址<br />邀请小伙伴们注册赚团子
+            </div>
             <el-button
               v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
               type="warning"
@@ -92,12 +92,9 @@
           </el-tooltip>
         </p>
       </template>
-      <div
-        v-else
-        class="sign-wrap"
-      >
+      <div v-else class="sign-wrap">
         <h3>欢迎注册 calibur.tv</h3>
-        <sign-up-form :invite-code="id"/>
+        <sign-up-form :invite-code="id" />
       </div>
     </div>
   </div>

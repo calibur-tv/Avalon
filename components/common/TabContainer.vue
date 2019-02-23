@@ -36,22 +36,14 @@
     class="tab-container"
     @tab-click="tabClick"
   >
+    <el-tab-pane v-if="title" :label="title" :disabled="true" :name="title" />
     <el-tab-pane
-      v-if="title"
-      :label="title"
-      :disabled="true"
-      :name="title"
-    />
-    <el-tab-pane
-      v-for="(i, index) in list" 
+      v-for="(i, index) in list"
       :key="index"
       :label="i.label"
       :name="route ? i.name : `${index}`"
     >
-      <slot
-        v-if="!route"
-        :name="`${index}`"
-      />
+      <slot v-if="!route" :name="`${index}`" />
     </el-tab-pane>
   </el-tabs>
 </template>

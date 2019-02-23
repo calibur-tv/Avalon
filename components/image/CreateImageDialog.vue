@@ -7,13 +7,9 @@
     title="上传图片"
     class="create-image-modal"
   >
-    <el-radio-group
-      v-model="action"
-      size="mini"
-      style="margin-bottom: 30px"
-    >
-      <el-radio-button label="上传图片"/>
-      <el-radio-button label="创建相册"/>
+    <el-radio-group v-model="action" size="mini" style="margin-bottom: 30px">
+      <el-radio-button label="上传图片" />
+      <el-radio-button label="创建相册" />
     </el-radio-group>
     <upload-image-form
       v-if="action === '上传图片'"

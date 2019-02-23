@@ -19,14 +19,8 @@
     </el-alert>
     <section v-if="source.total">
       <div v-if="source.has_season">
-        <div
-          v-for="season in source.videos"
-          :key="season.name"
-        >
-          <h3
-            class="celltitle"
-            v-text="season.name"
-          />
+        <div v-for="season in source.videos" :key="season.name">
+          <h3 class="celltitle" v-text="season.name" />
           <ul>
             <video-flow-item
               v-for="video in season.data"
@@ -46,15 +40,8 @@
         />
       </ul>
     </section>
-    <v-dialog
-      v-model="showDialog"
-      :footer="false"
-      title="新建视频"
-    >
-      <edit-video-form
-        :bangumi-id="id"
-        :season="computedSeason"
-      />
+    <v-dialog v-model="showDialog" :footer="false" title="新建视频">
+      <edit-video-form :bangumi-id="id" :season="computedSeason" />
     </v-dialog>
   </div>
 </template>
@@ -66,15 +53,6 @@ import EditVideoForm from '~/components/bangumi/EditVideoForm'
 
 export default {
   name: 'BangumiVideo',
-  asyncData({ params, app, error }) {
-    return getBangumiVideos(app, {
-      id: params.id
-    })
-      .then(source => {
-        return { source }
-      })
-      .catch(error)
-  },
   components: {
     EditVideoForm,
     VideoFlowItem
@@ -103,6 +81,20 @@ export default {
     bangumi() {
       return this.$store.state.bangumi.show
     }
+  },
+  asyncData({ params, app, error }) {
+    return getBangumiVideos(app, {
+      id: params.id
+    })
+      .then(source => {
+        return { source }
+      })
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
   },
   methods: {
     openCreateDialog() {

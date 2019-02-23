@@ -48,24 +48,27 @@
 
 <template>
   <div id="reward">
-    <v-header/>
+    <v-header />
     <div class="container">
       <h3 class="sub-title">
         就算是1块钱的捐助，也能让 calibur 更好的发展
       </h3>
       <div class="qr-code">
         <div class="alipay">
-          <img src="~assets/img/alipay.png">
+          <img src="~assets/img/alipay.png" />
           <p>支付宝</p>
         </div>
         <div class="wechat">
-          <img src="~assets/img/wechat.png">
+          <img src="~assets/img/wechat.png" />
           <p>微信</p>
         </div>
       </div>
-      <br>
-      <p>若您因为种种原因无法捐款，您仍可以通过其他方式为 calibur 的发展做出贡献（帮助宣传等）</p>
-      <br>
+      <br />
+      <p>
+        若您因为种种原因无法捐款，您仍可以通过其他方式为 calibur
+        的发展做出贡献（帮助宣传等）
+      </p>
+      <br />
     </div>
   </div>
 </template>

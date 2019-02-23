@@ -25,13 +25,13 @@
       title="变更方式"
       type="warning"
     >
-      <p>确认之后，将会发布一条公开提案，只要有超过 2/3 的票数表决同意，就会自动增发股票</p>
+      <p>
+        确认之后，将会发布一条公开提案，只要有超过 2/3
+        的票数表决同意，就会自动增发股票
+      </p>
     </el-alert>
     <el-form label-width="80px">
-      <el-form-item
-        label="每股股价"
-        prop="stock_price"
-      >
+      <el-form-item label="每股股价" prop="stock_price">
         <el-input-number
           v-model="editStockForm.new_price"
           :min="1"
@@ -39,10 +39,7 @@
           :step="0.01"
         />
       </el-form-item>
-      <el-form-item
-        label="增发数额"
-        prop="max_stock_count"
-      >
+      <el-form-item label="增发数额" prop="max_stock_count">
         <el-input-number
           v-model="editStockForm.add_stock_count"
           :step="1"
@@ -50,14 +47,16 @@
         />
       </el-form-item>
       <el-form-item>
-        <p>最低增发市值：￥{{ minAddPrice }}&nbsp;，当前增发市值：￥{{ curAddPrice }}&nbsp;，增发后总市值：￥{{ totalMarketPrice }}</p>
+        <p>
+          最低增发市值：￥{{ minAddPrice }}&nbsp;，当前增发市值：￥{{
+            curAddPrice
+          }}&nbsp;，增发后总市值：￥{{ totalMarketPrice }}
+        </p>
       </el-form-item>
       <el-form-item>
-        <el-button
-          :loading="submitting"
-          type="primary"
-          @click="changeIdolStock"
-        >提交变更提案</el-button>
+        <el-button :loading="submitting" type="primary" @click="changeIdolStock"
+          >提交变更提案</el-button
+        >
       </el-form-item>
     </el-form>
   </div>

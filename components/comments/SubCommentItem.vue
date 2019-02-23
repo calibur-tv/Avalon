@@ -95,10 +95,7 @@
   >
     <div class="sub-user">
       <div class="avatar">
-        <user-card
-          :id="comment.from_user_id"
-          :zone="comment.from_user_zone"
-        >
+        <user-card :id="comment.from_user_id" :zone="comment.from_user_zone">
           <v-img
             :src="comment.from_user_avatar"
             :avatar="true"
@@ -117,7 +114,9 @@
         {{ comment.from_user_name }}
       </user-card>
       <span class="sub-text">
-        <template v-if="comment.to_user_id && comment.to_user_id !== parentUserId">
+        <template
+          v-if="comment.to_user_id && comment.to_user_id !== parentUserId"
+        >
           回复
           <user-card
             :id="comment.to_user_id"
@@ -130,35 +129,21 @@
         {{ comment.content }}
       </span>
       <div class="sub-extra">
-        <el-tooltip
-          :content="comment.created_at"
-          placement="top"
-          effect="dark"
-        >
-          <v-time v-model="comment.created_at"/>
+        <el-tooltip :content="comment.created_at" placement="top" effect="dark">
+          <v-time v-model="comment.created_at" />
         </el-tooltip>
-        <button
-          class="reply-btn"
-          @click="openReplyForm"
-        >回复</button>
-        <button
-          v-if="canDelete"
-          @click="deleteComment"
-        >
-          <i class="iconfont icon-shanchu"/>
+        <button class="reply-btn" @click="openReplyForm">回复</button>
+        <button v-if="canDelete" @click="deleteComment">
+          <i class="iconfont icon-shanchu" />
         </button>
-        <report-dialog
-          v-else
-          :id="comment.id"
-          :type="type + '_reply'"
-        >
+        <report-dialog v-else :id="comment.id" :type="type + '_reply'">
           <button class="reply-btn">举报</button>
         </report-dialog>
       </div>
       <comment-reply-form
+        :id="comment.parent_id"
         v-model="showReplyArea"
         :type="type"
-        :id="comment.parent_id"
         :to-user-id="comment.from_user_id"
       />
     </div>

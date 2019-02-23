@@ -151,46 +151,24 @@
 </style>
 
 <template>
-  <div
-    v-show="show"
-    id="side-tools"
-  >
+  <div v-show="show" id="side-tools">
     <v-creator>
-      <el-tooltip
-        placement="left"
-        effect="dark"
-        content="传图片"
-      >
+      <el-tooltip placement="left" effect="dark" content="传图片">
         <button
           class="creator-btn el-icon-picture-outline"
           @click="handleImageClick"
         />
       </el-tooltip>
-      <el-tooltip
-        placement="top"
-        effect="dark"
-        content="发帖"
-      >
-        <button
-          class="creator-btn el-icon-edit"
-          @click="handlePostClick"
-        />
+      <el-tooltip placement="top" effect="dark" content="发帖">
+        <button class="creator-btn el-icon-edit" @click="handlePostClick" />
       </el-tooltip>
-      <el-tooltip
-        placement="top"
-        effect="dark"
-        content="写漫评"
-      >
+      <el-tooltip placement="top" effect="dark" content="写漫评">
         <button
           class="creator-btn el-icon-edit-outline"
           @click="handleScoreClick"
         />
       </el-tooltip>
-      <el-tooltip
-        placement="top"
-        effect="dark"
-        content="提问"
-      >
+      <el-tooltip placement="top" effect="dark" content="提问">
         <button
           class="creator-btn el-icon-printer"
           @click="handleQuestionClick"
@@ -198,16 +176,9 @@
       </el-tooltip>
     </v-creator>
     <div class="creator-button-box">
-      <el-tooltip
-        placement="right"
-        effect="dark"
-        content="反馈"
-      >
-        <button
-          class="tool-btn feedback-btn"
-          @click="handleFeedbackClick"
-        >
-          <i class="el-icon-service"/>
+      <el-tooltip placement="right" effect="dark" content="反馈">
+        <button class="tool-btn feedback-btn" @click="handleFeedbackClick">
+          <i class="el-icon-service" />
         </button>
       </el-tooltip>
       <transition name="el-fade-in">
@@ -217,33 +188,25 @@
           effect="dark"
           content="返回"
         >
-          <button
-            class="tool-btn top-btn"
-            @click="$scrollToY(0)"
-          >
-            <i class="el-icon-arrow-up"/>
+          <button class="tool-btn top-btn" @click="$scrollToY(0)">
+            <i class="el-icon-arrow-up" />
           </button>
         </el-tooltip>
-        <el-tooltip
-          v-else
-          placement="right"
-          effect="dark"
-          content="团子"
-        >
+        <el-tooltip v-else placement="right" effect="dark" content="团子">
           <button
             class="tool-btn coin-intro-btn"
             @click="showCoinDialog = true"
           >
-            <i class="iconfont icon-fantuan"/>
+            <i class="iconfont icon-fantuan" />
           </button>
         </el-tooltip>
       </transition>
     </div>
     <template v-if="!isGuest">
-      <create-question-dialog/>
-      <create-image-dialog/>
+      <create-question-dialog />
+      <create-image-dialog />
     </template>
-    <v-feedback/>
+    <v-feedback />
     <v-dialog
       v-model="showCoinDialog"
       :header="false"
@@ -254,7 +217,7 @@
       class="intro-coin-dialog"
     >
       <div class="intro-slide">
-        <div class="bg"/>
+        <div class="bg" />
       </div>
       <div class="intro-content">
         <p>什么是团子？</p>

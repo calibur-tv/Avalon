@@ -71,64 +71,76 @@
       class="title-input"
       placeholder="给你的文章起个好名字！"
     />
-    <div
-      v-if="!id"
-      class="is-creator-wrap"
-    >
+    <div v-if="!id" class="is-creator-wrap">
       <h3 class="sub-title">原创</h3>
-      <el-tooltip
-        content="如果这是你的原创作品，请勾选该选项"
-        placement="top"
-      >
-        <el-switch v-model="is_creator"/>
+      <el-tooltip content="如果这是你的原创作品，请勾选该选项" placement="top">
+        <el-switch v-model="is_creator" />
       </el-tooltip>
     </div>
     <h3 class="sub-title">
       评分
-      <i
-        class="el-icon-question"
-        @click="openTips = !openTips"
-      />
+      <i class="el-icon-question" @click="openTips = !openTips" />
     </h3>
     <div class="star-row">
-      <div
-        v-for="(item, index) in columns"
-        :key="index"
-        class="star-item"
-      >
-        <div
-          class="label"
-          v-text="labelMap[item]"
-        />
-        <el-rate
-          v-model="form[item]"
-          allow-half
-        />
+      <div v-for="(item, index) in columns" :key="index" class="star-item">
+        <div class="label" v-text="labelMap[item]" />
+        <el-rate v-model="form[item]" allow-half />
       </div>
     </div>
-    <el-alert
-      v-if="openTips"
-      title=""
-      type="info"
-    >
+    <el-alert v-if="openTips" title="" type="info">
       <p>漫评系统简介：</p>
-      <p>站长本人只能算是一个中度的动漫爱好者，对历史的动漫评分体系并没有做过深刻的研究，并且文学功底很差，因此实现的这个评分系统并不一定完美，如果你有好的意见可以通过QQ群联系到我向我反馈。</p>
-      <p>评分系统由十个维度组成，每个维度最低0分，最高10分，因此总分是100分，然后除以 10 之后，得出在页面展示的「10分制」总分。</p>
-      <p>在选取哪十个维度时，并无法做到完全的深思熟虑，因此可能会存在一些不合理的地方，还请大家见谅！</p>
-      <p><strong>笑点</strong>：这部作品是否让你开怀大笑了呢？虽然这个维度对「悲剧作品」不怎么友好，但有一部分喜剧它的核心其实源于悲剧。</p>
-      <p><strong>泪点</strong>：这部作品让你泪腺崩坏了吗？同样的，虽然这个维度对「喜剧作品」不怎么友好，但也存在一些笑着笑着忽然催人泪下的作品？</p>
+      <p>
+        站长本人只能算是一个中度的动漫爱好者，对历史的动漫评分体系并没有做过深刻的研究，并且文学功底很差，因此实现的这个评分系统并不一定完美，如果你有好的意见可以通过QQ群联系到我向我反馈。
+      </p>
+      <p>
+        评分系统由十个维度组成，每个维度最低0分，最高10分，因此总分是100分，然后除以
+        10 之后，得出在页面展示的「10分制」总分。
+      </p>
+      <p>
+        在选取哪十个维度时，并无法做到完全的深思熟虑，因此可能会存在一些不合理的地方，还请大家见谅！
+      </p>
+      <p>
+        <strong>笑点</strong
+        >：这部作品是否让你开怀大笑了呢？虽然这个维度对「悲剧作品」不怎么友好，但有一部分喜剧它的核心其实源于悲剧。
+      </p>
+      <p>
+        <strong>泪点</strong
+        >：这部作品让你泪腺崩坏了吗？同样的，虽然这个维度对「喜剧作品」不怎么友好，但也存在一些笑着笑着忽然催人泪下的作品？
+      </p>
       <p><strong>燃点</strong>：这个不需要多余的解释，成为神话吧，少年！</p>
-      <p><strong>萌点</strong>：em.....大家现在对萌系的东西都很喜爱，所以就单独拿出来做了一个分类，如果这部作品中有可爱的角色，就给它加分吧！</p>
-      <p><strong>音乐</strong>：音乐包括：OP、ED、BGM、声优，是一个综合性的分类。</p>
-      <p><strong>画面</strong>：画面包括：静态的人物、建筑、风景的设计与精度，还包括动态的画面连贯性、帧率、特效等。</p>
-      <p><strong>情节</strong>：好的作品情节总是跌宕起伏、扑朔里面，基本猜不到下一步会发展成什么样子，并且叙事手法、伏笔运用都非常的精妙。</p>
-      <p><strong>人设</strong>：一些动漫角色的存在甚至成为了我们的人生信条、憧憬的方向、美的标准，如是纯粹的恶、超强的头脑、强大的意志力等，是作品的灵魂。</p>
-      <p><strong>内涵</strong>：作品所表达的世界观、价值观、人生观等，对人生的思考具有一定的引导价值。</p>
-      <p><strong>美感</strong>：有时候画质不是越好就越美，有些美具有一种艺术感，这种美可能是画面上的，可能是叙事的手法，可能是背景音乐。</p>
-      <p>最后，一般情况下不存在0分的作品，如果你认为一部作品是0分，那就请放过它吧；也不存在满分的作品，如果你认为一部作品达到了满分，可能是你的阅片量还太少，需要再接再厉，(๑•̀ㅂ•́)و✧！</p>
+      <p>
+        <strong>萌点</strong
+        >：em.....大家现在对萌系的东西都很喜爱，所以就单独拿出来做了一个分类，如果这部作品中有可爱的角色，就给它加分吧！
+      </p>
+      <p>
+        <strong>音乐</strong>：音乐包括：OP、ED、BGM、声优，是一个综合性的分类。
+      </p>
+      <p>
+        <strong>画面</strong
+        >：画面包括：静态的人物、建筑、风景的设计与精度，还包括动态的画面连贯性、帧率、特效等。
+      </p>
+      <p>
+        <strong>情节</strong
+        >：好的作品情节总是跌宕起伏、扑朔里面，基本猜不到下一步会发展成什么样子，并且叙事手法、伏笔运用都非常的精妙。
+      </p>
+      <p>
+        <strong>人设</strong
+        >：一些动漫角色的存在甚至成为了我们的人生信条、憧憬的方向、美的标准，如是纯粹的恶、超强的头脑、强大的意志力等，是作品的灵魂。
+      </p>
+      <p>
+        <strong>内涵</strong
+        >：作品所表达的世界观、价值观、人生观等，对人生的思考具有一定的引导价值。
+      </p>
+      <p>
+        <strong>美感</strong
+        >：有时候画质不是越好就越美，有些美具有一种艺术感，这种美可能是画面上的，可能是叙事的手法，可能是背景音乐。
+      </p>
+      <p>
+        最后，一般情况下不存在0分的作品，如果你认为一部作品是0分，那就请放过它吧；也不存在满分的作品，如果你认为一部作品达到了满分，可能是你的阅片量还太少，需要再接再厉，(๑•̀ㅂ•́)و✧！
+      </p>
     </el-alert>
     <h3 class="sub-title">正文</h3>
-    <json-editor @submit="beforeSubmit"/>
+    <json-editor @submit="beforeSubmit" />
   </div>
 </template>
 
@@ -144,21 +156,8 @@ import {
 export default {
   name: 'ScoreCreate',
   layout: 'write',
-  asyncData({ app, store, query, error }) {
-    const { id } = query
-    if (id) {
-      return getScoreEditData(app, { id })
-        .then(data => {
-          store.commit('editor/INIT_SECTION', data)
-        })
-        .catch(error)
-    }
-  },
   components: {
     JsonEditor
-  },
-  head: {
-    title: '写漫评'
   },
   data() {
     const labelMap = {
@@ -215,6 +214,24 @@ export default {
     bid() {
       return this.$route.query.bid
     }
+  },
+  asyncData({ app, store, query, error }) {
+    const { id } = query
+    if (id) {
+      return getScoreEditData(app, { id })
+        .then(data => {
+          store.commit('editor/INIT_SECTION', data)
+        })
+        .catch(e => {
+          error({
+            statusCode: e.statusCode,
+            message: e.message
+          })
+        })
+    }
+  },
+  head: {
+    title: '写漫评'
   },
   mounted() {
     if (this.id) {

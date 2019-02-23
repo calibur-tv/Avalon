@@ -27,16 +27,8 @@
 <template>
   <div class="role-trending-newbie">
     <v-layout>
-      <flow-list
-        :sort="current_sort"
-        func="virtualIdolList"
-        type="seenIds"
-      >
-        <div
-          slot="header"
-          slot-scope="{ source }"
-          class="role-trending-header"
-        >
+      <flow-list :sort="current_sort" func="virtualIdolList" type="seenIds">
+        <div slot="header" slot-scope="{ source }" class="role-trending-header">
           <strong>总共 {{ source.total }} 个公司</strong>
           <div class="search">
             <bangumi-search
@@ -81,22 +73,18 @@
         </ul>
         <no-content slot="nothing">
           <nuxt-link to="/role/trending/listed">
-            <el-button
-              size="mini"
-            >
+            <el-button size="mini">
               查看已上市公司
             </el-button>
           </nuxt-link>
           <nuxt-link to="/role/trending/register">
-            <el-button
-              size="mini"
-            >
+            <el-button size="mini">
               自己注册公司
             </el-button>
           </nuxt-link>
         </no-content>
       </flow-list>
-      <idol-trending-aside slot="aside"/>
+      <idol-trending-aside slot="aside" />
     </v-layout>
   </div>
 </template>
@@ -108,20 +96,10 @@ import IdolTrendingAside from '~/components/idol/IdolTrendingAside'
 
 export default {
   name: 'RoleTrendingNewbie',
-  async asyncData({ store }) {
-    await store.dispatch('flow/initData', {
-      func: 'virtualIdolList',
-      type: 'seenIds',
-      sort: 'trending-star_count-0'
-    })
-  },
   components: {
     FlowList,
     VirtualIdolItem,
     IdolTrendingAside
-  },
-  head: {
-    title: '新创公司'
   },
   data() {
     return {
@@ -139,6 +117,16 @@ export default {
       sort_selected: 'star_count',
       current_sort: 'trending-star_count-0'
     }
+  },
+  async asyncData({ store }) {
+    await store.dispatch('flow/initData', {
+      func: 'virtualIdolList',
+      type: 'seenIds',
+      sort: 'trending-star_count-0'
+    })
+  },
+  head: {
+    title: '新创公司'
   },
   methods: {
     initTrending() {

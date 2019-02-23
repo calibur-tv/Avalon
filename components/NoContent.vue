@@ -39,14 +39,11 @@
 
 <template>
   <div id="no-content">
-    <img
-      src="~assets/img/no-content.png"
-      alt="no-content"
-    >
+    <img src="~assets/img/no-content.png" alt="no-content" />
     <div>
       <h3>暂无内容</h3>
       <p>抱歉，该页面暂无内容，请看看其他页面</p>
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>

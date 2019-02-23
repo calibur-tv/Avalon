@@ -31,8 +31,8 @@
 
 <template>
   <div class="hr">
-    <span/>
-    <p v-text="text"/>
+    <span />
+    <p v-text="text" />
   </div>
 </template>
 

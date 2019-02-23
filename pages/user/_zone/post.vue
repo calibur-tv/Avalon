@@ -17,18 +17,11 @@
 
 <template>
   <div id="user-post">
-    <el-radio-group
-      v-model="tab"
-      size="mini"
-      @change="handleTabSwitch"
-    >
-      <el-radio-button label="回帖"/>
-      <el-radio-button label="主题帖"/>
+    <el-radio-group v-model="tab" size="mini" @change="handleTabSwitch">
+      <el-radio-button label="回帖" />
+      <el-radio-button label="主题帖" />
     </el-radio-group>
-    <div
-      v-show="tab === '回帖'"
-      class="posts-of-reply"
-    >
+    <div v-show="tab === '回帖'" class="posts-of-reply">
       <flow-list
         :id="user.zone"
         func="getUserPostReply"
@@ -36,25 +29,13 @@
         sort="news"
       >
         <ul slot-scope="{ flow }">
-          <post-reply-item
-            v-for="item in flow"
-            :key="item.id"
-            :item="item"
-          />
+          <post-reply-item v-for="item in flow" :key="item.id" :item="item" />
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
     </div>
-    <div
-      v-show="tab === '主题帖'"
-      class="posts-of-mine"
-    >
-      <flow-list
-        :id="user.zone"
-        func="getUserPost"
-        type="page"
-        sort="news"
-      >
+    <div v-show="tab === '主题帖'" class="posts-of-mine">
+      <flow-list :id="user.zone" func="getUserPost" type="page" sort="news">
         <ul slot-scope="{ flow }">
           <post-flow-item
             v-for="item in flow"
@@ -63,7 +44,7 @@
             :item="item"
           />
         </ul>
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-list>
     </div>
   </div>
@@ -75,14 +56,6 @@ import PostReplyItem from '~/components/flow/item/PostReplyItem'
 
 export default {
   name: 'UserPost',
-  async asyncData({ store, params }) {
-    await store.dispatch('flow/initData', {
-      func: 'getUserPostReply',
-      sort: 'news',
-      type: 'page',
-      id: params.zone
-    })
-  },
   components: {
     PostFlowItem,
     PostReplyItem
@@ -96,6 +69,14 @@ export default {
     user() {
       return this.$store.state.users.show
     }
+  },
+  async asyncData({ store, params }) {
+    await store.dispatch('flow/initData', {
+      func: 'getUserPostReply',
+      sort: 'news',
+      type: 'page',
+      id: params.zone
+    })
   },
   methods: {
     handleTabSwitch(label) {

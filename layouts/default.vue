@@ -10,17 +10,17 @@
 
 <template>
   <div class="default-layout">
-    <nuxt class="main-view"/>
-    <v-footer/>
-    <v-music/>
+    <nuxt class="main-view" />
+    <v-footer />
+    <v-music />
     <not-ssr>
-      <side-tools/>
+      <side-tools />
     </not-ssr>
     <not-ssr>
-      <v-sign/>
+      <v-sign />
     </not-ssr>
     <not-ssr>
-      <gift-modal/>
+      <gift-modal />
     </not-ssr>
   </div>
 </template>

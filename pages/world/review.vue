@@ -70,19 +70,11 @@
       </div>
     </div>
     -->
-    <flow-list
-      func="getWorldScore"
-      type="seenIds"
-      sort="active"
-    >
+    <flow-list func="getWorldScore" type="seenIds" sort="active">
       <ul slot-scope="{ flow }">
-        <score-flow-item
-          v-for="item in flow"
-          :key="item.id"
-          :item="item"
-        />
+        <score-flow-item v-for="item in flow" :key="item.id" :item="item" />
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -92,6 +84,14 @@ import ScoreFlowItem from '~/components/flow/item/ScoreFlowItem'
 
 export default {
   name: 'ScoreWorld',
+  components: {
+    ScoreFlowItem
+  },
+  data() {
+    return {
+      showTips: false
+    }
+  },
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('flow/initData', {
@@ -102,16 +102,8 @@ export default {
       // store.dispatch('flow/getMeta', { type: 'score' })
     ])
   },
-  components: {
-    ScoreFlowItem
-  },
   head: {
     title: '漫评区'
-  },
-  data() {
-    return {
-      showTips: false
-    }
   }
 }
 </script>

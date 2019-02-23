@@ -220,7 +220,7 @@
 
 <template>
   <div id="post-show">
-    <v-header/>
+    <v-header />
     <v-layout>
       <el-alert
         v-if="post.deleted_at"
@@ -232,45 +232,26 @@
       <header>
         <div class="title-wrap">
           <div class="control">
-            <el-button
-              size="mini"
-              plain
-              @click="switchOnlyMaster"
-            >{{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}</el-button>
-            <el-button
-              size="mini"
-              plain
-              @click="scrollToReplyForm"
-            >回复</el-button>
-            <el-button
-              v-if="isMaster"
-              size="mini"
-              plain
-              @click="deletePost"
-            >删除</el-button>
+            <el-button size="mini" plain @click="switchOnlyMaster">{{
+              onlySeeMaster ? '取消只看楼主' : '只看楼主'
+            }}</el-button>
+            <el-button size="mini" plain @click="scrollToReplyForm"
+              >回复</el-button
+            >
+            <el-button v-if="isMaster" size="mini" plain @click="deletePost"
+              >删除</el-button
+            >
             <span class="floor">共{{ total }}条</span>
           </div>
-          <div
-            v-if="post.is_nice"
-            class="nice_badge"
-          >精</div>
-          <div
-            v-if="post.is_creator"
-            class="creator_badge"
-          >原创</div>
-          <h1
-            class="oneline"
-            v-text="post.title"
-          />
+          <div v-if="post.is_nice" class="nice_badge">精</div>
+          <div v-if="post.is_creator" class="creator_badge">原创</div>
+          <h1 class="oneline" v-text="post.title" />
         </div>
       </header>
       <main>
         <el-row class="post-main">
           <div class="user">
-            <user-card
-              :id="master.id"
-              :zone="master.zone"
-            >
+            <user-card :id="master.id" :zone="master.zone">
               <v-img
                 :src="master.avatar"
                 :avatar="true"
@@ -279,10 +260,7 @@
                 :height="80"
                 class="avatar"
               />
-              <p
-                class="nickname oneline"
-                v-text="master.nickname"
-              />
+              <p class="nickname oneline" v-text="master.nickname" />
             </user-card>
           </div>
           <div class="body">
@@ -302,19 +280,28 @@
                   class="image"
                 />
               </div>
-              <div
-                class="text-area"
-                v-html="post.content"
-              />
+              <div class="text-area" v-html="post.content" />
             </div>
             <div class="tags">
+              <a :href="$alias.bangumi(bangumi.id)" target="_blank">
+                <i class="iconfont icon-biaoqian" />
+                <span v-text="bangumi.name" />
+              </a>
               <a
-                :href="$alias.bangumi(bangumi.id)"
+                v-if="post.idol"
+                :href="$alias.cartoonRole(post.idol.id)"
                 target="_blank"
               >
-                <i class="iconfont icon-biaoqian"/>
-                <span v-text="bangumi.name"/>
+                <i class="iconfont icon-biaoqian" />
+                <span v-text="post.idol.name" />
               </a>
+              <buy-content-btn
+                v-else-if="post.is_idol_manager && post.is_creator"
+                :id="id"
+                :title="post.title"
+                :author="master.nickname"
+                type="post"
+              />
               <span
                 v-for="tag in post.tags"
                 :key="tag.id"
@@ -331,20 +318,15 @@
             <div class="footer">
               <div class="info-bar">
                 <span class="footer-item">1楼</span>
-                <v-time
-                  v-model="post.created_at"
-                  class="footer-item"
-                />
+                <v-time v-model="post.created_at" class="footer-item" />
                 <report-dialog
                   :id="post.id"
                   :is-creator="post.is_creator"
                   type="post"
                   title="帖子违规举报"
-                >举报</report-dialog>
-                <v-share
-                  :desc="post.desc"
-                  type="panel"
-                />
+                  >举报</report-dialog
+                >
+                <v-share :desc="post.desc" type="panel" />
               </div>
             </div>
           </div>
@@ -356,21 +338,15 @@
           empty-text=""
           type="post"
         >
-          <div slot="header"/>
+          <div slot="header" />
           <post-comment-item
             slot="comment-item"
             slot-scope="{ comment }"
             :post="comment"
             :master-id="master.id"
           />
-          <div
-            id="bottom-comment-post-form"
-            slot="reply"
-          >
-            <post-comment-form
-              :id="post.id"
-              :master-id="master.id"
-            />
+          <div id="bottom-comment-post-form" slot="reply">
+            <post-comment-form :id="post.id" :master-id="master.id" />
           </div>
         </comment-main>
       </main>
@@ -387,16 +363,51 @@
 </template>
 
 <script>
+import { getPostInfo, deletePost } from '~/api/postApi'
 import CommentMain from '~/components/comments/CommentMain'
 import PostCommentItem from '~/components/post/PostCommentItem'
 import PostCommentForm from '~/components/post/PostCommentForm'
 import SocialPanel from '~/components/common/SocialPanel'
-import { getPostInfo, deletePost } from '~/api/postApi'
+import BuyContentBtn from '~/components/idol/BuyContentBtn'
 
 export default {
   name: 'PostShow',
   validate({ params }) {
     return /^\d+$/.test(params.id)
+  },
+  components: {
+    CommentMain,
+    PostCommentItem,
+    PostCommentForm,
+    SocialPanel,
+    BuyContentBtn
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      bangumi: null,
+      post: null,
+      master: null
+    }
+  },
+  computed: {
+    total() {
+      return this.$store.state.comment.total + 1
+    },
+    onlySeeMaster() {
+      return !!parseInt(this.$route.query.only, 10)
+    },
+    isMaster() {
+      if (!this.$store.state.login) {
+        return false
+      }
+      return this.$store.state.user.id === this.master.id
+    }
   },
   asyncData({ query, store, params, app, error }) {
     const { id } = params
@@ -435,7 +446,12 @@ export default {
           shareData: data.share_data
         }
       })
-      .catch(error)
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
   },
   async fetch({ store, query, params }) {
     try {
@@ -445,44 +461,13 @@ export default {
         onlySeeMaster: query.only ? (parseInt(query.only, 10) ? 1 : 0) : 0,
         seeReplyId: query['comment-id']
       })
-    } catch (e) {}
-  },
-  components: {
-    CommentMain,
-    PostCommentItem,
-    PostCommentForm,
-    SocialPanel
+    } catch (e) {
+      // do nothing
+    }
   },
   head() {
     return {
       title: this.post.title
-    }
-  },
-  props: {
-    id: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      bangumi: null,
-      post: null,
-      master: null
-    }
-  },
-  computed: {
-    total() {
-      return this.$store.state.comment.total + 1
-    },
-    onlySeeMaster() {
-      return !!parseInt(this.$route.query.only, 10)
-    },
-    isMaster() {
-      if (!this.$store.state.login) {
-        return false
-      }
-      return this.$store.state.user.id === this.master.id
     }
   },
   methods: {

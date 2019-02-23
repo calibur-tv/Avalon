@@ -53,24 +53,12 @@
 
 <template>
   <div class="search-item-user">
-    <a
-      :href="$alias.user(item.zone)"
-      target="_blank"
-      class="avatar"
-    >
-      <v-img
-        :src="item.avatar"
-        :avatar="true"
-        :width="90"
-        :height="90"
-      />
+    <a :href="$alias.user(item.zone)" target="_blank" class="avatar">
+      <v-img :src="item.avatar" :avatar="true" :width="90" :height="90" />
     </a>
     <div class="intro">
       <div class="head">
-        <span
-          v-if="inCommon"
-          class="badge"
-        >用户</span>
+        <span v-if="inCommon" class="badge">用户</span>
         <a
           :href="$alias.user(item.zone)"
           target="_blank"
@@ -78,10 +66,7 @@
           v-text="item.nickname"
         />
       </div>
-      <p
-        class="signature"
-        v-text="item.signature"
-      />
+      <p class="signature" v-text="item.signature" />
     </div>
   </div>
 </template>

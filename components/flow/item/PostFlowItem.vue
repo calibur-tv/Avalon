@@ -247,21 +247,10 @@
           />
         </a>
       </el-tooltip>
-      <span class="time">
-        发表于: <v-time :datetime="item.created_at"/>
-      </span>
-      <div
-        v-if="item.top_at && bangumiId"
-        class="top_badge"
-      >置顶</div>
-      <div
-        v-if="item.is_nice"
-        class="nice_badge"
-      >精</div>
-      <div
-        v-if="item.is_creator"
-        class="creator_badge"
-      >原创</div>
+      <span class="time"> 发表于: <v-time :datetime="item.created_at" /> </span>
+      <div v-if="item.top_at && bangumiId" class="top_badge">置顶</div>
+      <div v-if="item.is_nice" class="nice_badge">精</div>
+      <div v-if="item.is_creator" class="creator_badge">原创</div>
       <div class="title oneline">
         <a
           :href="$alias.post(item.id)"
@@ -276,17 +265,11 @@
       :class="{ 'min-height': !item.images.length }"
       class="content"
     >
-      <a
-        :href="$alias.user(item.user.zone)"
-        target="_blank"
-        class="nickname"
-      >{{ item.user.nickname }}</a>
+      <a :href="$alias.user(item.user.zone)" target="_blank" class="nickname">{{
+        item.user.nickname
+      }}</a>
       :
-      <a
-        :href="$alias.post(item.id)"
-        target="_blank"
-        class="desc"
-      >
+      <a :href="$alias.post(item.id)" target="_blank" class="desc">
         {{ item.desc }}
       </a>
     </p>
@@ -296,55 +279,34 @@
       class="content"
       v-text="item.desc"
     />
-    <div
-      v-if="item.images.length"
-      class="images clearfix"
-    >
-      <image-preview
-        :images="item.images"
-        :download="false"
-        query="image-box"
-      >
+    <div v-if="item.images.length" class="images clearfix">
+      <image-preview :images="item.images" :download="false" query="image-box">
         <div
           v-for="(image, index) in item.images"
           :key="index"
           class="image-box"
         >
-          <v-img
-            :src="image.url"
-            :blur="true"
-            width="auto"
-            height="90"
-          />
+          <v-img :src="image.url" :blur="true" width="auto" height="90" />
         </div>
       </image-preview>
     </div>
-    <span
-      class="counter"
-      v-text="item.comment_count"
-    />
+    <span class="counter" v-text="item.comment_count" />
     <div class="footer clearfix">
       <div class="stats">
-        <span
-          v-if="item.is_creator"
-          class="meta"
-        >
-          <i class="iconfont icon-fantuan"/>
+        <span v-if="item.is_creator" class="meta">
+          <i class="iconfont icon-fantuan" />
           <span>{{ $utils.shortenNumber(item.reward_count) }}</span>
         </span>
-        <span
-          v-else
-          class="meta"
-        >
-          <i class="iconfont icon-like"/>
+        <span v-else class="meta">
+          <i class="iconfont icon-like" />
           <span>{{ $utils.shortenNumber(item.like_count) }}</span>
         </span>
         <span class="meta">
-          <i class="iconfont icon-mark"/>
+          <i class="iconfont icon-mark" />
           <span>{{ $utils.shortenNumber(item.mark_count) }}</span>
         </span>
         <span class="meta">
-          <i class="iconfont icon-talk"/>
+          <i class="iconfont icon-talk" />
           <span>{{ $utils.shortenNumber(item.comment_count) }}</span>
         </span>
         <v-share
@@ -356,14 +318,24 @@
         />
       </div>
       <div class="tags oneline">
-        <a
-          v-if="!bangumiId"
-          :href="$alias.bangumi(item.bangumi.id)"
-          target="_blank"
-        >
-          <i class="iconfont icon-biaoqian"/>
-          <span v-text="item.bangumi.name"/>
-        </a>
+        <template v-if="!bangumiId">
+          <a
+            v-if="item.bangumi"
+            :href="$alias.bangumi(item.bangumi.id)"
+            target="_blank"
+          >
+            <i class="iconfont icon-biaoqian" />
+            <span v-text="item.bangumi.name" />
+          </a>
+          <a
+            v-if="item.idol"
+            :href="$alias.cartoonRole(item.idol.id)"
+            target="_blank"
+          >
+            <i class="iconfont icon-biaoqian" />
+            <span v-text="item.idol.name" />
+          </a>
+        </template>
         <span
           v-for="tag in item.tags"
           :key="tag.id"

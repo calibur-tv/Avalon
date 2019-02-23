@@ -116,40 +116,18 @@
 
 <template>
   <li class="cartoon-role-flow-item">
-    <a
-      :href="$alias.cartoonRole(item.id)"
-      target="_blank"
-      class="avatar"
-    >
-      <v-img
-        :src="item.avatar"
-        :blur="true"
-        :width="98"
-        :height="98"
-      />
+    <a :href="$alias.cartoonRole(item.id)" target="_blank" class="avatar">
+      <v-img :src="item.avatar" :blur="true" :width="98" :height="98" />
     </a>
     <div class="summary">
-      <a
-        :href="$alias.cartoonRole(item.id)"
-        target="_blank"
-        class="role"
-      >
-        <span
-          class="name"
-          v-text="item.name"
-        />
+      <a :href="$alias.cartoonRole(item.id)" target="_blank" class="role">
+        <span class="name" v-text="item.name" />
         <span class="intro">：{{ item.intro }}</span>
       </a>
-      <div
-        v-if="item.lover"
-        class="lover fr"
-      >
+      <div v-if="item.lover" class="lover fr">
         <span>守护者：</span>
-        <user-card
-          :id="+item.lover.id"
-          :zone="item.lover.zone"
-        >
-          <span v-text="item.lover.nickname"/>
+        <user-card :id="+item.lover.id" :zone="item.lover.zone">
+          <span v-text="item.lover.nickname" />
           <v-img
             :src="item.lover.avatar"
             :width="20"
@@ -159,26 +137,17 @@
           />
         </user-card>
       </div>
-      <div
-        v-else
-        class="lover"
-      />
+      <div v-else class="lover" />
     </div>
     <div class="footer">
-      <div
-        v-if="userZone"
-        class="stats"
-      >
+      <div v-if="userZone" class="stats">
         <span>粉丝: {{ item.fans_count }}</span>
         ·
         <span>团子: {{ item.star_count }}</span>
         ·
         <span>贡献: {{ item.has_star }}</span>
       </div>
-      <div
-        v-else
-        class="stats"
-      >
+      <div v-else class="stats">
         <span>
           粉丝:
           {{ $utils.shortenNumber(item.fans_count) }}
@@ -189,10 +158,7 @@
         </span>
         <template v-if="!bangumiId && index !== -1">
           <span>排名:</span>
-          <span
-            :data-index="item.fans_count ? index + 1 : '无'"
-            class="top"
-          />
+          <span :data-index="item.fans_count ? index + 1 : '无'" class="top" />
         </template>
       </div>
       <a

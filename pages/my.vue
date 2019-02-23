@@ -39,26 +39,18 @@
 
 <template>
   <div id="my-space">
-    <v-header type="pure"/>
+    <v-header type="pure" />
     <v-layout :left="false">
       <template slot="aside">
         <ul class="side-bar">
           <li>
             <nuxt-link to="/my/notification">
-              <el-badge
-                :value="userCount"
-                :hidden="!userCount"
-                :max="99"
-              >
+              <el-badge :value="userCount" :hidden="!userCount" :max="99">
                 我的消息
               </el-badge>
             </nuxt-link>
             <nuxt-link to="/my/notice">
-              <el-badge
-                :value="systemCount"
-                :hidden="!systemCount"
-                :max="99"
-              >
+              <el-badge :value="systemCount" :hidden="!systemCount" :max="99">
                 系统通知
               </el-badge>
             </nuxt-link>
@@ -67,11 +59,11 @@
       </template>
       <div class="page-header">
         <button @click="readAll">
-          <i class="el-icon-check"/>
+          <i class="el-icon-check" />
           <span>全部设为已读</span>
         </button>
       </div>
-      <nuxt-child/>
+      <nuxt-child />
     </v-layout>
   </div>
 </template>
@@ -82,9 +74,6 @@ import { readAllMessage } from '~/api/userApi'
 
 export default {
   name: 'MySpace',
-  async asyncData({ store }) {
-    await store.dispatch('users/getNotifications', { init: true })
-  },
   components: {
     'el-badge': Badge
   },
@@ -105,6 +94,9 @@ export default {
         this.$store.state.users.notifications.checked
       return result < 0 ? 0 : result
     }
+  },
+  async asyncData({ store }) {
+    await store.dispatch('users/getNotifications', { init: true })
   },
   methods: {
     async readAll() {

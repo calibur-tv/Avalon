@@ -79,7 +79,7 @@
 
 <template>
   <div id="search-index">
-    <v-header/>
+    <v-header />
     <div class="container">
       <div class="search-panel">
         <v-search
@@ -88,17 +88,14 @@
           placeholder="搜索二次元的一切"
         >
           <template slot="submit-btn">
-            <i class="iconfont icon-sousuo"/>
+            <i class="iconfont icon-sousuo" />
             搜索
           </template>
         </v-search>
       </div>
     </div>
     <v-layout>
-      <el-tabs
-        v-model="selectedType"
-        @tab-click="handleTabClick"
-      >
+      <el-tabs v-model="selectedType" @tab-click="handleTabClick">
         <el-tab-pane
           v-for="(tab, index) in tabs"
           :key="index"
@@ -106,14 +103,14 @@
           :label="tab"
         >
           <component
-            v-if="noMore && !list.length"
             :is="`nothing-${selectedType}`"
+            v-if="noMore && !list.length"
           />
           <template v-else>
             <component
+              :is="`${item.type}-item`"
               v-for="item in list"
               :key="`${item.type}-${item.id}`"
-              :is="`${item.type}-item`"
               :item="item"
               :in-common="item.type != selectedType"
             />
@@ -126,16 +123,16 @@
             round
             class="load-more-btn"
             @click="loadMore"
-          >{{ loading ? '加载中' : '加载更多' }}</el-button>
-          <div
-            v-if="loading && !list.length"
-            class="loading-wrap"
+            >{{ loading ? '加载中' : '加载更多' }}</el-button
           >
-            <div class="el-icon-loading"/>
+          <div v-if="loading && !list.length" class="loading-wrap">
+            <div class="el-icon-loading" />
           </div>
         </el-tab-pane>
       </el-tabs>
-      <template slot="aside">&nbsp;</template>
+      <template slot="aside"
+        >&nbsp;</template
+      >
     </v-layout>
   </div>
 </template>
@@ -158,13 +155,6 @@ import NothingScore from '~/components/search/nothing/NothingScore'
 
 export default {
   name: 'SearchIndex',
-  async asyncData({ store, query }) {
-    const type = query.type || 'all'
-    await store.dispatch('search/fetchData', {
-      type,
-      q: query.q
-    })
-  },
   components: {
     vSearch,
     UserItem,
@@ -180,11 +170,6 @@ export default {
     NothingPost,
     NothingRole,
     NothingScore
-  },
-  head() {
-    return {
-      title: this.$route.query.q ? `搜索结果：${this.$route.query.q}` : '搜索'
-    }
   },
   data() {
     return {
@@ -218,6 +203,18 @@ export default {
       const { type, q } = query
       this.selectedType = type
       this.$store.dispatch('search/fetchData', { type, q })
+    }
+  },
+  async asyncData({ store, query }) {
+    const type = query.type || 'all'
+    await store.dispatch('search/fetchData', {
+      type,
+      q: query.q
+    })
+  },
+  head() {
+    return {
+      title: this.$route.query.q ? `搜索结果：${this.$route.query.q}` : '搜索'
     }
   },
   methods: {

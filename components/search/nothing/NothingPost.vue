@@ -1,6 +1,6 @@
 <template>
   <div class="search-nothing-post">
-    <no-content/>
+    <no-content />
   </div>
 </template>
 

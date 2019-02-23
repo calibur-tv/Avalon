@@ -73,30 +73,15 @@
 </style>
 
 <template>
-  <footer
-    v-show="show"
-    id="footer"
-  >
+  <footer v-show="show" id="footer">
     <div class="container">
       <ul class="cards">
         <li class="card-item">
           <p>calibur - 天下漫友是一家</p>
-          <a
-            href="/about/hello"
-            target="_blank"
-          >欢迎</a>
-          <a
-            href="/app/notice/1"
-            target="_blank"
-          >团子简介</a>
-          <a
-            href="javascript:;"
-            @click="openShareModal"
-          >分享网站</a>
-          <a
-            href="/about/thanks"
-            target="_blank"
-          >品牌与站娘</a>
+          <a href="/about/hello" target="_blank">欢迎</a>
+          <a href="/app/notice/1" target="_blank">团子简介</a>
+          <a href="javascript:;" @click="openShareModal">分享网站</a>
+          <a href="/about/thanks" target="_blank">品牌与站娘</a>
           <v-dialog
             v-model="toggleShareModal"
             :custom-class="$style.shareTipsModal"
@@ -113,37 +98,42 @@
                 快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv
               </p>
             </div>
-            <div
-              slot="footer"
-              :class="$style.footer"
-            >
+            <div slot="footer" :class="$style.footer">
               <el-button
-                v-clipboard="`【calibur.tv】一个纯粹的二次元社区网站，致力于实现'天下漫友是一家'！站内海量动漫资源在线播放，更有看漫画、cosplay、发帖、为偶像应援等功能，每天签到送团子（1团子 = 1人民币）！快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv`"
+                v-clipboard="
+                  `【calibur.tv】一个纯粹的二次元社区网站，致力于实现'天下漫友是一家'！站内海量动漫资源在线播放，更有看漫画、cosplay、发帖、为偶像应援等功能，每天签到送团子（1团子 = 1人民币）！快来加入我们吧~\(^o^)/~ 网址：http://calibur.tv`
+                "
                 :class="$style.fenThinkBtn"
                 type="primary"
                 size="small"
                 @success="handleCopySuccess"
-              >点击复制</el-button>
+                >点击复制</el-button
+              >
             </div>
           </v-dialog>
           <div>
             <a href="javascript:;">
               <img
-                :src="$resize('https://image.calibur.tv/owner/beianbgs.png', { width: 40 })"
+                :src="
+                  $resize('https://image.calibur.tv/owner/beianbgs.png', {
+                    width: 40
+                  })
+                "
                 class="icon"
-              >
+              />
               沪ICP备17050785号-1
             </a>
           </div>
           <div>
-            <a
-              href="http://www.shjbzx.cn/"
-              target="_blank"
-            >
+            <a href="http://www.shjbzx.cn/" target="_blank">
               <img
-                :src="$resize('https://image.calibur.tv/owner/int-info.png', { width: 40 })"
+                :src="
+                  $resize('https://image.calibur.tv/owner/int-info.png', {
+                    width: 40
+                  })
+                "
                 class="icon"
-              >
+              />
               上海互联网举报中心
             </a>
           </div>

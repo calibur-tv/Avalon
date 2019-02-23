@@ -36,22 +36,15 @@
 <template>
   <div class="avatar-dialog-wrap">
     <ul>
-      <li
-        v-for="user in displayUsers"
-        :key="user.id"
-        class="user-face"
-      >
+      <li v-for="user in displayUsers" :key="user.id" class="user-face">
         <el-tooltip
           :content="user.nickname"
           class="item"
           effect="dark"
           placement="top"
         >
-          <a
-            :href="$alias.user(user.zone)"
-            target="_blank"
-          >
-            <img :src="$resize(user.avatar, { width: 80 })">
+          <a :href="$alias.user(user.zone)" target="_blank">
+            <img :src="$resize(user.avatar, { width: 80 })" />
           </a>
         </el-tooltip>
       </li>
@@ -71,33 +64,16 @@
       :scroll="getMoreUser"
       class="likes-modal"
     >
-      <li
-        v-for="user in users"
-        :key="user.id"
-      >
-        <a
-          :href="$alias.user(user.zone)"
-          class="user"
-          target="_blank"
-        >
-          <img
-            :src="$resize(user.avatar, { width: 120 })"
-            class="avatar"
-          >
-          <span
-            class="nickname"
-            v-text="user.nickname"
-          />
+      <li v-for="user in users" :key="user.id">
+        <a :href="$alias.user(user.zone)" class="user" target="_blank">
+          <img :src="$resize(user.avatar, { width: 120 })" class="avatar" />
+          <span class="nickname" v-text="user.nickname" />
           <v-time
             v-if="user.created_at"
             v-model="user.created_at"
             class="score"
           />
-          <v-time
-            v-else-if="user.score"
-            v-model="user.score"
-            class="score"
-          />
+          <v-time v-else-if="user.score" v-model="user.score" class="score" />
         </a>
       </li>
     </v-dialog>

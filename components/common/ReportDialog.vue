@@ -44,10 +44,7 @@
       <el-radio-group v-model="selectedType">
         <el-radio :label="4">人身攻击</el-radio>
         <el-radio :label="5">侵犯隐私</el-radio>
-        <el-radio
-          v-if="isCreator"
-          :label="6"
-        >内容抄袭</el-radio>
+        <el-radio v-if="isCreator" :label="6">内容抄袭</el-radio>
       </el-radio-group>
       <h3>有害社区环境</h3>
       <el-radio-group v-model="selectedType">
@@ -69,11 +66,8 @@
         />
       </template>
     </v-dialog>
-    <span
-      class="report-btn"
-      @click="showDialog = true"
-    >
-      <slot/>
+    <span class="report-btn" @click="showDialog = true">
+      <slot />
     </span>
   </span>
 </template>

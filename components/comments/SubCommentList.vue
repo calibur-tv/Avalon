@@ -29,25 +29,20 @@
       :parent-user-id="authorId"
       :type="type"
     />
-    <div
-      v-if="!comments.noMore || comments.list.length > 5"
-      class="view-more"
-    >
-      共<strong>{{ comments.total }}</strong>条回复
-      <template
-        v-if="!comments.noMore"
-      >
+    <div v-if="!comments.noMore || comments.list.length > 5" class="view-more">
+      共<strong>{{ comments.total }}</strong
+      >条回复
+      <template v-if="!comments.noMore">
         ，
-        <button
-          class="more-btn"
-          @click="loadMore"
-        >查看更多</button>
+        <button class="more-btn" @click="loadMore">查看更多</button>
       </template>
       <button
         v-if="showCollapse"
         class="collapse-btn"
         @click="collapsed = !collapsed"
-      >{{ collapsed ? '展开' : '收起' }}</button>
+      >
+        {{ collapsed ? '展开' : '收起' }}
+      </button>
     </div>
   </div>
 </template>

@@ -322,19 +322,9 @@
 
 <template>
   <div id="user-show">
-    <v-header
-      :banner="user.banner"
-      type="mask"
-      height="400px"
-    >
-      <div
-        :class="{ 'my-banner': isMe }"
-        class="banner-container"
-      >
-        <div
-          v-if="isMe"
-          class="banner-cropper-wrap"
-        >
+    <v-header :banner="user.banner" type="mask" height="400px">
+      <div :class="{ 'my-banner': isMe }" class="banner-container">
+        <div v-if="isMe" class="banner-cropper-wrap">
           <template v-if="bannerSelector.showBar">
             <image-cropper
               :init-image="bannerSelector.image"
@@ -348,24 +338,27 @@
                 :disabled="bannerSelector.loading"
                 type="text"
                 @click="cancelBannerChange"
-              >取消</el-button>
+                >取消</el-button
+              >
             </div>
           </template>
-          <div
-            v-else
-            class="banner-file-input file-input bg"
-          >
+          <div v-else class="banner-file-input file-input bg">
             <input
               ref="bannerInput"
               accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="selectBanner"
-            >
+            />
           </div>
         </div>
         <template v-if="isMe">
           <div
-            :style="{ backgroundImage: `url(${$resize(user.avatar, { width: 200, height: 200 })})` }"
+            :style="{
+              backgroundImage: `url(${$resize(user.avatar, {
+                width: 200,
+                height: 200
+              })})`
+            }"
             class="avatar bg file-input"
           >
             <input
@@ -373,7 +366,7 @@
               accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="openAvatarModal"
-            >
+            />
           </div>
           <v-dialog
             v-model="avatarCropper.showModal"
@@ -399,7 +392,7 @@
           :src="$resize(user.avatar, { width: 200, height: 200 })"
           class="avatar"
           alt="avatar"
-        >
+        />
         <span class="nickname">
           {{ user.nickname }}
           <template v-if="isMe">
@@ -407,22 +400,13 @@
               :sex="convertUserSex(user.sex)"
               :secret="user.sexSecret"
             />
-            <span class="level">
-              Lv{{ user.exp.level }}
-            </span>
+            <span class="level"> Lv{{ user.exp.level }} </span>
           </template>
           <template v-else>
-            <user-sex
-              :sex="user.sex"
-              :secret="user.sexSecret"
-            />
-            <span class="level">
-              Lv{{ user.level }}
-            </span>
+            <user-sex :sex="user.sex" :secret="user.sexSecret" />
+            <span class="level"> Lv{{ user.level }} </span>
           </template>
-          <span class="level">
-            &nbsp;·&nbsp;战斗力：{{ userPower }}
-          </span>
+          <span class="level"> &nbsp;·&nbsp;战斗力：{{ userPower }} </span>
         </span>
         <el-popover
           v-if="isMe"
@@ -432,10 +416,16 @@
           popper-class="exp-detail"
         >
           <div class="content">
-            <v-hr text="我的等级"/>
-            <p>当前等级：<span>{{ user.exp.level }}</span></p>
-            <p>距离升级：<span>{{ user.exp.have_exp }} / {{ user.exp.next_level_exp }}</span></p>
-            <v-hr text="升级方法"/>
+            <v-hr text="我的等级" />
+            <p>
+              当前等级：<span>{{ user.exp.level }}</span>
+            </p>
+            <p>
+              距离升级：<span
+                >{{ user.exp.have_exp }} / {{ user.exp.next_level_exp }}</span
+              >
+            </p>
+            <v-hr text="升级方法" />
             <ul>
               <li>每日签到：+2</li>
               <li>发帖子：+4</li>
@@ -449,15 +439,12 @@
               <li>获得收藏：+2</li>
               <li>获得团子：+3</li>
             </ul>
-            <v-hr text="其它提醒"/>
+            <v-hr text="其它提醒" />
             <p>评论/回复自己的内容不会获得经验</p>
             <p>少于15字的内容，是没有经验的</p>
             <p>如果内容被删除，会掉经验和等级</p>
           </div>
-          <div
-            slot="reference"
-            class="exp-container"
-          >
+          <div slot="reference" class="exp-container">
             <el-progress
               :text-inside="true"
               :stroke-width="18"
@@ -466,40 +453,31 @@
             />
           </div>
         </el-popover>
-        <p
-          class="signature"
-          v-text="user.signature"
-        />
+        <p class="signature" v-text="user.signature" />
       </div>
     </v-header>
     <v-layout class="flow-container">
-      <div
-        v-if="user.faker"
-        class="faker-tips"
-      >
+      <div v-if="user.faker" class="faker-tips">
         <span>重要提醒</span>
         <p>这是一个运营号，并非本人，该账号下所有信息都是搬运而来</p>
-        <p>如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的团子也将归你所有</p>
+        <p>
+          如果你就是该账号本人，可以联系网站工作人员拿回该账号，该账号通过搬运资源获得的团子也将归你所有
+        </p>
         <p>当然，你也有权要求我们删除所有你的内容</p>
       </div>
-      <div
-        v-if="blockedAt"
-        class="faker-tips"
-      >
-        <span>该用户已被禁言，禁言至：{{ blockedAt }}，可能是由于以下原因：</span>
+      <div v-if="blockedAt" class="faker-tips">
+        <span
+          >该用户已被禁言，禁言至：{{ blockedAt }}，可能是由于以下原因：</span
+        >
         <p>1. 破坏社区环境，包括但不限于：无脑刷屏、复制他人内容来发表</p>
         <p>2. 恶意带节奏</p>
         <p>3. 发表于二次元无关的内容</p>
         <p>4. 其它原因还没想好，希望大家引以为戒</p>
       </div>
       <div class="user-flows-wrap">
-        <tab-container
-          :list="cards"
-          def="user-bangumi"
-          pos="left"
-        />
+        <tab-container :list="cards" def="user-bangumi" pos="left" />
         <div class="route-container">
-          <router-view/>
+          <router-view />
         </div>
       </div>
       <template slot="aside">
@@ -511,7 +489,9 @@
               :class="{ 'day-signed': daySigned }"
               class="sign-btn"
               @click="handleDaySign"
-            >{{ daySigned ? '已签到' : '签到' }}</button>
+            >
+              {{ daySigned ? '已签到' : '签到' }}
+            </button>
           </h2>
           <div>
             <div class="item">
@@ -533,7 +513,9 @@
           <button
             v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
             @success="handleCopySuccess"
-          >点击复制邀请码</button>
+          >
+            点击复制邀请码
+          </button>
           <p>其他人使用你的邀请码注册，你就能获得团子奖励</p>
         </div>
         <template v-if="badges.length">
@@ -563,20 +545,6 @@ import { uploadToQiniu } from '~/api/imageApi'
 
 export default {
   name: 'UserShowLayout',
-  asyncData({ app, store, params, error }) {
-    return getUserInfo(app, {
-      zone: params.zone
-    })
-      .then(data => {
-        store.commit('users/SET_USER_INFO', data)
-      })
-      .catch(error)
-  },
-  head() {
-    return {
-      title: this.user.nickname
-    }
-  },
   components: {
     TabContainer,
     ImageCropper,
@@ -693,6 +661,25 @@ export default {
         (this.user.exp.have_exp / this.user.exp.next_level_exp) * 100,
         10
       )
+    }
+  },
+  asyncData({ app, store, params, error }) {
+    return getUserInfo(app, {
+      zone: params.zone
+    })
+      .then(data => {
+        store.commit('users/SET_USER_INFO', data)
+      })
+      .catch(e => {
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
+      })
+  },
+  head() {
+    return {
+      title: this.user.nickname
     }
   },
   methods: {

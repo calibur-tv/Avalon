@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Meta from 'vue-meta'
 import { createRouter } from './router.js'
-import NoSSR from './components/no-ssr.js'
+import NoSsr from './components/no-ssr.js'
 import NuxtChild from './components/nuxt-child.js'
-import NuxtLink from './components/nuxt-link.js'
 import NuxtError from '../layouts/error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
@@ -12,24 +11,24 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_axios_d1d6cd4e from 'nuxt_plugin_axios_d1d6cd4e' // Source: ./axios.js
-import nuxt_plugin_axios_3566aa80 from 'nuxt_plugin_axios_3566aa80' // Source: ../plugins/axios
-import nuxt_plugin_elementui_a6a1b20a from 'nuxt_plugin_elementui_a6a1b20a' // Source: ../plugins/element-ui
-import nuxt_plugin_globalprototype_25248aee from 'nuxt_plugin_globalprototype_25248aee' // Source: ../plugins/global-prototype
-import nuxt_plugin_globalcomponent_1536fa6e from 'nuxt_plugin_globalcomponent_1536fa6e' // Source: ../plugins/global-component
-import nuxt_plugin_clientprototype_2a5e6916 from 'nuxt_plugin_clientprototype_2a5e6916' // Source: ../plugins/client-prototype (ssr: false)
-import nuxt_plugin_clientnamespace_ce9acd62 from 'nuxt_plugin_clientnamespace_ce9acd62' // Source: ../plugins/client-namespace (ssr: false)
+import nuxt_plugin_axios_d1d6cd4e from 'nuxt_plugin_axios_d1d6cd4e' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_axios_3566aa80 from 'nuxt_plugin_axios_3566aa80' // Source: ../plugins/axios (mode: 'all')
+import nuxt_plugin_elementui_a6a1b20a from 'nuxt_plugin_elementui_a6a1b20a' // Source: ../plugins/element-ui (mode: 'all')
+import nuxt_plugin_globalprototype_25248aee from 'nuxt_plugin_globalprototype_25248aee' // Source: ../plugins/global-prototype (mode: 'all')
+import nuxt_plugin_globalcomponent_1536fa6e from 'nuxt_plugin_globalcomponent_1536fa6e' // Source: ../plugins/global-component (mode: 'all')
+import nuxt_plugin_clientprototype_2a5e6916 from 'nuxt_plugin_clientprototype_2a5e6916' // Source: ../plugins/client-prototype (mode: 'client')
+import nuxt_plugin_clientnamespace_ce9acd62 from 'nuxt_plugin_clientnamespace_ce9acd62' // Source: ../plugins/client-namespace (mode: 'client')
 
-// Component: <no-ssr>
-Vue.component(NoSSR.name, NoSSR)
+// Component: <NoSsr>
+Vue.component(NoSsr.name, NoSsr)
 
-// Component: <nuxt-child>
+// Component: <NuxtChild>
 Vue.component(NuxtChild.name, NuxtChild)
+Vue.component('NChild', NuxtChild)
 
-// Component: <nuxt-link>
-Vue.component(NuxtLink.name, NuxtLink)
+// Component NuxtLink is imported in server.js or client.js
 
-// Component: <nuxt>`
+// Component: <Nuxt>`
 Vue.component(Nuxt.name, Nuxt)
 
 // vue-meta configuration

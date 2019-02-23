@@ -53,24 +53,11 @@
   <div id="bangumi-video-flow">
     <section v-if="videos.total">
       <div v-if="videos.has_season">
-        <div
-          v-for="season in videos.videos"
-          :key="season.name"
-        >
-          <h3
-            class="celltitle"
-            v-text="season.name"
-          />
+        <div v-for="season in videos.videos" :key="season.name">
+          <h3 class="celltitle" v-text="season.name" />
           <ul>
-            <li
-              v-for="video in season.data"
-              :key="video.id"
-              class="video-item"
-            >
-              <a
-                :href="$alias.video(video.id)"
-                target="_blank"
-              >
+            <li v-for="video in season.data" :key="video.id" class="video-item">
+              <a :href="$alias.video(video.id)" target="_blank">
                 <v-img
                   :src="video.poster"
                   width="106"
@@ -79,10 +66,7 @@
                 />
                 <div class="intro">
                   <p class="part oneline">第{{ video.part - season.base }}话</p>
-                  <span
-                    class="name"
-                    v-text="video.name"
-                  />
+                  <span class="name" v-text="video.name" />
                 </div>
               </a>
             </li>
@@ -95,22 +79,11 @@
           :key="video.id"
           class="video-item"
         >
-          <a
-            :href="$alias.video(video.id)"
-            target="_blank"
-          >
-            <v-img
-              :src="video.poster"
-              width="106"
-              height="60"
-              class="poster"
-            />
+          <a :href="$alias.video(video.id)" target="_blank">
+            <v-img :src="video.poster" width="106" height="60" class="poster" />
             <div class="intro">
               <p class="part oneline">第{{ video.part }}话</p>
-              <span
-                class="name"
-                v-text="video.name"
-              />
+              <span class="name" v-text="video.name" />
             </div>
           </a>
         </li>

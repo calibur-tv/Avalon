@@ -38,31 +38,18 @@
     label-width="45px"
   >
     <template v-if="!isCartoon">
-      <el-alert
-        type="info"
-        title=""
-        class="tips"
-        show-icon
-      >
+      <el-alert type="info" title="" class="tips" show-icon>
         <p>如果想要批量上传图片，就选择一个相册（需要先创建）</p>
         <p>如果想上传单张精品美图，就选择一个番剧</p>
       </el-alert>
-      <el-form-item
-        v-if="!form.bangumi_id"
-        label="相册"
-        prop="album_id"
-      >
+      <el-form-item v-if="!form.bangumi_id" label="相册" prop="album_id">
         <image-album-select
           v-model="form.album_id"
           :append="appendAlbums"
           placeholder="【批量上传】选择要上传图片的相册"
         />
       </el-form-item>
-      <el-form-item
-        v-if="!form.album_id"
-        label="番剧"
-        prop="bangumi_id"
-      >
+      <el-form-item v-if="!form.album_id" label="番剧" prop="bangumi_id">
         <bangumi-search
           v-model="form.bangumi_id"
           placeholder="【单个上传】选择要投稿的番剧"
@@ -71,10 +58,7 @@
     </template>
     <template v-if="form.album_id || form.bangumi_id">
       <template v-if="form.album_id">
-        <el-form-item
-          label="图片"
-          prop="images"
-        >
+        <el-form-item label="图片" prop="images">
           <el-upload
             ref="manyUpload"
             :data="uploadHeaders"
@@ -90,7 +74,7 @@
             multiple
             list-type="picture-card"
           >
-            <i class="el-icon-plus"/>
+            <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
         <el-form-item>
@@ -106,35 +90,32 @@
       </template>
       <template v-else>
         <el-form-item label="名字">
-          <el-input
-            v-model="form.name"
-            placeholder="给图片起个名字"
-          />
+          <el-input v-model="form.name" placeholder="给图片起个名字" />
         </el-form-item>
         <el-form-item label="原创">
           <el-row>
-            <el-switch
-              v-model="form.is_creator"
-            />
+            <el-switch v-model="form.is_creator" />
             <el-tooltip
               class="item"
               effect="dark"
               content="如果这幅画是你的作品，请勾选它！"
               placement="top"
             >
-              <i class="el-icon-question"/>
+              <i class="el-icon-question" />
             </el-tooltip>
             <div
               v-if="form.image"
-              :style="{ backgroundImage: `url(${$resize(form.image.url, { width: 400, mode: 2 })})` }"
+              :style="{
+                backgroundImage: `url(${$resize(form.image.url, {
+                  width: 400,
+                  mode: 2
+                })})`
+              }"
               class="preview-poster"
             />
           </el-row>
         </el-form-item>
-        <el-form-item
-          label="图片"
-          prop="image"
-        >
+        <el-form-item label="图片" prop="image">
           <el-upload
             ref="singleUpload"
             :data="uploadHeaders"
@@ -145,11 +126,9 @@
             :accept="imageUploadAccept"
             :action="imageUploadAction"
           >
-            <el-button
-              :loading="submitting"
-              size="small"
-              round
-            >选择图片</el-button>
+            <el-button :loading="submitting" size="small" round
+              >选择图片</el-button
+            >
           </el-upload>
         </el-form-item>
         <el-form-item>

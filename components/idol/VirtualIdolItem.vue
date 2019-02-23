@@ -114,12 +114,29 @@
     margin-top: 15px;
     padding-top: 15px;
 
-    img {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: block;
+    .user {
       float: right;
+
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        position: relative;
+        border: 1px solid hsla(0, 0%, 71%, 0.1);
+      }
+
+      .manager {
+        z-index: 1;
+
+        &:hover {
+          z-index: 3;
+        }
+      }
+
+      .boss {
+        margin-left: -20px;
+        z-index: 2;
+      }
     }
 
     .time {
@@ -134,34 +151,29 @@
 
 <template>
   <li class="virtual-idol-item">
-    <a
-      :href="$alias.cartoonRole(item.id)"
-      target="_blank"
-    >
+    <a :href="$alias.cartoonRole(item.id)" target="_blank">
       <div class="info">
-        <img :src="$resize(item.avatar, { width: 160 })">
+        <img :src="$resize(item.avatar, { width: 160 })" />
         <p class="oneline">{{ item.name }}</p>
       </div>
       <div class="intro">
         <p class="price">
           <span>市值:</span>
-          <strong>{{ item.company_state ? `￥${item.market_price}` : '未上市' }}</strong>
+          <strong>{{
+            item.company_state ? `￥${item.market_price}` : '未上市'
+          }}</strong>
         </p>
         <p class="meta_1">
           <span>股价:</span>
-          <span>￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span>
+          <span
+            >￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span
+          >
         </p>
-        <p
-          v-if="sort === 'mine'"
-          class="meta_2"
-        >
+        <p v-if="sort === 'mine'" class="meta_2">
           <span>持有：</span>
           <span>{{ item.has_star }}股，占比 {{ computedPercent }}</span>
         </p>
-        <p
-          v-else
-          class="meta_2"
-        >
+        <p v-else class="meta_2">
           <span>认购：</span>
           <span>{{ item.star_count }}股</span>
         </p>
@@ -185,14 +197,24 @@
           <button>查看数据</button>
         </template>
         <template v-else>
-          <button :class="{ 'locked': item.is_locked }">{{ item.is_locked ? '已停牌' : '马上入股' }}</button>
+          <button :class="{ locked: item.is_locked }">
+            {{ item.is_locked ? '已停牌' : '马上入股' }}
+          </button>
         </template>
       </div>
       <div class="extra">
-        <img
-          v-if="item.boss"
-          :src="$resize(item.boss.avatar, { width: 50, height: 50 })"
-        >
+        <div class="user">
+          <img
+            v-if="item.manager"
+            :src="$resize(item.manager.avatar, { width: 50, height: 50 })"
+            class="manager"
+          />
+          <img
+            v-if="item.boss"
+            :src="$resize(item.boss.avatar, { width: 50, height: 50 })"
+            class="boss"
+          />
+        </div>
         <div class="time">
           <p v-if="item.ipo_at">上市时间：{{ item.ipo_at.split(' ')[0] }}</p>
           <p v-else>创办时间：{{ item.created_at.split(' ')[0] }}</p>

@@ -47,7 +47,9 @@ export default {
     async getUpToken() {
       try {
         await this.$store.dispatch('getUpToken')
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
     },
     handleImageUploadError(err, file) {
       if (this.$store.state.login) {

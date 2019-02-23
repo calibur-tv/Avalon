@@ -70,10 +70,7 @@
 </style>
 
 <template>
-  <div
-    v-if="users.length"
-    id="user-recommended"
-  >
+  <div v-if="users.length" id="user-recommended">
     <h3 class="sub-title">
       推荐用户
       <span @click="choiceTags">
@@ -85,27 +82,12 @@
       </span>
     </h3>
     <ul>
-      <li
-        v-for="user in filterList"
-        :key="user.id"
-      >
-        <a
-          :href="$alias.user(user.zone)"
-          target="_blank"
-        >
-          <img
-            :src="$resize(user.avatar, { width: 80 })"
-            class="avatar"
-          >
+      <li v-for="user in filterList" :key="user.id">
+        <a :href="$alias.user(user.zone)" target="_blank">
+          <img :src="$resize(user.avatar, { width: 80 })" class="avatar" />
           <div class="intro">
-            <span
-              class="oneline"
-              v-text="user.nickname"
-            />
-            <p
-              class="oneline"
-              v-text="user.signature"
-            />
+            <span class="oneline" v-text="user.nickname" />
+            <p class="oneline" v-text="user.signature" />
           </div>
         </a>
       </li>

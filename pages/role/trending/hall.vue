@@ -80,119 +80,91 @@
           title="已上市的公司，投资人可以在这里出售自己持有的股份（一周内无人购买的交易会被系统删除）"
         />
       </el-col>
-      <el-col
-        :span="6"
-        :offset="2"
-      >
-        <div
-          v-if="meta"
-          class="badge"
-        >
+      <el-col :span="6" :offset="2">
+        <div v-if="meta" class="badge">
           <span>成交次数：{{ meta.deal_count }}</span>
-          <em/>
-          <span>总成交额：￥{{ parseFloat(meta.exchang_money_count).toFixed(2) }}</span>
+          <em />
+          <span
+            >总成交额：￥{{
+              parseFloat(meta.exchang_money_count).toFixed(2)
+            }}</span
+          >
         </div>
       </el-col>
     </el-row>
-    <flow-list
-      func="getVirtualIdolDealList"
-      type="seenIds"
-      sort="active"
-    >
-      <div
-        slot-scope="{ flow }"
-        class="table"
-      >
-        <el-table
-          :data="flow"
-          stripe
-          style="width: 100%"
-        >
-          <el-table-column
-            label="交易编号"
-            prop="id"
-            sortable
-          >
+    <flow-list func="getVirtualIdolDealList" type="seenIds" sort="active">
+      <div slot-scope="{ flow }" class="table">
+        <el-table :data="flow" stripe style="width: 100%">
+          <el-table-column label="交易编号" prop="id" sortable>
             <template slot-scope="scope">
               <span># {{ scope.row.id }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="偶像"
-            width="200"
-          >
+          <el-table-column label="偶像" width="200">
             <a
               slot-scope="scope"
               :href="$alias.cartoonRole(scope.row.idol.id)"
               target="_blank"
               class="idol"
             >
-              <img :src="$resize(scope.row.idol.avatar, { width: 100 })">
-              <span v-text="scope.row.idol.name"/>
+              <img :src="$resize(scope.row.idol.avatar, { width: 100 })" />
+              <span v-text="scope.row.idol.name" />
             </a>
           </el-table-column>
-          <el-table-column
-            label="公司市值"
-            prop="idol.market_price"
-            sortable
-          >
+          <el-table-column label="公司市值" prop="idol.market_price" sortable>
             <template slot-scope="scope">
               <span>￥{{ scope.row.idol.market_price }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="每股股价"
-          >
+          <el-table-column label="每股股价">
             <template slot-scope="scope">
               <span>￥{{ scope.row.idol.stock_price }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            :filters="[{ text: '已停牌', value: true }, { text: '挂牌中', value: false }]"
+            :filters="[
+              { text: '已停牌', value: true },
+              { text: '挂牌中', value: false }
+            ]"
             :filter-method="filterState"
             label="发行股数"
             prop="idol.is_locked"
           >
             <template slot-scope="scope">
               <div>{{ scope.row.idol.star_count }}</div>
-              <el-tag
-                v-if="scope.row.idol.is_locked"
-                size="mini"
-                type="danger"
-              >已停牌</el-tag>
-              <el-tag
-                v-else
-                size="mini"
-                type="success"
-              >挂牌中</el-tag>
+              <el-tag v-if="scope.row.idol.is_locked" size="mini" type="danger"
+                >已停牌</el-tag
+              >
+              <el-tag v-else size="mini" type="success">挂牌中</el-tag>
             </template>
           </el-table-column>
           <el-table-column
-            :filters="[{ text: '低于市场价', value: -1 }, { text: '高于市场价', value: 1 }, { text: '等于市场价', value: 0 }]"
+            :filters="[
+              { text: '低于市场价', value: -1 },
+              { text: '高于市场价', value: 1 },
+              { text: '等于市场价', value: 0 }
+            ]"
             :filter-method="filterPrice"
             label="出售价格"
             prop="product_price"
           >
-            <div
-              slot-scope="scope"
-              class="price"
-            >
+            <div slot-scope="scope" class="price">
               <div>￥{{ scope.row.product_price }}</div>
-              <el-tag
-                :type="computePriceColor(scope.row)"
-                size="mini"
-              >{{ computePriceText(scope.row) }}</el-tag>
+              <el-tag :type="computePriceColor(scope.row)" size="mini">{{
+                computePriceText(scope.row)
+              }}</el-tag>
             </div>
           </el-table-column>
-          <el-table-column
-            label="出售股数"
-          >
+          <el-table-column label="出售股数">
             <template slot-scope="scope">
               <div>{{ scope.row.product_count }}</div>
-              <el-tag
-                size="mini"
-                type="info"
-              >占比:{{ parseFloat(scope.row.product_count / scope.row.idol.star_count * 100).toFixed(2) }}%</el-tag>
+              <el-tag size="mini" type="info"
+                >占比:{{
+                  parseFloat(
+                    (scope.row.product_count / scope.row.idol.star_count) * 100
+                  ).toFixed(2)
+                }}%</el-tag
+              >
             </template>
           </el-table-column>
           <el-table-column
@@ -202,30 +174,25 @@
             label="已成交"
           >
             <template slot-scope="scope">
-              <span>{{ parseFloat(scope.row.product_count - scope.row.last_count).toFixed(2) }}</span>
+              <span>{{
+                parseFloat(
+                  scope.row.product_count - scope.row.last_count
+                ).toFixed(2)
+              }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="交易人"
-            prop="user.id"
-            sortable
-          >
+          <el-table-column label="交易人" prop="user.id" sortable>
             <a
               slot-scope="scope"
               :href="$alias.user(scope.row.user.zone)"
               target="_blank"
               class="user"
             >
-              <img :src="$resize(scope.row.user.avatar, { width: 60 })">
-              <span
-                class="oneline"
-                v-text="scope.row.user.nickname"
-              />
+              <img :src="$resize(scope.row.user.avatar, { width: 60 })" />
+              <span class="oneline" v-text="scope.row.user.nickname" />
             </a>
           </el-table-column>
-          <el-table-column
-            label="操作"
-          >
+          <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
                 v-if="currentUserId === scope.row.user.id"
@@ -234,29 +201,23 @@
                 round
                 plain
                 @click="deleteMyDeal(scope.row)"
-              >终止交易</el-button>
-              <el-button
-                v-else
-                size="small"
-                round
-                @click="makeADeal(scope.row)"
-              >马上交易</el-button>
+                >终止交易</el-button
+              >
+              <el-button v-else size="small" round @click="makeADeal(scope.row)"
+                >马上交易</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
       </div>
       <no-content slot="nothing">
         <nuxt-link to="/role/trending/newbie">
-          <el-button
-            size="mini"
-          >
+          <el-button size="mini">
             查看融资中的公司
           </el-button>
         </nuxt-link>
         <nuxt-link to="/role/trending/register">
-          <el-button
-            size="mini"
-          >
+          <el-button size="mini">
             自己注册公司
           </el-button>
         </nuxt-link>
@@ -310,21 +271,11 @@ import {
 
 export default {
   name: 'RoleTrendingHall',
-  async asyncData({ store }) {
-    await store.dispatch('flow/initData', {
-      func: 'getVirtualIdolDealList',
-      type: 'seenIds',
-      sort: 'active'
-    })
-  },
   components: {
     FlowList,
     'el-tag': Tag,
     'el-table': Table,
     'el-table-column': TableColumn
-  },
-  head: {
-    title: '交易所'
   },
   data() {
     return {
@@ -367,6 +318,16 @@ export default {
       }
       return parseFloat(this.buyCount * this.deal.product_price).toFixed(2)
     }
+  },
+  async asyncData({ store }) {
+    await store.dispatch('flow/initData', {
+      func: 'getVirtualIdolDealList',
+      type: 'seenIds',
+      sort: 'active'
+    })
+  },
+  head: {
+    title: '交易所'
   },
   mounted() {
     this.getMetaInfo()

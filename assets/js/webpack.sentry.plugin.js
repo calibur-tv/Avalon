@@ -1,11 +1,11 @@
 /* eslint-disable */
 'use strict'
 /* 为啥这个plugin要放在这里？
-* Because。。。。
-* webpack sentry plugin原先是支持apiKey的方式认证（已被sentry废弃）
-* 所以改成了token的方式，这样使用npm install的方式就不太行了,
-* 况且这个不太需要自动更新，所以就放在这里了
-**/
+ * Because。。。。
+ * webpack sentry plugin原先是支持apiKey的方式认证（已被sentry废弃）
+ * 所以改成了token的方式，这样使用npm install的方式就不太行了,
+ * 况且这个不太需要自动更新，所以就放在这里了
+ **/
 var _createClass = (function() {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {

@@ -27,7 +27,9 @@ export const actions = {
         list && commit('SET_ALL_BANGUMI', list)
         needLoad = !(list && list.length)
       }
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     if (state.all.length || !needLoad) {
       return
     }
@@ -36,7 +38,9 @@ export const actions = {
     try {
       sessionStorage.setItem('all-bangumi-load-at', Date.now())
       sessionStorage.setItem('all-bangumi-list', JSON.stringify(data))
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
   }
 }
 

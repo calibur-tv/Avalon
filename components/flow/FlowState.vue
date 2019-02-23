@@ -53,10 +53,7 @@ $font-size: 14px;
 
 <template>
   <div :class="$style.flowState">
-    <div
-      v-if="error"
-      @click="fetch"
-    >
+    <div v-if="error" @click="fetch">
       <slot name="error">
         <div :class="$style.error">
           <span>出错了，点击重试</span>
@@ -72,10 +69,7 @@ $font-size: 14px;
     </div>
     <div v-else-if="noMore">
       <slot name="no-more">
-        <div
-          v-show="displayNoMore"
-          :class="$style.noMore"
-        >
+        <div v-show="displayNoMore" :class="$style.noMore">
           <span>没有更多了</span>
         </div>
       </slot>
@@ -83,16 +77,13 @@ $font-size: 14px;
     <div v-else-if="loading">
       <slot name="loading">
         <div :class="$style.loading">
-          <i/>
+          <i />
           <span>加载中…</span>
         </div>
       </slot>
     </div>
     <div v-else-if="!auto && showLoadMore">
-      <button
-        :class="$style.fetchBtn"
-        @click="fetch"
-      >
+      <button :class="$style.fetchBtn" @click="fetch">
         点击加载更多
       </button>
     </div>

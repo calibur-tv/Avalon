@@ -81,10 +81,7 @@
 </style>
 
 <template>
-  <div
-    v-if="bangumis.length"
-    id="bangumi-recommended"
-  >
+  <div v-if="bangumis.length" id="bangumi-recommended">
     <h3 class="sub-title">
       推荐番剧
       <span @click="choiceTags">
@@ -96,21 +93,12 @@
       </span>
     </h3>
     <ul>
-      <li
-        v-for="item in filterList"
-        :key="item.id"
-      >
-        <a
-          :href="$alias.bangumi(item.id)"
-          target="_blank"
-        >
-          <img :src="$resize(item.avatar, { width: 120 })">
+      <li v-for="item in filterList" :key="item.id">
+        <a :href="$alias.bangumi(item.id)" target="_blank">
+          <img :src="$resize(item.avatar, { width: 120 })" />
           <div>
-            <p
-              class="oneline"
-              v-text="'《' + item.name + '》'"
-            />
-            <span v-text="item.tag"/>
+            <p class="oneline" v-text="'《' + item.name + '》'" />
+            <span v-text="item.tag" />
           </div>
         </a>
       </li>

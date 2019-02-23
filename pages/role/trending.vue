@@ -10,21 +10,21 @@
 
 <template>
   <div id="trending-role">
-    <v-header type="pure"/>
-    <div
-      id="main-content"
-      class="container"
-    >
-      <tab-container :list="pages"/>
-      <nuxt-child/>
+    <v-header type="pure" />
+    <div id="main-content" class="container">
+      <tab-container :list="pages" />
+      <nuxt-child />
     </div>
   </div>
 </template>
 
 <script>
 import TabContainer from '~/components/common/TabContainer'
-import { getUserWorkSchedule } from '~/api/cartoonRoleApi'
 import { Notification } from 'element-ui'
+import {
+  getUserWorkSchedule,
+  getMineProductOrderCount
+} from '~/api/cartoonRoleApi'
 
 export default {
   name: 'TrendingRole',
@@ -36,7 +36,8 @@ export default {
   },
   data() {
     return {
-      todo: []
+      todo: [],
+      orderCount: 0
     }
   },
   computed: {
@@ -45,6 +46,10 @@ export default {
     },
     pages() {
       const result = [
+        {
+          label: '产品区',
+          name: 'role-trending-product'
+        },
         {
           label: '上市榜',
           name: 'role-trending-listed'
@@ -62,13 +67,13 @@ export default {
           name: 'role-trending-register'
         },
         {
-          label: '股市简介',
+          label: '游戏规则',
           name: 'role-trending-intro'
         }
       ]
       if (this.isLogin) {
         result.push({
-          label: '我的数据',
+          label: '我的股市',
           name: 'role-trending-mine'
         })
       }
@@ -76,10 +81,16 @@ export default {
     }
   },
   mounted() {
-    const canceler = this.$watch('isLogin', () => {
-      canceler()
+    if (this.isLogin) {
       this.getUserNeedTodo()
-    })
+      this.getUserOrderCount()
+    } else {
+      const canceler = this.$watch('isLogin', () => {
+        canceler()
+        this.getUserNeedTodo()
+        this.getUserOrderCount()
+      })
+    }
   },
   methods: {
     async getUserNeedTodo() {
@@ -99,6 +110,20 @@ export default {
           })
         }, 100)
       })
+    },
+    async getUserOrderCount() {
+      const data = await getMineProductOrderCount(this)
+      this.orderCount = data
+      if (data) {
+        Notification({
+          title: '采购提醒',
+          type: 'success',
+          dangerouslyUseHTMLString: true,
+          message: `<a href="/role/trending/mine">你有「${data}条」采购请求待处理</a>`,
+          offset: 50,
+          duration: 0
+        })
+      }
     }
   }
 }

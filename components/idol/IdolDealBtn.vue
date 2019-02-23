@@ -30,15 +30,22 @@
       width="560px"
       @submit="submit"
     >
-      <el-alert
-        :closable="false"
-        title="交易建议"
-        type="info"
-      >
+      <el-alert :closable="false" title="交易建议" type="info">
         <p v-if="locked">当前公开发售的股份已停牌，可高于市场价格出售</p>
         <p v-else>当前仍有股份在公开发售，应该低于公开价格发售</p>
-        <p>最终交易的总价值不得低于 0.01 个虚拟币，当前市场价：<strong>{{ price }}</strong>/股</p>
-        <p v-if="loaded">{{ deal.id ? '检测到当前有正在出售的交易，可对其进行修改' : '当前未有正在进行的交易，可新建一个交易' }}</p>
+        <p>
+          最终交易的总价值不得低于 0.01 个虚拟币，当前市场价：<strong>{{
+            price
+          }}</strong
+          >/股
+        </p>
+        <p v-if="loaded">
+          {{
+            deal.id
+              ? '检测到当前有正在出售的交易，可对其进行修改'
+              : '当前未有正在进行的交易，可新建一个交易'
+          }}
+        </p>
       </el-alert>
       <el-form label-position="top">
         <el-form-item label="出售份额">

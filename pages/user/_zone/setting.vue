@@ -58,24 +58,18 @@
       :rules="rule"
       label-width="50px"
     >
-      <el-alert
-        type="info"
-        title=""
-        show-icon
-      >
-        <p>填写正确的性别和生日有助于网站对你番剧喜好的分析，在未来我们有可能根据你的喜好来推荐合适的番剧</p>
-        <p>如果你担心自己的性别和生日被其他用户知道，可以勾选<strong>私密</strong>，这样我们只会在推荐系统中用到你的数据</p>
+      <el-alert type="info" title="" show-icon>
+        <p>
+          填写正确的性别和生日有助于网站对你番剧喜好的分析，在未来我们有可能根据你的喜好来推荐合适的番剧
+        </p>
+        <p>
+          如果你担心自己的性别和生日被其他用户知道，可以勾选<strong>私密</strong>，这样我们只会在推荐系统中用到你的数据
+        </p>
       </el-alert>
-      <el-form-item
-        label="昵称"
-        prop="nickname"
-      >
-        <el-input v-model.trim="nickname"/>
+      <el-form-item label="昵称" prop="nickname">
+        <el-input v-model.trim="nickname" />
       </el-form-item>
-      <el-form-item
-        label="生日"
-        prop="birthday"
-      >
+      <el-form-item label="生日" prop="birthday">
         <el-date-picker
           v-model="birthday"
           :editable="false"
@@ -91,7 +85,7 @@
           content="设置为私密后将不对外公开"
           placement="top"
         >
-          <i class="el-icon-question"/>
+          <i class="el-icon-question" />
         </el-tooltip>
         <el-switch
           v-model="birthSecret"
@@ -113,7 +107,7 @@
           content="设置为私密后将不对外公开"
           placement="top"
         >
-          <i class="el-icon-question"/>
+          <i class="el-icon-question" />
         </el-tooltip>
         <el-switch
           v-model="sexSecret"
@@ -121,10 +115,7 @@
           inactive-text="公开"
         />
       </el-form-item>
-      <el-form-item
-        label="签名"
-        prop="signature"
-      >
+      <el-form-item label="签名" prop="signature">
         <el-input
           v-model="signature"
           :rows="5"
@@ -134,22 +125,31 @@
       </el-form-item>
       <el-form-item label="绑定">
         <div class="providers">
-          <a :href="`https://api.calibur.tv/callback/oauth2/qq?from=bind&id=${user.id}&zone=${user.zone}`">
+          <a
+            :href="
+              `https://api.calibur.tv/callback/oauth2/qq?from=bind&id=${
+                user.id
+              }&zone=${user.zone}`
+            "
+          >
             <i
               :class="{ 'is-bind': user.providers.bind_qq }"
               class="iconfont icon-qq"
             />
           </a>
-          <a :href="`https://api.calibur.tv/callback/oauth2/wechat?from=bind&id=${user.id}&zone=${user.zone}`">
+          <a
+            :href="
+              `https://api.calibur.tv/callback/oauth2/wechat?from=bind&id=${
+                user.id
+              }&zone=${user.zone}`
+            "
+          >
             <i
               :class="{ 'is-bind': user.providers.bind_wechat }"
               class="iconfont icon-v-chat"
             />
           </a>
-          <a
-            href="javascript:;"
-            @click="bindUserPhone"
-          >
+          <a href="javascript:;" @click="bindUserPhone">
             <i
               :class="{ 'is-bind': user.providers.bind_phone }"
               class="iconfont icon-phone"
@@ -158,11 +158,9 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button
-          :loading="submitting"
-          type="primary"
-          @click="submit"
-        >提交</el-button>
+        <el-button :loading="submitting" type="primary" @click="submit"
+          >提交</el-button
+        >
       </el-form-item>
     </el-form>
     <v-dialog
@@ -177,8 +175,8 @@
         placeholder="短信验证码"
         auto-complete="off"
       />
-      <br>
-      <br>
+      <br />
+      <br />
       <el-input
         v-model.trim="password"
         type="text"

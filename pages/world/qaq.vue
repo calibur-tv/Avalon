@@ -54,19 +54,11 @@
       </div>
     </div>
     -->
-    <flow-list
-      func="getWorldQAQ"
-      type="seenIds"
-      sort="active"
-    >
+    <flow-list func="getWorldQAQ" type="seenIds" sort="active">
       <ul slot-scope="{ flow }">
-        <question-flow-item
-          v-for="item in flow"
-          :key="item.id"
-          :item="item"
-        />
+        <question-flow-item v-for="item in flow" :key="item.id" :item="item" />
       </ul>
-      <no-content slot="nothing"/>
+      <no-content slot="nothing" />
     </flow-list>
   </div>
 </template>
@@ -76,6 +68,14 @@ import QuestionFlowItem from '~/components/flow/item/QuestionFlowItem'
 
 export default {
   name: 'QuestionWorld',
+  components: {
+    QuestionFlowItem
+  },
+  data() {
+    return {
+      showTips: false
+    }
+  },
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('flow/initData', {
@@ -86,16 +86,8 @@ export default {
       // store.dispatch('flow/getMeta', { type: 'question' })
     ])
   },
-  components: {
-    QuestionFlowItem
-  },
   head: {
     title: '问答区'
-  },
-  data() {
-    return {
-      showTips: false
-    }
   },
   methods: {
     openCreateQuestion() {

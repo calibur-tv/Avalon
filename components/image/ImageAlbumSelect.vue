@@ -60,21 +60,12 @@
       :value="item.id"
       class="choice-album-item"
     >
-      <div
-        class="image-count meta"
-        v-text="item.image_count"
-      />
-      <div
-        v-if="item.is_creator"
-        class="is-creator meta"
-      >创</div>
-      <div
-        v-if="item.is_cartoon"
-        class="is-cartoon meta"
-      >漫</div>
+      <div class="image-count meta" v-text="item.image_count" />
+      <div v-if="item.is_creator" class="is-creator meta">创</div>
+      <div v-if="item.is_cartoon" class="is-cartoon meta">漫</div>
       <div class="info">
-        <img :src="$resize(item.poster, { width: 48 })">
-        <span v-text="item.name"/>
+        <img :src="$resize(item.poster, { width: 48 })" />
+        <span v-text="item.name" />
       </div>
     </el-option>
   </el-select>

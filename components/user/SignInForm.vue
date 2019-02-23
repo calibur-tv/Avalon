@@ -62,15 +62,16 @@
 <template>
   <div class="sign-in-form">
     <img
-      :src="$resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png', { width: 600, height: 200 })"
+      :src="
+        $resize('https://image.calibur.tv/owner/logo/calibur-blue-new.png', {
+          width: 600,
+          height: 200
+        })
+      "
       class="logo"
       alt="sign-logo"
-    >
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rule"
-    >
+    />
+    <el-form ref="form" :model="form" :rules="rule">
       <el-form-item prop="access">
         <el-input
           v-model.trim="form.access"
@@ -89,27 +90,24 @@
           class="watch-pwd"
           type="button"
           @click="watchPwd = !watchPwd"
-        ><i class="iconfont icon-ai-eye"/></button>
+        >
+          <i class="iconfont icon-ai-eye" />
+        </button>
       </el-form-item>
       <el-form-item class="sign-in-opt">
         <div class="opt-container">
           <el-checkbox v-model="form.remember">记住我</el-checkbox>
-          <div
-            v-if="showOAuth"
-            class="provider"
-          >
+          <div v-if="showOAuth" class="provider">
             <a href="https://api.calibur.tv/callback/oauth2/qq?from=sign">
-              <i class="iconfont icon-qq"/>
+              <i class="iconfont icon-qq" />
             </a>
             <a href="https://api.calibur.tv/callback/oauth2/wechat?from=sign">
-              <i class="iconfont icon-v-chat"/>
+              <i class="iconfont icon-v-chat" />
             </a>
           </div>
-          <button
-            v-else
-            type="button"
-            @click="showOAuth = true"
-          >社交账号登录</button>
+          <button v-else type="button" @click="showOAuth = true">
+            社交账号登录
+          </button>
         </div>
       </el-form-item>
       <el-form-item>
@@ -118,7 +116,8 @@
           class="submit-btn"
           type="primary"
           @click="submitForm"
-        >登录</el-button>
+          >登录</el-button
+        >
       </el-form-item>
     </el-form>
     <div class="others">

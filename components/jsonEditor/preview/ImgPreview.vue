@@ -31,10 +31,7 @@
 <template>
   <div class="image-preview">
     <div class="body">
-      <div
-        v-if="item.url"
-        class="wrapper"
-      >
+      <div v-if="item.url" class="wrapper">
         <v-img
           :src="item.url"
           :width="item.width"
@@ -60,7 +57,7 @@
         drag
         class="uploader"
       >
-        <i class="el-icon-upload"/>
+        <i class="el-icon-upload" />
         <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
       </el-upload>
     </div>
@@ -74,12 +71,7 @@
         :on-success="handleImageUploadSuccess"
         style="display: inline-block;margin-right: 10px"
       >
-        <el-button
-          v-if="item.url"
-          size="small"
-          plain
-          round
-        >更换图片</el-button>
+        <el-button v-if="item.url" size="small" plain round>更换图片</el-button>
       </el-upload>
       <el-button
         v-if="item.url"
@@ -88,7 +80,8 @@
         round
         class="save-btn"
         @click="emitSave"
-      >保存</el-button>
+        >保存</el-button
+      >
     </div>
   </div>
 </template>

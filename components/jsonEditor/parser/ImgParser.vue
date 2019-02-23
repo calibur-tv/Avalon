@@ -29,11 +29,7 @@
       :blur="true"
       :full="true"
     />
-    <p
-      v-if="item.text"
-      class="img-tip"
-      v-text="item.text"
-    />
+    <p v-if="item.text" class="img-tip" v-text="item.text" />
   </div>
 </template>
 

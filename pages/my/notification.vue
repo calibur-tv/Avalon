@@ -48,7 +48,7 @@
         <li
           v-for="item in list"
           :key="item.id"
-          :class="{ 'checked': item.checked }"
+          :class="{ checked: item.checked }"
           @click="readMsg(item.id)"
         >
           <div
@@ -64,7 +64,7 @@
         :nothing="noMore && !list.length"
         :loading="loading"
       >
-        <no-content slot="nothing"/>
+        <no-content slot="nothing" />
       </flow-state>
     </div>
   </div>

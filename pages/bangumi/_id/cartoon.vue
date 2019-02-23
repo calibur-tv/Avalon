@@ -18,10 +18,7 @@
 
 <template>
   <div id="bangumi-cartoon-flow">
-    <div
-      v-if="source && source.total"
-      class="header"
-    >
+    <div v-if="source && source.total" class="header">
       <strong class="total">共 {{ source.total }} 集</strong>
       <el-select
         v-model="selectedSort"
@@ -37,12 +34,7 @@
         />
       </el-select>
     </div>
-    <flow-list
-      :id="id"
-      :sort="sort"
-      func="getBangumiCartoon"
-      type="page"
-    >
+    <flow-list :id="id" :sort="sort" func="getBangumiCartoon" type="page">
       <ul slot-scope="{ flow }">
         <cartoon-flow-item
           v-for="item in flow"
@@ -60,14 +52,6 @@ import CartoonFlowItem from '~/components/flow/item/CartoonFlowItem'
 
 export default {
   name: 'BangumiCartoonFlow',
-  async asyncData({ store, params }) {
-    await store.dispatch('flow/initData', {
-      id: params.id,
-      func: 'getBangumiCartoon',
-      type: 'page',
-      sort: 'asc'
-    })
-  },
   components: {
     CartoonFlowItem
   },
@@ -103,6 +87,14 @@ export default {
         }
       ]
     }
+  },
+  async asyncData({ store, params }) {
+    await store.dispatch('flow/initData', {
+      id: params.id,
+      func: 'getBangumiCartoon',
+      type: 'page',
+      sort: 'asc'
+    })
   },
   methods: {
     handleSortSwitch(item) {

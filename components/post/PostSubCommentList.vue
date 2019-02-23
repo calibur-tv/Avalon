@@ -51,10 +51,7 @@
       v-text="computeCollapsedBtnText"
     />
     <el-collapse-transition>
-      <div
-        v-if="hasComment && !collapsed"
-        class="post-sub-comment-list"
-      >
+      <div v-if="hasComment && !collapsed" class="post-sub-comment-list">
         <post-sub-comment-item
           v-for="comment in comments.list"
           :key="comment.id"
@@ -63,10 +60,7 @@
         />
       </div>
     </el-collapse-transition>
-    <div
-      v-if="hasComment && !collapsed"
-      class="sub-comment-footer"
-    >
+    <div v-if="hasComment && !collapsed" class="sub-comment-footer">
       <div class="more">
         <el-button
           v-if="!comments.noMore"
@@ -74,17 +68,15 @@
           size="mini"
           round
           @click="loadMore"
-        >点击加载更多</el-button>
+          >点击加载更多</el-button
+        >
         <span class="total">共{{ comments.total }}条</span>
       </div>
-      <button
-        class="toggle"
-        @click="toggleCommentArea"
-      >我也说一句</button>
+      <button class="toggle" @click="toggleCommentArea">我也说一句</button>
     </div>
     <comment-reply-form
-      v-model="showReplyArea"
       :id="parentId"
+      v-model="showReplyArea"
       :to-user-id="authorId"
       type="post"
       class="footer-reply-area"

@@ -27,16 +27,8 @@
 <template>
   <div class="role-trending-listed">
     <v-layout>
-      <flow-list
-        :sort="current_sort"
-        func="virtualIdolList"
-        type="seenIds"
-      >
-        <div
-          slot="header"
-          slot-scope="{ source }"
-          class="role-trending-header"
-        >
+      <flow-list :sort="current_sort" func="virtualIdolList" type="seenIds">
+        <div slot="header" slot-scope="{ source }" class="role-trending-header">
           <strong>总共 {{ source.total }} 个公司</strong>
           <div class="search">
             <bangumi-search
@@ -81,22 +73,18 @@
         </ul>
         <no-content slot="nothing">
           <nuxt-link to="/role/trending/newbie">
-            <el-button
-              size="mini"
-            >
+            <el-button size="mini">
               查看融资中的公司
             </el-button>
           </nuxt-link>
           <nuxt-link to="/role/trending/register">
-            <el-button
-              size="mini"
-            >
+            <el-button size="mini">
               自己注册公司
             </el-button>
           </nuxt-link>
         </no-content>
       </flow-list>
-      <idol-trending-aside slot="aside"/>
+      <idol-trending-aside slot="aside" />
     </v-layout>
   </div>
 </template>
@@ -108,20 +96,10 @@ import IdolTrendingAside from '~/components/idol/IdolTrendingAside'
 
 export default {
   name: 'RoleTrendingListed',
-  async asyncData({ store }) {
-    await store.dispatch('flow/initData', {
-      func: 'virtualIdolList',
-      type: 'seenIds',
-      sort: 'trending-activity-1'
-    })
-  },
   components: {
     FlowList,
     VirtualIdolItem,
     IdolTrendingAside
-  },
-  head: {
-    title: '上市公司'
   },
   data() {
     return {
@@ -147,6 +125,16 @@ export default {
       sort_selected: 'activity',
       current_sort: 'trending-activity-1'
     }
+  },
+  async asyncData({ store }) {
+    await store.dispatch('flow/initData', {
+      func: 'virtualIdolList',
+      type: 'seenIds',
+      sort: 'trending-activity-1'
+    })
+  },
+  head: {
+    title: '上市公司'
   },
   methods: {
     initTrending() {

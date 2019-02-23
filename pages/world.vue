@@ -134,7 +134,7 @@
 
 <template>
   <section id="world-layout">
-    <v-header type="pure"/>
+    <v-header type="pure" />
     <v-layout :left="false">
       <template slot="aside">
         <ul class="side-bar">
@@ -143,7 +143,7 @@
           <li><nuxt-link to="/world/review">漫评</nuxt-link></li>
           <li><nuxt-link to="/world/qaq">问答</nuxt-link></li>
         </ul>
-        <user-recommended :users="recommendedUsers"/>
+        <user-recommended :users="recommendedUsers" />
       </template>
       <div class="col-main">
         <el-carousel
@@ -154,30 +154,26 @@
           indicator-position="none"
           class="carousel"
         >
-          <el-carousel-item
-            v-for="(item, index) in loops"
-            :key="index"
-          >
+          <el-carousel-item v-for="(item, index) in loops" :key="index">
             <a
-              :style="{ backgroundImage: `url(${$resize(item.poster, { width: 800, height: 480 })})` }"
+              :style="{
+                backgroundImage: `url(${$resize(item.poster, {
+                  width: 800,
+                  height: 480
+                })})`
+              }"
               :href="item.link"
               target="_blank"
               class="background"
             >
               <div class="intro">
-                <p
-                  class="title"
-                  v-text="item.title"
-                />
-                <p
-                  class="desc oneline"
-                  v-text="item.desc"
-                />
+                <p class="title" v-text="item.title" />
+                <p class="desc oneline" v-text="item.desc" />
               </div>
             </a>
           </el-carousel-item>
         </el-carousel>
-        <nuxt-child/>
+        <nuxt-child />
       </div>
     </v-layout>
   </section>
@@ -196,17 +192,17 @@ export default {
     'el-carousel': Carousel,
     'el-carousel-item': CarouselItem
   },
+  data() {
+    return {
+      recommendedUsers: [],
+      loops: []
+    }
+  },
   async asyncData({ app }) {
     const data = await Promise.all([getRecommendedUsers(app), getCarousel(app)])
     return {
       recommendedUsers: data[0],
       loops: data[1]
-    }
-  },
-  data() {
-    return {
-      recommendedUsers: [],
-      loops: []
     }
   }
 }

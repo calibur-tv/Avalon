@@ -37,52 +37,40 @@
 </style>
 
 <template>
-  <div 
-    class="user-badge"
-    @click="getBadgeData"
-  >
-    <img
-      :src="$resize(item.icon, { width: 40 })"
-      class="icon"
-    >
-    <span
-      class="text"
-      v-text="item.name"
-    />
+  <div class="user-badge" @click="getBadgeData">
+    <img :src="$resize(item.icon, { width: 40 })" class="icon" />
+    <span class="text" v-text="item.name" />
     <v-dialog
       v-model="showDetail"
       :header="false"
       :footer="false"
       width="400px"
     >
-      <div
-        v-if="info"
-        class="user-badge-detail"
-      >
-        <img :src="$resize(info.icon, { width: 140 })">
+      <div v-if="info" class="user-badge-detail">
+        <img :src="$resize(info.icon, { width: 140 })" />
         <div>
           <strong>名称</strong>
-          <p v-text="info.name"/>
+          <p v-text="info.name" />
         </div>
         <div>
           <strong>稀有度</strong>
-          <p v-text="computeLevel(info.level)"/>
+          <p v-text="computeLevel(info.level)" />
         </div>
         <div>
           <strong>持有人数</strong>
-          <p v-text="info.user_count"/>
+          <p v-text="info.user_count" />
         </div>
         <div v-if="info.user_count > 1">
           <strong>该用户持有数</strong>
-          <p v-text="info.user_get_count"/>
+          <p v-text="info.user_get_count" />
         </div>
         <div>
           <strong>徽章描述</strong>
-          <p v-text="info.intro"/>
+          <p v-text="info.intro" />
         </div>
         <div v-if="info.user_spec_intro">
           <strong>小纸条</strong>
-          <p v-text="info.user_spec_intro"/>
+          <p v-text="info.user_spec_intro" />
         </div>
       </div>
     </v-dialog>
@@ -130,19 +118,14 @@ export default {
       switch (+level) {
         case 0:
           return 'D'
-          break
         case 1:
           return 'C'
-          break
         case 2:
           return 'B'
-          break
         case 3:
           return 'A'
-          break
         case 4:
           return 'S'
-          break
         default:
           return '未知'
       }

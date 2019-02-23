@@ -62,48 +62,26 @@
 </style>
 
 <template>
-  <div
-    id="bangumi-tags"
-    class="main"
-  >
+  <div id="bangumi-tags" class="main">
     <div class="tags">
       <h2 class="sub-title">标签列表</h2>
       <ul>
-        <li
-          v-for="tag in tags"
-          :key="tag.id"
-          @click="selectTag(tag)"
-        >
+        <li v-for="tag in tags" :key="tag.id" @click="selectTag(tag)">
           <a
-            :class="{ 'selected': tag.selected }"
+            :class="{ selected: tag.selected }"
             href="javascript:;"
             class="tag-btn"
-          >{{ tag.name }}</a>
+            >{{ tag.name }}</a
+          >
         </li>
       </ul>
     </div>
-    <div
-      v-if="bangumis.total"
-      class="bangumis"
-    >
+    <div v-if="bangumis.total" class="bangumis">
       <h2 class="sub-title">番剧列表</h2>
       <ul>
-        <li
-          v-for="item in bangumis.data"
-          :key="item.id"
-          class="bangumi"
-        >
-          <a
-            :href="$alias.bangumi(item.id)"
-            target="_blank"
-            class="avatar"
-          >
-            <v-img
-              :src="item.avatar"
-              :poster="true"
-              :width="90"
-              :height="90"
-            />
+        <li v-for="item in bangumis.data" :key="item.id" class="bangumi">
+          <a :href="$alias.bangumi(item.id)" target="_blank" class="avatar">
+            <v-img :src="item.avatar" :poster="true" :width="90" :height="90" />
           </a>
           <div class="content">
             <a
@@ -112,10 +90,7 @@
               class="title"
               v-text="item.name"
             />
-            <p
-              class="desc"
-              v-text="item.summary"
-            />
+            <p class="desc" v-text="item.summary" />
           </div>
         </li>
       </ul>
@@ -126,7 +101,7 @@
         @fetch="loadBangumis"
       />
     </div>
-    <no-content v-else-if="showEmpty"/>
+    <no-content v-else-if="showEmpty" />
   </div>
 </template>
 
@@ -135,19 +110,6 @@ import { getAllBangumiTag, getCategoryBangumis } from '~/api/bangumiApi'
 
 export default {
   name: 'BangumiTags',
-  async asyncData({ app }) {
-    const data = await getAllBangumiTag(app)
-    return {
-      tags: data.map(_ => {
-        return Object.assign(_, {
-          selected: false
-        })
-      })
-    }
-  },
-  head: {
-    title: '动画标签'
-  },
   data() {
     return {
       tags: [],
@@ -169,6 +131,19 @@ export default {
         this.tags.every(_ => !_.selected)
       )
     }
+  },
+  async asyncData({ app }) {
+    const data = await getAllBangumiTag(app)
+    return {
+      tags: data.map(_ => {
+        return Object.assign(_, {
+          selected: false
+        })
+      })
+    }
+  },
+  head: {
+    title: '动画标签'
   },
   methods: {
     selectTag(tag) {

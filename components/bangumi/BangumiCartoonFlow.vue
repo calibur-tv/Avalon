@@ -138,11 +138,7 @@
     <template v-if="cartoons.list.length">
       <div class="header">
         <strong class="total">共 {{ cartoons.total }} 集</strong>
-        <el-select
-          v-model="sort"
-          :loading="state.loading"
-          size="mini"
-        >
+        <el-select v-model="sort" :loading="state.loading" size="mini">
           <el-option
             v-for="item in order"
             :key="item.value"
@@ -151,26 +147,16 @@
           />
         </el-select>
       </div>
-      <ul
-        class="clearfix"
-      >
-        <li
-          v-for="item in cartoons.list"
-          :key="item.id"
-          class="cartoon"
-        >
-          <a
-            :href="$alias.image(item.id)"
-            target="_blank"
-          >
+      <ul class="clearfix">
+        <li v-for="item in cartoons.list" :key="item.id" class="cartoon">
+          <a :href="$alias.image(item.id)" target="_blank">
             <div class="poster-wrap">
-              <img :src="$resize(item.source.url, { width: 396, height: 600 })">
+              <img
+                :src="$resize(item.source.url, { width: 396, height: 600 })"
+              />
               <div class="info">
-                <i class="el-icon-picture-outline"/>
-                <span
-                  class="image-count"
-                  v-text="item.image_count"
-                />
+                <i class="el-icon-picture-outline" />
+                <span class="image-count" v-text="item.image_count" />
               </div>
             </div>
             <div class="intro">
@@ -228,11 +214,7 @@
       />
     </template>
     <no-content v-else-if="cartoons.noMore">
-      <el-button
-        type="primary"
-        round
-        @click="openFeedback"
-      >求漫画</el-button>
+      <el-button type="primary" round @click="openFeedback">求漫画</el-button>
     </no-content>
   </div>
 </template>

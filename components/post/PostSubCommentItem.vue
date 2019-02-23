@@ -55,10 +55,7 @@
     :class="{ 'focused-sub-comment': focusThisComment }"
     class="post-sub-comment-item"
   >
-    <user-card
-      :zone="comment.from_user_zone"
-      :id="comment.from_user_id"
-    >
+    <user-card :id="comment.from_user_id" :zone="comment.from_user_zone">
       <v-img
         :src="comment.from_user_avatar"
         :width="30"
@@ -66,14 +63,9 @@
         :avatar="true"
         class="avatar"
       />
-      <span
-        class="href-fade-blue"
-        v-text="comment.from_user_name"
-      />
+      <span class="href-fade-blue" v-text="comment.from_user_name" />
     </user-card>
-    <template
-      v-if="comment.to_user_id && comment.to_user_id !== parentUserId"
-    >
+    <template v-if="comment.to_user_id && comment.to_user_id !== parentUserId">
       回复
       <user-card
         :id="comment.to_user_id"
@@ -86,25 +78,16 @@
     :
     <span class="comment-content">{{ comment.content }}</span>
     <div class="reply-area">
-      <report-dialog
-        :id="comment.id"
-        type="post_reply"
-      >举报</report-dialog>
-      <v-time v-model="comment.created_at"/>
-      <button
-        v-if="canDelete"
-        @click="deleteComment"
-      >删除</button>
-      <button
-        v-if="!isMine"
-        @click="toggleCommentArea"
-      >
+      <report-dialog :id="comment.id" type="post_reply">举报</report-dialog>
+      <v-time v-model="comment.created_at" />
+      <button v-if="canDelete" @click="deleteComment">删除</button>
+      <button v-if="!isMine" @click="toggleCommentArea">
         {{ showReplyArea ? '收起' : '回复' }}
       </button>
     </div>
     <comment-reply-form
-      v-model="showReplyArea"
       :id="comment.parent_id"
+      v-model="showReplyArea"
       :to-user-id="comment.from_user_id"
       type="post"
     />

@@ -143,10 +143,7 @@
 </style>
 
 <template>
-  <div
-    :class="[{ selected }, `json-item-${index}`]"
-    class="json-item"
-  >
+  <div :class="[{ selected }, `json-item-${index}`]" class="json-item">
     <el-button
       v-if="selected && sectionCount > 1"
       type="danger"
@@ -164,143 +161,80 @@
       circle
       @click="emitSort"
     />
-    <div
-      class="show-area"
-      @click="emitPreview"
-    >
+    <div class="show-area" @click="emitPreview">
       <div class="capture">
         <template v-if="item.type === 'img'">
           <div
             v-if="item.url"
-            :style="{ backgroundImage: `url(${$resize(item.url, { width: 150 })})` }"
+            :style="{
+              backgroundImage: `url(${$resize(item.url, { width: 150 })})`
+            }"
             class="poster"
           />
-          <div
-            v-if="!item.url"
-            class="default green"
-          >
-            <i class="iconfont icon-image"/>
+          <div v-if="!item.url" class="default green">
+            <i class="iconfont icon-image" />
           </div>
         </template>
-        <div
-          v-else-if="item.type === 'txt'"
-          class="default yellow"
-        >
-          <i class="iconfont icon-text"/>
+        <div v-else-if="item.type === 'txt'" class="default yellow">
+          <i class="iconfont icon-text" />
         </div>
-        <div
-          v-else-if="item.type === 'list'"
-          class="default blue"
-        >
-          <i class="iconfont icon-list"/>
+        <div v-else-if="item.type === 'list'" class="default blue">
+          <i class="iconfont icon-list" />
         </div>
-        <div
-          v-else-if="item.type === 'use'"
-          class="default pink"
-        >
-          <i class="iconfont icon-use"/>
+        <div v-else-if="item.type === 'use'" class="default pink">
+          <i class="iconfont icon-use" />
         </div>
-        <div
-          v-else-if="item.type === 'title'"
-          class="default purple"
-        >
-          <i class="iconfont icon-title"/>
+        <div v-else-if="item.type === 'title'" class="default purple">
+          <i class="iconfont icon-title" />
         </div>
       </div>
       <div class="content">
         <template v-if="item.type === 'txt'">
-          <div
-            v-if="item.text"
-            class="text line-4"
-            v-html="item.text"
-          />
-          <div
-            v-else
-            class="text"
-          >点击添加文字</div>
+          <div v-if="item.text" class="text line-4" v-html="item.text" />
+          <div v-else class="text">点击添加文字</div>
         </template>
-        <template
-          v-else-if="item.type === 'img'"
-        >
-          <div
-            v-if="item.text"
-            class="text line-4"
-            v-html="item.text"
-          />
-          <div
-            v-else-if="item.url"
-            class="text"
-          >
+        <template v-else-if="item.type === 'img'">
+          <div v-if="item.text" class="text line-4" v-html="item.text" />
+          <div v-else-if="item.url" class="text">
             点击编辑图片
           </div>
-          <div
-            v-else
-            class="text"
-          >
+          <div v-else class="text">
             点击上传图片
           </div>
         </template>
         <template v-else-if="item.type === 'list'">
-          <div
-            v-if="item.text"
-            class="text line-4"
-          >
+          <div v-if="item.text" class="text line-4">
             <ol v-if="item.sort === '1'">
               <li
-                v-for="(li, index) in computeList(item.text)"
-                :key="index"
+                v-for="(li, subIndex) in computeList(item.text)"
+                :key="subIndex"
               >
-                <span
-                  class="oneline"
-                  v-text="li"/>
+                <span class="oneline" v-text="li" />
               </li>
             </ol>
             <ul v-else>
               <li
-                v-for="(li, index) in computeList(item.text)"
-                :key="index"
+                v-for="(li, subIndex) in computeList(item.text)"
+                :key="subIndex"
               >
-                <span
-                  class="oneline"
-                  v-text="li"/>
+                <span class="oneline" v-text="li" />
               </li>
             </ul>
           </div>
-          <div
-            v-else
-            class="text"
-          >点击添加列表</div>
+          <div v-else class="text">点击添加列表</div>
         </template>
         <template v-else-if="item.type === 'use'">
-          <blockquote
-            v-if="item.text"
-            class="text line-4"
-            v-html="item.text"
-          />
-          <div
-            v-else
-            class="text"
-          >点击添加引用内容</div>
+          <blockquote v-if="item.text" class="text line-4" v-html="item.text" />
+          <div v-else class="text">点击添加引用内容</div>
         </template>
         <template v-if="item.type === 'title'">
-          <div
-            v-if="item.text"
-            class="text line-4"
-            v-html="item.text"
-          />
-          <div
-            v-else
-            class="text"
-          >点击添加标题</div>
+          <div v-if="item.text" class="text line-4" v-html="item.text" />
+          <div v-else class="text">点击添加标题</div>
         </template>
       </div>
     </div>
     <div class="append-area">
-      <el-tooltip
-        content="添加文本段落"
-        placement="top"
-        effect="dark"
-      >
+      <el-tooltip content="添加文本段落" placement="top" effect="dark">
         <el-button
           type="warning"
           icon="iconfont icon-text"
@@ -310,11 +244,7 @@
           @click="emitCreate('txt')"
         />
       </el-tooltip>
-      <el-tooltip
-        content="添加图片段落"
-        placement="top"
-        effect="dark"
-      >
+      <el-tooltip content="添加图片段落" placement="top" effect="dark">
         <el-button
           type="success"
           icon="iconfont icon-image"
@@ -324,11 +254,7 @@
           @click="emitCreate('img')"
         />
       </el-tooltip>
-      <el-tooltip
-        content="添加列表段落"
-        placement="top"
-        effect="dark"
-      >
+      <el-tooltip content="添加列表段落" placement="top" effect="dark">
         <el-button
           type="primary"
           icon="iconfont icon-list"
@@ -338,11 +264,7 @@
           @click="emitCreate('list')"
         />
       </el-tooltip>
-      <el-tooltip
-        content="添加引用段落"
-        placement="top"
-        effect="dark"
-      >
+      <el-tooltip content="添加引用段落" placement="top" effect="dark">
         <el-button
           type="danger"
           icon="iconfont icon-use"
@@ -352,11 +274,7 @@
           @click="emitCreate('use')"
         />
       </el-tooltip>
-      <el-tooltip
-        content="添加小标题"
-        placement="top"
-        effect="dark"
-      >
+      <el-tooltip content="添加小标题" placement="top" effect="dark">
         <el-button
           type="info"
           icon="iconfont icon-title"

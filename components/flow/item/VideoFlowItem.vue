@@ -47,14 +47,8 @@
 </style>
 
 <template>
-  <li
-    :key="item.id"
-    class="video-flow-item"
-  >
-    <a
-      :href="$alias.video(item.id)"
-      target="_blank"
-    >
+  <li :key="item.id" class="video-flow-item">
+    <a :href="$alias.video(item.id)" target="_blank">
       <v-img
         :src="item.poster"
         :blur="true"
@@ -64,10 +58,7 @@
       />
       <div class="intro">
         <p class="part oneline">第{{ item.part }}话</p>
-        <span
-          class="name"
-          v-text="item.name"
-        />
+        <span class="name" v-text="item.name" />
       </div>
     </a>
   </li>

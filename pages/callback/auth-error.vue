@@ -16,7 +16,7 @@
 
 <template>
   <div id="auth-error">
-    <p v-text="message"/>
+    <p v-text="message" />
     <a href="/">点击返回首页</a>
   </div>
 </template>

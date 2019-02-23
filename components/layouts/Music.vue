@@ -330,69 +330,50 @@ $color-gray-hover: #6d757a;
 </style>
 
 <template>
-  <div
-    id="music"
-    :class="[ open ? 'M-open' : 'M-close' ]"
-  >
-    <audio ref="audio"/>
-    <button
-      class="toggle"
-      @click="musicToggle"
-    >
-      <i class="iconfont icon-yinle"/>
+  <div id="music" :class="[open ? 'M-open' : 'M-close']">
+    <audio ref="audio" />
+    <button class="toggle" @click="musicToggle">
+      <i class="iconfont icon-yinle" />
     </button>
     <div class="M-main">
       <div class="M-warp">
-        <img
-          :src="now.img"
-          class="M-face"
-        >
+        <img :src="now.img" class="M-face" />
         <div class="M-control">
           <div class="header">
             <div class="left">
               <a>{{ now.name }}</a>
-              <span class="M-dot"/>
+              <span class="M-dot" />
               <a>{{ now.player }}</a>
             </div>
             <button
-              :class="{ 'menu-click' : status.menuShow }"
+              :class="{ 'menu-click': status.menuShow }"
               class="menu-btn"
               @click="status.menuShow = !status.menuShow"
             >
-              <i class="iconfont icon-liebiao"/>
+              <i class="iconfont icon-liebiao" />
             </button>
           </div>
           <div class="center">
             <div class="M-play-control">
-              <button
-                class="sm-btn"
-                @click="next(false)"
-              >
-                <i class="iconfont icon-svgprevious"/>
+              <button class="sm-btn" @click="next(false)">
+                <i class="iconfont icon-svgprevious" />
               </button>
-              <button
-                class="lg-btn"
-                @click="handlePlayBtnClick"
-              >
+              <button class="lg-btn" @click="handlePlayBtnClick">
                 <i
-                  :class="[ status.playing ? 'icon-paused' : 'icon-bofang' ]"
+                  :class="[status.playing ? 'icon-paused' : 'icon-bofang']"
                   class="iconfont"
                 />
               </button>
-              <button
-                class="sm-btn"
-                @click="next(true)"
-              >
-                <i class="iconfont icon-iconfontsvgnext"/>
+              <button class="sm-btn" @click="next(true)">
+                <i class="iconfont icon-iconfontsvgnext" />
               </button>
             </div>
             <div class="M-voice-control">
-              <button
-                class="sm-btn"
-                @click="handleMuteBtnClick"
-              >
+              <button class="sm-btn" @click="handleMuteBtnClick">
                 <i
-                  :class="[ status.silent ? 'icon-jingyin' : 'icon-zengdayinliang' ]"
+                  :class="[
+                    status.silent ? 'icon-jingyin' : 'icon-zengdayinliang'
+                  ]"
                   class="iconfont"
                 />
               </button>
@@ -421,28 +402,20 @@ $color-gray-hover: #6d757a;
         />
       </span>
     </div>
-    <div
-      :class="{ 'menu-show': status.menuShow }"
-      class="M-menu"
-    >
+    <div :class="{ 'menu-show': status.menuShow }" class="M-menu">
       <div class="M-menu-wrap">
         <div class="header">
           <h3 class="list">歌曲列表</h3>
-          <button
-            class="close"
-            @click="status.menuShow = false"
-          >&times;</button>
+          <button class="close" @click="status.menuShow = false">
+            &times;
+          </button>
         </div>
         <div class="body">
           <div class="title item">
             <div class="item-right">歌手</div>
             <div class="item-left">歌曲</div>
           </div>
-          <div
-            v-for="(item, index) in musics"
-            :key="index"
-            class="item"
-          >
+          <div v-for="(item, index) in musics" :key="index" class="item">
             <div class="item-right oneline">{{ item.player }}</div>
             <div class="item-left">
               <div>
@@ -450,9 +423,7 @@ $color-gray-hover: #6d757a;
                   v-show="item.playing"
                   :class="['icon', status.playing ? 'icon-play' : 'icon-pause']"
                 />
-                <a
-                  @click="loadSource(item)"
-                >{{ item.name }}</a>
+                <a @click="loadSource(item)">{{ item.name }}</a>
               </div>
               <div class="hover">
                 <button
@@ -460,7 +431,7 @@ $color-gray-hover: #6d757a;
                   class="sm-btn play"
                   @click="loadSource(item)"
                 >
-                  <i class="iconfont icon-tongji"/>
+                  <i class="iconfont icon-tongji" />
                 </button>
               </div>
             </div>

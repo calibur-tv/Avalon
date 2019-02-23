@@ -17,24 +17,15 @@
 
 <template>
   <div class="roll-list">
-    <button
-      class="rolling-btn"
-      @click="fetchData"
-    >
+    <button class="rolling-btn" @click="fetchData">
       <i
         :style="{ transform: `rotate(${counter * 360}deg)` }"
         class="iconfont ic-search-change"
       />
-      <span v-text="$t('common.roll')"/>
+      <span v-text="$t('common.roll')" />
     </button>
-    <slot
-      v-if="setLoading && loading"
-      name="loading"
-    />
-    <slot
-      v-else
-      :list="displayList"
-    />
+    <slot v-if="setLoading && loading" name="loading" />
+    <slot v-else :list="displayList" />
   </div>
 </template>
 

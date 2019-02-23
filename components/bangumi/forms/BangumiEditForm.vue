@@ -6,18 +6,11 @@
     :disabled="submitting"
     label-width="40px"
   >
-    <el-form-item
-      v-if="isAdmin"
-      label="名称"
-      prop="name"
-    >
-      <el-input v-model.trim="name"/>
+    <el-form-item v-if="isAdmin" label="名称" prop="name">
+      <el-input v-model.trim="name" />
     </el-form-item>
     <el-form-item label="头像">
-      <img
-        :src="$resize(avatar, { width: 200 })"
-        class="avatar"
-      >
+      <img :src="$resize(avatar, { width: 200 })" class="avatar" />
       <el-upload
         :data="uploadHeaders"
         :action="imageUploadAction"
@@ -43,10 +36,7 @@
         <el-button size="mini">点击上传</el-button>
       </el-upload>
     </el-form-item>
-    <el-form-item
-      label="标签"
-      prop="tags"
-    >
+    <el-form-item label="标签" prop="tags">
       <el-select
         v-if="bangumiTags.length"
         v-model="tags"
@@ -62,10 +52,7 @@
         />
       </el-select>
     </el-form-item>
-    <el-form-item
-      label="简介"
-      prop="summary"
-    >
+    <el-form-item label="简介" prop="summary">
       <el-input
         v-model="summary"
         :rows="5"
@@ -74,11 +61,9 @@
       />
     </el-form-item>
     <el-form-item>
-      <el-button
-        :loading="submitting"
-        type="primary"
-        @click="submit"
-      >确认修改</el-button>
+      <el-button :loading="submitting" type="primary" @click="submit"
+        >确认修改</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

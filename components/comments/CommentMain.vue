@@ -32,10 +32,9 @@
   <div id="comment-wrap">
     <!-- 主列表的头部 -->
     <slot name="header">
-      <h3
-        v-if="showHeader"
-        class="sub-title"
-      >评论{{ total ? `(${total})` : '' }}</h3>
+      <h3 v-if="showHeader" class="sub-title">
+        评论{{ total ? `(${total})` : '' }}
+      </h3>
       <comment-create-form
         :id="id"
         :type="type"
@@ -44,21 +43,11 @@
       />
     </slot>
     <!-- 主列表的 list -->
-    <div
-      v-if="list.length"
-      id="comment-list-wrap"
-    >
+    <div v-if="list.length" id="comment-list-wrap">
       <!-- 每条主评论 -->
-      <div
-        v-for="comment in list"
-        :key="comment.id"
-        class="comment-item-wrap"
-      >
+      <div v-for="comment in list" :key="comment.id" class="comment-item-wrap">
         <!-- 主评论的内容 -->
-        <slot
-          :comment="comment"
-          name="comment-item"
-        >
+        <slot :comment="comment" name="comment-item">
           <comment-item
             :comment="comment"
             :type="type"
@@ -68,11 +57,7 @@
         </slot>
       </div>
     </div>
-    <p
-      v-else-if="emptyText"
-      class="no-content"
-      v-text="emptyText"
-    />
+    <p v-else-if="emptyText" class="no-content" v-text="emptyText" />
     <div id="comment-list-footer">
       <div class="load-more-btn">
         <el-button
@@ -82,7 +67,8 @@
           plain
           round
           @click="loadMore(false)"
-        >{{ loading ? '加载中...' : '加载更多' }}</el-button>
+          >{{ loading ? '加载中...' : '加载更多' }}</el-button
+        >
       </div>
       <!-- 主列表的底部 -->
       <slot name="reply">

@@ -1,11 +1,6 @@
 <template>
   <div id="bangumi-post-flow">
-    <flow-list
-      :id="id"
-      func="getBangumiPost"
-      type="seenIds"
-      sort="active"
-    >
+    <flow-list :id="id" func="getBangumiPost" type="seenIds" sort="active">
       <ul slot-scope="{ flow }">
         <post-flow-item
           v-for="item in computeFlow(flow)"
@@ -14,14 +9,10 @@
           :item="item"
         />
       </ul>
-      <no-content
-        slot="nothing"
-      >
-        <el-button
-          :round="true"
-          type="primary"
-          @click="handlePostClick"
-        >发表《{{ bangumi.name }}》的第一个帖子</el-button>
+      <no-content slot="nothing">
+        <el-button :round="true" type="primary" @click="handlePostClick"
+          >发表《{{ bangumi.name }}》的第一个帖子</el-button
+        >
       </no-content>
     </flow-list>
   </div>
@@ -33,20 +24,6 @@ import { getTopicPosts } from '~/api/bangumiApi'
 
 export default {
   name: 'BangumiPostFlow',
-  async asyncData({ app, params }) {
-    const topic = await getTopicPosts(app, {
-      id: params.id
-    })
-    return { topic }
-  },
-  async fetch({ store, params }) {
-    await store.dispatch('flow/initData', {
-      id: params.id,
-      func: 'getBangumiPost',
-      type: 'seenIds',
-      sort: 'active'
-    })
-  },
   components: {
     PostFlowItem
   },
@@ -65,6 +42,20 @@ export default {
     bangumi() {
       return this.$store.state.bangumi.show
     }
+  },
+  async asyncData({ app, params }) {
+    const topic = await getTopicPosts(app, {
+      id: params.id
+    })
+    return { topic }
+  },
+  async fetch({ store, params }) {
+    await store.dispatch('flow/initData', {
+      id: params.id,
+      func: 'getBangumiPost',
+      type: 'seenIds',
+      sort: 'active'
+    })
   },
   methods: {
     computeFlow(flow) {

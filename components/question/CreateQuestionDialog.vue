@@ -35,20 +35,14 @@
       :disabled="submitting"
       label-width="42px"
     >
-      <el-form-item
-        label="标题"
-        prop="title"
-      >
+      <el-form-item label="标题" prop="title">
         <el-input
           v-model.trim="form.title"
           maxlength="30"
           placeholder="问题标题"
         />
       </el-form-item>
-      <el-form-item
-        label="番剧"
-        prop="tags"
-      >
+      <el-form-item label="番剧" prop="tags">
         <bangumi-search
           v-model="form.tags"
           :multiple="true"
@@ -57,10 +51,7 @@
           placeholder="添加番剧标签"
         />
       </el-form-item>
-      <el-form-item
-        label="描述"
-        prop="content"
-      >
+      <el-form-item label="描述" prop="content">
         <el-input
           v-model="form.content"
           :rows="5"
@@ -84,15 +75,13 @@
           multiple
           list-type="picture-card"
         >
-          <i class="el-icon-plus"/>
+          <i class="el-icon-plus" />
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button
-          :loading="submitting"
-          type="primary"
-          @click="submit"
-        >提交问题</el-button>
+        <el-button :loading="submitting" type="primary" @click="submit"
+          >提交问题</el-button
+        >
       </el-form-item>
     </el-form>
   </v-dialog>

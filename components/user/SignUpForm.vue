@@ -53,12 +53,7 @@
 
 <template>
   <div class="sign-up-form">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rule"
-      status-icon
-    >
+    <el-form ref="form" :model="form" :rules="rule" status-icon>
       <el-form-item prop="nickname">
         <el-input
           v-model.trim="form.nickname"
@@ -87,7 +82,9 @@
           class="watch-pwd"
           type="button"
           @click="watchPwd = !watchPwd"
-        ><i class="iconfont icon-ai-eye"/></button>
+        >
+          <i class="iconfont icon-ai-eye" />
+        </button>
       </el-form-item>
       <el-form-item v-if="!inviteCode">
         <el-input
@@ -112,22 +109,17 @@
         </el-button>
       </el-form-item>
     </el-form>
-    <div
-      class="others"
-    >
+    <div class="others">
       <div class="provider">
         <span>社交账号注册</span>
         <a :href="qqRegisterLink">
-          <i class="iconfont icon-qq"/>
+          <i class="iconfont icon-qq" />
         </a>
         <a :href="wechatRegisterLink">
-          <i class="iconfont icon-v-chat"/>
+          <i class="iconfont icon-v-chat" />
         </a>
       </div>
-      <a
-        v-if="!inviteCode"
-        @click="showLogin"
-      >已有账号»</a>
+      <a v-if="!inviteCode" @click="showLogin">已有账号»</a>
     </div>
   </div>
 </template>
@@ -236,6 +228,7 @@ export default {
       } else if (this.step === 3) {
         return '注册中...'
       }
+      return '注册'
     },
     submitBtnLoading() {
       return this.step === 1 || this.step === 3

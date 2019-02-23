@@ -68,26 +68,20 @@
       :def="thisWeek"
       title="新番放送表"
     >
-      <div
-        v-for="index in 8"
-        :key="index"
-        :slot="index - 1"
-      >
-        <ul v-if="released && released[index - 1] && released[index - 1].length">
+      <div v-for="index in 8" :key="index" :slot="index - 1">
+        <ul
+          v-if="released && released[index - 1] && released[index - 1].length"
+        >
           <li
             v-for="item in released[index - 1]"
             :key="item.id"
             class="bangumi"
           >
-            <a
-              :href="$alias.bangumi(item.id)"
-              target="_blank"
-              class="avatar"
-            >
+            <a :href="$alias.bangumi(item.id)" target="_blank" class="avatar">
               <img
                 :src="$resize(item.avatar, { width: 180 })"
                 :alt="item.name"
-              >
+              />
             </a>
             <div class="intro">
               <a
@@ -119,11 +113,9 @@
           </li>
         </ul>
         <no-content v-else>
-          <el-button
-            type="primary"
-            round
-            @click="openFeedbackForResource"
-          >求资源</el-button>
+          <el-button type="primary" round @click="openFeedbackForResource"
+            >求资源</el-button
+          >
         </no-content>
       </div>
     </tab-container>
@@ -142,10 +134,6 @@ export default {
   head: {
     title: '新番放送'
   },
-  async asyncData({ app }) {
-    const released = await getReleasedBangumis(app)
-    return { released }
-  },
   data() {
     return {
       released: [],
@@ -161,6 +149,10 @@ export default {
       ],
       thisWeek: `${new Date().getDay() || 7}`
     }
+  },
+  async asyncData({ app }) {
+    const released = await getReleasedBangumis(app)
+    return { released }
   },
   methods: {
     openFeedbackForResource() {

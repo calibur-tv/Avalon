@@ -7,15 +7,10 @@
 
 <template>
   <div>
-    <div 
-      ref="point" 
-      :class="classes"
-      :style="styles">
-      <slot/>
+    <div ref="point" :class="classes" :style="styles">
+      <slot />
     </div>
-    <div 
-      v-show="slot" 
-      :style="slotStyle"/>
+    <div v-show="slot" :style="slotStyle" />
   </div>
 </template>
 

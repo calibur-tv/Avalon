@@ -27,30 +27,16 @@
     :disabled="submitting"
     label-width="45px"
   >
-    <el-form-item
-      label="名字"
-      prop="name"
-    >
+    <el-form-item label="名字" prop="name">
       <el-input
         v-model="form.name"
         :placeholder="isCartoon ? '填写这一话的名字' : '给相册起一个名字'"
       />
     </el-form-item>
-    <el-form-item
-      v-if="isCartoon"
-      label="集数"
-      prop="part"
-    >
-      <el-input-number
-        v-model="form.part"
-        :min="1"
-      />
+    <el-form-item v-if="isCartoon" label="集数" prop="part">
+      <el-input-number v-model="form.part" :min="1" />
     </el-form-item>
-    <el-form-item
-      v-else
-      label="番剧"
-      prop="bangumi_id"
-    >
+    <el-form-item v-else label="番剧" prop="bangumi_id">
       <bangumi-search
         v-model="form.bangumi_id"
         placeholder="请选择要投稿的番剧"
@@ -58,26 +44,28 @@
     </el-form-item>
     <el-form-item label="原创">
       <el-row>
-        <el-switch v-model="form.is_creator"/>
+        <el-switch v-model="form.is_creator" />
         <el-tooltip
           class="item"
           effect="dark"
           content="只有相册内容全是原创时才应该勾选"
           placement="top"
         >
-          <i class="el-icon-question"/>
+          <i class="el-icon-question" />
         </el-tooltip>
         <div
           v-if="form.poster"
-          :style="{ backgroundImage: `url(${$resize(form.poster.url, { width: 400, mode: 2 })})` }"
+          :style="{
+            backgroundImage: `url(${$resize(form.poster.url, {
+              width: 400,
+              mode: 2
+            })})`
+          }"
           class="preview-poster"
         />
       </el-row>
     </el-form-item>
-    <el-form-item
-      label="封面"
-      prop="poster"
-    >
+    <el-form-item label="封面" prop="poster">
       <el-upload
         ref="upload"
         :data="uploadHeaders"
@@ -88,11 +76,7 @@
         :action="imageUploadAction"
         :accept="imageUploadAccept"
       >
-        <el-button
-          :loading="submitting"
-          size="small"
-          round
-        >上传封面</el-button>
+        <el-button :loading="submitting" size="small" round>上传封面</el-button>
       </el-upload>
     </el-form-item>
     <el-form-item>
@@ -101,7 +85,8 @@
         type="primary"
         size="small"
         @click="submit"
-      >确认提交</el-button>
+        >确认提交</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

@@ -39,14 +39,8 @@
 </style>
 
 <template>
-  <div
-    :class="$style.bangumiPanel"
-    class="bangumi-panel"
-  >
-    <a
-      :href="$alias.bangumi(id)"
-      target="_blank"
-    >
+  <div :class="$style.bangumiPanel" class="bangumi-panel">
+    <a :href="$alias.bangumi(id)" target="_blank">
       <v-img
         :class="$style.avatar"
         :src="avatar"
@@ -61,10 +55,7 @@
       target="_blank"
       v-text="name"
     />
-    <p
-      :class="$style.summary"
-      v-text="summary"
-    />
+    <p :class="$style.summary" v-text="summary" />
     <el-button
       :loading="source.follow_loading"
       :plain="source.follow"

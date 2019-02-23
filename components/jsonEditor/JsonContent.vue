@@ -1,13 +1,10 @@
 <template>
-  <div
-    v-if="show"
-    class="json-content"
-  >
+  <div v-if="show" class="json-content">
     <component
+      :is="`${item.type}-parser`"
       v-for="(item, index) in content"
       :key="index"
       :item="item"
-      :is="`${item.type}-parser`"
     />
   </div>
 </template>

@@ -1,29 +1,14 @@
-<style lang="scss">
-</style>
+<style lang="scss"></style>
 
 <template>
   <div class="create-role-form">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      label-width="40px"
-    >
-      <el-form-item
-        label="名称"
-        prop="name"
-      >
+    <el-form ref="form" :model="form" :rules="rules" label-width="40px">
+      <el-form-item label="名称" prop="name">
         <el-col :span="16">
-          <el-input
-            v-model.trim="form.name"
-            placeholder="中文名"
-          />
+          <el-input v-model.trim="form.name" placeholder="中文名" />
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="别名"
-        prop="alias"
-      >
+      <el-form-item label="别名" prop="alias">
         <el-select
           v-model="form.alias"
           multiple
@@ -34,29 +19,18 @@
           style="width: 100%"
         />
       </el-form-item>
-      <el-form-item
-        label="番剧"
-        prop="bangumi_id"
-      >
-        <bangumi-search v-model="form.bangumi_id"/>
+      <el-form-item label="番剧" prop="bangumi_id">
+        <bangumi-search v-model="form.bangumi_id" />
       </el-form-item>
-      <el-form-item
-        label="头像"
-        prop="avatar"
-        required
-      >
+      <el-form-item label="头像" prop="avatar" required>
         <el-col :span="16">
-          <el-input
-            v-model.trim="form.avatar"
-            :disabled="true"
-          >
-            <template slot="prepend">https://image.calibur.tv/</template>
+          <el-input v-model.trim="form.avatar" :disabled="true">
+            <template slot="prepend"
+              >https://image.calibur.tv/</template
+            >
           </el-input>
         </el-col>
-        <el-col
-          :span="2"
-          :offset="1"
-        >
+        <el-col :span="2" :offset="1">
           <el-form-item>
             <el-upload
               :data="uploadHeaders"
@@ -68,23 +42,20 @@
               :accept="imageUploadAccept"
             >
               <el-button type="text">
-                <i class="el-icon-plus"/>
+                <i class="el-icon-plus" />
                 上传
               </el-button>
             </el-upload>
           </el-form-item>
         </el-col>
-        <el-col
-          v-if="form.avatar"
-          :span="2"
-        >
+        <el-col v-if="form.avatar" :span="2">
           <el-popover
             ref="popoverAvatar"
             placement="left"
             width="100"
             trigger="hover"
           >
-            <img :src="$resize(form.avatar, { width: 250 })">
+            <img :src="$resize(form.avatar, { width: 250 })" />
           </el-popover>
           <a
             v-popover:popoverAvatar
@@ -92,14 +63,11 @@
             type="text"
             target="_blank"
           >
-            <i class="el-icon-view"/>&nbsp;预览
+            <i class="el-icon-view" />&nbsp;预览
           </a>
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="简介"
-        prop="intro"
-      >
+      <el-form-item label="简介" prop="intro">
         <el-input
           v-model="form.intro"
           :rows="10"
@@ -108,14 +76,8 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-col
-          :span="3"
-          :offset="21"
-        >
-          <el-button
-            type="primary"
-            @click="submitForm"
-          >立即创建</el-button>
+        <el-col :span="3" :offset="21">
+          <el-button type="primary" @click="submitForm">立即创建</el-button>
         </el-col>
       </el-form-item>
     </el-form>

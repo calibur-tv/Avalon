@@ -156,15 +156,12 @@
 <template>
   <div id="image-waterfall-flow">
     <no-ssr>
-      <waterfall
-        :line-gap="width + 12"
-        :auto-resize="false"
-      >
+      <waterfall :line-gap="width + 12" :auto-resize="false">
         <waterfall-slot
           v-for="(item, index) in list"
+          :key="item.id"
           :height="computeBoxHeight(item.source)"
           :order="index"
-          :key="item.id"
           :width="width"
         >
           <div class="image">
@@ -180,7 +177,7 @@
                 content="原创"
                 placement="top"
               >
-                <i class="is-creator iconfont icon-huangguan"/>
+                <i class="is-creator iconfont icon-huangguan" />
               </el-tooltip>
               <v-img
                 :src="item.source.url"
@@ -188,37 +185,28 @@
                 :width="width"
                 :lazy="false"
               />
-              <div
-                v-if="item.is_album"
-                class="is-album"
-              >
-                <i class="el-icon-picture-outline"/>
-                <span
-                  class="image-count"
-                  v-text="item.image_count"
-                />
+              <div v-if="item.is_album" class="is-album">
+                <i class="el-icon-picture-outline" />
+                <span class="image-count" v-text="item.image_count" />
               </div>
             </a>
             <div class="intro">
-              <p
-                class="name oneline"
-                v-text="item.name"
-              />
+              <p class="name oneline" v-text="item.name" />
               <div class="social">
                 <span v-if="item.is_creator">
-                  <i class="iconfont icon-fantuan"/>
+                  <i class="iconfont icon-fantuan" />
                   {{ item.reward_count }}
                 </span>
                 <span v-else>
-                  <i class="iconfont icon-like"/>
+                  <i class="iconfont icon-like" />
                   {{ item.like_count }}
                 </span>
                 <span>
-                  <i class="iconfont icon-talk"/>
+                  <i class="iconfont icon-talk" />
                   {{ item.comment_count }}
                 </span>
                 <span>
-                  <i class="iconfont icon-mark"/>
+                  <i class="iconfont icon-mark" />
                   {{ item.mark_count }}
                 </span>
               </div>
@@ -258,10 +246,7 @@
                   :lazy="false"
                   class="user-avatar"
                 />
-                <span
-                  class="main-name"
-                  v-text="item.user.nickname"
-                />
+                <span class="main-name" v-text="item.user.nickname" />
               </user-card>
               <template v-else>
                 <a

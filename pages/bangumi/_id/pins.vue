@@ -1,24 +1,15 @@
 <template>
   <div id="bangumi-image-flow">
-    <flow-list
-      :id="id"
-      func="getBangumiImage"
-      type="seenIds"
-      sort="active"
-    >
+    <flow-list :id="id" func="getBangumiImage" type="seenIds" sort="active">
       <image-waterfall-flow
         slot-scope="{ flow }"
         :bangumi-id="id"
         :list="flow"
       />
-      <no-content
-        slot="nothing"
-      >
-        <el-button
-          :round="true"
-          type="primary"
-          @click="handleImageClick"
-        >上传《{{ bangumi.name }}》的第一张美图</el-button>
+      <no-content slot="nothing">
+        <el-button :round="true" type="primary" @click="handleImageClick"
+          >上传《{{ bangumi.name }}》的第一张美图</el-button
+        >
       </no-content>
     </flow-list>
   </div>
@@ -29,14 +20,6 @@ import ImageWaterfallFlow from '~/components/image/ImageWaterfallFlow'
 
 export default {
   name: 'BangumiImageFlow',
-  async asyncData({ store, params }) {
-    await store.dispatch('flow/initData', {
-      id: params.id,
-      func: 'getBangumiImage',
-      type: 'seenIds',
-      sort: 'active'
-    })
-  },
   components: {
     ImageWaterfallFlow
   },
@@ -50,6 +33,14 @@ export default {
     bangumi() {
       return this.$store.state.bangumi.show
     }
+  },
+  async asyncData({ store, params }) {
+    await store.dispatch('flow/initData', {
+      id: params.id,
+      func: 'getBangumiImage',
+      type: 'seenIds',
+      sort: 'active'
+    })
   },
   methods: {
     handleImageClick() {
