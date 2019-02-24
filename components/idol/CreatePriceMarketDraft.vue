@@ -19,17 +19,6 @@
       <p>当前总发行股份：{{ editStockForm.max_stock_count || '未设上限' }}</p>
       <p>当前已售出股份：{{ editStockForm.star_count }}</p>
     </el-alert>
-    <el-alert
-      :closable="false"
-      style="margin-bottom:15px"
-      title="变更方式"
-      type="warning"
-    >
-      <p>
-        确认之后，将会发布一条公开提案，只要有超过 2/3
-        的票数表决同意，就会自动增发股票
-      </p>
-    </el-alert>
     <el-form label-width="80px">
       <el-form-item label="每股股价" prop="stock_price">
         <el-input-number
