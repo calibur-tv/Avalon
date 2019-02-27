@@ -1,9 +1,6 @@
 <template>
   <div class="idol-product-order-list">
-    <el-alert
-      type="info"
-      title="经纪人的采购记录将展示在这里"
-    >
+    <el-alert type="info" title="经纪人的采购记录将展示在这里">
       <p>
         经纪人只能采购偶像所属番剧下的原创内容，目前只支持帖子
       </p>

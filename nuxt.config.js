@@ -24,7 +24,6 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    titleTemplate: 'calibur 二次元股市',
     /*
     titleTemplate: title => {
       if (!title) {

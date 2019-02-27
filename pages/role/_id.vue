@@ -408,10 +408,7 @@ export default {
       const total_income = +this.role.total_income
       const total_pay = +this.role.total_pay
       return parseFloat(
-        market_price -
-        star_count +
-        total_income -
-        total_pay
+        market_price - star_count + total_income - total_pay
       ).toFixed(2)
     },
     computedHtmlIntro() {
