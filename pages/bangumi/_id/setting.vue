@@ -15,9 +15,20 @@
   <div id="bangumi-setting">
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item title="编辑番剧" name="1">
-        <bangumi-edit-form />
+        <bangumi-edit-form :id="id" />
       </el-collapse-item>
-      <el-collapse-item title="添加偶像" name="2">
+      <!--
+      <el-collapse-item title="编辑视频" name="2">
+        编辑视频
+      </el-collapse-item>
+      <el-collapse-item title="编辑漫画" name="3">
+        编辑漫画
+      </el-collapse-item>
+      <el-collapse-item title="编辑权限" name="4">
+        编辑权限，支持QQ群
+      </el-collapse-item>
+      -->
+      <el-collapse-item title="添加偶像" name="5">
         <el-alert type="info" title="">
           <div>1：请勿添加与该番剧无关的偶像</div>
           <div>
@@ -26,10 +37,10 @@
         </el-alert>
         <create-role-form :bangumi-id="id" :is-create="true" />
       </el-collapse-item>
-      <el-collapse-item title="帖子操作" name="3">
+      <el-collapse-item title="帖子操作" name="6">
         <bangumi-post-setting />
       </el-collapse-item>
-      <el-collapse-item title="上传漫画" name="4">
+      <el-collapse-item title="上传漫画" name="7">
         <template v-if="createdAlbum">
           <el-alert type="info" title="">
             <div>1：漫画已经创建，但还没有内容，最好尽快上传内容</div>
@@ -93,6 +104,7 @@ import UploadImageForm from '~/components/image/UploadImageForm'
 import CreateAlbumForm from '~/components/image/CreateAlbumForm'
 import ImageAlbumSelect from '~/components/image/ImageAlbumSelect'
 import { Collapse, CollapseItem } from 'element-ui'
+import serverAuth from '~/mixins/serverAuth'
 
 export default {
   name: 'BangumiSetting',
@@ -106,6 +118,7 @@ export default {
     'el-collapse': Collapse,
     'el-collapse-item': CollapseItem
   },
+  mixins: [serverAuth],
   props: {
     id: {
       required: true,

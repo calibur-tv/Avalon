@@ -199,10 +199,9 @@
           <star-idol-btn
             :id="id"
             :price="role.stock_price"
-            :locked="role.is_locked"
             :max="+role.max_stock_count"
             :buyed="+role.star_count"
-            :name="role.name"
+            :idol="role"
             @success="handleStarCallback"
           />
           <idol-deal-btn

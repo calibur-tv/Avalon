@@ -42,15 +42,20 @@ export const getTopicPosts = (ctx, { id }) => {
   return ctx.$axios.$get(`bangumi/${id}/posts/top`)
 }
 
-export const editBangumiInfo = (
-  ctx,
-  { id, name, summary, avatar, banner, tags }
-) => {
-  return ctx.$axios.post(`bangumi/${id}/edit`, {
-    name,
-    summary,
-    avatar,
-    banner,
-    tags
+export const createSeason = (ctx, form) => {
+  return ctx.$axios.$post('bangumi/manager/create_season', form)
+}
+
+export const editSeason = (ctx, form) => {
+  return ctx.$axios.$post('bangumi/manager/edit_season', form)
+}
+
+export const getEditBangumi = (ctx, { bangumi_id }) => {
+  return ctx.$axios.$get('bangumi/manager/get_info', {
+    params: { bangumi_id }
   })
+}
+
+export const editBangumiInfo = (ctx, form) => {
+  return ctx.$axios.$post('bangumi/manager/edit_info', form)
 }

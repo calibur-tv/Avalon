@@ -32,14 +32,14 @@
 <template>
   <span :class="$style.wrap">
     <button
-      :class="[$style.cartoonRoleBtn, { [$style.locked]: locked }]"
+      :class="[$style.cartoonRoleBtn, { [$style.locked]: idol.is_locked }]"
       @click="handleStarRole"
     >
-      {{ locked ? '已停牌' : '入股' }}
+      {{ idol.is_locked ? '已停牌' : '入股' }}
     </button>
     <v-dialog
       v-model="showDialog"
-      :title="`入股 - ${name}`"
+      :title="`入股 - ${idol.name}`"
       :loading="submitting"
       width="560px"
       @submit="submit"
@@ -58,7 +58,7 @@
         <el-form-item label="购入份额">
           <el-input-number
             v-model="count"
-            :min="maxCount < 1 ? 0.01 : 1"
+            :min="minCount"
             :step="0.01"
             :max="maxCount"
           />
@@ -89,10 +89,6 @@ export default {
       type: String,
       required: true
     },
-    name: {
-      type: String,
-      required: true
-    },
     max: {
       type: Number,
       required: true
@@ -101,9 +97,9 @@ export default {
       type: Number,
       required: true
     },
-    locked: {
-      type: Boolean,
-      default: false
+    idol: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -137,6 +133,9 @@ export default {
       }
       return parseFloat(result).toFixed(2)
     },
+    minCount() {
+      return this.idol.company_state ? 0.01 : 1
+    },
     needPay() {
       if (!this.count) {
         return 0
@@ -146,7 +145,7 @@ export default {
   },
   methods: {
     async handleStarRole() {
-      if (this.locked) {
+      if (this.idol.is_locked) {
         this.$toast.error('已经停牌了，等待下次挂牌吧')
         return
       }
