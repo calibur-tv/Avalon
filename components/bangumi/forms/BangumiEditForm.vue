@@ -196,6 +196,15 @@
           placeholder="请输入番剧简介，最多250字，纯文本不支持各种换行符"
         />
       </el-form-item>
+      <el-form-item
+        label="番剧Q群"
+        prop="qq_group"
+      >
+        <el-input
+          v-model.trim="form.qq_group"
+          placeholder="设置官方同好群，请不要频繁修改"
+        />
+      </el-form-item>
     </el-form>
     <el-alert
       title="以下是季度信息，与番剧信息分开编辑保存"
@@ -388,6 +397,15 @@ export default {
       }
       callback()
     }
+    const validateQQ = (rule, value, callback) => {
+      if (!value) {
+        return callback()
+      }
+      if (!/^\d+$/.test(value)) {
+        return callback(new Error('QQ群号码必须是数字'))
+      }
+      callback()
+    }
     return {
       loading: false,
       tags: [],
@@ -433,7 +451,8 @@ export default {
         banner: '',
         summary: '',
         has_video: true,
-        has_cartoon: false
+        has_cartoon: false,
+        qq_group: ''
       },
       rules: {
         name: [{ required: true, message: '请输入番剧名称', trigger: 'blur' }],
@@ -442,7 +461,8 @@ export default {
         summary: [
           { required: true, message: '简介不能为空', trigger: 'blur' },
           { min: 1, max: 250, message: '最多250字', trigger: 'blur' }
-        ]
+        ],
+        qq_group: [{ validator: validateQQ, trigger: 'submit' }]
       },
       seasons: [],
       editableTabsValue: '',

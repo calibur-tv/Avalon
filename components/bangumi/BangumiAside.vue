@@ -21,16 +21,34 @@
       margin: 0 -5px;
       display: inline-block;
       vertical-align: middle;
+      position: relative;
 
       img {
         width: 40px;
         height: 40px;
         border-radius: 50%;
         border: 3px solid #fff;
+        background-color: #fff;
       }
 
       a {
         display: block;
+      }
+
+      i {
+        position: absolute;
+        left: 20px;
+        bottom: 3px;
+      }
+
+      .icon-leader {
+        color: $color-pink-deep;
+        font-size: 16px;
+      }
+
+      .icon-master {
+        color: $color-blue-normal;
+        font-size: 14px;
       }
     }
   }
@@ -79,17 +97,25 @@
       <span v-else class="no-one">还没有人关注</span>
     </div>
     <div id="bangumi-managers">
-      <h2 class="sub-title">版主</h2>
+      <h2 class="sub-title">管理员</h2>
       <ul v-if="managers.total">
-        <li v-for="user in managerUsers" :key="user.id">
+        <li v-for="item in managers.list" :key="item.user.id">
           <el-tooltip
-            :content="user.nickname"
+            :content="item.user.nickname"
             class="item"
             effect="dark"
             placement="top"
           >
-            <a :href="$alias.user(user.zone)" target="_blank">
-              <img :src="$resize(user.avatar, { width: 80 })" />
+            <a :href="$alias.user(item.user.zone)" target="_blank">
+              <img :src="$resize(item.user.avatar, { width: 80 })" />
+              <i
+                v-if="item.is_leader"
+                class="iconfont icon-leader"
+              />
+              <i
+                v-else
+                class="iconfont icon-master"
+              />
             </a>
           </el-tooltip>
         </li>
@@ -121,6 +147,13 @@
         <p>如果你满足以上条件，请尽快联系我们，组织需要你！</p>
         <p>QQ群「106402736」</p>
       </v-dialog>
+    </div>
+    <div
+      v-if="info.qq_group"
+      id="qq-group"
+    >
+      <h2 class="sub-title">QQ同好群</h2>
+      <p>{{ info.qq_group }}</p>
     </div>
   </div>
 </template>

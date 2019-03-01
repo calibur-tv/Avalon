@@ -44,14 +44,14 @@
     "2e7305024d90c94df7f0.css.gz",
     "3.chunk.e1248d43.js",
     "3.chunk.e1248d43.js.map",
+    "361270e1c5916aa289ed.css",
+    "361270e1c5916aa289ed.css.gz",
     "370fb0dcf5dd6cd1d53c.css",
     "370fb0dcf5dd6cd1d53c.css.gz",
     "4a5bdd0879c3986ff886.css",
     "4a5bdd0879c3986ff886.css.gz",
     "4c4021686f01830a3552.css",
     "4c4021686f01830a3552.css.gz",
-    "54a16e534a3b68c59ecc.css",
-    "54a16e534a3b68c59ecc.css.gz",
     "5552aa08d4802d46e8f7.css",
     "5552aa08d4802d46e8f7.css.gz",
     "564ef61d306fa92394ad.css",
@@ -115,9 +115,9 @@
     "a5b2c3e1c6123fab819e.css",
     "a5b2c3e1c6123fab819e.css.gz",
     "ad217362fd0da5a00642.css",
-    "app.chunk.5f9e506a.js",
-    "app.chunk.5f9e506a.js.gz",
-    "app.chunk.5f9e506a.js.map",
+    "app.chunk.f1ee0bb5.js",
+    "app.chunk.f1ee0bb5.js.gz",
+    "app.chunk.f1ee0bb5.js.map",
     "b170cfe8b6633230a489.css",
     "b170cfe8b6633230a489.css.gz",
     "b262a6eca5efab1b3ad2.css",
@@ -184,9 +184,9 @@
     "pages/app/notice/_id.chunk.d635fefc.js",
     "pages/app/notice/_id.chunk.d635fefc.js.gz",
     "pages/app/notice/_id.chunk.d635fefc.js.map",
-    "pages/bangumi/_id.chunk.9984324c.js",
-    "pages/bangumi/_id.chunk.9984324c.js.gz",
-    "pages/bangumi/_id.chunk.9984324c.js.map",
+    "pages/bangumi/_id.chunk.31c74429.js",
+    "pages/bangumi/_id.chunk.31c74429.js.gz",
+    "pages/bangumi/_id.chunk.31c74429.js.map",
     "pages/bangumi/_id/cartoon.chunk.992d45b9.js",
     "pages/bangumi/_id/cartoon.chunk.992d45b9.js.gz",
     "pages/bangumi/_id/cartoon.chunk.992d45b9.js.map",
@@ -208,9 +208,9 @@
     "pages/bangumi/_id/role.chunk.c0674510.js",
     "pages/bangumi/_id/role.chunk.c0674510.js.gz",
     "pages/bangumi/_id/role.chunk.c0674510.js.map",
-    "pages/bangumi/_id/setting.chunk.b2fec56a.js",
-    "pages/bangumi/_id/setting.chunk.b2fec56a.js.gz",
-    "pages/bangumi/_id/setting.chunk.b2fec56a.js.map",
+    "pages/bangumi/_id/setting.chunk.4688aab7.js",
+    "pages/bangumi/_id/setting.chunk.4688aab7.js.gz",
+    "pages/bangumi/_id/setting.chunk.4688aab7.js.map",
     "pages/bangumi/_id/video.chunk.e171ac7d.js",
     "pages/bangumi/_id/video.chunk.e171ac7d.js.gz",
     "pages/bangumi/_id/video.chunk.e171ac7d.js.map",
@@ -365,9 +365,9 @@
     "pages/world/review.chunk.cf16f6dc.js",
     "pages/world/review.chunk.cf16f6dc.js.gz",
     "pages/world/review.chunk.cf16f6dc.js.map",
-    "runtime.8df1b835.js",
-    "runtime.8df1b835.js.gz",
-    "runtime.8df1b835.js.map",
+    "runtime.576a7a33.js",
+    "runtime.576a7a33.js.gz",
+    "runtime.576a7a33.js.map",
     "vendors.app.chunk.2cd0121c.js",
     "vendors.app.chunk.2cd0121c.js.gz",
     "vendors.app.chunk.2cd0121c.js.map",
@@ -397,12 +397,12 @@
     "vendors.pages/world.chunk.c55bbf14.js.map"
   ],
   "initial": [
-    "runtime.8df1b835.js",
+    "runtime.576a7a33.js",
     "commons.app.chunk.7fd9d021.js",
     "ba18a69b0a0e090c645b.css",
     "vendors.app.chunk.2cd0121c.js",
     "b64f7f13970d1190a093.css",
-    "app.chunk.5f9e506a.js"
+    "app.chunk.f1ee0bb5.js"
   ],
   "async": [
     "0452920c831baf1906cf.css",
@@ -426,10 +426,10 @@
     "2c67ba8d25542b8ec2d4.css",
     "2e7305024d90c94df7f0.css",
     "3.chunk.e1248d43.js",
+    "361270e1c5916aa289ed.css",
     "370fb0dcf5dd6cd1d53c.css",
     "4a5bdd0879c3986ff886.css",
     "4c4021686f01830a3552.css",
-    "54a16e534a3b68c59ecc.css",
     "5552aa08d4802d46e8f7.css",
     "564ef61d306fa92394ad.css",
     "58efa387cfdb1e864577.css",
@@ -485,7 +485,7 @@
     "pages/about/thanks.chunk.d90c0b78.js",
     "pages/app/download.chunk.d43ed758.js",
     "pages/app/notice/_id.chunk.d635fefc.js",
-    "pages/bangumi/_id.chunk.9984324c.js",
+    "pages/bangumi/_id.chunk.31c74429.js",
     "pages/bangumi/_id/cartoon.chunk.992d45b9.js",
     "pages/bangumi/_id/index.chunk.4e004168.js",
     "pages/bangumi/_id/pins.chunk.b3a9084b.js",
@@ -493,7 +493,7 @@
     "pages/bangumi/_id/qaq.chunk.752966a3.js",
     "pages/bangumi/_id/review.chunk.c10ee07e.js",
     "pages/bangumi/_id/role.chunk.c0674510.js",
-    "pages/bangumi/_id/setting.chunk.b2fec56a.js",
+    "pages/bangumi/_id/setting.chunk.4688aab7.js",
     "pages/bangumi/_id/video.chunk.e171ac7d.js",
     "pages/bangumi/index.chunk.dd393bfa.js",
     "pages/bangumi/index/news.chunk.59de8402.js",
@@ -3504,7 +3504,7 @@
       360
     ],
     "fc0b44da": [
-      45,
+      47,
       361,
       363
     ],
@@ -3646,7 +3646,7 @@
       304
     ],
     "5a9acb54": [
-      47,
+      49,
       165,
       167
     ],
@@ -3656,12 +3656,12 @@
       182
     ],
     "0387c6ee": [
-      49,
+      43,
       183,
       185
     ],
     "54146c0d": [
-      49,
+      43,
       183,
       185
     ],
@@ -3836,7 +3836,7 @@
       313
     ],
     "3d24ef2f": [
-      43,
+      45,
       314,
       316
     ],
@@ -4267,7 +4267,7 @@
       360
     ],
     "cd5a3daa": [
-      45,
+      47,
       361,
       363
     ],
@@ -4471,7 +4471,7 @@
       304
     ],
     "4457c2ec": [
-      47,
+      49,
       165,
       167
     ],
@@ -4481,12 +4481,12 @@
       182
     ],
     "058b13be": [
-      49,
+      43,
       183,
       185
     ],
     "f4cf0116": [
-      49,
+      43,
       183,
       185
     ],
@@ -4701,7 +4701,7 @@
       313
     ],
     "a8fb3e72": [
-      43,
+      45,
       314,
       316
     ],
@@ -5173,7 +5173,7 @@
       215
     ],
     "2046a884": [
-      49,
+      43,
       183,
       185
     ],
@@ -5290,12 +5290,12 @@
       164
     ],
     "4c5f13eb": [
-      45,
+      47,
       361,
       363
     ],
     "2e065472": [
-      43,
+      45,
       314,
       316
     ],
@@ -5315,7 +5315,7 @@
       354
     ],
     "4d6c0d6c": [
-      47,
+      49,
       165,
       167
     ],
@@ -5741,7 +5741,7 @@
       164
     ],
     "700c4192": [
-      47,
+      49,
       165,
       167
     ],
@@ -5923,7 +5923,7 @@
       313
     ],
     "61e2d35c": [
-      43,
+      45,
       314,
       316
     ],
@@ -5978,7 +5978,7 @@
       360
     ],
     "116cdaf6": [
-      45,
+      47,
       361,
       363
     ],
@@ -6078,12 +6078,12 @@
       346
     ],
     "dbcbf0ec": [
-      49,
+      43,
       183,
       185
     ],
     "fe2c1ea8": [
-      49,
+      43,
       183,
       185
     ],
@@ -6433,7 +6433,7 @@
     "81.chunk.ec279061.js": "bba68bf6",
     "82.chunk.07d0695c.js": "bba68bf6",
     "83.chunk.62e9bd58.js": "bba68bf6",
-    "app.chunk.5f9e506a.js": "1a3ae26b",
+    "app.chunk.f1ee0bb5.js": "1a3ae26b",
     "commons.app.chunk.7fd9d021.js": "0859c165",
     "pages/about/hello.chunk.e25aa77c.js": "169b6e62",
     "pages/about/invite/_id.chunk.e41b5405.js": "11ae97d7",
@@ -6442,7 +6442,7 @@
     "pages/about/thanks.chunk.d90c0b78.js": "93937328",
     "pages/app/download.chunk.d43ed758.js": "053f3f97",
     "pages/app/notice/_id.chunk.d635fefc.js": "25abad5c",
-    "pages/bangumi/_id.chunk.9984324c.js": "1d3e997a",
+    "pages/bangumi/_id.chunk.31c74429.js": "1d3e997a",
     "pages/bangumi/_id/cartoon.chunk.992d45b9.js": "6c49dca2",
     "pages/bangumi/_id/index.chunk.4e004168.js": "d98239f4",
     "pages/bangumi/_id/pins.chunk.b3a9084b.js": "59929e6c",
@@ -6450,7 +6450,7 @@
     "pages/bangumi/_id/qaq.chunk.752966a3.js": "1f966b95",
     "pages/bangumi/_id/review.chunk.c10ee07e.js": "38faf8b8",
     "pages/bangumi/_id/role.chunk.c0674510.js": "5990a07c",
-    "pages/bangumi/_id/setting.chunk.b2fec56a.js": "7cc5e8f8",
+    "pages/bangumi/_id/setting.chunk.4688aab7.js": "7cc5e8f8",
     "pages/bangumi/_id/video.chunk.e171ac7d.js": "d81862a2",
     "pages/bangumi/index.chunk.dd393bfa.js": "1c902c1b",
     "pages/bangumi/index/news.chunk.59de8402.js": "f8efef72",
@@ -6503,7 +6503,7 @@
     "pages/world/post.chunk.92d46f18.js": "07be381e",
     "pages/world/qaq.chunk.03713d32.js": "c5b1a5ba",
     "pages/world/review.chunk.cf16f6dc.js": "13eeaf56",
-    "runtime.8df1b835.js": "6fca0322",
+    "runtime.576a7a33.js": "6fca0322",
     "vendors.app.chunk.2cd0121c.js": "7ea1d828",
     "vendors.pages/app/download.chunk.8be2f2ad.js": "abbf0f8c",
     "vendors.pages/bangumi/_id/setting.pages/user/_zone/setting.chunk.f0b49351.js": "24f71580",
