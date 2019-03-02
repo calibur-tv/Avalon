@@ -148,12 +148,9 @@
         <p>QQ群「106402736」</p>
       </v-dialog>
     </div>
-    <div
-      v-if="info.qq_group"
-      id="qq-group"
-    >
+    <div id="qq-group">
       <h2 class="sub-title">QQ同好群</h2>
-      <p>{{ info.qq_group }}</p>
+      <p>{{ info.qq_group || '106402736' }}</p>
     </div>
   </div>
 </template>
