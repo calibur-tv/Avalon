@@ -59,3 +59,25 @@ export const getEditBangumi = (ctx, { bangumi_id }) => {
 export const editBangumiInfo = (ctx, form) => {
   return ctx.$axios.$post('bangumi/manager/edit_info', form)
 }
+
+export const getManagerList = (ctx, id) => {
+  return ctx.$axios.$get('bangumi/manager/list', {
+    params: {
+      id
+    }
+  })
+}
+
+export const setManager = (ctx, { user_id, bangumi_id }) => {
+  return ctx.$axios.$post('bangumi/manager/set_manager', {
+    user_id,
+    bangumi_id
+  })
+}
+
+export const removeManager = (ctx, { user_id, bangumi_id }) => {
+  return ctx.$axios.$post('bangumi/manager/remove_manager', {
+    user_id,
+    bangumi_id
+  })
+}

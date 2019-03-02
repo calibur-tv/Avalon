@@ -24,10 +24,10 @@
       <el-collapse-item title="编辑漫画" name="3">
         编辑漫画
       </el-collapse-item>
-      <el-collapse-item title="编辑权限" name="4">
-        编辑权限，支持QQ群
-      </el-collapse-item>
       -->
+      <el-collapse-item title="编辑权限" name="4">
+        <change-bangumi-manager :id="id" />
+      </el-collapse-item>
       <el-collapse-item title="添加偶像" name="5">
         <el-alert type="info" title="">
           <div>1：请勿添加与该番剧无关的偶像</div>
@@ -103,6 +103,7 @@ import BangumiPostSetting from '~/components/bangumi/forms/BangumiPostSetting'
 import UploadImageForm from '~/components/image/UploadImageForm'
 import CreateAlbumForm from '~/components/image/CreateAlbumForm'
 import ImageAlbumSelect from '~/components/image/ImageAlbumSelect'
+import ChangeBangumiManager from '~/components/bangumi/forms/ChangeBangumiManager'
 import { Collapse, CollapseItem } from 'element-ui'
 import serverAuth from '~/mixins/serverAuth'
 
@@ -115,6 +116,7 @@ export default {
     UploadImageForm,
     CreateAlbumForm,
     ImageAlbumSelect,
+    ChangeBangumiManager,
     'el-collapse': Collapse,
     'el-collapse-item': CollapseItem
   },
