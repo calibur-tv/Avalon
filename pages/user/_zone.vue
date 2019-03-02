@@ -407,6 +407,7 @@
             <span class="level"> Lv{{ user.level }} </span>
           </template>
           <span class="level"> &nbsp;·&nbsp;战斗力：{{ userPower }} </span>
+          <span class="level"> &nbsp;·&nbsp;邀请码：{{ user.id }} </span>
         </span>
         <el-popover
           v-if="isMe"

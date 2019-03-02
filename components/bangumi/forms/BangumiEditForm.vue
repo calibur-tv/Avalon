@@ -1,42 +1,22 @@
 <template>
   <div id="bangumi-edit">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      label-width="68px"
-    >
+    <el-form ref="form" :model="form" :rules="rules" label-width="68px">
       <el-alert
         title="修改番剧名称不会生效"
         type="error"
         style="margin-bottom: 20px"
       />
-      <el-form-item
-        label="番剧名称"
-        prop="name"
-      >
+      <el-form-item label="番剧名称" prop="name">
         <el-col :span="16">
-          <el-input
-            v-model.trim="form.name"
-            placeholder="中文名"
-          />
+          <el-input v-model.trim="form.name" placeholder="中文名" />
         </el-col>
-        <el-col
-          :offset="2"
-          :span="6"
-          style="text-align: right"
-        >
-          <el-button
-            type="primary"
-            @click="editBangumiInfo"
-          >更新番剧</el-button>
+        <el-col :offset="2" :span="6" style="text-align: right">
+          <el-button type="primary" @click="editBangumiInfo"
+            >更新番剧</el-button
+          >
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="番剧别名"
-        prop="alias"
-        required
-      >
+      <el-form-item label="番剧别名" prop="alias" required>
         <el-select
           v-model="form.alias"
           multiple
@@ -48,16 +28,12 @@
         />
       </el-form-item>
       <el-form-item label="开启视频">
-        <el-switch v-model="form.has_video"/>
+        <el-switch v-model="form.has_video" />
       </el-form-item>
       <el-form-item label="开启漫画">
-        <el-switch v-model="form.has_cartoon"/>
+        <el-switch v-model="form.has_cartoon" />
       </el-form-item>
-      <el-form-item
-        label="番剧标签"
-        prop="tags"
-        required
-      >
+      <el-form-item label="番剧标签" prop="tags" required>
         <el-select
           v-model="form.tags"
           style="width: 100%"
@@ -72,24 +48,19 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        label="番剧头像"
-        prop="avatar"
-        required
-      >
+      <el-form-item label="番剧头像" prop="avatar" required>
         <el-col :span="16">
           <el-input
             v-model.trim="form.avatar"
             :disabled="true"
             auto-complete="off"
           >
-            <template slot="prepend">https://image.calibur.tv/</template>
+            <template slot="prepend"
+              >https://image.calibur.tv/</template
+            >
           </el-input>
         </el-col>
-        <el-col
-          :span="2"
-          :offset="1"
-        >
+        <el-col :span="2" :offset="1">
           <el-form-item>
             <el-upload
               :data="uploadHeaders"
@@ -101,22 +72,20 @@
               :accept="imageUploadAccept"
             >
               <el-button type="text">
-                <i class="el-icon-plus"/>
+                <i class="el-icon-plus" />
                 上传
               </el-button>
             </el-upload>
           </el-form-item>
         </el-col>
-        <el-col
-          v-if="form.avatar"
-          :span="2"
-        >
+        <el-col v-if="form.avatar" :span="2">
           <el-popover
             ref="popoverAvatar"
             placement="left"
             width="200"
-            trigger="hover">
-            <img :src="imagePrefix + form.avatar">
+            trigger="hover"
+          >
+            <img :src="imagePrefix + form.avatar" />
           </el-popover>
           <a
             v-popover:popoverAvatar
@@ -124,28 +93,23 @@
             type="text"
             target="_blank"
           >
-            <i class="el-icon-view"/>&nbsp;预览
+            <i class="el-icon-view" />&nbsp;预览
           </a>
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="番剧背景"
-        prop="banner"
-        required
-      >
+      <el-form-item label="番剧背景" prop="banner" required>
         <el-col :span="16">
           <el-input
             v-model.trim="form.banner"
             :disabled="true"
             auto-complete="off"
           >
-            <template slot="prepend">https://image.calibur.tv/</template>
+            <template slot="prepend"
+              >https://image.calibur.tv/</template
+            >
           </el-input>
         </el-col>
-        <el-col
-          :span="2"
-          :offset="1"
-        >
+        <el-col :span="2" :offset="1">
           <el-form-item>
             <el-upload
               :data="uploadHeaders"
@@ -157,23 +121,20 @@
               :accept="imageUploadAccept"
             >
               <el-button type="text">
-                <i class="el-icon-plus"/>
+                <i class="el-icon-plus" />
                 上传
               </el-button>
             </el-upload>
           </el-form-item>
         </el-col>
-        <el-col
-          v-if="form.banner"
-          :span="2"
-        >
+        <el-col v-if="form.banner" :span="2">
           <el-popover
             ref="popoverBanner"
             placement="left"
             width="200"
             trigger="hover"
           >
-            <img :src="imagePrefix + form.banner">
+            <img :src="imagePrefix + form.banner" />
           </el-popover>
           <a
             v-popover:popoverBanner
@@ -181,14 +142,11 @@
             type="text"
             target="_blank"
           >
-            <i class="el-icon-view"/>&nbsp;预览
+            <i class="el-icon-view" />&nbsp;预览
           </a>
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="番剧简介"
-        prop="summary"
-      >
+      <el-form-item label="番剧简介" prop="summary">
         <el-input
           v-model.trim="form.summary"
           :rows="4"
@@ -196,10 +154,7 @@
           placeholder="请输入番剧简介，最多250字，纯文本不支持各种换行符"
         />
       </el-form-item>
-      <el-form-item
-        label="番剧Q群"
-        prop="qq_group"
-      >
+      <el-form-item label="番剧Q群" prop="qq_group">
         <el-input
           v-model.trim="form.qq_group"
           placeholder="设置官方同好群，请不要频繁修改"
@@ -232,20 +187,11 @@
           :rules="seasonRule"
           label-width="68px"
         >
-          <el-form-item
-            label="季度名称"
-            prop="name"
-          >
+          <el-form-item label="季度名称" prop="name">
             <el-col :span="16">
-              <el-input
-                v-model.trim="item.name"
-                placeholder="季度名"
-              />
+              <el-input v-model.trim="item.name" placeholder="季度名" />
             </el-col>
-            <el-col
-              :span="8"
-              style="text-align: right"
-            >
+            <el-col :span="8" style="text-align: right">
               <!--
               <el-button
                 v-if="!item.end"
@@ -253,16 +199,12 @@
                 @click="updateRelease"
               >发布视频</el-button>
               -->
-              <el-button
-                type="primary"
-                @click="editSeasonInfo"
-              >更新季度</el-button>
+              <el-button type="primary" @click="editSeasonInfo"
+                >更新季度</el-button
+              >
             </el-col>
           </el-form-item>
-          <el-form-item
-            label="季度简介"
-            prop="summary"
-          >
+          <el-form-item label="季度简介" prop="summary">
             <el-input
               v-model.trim="item.summary"
               :rows="4"
@@ -270,24 +212,19 @@
               placeholder="季度简介，最多250字，纯文本不支持各种换行符"
             />
           </el-form-item>
-          <el-form-item
-            label="季度封面"
-            prop="avatar"
-            required
-          >
+          <el-form-item label="季度封面" prop="avatar" required>
             <el-col :span="16">
               <el-input
                 v-model.trim="item.avatar"
                 :disabled="true"
                 auto-complete="off"
               >
-                <template slot="prepend">https://image.calibur.tv/</template>
+                <template slot="prepend"
+                  >https://image.calibur.tv/</template
+                >
               </el-input>
             </el-col>
-            <el-col
-              :span="2"
-              :offset="1"
-            >
+            <el-col :span="2" :offset="1">
               <el-form-item>
                 <el-upload
                   :data="uploadHeaders"
@@ -299,22 +236,20 @@
                   :accept="imageUploadAccept"
                 >
                   <el-button type="text">
-                    <i class="el-icon-plus"/>
+                    <i class="el-icon-plus" />
                     上传
                   </el-button>
                 </el-upload>
               </el-form-item>
             </el-col>
-            <el-col
-              v-if="item.avatar"
-              :span="2"
-            >
+            <el-col v-if="item.avatar" :span="2">
               <el-popover
                 :ref="`popoverPoster-${item.id}`"
                 placement="left"
                 width="200"
-                trigger="hover">
-                <img :src="imagePrefix + item.avatar">
+                trigger="hover"
+              >
+                <img :src="imagePrefix + item.avatar" />
               </el-popover>
               <a
                 v-popover="`popoverPoster-${item.id}`"
@@ -322,15 +257,11 @@
                 type="text"
                 target="_blank"
               >
-                <i class="el-icon-view"/>&nbsp;预览
+                <i class="el-icon-view" />&nbsp;预览
               </a>
             </el-col>
           </el-form-item>
-          <el-form-item
-            label="上映日期"
-            prop="published_at"
-            required
-          >
+          <el-form-item label="上映日期" prop="published_at" required>
             <el-date-picker
               v-model="item.published_at"
               :clearable="false"
@@ -339,10 +270,7 @@
             />
           </el-form-item>
           <el-form-item label="连载周期">
-            <el-select
-              v-model="item.released_at"
-              placeholder="请选择"
-            >
+            <el-select v-model="item.released_at" placeholder="请选择">
               <el-option
                 v-for="day in releaseWeekly"
                 :key="day.id"
@@ -352,7 +280,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="是否完结">
-            <el-switch v-model="item.end"/>
+            <el-switch v-model="item.end" />
           </el-form-item>
         </el-form>
       </el-tab-pane>

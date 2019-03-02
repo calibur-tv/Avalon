@@ -52,11 +52,7 @@
 </template>
 
 <script>
-import {
-  getManagerList,
-  setManager,
-  removeManager
-} from '~/api/bangumiApi'
+import { getManagerList, setManager, removeManager } from '~/api/bangumiApi'
 
 export default {
   name: 'ChangeBangumiManager',
