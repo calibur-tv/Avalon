@@ -81,3 +81,7 @@ export const removeManager = (ctx, { user_id, bangumi_id }) => {
     bangumi_id
   })
 }
+
+export const updateBangumiVideos = (ctx, form) => {
+  return ctx.$axios.$post('bangumi/manager/update_videos', form)
+}

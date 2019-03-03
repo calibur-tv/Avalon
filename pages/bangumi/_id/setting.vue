@@ -17,10 +17,10 @@
       <el-collapse-item title="编辑番剧" name="1">
         <bangumi-edit-form :id="id" />
       </el-collapse-item>
-      <!--
       <el-collapse-item title="编辑视频" name="2">
-        编辑视频
+        <sort-and-del-video :id="id" />
       </el-collapse-item>
+      <!--
       <el-collapse-item title="编辑漫画" name="3">
         编辑漫画
       </el-collapse-item>
@@ -104,6 +104,7 @@ import UploadImageForm from '~/components/image/UploadImageForm'
 import CreateAlbumForm from '~/components/image/CreateAlbumForm'
 import ImageAlbumSelect from '~/components/image/ImageAlbumSelect'
 import ChangeBangumiManager from '~/components/bangumi/forms/ChangeBangumiManager'
+import SortAndDelVideo from '~/components/bangumi/forms/SortAndDelVideo'
 import { Collapse, CollapseItem } from 'element-ui'
 import serverAuth from '~/mixins/serverAuth'
 
@@ -116,6 +117,7 @@ export default {
     UploadImageForm,
     CreateAlbumForm,
     ImageAlbumSelect,
+    SortAndDelVideo,
     ChangeBangumiManager,
     'el-collapse': Collapse,
     'el-collapse-item': CollapseItem
