@@ -67,6 +67,10 @@ export default {
         return
       }
       const words = this.lover_words.trim()
+      if (!words) {
+        this.$toast.error('需要填写留言')
+        return
+      }
       if (words.length > 20) {
         this.$toast.error('留言给我缩减至20字以内重说！')
         return
