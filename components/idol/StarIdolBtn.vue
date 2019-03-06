@@ -109,7 +109,7 @@ export default {
     return {
       showDialog: false,
       submitting: false,
-      count: 0
+      count: this.idol.company_state ? 0.01 : 1
     }
   },
   computed: {
