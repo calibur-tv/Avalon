@@ -97,12 +97,7 @@
         active-text="排序模式"
       />
       &nbsp;
-      <el-button
-        type="primary"
-        size="mini"
-        round
-        @click="submitChange"
-      >
+      <el-button type="primary" size="mini" round @click="submitChange">
         保存
       </el-button>
     </div>
@@ -114,10 +109,7 @@
         :class="{ enabled }"
         class="list"
       >
-        <p
-          class="title oneline"
-          v-text="col.name"
-        />
+        <p class="title oneline" v-text="col.name" />
         <draggable
           :list="videos[index]"
           :disabled="!enabled"
@@ -129,18 +121,12 @@
             :key="video.id"
             class="list-group-item"
           >
-            <div
-              class="part"
-              v-text="video.episode"
-            />
+            <div class="part" v-text="video.episode" />
             <div
               class="el-icon-error delete"
               @click="deleteVideo(index, video.id)"
             />
-            <div
-              class="name oneline"
-              v-text="video.name"
-            />
+            <div class="name oneline" v-text="video.name" />
           </div>
         </draggable>
       </div>
