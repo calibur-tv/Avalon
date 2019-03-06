@@ -43,7 +43,7 @@
       >
       <span>，时间：{{ item.created_at }}</span>
       <el-button
-        v-if="state === 0"
+        v-if="canDelete"
         :loading="loading"
         size="mini"
         @click="cancelOrder(item.id)"
@@ -76,6 +76,14 @@ export default {
     }
   },
   computed: {
+    canDelete() {
+      if (!this.$store.state.login) {
+        return false
+      }
+      return (
+        this.state === 0 && this.$store.state.user.zone === this.item.buyer.zone
+      )
+    },
     computeTagColor() {
       const result = this.state
       if (result === 0) {
