@@ -60,6 +60,7 @@
         </el-form-item>
         <el-form-item label="购入份额">
           <el-input-number
+            v-if="signed"
             v-model="count"
             :min="minCount"
             :step="0.01"
@@ -113,8 +114,11 @@ export default {
     }
   },
   computed: {
+    signed() {
+      return this.$store.state.login
+    },
     pocket() {
-      if (!this.$store.state.login) {
+      if (!this.signed) {
         return 0
       }
       return +this.$store.state.user.pocket
@@ -145,7 +149,7 @@ export default {
         this.$toast.error('已经停牌了，等待下次挂牌吧')
         return
       }
-      if (!this.$store.state.login) {
+      if (!this.signed) {
         this.$channel.$emit('sign-in')
         return
       }
@@ -156,7 +160,7 @@ export default {
       this.showDialog = true
     },
     async submit() {
-      if (!this.count <= 0) {
+      if (this.count <= 0) {
         this.$toast.error('未选择份额')
         return
       }
