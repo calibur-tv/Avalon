@@ -109,7 +109,7 @@ export default {
     return {
       showDialog: false,
       submitting: false,
-      count: -1
+      count: 0
     }
   },
   computed: {
@@ -124,9 +124,7 @@ export default {
         !this.idol.max_stock_count || this.idol.max_stock_count === '0.00'
           ? -1
           : this.idol.max_stock_count - this.idol.star_count
-      const pocketCanBuy = this.pocket
-        ? this.pocket / this.idol.stock_price
-        : '0.00'
+      const pocketCanBuy = this.pocket ? this.pocket / this.idol.stock_price : 0
       if (maxCanBuy === -1) {
         return pocketCanBuy
       }
@@ -136,9 +134,7 @@ export default {
       return Math.min(this.idol.company_state ? 0.01 : 1, this.maxCount)
     },
     needPay() {
-      return this.count === -1
-        ? parseFloat(this.minCount * this.idol.stock_price).toFixed(2)
-        : this.count
+      return this.count
         ? parseFloat(this.idol.stock_price * this.count).toFixed(2)
         : '0.00'
     }
@@ -160,9 +156,6 @@ export default {
       this.showDialog = true
     },
     async submit() {
-      if (this.count === -1) {
-        this.count = +parseFloat(this.needPay / this.idol.stock_price).toFixed(2)
-      }
       if (!this.count <= 0) {
         this.$toast.error('未选择份额')
         return
