@@ -43,7 +43,7 @@ export const createCartoonRole = (ctx, form) => {
 }
 
 export const getCartoonRoleDeal = (ctx, { id }) => {
-  return ctx.$axios.$get(`cartoon_role/${id}/get_deal`)
+  return ctx.$axios.$get(`cartoon_role/${id}/get_idol_deal`)
 }
 
 export const createCartoonRoleDeal = (ctx, form) => {

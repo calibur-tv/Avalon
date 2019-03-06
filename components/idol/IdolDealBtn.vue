@@ -53,7 +53,7 @@
             v-model="deal.product_count"
             :min="0.01"
             :step="0.01"
-            :max="+count"
+            :max="has_star"
           />
         </el-form-item>
         <el-form-item label="出售价格">
@@ -111,6 +111,7 @@ export default {
         product_count: 0,
         product_price: 0
       },
+      has_star: 0,
       loaded: false
     }
   },
@@ -139,16 +140,17 @@ export default {
       this.showDialog = true
     },
     async getCanExchangeCount() {
-      const result = await getCartoonRoleDeal(this, {
+      const { deal, has_star } = await getCartoonRoleDeal(this, {
         id: this.id
       })
-      if (result) {
+      if (deal) {
         // 去掉已售出的份额
-        result['product_count'] = result['last_count']
+        deal['product_count'] = deal['last_count']
         Object.keys(this.deal).forEach(key => {
-          this.deal[key] = result[key]
+          this.deal[key] = deal[key]
         })
       }
+      this.has_star = has_star
       this.loaded = true
     },
     async submit() {
