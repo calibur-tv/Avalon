@@ -180,7 +180,7 @@ export default {
         this.bangumis.total = data.total
         this.bangumis.page++
       } catch (e) {
-        this.$toast.error(e.message)
+        // do nothing
       } finally {
         this.loading = false
       }

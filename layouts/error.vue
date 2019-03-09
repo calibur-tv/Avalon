@@ -127,6 +127,7 @@ import vFooter from '~/components/layouts/Footer'
 
 export default {
   name: 'nuxt-error', // eslint-disable-line
+  layout: 'empty',
   components: {
     vFooter
   },

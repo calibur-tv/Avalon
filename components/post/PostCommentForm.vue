@@ -150,7 +150,7 @@ export default {
               dom && this.$scrollToY(this.$utils.getOffsetTop(dom) - 200, 600)
             }, 400)
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           } finally {
             this.$store.commit('comment/SET_SUBMITTING', { result: false })
           }

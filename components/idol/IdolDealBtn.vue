@@ -170,8 +170,8 @@ export default {
             : '交易创建成功，可到交易所查看'
         )
         this.showDialog = false
-      } catch (err) {
-        this.$toast.error(err)
+      } catch (e) {
+        // do nothing
       } finally {
         this.submitting = false
       }

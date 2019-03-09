@@ -195,8 +195,7 @@ export default {
                 this.$toast.success(result.message).then(() => {
                   window.location = this.$alias.question(result.data)
                 })
-              } catch (err) {
-                this.$toast.error(err)
+              } catch (e) {
                 this.submitting = false
               }
             },

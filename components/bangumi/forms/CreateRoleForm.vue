@@ -200,8 +200,8 @@ export default {
               )
               this.$emit('success')
             }
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.submitting = false
           }

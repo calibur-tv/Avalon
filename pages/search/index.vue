@@ -230,7 +230,7 @@ export default {
           type: this.selectedType
         })
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       }
     }
   }

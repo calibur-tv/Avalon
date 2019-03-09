@@ -824,7 +824,7 @@ export default {
         this.$store.commit('UPDATE_USER_EXP', result.exp)
         this.$toast.success(result.message)
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.signDayLoading = false
       }

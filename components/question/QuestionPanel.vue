@@ -363,7 +363,7 @@ export default {
         this.$store.commit('editor/INIT_SECTION', data)
         this.showCreateAnswerForm = true
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       }
     },
     loadQAQComment() {

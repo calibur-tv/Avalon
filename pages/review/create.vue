@@ -369,7 +369,7 @@ export default {
           }
         }
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.$channel.$emit('write-save-done')
         if (richContent.auto) {

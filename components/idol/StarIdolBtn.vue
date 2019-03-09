@@ -180,7 +180,7 @@ export default {
         })
         this.showDialog = false
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.submitting = false
       }

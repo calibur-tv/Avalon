@@ -249,7 +249,7 @@ export default {
               window.location.reload()
             })
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           }
         })
         .catch(() => {})

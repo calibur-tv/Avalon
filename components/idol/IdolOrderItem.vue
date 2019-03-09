@@ -136,7 +136,7 @@ export default {
             this.$toast.success('订单已取消')
             this.state = 3
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           } finally {
             this.loading = false
           }

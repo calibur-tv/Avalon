@@ -336,8 +336,8 @@ export default {
               sex: this.sex
             })
             this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.submitting = false
           }
@@ -372,8 +372,8 @@ export default {
                   geetest: data
                 })
                 this.showInfoForm = true
-              } catch (err) {
-                this.$toast.error(err)
+              } catch (e) {
+                // do nothing
               } finally {
                 this.timeout = 60
                 const timer = setInterval(() => {
@@ -416,7 +416,7 @@ export default {
           window.location.reload()
         })
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.loadingBindPhone = false
       }

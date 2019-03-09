@@ -469,7 +469,7 @@ export default {
               window.location.reload()
             }, 1000)
           } catch (e) {
-            this.$toast.error('操作失败')
+            // do nothing
           }
         }
       })
@@ -518,7 +518,7 @@ export default {
           window.location.reload()
         }, 1000)
       } catch (e) {
-        this.$toast.error('操作失败')
+        // do nothing
       }
     },
     handleTabsChange(tab) {

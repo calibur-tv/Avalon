@@ -180,7 +180,7 @@ export default {
           firstRequest
         })
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.loading = false
       }

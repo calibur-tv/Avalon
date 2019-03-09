@@ -156,7 +156,7 @@ export default {
           id: this.parentId
         })
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.loading = false
       }

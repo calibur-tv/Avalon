@@ -164,7 +164,7 @@ export default {
         return []
       }
       if (!this.package.has_season) {
-        return [this.package.videos.data]
+        return [this.package.videos[0].data]
       }
       return this.package.videos.map(_ => _.data)
     }
@@ -216,7 +216,7 @@ export default {
               window.location.reload()
             }, 1500)
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           }
         })
         .catch(() => {})

@@ -447,7 +447,7 @@ export default {
         this.images = imageArr
         this.$toast.success('操作成功')
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.loadingEditImages = false
       }
@@ -476,7 +476,7 @@ export default {
             this.info.image_count--
             this.$toast.success('操作成功')
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           } finally {
             this.loadingEditImages = false
           }

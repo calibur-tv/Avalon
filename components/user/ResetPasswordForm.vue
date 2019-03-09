@@ -144,8 +144,7 @@ export default {
             })
             this.step = 2
             this.openConfirmModal()
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
             this.step = 0
           } finally {
             this.timeout = 60
@@ -185,8 +184,8 @@ export default {
         })
         this.$toast.success(res)
         this.showLogin()
-      } catch (err) {
-        this.$toast.error(err)
+      } catch (e) {
+        // do nothing
       } finally {
         this.step = 0
       }

@@ -212,7 +212,7 @@ export default {
           this.closeEditor()
         }
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.saving = false
       }

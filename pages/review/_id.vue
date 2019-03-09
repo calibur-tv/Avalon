@@ -343,7 +343,7 @@ export default {
               window.location.reload()
             }, 1000)
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           }
         })
         .catch(() => {})

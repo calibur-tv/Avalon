@@ -116,7 +116,7 @@ export default {
         this.$toast.success(result.message)
         this.$store.commit('UPDATE_USER_EXP', result.exp)
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.submitting = false
       }

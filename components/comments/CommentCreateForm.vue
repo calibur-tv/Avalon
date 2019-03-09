@@ -147,7 +147,7 @@ export default {
         }
         this.$emit('submit')
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.$store.commit('comment/SET_SUBMITTING', { result: false })
       }

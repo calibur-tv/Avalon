@@ -403,8 +403,7 @@ export default {
         setTimeout(() => {
           window.location.reload()
         }, 1000)
-      } catch (err) {
-        this.$toast.error(err)
+      } catch (e) {
         this.submitting = false
       }
     },

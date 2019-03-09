@@ -1,1 +1,0 @@
-{"version":3,"file":"pages/world/index.chunk.7551eed8.js","sources":["webpack:///pages/world/index.vue"],"sourcesContent":["<script>\nexport default {\n  fetch({ redirect }) {\n    return redirect('/world/post')\n  }\n}\n</script>\n"],"mappings":"AACA","sourceRoot":""}

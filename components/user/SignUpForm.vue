@@ -297,8 +297,7 @@ export default {
             })
             this.step = 2
             this.openConfirmModal()
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
             this.step = 0
           } finally {
             this.timeout = 60

@@ -140,7 +140,7 @@ export default {
             this.refreshList()
             this.$toast.success('交易已达成')
           } catch (e) {
-            this.$toast.error(e)
+            // do nothing
           }
         })
         .catch(() => {})
@@ -154,7 +154,7 @@ export default {
         this.refreshList()
         this.$toast.success('已确认')
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       }
     },
     refreshList() {

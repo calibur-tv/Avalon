@@ -124,8 +124,8 @@ export default {
           try {
             await setNice(this, { id })
             this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.loading = false
           }
@@ -154,8 +154,8 @@ export default {
           try {
             await setTop(this, { id })
             this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.loading = false
           }
@@ -184,8 +184,8 @@ export default {
           try {
             await removeNice(this, { id })
             this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.loading = false
           }
@@ -214,8 +214,8 @@ export default {
           try {
             await removeTop(this, { id })
             this.$toast.success('设置成功')
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.loading = false
           }

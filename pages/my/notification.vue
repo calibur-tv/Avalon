@@ -104,7 +104,7 @@ export default {
       try {
         await this.$store.dispatch('users/getNotifications', { init: false })
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.loading = false
       }

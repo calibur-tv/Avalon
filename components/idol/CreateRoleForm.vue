@@ -182,8 +182,8 @@ export default {
             setTimeout(() => {
               window.location = this.$alias.cartoonRole(id)
             }, 1000)
-          } catch (err) {
-            this.$toast.error(err)
+          } catch (e) {
+            // do nothing
           } finally {
             this.submitting = false
           }

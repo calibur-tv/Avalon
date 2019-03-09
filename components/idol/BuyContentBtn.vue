@@ -126,7 +126,7 @@ export default {
         this.show = false
         this.$toast.success('请求已发送，等待作者确认')
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.submitting = false
       }

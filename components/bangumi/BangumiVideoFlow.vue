@@ -127,7 +127,7 @@ export default {
           id: this.info.id
         })
       } catch (e) {
-        this.$toast.error(e)
+        // do nothing
       } finally {
         this.state.loading = false
         this.state.fetched = true
