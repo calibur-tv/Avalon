@@ -254,6 +254,8 @@ export default {
       let link = 'https://api.calibur.tv/callback/oauth2/qq?from=sign'
       if (this.paramsIsOK) {
         link = `${link}&invite=${this.query.uid}`
+      } else if (this.$route.name === 'about-invite-id') {
+        link = `${link}&invite=${this.$route.params.id}`
       }
       return link
     },
@@ -261,6 +263,8 @@ export default {
       let link = 'https://api.calibur.tv/callback/oauth2/wechat?from=sign'
       if (this.paramsIsOK) {
         link = `${link}&invite=${this.query.uid}`
+      } else if (this.$route.name === 'about-invite-id') {
+        link = `${link}&invite=${this.$route.params.id}`
       }
       return link
     }
