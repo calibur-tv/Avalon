@@ -27,6 +27,7 @@
       &.enabled {
         .list-group-item {
           cursor: pointer;
+          user-select: none;
 
           .delete {
             display: none;
