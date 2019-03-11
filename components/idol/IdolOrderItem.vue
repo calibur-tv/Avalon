@@ -42,20 +42,30 @@
         }}</el-tag></span
       >
       <span>，时间：{{ item.created_at }}</span>
-      <el-button
-        v-if="canDelete"
-        :loading="loading"
-        size="mini"
-        @click="cancelOrder(item.id)"
-      >
-        取消订单
-      </el-button>
+      <template v-if="isMine">
+        <el-button
+          v-if="state === 0"
+          :loading="loading"
+          size="mini"
+          @click="cancelOrder(item.id)"
+        >
+          取消订单
+        </el-button>
+        <el-button
+          v-if="state === 1"
+          :loading="loading"
+          size="mini"
+          @click="rollbackOrder(item.id)"
+        >
+          终止订单
+        </el-button>
+      </template>
     </div>
   </li>
 </template>
 
 <script>
-import { deleteOrder } from '~/api/cartoonRoleApi'
+import { deleteOrder, overOrder } from '~/api/cartoonRoleApi'
 import { Tag } from 'element-ui'
 
 export default {
@@ -84,6 +94,12 @@ export default {
         this.state === 0 && this.$store.state.user.zone === this.item.buyer.zone
       )
     },
+    isMine() {
+      if (!this.$store.state.login) {
+        return false
+      }
+      return this.$store.state.user.zone === this.item.buyer.zone
+    },
     computeTagColor() {
       const result = this.state
       if (result === 0) {
@@ -98,6 +114,8 @@ export default {
         return 'warning'
       } else if (result === 5) {
         return 'info'
+      } else if (result === 6) {
+        return 'danger'
       }
       return ''
     },
@@ -115,6 +133,8 @@ export default {
         return '作品已出售'
       } else if (result === 5) {
         return '作品已失效'
+      } else if (result === 6) {
+        return '经纪人解约'
       }
       return '未知状态'
     }
@@ -137,6 +157,33 @@ export default {
             this.state = 3
           } catch (e) {
             // do nothing
+          } finally {
+            this.loading = false
+          }
+        })
+        .catch()
+    },
+    rollbackOrder(order_id) {
+      if (this.loading) {
+        return
+      }
+      this.$confirm(
+        '终止后无法得到收益分成，也不会退还定金，确认要这么做吗？',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      )
+        .then(async () => {
+          try {
+            this.loading = true
+            await overOrder(this, { order_id })
+            this.$toast.success('订单已解约')
+            this.state = 6
+          } catch (e) {
+            this.$toast.error(e)
           } finally {
             this.loading = false
           }

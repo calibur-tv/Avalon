@@ -126,6 +126,12 @@ export const deleteOrder = (ctx, { order_id }) => {
   })
 }
 
+export const overOrder = (ctx, { order_id }) => {
+  return ctx.$axios.$post('cartoon_role/over_buy_request', {
+    order_id
+  })
+}
+
 export const getMineProductOrderCount = ctx => {
   return ctx.$axios.$get('cartoon_role/get_mine_product_orders')
 }
