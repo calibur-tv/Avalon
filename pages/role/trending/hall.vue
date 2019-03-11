@@ -359,7 +359,16 @@ export default {
         this.$channel.$emit('sign-in')
         return
       }
-      this.minBuyCount = parseFloat(0.01 / deal.product_price).toFixed(2)
+      let minBuyCount = parseFloat(0.01 / deal.product_price).toFixed(2)
+      let tail = deal.product_price.toString().split('.')[1]
+      if (tail) {
+        if (tail.length === 1) {
+          minBuyCount = Math.max(minBuyCount, 0.1)
+        } else if (tail.length === 2) {
+          minBuyCount = Math.max(minBuyCount, 1)
+        }
+      }
+      this.minBuyCount = parseFloat(minBuyCount).toFixed(2)
       this.deal = deal
       this.showDealDialog = true
     },
