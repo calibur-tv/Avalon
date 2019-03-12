@@ -290,6 +290,11 @@
             />
           </v-dialog>
         </template>
+        <a v-else href="mailto:414927352@qq.com">
+          <el-button size="medium" round>
+            侵权举报
+          </el-button>
+        </a>
       </div>
       <!-- 评论区 -->
       <v-lazy>
