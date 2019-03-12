@@ -13,33 +13,36 @@
       min-height: 100px;
       font-size: 12px;
       line-height: 1;
-      padding-right: 40px;
+      padding-right: 15px;
       float: left;
 
       &:not(:first-child) {
         border-left: solid 1px $color-gray-normal;
-        padding-left: 39px;
+        padding-left: 14px;
       }
 
       p {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         font-size: 14px;
         color: $color-text-normal;
       }
 
-      a {
-        margin-bottom: 16px;
-        margin-right: 10px;
+      a,
+      span {
+        margin-bottom: 12px;
+        margin-right: 8px;
         transition: 0.4s;
         color: $color-text-light;
+      }
 
+      a {
         &:hover {
           color: $color-blue-normal;
         }
       }
 
       div {
-        margin-top: 15px;
+        margin-top: 10px;
       }
 
       .icon {
@@ -147,6 +150,21 @@
             target="_blank"
             v-text="item.name"
           />
+        </li>
+        <li class="card-item">
+          <p>免责声明</p>
+          <div>
+            <span>本网站不提供任何视频点播服务</span>
+          </div>
+          <div>
+            <span>网站视频为用户自发上传的外链地址</span>
+          </div>
+          <div>
+            <span>如果您的合法权益被侵犯，请联系我们</span>
+          </div>
+          <div>
+            <span>举报邮箱：<a href="mailto:414927352@qq.com">414927352@qq.com</a></span>
+          </div>
         </li>
         <li class="card-item">
           <a
