@@ -36,6 +36,14 @@ async function start() {
 
   app.use(ctx => {
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset
+    ctx.set('X-XSS-Protection', '1; mode=block')
+    ctx.set('X-Content-Type-Options', 'nosniff')
+    ctx.set('Cache-Control', 'max-age=0, private, no-siteapp, no-transform')
+    ctx.set('X-Frame-Options', 'DENY')
+    ctx.set(
+      'Content-Security-Policy',
+      `script-src 'self' 'unsafe-inline' 'unsafe-eval' *.calibur.tv hm.baidu.com *.geetest.com zz.bdstatic.com push.zhanzhang.baidu.com;`
+    )
 
     return new Promise((resolve, reject) => {
       ctx.res.on('close', resolve)
