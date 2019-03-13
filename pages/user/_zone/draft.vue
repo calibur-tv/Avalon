@@ -92,7 +92,7 @@
               class="bangumi"
               target="_blank"
             >
-              <img :src="$resize(item.bangumi.avatar, { width: 60 })" >
+              <img :src="$resize(item.bangumi.avatar, { width: 60 })">
             </a>
             <div class="title">
               <a

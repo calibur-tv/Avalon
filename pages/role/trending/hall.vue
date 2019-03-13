@@ -84,11 +84,9 @@
         <div v-if="meta" class="badge">
           <span>成交次数：{{ meta.deal_count }}</span>
           <em />
-          <span
-            >总成交额：￥{{
-              parseFloat(meta.exchang_money_count).toFixed(2)
-            }}</span
-          >
+          <span>总成交额：￥{{
+            parseFloat(meta.exchang_money_count).toFixed(2)
+          }}</span>
         </div>
       </el-col>
     </el-row>
@@ -107,7 +105,7 @@
               target="_blank"
               class="idol"
             >
-              <img :src="$resize(scope.row.idol.avatar, { width: 100 })" >
+              <img :src="$resize(scope.row.idol.avatar, { width: 100 })">
               <span v-text="scope.row.idol.name" />
             </a>
           </el-table-column>
@@ -133,8 +131,8 @@
             <template slot-scope="scope">
               <div>{{ scope.row.idol.star_count }}</div>
               <el-tag v-if="scope.row.idol.is_locked" size="mini"
-type="danger"
->
+                      type="danger"
+              >
                 已停牌
               </el-tag>
               <el-tag v-else size="mini" type="success">
@@ -162,8 +160,7 @@ type="danger"
           <el-table-column label="出售股数">
             <template slot-scope="scope">
               <div>{{ scope.row.product_count }}</div>
-              <el-tag size="mini" type="info"
->
+              <el-tag size="mini" type="info">
                 占比:{{
                   parseFloat(
                     (scope.row.product_count / scope.row.idol.star_count) * 100
@@ -193,7 +190,7 @@ type="danger"
               target="_blank"
               class="user"
             >
-              <img :src="$resize(scope.row.user.avatar, { width: 60 })" >
+              <img :src="$resize(scope.row.user.avatar, { width: 60 })">
               <span class="oneline" v-text="scope.row.user.nickname" />
             </a>
           </el-table-column>

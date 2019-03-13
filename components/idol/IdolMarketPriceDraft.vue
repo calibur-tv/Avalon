@@ -50,7 +50,7 @@
         type="warning"
         title="提案项在通过或反对占比大于「50%」之后，会由系统自动增发股票/或关闭提案（最多延迟5分钟）"
       />
-      <br >
+      <br>
       <el-alert
         show-icon
         type="warning"
@@ -60,11 +60,9 @@
         <div class="text-wrap">
           <p>
             <strong>提案内容：</strong>
-            <span
-              >预增发{{ draft.add_stock_count }}股，每股￥{{
-                draft.stock_price
-              }}</span
-            >
+            <span>预增发{{ draft.add_stock_count }}股，每股￥{{
+              draft.stock_price
+            }}</span>
           </p>
           <p>
             <strong>提案董事：</strong>
@@ -76,17 +74,13 @@
           </p>
           <p>
             <strong>通过情况：</strong>
-            <span
-              >{{ draft.pass_count }}人投票，占比：{{
-                draft.pass_percent
-              }}%</span
-            >
+            <span>{{ draft.pass_count }}人投票，占比：{{
+              draft.pass_percent
+            }}%</span>
           </p>
           <p>
             <strong>反对情况：</strong>
-            <span
-              >{{ draft.ban_count }}人投票，占比：{{ draft.ban_percent }}%</span
-            >
+            <span>{{ draft.ban_count }}人投票，占比：{{ draft.ban_percent }}%</span>
           </p>
           <p>
             <strong>我的选择：</strong>
@@ -94,8 +88,8 @@
               draft.voted === 0
                 ? '未投票'
                 : draft.voted > 0
-                ? '赞同票'
-                : '反对票'
+                  ? '赞同票'
+                  : '反对票'
             }}</span>
           </p>
         </div>
@@ -160,8 +154,8 @@
             item.result === 0
               ? 'finish'
               : item.result === 1
-              ? 'success'
-              : 'error'
+                ? 'success'
+                : 'error'
           "
           :description="
             `${item.created_at} - 本提案由「${
@@ -172,8 +166,8 @@
               (item.result === 0
                 ? '董事会正在投票'
                 : item.result === 1
-                ? '董事会表决通过'
-                : '董事会表决未通过')
+                  ? '董事会表决通过'
+                  : '董事会表决未通过')
           "
           title="增发提案"
         />

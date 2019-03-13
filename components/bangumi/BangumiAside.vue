@@ -113,7 +113,7 @@
             placement="top"
           >
             <a :href="$alias.user(item.user.zone)" target="_blank">
-              <img :src="$resize(item.user.avatar, { width: 80 })" >
+              <img :src="$resize(item.user.avatar, { width: 80 })">
               <i v-if="item.is_leader" class="iconfont icon-leader" />
               <i v-else class="iconfont icon-master" />
             </a>

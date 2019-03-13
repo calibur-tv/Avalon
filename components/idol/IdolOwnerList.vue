@@ -16,21 +16,18 @@
       <ul slot-scope="{ flow }" class="likes-modal">
         <li v-for="item in flow" :key="item.id">
           <a :href="$alias.user(item.zone)" class="user" target="_blank">
-            <img :src="$resize(item.avatar, { width: 80 })" class="avatar" >
+            <img :src="$resize(item.avatar, { width: 80 })" class="avatar">
             <span class="nickname" v-text="item.nickname" />
-            <span class="score"
-              >持有{{ item.score }}股，占比{{
-                computedPercent(item.score)
-              }}</span
-            >
+            <span class="score">持有{{ item.score }}股，占比{{
+              computedPercent(item.score)
+            }}</span>
           </a>
         </li>
       </ul>
       <template slot="nothing">
-        <br >
+        <br>
         <no-content>
-          <el-button round @click="$toast.warn('Orz')"
->
+          <el-button round @click="$toast.warn('Orz')">
             可怜的「{{ name }}」还没有人入股
           </el-button>
         </no-content>
@@ -46,17 +43,16 @@
       <ul slot-scope="{ flow }" class="likes-modal">
         <li v-for="item in flow" :key="item.id">
           <a :href="$alias.user(item.zone)" class="user" target="_blank">
-            <img :src="$resize(item.avatar, { width: 80 })" class="avatar" >
+            <img :src="$resize(item.avatar, { width: 80 })" class="avatar">
             <span class="nickname" v-text="item.nickname" />
             <v-time v-model="item.score" class="score" />
           </a>
         </li>
       </ul>
       <template slot="nothing">
-        <br >
+        <br>
         <no-content>
-          <el-button round @click="$toast.warn('Orz')"
->
+          <el-button round @click="$toast.warn('Orz')">
             可怜的「{{ name }}」还没有人入股
           </el-button>
         </no-content>

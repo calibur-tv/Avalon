@@ -44,7 +44,7 @@
           placement="top"
         >
           <a :href="$alias.user(user.zone)" target="_blank">
-            <img :src="$resize(user.avatar, { width: 80 })" >
+            <img :src="$resize(user.avatar, { width: 80 })">
           </a>
         </el-tooltip>
       </li>
@@ -66,7 +66,7 @@
     >
       <li v-for="user in users" :key="user.id">
         <a :href="$alias.user(user.zone)" class="user" target="_blank">
-          <img :src="$resize(user.avatar, { width: 120 })" class="avatar" >
+          <img :src="$resize(user.avatar, { width: 120 })" class="avatar">
           <span class="nickname" v-text="user.nickname" />
           <v-time
             v-if="user.created_at"

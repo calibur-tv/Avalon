@@ -72,14 +72,14 @@
       <template v-if="user && user.id">
         <p class="signed">
           你已经是注册用户了 (￣3￣)
-          <br >
+          <br>
           把这个网址链接发给小伙伴，或者告诉TA你的邀请码就行啦
-          <br >
+          <br>
           快来邀请小伙伴一起加入 calibur 吧
-          <br >
+          <br>
           <el-tooltip class="item" effect="dark" placement="bottom">
             <div slot="content">
-              点击复制我的邀请地址<br >邀请小伙伴们注册赚团子
+              点击复制我的邀请地址<br>邀请小伙伴们注册赚团子
             </div>
             <el-button
               v-clipboard="`http://calibur.tv/about/invite/${user.id}`"

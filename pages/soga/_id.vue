@@ -25,28 +25,21 @@
     <v-layout>
       <div v-if="answer" class="answer">
         <a :href="$alias.question(qaq.id)">
-          <el-button v-if="qaq.answer_count > 1" class="read-all-btn"
-            >查看全部 {{ qaq.answer_count }} 个回答</el-button
-          >
+          <el-button v-if="qaq.answer_count > 1" class="read-all-btn">查看全部 {{ qaq.answer_count }} 个回答</el-button>
           <el-button v-else class="read-all-btn">查看问题</el-button>
         </a>
         <answer-flow-item :item="answer" :qaq="qaq" />
         <a :href="$alias.question(qaq.id)">
-          <el-button v-if="qaq.answer_count > 1" class="read-all-btn"
-            >查看全部 {{ qaq.answer_count }} 个回答</el-button
-          >
+          <el-button v-if="qaq.answer_count > 1" class="read-all-btn">查看全部 {{ qaq.answer_count }} 个回答</el-button>
           <el-button v-else class="read-all-btn">查看问题</el-button>
         </a>
       </div>
       <no-content v-else>
         <a v-if="qaq.answer_count" :href="$alias.question(qaq.id)">
-          <el-button type="primary" round
-            >这个答案在审核中或已被删除，查看其它答案</el-button
-          >
+          <el-button type="primary" round>这个答案在审核中或已被删除，查看其它答案</el-button>
         </a>
       </no-content>
-      <template slot="aside"
->
+      <template slot="aside">
         &nbsp;
       </template>
     </v-layout>

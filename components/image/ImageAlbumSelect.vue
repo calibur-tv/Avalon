@@ -68,7 +68,7 @@
         漫
       </div>
       <div class="info">
-        <img :src="$resize(item.poster, { width: 48 })" >
+        <img :src="$resize(item.poster, { width: 48 })">
         <span v-text="item.name" />
       </div>
     </el-option>

@@ -462,7 +462,7 @@ $search-height: 32px;
             :class="$style.logo"
             to="/"
           >
-            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })" >
+            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })">
           </nuxt-link>
           <nuxt-link v-else :class="[$style.navLink, $style.first]" to="/">
             <span>首页</span>

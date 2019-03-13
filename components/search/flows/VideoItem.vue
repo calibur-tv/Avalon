@@ -85,13 +85,13 @@
       <img
         :src="$resize(item.poster, { width: 180, height: 102 })"
         :alt="item.name"
-      />
+      >
     </a>
     <a v-else :href="$alias.video(item.id)" target="_blank" class="avatar">
       <img
         :src="$resize(item.poster, { width: 320, height: 200 })"
         :alt="item.name"
-      />
+      >
     </a>
     <div class="intro">
       <div class="head">

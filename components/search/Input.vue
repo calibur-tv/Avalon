@@ -81,7 +81,7 @@
         @blur="handleInputBlur"
         @keyup.up="handleKeyUp"
         @keyup.down="handleKeyDown"
-      />
+      >
     </div>
     <ul v-show="displaySuggestion" class="search-suggestions">
       <li
@@ -90,7 +90,7 @@
         :class="{ active: index === selectedIndex }"
         @click="clickToSearch(index)"
       >
-        <img :src="$resize(item.avatar, { width: 60 })" >
+        <img :src="$resize(item.avatar, { width: 60 })">
         <span v-text="item.name" />
       </li>
     </ul>

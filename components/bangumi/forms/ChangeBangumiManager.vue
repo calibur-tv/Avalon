@@ -28,7 +28,7 @@
         :href="$alias.user(item.user.zone)"
         target="_blank"
       >
-        <img :src="$resize(item.user.avatar, { width: 120 })" >
+        <img :src="$resize(item.user.avatar, { width: 120 })">
       </a>
     </div>
     <div v-if="isLeader" class="control">
@@ -49,7 +49,7 @@
         :href="$alias.user(item.user.zone)"
         target="_blank"
       >
-        <img :src="$resize(item.user.avatar, { width: 120 })" >
+        <img :src="$resize(item.user.avatar, { width: 120 })">
       </a>
     </div>
   </div>

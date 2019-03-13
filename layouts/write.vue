@@ -96,7 +96,7 @@ $layout-width: 900px;
           "
           class="logo"
           alt="logo"
-        />
+        >
         <div class="slogan">
           <p>calibur.tv</p>
           <p>天下漫友是一家</p>
@@ -148,8 +148,8 @@ $layout-width: 900px;
               saving === false
                 ? '已保存'
                 : saving === true
-                ? '正在保存中...'
-                : ''
+                  ? '正在保存中...'
+                  : ''
             }}
           </span>
           <!--

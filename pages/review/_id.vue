@@ -128,7 +128,9 @@
       />
       <div class="score-header">
         <div>
-          <div class="total">{{ info.total }}分</div>
+          <div class="total">
+            {{ info.total }}分
+          </div>
           <template v-if="isMine">
             <el-button
               round
@@ -147,8 +149,7 @@
                 type="primary"
                 class="control-btn"
                 size="mini"
-                >编辑</el-button
-              >
+              >编辑</el-button>
             </a>
           </template>
           <div class="title">

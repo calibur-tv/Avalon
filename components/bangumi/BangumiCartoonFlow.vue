@@ -153,7 +153,7 @@
             <div class="poster-wrap">
               <img
                 :src="$resize(item.source.url, { width: 396, height: 600 })"
-              />
+              >
               <div class="info">
                 <i class="el-icon-picture-outline" />
                 <span class="image-count" v-text="item.image_count" />

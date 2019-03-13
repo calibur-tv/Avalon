@@ -124,7 +124,7 @@
                   })
                 "
                 class="icon"
-              />
+              >
               沪ICP备17050785号-1
             </a>
           </div>
@@ -137,7 +137,7 @@
                   })
                 "
                 class="icon"
-              />
+              >
               上海互联网举报中心
             </a>
           </div>
@@ -164,11 +164,7 @@
             <span>如果您的合法权益被侵犯，请联系我们</span>
           </div>
           <div>
-            <span
-              >举报邮箱：<a href="mailto:414927352@qq.com"
-                >414927352@qq.com</a
-              ></span
-            >
+            <span>举报邮箱：<a href="mailto:414927352@qq.com">414927352@qq.com</a></span>
           </div>
         </li>
         <li class="card-item">

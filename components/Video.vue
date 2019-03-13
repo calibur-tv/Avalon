@@ -228,8 +228,7 @@ $tool-btn-width: 40px;
           v-clipboard="baiduCloudPwd"
           href="javascript:;"
           @success="$toast.success('密码已复制到剪贴板')"
-          >密码：{{ baiduCloudPwd }}</a
-        >
+        >密码：{{ baiduCloudPwd }}</a>
         <a :href="source" target="_blank">点击跳转播放</a>
       </div>
       <div v-else-if="isFlv" class="not-play-screen">
@@ -246,9 +245,9 @@ $tool-btn-width: 40px;
       <div v-else-if="blocked" class="not-play-screen">
         <p>
           由于你消耗的视频流量过高，被系统判定为机器人恶意攻击，已被禁止看视频功能
-          <br >
+          <br>
           如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
-          <br >
+          <br>
           如果你是因为在站内发表了「无意义」的内容被禁言了，抱歉神也救不了你！
         </p>
       </div>
@@ -257,12 +256,8 @@ $tool-btn-width: 40px;
           由于站内视频流量过大，站长资金难以维持，该视频需要你的等级至少
           {{ needMinLevel }} 才能播放
         </p>
-        <a href="https://www.calibur.tv/post/2282" target="_blank"
-          >&nbsp;&nbsp;为什么要限流？</a
-        >
-        <a href="https://www.calibur.tv/post/2279" target="_blank"
-          >&nbsp;&nbsp;如何升级？</a
-        >
+        <a href="https://www.calibur.tv/post/2282" target="_blank">&nbsp;&nbsp;为什么要限流？</a>
+        <a href="https://www.calibur.tv/post/2279" target="_blank">&nbsp;&nbsp;如何升级？</a>
       </div>
       <div
         v-else
@@ -270,9 +265,9 @@ $tool-btn-width: 40px;
         :class="[isFull ? '' : 'chimee-control-fixed']"
       />
       <div v-if="showRewardBg" class="not-play-screen">
-        <br >
-        <br >
-        <br >
+        <br>
+        <br>
+        <br>
         <p>
           由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
         </p>

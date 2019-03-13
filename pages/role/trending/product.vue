@@ -19,8 +19,7 @@
           </el-button>
         </no-content>
       </flow-list>
-      <template slot="aside"
->
+      <template slot="aside">
         &nbsp;
       </template>
     </v-layout>

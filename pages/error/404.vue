@@ -60,7 +60,7 @@
       <img
         class="error-img"
         src="https://image.calibur.tv/owner/error/404.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/500/h/500"
-      />
+      >
       <div class="error-show">
         <div class="error-config">
           <p>您查找的页面不存在</p>

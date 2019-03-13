@@ -25,8 +25,7 @@
       <el-form-item label="头像" prop="avatar" required>
         <el-col :span="16">
           <el-input v-model.trim="form.avatar" :disabled="true">
-            <template slot="prepend"
->
+            <template slot="prepend">
               https://image.calibur.tv/
             </template>
           </el-input>
@@ -56,7 +55,7 @@
             width="100"
             trigger="hover"
           >
-            <img :src="$resize(form.avatar, { width: 250 })" >
+            <img :src="$resize(form.avatar, { width: 250 })">
           </el-popover>
           <a
             v-popover:popoverAvatar

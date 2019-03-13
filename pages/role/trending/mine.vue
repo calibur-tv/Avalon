@@ -88,7 +88,7 @@
                 target="_blank"
                 class="idol"
               >
-                <img :src="$resize(scope.row.idol.avatar, { width: 100 })" >
+                <img :src="$resize(scope.row.idol.avatar, { width: 100 })">
                 <span v-text="scope.row.idol.name" />
               </a>
             </el-table-column>

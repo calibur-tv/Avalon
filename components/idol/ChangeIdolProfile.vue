@@ -41,8 +41,8 @@
     </div>
     <el-input v-model="manager_id" placeholder="填写要任命的经纪人的邀请码" />
     <el-button :loading="submitting" type="primary"
-@click="beforeSubmit"
->
+               @click="beforeSubmit"
+    >
       确认提交
     </el-button>
   </div>

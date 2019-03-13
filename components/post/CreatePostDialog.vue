@@ -107,8 +107,8 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="submitting" type="primary"
-@click="submit"
->
+                   @click="submit"
+        >
           发布
         </el-button>
       </el-form-item>

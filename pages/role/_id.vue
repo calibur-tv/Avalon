@@ -192,14 +192,14 @@
           type="warning"
           description="股东大会召开中，请全体股东到本页面「大事记」一栏进行会议投票"
         />
-        <br >
+        <br>
       </div>
       <div class="intro clearfix">
         <p class="sub-title">
           {{ role.name }}
         </p>
         <div class="avatar-wrap">
-          <img :src="$resize(role.avatar, { width: 360 })" class="avatar" >
+          <img :src="$resize(role.avatar, { width: 360 })" class="avatar">
           <star-idol-btn
             :id="id"
             :price="role.stock_price"
@@ -241,7 +241,7 @@
         </p>
         <a :href="$alias.user(role.boss.zone)" class="user" target="_blank">
           <div class="avatar">
-            <img :src="$resize(role.boss.avatar, { width: 80 })" >
+            <img :src="$resize(role.boss.avatar, { width: 80 })">
           </div>
           <span v-text="role.boss.nickname" />
         </a>
@@ -253,7 +253,7 @@
         </p>
         <a :href="$alias.user(role.manager.zone)" class="user" target="_blank">
           <div class="avatar">
-            <img :src="$resize(role.manager.avatar, { width: 80 })" >
+            <img :src="$resize(role.manager.avatar, { width: 80 })">
           </div>
           <span v-text="role.manager.nickname" />
         </a>
@@ -270,7 +270,7 @@
         </p>
         <div class="coin">
           <p><strong>QQ群号：</strong>{{ role.qq_group || '106402736' }}</p>
-          <br >
+          <br>
         </div>
       </div>
       <tab-container

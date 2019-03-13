@@ -131,8 +131,7 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-      <template slot="aside"
->
+      <template slot="aside">
         &nbsp;
       </template>
     </v-layout>

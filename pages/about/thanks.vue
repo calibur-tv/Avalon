@@ -82,7 +82,7 @@
               "
               height="130"
               alt="260"
-            />
+            >
           </a>
         </el-tooltip>
         <el-tooltip effect="dark" content="团子 ♪" placement="top">
@@ -105,7 +105,7 @@
               "
               height="110"
               alt="220"
-            />
+            >
           </a>
         </el-tooltip>
         <el-tooltip effect="dark" content="团子 ♪" placement="top">
@@ -128,7 +128,7 @@
               "
               height="90"
               alt="180"
-            />
+            >
           </a>
         </el-tooltip>
         <el-tooltip effect="dark" content="团子 ♪" placement="top">
@@ -151,7 +151,7 @@
               "
               height="70"
               alt="140"
-            />
+            >
           </a>
         </el-tooltip>
         <el-tooltip effect="dark" content="团子 ♪" placement="top">
@@ -174,7 +174,7 @@
               "
               height="50"
               alt="100"
-            />
+            >
           </a>
         </el-tooltip>
         <el-tooltip effect="dark" content="团子 ♪" placement="top">
@@ -197,7 +197,7 @@
               "
               height="30"
               alt="60"
-            />
+            >
           </a>
         </el-tooltip>
         <el-tooltip effect="dark" content="团子大家族 ♪" placement="top">
@@ -220,7 +220,7 @@
               "
               height="110"
               alt="220"
-            />
+            >
           </a>
         </el-tooltip>
       </div>
@@ -250,7 +250,7 @@
             "
             height="70"
             alt="pink-logo"
-          />
+          >
         </a>
         <a
           :href="
@@ -268,7 +268,7 @@
             "
             height="70"
             alt="pink-logo"
-          />
+          >
         </a>
         <a
           :href="$resize('https://image.calibur.tv/owner/logo/animate.gif')"
@@ -285,16 +285,14 @@
             "
             height="70"
             alt="animate-logo"
-          />
+          >
         </a>
       </div>
       <p class="intro">
         <strong>灵感来源：</strong>
         《Fate/stay night》—— 石中剑，
         <strong>图标作者：</strong>
-        <a href="https://www.calibur.tv/user/yu-yuan-lin-yin-7" target="_blank"
-          >艾拉</a
-        >
+        <a href="https://www.calibur.tv/user/yu-yuan-lin-yin-7" target="_blank">艾拉</a>
       </p>
       <h3 class="sub-title">
         站娘
@@ -316,7 +314,7 @@
               "
               height="300"
               alt="c.c"
-            />
+            >
           </a>
         </el-tooltip>
         <div class="context">
@@ -335,9 +333,7 @@
         <strong>灵感来源：</strong>
         站长の幻想，
         <strong>图标作者：</strong>
-        <a href="https://www.calibur.tv/user/jian-pao-zhi-yuan" target="_blank"
-          >JPZY</a
-        >
+        <a href="https://www.calibur.tv/user/jian-pao-zhi-yuan" target="_blank">JPZY</a>
       </p>
       <h3 class="sub-title">
         宣传片
@@ -388,18 +384,14 @@
       </div>
       <p class="intro">
         <strong>视频1作者：</strong>
-        <a href="https://www.calibur.tv/user/cfdxkk" target="_blank"
-          >冲锋的小卡卡</a
-        >，
+        <a href="https://www.calibur.tv/user/cfdxkk" target="_blank">冲锋的小卡卡</a>，
         <strong>视频2作者：</strong>
         <a
           href="https://www.calibur.tv/user/yu-yuan-lin-yin-7/bangumi"
           target="_blank"
-          >艾了个拉</a
-        >
+        >艾了个拉</a>
       </p>
-      <template slot="aside"
->
+      <template slot="aside">
         &nbsp;
       </template>
     </v-layout>

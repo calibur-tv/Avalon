@@ -154,7 +154,7 @@
   <li class="virtual-idol-item">
     <a :href="$alias.cartoonRole(item.id)" target="_blank">
       <div class="info">
-        <img :src="$resize(item.avatar, { width: 160 })" >
+        <img :src="$resize(item.avatar, { width: 160 })">
         <p class="oneline">{{ item.name }}</p>
       </div>
       <div class="intro">
@@ -166,9 +166,7 @@
         </p>
         <p class="meta_1">
           <span>股价:</span>
-          <span
-            >￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span
-          >
+          <span>￥{{ item.stock_price }} / 股，{{ item.fans_count }}人持股</span>
         </p>
         <p v-if="sort === 'mine'" class="meta_2">
           <span>持有：</span>
@@ -209,12 +207,12 @@
             v-if="item.boss"
             :src="$resize(item.boss.avatar, { width: 50, height: 50 })"
             class="boss"
-          />
+          >
           <img
             v-if="item.manager"
             :src="$resize(item.manager.avatar, { width: 50, height: 50 })"
             class="manager"
-          />
+          >
         </div>
         <div class="time">
           <p v-if="item.ipo_at">上市时间：{{ item.ipo_at.split(' ')[0] }}</p>

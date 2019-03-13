@@ -127,9 +127,7 @@
     <div class="bangumi-header-bottom">
       <v-layout>
         <div class="meta">
-          <span v-if="info.follow_users"
-            >关注人数：{{ info.follow_users.total }}</span
-          >
+          <span v-if="info.follow_users">关注人数：{{ info.follow_users.total }}</span>
           <span v-if="info.power">活跃度：{{ info.power }}</span>
         </div>
         <v-share type="panel" />

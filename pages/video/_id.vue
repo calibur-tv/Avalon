@@ -213,8 +213,7 @@
             :all-data="videos"
           >
             <template slot-scope="{ item }">
-              <span>{{ item.part - items.base }}</span
-              >{{ item.name }}
+              <span>{{ item.part - items.base }}</span>{{ item.name }}
             </template>
           </v-part>
         </div>
@@ -227,8 +226,7 @@
         :alias="$alias.video"
       >
         <template slot-scope="{ item }">
-          <span>{{ item.part }}</span
-          >{{ item.name }}
+          <span>{{ item.part }}</span>{{ item.name }}
         </template>
       </v-part>
     </div>
@@ -280,8 +278,8 @@
         </el-button>
         <template v-if="is_manager">
           <el-button size="medium" round
-@click="openEditVideo = true"
->
+                     @click="openEditVideo = true"
+          >
             编辑视频
           </el-button>
           <v-dialog v-model="openEditVideo" :footer="false" title="编辑视频">

@@ -182,8 +182,7 @@
           <span class="floor-count">{{ post.floor_count }}楼</span>
           <v-time :datetime="post.created_at" class="floor-count" />
           <div class="hover-box">
-            <report-dialog :id="post.id" type="post_comment"
->
+            <report-dialog :id="post.id" type="post_comment">
               举报
             </report-dialog>
             <button

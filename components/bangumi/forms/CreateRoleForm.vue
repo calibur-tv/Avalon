@@ -51,7 +51,7 @@
           :src="$resize(form.avatar, { width: 200 })"
           class="avatar"
           style="width: 100px;height: 100px;"
-        />
+        >
         <el-upload
           ref="upload"
           :data="uploadHeaders"

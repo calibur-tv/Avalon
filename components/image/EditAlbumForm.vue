@@ -15,7 +15,7 @@
         :src="$resize(form.poster.url)"
         height="200"
         style="width: auto;"
-      />
+      >
       <el-upload
         ref="upload"
         :data="uploadHeaders"

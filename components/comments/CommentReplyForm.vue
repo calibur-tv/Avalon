@@ -43,7 +43,7 @@
         type="text"
         placeholder="请缩减至100字以内"
         maxlength="100"
-      />
+      >
     </div>
   </div>
 </template>

@@ -48,7 +48,7 @@
   >
     <div v-if="user" class="content">
       <div class="avatar">
-        <img :src="user.avatar" >
+        <img :src="user.avatar">
       </div>
       <div class="tips">
         <p>

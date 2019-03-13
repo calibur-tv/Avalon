@@ -214,8 +214,8 @@
           />
           <report-dialog :id="id" type="question">
             <el-button type="text" size="medium"
-icon="el-icon-phone"
->
+                       icon="el-icon-phone"
+            >
               举报
             </el-button>
           </report-dialog>
@@ -251,7 +251,9 @@ icon="el-icon-phone"
       </div>
       <div slot="aside" class="question-aside">
         <div class="meta-item">
-          <div class="meta-text">被浏览 {{ qaq.view_count }}</div>
+          <div class="meta-text">
+            被浏览 {{ qaq.view_count }}
+          </div>
         </div>
         <div class="meta-item">
           <div class="meta-text">

@@ -169,8 +169,8 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="submitting" type="primary"
-@click="submit"
->
+                   @click="submit"
+        >
           提交
         </el-button>
       </el-form-item>
@@ -187,8 +187,8 @@
         placeholder="短信验证码"
         auto-complete="off"
       />
-      <br >
-      <br >
+      <br>
+      <br>
       <el-input
         v-model.trim="password"
         type="text"

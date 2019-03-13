@@ -143,7 +143,9 @@
     >
       <div class="container">
         <div class="panel">
-          <h1 class="title">《{{ info.name }}》</h1>
+          <h1 class="title">
+            《{{ info.name }}》
+          </h1>
           <p class="author">
             UP：
             <a
@@ -213,11 +215,8 @@
             v-else-if="info.is_cartoon"
             :href="$alias.bangumi(bangumi.id, 'cartoon')"
             target="_blank"
-            >漫画</a
-          >
-          <a v-else :href="$alias.bangumi(bangumi.id, 'pins')" target="_blank"
-            >相册</a
-          >
+          >漫画</a>
+          <a v-else :href="$alias.bangumi(bangumi.id, 'pins')" target="_blank">相册</a>
           {{ info.name }}
         </h1>
       </nav>

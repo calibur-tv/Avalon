@@ -73,8 +73,7 @@
             :class="{ selected: tag.selected }"
             href="javascript:;"
             class="tag-btn"
-            >{{ tag.name }}</a
-          >
+          >{{ tag.name }}</a>
         </li>
       </ul>
     </div>

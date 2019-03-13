@@ -11,8 +11,7 @@
           <el-input v-model.trim="form.name" placeholder="中文名" />
         </el-col>
         <el-col :offset="2" :span="6" style="text-align: right">
-          <el-button type="primary" @click="editBangumiInfo"
->
+          <el-button type="primary" @click="editBangumiInfo">
             更新番剧
           </el-button>
         </el-col>
@@ -56,8 +55,7 @@
             :disabled="true"
             auto-complete="off"
           >
-            <template slot="prepend"
->
+            <template slot="prepend">
               https://image.calibur.tv/
             </template>
           </el-input>
@@ -87,7 +85,7 @@
             width="200"
             trigger="hover"
           >
-            <img :src="imagePrefix + form.avatar" >
+            <img :src="imagePrefix + form.avatar">
           </el-popover>
           <a
             v-popover:popoverAvatar
@@ -106,8 +104,7 @@
             :disabled="true"
             auto-complete="off"
           >
-            <template slot="prepend"
->
+            <template slot="prepend">
               https://image.calibur.tv/
             </template>
           </el-input>
@@ -137,7 +134,7 @@
             width="200"
             trigger="hover"
           >
-            <img :src="imagePrefix + form.banner" >
+            <img :src="imagePrefix + form.banner">
           </el-popover>
           <a
             v-popover:popoverBanner
@@ -202,8 +199,7 @@
                 @click="updateRelease"
               >发布视频</el-button>
               -->
-              <el-button type="primary" @click="editSeasonInfo"
->
+              <el-button type="primary" @click="editSeasonInfo">
                 更新季度
               </el-button>
             </el-col>
@@ -223,8 +219,7 @@
                 :disabled="true"
                 auto-complete="off"
               >
-                <template slot="prepend"
->
+                <template slot="prepend">
                   https://image.calibur.tv/
                 </template>
               </el-input>
@@ -254,7 +249,7 @@
                 width="200"
                 trigger="hover"
               >
-                <img :src="imagePrefix + item.avatar" >
+                <img :src="imagePrefix + item.avatar">
               </el-popover>
               <a
                 v-popover="`popoverPoster-${item.id}`"

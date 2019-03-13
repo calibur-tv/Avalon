@@ -218,7 +218,7 @@ $input-height: 40px;
               class="logo"
               alt="sign-logo"
               style="margin-top: -13px"
-            />
+            >
             <reset-password-form
               @to-login="showReset = false"
               @to-register="showRegister"

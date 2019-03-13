@@ -81,7 +81,7 @@
               <img
                 :src="$resize(item.avatar, { width: 180 })"
                 :alt="item.name"
-              />
+              >
             </a>
             <div class="intro">
               <a
@@ -114,8 +114,8 @@
         </ul>
         <no-content v-else>
           <el-button type="primary" round
-@click="openFeedbackForResource"
->
+                     @click="openFeedbackForResource"
+          >
             求资源
           </el-button>
         </no-content>

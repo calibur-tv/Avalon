@@ -15,7 +15,9 @@
     </ul>
     <no-content slot="nothing">
       <nuxt-link to="/role/trending/register">
-        <el-button size="mini"> 为「{{ bangumi.name }}」注册公司 </el-button>
+        <el-button size="mini">
+          为「{{ bangumi.name }}」注册公司
+        </el-button>
       </nuxt-link>
     </no-content>
   </flow-list>

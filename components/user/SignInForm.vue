@@ -70,7 +70,7 @@
       "
       class="logo"
       alt="sign-logo"
-    />
+    >
     <el-form ref="form" :model="form" :rules="rule">
       <el-form-item prop="access">
         <el-input

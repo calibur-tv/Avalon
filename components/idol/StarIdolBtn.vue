@@ -47,9 +47,7 @@
       <el-form label-position="top">
         <el-form-item label="当前股价">
           <el-input v-model="price" :disabled="true">
-            <template slot="append"
-              >虚拟币每股</template
-            >
+            <template slot="append">虚拟币每股</template>
           </el-input>
         </el-form-item>
         <el-form-item label="购入上限">
@@ -69,9 +67,7 @@
         </el-form-item>
         <el-form-item label="账单计算">
           <div class="pocket">
-            <strong>预计支付：</strong><span>{{ needPay }}</span
-            >&nbsp;&nbsp; <strong>购买后钱包余额：</strong
-            ><span>{{ parseFloat(pocket - needPay).toFixed(2) }}</span>
+            <strong>预计支付：</strong><span>{{ needPay }}</span>&nbsp;&nbsp; <strong>购买后钱包余额：</strong><span>{{ parseFloat(pocket - needPay).toFixed(2) }}</span>
           </div>
         </el-form-item>
       </el-form>

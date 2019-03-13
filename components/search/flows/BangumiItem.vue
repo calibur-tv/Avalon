@@ -85,13 +85,13 @@
       <img
         :src="$resize(item.avatar, { width: 180, height: 240 })"
         :alt="item.name"
-      />
+      >
     </a>
     <a v-else :href="$alias.bangumi(item.id)" target="_blank" class="avatar">
       <img
         :src="$resize(item.avatar, { width: 252, height: 336 })"
         :alt="item.name"
-      />
+      >
     </a>
     <div class="intro">
       <div class="head">

@@ -8,12 +8,12 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: [
-    '@nuxtjs',
-    'plugin:nuxt/recommended',
-    'plugin:prettier/recommended'
+    'plugin:vue/recommended',
+    // 'plugin:prettier/recommended'
   ],
   plugins: [
-    'prettier'
+    'vue',
+    // 'prettier'
   ],
   // add your custom rules here
   rules: {
@@ -22,7 +22,8 @@ module.exports = {
     'no-undef': 'error',
     'no-unused-vars': 'warn',
     'no-else-return': 'warn',
-    'vue/no-v-html': 'off'
+    'vue/no-v-html': 'off',
+    'vue/max-attributes-per-line': 'off'
   },
   globals: {
     _hmt: true,

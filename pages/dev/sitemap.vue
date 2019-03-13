@@ -46,24 +46,20 @@
           <span class="ok">问答</span>
         </nuxt-link>
         <p>番剧：</p>
-        <nuxt-link to="/bangumi/news"
->
+        <nuxt-link to="/bangumi/news">
           <span class="ok">新番放送</span>
         </nuxt-link>
-        <nuxt-link to="/bangumi/tags"
->
+        <nuxt-link to="/bangumi/tags">
           <span class="ok">分类索引</span>
         </nuxt-link>
         &nbsp;|&nbsp;
         <nuxt-link to="/bangumi/3/post">
           <span class="ok">帖子</span>
         </nuxt-link>
-        <nuxt-link to="/bangumi/3/video"
->
+        <nuxt-link to="/bangumi/3/video">
           <span class="ok">视频</span>
         </nuxt-link>
-        <nuxt-link to="/bangumi/3/cartoon"
->
+        <nuxt-link to="/bangumi/3/cartoon">
           <span class="ok">漫画</span>
         </nuxt-link>
         <nuxt-link to="/bangumi/3/role">
@@ -72,8 +68,7 @@
         <nuxt-link to="/bangumi/3/pins">
           <span class="ok">相册</span>
         </nuxt-link>
-        <nuxt-link to="/bangumi/3/review"
->
+        <nuxt-link to="/bangumi/3/review">
           <span class="ok">漫评</span>
         </nuxt-link>
         <nuxt-link to="/bangumi/3/qaq">
@@ -83,40 +78,32 @@
           设置
         </nuxt-link>
         <p>用户：</p>
-        <nuxt-link to="/user/bing-yu/bangumi"
->
+        <nuxt-link to="/user/bing-yu/bangumi">
           <span class="ok">番剧</span>
         </nuxt-link>
-        <nuxt-link to="/user/bing-yu/post"
->
+        <nuxt-link to="/user/bing-yu/post">
           <span class="ok">帖子</span>
         </nuxt-link>
-        <nuxt-link to="/user/bing-yu/pins"
->
+        <nuxt-link to="/user/bing-yu/pins">
           <span class="ok">相册</span>
         </nuxt-link>
-        <nuxt-link to="/user/bing-yu/review"
->
+        <nuxt-link to="/user/bing-yu/review">
           <span class="ok">漫评</span>
         </nuxt-link>
-        <nuxt-link to="/user/bing-yu/qaq"
->
+        <nuxt-link to="/user/bing-yu/qaq">
           <span class="ok">问答</span>
         </nuxt-link>
-        <nuxt-link to="/user/bing-yu/role"
->
+        <nuxt-link to="/user/bing-yu/role">
           <span class="ok">偶像</span>
         </nuxt-link>
-        <nuxt-link to="/user/bing-yu/draft"
->
+        <nuxt-link to="/user/bing-yu/draft">
           <span class="ok">草稿</span>
         </nuxt-link>
         <nuxt-link to="/user/bing-yu/setting">
           设置
         </nuxt-link>
         <p>偶像：</p>
-        <nuxt-link to="/role/trending"
->
+        <nuxt-link to="/role/trending">
           <span class="ok">排行榜</span>
         </nuxt-link>
         <nuxt-link to="/test">
@@ -156,16 +143,13 @@
         <nuxt-link to="/about/hello">
           <span class="ok">欢迎</span>
         </nuxt-link>
-        <nuxt-link to="/about/thanks"
->
+        <nuxt-link to="/about/thanks">
           <span class="ok">品牌与站娘</span>
         </nuxt-link>
-        <nuxt-link to="/about/invite/1"
->
+        <nuxt-link to="/about/invite/1">
           <span class="ok">邀请注册</span>
         </nuxt-link>
-        <nuxt-link to="/app/download"
->
+        <nuxt-link to="/app/download">
           <span class="ok">下载APP</span>
         </nuxt-link>
         <p>创作：</p>

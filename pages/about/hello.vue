@@ -67,9 +67,7 @@
       <ul>
         <li>站内流通着一种虚拟货币，它与人民币是一比一的恒定汇率</li>
         <li>
-          虚拟币分两种，一种是不可提现的<strong>「团子」</strong>，另一种是可以提现的<strong
-            >「光玉」</strong
-          >
+          虚拟币分两种，一种是不可提现的<strong>「团子」</strong>，另一种是可以提现的<strong>「光玉」</strong>
         </li>
         <li>1团子 = 1光玉 = 1人民币</li>
         <li>
@@ -130,8 +128,7 @@
         网站目前的功能还很弱，我会努力做的更好，尽可能为自己喜欢的东西，做一点点贡献
       </p>
       <p>希望，你也喜欢这个网站。by：冰淤</p>
-      <template slot="aside"
->
+      <template slot="aside">
         &nbsp;
       </template>
     </v-layout>

@@ -80,8 +80,8 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="submitting" type="primary"
-@click="submit"
->
+                   @click="submit"
+        >
           提交问题
         </el-button>
       </el-form-item>

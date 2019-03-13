@@ -84,7 +84,7 @@
     <ul>
       <li v-for="user in filterList" :key="user.id">
         <a :href="$alias.user(user.zone)" target="_blank">
-          <img :src="$resize(user.avatar, { width: 80 })" class="avatar" >
+          <img :src="$resize(user.avatar, { width: 80 })" class="avatar">
           <div class="intro">
             <span class="oneline" v-text="user.nickname" />
             <p class="oneline" v-text="user.signature" />

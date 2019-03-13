@@ -349,7 +349,7 @@
               accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="selectBanner"
-            />
+            >
           </div>
         </div>
         <template v-if="isMe">
@@ -367,7 +367,7 @@
               accept="image/png, image/jpeg, image/jpg, image/x-png, image/gif"
               type="file"
               @change="openAvatarModal"
-            />
+            >
           </div>
           <v-dialog
             v-model="avatarCropper.showModal"
@@ -393,7 +393,7 @@
           :src="$resize(user.avatar, { width: 200, height: 200 })"
           class="avatar"
           alt="avatar"
-        />
+        >
         <span class="nickname">
           {{ user.nickname }}
           <template v-if="isMe">
@@ -423,9 +423,7 @@
               当前等级：<span>{{ user.exp.level }}</span>
             </p>
             <p>
-              距离升级：<span
-                >{{ user.exp.have_exp }} / {{ user.exp.next_level_exp }}</span
-              >
+              距离升级：<span>{{ user.exp.have_exp }} / {{ user.exp.next_level_exp }}</span>
             </p>
             <v-hr text="升级方法" />
             <ul>
@@ -468,9 +466,7 @@
         <p>当然，你也有权要求我们删除所有你的内容</p>
       </div>
       <div v-if="blockedAt" class="faker-tips">
-        <span
-          >该用户已被禁言，禁言至：{{ blockedAt }}，可能是由于以下原因：</span
-        >
+        <span>该用户已被禁言，禁言至：{{ blockedAt }}，可能是由于以下原因：</span>
         <p>1. 破坏社区环境，包括但不限于：无脑刷屏、复制他人内容来发表</p>
         <p>2. 恶意带节奏</p>
         <p>3. 发表于二次元无关的内容</p>

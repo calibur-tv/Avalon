@@ -95,8 +95,7 @@
       <div slot="header" slot-scope="{ source }" class="recent-header">
         <span class="title">最近入股</span>
         <span v-if="source.total" class="total">
-          &nbsp;·&nbsp;共{{ source.total }}笔</span
-        >
+          &nbsp;·&nbsp;共{{ source.total }}笔</span>
       </div>
       <ul slot-scope="{ flow }" class="recent-deal-list">
         <li v-for="(item, index) in flow" :key="index">
@@ -104,7 +103,7 @@
             <a :href="$alias.user(item.user.zone)" target="_blank">
               <img
                 :src="$resize(item.user.avatar, { width: 36, height: 36 })"
-              />
+              >
             </a>
             <span v-text="item.user.nickname" />
             <span>入股了</span>
@@ -125,13 +124,11 @@
         </li>
       </ul>
     </flow-list>
-    <br >
+    <br>
     <div class="badge">
       <span>成交次数：{{ meta.deal_count }}</span>
       <em />
-      <span
-        >总成交额：￥{{ parseFloat(meta.exchang_money_count).toFixed(2) }}</span
-      >
+      <span>总成交额：￥{{ parseFloat(meta.exchang_money_count).toFixed(2) }}</span>
     </div>
     <flow-list
       :auto="false"
@@ -142,9 +139,7 @@
     >
       <div slot="header" slot-scope="{ source }" class="recent-header">
         <span class="title">最近交易</span>
-        <span v-if="source.total" class="total"
-          >&nbsp;·&nbsp;共{{ source.total }}笔</span
-        >
+        <span v-if="source.total" class="total">&nbsp;·&nbsp;共{{ source.total }}笔</span>
       </div>
       <ul slot-scope="{ flow }" class="recent-deal-list">
         <li v-for="(item, index) in flow" :key="index">
@@ -152,7 +147,7 @@
             <a :href="$alias.user(item.buyer.zone)" target="_blank">
               <img
                 :src="$resize(item.buyer.avatar, { width: 36, height: 36 })"
-              />
+              >
             </a>
             <span v-text="item.buyer.nickname" />
             <span>购买了</span>

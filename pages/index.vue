@@ -171,7 +171,7 @@
         <img
           :src="$resize(curBanner.user_avatar, { width: 80 })"
           class="avatar"
-        />
+        >
       </a>
       <img
         v-else
@@ -179,7 +179,7 @@
           $resize('https://image.calibur.tv/default/user-avatar', { width: 80 })
         "
         class="avatar"
-      />
+      >
       <div class="content">
         <p class="oneline">
           作者：

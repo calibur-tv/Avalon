@@ -337,7 +337,7 @@ $color-gray-hover: #6d757a;
     </button>
     <div class="M-main">
       <div class="M-warp">
-        <img :src="now.img" class="M-face" >
+        <img :src="now.img" class="M-face">
         <div class="M-control">
           <div class="header">
             <div class="left">

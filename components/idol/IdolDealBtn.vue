@@ -36,8 +36,7 @@
         <p>
           最终交易的总价值不得低于 0.01 个虚拟币，当前市场价：<strong>{{
             price
-          }}</strong
-          >/股
+          }}</strong>/股
         </p>
         <p v-if="loaded">
           {{

@@ -58,8 +58,8 @@
           :accept="imageUploadAccept"
         >
           <el-button :loading="submitting" size="small"
-round
->
+                     round
+          >
             上传封面图
           </el-button>
         </el-upload>

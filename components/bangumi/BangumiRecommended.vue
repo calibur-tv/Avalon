@@ -95,7 +95,7 @@
     <ul>
       <li v-for="item in filterList" :key="item.id">
         <a :href="$alias.bangumi(item.id)" target="_blank">
-          <img :src="$resize(item.avatar, { width: 120 })" >
+          <img :src="$resize(item.avatar, { width: 120 })">
           <div>
             <p class="oneline" v-text="'《' + item.name + '》'" />
             <span v-text="item.tag" />

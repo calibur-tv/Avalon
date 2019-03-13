@@ -39,8 +39,7 @@
         </el-alert>
       </div>
       <create-role-form />
-      <template slot="aside"
->
+      <template slot="aside">
         &nbsp;
       </template>
     </v-layout>

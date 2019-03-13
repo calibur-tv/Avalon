@@ -30,8 +30,7 @@
       :type="type"
     />
     <div v-if="!comments.noMore || comments.list.length > 5" class="view-more">
-      共<strong>{{ comments.total }}</strong
-      >条回复
+      共<strong>{{ comments.total }}</strong>条回复
       <template v-if="!comments.noMore">
         ，
         <button class="more-btn" @click="loadMore">
