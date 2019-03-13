@@ -74,7 +74,7 @@ export default {
       const result = this.source.season.map(_ => _)
       this.source.videos.forEach((videos, index) => {
         const lastVideo = videos.data[videos.data.length - 1]
-        result[index]['last_part'] = lastVideo ? +lastVideo['episode'] + 1 : 0
+        result[index].last_part = lastVideo ? +lastVideo.episode + 1 : 0
       })
       return result
     },

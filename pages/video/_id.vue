@@ -275,12 +275,15 @@
           class="video-report"
           round
           @click="handleVideoReportClick"
-          >资源报错</el-button
         >
+          资源报错
+        </el-button>
         <template v-if="is_manager">
-          <el-button size="medium" round @click="openEditVideo = true"
-            >编辑视频</el-button
-          >
+          <el-button size="medium" round
+@click="openEditVideo = true"
+>
+            编辑视频
+          </el-button>
           <v-dialog v-model="openEditVideo" :footer="false" title="编辑视频">
             <edit-video-form
               :season-id="season_id"
@@ -308,7 +311,9 @@
       <!-- 侧边栏 -->
       <template slot="aside">
         <div v-if="upload_user" class="uploader">
-          <h3 class="sub-title">UP主</h3>
+          <h3 class="sub-title">
+            UP主
+          </h3>
           <div>
             <div class="avatar">
               <v-img
@@ -327,7 +332,9 @@
         </div>
         <template v-if="!isGuest">
           <div class="wallet">
-            <h3 class="sub-title">虚拟币</h3>
+            <h3 class="sub-title">
+              虚拟币
+            </h3>
             <div>
               <div class="item">
                 <strong>{{ coinCount }}</strong>
@@ -344,7 +351,9 @@
             </div>
           </div>
           <div class="invite-code">
-            <h2 class="sub-title">邀请码</h2>
+            <h2 class="sub-title">
+              邀请码
+            </h2>
             <button
               v-clipboard="share_data.link"
               @success="$toast.success('复制成功~快去发送给好友吧')"
@@ -354,7 +363,9 @@
             <p>使用你分享的链接注册，你们都能获得团子奖励</p>
           </div>
         </template>
-        <h3 class="sub-title">番剧</h3>
+        <h3 class="sub-title">
+          番剧
+        </h3>
         <bangumi-panel
           :id="bangumi.id"
           :name="bangumi.name"
@@ -375,7 +386,9 @@
           <h2>非常抱歉，为了降低流量压力，需要投食才能看番</h2>
           <p>
             <span>点击视频下方</span>
-            <el-button type="warning" size="mini" round>投食</el-button>
+            <el-button type="warning" size="mini" round>
+              投食
+            </el-button>
             <span>按钮即可继续观看</span>
           </p>
           <p>

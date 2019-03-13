@@ -46,8 +46,9 @@
         </a>
       </no-content>
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

@@ -338,8 +338,9 @@
                 :disabled="bannerSelector.loading"
                 type="text"
                 @click="cancelBannerChange"
-                >取消</el-button
               >
+                取消
+              </el-button>
             </div>
           </template>
           <div v-else class="banner-file-input file-input bg">
@@ -510,7 +511,9 @@
           </div>
         </div>
         <div class="invite-code">
-          <h2 class="sub-title">邀请码</h2>
+          <h2 class="sub-title">
+            邀请码
+          </h2>
           <button
             v-clipboard="`http://calibur.tv/about/invite/${user.id}`"
             @success="handleCopySuccess"
@@ -520,7 +523,9 @@
           <p>其他人使用你的邀请码注册，你就能获得团子奖励</p>
         </div>
         <template v-if="badges.length">
-          <h2 class="sub-title">徽章墙</h2>
+          <h2 class="sub-title">
+            徽章墙
+          </h2>
           <ul>
             <user-badge
               v-for="item in badges"

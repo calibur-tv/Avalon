@@ -73,7 +73,9 @@
 <template>
   <div id="bangumi-aside">
     <div v-if="tags.length" id="bangumi-tags">
-      <h2 class="sub-title">标签</h2>
+      <h2 class="sub-title">
+        标签
+      </h2>
       <ul>
         <li v-for="tag in tags" :key="tag.id" class="tag">
           <a
@@ -86,7 +88,9 @@
       </ul>
     </div>
     <div id="bangumi-followers">
-      <h2 class="sub-title">关注的人</h2>
+      <h2 class="sub-title">
+        关注的人
+      </h2>
       <ava-dialog
         v-if="followers.total"
         :id="info.id"
@@ -97,7 +101,9 @@
       <span v-else class="no-one">还没有人关注</span>
     </div>
     <div id="bangumi-managers">
-      <h2 class="sub-title">管理员</h2>
+      <h2 class="sub-title">
+        管理员
+      </h2>
       <ul v-if="managers.total">
         <li v-for="item in managers.list" :key="item.user.id">
           <el-tooltip
@@ -107,7 +113,7 @@
             placement="top"
           >
             <a :href="$alias.user(item.user.zone)" target="_blank">
-              <img :src="$resize(item.user.avatar, { width: 80 })" />
+              <img :src="$resize(item.user.avatar, { width: 80 })" >
               <i v-if="item.is_leader" class="iconfont icon-leader" />
               <i v-else class="iconfont icon-master" />
             </a>
@@ -120,8 +126,9 @@
         size="mini"
         type="primary"
         @click="openRequestMasterModal = true"
-        >还没有版主，点击申请</el-button
       >
+        还没有版主，点击申请
+      </el-button>
       <v-dialog
         v-model="openRequestMasterModal"
         :title="`申请成为《${info.name}》的版主`"
@@ -143,7 +150,9 @@
       </v-dialog>
     </div>
     <div id="qq-group">
-      <h2 class="sub-title">QQ同好群</h2>
+      <h2 class="sub-title">
+        QQ同好群
+      </h2>
       <p>{{ info.qq_group || '106402736' }}</p>
     </div>
   </div>

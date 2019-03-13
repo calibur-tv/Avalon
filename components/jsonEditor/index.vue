@@ -68,13 +68,13 @@
 </template>
 
 <script>
+import Mousetrap from 'mousetrap'
 import JsonItem from './JsonItem'
 import ImgPreview from './preview/ImgPreview'
 import TxtPreview from './preview/TxtPreview'
 import ListPreview from './preview/ListPreview'
 import UsePreview from './preview/UsePreview'
 import TitlePreview from './preview/TitlePreview'
-import Mousetrap from 'mousetrap'
 
 export default {
   name: 'JsonEditorMain',

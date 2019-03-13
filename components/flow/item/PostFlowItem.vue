@@ -248,9 +248,15 @@
         </a>
       </el-tooltip>
       <span class="time"> 发表于: <v-time :datetime="item.created_at" /> </span>
-      <div v-if="item.top_at && bangumiId" class="top_badge">置顶</div>
-      <div v-if="item.is_nice" class="nice_badge">精</div>
-      <div v-if="item.is_creator" class="creator_badge">原创</div>
+      <div v-if="item.top_at && bangumiId" class="top_badge">
+        置顶
+      </div>
+      <div v-if="item.is_nice" class="nice_badge">
+        精
+      </div>
+      <div v-if="item.is_creator" class="creator_badge">
+        原创
+      </div>
       <div class="title oneline">
         <a
           :href="$alias.post(item.id)"

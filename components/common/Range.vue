@@ -143,8 +143,8 @@ export default {
   },
   computed: {
     containerStyle() {
-      let style = {}
-      let size = this.tailsize
+      const style = {}
+      const size = this.tailsize
         ? (this.tailsize - this.barsize) / 2 + 'px'
         : '0px'
       if (this.vertical) {
@@ -164,8 +164,8 @@ export default {
     progressStyle() {
       this.getOffset()
 
-      let style = {}
-      let offset = this.progress()
+      const style = {}
+      const offset = this.progress()
 
       if (this.vertical) {
         style.width = this.barsize + 'px'
@@ -200,7 +200,7 @@ export default {
 
       this.getOffset()
 
-      let style = {}
+      const style = {}
 
       style.width = this.tailsize + 'px'
       style.height = this.tailsize + 'px'

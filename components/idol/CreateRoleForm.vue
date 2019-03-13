@@ -26,8 +26,9 @@
         <el-col :span="16">
           <el-input v-model.trim="form.avatar" :disabled="true">
             <template slot="prepend"
-              >https://image.calibur.tv/</template
-            >
+>
+              https://image.calibur.tv/
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2" :offset="1">
@@ -55,7 +56,7 @@
             width="100"
             trigger="hover"
           >
-            <img :src="$resize(form.avatar, { width: 250 })" />
+            <img :src="$resize(form.avatar, { width: 250 })" >
           </el-popover>
           <a
             v-popover:popoverAvatar
@@ -77,7 +78,9 @@
       </el-form-item>
       <el-form-item>
         <el-col :span="3" :offset="21">
-          <el-button type="primary" @click="submitForm">立即创建</el-button>
+          <el-button type="primary" @click="submitForm">
+            立即创建
+          </el-button>
         </el-col>
       </el-form-item>
     </el-form>

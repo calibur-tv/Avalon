@@ -26,7 +26,9 @@
         :action="imageUploadAction"
         :accept="imageUploadAccept"
       >
-        <el-button :loading="submitting" size="small" round>上传封面</el-button>
+        <el-button :loading="submitting" size="small" round>
+          上传封面
+        </el-button>
       </el-upload>
     </el-form-item>
     <el-form-item>
@@ -35,8 +37,9 @@
         type="primary"
         size="small"
         @click="submit"
-        >确认提交</el-button
       >
+        确认提交
+      </el-button>
     </el-form-item>
   </el-form>
 </template>

@@ -119,8 +119,9 @@ $layout-width: 900px;
             round
             plain
             @click="emitPublish"
-            >{{ id ? '发布更新' : '发布' }}</el-button
           >
+            {{ id ? '发布更新' : '发布' }}
+          </el-button>
           <el-button
             v-if="!published"
             size="small"
@@ -129,8 +130,9 @@ $layout-width: 900px;
             plain
             round
             @click="emitSave"
-            >保存</el-button
           >
+            保存
+          </el-button>
           <el-button
             size="small"
             icon="el-icon-view"
@@ -138,8 +140,9 @@ $layout-width: 900px;
             plain
             round
             @click="emitPreview"
-            >预览</el-button
           >
+            预览
+          </el-button>
           <span class="saving-flag">
             {{
               saving === false

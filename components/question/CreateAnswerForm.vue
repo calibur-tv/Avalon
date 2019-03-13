@@ -92,10 +92,9 @@
           size="medium"
           type="primary"
           @click="$channel.$emit('write-publish')"
-          >{{
-            published ? '更新回答' : id ? '发布回答' : '提交回答'
-          }}</el-button
         >
+          {{ published ? '更新回答' : id ? '发布回答' : '提交回答' }}
+        </el-button>
       </div>
     </div>
   </v-dialog>

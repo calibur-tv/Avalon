@@ -154,7 +154,7 @@
   <li class="virtual-idol-item">
     <a :href="$alias.cartoonRole(item.id)" target="_blank">
       <div class="info">
-        <img :src="$resize(item.avatar, { width: 160 })" />
+        <img :src="$resize(item.avatar, { width: 160 })" >
         <p class="oneline">{{ item.name }}</p>
       </div>
       <div class="intro">

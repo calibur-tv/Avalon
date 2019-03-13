@@ -96,7 +96,9 @@
       </el-form-item>
       <el-form-item class="sign-in-opt">
         <div class="opt-container">
-          <el-checkbox v-model="form.remember">记住我</el-checkbox>
+          <el-checkbox v-model="form.remember">
+            记住我
+          </el-checkbox>
           <div v-if="showOAuth" class="provider">
             <a href="https://api.calibur.tv/callback/oauth2/qq?from=sign">
               <i class="iconfont icon-qq" />
@@ -116,8 +118,9 @@
           class="submit-btn"
           type="primary"
           @click="submitForm"
-          >登录</el-button
         >
+          登录
+        </el-button>
       </el-form-item>
     </el-form>
     <div class="others">

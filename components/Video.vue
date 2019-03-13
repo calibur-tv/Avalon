@@ -246,9 +246,9 @@ $tool-btn-width: 40px;
       <div v-else-if="blocked" class="not-play-screen">
         <p>
           由于你消耗的视频流量过高，被系统判定为机器人恶意攻击，已被禁止看视频功能
-          <br />
+          <br >
           如果看到这条信息，代表你不是机器人，那么请加官方QQ群，帮你解禁
-          <br />
+          <br >
           如果你是因为在站内发表了「无意义」的内容被禁言了，抱歉神也救不了你！
         </p>
       </div>
@@ -270,9 +270,9 @@ $tool-btn-width: 40px;
         :class="[isFull ? '' : 'chimee-control-fixed']"
       />
       <div v-if="showRewardBg" class="not-play-screen">
-        <br />
-        <br />
-        <br />
+        <br >
+        <br >
+        <br >
         <p>
           由于站内视频流量过大，站长资金难以维持，该视频需要投食之后才能播放
         </p>
@@ -529,7 +529,7 @@ export default {
         if (prefix === '') {
           method = method.slice(0, 1).toLowerCase() + method.slice(1)
         }
-        let typePrefixMethod = typeof ele[prefix + method]
+        const typePrefixMethod = typeof ele[prefix + method]
         if (typePrefixMethod + '' !== 'undefined') {
           if (typePrefixMethod === 'function') {
             usablePrefixMethod = ele[prefix + method]()

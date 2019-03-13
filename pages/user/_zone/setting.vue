@@ -95,11 +95,21 @@
       </el-form-item>
       <el-form-item label="性别">
         <el-radio-group v-model="sex">
-          <el-radio :label="1">男</el-radio>
-          <el-radio :label="2">女</el-radio>
-          <el-radio :label="3">伪娘</el-radio>
-          <el-radio :label="4">药娘</el-radio>
-          <el-radio :label="5">扶她</el-radio>
+          <el-radio :label="1">
+            男
+          </el-radio>
+          <el-radio :label="2">
+            女
+          </el-radio>
+          <el-radio :label="3">
+            伪娘
+          </el-radio>
+          <el-radio :label="4">
+            药娘
+          </el-radio>
+          <el-radio :label="5">
+            扶她
+          </el-radio>
         </el-radio-group>
         <el-tooltip
           class="item"
@@ -158,9 +168,11 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="submitting" type="primary" @click="submit"
-          >提交</el-button
-        >
+        <el-button :loading="submitting" type="primary"
+@click="submit"
+>
+          提交
+        </el-button>
       </el-form-item>
     </el-form>
     <v-dialog
@@ -175,8 +187,8 @@
         placeholder="短信验证码"
         auto-complete="off"
       />
-      <br />
-      <br />
+      <br >
+      <br >
       <el-input
         v-model.trim="password"
         type="text"

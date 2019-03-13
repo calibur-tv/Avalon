@@ -78,9 +78,13 @@
     :
     <span class="comment-content">{{ comment.content }}</span>
     <div class="reply-area">
-      <report-dialog :id="comment.id" type="post_reply">举报</report-dialog>
+      <report-dialog :id="comment.id" type="post_reply">
+        举报
+      </report-dialog>
       <v-time v-model="comment.created_at" />
-      <button v-if="canDelete" @click="deleteComment">删除</button>
+      <button v-if="canDelete" @click="deleteComment">
+        删除
+      </button>
       <button v-if="!isMine" @click="toggleCommentArea">
         {{ showReplyArea ? '收起' : '回复' }}
       </button>

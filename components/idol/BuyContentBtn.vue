@@ -25,12 +25,12 @@
             title
           }}》
         </p>
-        <br />
+        <br >
         <p>当前可用资金：￥{{ idol.income }}</p>
         <div>
-          <br />
+          <br >
           <p><strong>采购价格：</strong></p>
-          <br />
+          <br >
           <el-input-number
             v-model="price"
             :min="5"
@@ -38,26 +38,26 @@
           />
         </div>
         <div>
-          <br />
+          <br >
           <p><strong>分成比例：</strong></p>
-          <br />
+          <br >
           <p>
             当前默认的分成比例是
             5：5（该文章每收到一次投食，就有0.5个团子赠予偶像，0.5个团子归属作者）
           </p>
         </div>
         <div>
-          <br />
+          <br >
           <p><strong>提示：</strong></p>
-          <br />
+          <br >
           <p>
             确认采购后，等待作者确认，作者同意后才会扣费，并开始计算偶像的盈利
           </p>
         </div>
       </template>
       <div v-else style="text-align:center">
-        <br />
-        <br />
+        <br >
+        <br >
         <mt-spinner type="triple-bounce" />
       </div>
     </v-dialog>

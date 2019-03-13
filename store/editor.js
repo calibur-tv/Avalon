@@ -80,7 +80,7 @@ export const mutations = {
   },
   INIT_SECTION(state, data) {
     const sections = []
-    data['content'].forEach((section, index) => {
+    data.content.forEach((section, index) => {
       section.id = `${index}-${Date.now()}`
       sections.push(section)
     })

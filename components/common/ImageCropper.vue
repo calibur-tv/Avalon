@@ -40,8 +40,9 @@
       size="small"
       round
       @click="generateImage"
-      >确认</el-button
     >
+      确认
+    </el-button>
   </div>
 </template>
 

@@ -145,7 +145,7 @@ export default {
       })
       if (deal) {
         // 去掉已售出的份额
-        deal['product_count'] = deal['last_count']
+        deal.product_count = deal.last_count
         Object.keys(this.deal).forEach(key => {
           this.deal[key] = deal[key]
         })

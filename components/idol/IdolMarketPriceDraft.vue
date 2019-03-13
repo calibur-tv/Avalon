@@ -50,7 +50,7 @@
         type="warning"
         title="提案项在通过或反对占比大于「50%」之后，会由系统自动增发股票/或关闭提案（最多延迟5分钟）"
       />
-      <br />
+      <br >
       <el-alert
         show-icon
         type="warning"
@@ -106,8 +106,9 @@
             type="primary"
             icon="el-icon-caret-top"
             @click="submitVote(true)"
-            >同意</el-button
           >
+            同意
+          </el-button>
           <el-button
             :loading="submitting"
             :plain="draft.voted < 0"

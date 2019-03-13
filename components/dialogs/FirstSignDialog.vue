@@ -59,10 +59,12 @@
     height="420px"
     custom-class="first-sign-dialog"
   >
-    <h3 class="title">欢迎来到「calibur.tv」</h3>
+    <h3 class="title">
+      欢迎来到「calibur.tv」
+    </h3>
     <p class="content">
-      使用你的“邀请码”带朋友一起来玩吧！<br />
-      每邀请一个朋友加入，你就可以获得一枚金币<br />
+      使用你的“邀请码”带朋友一起来玩吧！<br >
+      每邀请一个朋友加入，你就可以获得一枚金币<br >
       1金币=1人民币，满100就可以提现噢！
     </p>
     <div class="control">

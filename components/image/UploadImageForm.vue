@@ -126,9 +126,11 @@
             :accept="imageUploadAccept"
             :action="imageUploadAction"
           >
-            <el-button :loading="submitting" size="small" round
-              >选择图片</el-button
-            >
+            <el-button :loading="submitting" size="small"
+round
+>
+              选择图片
+            </el-button>
           </el-upload>
         </el-form-item>
         <el-form-item>

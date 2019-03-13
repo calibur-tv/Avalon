@@ -462,7 +462,7 @@ $search-height: 32px;
             :class="$style.logo"
             to="/"
           >
-            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })" />
+            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })" >
           </nuxt-link>
           <nuxt-link v-else :class="[$style.navLink, $style.first]" to="/">
             <span>首页</span>
@@ -523,7 +523,9 @@ $search-height: 32px;
                 </a>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
-                    <button @click="signOut">退出</button>
+                    <button @click="signOut">
+                      退出
+                    </button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

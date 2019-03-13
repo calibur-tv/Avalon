@@ -12,8 +12,9 @@
         </el-col>
         <el-col :offset="2" :span="6" style="text-align: right">
           <el-button type="primary" @click="editBangumiInfo"
-            >更新番剧</el-button
-          >
+>
+            更新番剧
+          </el-button>
         </el-col>
       </el-form-item>
       <el-form-item label="番剧别名" prop="alias" required>
@@ -56,8 +57,9 @@
             auto-complete="off"
           >
             <template slot="prepend"
-              >https://image.calibur.tv/</template
-            >
+>
+              https://image.calibur.tv/
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2" :offset="1">
@@ -85,7 +87,7 @@
             width="200"
             trigger="hover"
           >
-            <img :src="imagePrefix + form.avatar" />
+            <img :src="imagePrefix + form.avatar" >
           </el-popover>
           <a
             v-popover:popoverAvatar
@@ -105,8 +107,9 @@
             auto-complete="off"
           >
             <template slot="prepend"
-              >https://image.calibur.tv/</template
-            >
+>
+              https://image.calibur.tv/
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2" :offset="1">
@@ -134,7 +137,7 @@
             width="200"
             trigger="hover"
           >
-            <img :src="imagePrefix + form.banner" />
+            <img :src="imagePrefix + form.banner" >
           </el-popover>
           <a
             v-popover:popoverBanner
@@ -200,8 +203,9 @@
               >发布视频</el-button>
               -->
               <el-button type="primary" @click="editSeasonInfo"
-                >更新季度</el-button
-              >
+>
+                更新季度
+              </el-button>
             </el-col>
           </el-form-item>
           <el-form-item label="季度简介" prop="summary">
@@ -220,8 +224,9 @@
                 auto-complete="off"
               >
                 <template slot="prepend"
-                  >https://image.calibur.tv/</template
-                >
+>
+                  https://image.calibur.tv/
+                </template>
               </el-input>
             </el-col>
             <el-col :span="2" :offset="1">
@@ -249,7 +254,7 @@
                 width="200"
                 trigger="hover"
               >
-                <img :src="imagePrefix + item.avatar" />
+                <img :src="imagePrefix + item.avatar" >
               </el-popover>
               <a
                 v-popover="`popoverPoster-${item.id}`"
@@ -527,7 +532,7 @@ export default {
     handleTabsEdit(targetName, action) {
       if (action === 'add') {
         const rank = this.seasons[this.seasons.length - 1].rank + 1
-        let newTabName = `第${rank}季`
+        const newTabName = `第${rank}季`
         this.seasons.push({
           id: 0,
           name: '',

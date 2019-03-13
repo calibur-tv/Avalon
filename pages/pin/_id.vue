@@ -279,7 +279,9 @@
           </user-card>
           &nbsp;·&nbsp;
           <span> 发布于：<v-time v-model="info.created_at" /> </span>
-          <report-dialog :id="id" type="image">举报</report-dialog>
+          <report-dialog :id="id" type="image">
+            举报
+          </report-dialog>
         </div>
         <v-parts
           v-if="info.is_cartoon"
@@ -301,7 +303,9 @@
         <comment-main :id="id" :master-id="user.id" :lazy="true" type="image" />
       </v-lazy>
       <template slot="aside">
-        <h3 class="sub-title">所属番剧</h3>
+        <h3 class="sub-title">
+          所属番剧
+        </h3>
         <bangumi-panel
           :id="bangumi.id"
           :name="bangumi.name"
@@ -437,7 +441,7 @@ export default {
       try {
         const prev = toNext ? index : index - 1
         const next = toNext ? index + 1 : index
-        let imageArr = this.images.map(_ => _)
+        const imageArr = this.images.map(_ => _)
         imageArr.splice(prev, 1, ...imageArr.splice(next, 1, imageArr[prev]))
         const result = imageArr.map(_ => _.id).toString()
         await sortAlbum(this, {
@@ -465,7 +469,7 @@ export default {
         .then(async () => {
           this.loadingEditImages = true
           try {
-            let idsArr = this.images.map(_ => _.id)
+            const idsArr = this.images.map(_ => _.id)
             const imageId = idsArr.splice(index, 1)[0]
             await deleteAlbumImage(this, {
               id: this.id,

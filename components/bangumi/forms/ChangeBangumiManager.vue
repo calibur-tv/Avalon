@@ -18,7 +18,9 @@
 
 <template>
   <div id="change-bangumi-manager">
-    <h3 class="sub-title">版主</h3>
+    <h3 class="sub-title">
+      版主
+    </h3>
     <div class="users">
       <a
         v-for="item in leaders"
@@ -26,7 +28,7 @@
         :href="$alias.user(item.user.zone)"
         target="_blank"
       >
-        <img :src="$resize(item.user.avatar, { width: 120 })" />
+        <img :src="$resize(item.user.avatar, { width: 120 })" >
       </a>
     </div>
     <div v-if="isLeader" class="control">
@@ -37,7 +39,9 @@
         移除代行者
       </el-button>
     </div>
-    <h3 class="sub-title">代行者</h3>
+    <h3 class="sub-title">
+      代行者
+    </h3>
     <div class="users">
       <a
         v-for="item in managers"
@@ -45,7 +49,7 @@
         :href="$alias.user(item.user.zone)"
         target="_blank"
       >
-        <img :src="$resize(item.user.avatar, { width: 120 })" />
+        <img :src="$resize(item.user.avatar, { width: 120 })" >
       </a>
     </div>
   </div>

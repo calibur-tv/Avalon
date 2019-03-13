@@ -62,7 +62,9 @@
           :on-success="handleAvatarSuccess"
           :show-file-list="false"
         >
-          <el-button size="mini">点击上传</el-button>
+          <el-button size="mini">
+            点击上传
+          </el-button>
         </el-upload>
       </el-form-item>
       <el-form-item label="偶像简介" prop="intro">
@@ -78,8 +80,9 @@
           :loading="submitting"
           type="primary"
           @click="submitEditProfile"
-          >确认提交</el-button
         >
+          确认提交
+        </el-button>
       </el-form-item>
     </el-form>
   </div>

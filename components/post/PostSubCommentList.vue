@@ -68,11 +68,14 @@
           size="mini"
           round
           @click="loadMore"
-          >点击加载更多</el-button
         >
+          点击加载更多
+        </el-button>
         <span class="total">共{{ comments.total }}条</span>
       </div>
-      <button class="toggle" @click="toggleCommentArea">我也说一句</button>
+      <button class="toggle" @click="toggleCommentArea">
+        我也说一句
+      </button>
     </div>
     <comment-reply-form
       :id="parentId"

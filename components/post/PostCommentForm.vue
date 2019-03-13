@@ -61,8 +61,9 @@
         type="primary"
         class="submit-btn"
         @click="submit"
-        >发表评论</el-button
       >
+        发表评论
+      </el-button>
     </el-form-item>
   </el-form>
 </template>

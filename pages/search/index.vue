@@ -123,16 +123,18 @@
             round
             class="load-more-btn"
             @click="loadMore"
-            >{{ loading ? '加载中' : '加载更多' }}</el-button
           >
+            {{ loading ? '加载中' : '加载更多' }}
+          </el-button>
           <div v-if="loading && !list.length" class="loading-wrap">
             <div class="el-icon-loading" />
           </div>
         </el-tab-pane>
       </el-tabs>
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

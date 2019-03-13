@@ -80,16 +80,18 @@
             round
             plain
             @click="$toast.success('在个人主页右侧可签到~')"
-            >每日签到</el-button
           >
+            每日签到
+          </el-button>
           <el-button
             size="mini"
             type="primary"
             round
             plain
             @click="$toast.success('每天多来站里玩玩就会获得团子~')"
-            >每日活跃提升战斗力</el-button
           >
+            每日活跃提升战斗力
+          </el-button>
           <el-button
             size="mini"
             type="danger"
@@ -129,8 +131,9 @@
       </p>
       <p>希望，你也喜欢这个网站。by：冰淤</p>
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

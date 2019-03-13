@@ -105,7 +105,9 @@
             <p>
               前往
               <nuxt-link to="/role/trending/register">
-                <el-button round size="mini">注册公司</el-button>
+                <el-button round size="mini">
+                  注册公司
+                </el-button>
               </nuxt-link>
               页面，填写表单即可注册公司
             </p>
@@ -241,8 +243,9 @@
         </el-collapse>
       </div>
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

@@ -110,8 +110,9 @@
                 type="primary"
                 size="small"
                 @success="handleCopySuccess"
-                >点击复制</el-button
               >
+                点击复制
+              </el-button>
             </div>
           </v-dialog>
           <div>

@@ -3,8 +3,12 @@
     <v-header />
     <v-layout>
       <div class="breadcrumb-links">
-        <router-link :to="$alias.bangumiNews">新番放送</router-link>
-        <router-link :to="$alias.bangumiTag()">分类索引</router-link>
+        <router-link :to="$alias.bangumiNews">
+          新番放送
+        </router-link>
+        <router-link :to="$alias.bangumiTag()">
+          分类索引
+        </router-link>
       </div>
       <nuxt />
       <template slot="aside">

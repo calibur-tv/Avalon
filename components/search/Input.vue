@@ -57,7 +57,9 @@
     @submit.prevent="submit"
   >
     <button type="submit" class="search-input-btn">
-      <slot name="submit-btn">搜索</slot>
+      <slot name="submit-btn">
+        搜索
+      </slot>
     </button>
     <div class="search-input-text">
       <input
@@ -88,7 +90,7 @@
         :class="{ active: index === selectedIndex }"
         @click="clickToSearch(index)"
       >
-        <img :src="$resize(item.avatar, { width: 60 })" />
+        <img :src="$resize(item.avatar, { width: 60 })" >
         <span v-text="item.name" />
       </li>
     </ul>

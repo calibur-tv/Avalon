@@ -137,8 +137,9 @@
               class="control-btn"
               size="mini"
               @click="deleteScore"
-              >删除</el-button
             >
+              删除
+            </el-button>
             <a :href="$alias.editScore(info.id)">
               <el-button
                 round

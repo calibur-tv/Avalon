@@ -46,15 +46,13 @@ export const mutations = {
       } else {
         state.user.exp.have_exp = state.user.exp.have_exp + score
       }
+    } else if (state.user.exp.have_exp + score < 0) {
+      const newLevel = state.user.exp.level - 1
+      const lastTotalExp = newLevel * newLevel + newLevel * 10
+      state.user.exp.have_exp = lastTotalExp + state.user.exp.have_exp + score
+      state.user.exp.next_level_exp = lastTotalExp
     } else {
-      if (state.user.exp.have_exp + score < 0) {
-        const newLevel = state.user.exp.level - 1
-        const lastTotalExp = newLevel * newLevel + newLevel * 10
-        state.user.exp.have_exp = lastTotalExp + state.user.exp.have_exp + score
-        state.user.exp.next_level_exp = lastTotalExp
-      } else {
-        state.user.exp.have_exp = state.user.exp.have_exp + score
-      }
+      state.user.exp.have_exp = state.user.exp.have_exp + score
     }
   },
   USE_COIN(state, amount = 1) {

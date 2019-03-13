@@ -88,7 +88,7 @@
                 target="_blank"
                 class="idol"
               >
-                <img :src="$resize(scope.row.idol.avatar, { width: 100 })" />
+                <img :src="$resize(scope.row.idol.avatar, { width: 100 })" >
                 <span v-text="scope.row.idol.name" />
               </a>
             </el-table-column>
@@ -135,8 +135,9 @@
                   type="info"
                   round
                   plain
-                  >交易已终止</el-button
                 >
+                  交易已终止
+                </el-button>
                 <el-button
                   v-else
                   size="small"
@@ -144,8 +145,9 @@
                   round
                   plain
                   @click="deleteMyDeal(scope.row)"
-                  >终止交易</el-button
                 >
+                  终止交易
+                </el-button>
               </template>
             </el-table-column>
           </el-table>

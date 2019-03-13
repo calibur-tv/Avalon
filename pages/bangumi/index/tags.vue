@@ -64,7 +64,9 @@
 <template>
   <div id="bangumi-tags" class="main">
     <div class="tags">
-      <h2 class="sub-title">标签列表</h2>
+      <h2 class="sub-title">
+        标签列表
+      </h2>
       <ul>
         <li v-for="tag in tags" :key="tag.id" @click="selectTag(tag)">
           <a
@@ -77,7 +79,9 @@
       </ul>
     </div>
     <div v-if="bangumis.total" class="bangumis">
-      <h2 class="sub-title">番剧列表</h2>
+      <h2 class="sub-title">
+        番剧列表
+      </h2>
       <ul>
         <li v-for="item in bangumis.data" :key="item.id" class="bangumi">
           <a :href="$alias.bangumi(item.id)" target="_blank" class="avatar">

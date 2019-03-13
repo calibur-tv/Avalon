@@ -34,7 +34,9 @@
       >条回复
       <template v-if="!comments.noMore">
         ，
-        <button class="more-btn" @click="loadMore">查看更多</button>
+        <button class="more-btn" @click="loadMore">
+          查看更多
+        </button>
       </template>
       <button
         v-if="showCollapse"

@@ -38,7 +38,7 @@
 
 <template>
   <div class="user-badge" @click="getBadgeData">
-    <img :src="$resize(item.icon, { width: 40 })" class="icon" />
+    <img :src="$resize(item.icon, { width: 40 })" class="icon" >
     <span class="text" v-text="item.name" />
     <v-dialog
       v-model="showDetail"
@@ -47,7 +47,7 @@
       width="400px"
     >
       <div v-if="info" class="user-badge-detail">
-        <img :src="$resize(info.icon, { width: 140 })" />
+        <img :src="$resize(info.icon, { width: 140 })" >
         <div>
           <strong>名称</strong>
           <p v-text="info.name" />

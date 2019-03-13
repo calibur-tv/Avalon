@@ -337,7 +337,7 @@ $color-gray-hover: #6d757a;
     </button>
     <div class="M-main">
       <div class="M-warp">
-        <img :src="now.img" class="M-face" />
+        <img :src="now.img" class="M-face" >
         <div class="M-control">
           <div class="header">
             <div class="left">
@@ -405,18 +405,26 @@ $color-gray-hover: #6d757a;
     <div :class="{ 'menu-show': status.menuShow }" class="M-menu">
       <div class="M-menu-wrap">
         <div class="header">
-          <h3 class="list">歌曲列表</h3>
+          <h3 class="list">
+            歌曲列表
+          </h3>
           <button class="close" @click="status.menuShow = false">
             &times;
           </button>
         </div>
         <div class="body">
           <div class="title item">
-            <div class="item-right">歌手</div>
-            <div class="item-left">歌曲</div>
+            <div class="item-right">
+              歌手
+            </div>
+            <div class="item-left">
+              歌曲
+            </div>
           </div>
           <div v-for="(item, index) in musics" :key="index" class="item">
-            <div class="item-right oneline">{{ item.player }}</div>
+            <div class="item-right oneline">
+              {{ item.player }}
+            </div>
             <div class="item-left">
               <div>
                 <span
@@ -775,7 +783,7 @@ export default {
     musics() {
       const array = this.source.map(_ => _)
       for (let i = array.length; i; i--) {
-        let j = Math.floor(Math.random() * i)
+        const j = Math.floor(Math.random() * i)
         ;[array[i - 1], array[j]] = [array[j], array[i - 1]]
       }
 
@@ -837,12 +845,10 @@ export default {
             } else {
               resultIndex = index + 1
             }
+          } else if (!index) {
+            resultIndex = musicCount - 1
           } else {
-            if (!index) {
-              resultIndex = musicCount - 1
-            } else {
-              resultIndex = index - 1
-            }
+            resultIndex = index - 1
           }
         }
       })

@@ -43,9 +43,13 @@
         </p>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="submitting" type="primary" @click="changeIdolStock"
-          >提交变更提案</el-button
+        <el-button
+          :loading="submitting"
+          type="primary"
+          @click="changeIdolStock"
         >
+          提交变更提案
+        </el-button>
       </el-form-item>
     </el-form>
   </div>

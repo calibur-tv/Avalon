@@ -67,8 +67,9 @@
           plain
           round
           @click="loadMore(false)"
-          >{{ loading ? '加载中...' : '加载更多' }}</el-button
         >
+          {{ loading ? '加载中...' : '加载更多' }}
+        </el-button>
       </div>
       <!-- 主列表的底部 -->
       <slot name="reply">

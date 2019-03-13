@@ -183,8 +183,9 @@
           <v-time :datetime="post.created_at" class="floor-count" />
           <div class="hover-box">
             <report-dialog :id="post.id" type="post_comment"
-              >举报</report-dialog
-            >
+>
+              举报
+            </report-dialog>
             <button
               v-clipboard="
                 `https://www.calibur.tv/post/${post.modal_id}?comment-id=${
@@ -233,7 +234,7 @@ export default {
       return this.$store.state.login ? this.$store.state.user.id : 0
     },
     isMine() {
-      return this.currentUserId === this.post['from_user_id']
+      return this.currentUserId === this.post.from_user_id
     },
     canDelete() {
       return this.isMine || this.currentUserId === this.masterId

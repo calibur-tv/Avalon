@@ -57,9 +57,11 @@
           :action="imageUploadAction"
           :accept="imageUploadAccept"
         >
-          <el-button :loading="submitting" size="small" round
-            >上传封面图</el-button
-          >
+          <el-button :loading="submitting" size="small"
+round
+>
+            上传封面图
+          </el-button>
         </el-upload>
         <div
           v-if="form.poster"
@@ -90,8 +92,9 @@
           type="primary"
           size="small"
           @click="submit"
-          >确认提交</el-button
         >
+          确认提交
+        </el-button>
       </el-form-item>
     </el-form>
   </div>

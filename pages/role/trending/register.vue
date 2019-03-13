@@ -29,7 +29,9 @@
             <li>
               其它详情，请查看
               <nuxt-link to="/role/trending/intro">
-                <el-button round size="mini">股市介绍</el-button>
+                <el-button round size="mini">
+                  股市介绍
+                </el-button>
               </nuxt-link>
               页面
             </li>
@@ -38,8 +40,9 @@
       </div>
       <create-role-form />
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

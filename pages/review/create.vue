@@ -55,7 +55,9 @@
 
 <template>
   <div id="score-create">
-    <h3 class="sub-title">番剧</h3>
+    <h3 class="sub-title">
+      番剧
+    </h3>
     <bangumi-search
       v-model="bangumiId"
       :followed="true"
@@ -64,7 +66,9 @@
       class="bangumi-search"
       @search="handleBangumiSearch"
     />
-    <h3 class="sub-title">标题</h3>
+    <h3 class="sub-title">
+      标题
+    </h3>
     <el-input
       v-model.trim="title"
       maxlength="30"
@@ -72,7 +76,9 @@
       placeholder="给你的文章起个好名字！"
     />
     <div v-if="!id" class="is-creator-wrap">
-      <h3 class="sub-title">原创</h3>
+      <h3 class="sub-title">
+        原创
+      </h3>
       <el-tooltip content="如果这是你的原创作品，请勾选该选项" placement="top">
         <el-switch v-model="is_creator" />
       </el-tooltip>
@@ -139,7 +145,9 @@
         最后，一般情况下不存在0分的作品，如果你认为一部作品是0分，那就请放过它吧；也不存在满分的作品，如果你认为一部作品达到了满分，可能是你的阅片量还太少，需要再接再厉，(๑•̀ㅂ•́)و✧！
       </p>
     </el-alert>
-    <h3 class="sub-title">正文</h3>
+    <h3 class="sub-title">
+      正文
+    </h3>
     <json-editor @submit="beforeSubmit" />
   </div>
 </template>

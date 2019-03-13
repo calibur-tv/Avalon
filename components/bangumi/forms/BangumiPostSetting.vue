@@ -22,14 +22,17 @@
         <el-col :span="21">
           <el-input v-model="set_nice_url" placeholder="输入帖子链接">
             <template slot="prepend"
-              >要加精的帖子链接</template
-            >
+>
+              要加精的帖子链接
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="primary" @click="setNice"
-            >确认</el-button
-          >
+          <el-button :loading="loading" type="primary"
+@click="setNice"
+>
+            确认
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -39,14 +42,17 @@
         <el-col :span="21">
           <el-input v-model="del_nice_url" placeholder="输入帖子链接">
             <template slot="prepend"
-              >要取消精的帖子链接</template
-            >
+>
+              要取消精的帖子链接
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="danger" @click="removeNice"
-            >确认</el-button
-          >
+          <el-button :loading="loading" type="danger"
+@click="removeNice"
+>
+            确认
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -56,14 +62,17 @@
         <el-col :span="21">
           <el-input v-model="set_top_url" placeholder="输入帖子链接">
             <template slot="prepend"
-              >要置顶的帖子链接</template
-            >
+>
+              要置顶的帖子链接
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="primary" @click="setTop"
-            >确认</el-button
-          >
+          <el-button :loading="loading" type="primary"
+@click="setTop"
+>
+            确认
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -73,14 +82,17 @@
         <el-col :span="21">
           <el-input v-model="del_top_url" placeholder="输入帖子链接">
             <template slot="prepend"
-              >要取消置顶的帖子链接</template
-            >
+>
+              要取消置顶的帖子链接
+            </template>
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="danger" @click="removeTop"
-            >确认</el-button
-          >
+          <el-button :loading="loading" type="danger"
+@click="removeTop"
+>
+            确认
+          </el-button>
         </el-col>
       </el-row>
     </div>

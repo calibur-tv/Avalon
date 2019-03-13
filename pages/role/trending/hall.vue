@@ -107,7 +107,7 @@
               target="_blank"
               class="idol"
             >
-              <img :src="$resize(scope.row.idol.avatar, { width: 100 })" />
+              <img :src="$resize(scope.row.idol.avatar, { width: 100 })" >
               <span v-text="scope.row.idol.name" />
             </a>
           </el-table-column>
@@ -132,10 +132,14 @@
           >
             <template slot-scope="scope">
               <div>{{ scope.row.idol.star_count }}</div>
-              <el-tag v-if="scope.row.idol.is_locked" size="mini" type="danger"
-                >已停牌</el-tag
-              >
-              <el-tag v-else size="mini" type="success">挂牌中</el-tag>
+              <el-tag v-if="scope.row.idol.is_locked" size="mini"
+type="danger"
+>
+                已停牌
+              </el-tag>
+              <el-tag v-else size="mini" type="success">
+                挂牌中
+              </el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -150,21 +154,22 @@
           >
             <div slot-scope="scope" class="price">
               <div>￥{{ scope.row.product_price }}</div>
-              <el-tag :type="computePriceColor(scope.row)" size="mini">{{
-                computePriceText(scope.row)
-              }}</el-tag>
+              <el-tag :type="computePriceColor(scope.row)" size="mini">
+                {{ computePriceText(scope.row) }}
+              </el-tag>
             </div>
           </el-table-column>
           <el-table-column label="出售股数">
             <template slot-scope="scope">
               <div>{{ scope.row.product_count }}</div>
               <el-tag size="mini" type="info"
-                >占比:{{
+>
+                占比:{{
                   parseFloat(
                     (scope.row.product_count / scope.row.idol.star_count) * 100
                   ).toFixed(2)
-                }}%</el-tag
-              >
+                }}%
+              </el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -188,7 +193,7 @@
               target="_blank"
               class="user"
             >
-              <img :src="$resize(scope.row.user.avatar, { width: 60 })" />
+              <img :src="$resize(scope.row.user.avatar, { width: 60 })" >
               <span class="oneline" v-text="scope.row.user.nickname" />
             </a>
           </el-table-column>
@@ -201,11 +206,17 @@
                 round
                 plain
                 @click="deleteMyDeal(scope.row)"
-                >终止交易</el-button
               >
-              <el-button v-else size="small" round @click="makeADeal(scope.row)"
-                >马上交易</el-button
+                终止交易
+              </el-button>
+              <el-button
+                v-else
+                size="small"
+                round
+                @click="makeADeal(scope.row)"
               >
+                马上交易
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -360,7 +371,7 @@ export default {
         return
       }
       let minBuyCount = parseFloat(0.01 / deal.product_price).toFixed(2)
-      let tail = deal.product_price.toString().split('.')[1]
+      const tail = deal.product_price.toString().split('.')[1]
       if (tail) {
         if (tail.length === 1) {
           minBuyCount = Math.max(minBuyCount, 0.1)

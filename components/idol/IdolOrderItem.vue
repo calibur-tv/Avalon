@@ -20,7 +20,7 @@
 <template>
   <li class="idol-order-item">
     <a :href="$alias.user(item.buyer.zone)" target="_blank">
-      <img :src="$resize(item.buyer.avatar, { width: 80 })" />
+      <img :src="$resize(item.buyer.avatar, { width: 80 })" >
       <span v-text="item.buyer.nickname" />
     </a>
     <span>采购了</span>

@@ -15,8 +15,8 @@
 </template>
 
 <script>
-const prefixCls = 'ivu-affix'
 import utils from '~/components/common/ImageLazyLoad/utils'
+const prefixCls = 'ivu-affix'
 
 function getScroll(target, top) {
   const prop = top ? 'pageYOffset' : 'pageXOffset'

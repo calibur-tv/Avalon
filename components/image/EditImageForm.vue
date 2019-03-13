@@ -12,8 +12,9 @@
         type="primary"
         size="small"
         @click="submit"
-        >确认编辑</el-button
       >
+        确认编辑
+      </el-button>
     </el-form-item>
   </el-form>
 </template>

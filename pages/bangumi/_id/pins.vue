@@ -7,9 +7,11 @@
         :list="flow"
       />
       <no-content slot="nothing">
-        <el-button :round="true" type="primary" @click="handleImageClick"
-          >上传《{{ bangumi.name }}》的第一张美图</el-button
-        >
+        <el-button :round="true" type="primary"
+@click="handleImageClick"
+>
+          上传《{{ bangumi.name }}》的第一张美图
+        </el-button>
       </no-content>
     </flow-list>
   </div>

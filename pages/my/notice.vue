@@ -70,7 +70,7 @@
         <v-time v-model="item.created_at" />
       </header>
       <main @click="openNotice(item)">
-        <img :src="$resize(item.banner, { width: 200 })" class="banner" />
+        <img :src="$resize(item.banner, { width: 200 })" class="banner" >
         <div class="title" v-text="item.title" />
       </main>
     </li>

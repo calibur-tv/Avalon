@@ -79,9 +79,11 @@
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="submitting" type="primary" @click="submit"
-          >提交问题</el-button
-        >
+        <el-button :loading="submitting" type="primary"
+@click="submit"
+>
+          提交问题
+        </el-button>
       </el-form-item>
     </el-form>
   </v-dialog>

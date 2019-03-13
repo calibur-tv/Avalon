@@ -232,19 +232,27 @@
       <header>
         <div class="title-wrap">
           <div class="control">
-            <el-button size="mini" plain @click="switchOnlyMaster">{{
-              onlySeeMaster ? '取消只看楼主' : '只看楼主'
-            }}</el-button>
-            <el-button size="mini" plain @click="scrollToReplyForm"
-              >回复</el-button
-            >
-            <el-button v-if="isMaster" size="mini" plain @click="deletePost"
-              >删除</el-button
-            >
+            <el-button size="mini" plain @click="switchOnlyMaster">
+              {{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}
+            </el-button>
+            <el-button size="mini" plain
+@click="scrollToReplyForm"
+>
+              回复
+            </el-button>
+            <el-button v-if="isMaster" size="mini"
+plain @click="deletePost"
+>
+              删除
+            </el-button>
             <span class="floor">共{{ total }}条</span>
           </div>
-          <div v-if="post.is_nice" class="nice_badge">精</div>
-          <div v-if="post.is_creator" class="creator_badge">原创</div>
+          <div v-if="post.is_nice" class="nice_badge">
+            精
+          </div>
+          <div v-if="post.is_creator" class="creator_badge">
+            原创
+          </div>
           <h1 class="oneline" v-text="post.title" />
         </div>
       </header>
@@ -324,8 +332,9 @@
                   :is-creator="post.is_creator"
                   type="post"
                   title="帖子违规举报"
-                  >举报</report-dialog
                 >
+                  举报
+                </report-dialog>
                 <v-share :desc="post.desc" type="panel" />
               </div>
             </div>

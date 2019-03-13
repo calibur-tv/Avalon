@@ -177,12 +177,16 @@
           />
           <span v-if="comment.like_count" v-text="comment.like_count" />
         </button>
-        <button class="reply-btn" @click="replyComment">回复</button>
+        <button class="reply-btn" @click="replyComment">
+          回复
+        </button>
         <button v-if="canDelete" class="delete-btn" @click="deleteComment">
           <i class="iconfont icon-shanchu" />
         </button>
         <report-dialog v-else :id="comment.id" :type="type + '_comment'">
-          <button class="reply-btn main-comment-report-btn">举报</button>
+          <button class="reply-btn main-comment-report-btn">
+            举报
+          </button>
         </report-dialog>
       </div>
       <comment-reply-form

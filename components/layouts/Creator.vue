@@ -153,7 +153,7 @@ export default {
       }
     }
     let css = ''
-    let directionArc =
+    const directionArc =
       (Math.PI *
         (3 +
           Math.max(

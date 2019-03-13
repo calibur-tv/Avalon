@@ -125,7 +125,7 @@
         </li>
       </ul>
     </flow-list>
-    <br />
+    <br >
     <div class="badge">
       <span>成交次数：{{ meta.deal_count }}</span>
       <em />

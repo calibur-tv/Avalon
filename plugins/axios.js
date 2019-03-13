@@ -27,11 +27,9 @@ export default ({ $axios, app }) => {
         params: method === 'GET' ? config.params : config.data,
         method
       })
-    } else {
-      if (isDev) {
-        console.log(method, config.url)
-        config.params && console.log('params', config.params)
-      }
+    } else if (isDev) {
+      console.log(method, config.url)
+      config.params && console.log('params', config.params)
     }
   })
 

@@ -58,7 +58,9 @@
   <div id="about-thanks">
     <v-header type="pure" />
     <v-layout>
-      <h3 class="sub-title">logo</h3>
+      <h3 class="sub-title">
+        logo
+      </h3>
       <div class="panel" style="height: 130px">
         <el-tooltip effect="dark" content="团子 ♪" placement="top">
           <a
@@ -228,7 +230,9 @@
         <strong>图标作者：</strong>
         众漫友
       </p>
-      <h3 class="sub-title">域名</h3>
+      <h3 class="sub-title">
+        域名
+      </h3>
       <div class="panel" style="margin-left: -13px;height: 70px">
         <a
           :href="
@@ -292,7 +296,9 @@
           >艾拉</a
         >
       </p>
-      <h3 class="sub-title">站娘</h3>
+      <h3 class="sub-title">
+        站娘
+      </h3>
       <div class="panel">
         <el-tooltip effect="dark" content="c.c" placement="top">
           <a
@@ -333,7 +339,9 @@
           >JPZY</a
         >
       </p>
-      <h3 class="sub-title">宣传片</h3>
+      <h3 class="sub-title">
+        宣传片
+      </h3>
       <div class="panel">
         <a
           :style="{
@@ -391,8 +399,9 @@
         >
       </p>
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

@@ -132,12 +132,16 @@
         <el-tooltip :content="comment.created_at" placement="top" effect="dark">
           <v-time v-model="comment.created_at" />
         </el-tooltip>
-        <button class="reply-btn" @click="openReplyForm">回复</button>
+        <button class="reply-btn" @click="openReplyForm">
+          回复
+        </button>
         <button v-if="canDelete" @click="deleteComment">
           <i class="iconfont icon-shanchu" />
         </button>
         <report-dialog v-else :id="comment.id" :type="type + '_reply'">
-          <button class="reply-btn">举报</button>
+          <button class="reply-btn">
+            举报
+          </button>
         </report-dialog>
       </div>
       <comment-reply-form

@@ -50,12 +50,16 @@
           >，处理时间：{{ order.updated_at }}</span
         >
         <template v-if="order.result === 0">
-          <el-button size="mini" type="primary" @click="resolveOrder(order.id)"
-            >同意</el-button
-          >
-          <el-button size="mini" type="danger" @click="rejectOrder(order.id)"
-            >拒绝</el-button
-          >
+          <el-button size="mini" type="primary"
+@click="resolveOrder(order.id)"
+>
+            同意
+          </el-button>
+          <el-button size="mini" type="danger"
+@click="rejectOrder(order.id)"
+>
+            拒绝
+          </el-button>
         </template>
         <el-tag v-else :type="computeTagColor(order.result)" size="mini">
           {{ computedOrderResult(order.result) }}

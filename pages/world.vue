@@ -138,10 +138,26 @@
     <v-layout :left="false">
       <template slot="aside">
         <ul class="side-bar">
-          <li><nuxt-link to="/world/post">帖子</nuxt-link></li>
-          <li><nuxt-link to="/world/pins">相册</nuxt-link></li>
-          <li><nuxt-link to="/world/review">漫评</nuxt-link></li>
-          <li><nuxt-link to="/world/qaq">问答</nuxt-link></li>
+          <li>
+            <nuxt-link to="/world/post">
+              帖子
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/world/pins">
+              相册
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/world/review">
+              漫评
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/world/qaq">
+              问答
+            </nuxt-link>
+          </li>
         </ul>
         <user-recommended :users="recommendedUsers" />
       </template>

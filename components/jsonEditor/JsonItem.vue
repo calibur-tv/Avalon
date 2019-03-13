@@ -191,7 +191,9 @@
       <div class="content">
         <template v-if="item.type === 'txt'">
           <div v-if="item.text" class="text line-4" v-html="item.text" />
-          <div v-else class="text">点击添加文字</div>
+          <div v-else class="text">
+            点击添加文字
+          </div>
         </template>
         <template v-else-if="item.type === 'img'">
           <div v-if="item.text" class="text line-4" v-html="item.text" />
@@ -221,15 +223,21 @@
               </li>
             </ul>
           </div>
-          <div v-else class="text">点击添加列表</div>
+          <div v-else class="text">
+            点击添加列表
+          </div>
         </template>
         <template v-else-if="item.type === 'use'">
           <blockquote v-if="item.text" class="text line-4" v-html="item.text" />
-          <div v-else class="text">点击添加引用内容</div>
+          <div v-else class="text">
+            点击添加引用内容
+          </div>
         </template>
         <template v-if="item.type === 'title'">
           <div v-if="item.text" class="text line-4" v-html="item.text" />
-          <div v-else class="text">点击添加标题</div>
+          <div v-else class="text">
+            点击添加标题
+          </div>
         </template>
       </div>
     </div>

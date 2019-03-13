@@ -95,7 +95,7 @@ export default {
       this.go(i.name)
     },
     go(x) {
-      const name = x ? x : 'homepage'
+      const name = x || 'homepage'
       this.$router.push({
         name,
         params: this.$route.params

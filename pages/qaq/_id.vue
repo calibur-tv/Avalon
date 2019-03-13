@@ -59,8 +59,9 @@
         </ul>
       </flow-list>
       <template slot="aside"
-        >&nbsp;</template
-      >
+>
+        &nbsp;
+      </template>
     </v-layout>
   </div>
 </template>

@@ -173,7 +173,9 @@
     <v-header />
     <v-layout>
       <div v-if="role.has_market_price_draft">
-        <p class="sub-title">重要提醒</p>
+        <p class="sub-title">
+          重要提醒
+        </p>
         <el-alert
           v-if="role.market_price_draft_voted"
           :closable="false"
@@ -190,12 +192,14 @@
           type="warning"
           description="股东大会召开中，请全体股东到本页面「大事记」一栏进行会议投票"
         />
-        <br />
+        <br >
       </div>
       <div class="intro clearfix">
-        <p class="sub-title">{{ role.name }}</p>
+        <p class="sub-title">
+          {{ role.name }}
+        </p>
         <div class="avatar-wrap">
-          <img :src="$resize(role.avatar, { width: 360 })" class="avatar" />
+          <img :src="$resize(role.avatar, { width: 360 })" class="avatar" >
           <star-idol-btn
             :id="id"
             :price="role.stock_price"
@@ -216,45 +220,57 @@
         <div class="info">
           <p v-if="collapsed" class="summary collapsed">
             <strong>简介：</strong>{{ role.intro.substr(0, 30) }}
-            <button @click="collapsed = false">全文</button>
+            <button @click="collapsed = false">
+              全文
+            </button>
           </p>
           <div v-else class="summary">
             <strong>简介：</strong>
             <p v-html="computedHtmlIntro" />
-            <button @click="collapsed = true">收起</button>
+            <button @click="collapsed = true">
+              收起
+            </button>
           </div>
           <strong>股市行情：</strong>
           <idol-stock-chart :idol="role" />
         </div>
       </div>
       <div v-if="role.boss" class="lover">
-        <p class="sub-title">大股东</p>
+        <p class="sub-title">
+          大股东
+        </p>
         <a :href="$alias.user(role.boss.zone)" class="user" target="_blank">
           <div class="avatar">
-            <img :src="$resize(role.boss.avatar, { width: 80 })" />
+            <img :src="$resize(role.boss.avatar, { width: 80 })" >
           </div>
           <span v-text="role.boss.nickname" />
         </a>
         <span>：{{ role.lover_words || 'TA还什么都没说！' }}</span>
       </div>
       <div v-if="role.manager" class="lover">
-        <p class="sub-title">经纪人</p>
+        <p class="sub-title">
+          经纪人
+        </p>
         <a :href="$alias.user(role.manager.zone)" class="user" target="_blank">
           <div class="avatar">
-            <img :src="$resize(role.manager.avatar, { width: 80 })" />
+            <img :src="$resize(role.manager.avatar, { width: 80 })" >
           </div>
           <span v-text="role.manager.nickname" />
         </a>
       </div>
       <div v-if="role.company_state" class="lover">
-        <p class="sub-title">可支配资产</p>
+        <p class="sub-title">
+          可支配资产
+        </p>
         <span>￥{{ computedIdolMoney }}</span>
       </div>
       <div>
-        <p class="sub-title">应援群</p>
+        <p class="sub-title">
+          应援群
+        </p>
         <div class="coin">
           <p><strong>QQ群号：</strong>{{ role.qq_group || '106402736' }}</p>
-          <br />
+          <br >
         </div>
       </div>
       <tab-container
@@ -310,7 +326,9 @@
       </tab-container>
       <template slot="aside">
         <div class="invite-code">
-          <h2 class="sub-title">邀请链接</h2>
+          <h2 class="sub-title">
+            邀请链接
+          </h2>
           <button
             v-clipboard="share_data.link"
             @success="$toast.success('复制成功~快去发送给好友吧')"
@@ -320,7 +338,9 @@
           <p>使用你分享的链接注册，你们都能获得团子奖励</p>
         </div>
         <div class="bangumi">
-          <p class="sub-title">所属番剧</p>
+          <p class="sub-title">
+            所属番剧
+          </p>
           <bangumi-panel
             :id="bangumi.id"
             :name="bangumi.name"

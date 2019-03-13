@@ -214,7 +214,9 @@
       />
     </template>
     <no-content v-else-if="cartoons.noMore">
-      <el-button type="primary" round @click="openFeedback">求漫画</el-button>
+      <el-button type="primary" round @click="openFeedback">
+        求漫画
+      </el-button>
     </no-content>
   </div>
 </template>
