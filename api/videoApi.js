@@ -21,3 +21,10 @@ export const createVideo = (ctx, form) => {
 export const updateVideo = (ctx, id, form) => {
   return ctx.$axios.$post(`video/${id}/update`, form)
 }
+
+export const fetchRemoteVideo = (ctx, { id, src }) => {
+  return ctx.$axios.$post('video/fetch', {
+    id,
+    src
+  })
+}

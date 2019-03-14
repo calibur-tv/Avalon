@@ -1,5 +1,9 @@
 <style lang="scss">
 .edit-video-form {
+  .dialog-header {
+    margin-bottom: 20px;
+  }
+
   .preview-poster {
     height: 100px;
     width: 300px;
@@ -15,92 +19,123 @@
 
 <template>
   <div class="edit-video-form">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rule"
-      :disabled="submitting"
-      label-width="45px"
-    >
-      <el-form-item label="名字" prop="name">
-        <el-input
-          v-model="form.name"
-          placeholder="填写这一话的名字"
-          style="width:450px"
-        />
-      </el-form-item>
-      <el-form-item label="集数" prop="episode">
-        <el-input-number v-model="form.episode" :min="minPart" :step="0.5" />
-      </el-form-item>
-      <el-form-item
-        v-if="!videoId && season.length > 1"
-        label="季度"
-        prop="season_id"
+    <div class="dialog-header">
+      <el-radio-group
+        v-model="selected"
+        size="mini"
       >
-        <el-select v-model="form.season_id" placeholder="请选择季度">
-          <el-option
-            v-for="item in season"
-            :key="item.id"
-            :value="item.id"
-            :label="item.name"
+        <el-radio-button label="百度云" />
+        <el-radio-button label="视频源" />
+      </el-radio-group>
+    </div>
+    <template v-if="selected === '百度云'">
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rule"
+        :disabled="submitting"
+        label-width="45px"
+      >
+        <el-form-item label="名字" prop="name">
+          <el-input
+            v-model="form.name"
+            placeholder="填写这一话的名字"
+            style="width:450px"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="封面" prop="poster">
-        <el-upload
-          ref="upload"
-          :data="uploadHeaders"
-          :on-error="handleImageUploadError"
-          :on-success="handleAlbumUploadSuccess"
-          :before-upload="beforePosterUpload"
-          :on-remove="handlePosterRemove"
-          :action="imageUploadAction"
-          :accept="imageUploadAccept"
+        </el-form-item>
+        <el-form-item label="集数" prop="episode">
+          <el-input-number v-model="form.episode" :min="minPart" :step="0.5" />
+        </el-form-item>
+        <el-form-item
+          v-if="!videoId && season.length > 1"
+          label="季度"
+          prop="season_id"
         >
-          <el-button :loading="submitting" size="small" round>
-            上传封面图
+          <el-select v-model="form.season_id" placeholder="请选择季度">
+            <el-option
+              v-for="item in season"
+              :key="item.id"
+              :value="item.id"
+              :label="item.name"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="封面" prop="poster">
+          <el-upload
+            ref="upload"
+            :data="uploadHeaders"
+            :on-error="handleImageUploadError"
+            :on-success="handleAlbumUploadSuccess"
+            :before-upload="beforePosterUpload"
+            :on-remove="handlePosterRemove"
+            :action="imageUploadAction"
+            :accept="imageUploadAccept"
+          >
+            <el-button :loading="submitting" size="small" round>
+              上传封面图
+            </el-button>
+          </el-upload>
+          <div
+            v-if="form.poster"
+            :style="{
+              backgroundImage: `url(${$resize(form.poster, {
+                width: 400,
+                mode: 2
+              })})`
+            }"
+            class="preview-poster"
+          />
+        </el-form-item>
+        <el-form-item label="链接" prop="baidu_cloud_src">
+          <el-input
+            v-model="form.baidu_cloud_src"
+            placeholder="填写百度云视频链接"
+          />
+        </el-form-item>
+        <el-form-item label="密码" prop="baidu_cloud_pwd">
+          <el-input
+            v-model="form.baidu_cloud_pwd"
+            placeholder="填写百度云视频密码，最长6位，可空"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            :loading="submitting"
+            type="primary"
+            size="small"
+            @click="submit"
+          >
+            确认提交
           </el-button>
-        </el-upload>
-        <div
-          v-if="form.poster"
-          :style="{
-            backgroundImage: `url(${$resize(form.poster, {
-              width: 400,
-              mode: 2
-            })})`
-          }"
-          class="preview-poster"
-        />
-      </el-form-item>
-      <el-form-item label="链接" prop="baidu_cloud_src">
-        <el-input
-          v-model="form.baidu_cloud_src"
-          placeholder="填写百度云视频链接"
-        />
-      </el-form-item>
-      <el-form-item label="密码" prop="baidu_cloud_pwd">
-        <el-input
-          v-model="form.baidu_cloud_pwd"
-          placeholder="填写百度云视频密码，最长6位，可空"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          :loading="submitting"
-          type="primary"
-          size="small"
-          @click="submit"
-        >
-          确认提交
-        </el-button>
-      </el-form-item>
-    </el-form>
+        </el-form-item>
+      </el-form>
+    </template>
+    <template v-if="selected === '视频源'">
+      <el-form label-width="45px">
+        <el-form-item label="链接">
+          <el-input
+            v-model.trim="remote_src"
+            placeholder="请填写视频链接（不是页面链接）"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            :loading="submitting"
+            type="primary"
+            size="small"
+            @click="fetchVideo"
+          >
+            确认提交
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </template>
   </div>
 </template>
 
 <script>
 import uploadMixin from '~/mixins/upload'
-import { createVideo, updateVideo } from '~/api/videoApi'
+import { createVideo, updateVideo, fetchRemoteVideo } from '~/api/videoApi'
 
 export default {
   name: 'EditVideoForm',
@@ -172,6 +207,8 @@ export default {
       callback()
     }
     return {
+      selected: '百度云',
+      remote_src: '',
       submitting: false,
       form: {
         season_id: this.seasonId
@@ -227,8 +264,7 @@ export default {
               .then(() => {
                 window.location.reload()
               })
-              .catch(err => {
-                this.$toast.error(err)
+              .catch(() => {
                 this.submitting = false
               })
           } else {
@@ -273,6 +309,27 @@ export default {
     },
     handlePosterRemove() {
       this.form.poster = null
+    },
+    async fetchVideo() {
+      if (!/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(this.remote_src)) {
+        return this.$toast.error('请输入合法链接')
+      }
+      if (this.submitting) {
+        return
+      }
+      this.submitting = true
+      try {
+        await fetchRemoteVideo(this, {
+          id: this.videoId,
+          src: this.remote_src
+        })
+        this.$toast.success('视频正在抓取中，请勿重复操作')
+          .then(() => {
+            window.location.reload()
+          })
+      } catch (e) {} finally {
+        this.submitting = false
+      }
     }
   }
 }
