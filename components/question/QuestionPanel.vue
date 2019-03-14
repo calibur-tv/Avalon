@@ -213,9 +213,7 @@
             type="button"
           />
           <report-dialog :id="id" type="question">
-            <el-button type="text" size="medium"
-                       icon="el-icon-phone"
-            >
+            <el-button type="text" size="medium" icon="el-icon-phone">
               举报
             </el-button>
           </report-dialog>

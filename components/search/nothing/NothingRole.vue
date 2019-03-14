@@ -1,9 +1,7 @@
 <template>
   <div class="search-nothing-role">
     <no-content>
-      <el-button type="primary" round
-                 @click="openFeedback"
-      >
+      <el-button type="primary" round @click="openFeedback">
         没有找到你的偶像？
       </el-button>
     </no-content>

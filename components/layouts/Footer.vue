@@ -155,10 +155,10 @@
         <li class="card-item">
           <p>免责声明</p>
           <div>
-            <span>本网站不提供任何视频点播服务</span>
+            <span>本网站不提供任何视频点播和漫画阅览服务</span>
           </div>
           <div>
-            <span>网站视频为用户自发上传的外链地址</span>
+            <span>网站内容都是由用户自行发布编辑，与本网站无关</span>
           </div>
           <div>
             <span>如果您的合法权益被侵犯，请联系我们</span>

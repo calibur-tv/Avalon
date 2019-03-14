@@ -113,9 +113,7 @@
           </li>
         </ul>
         <no-content v-else>
-          <el-button type="primary" round
-                     @click="openFeedbackForResource"
-          >
+          <el-button type="primary" round @click="openFeedbackForResource">
             求资源
           </el-button>
         </no-content>

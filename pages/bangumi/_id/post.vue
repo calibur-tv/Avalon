@@ -10,9 +10,7 @@
         />
       </ul>
       <no-content slot="nothing">
-        <el-button :round="true" type="primary"
-                   @click="handlePostClick"
-        >
+        <el-button :round="true" type="primary" @click="handlePostClick">
           发表《{{ bangumi.name }}》的第一个帖子
         </el-button>
       </no-content>

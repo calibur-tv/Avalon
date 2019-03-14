@@ -27,9 +27,7 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="primary"
-                     @click="setNice"
-          >
+          <el-button :loading="loading" type="primary" @click="setNice">
             确认
           </el-button>
         </el-col>
@@ -46,9 +44,7 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="danger"
-                     @click="removeNice"
-          >
+          <el-button :loading="loading" type="danger" @click="removeNice">
             确认
           </el-button>
         </el-col>
@@ -65,9 +61,7 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="primary"
-                     @click="setTop"
-          >
+          <el-button :loading="loading" type="primary" @click="setTop">
             确认
           </el-button>
         </el-col>
@@ -84,9 +78,7 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="danger"
-                     @click="removeTop"
-          >
+          <el-button :loading="loading" type="danger" @click="removeTop">
             确认
           </el-button>
         </el-col>

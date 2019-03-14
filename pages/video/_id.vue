@@ -277,9 +277,7 @@
           资源报错
         </el-button>
         <template v-if="is_manager">
-          <el-button size="medium" round
-                     @click="openEditVideo = true"
-          >
+          <el-button size="medium" round @click="openEditVideo = true">
             编辑视频
           </el-button>
           <v-dialog v-model="openEditVideo" :footer="false" title="编辑视频">

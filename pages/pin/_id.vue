@@ -106,8 +106,10 @@
       font-size: 14px;
       color: #8590a6;
 
+      .email,
       .report-btn {
         float: right;
+        margin-left: 15px;
       }
     }
 
@@ -278,8 +280,9 @@
           </user-card>
           &nbsp;·&nbsp;
           <span> 发布于：<v-time v-model="info.created_at" /> </span>
+          <a v-if="info.is_cartoon" class="email" href="mailto:414927352@qq.com">侵权申诉</a>
           <report-dialog :id="id" type="image">
-            举报
+            内容举报
           </report-dialog>
         </div>
         <v-parts

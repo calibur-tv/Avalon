@@ -48,14 +48,10 @@
         <span>创建时间：{{ order.created_at }}</span>
         <span v-if="order.result === 1 || order.result === 2">，处理时间：{{ order.updated_at }}</span>
         <template v-if="order.result === 0">
-          <el-button size="mini" type="primary"
-                     @click="resolveOrder(order.id)"
-          >
+          <el-button size="mini" type="primary" @click="resolveOrder(order.id)">
             同意
           </el-button>
-          <el-button size="mini" type="danger"
-                     @click="rejectOrder(order.id)"
-          >
+          <el-button size="mini" type="danger" @click="rejectOrder(order.id)">
             拒绝
           </el-button>
         </template>

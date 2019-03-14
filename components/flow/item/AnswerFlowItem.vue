@@ -166,9 +166,7 @@
         </el-button>
       </template>
       <report-dialog :id="item.id" type="answer">
-        <el-button type="text" size="medium"
-                   icon="el-icon-phone"
-        >
+        <el-button type="text" size="medium" icon="el-icon-phone">
           举报
         </el-button>
       </report-dialog>

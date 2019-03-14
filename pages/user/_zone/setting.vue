@@ -168,9 +168,7 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="submitting" type="primary"
-                   @click="submit"
-        >
+        <el-button :loading="submitting" type="primary" @click="submit">
           提交
         </el-button>
       </el-form-item>

@@ -130,9 +130,7 @@
           >
             <template slot-scope="scope">
               <div>{{ scope.row.idol.star_count }}</div>
-              <el-tag v-if="scope.row.idol.is_locked" size="mini"
-                      type="danger"
-              >
+              <el-tag v-if="scope.row.idol.is_locked" size="mini" type="danger">
                 已停牌
               </el-tag>
               <el-tag v-else size="mini" type="success">

@@ -235,14 +235,10 @@
             <el-button size="mini" plain @click="switchOnlyMaster">
               {{ onlySeeMaster ? '取消只看楼主' : '只看楼主' }}
             </el-button>
-            <el-button size="mini" plain
-                       @click="scrollToReplyForm"
-            >
+            <el-button size="mini" plain @click="scrollToReplyForm">
               回复
             </el-button>
-            <el-button v-if="isMaster" size="mini"
-                       plain @click="deletePost"
-            >
+            <el-button v-if="isMaster" size="mini" plain @click="deletePost">
               删除
             </el-button>
             <span class="floor">共{{ total }}条</span>
