@@ -135,3 +135,9 @@ export const overOrder = (ctx, { order_id }) => {
 export const getMineProductOrderCount = ctx => {
   return ctx.$axios.$get('cartoon_role/get_mine_product_orders')
 }
+
+export const getIdolChart = (ctx, { idol_id, days }) => {
+  return ctx.$axios.$get('cartoon_role/get_idol_days_chart', {
+    params: { idol_id, days }
+  })
+}

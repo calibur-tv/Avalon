@@ -44,6 +44,29 @@
   .chart-wrap {
     width: 300px;
     float: right;
+
+    .control {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+      padding-left: 13px;
+      padding-right: 13px;
+
+      button {
+        flex-grow: 1;
+        text-align: center;
+        color: $color-text-normal;
+        background-color: $color-gray-light;
+        height: 32px;
+
+        &.active {
+          color: $color-text-deep;
+          background-color: transparent;
+        }
+      }
+    }
   }
 }
 </style>
@@ -52,6 +75,26 @@
   <div id="idol-stock-chart">
     <div class="chart-wrap">
       <canvas id="chart-node" />
+      <div class="control">
+        <button
+          :class="{ 'active': index === 0 }"
+          @click="switchChart(0)"
+        >
+          24 小时
+        </button>
+        <button
+          :class="{ 'active': index === 1 }"
+          @click="switchChart(1)"
+        >
+          近 7 天
+        </button>
+        <button
+          :class="{ 'active': index === 2 }"
+          @click="switchChart(2)"
+        >
+          近 30 天
+        </button>
+      </div>
     </div>
     <div class="table-wrap">
       <table class="table">
@@ -112,6 +155,7 @@
 
 <script>
 import F2 from '@antv/f2'
+import { getIdolChart } from '~/api/cartoonRoleApi'
 
 export default {
   name: 'IdolStockChart',
@@ -119,6 +163,17 @@ export default {
     idol: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      chart: null,
+      index: 0,
+      list: [
+        this.idol.chart,
+        [],
+        []
+      ]
     }
   },
   computed: {
@@ -145,20 +200,94 @@ export default {
     }
   },
   mounted() {
-    this.drawChart()
+    this.initF2Animation()
+    this.drawChart(this.list[this.index])
+    this.getIdolChartData(7, 1)
+    this.getIdolChartData(30, 2)
   },
   methods: {
-    drawChart() {
-      const chart = new F2.Chart({
-        id: 'chart-node',
-        pixelRatio: window.devicePixelRatio
+    initF2Animation() {
+      F2.Animate.registerAnimation('lineUpdate', function(updateShape, animateCfg) {
+        var cacheShape = updateShape.get('cacheShape'); // 该动画 shape 的前一个状态
+        var cacheAttrs = cacheShape.attrs; // 上一个 shape 属性
+        var geomType = cacheShape.geomType; // 图形类型
+
+        var oldPoints = cacheAttrs.points; // 上一个状态的关键点
+        var newPoints = updateShape.attr('points'); // 当前 shape 的关键点
+
+        var oldLength = oldPoints.length;
+        var newLength = newPoints.length;
+        var deltaLength = geomType === 'area' ? (oldLength - newLength) / 2 : oldLength - newLength;
+
+        if (deltaLength > 0) {
+          var firstPoint = newPoints[0];
+          var lastPoint = newPoints[newPoints.length - 1];
+
+          for (var i = 0; i < deltaLength; i++) {
+            newPoints.splice(0, 0, firstPoint);
+          }
+
+          if (geomType === 'area') {
+            for (var j = 0; j < deltaLength; j++) {
+              newPoints.push(lastPoint);
+            }
+          }
+        } else {
+          deltaLength = Math.abs(deltaLength);
+          var firstPoint1 = oldPoints[0];
+          var lastPoint1 = oldPoints[oldPoints.length - 1];
+
+          for (var k = 0; k < deltaLength; k++) {
+            oldPoints.splice(0, 0, firstPoint1);
+          }
+
+          if (geomType === 'area') {
+            for (var p = 0; p < deltaLength; p++) {
+              oldPoints.push(lastPoint1);
+            }
+          }
+
+          cacheAttrs.points = oldPoints;
+        }
+        updateShape.attr(cacheAttrs);
+        updateShape.animate().to({
+          attrs: {
+            points: newPoints
+          },
+          duration: 800,
+          easing: animateCfg.easing
+        });
+      });
+    },
+    getIdolChartData(days, index) {
+      getIdolChart(this, {
+        days,
+        idol_id: this.idol.id
       })
-      const data = this.idol.chart.map(_ => {
+        .then(data => {
+          this.list[index] = data
+        })
+        .catch(() => {})
+    },
+    switchChart(index) {
+      this.index = index
+      this.chart.changeData(this.list[index])
+    },
+    drawChart(resource) {
+      const data = resource.map(_ => {
         return {
           time: +_.time * 1000,
           value: parseFloat(_.value).toFixed(2)
         }
       })
+      if (!data.length) {
+        return
+      }
+      const chart = new F2.Chart({
+        id: 'chart-node',
+        pixelRatio: window.devicePixelRatio
+      })
+      this.chart = chart
       chart.source(data, {
         time: {
           type: 'timeCat',
