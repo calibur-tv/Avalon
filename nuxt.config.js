@@ -3,11 +3,11 @@ const isDev = buildEnv === 'development'
 const path = require('path')
 const resolve = file => path.resolve(__dirname, file)
 const CompressionPlugin = require('compression-webpack-plugin')
-// const BrotliPlugin = require('brotli-webpack-plugin')
+const BrotliPlugin = require('brotli-webpack-plugin')
+const SentryPlugin = require('./assets/js/webpack.sentry.plugin.js')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const qiniu = require('./qiniu')
 const injectScript = require('./.script')
-const SentryPlugin = require('./assets/js/webpack.sentry.plugin.js')
 const releaseTag = new Date().toLocaleString().replace(/( |:)/g, '-')
 const baseUrl = require('./.env').baseUrl
 
@@ -42,13 +42,13 @@ module.exports = {
       id: 'calibur-tv'
     },
     meta: [
-      { charset: 'utf-8' },
+      {charset: 'utf-8'},
       {
         name: 'viewport',
         content: 'width=device-width,initial-scale=1,maximum-scale=1'
       },
-      { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge,chrome=1' },
-      { name: 'force-rendering', content: 'webkit' },
+      {'http-equiv': 'X-UA-Compatible', content: 'IE=edge,chrome=1'},
+      {name: 'force-rendering', content: 'webkit'},
       {
         hid: 'description',
         name: 'description',
@@ -85,7 +85,7 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#00a1d6' },
+  loading: {color: '#00a1d6'},
 
   /*
    ** Global CSS
@@ -100,8 +100,8 @@ module.exports = {
     '~/plugins/element-ui',
     '~/plugins/global-prototype',
     '~/plugins/global-component',
-    { src: '~/plugins/client-prototype', ssr: false },
-    { src: '~/plugins/client-namespace', ssr: false }
+    {src: '~/plugins/client-prototype', ssr: false},
+    {src: '~/plugins/client-namespace', ssr: false}
   ],
 
   /*
@@ -144,13 +144,13 @@ module.exports = {
         component: resolve('pages/error/404.vue')
       })
     },
-    scrollBehavior: function(to, from, savedPosition) {
+    scrollBehavior: function (to, from, savedPosition) {
       if (savedPosition) {
         return savedPosition
       }
-      let position = { x: 0, y: 0 }
+      let position = {x: 0, y: 0}
       if (to.hash) {
-        position = { selector: to.hash }
+        position = {selector: to.hash}
       }
       return position
     }
@@ -160,7 +160,7 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    extend(config, { isDev, isClient }) {
+    extend(config, {isDev, isClient}) {
       config.output.filename = '[name].[hash:8].js'
       config.output.chunkFilename = '[name].chunk.[chunkhash:8].js'
       // Run ESLint on save
@@ -178,32 +178,32 @@ module.exports = {
     },
     extractCSS: true,
     plugins: (() => {
-      const result = [new LodashModuleReplacementPlugin({ shorthands: true })]
+      const result = [new LodashModuleReplacementPlugin({shorthands: true})]
       return isDev
         ? result.concat([])
         : result.concat([
-            new SentryPlugin({
-              project: 'www',
-              include: /\.js(\.map)?$/,
-              organisation: 'calibur',
-              token:
-                '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
-              release: releaseTag,
-              suppressErrors: !isDev,
-              deleteAfterCompile: false,
-              filenameTransform: filename => {
-                return `~/www/${filename}`
-              }
-            }),
-            new CompressionPlugin({
-              test: /\.(js|css|html)$/
-            })
-            /*
-            new BrotliPlugin({
-              test: /\.(js|css|html)$/
-            })
-            */
-          ])
+          /*
+          new SentryPlugin({
+            project: 'www',
+            include: /\.js(\.map)?$/,
+            organisation: 'calibur',
+            token:
+              '5b02ddc4b7894347952d08e1f5563b9c2a845347bb234acf9fedd73210cbbd8b',
+            release: releaseTag,
+            suppressErrors: !isDev,
+            deleteAfterCompile: false,
+            filenameTransform: filename => {
+              return `~/www/${filename}`
+            }
+          }),
+          new CompressionPlugin({
+            test: /\.(js|css|html)$/
+          })
+          new BrotliPlugin({
+            test: /\.(js|css|html)$/
+          })
+          */
+        ])
     })(),
     loaders: {
       cssModules: {

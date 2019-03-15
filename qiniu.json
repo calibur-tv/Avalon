@@ -1,6 +1,6 @@
 {
   "src_dir"            :   "/Users/yuistack/Documents/calibur/Avalon/.nuxt/dist/client",
-  "bucket"             :   "clannader",
+  "bucket"             :   "file",
   "overwrite"          :   true,
   "rescan_local"       :   true,
   "skip_suffixes"      :   ".DS_Store,.map",
@@ -9,5 +9,5 @@
   "log_level"          :   "info",
   "log_stdout"         :   true,
   "file_type"          :   0,
-  "host"               :   "https://static.calibur.tv/"
+  "host"               :   "https://file.calibur.tv/"
 }

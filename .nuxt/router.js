@@ -70,13 +70,13 @@ const _459d21a5 = () => interopDefault(import('../pages/index.vue' /* webpackChu
 
 Vue.use(Router)
 
-const scrollBehavior = function(to, from, savedPosition) {
+const scrollBehavior = function (to, from, savedPosition) {
       if (savedPosition) {
         return savedPosition
       }
-      let position = { x: 0, y: 0 }
+      let position = {x: 0, y: 0}
       if (to.hash) {
-        position = { selector: to.hash }
+        position = {selector: to.hash}
       }
       return position
     }

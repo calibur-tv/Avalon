@@ -327,7 +327,7 @@ export default {
           .then(() => {
             window.location.reload()
           })
-      } catch (e) {} finally {
+      } catch (e) {
         this.submitting = false
       }
     }
