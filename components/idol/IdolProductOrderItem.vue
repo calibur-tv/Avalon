@@ -46,7 +46,9 @@
         <span>￥{{ order.amount }}的价格，</span>
         <span>{{ order.income_ratio }}%比例分成，</span>
         <span>创建时间：{{ order.created_at }}</span>
-        <span v-if="order.result === 1 || order.result === 2">，处理时间：{{ order.updated_at }}</span>
+        <span
+          v-if="order.result === 1 || order.result === 2"
+        >，处理时间：{{ order.updated_at }}</span>
         <template v-if="order.result === 0">
           <el-button size="mini" type="primary" @click="resolveOrder(order.id)">
             同意

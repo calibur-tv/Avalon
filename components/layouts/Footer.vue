@@ -164,7 +164,9 @@
             <span>如果您的合法权益被侵犯，请联系我们</span>
           </div>
           <div>
-            <span>举报邮箱：<a href="mailto:414927352@qq.com">414927352@qq.com</a></span>
+            <span>举报邮箱：<a
+              href="mailto:414927352@qq.com"
+            >414927352@qq.com</a></span>
           </div>
         </li>
         <li class="card-item">

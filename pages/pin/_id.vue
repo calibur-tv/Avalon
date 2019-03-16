@@ -218,7 +218,11 @@
             :href="$alias.bangumi(bangumi.id, 'cartoon')"
             target="_blank"
           >漫画</a>
-          <a v-else :href="$alias.bangumi(bangumi.id, 'pins')" target="_blank">相册</a>
+          <a
+            v-else
+            :href="$alias.bangumi(bangumi.id, 'pins')"
+            target="_blank"
+          >相册</a>
           {{ info.name }}
         </h1>
       </nav>
@@ -280,7 +284,11 @@
           </user-card>
           &nbsp;·&nbsp;
           <span> 发布于：<v-time v-model="info.created_at" /> </span>
-          <a v-if="info.is_cartoon" class="email" href="mailto:414927352@qq.com">侵权申诉</a>
+          <a
+            v-if="info.is_cartoon"
+            class="email"
+            href="mailto:414927352@qq.com"
+          >侵权申诉</a>
           <report-dialog :id="id" type="image">
             内容举报
           </report-dialog>
@@ -388,7 +396,7 @@ export default {
       return '相册'
     }
   },
-  async asyncData({ app, store, params, query, error }) {
+  asyncData({ app, store, params, query, error }) {
     const { id } = params
     const { hash, time } = query
     return getImageInfo(app, { id, hash, time })

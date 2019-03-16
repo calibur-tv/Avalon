@@ -20,10 +20,7 @@
 <template>
   <div class="edit-video-form">
     <div class="dialog-header">
-      <el-radio-group
-        v-model="selected"
-        size="mini"
-      >
+      <el-radio-group v-model="selected" size="mini">
         <el-radio-button label="百度云" />
         <el-radio-button label="视频源" />
       </el-radio-group>
@@ -311,7 +308,11 @@ export default {
       this.form.poster = null
     },
     async fetchVideo() {
-      if (!/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(this.remote_src)) {
+      if (
+        !/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(
+          this.remote_src
+        )
+      ) {
         return this.$toast.error('请输入合法链接')
       }
       if (this.submitting) {
@@ -323,10 +324,9 @@ export default {
           id: this.videoId,
           src: this.remote_src
         })
-        this.$toast.success('视频正在抓取中，请勿重复操作')
-          .then(() => {
-            window.location.reload()
-          })
+        this.$toast.success('视频正在抓取中，请勿重复操作').then(() => {
+          window.location.reload()
+        })
       } catch (e) {
         this.submitting = false
       }

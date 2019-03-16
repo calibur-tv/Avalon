@@ -198,44 +198,44 @@ export default {
         updateShape,
         animateCfg
       ) {
-        var cacheShape = updateShape.get('cacheShape') // 该动画 shape 的前一个状态
-        var cacheAttrs = cacheShape.attrs // 上一个 shape 属性
-        var geomType = cacheShape.geomType // 图形类型
+        const cacheShape = updateShape.get('cacheShape') // 该动画 shape 的前一个状态
+        const cacheAttrs = cacheShape.attrs // 上一个 shape 属性
+        const geomType = cacheShape.geomType // 图形类型
 
-        var oldPoints = cacheAttrs.points // 上一个状态的关键点
-        var newPoints = updateShape.attr('points') // 当前 shape 的关键点
+        const oldPoints = cacheAttrs.points // 上一个状态的关键点
+        const newPoints = updateShape.attr('points') // 当前 shape 的关键点
 
-        var oldLength = oldPoints.length
-        var newLength = newPoints.length
-        var deltaLength =
+        const oldLength = oldPoints.length
+        const newLength = newPoints.length
+        let deltaLength =
           geomType === 'area'
             ? (oldLength - newLength) / 2
             : oldLength - newLength
 
         if (deltaLength > 0) {
-          var firstPoint = newPoints[0]
-          var lastPoint = newPoints[newPoints.length - 1]
+          const firstPoint = newPoints[0]
+          const lastPoint = newPoints[newPoints.length - 1]
 
-          for (var i = 0; i < deltaLength; i++) {
+          for (let i = 0; i < deltaLength; i++) {
             newPoints.splice(0, 0, firstPoint)
           }
 
           if (geomType === 'area') {
-            for (var j = 0; j < deltaLength; j++) {
+            for (let j = 0; j < deltaLength; j++) {
               newPoints.push(lastPoint)
             }
           }
         } else {
           deltaLength = Math.abs(deltaLength)
-          var firstPoint1 = oldPoints[0]
-          var lastPoint1 = oldPoints[oldPoints.length - 1]
+          const firstPoint1 = oldPoints[0]
+          const lastPoint1 = oldPoints[oldPoints.length - 1]
 
-          for (var k = 0; k < deltaLength; k++) {
+          for (let k = 0; k < deltaLength; k++) {
             oldPoints.splice(0, 0, firstPoint1)
           }
 
           if (geomType === 'area') {
-            for (var p = 0; p < deltaLength; p++) {
+            for (let p = 0; p < deltaLength; p++) {
               oldPoints.push(lastPoint1)
             }
           }

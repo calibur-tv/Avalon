@@ -242,7 +242,7 @@ export default {
           this.submitting = true
           this.$captcha({
             ctx: this,
-            success: async ({ data }) => {
+            success: ({ data }) => {
               uploadSingleImage(
                 this,
                 Object.assign(

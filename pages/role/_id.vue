@@ -446,7 +446,7 @@ export default {
       return this.role.has_star !== '0.00'
     }
   },
-  async asyncData({ app, store, params, error }) {
+  asyncData({ app, store, params, error }) {
     const { id } = params
     return getCartoonRoleInfo(app, { id })
       .then(data => {

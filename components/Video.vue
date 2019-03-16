@@ -228,7 +228,9 @@ $tool-btn-width: 40px;
           v-clipboard="baiduCloudPwd"
           href="javascript:;"
           @success="$toast.success('密码已复制到剪贴板')"
-        >密码：{{ baiduCloudPwd }}</a>
+        >
+          密码：{{ baiduCloudPwd }}
+        </a>
         <a :href="source" target="_blank">点击跳转播放</a>
       </div>
       <div v-else-if="isFlv" class="not-play-screen">
@@ -256,8 +258,14 @@ $tool-btn-width: 40px;
           由于站内视频流量过大，站长资金难以维持，该视频需要你的等级至少
           {{ needMinLevel }} 才能播放
         </p>
-        <a href="https://www.calibur.tv/post/2282" target="_blank">&nbsp;&nbsp;为什么要限流？</a>
-        <a href="https://www.calibur.tv/post/2279" target="_blank">&nbsp;&nbsp;如何升级？</a>
+        <a
+          href="https://www.calibur.tv/post/2282"
+          target="_blank"
+        >&nbsp;&nbsp;为什么要限流？</a>
+        <a
+          href="https://www.calibur.tv/post/2279"
+          target="_blank"
+        >&nbsp;&nbsp;如何升级？</a>
       </div>
       <div
         v-else

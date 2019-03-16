@@ -83,6 +83,7 @@ $avatar-height: 36px;
         img {
           width: $logo-size;
           height: $logo-size;
+          border-radius: 10%;
         }
       }
 
@@ -462,7 +463,7 @@ $search-height: 32px;
             :class="$style.logo"
             to="/"
           >
-            <img :src="$resize('owner/logo-new/logo.png', { width: 80 })">
+            <img src="https://image.calibur.tv/owner/logo/icon-1024.png-share120jpg">
           </nuxt-link>
           <nuxt-link v-else :class="[$style.navLink, $style.first]" to="/">
             <span>首页</span>
@@ -644,8 +645,8 @@ export default {
           type === 'mask'
             ? this.$style.navMask
             : type === 'banner'
-            ? this.$style.navBanner
-            : this.$style.navPure
+              ? this.$style.navBanner
+              : this.$style.navPure
         )
         result.push(`nav-${type}`)
       }

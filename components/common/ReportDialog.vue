@@ -131,7 +131,7 @@ export default {
       }
       this.loading = true
       try {
-        report(this, {
+        await report(this, {
           id: this.id,
           message: content,
           type: this.selectedType,

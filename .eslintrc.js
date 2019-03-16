@@ -8,12 +8,12 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: [
-    'plugin:vue/recommended',
-    // 'plugin:prettier/recommended'
+    '@nuxtjs',
+    'plugin:nuxt/recommended',
+    'plugin:prettier/recommended'
   ],
   plugins: [
-    'vue',
-    // 'prettier'
+    'prettier'
   ],
   // add your custom rules here
   rules: {
@@ -23,7 +23,8 @@ module.exports = {
     'no-unused-vars': 'warn',
     'no-else-return': 'warn',
     'vue/no-v-html': 'off',
-    'vue/max-attributes-per-line': 'off'
+    'camelcase': 'off',
+    'standard/computed-property-even-spacing': 'off'
   },
   globals: {
     _hmt: true,

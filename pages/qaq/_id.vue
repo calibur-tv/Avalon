@@ -90,7 +90,7 @@ export default {
       qaq: null
     }
   },
-  async asyncData({ app, store, params, error }) {
+  asyncData({ app, store, params, error }) {
     const { id } = params
     return getQuestionInfo(app, { id })
       .then(qaq => {

@@ -164,8 +164,8 @@ export const mutations = {
     state[fieldName].noMore = isListObj
       ? data.noMore
       : state.type === 'seenIds'
-      ? data.length === 0
-      : data.length < count
+        ? data.length === 0
+        : data.length < count
     state[fieldName].total = data.total || 0
     state[fieldName].loading = false
     state[fieldName].error = false

@@ -6,8 +6,9 @@ export default {
   },
 
   camelize(string, uppercaseFirstLetter = true) {
-    const camelizeString = string.replace(/(?:^|[-])(\w)/g, (_, c) =>
-      c ? c.toUpperCase() : ''
+    const camelizeString = string.replace(
+      /(?:^|[-])(\w)/g,
+      (_, c) => (c ? c.toUpperCase() : '')
     )
     if (uppercaseFirstLetter) {
       return camelizeString

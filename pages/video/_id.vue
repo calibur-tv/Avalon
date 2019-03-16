@@ -508,7 +508,7 @@ export default {
       return parseFloat(this.user.banlance.light_count).toFixed(2)
     }
   },
-  async asyncData({ app, store, params, error }) {
+  asyncData({ app, store, params, error }) {
     const { id } = params
     return getVideoInfo(app, { id })
       .then(data => {

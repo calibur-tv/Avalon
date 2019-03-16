@@ -1,9 +1,4 @@
-import {
-  getNotifications,
-  daySignAction,
-  readMessage,
-  readNotice
-} from '~/api/userApi'
+import { getNotifications, readMessage, readNotice } from '~/api/userApi'
 
 export const state = () => ({
   show: null,
@@ -54,13 +49,6 @@ export const mutations = {
 }
 
 export const actions = {
-  async daySign({ rootState, commit }) {
-    if (rootState.user.signed) {
-      return
-    }
-    commit('USER_SIGN')
-    return await daySignAction(this)
-  },
   async getNotifications({ state, commit }, { init }) {
     const length = state.notifications.list.length
     if ((init && length) || state.notifications.noMore) {

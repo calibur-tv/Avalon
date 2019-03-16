@@ -542,7 +542,7 @@ import TabContainer from '~/components/common/TabContainer'
 import UserSex from '~/components/user/UserSex'
 import UserBadge from '~/components/user/UserBadge'
 import { Progress } from 'element-ui'
-import { settingImage, getUserInfo } from '~/api/userApi'
+import { settingImage, getUserInfo, daySignAction } from '~/api/userApi'
 import { uploadToQiniu } from '~/api/imageApi'
 
 export default {
@@ -813,7 +813,8 @@ export default {
       this.signDayLoading = true
 
       try {
-        const result = await this.$store.dispatch('users/daySign')
+        const result = await daySignAction(this)
+        this.$store.commit('users/USER_SIGN')
         this.$store.commit('UPDATE_USER_INFO', {
           key: 'daySign',
           value: true

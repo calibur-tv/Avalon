@@ -47,7 +47,9 @@
       <el-form label-position="top">
         <el-form-item label="当前股价">
           <el-input v-model="price" :disabled="true">
-            <template slot="append">虚拟币每股</template>
+            <template
+              slot="append"
+            >虚拟币每股</template>
           </el-input>
         </el-form-item>
         <el-form-item label="购入上限">
@@ -140,7 +142,7 @@ export default {
     }
   },
   methods: {
-    async handleStarRole() {
+    handleStarRole() {
       if (this.idol.is_locked) {
         this.$toast.error('已经停牌了，等待下次挂牌吧')
         return

@@ -292,7 +292,10 @@
         <strong>灵感来源：</strong>
         《Fate/stay night》—— 石中剑，
         <strong>图标作者：</strong>
-        <a href="https://www.calibur.tv/user/yu-yuan-lin-yin-7" target="_blank">艾拉</a>
+        <a
+          href="https://www.calibur.tv/user/yu-yuan-lin-yin-7"
+          target="_blank"
+        >艾拉</a>
       </p>
       <h3 class="sub-title">
         站娘
@@ -333,7 +336,10 @@
         <strong>灵感来源：</strong>
         站长の幻想，
         <strong>图标作者：</strong>
-        <a href="https://www.calibur.tv/user/jian-pao-zhi-yuan" target="_blank">JPZY</a>
+        <a
+          href="https://www.calibur.tv/user/jian-pao-zhi-yuan"
+          target="_blank"
+        >JPZY</a>
       </p>
       <h3 class="sub-title">
         宣传片
@@ -384,7 +390,10 @@
       </div>
       <p class="intro">
         <strong>视频1作者：</strong>
-        <a href="https://www.calibur.tv/user/cfdxkk" target="_blank">冲锋的小卡卡</a>，
+        <a
+          href="https://www.calibur.tv/user/cfdxkk"
+          target="_blank"
+        >冲锋的小卡卡</a>，
         <strong>视频2作者：</strong>
         <a
           href="https://www.calibur.tv/user/yu-yuan-lin-yin-7/bangumi"

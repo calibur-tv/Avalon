@@ -52,6 +52,7 @@ export default {
       }
     },
     handleImageUploadError(err, file) {
+      console.log(err)
       if (this.$store.state.login) {
         this.$toast.error(`图片：${file.name} 上传失败`)
       } else {

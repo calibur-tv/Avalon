@@ -139,7 +139,10 @@
     >
       <div slot="header" slot-scope="{ source }" class="recent-header">
         <span class="title">最近交易</span>
-        <span v-if="source.total" class="total">&nbsp;·&nbsp;共{{ source.total }}笔</span>
+        <span
+          v-if="source.total"
+          class="total"
+        >&nbsp;·&nbsp;共{{ source.total }}笔</span>
       </div>
       <ul slot-scope="{ flow }" class="recent-deal-list">
         <li v-for="(item, index) in flow" :key="index">

@@ -18,7 +18,9 @@
           <a :href="$alias.user(item.zone)" class="user" target="_blank">
             <img :src="$resize(item.avatar, { width: 80 })" class="avatar">
             <span class="nickname" v-text="item.nickname" />
-            <span class="score">持有{{ item.score }}股，占比{{
+            <span
+              class="score"
+            >持有{{ item.score }}股，占比{{
               computedPercent(item.score)
             }}</span>
           </a>
