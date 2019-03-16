@@ -374,6 +374,9 @@ export default {
           minBuyCount = Math.max(minBuyCount, 1)
         }
       }
+      if (deal.last_count < minBuyCount) {
+        minBuyCount = deal.last_count
+      }
       this.minBuyCount = parseFloat(minBuyCount).toFixed(2)
       this.deal = deal
       this.showDealDialog = true
