@@ -117,7 +117,7 @@
             <div>
               <span>￥{{ item.price }}</span>
               ·
-              <span>{{ item.count }}股</span>
+              <span>{{ parseFloat(item.count).toFixed(2) }}股</span>
             </div>
             <v-time v-model="item.time" />
           </div>
@@ -171,7 +171,7 @@
               ·
               <span>￥{{ item.price }}</span>
               ·
-              <span>{{ item.count }}股</span>
+              <span>{{ parseFloat(item.count).toFixed(2) }}股</span>
             </div>
             <v-time v-model="item.time" />
           </div>
