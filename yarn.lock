@@ -10668,6 +10668,14 @@ vue-no-ssr@^1.1.1:
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
   integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
 
+vue-picflow@^0.1.1, vue-picflow@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/vue-picflow/-/vue-picflow-0.1.2.tgz#56d8b6ce1452ca0a702e1cc68742d16a393bc5cd"
+  integrity sha512-2wFF9Ab6vu7n0ETtMtyLaHplOaE5sLNQ6Psfspcw3DuM1iAlXkOSfCXdSt8yYhjH0UiTUbC+ulozVGk2SepuBA==
+  dependencies:
+    vue "^2.6.6"
+    vue-picflow "^0.1.1"
+
 vue-router@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.2.tgz#dedc67afe6c4e2bc25682c8b1c2a8c0d7c7e56be"
@@ -10713,7 +10721,7 @@ vue-waterfall@^1.0.6:
   resolved "https://registry.yarnpkg.com/vue-waterfall/-/vue-waterfall-1.0.6.tgz#00324a8f97f449bf6f8cdebb4974b60cffac9eed"
   integrity sha1-ADJKj5f0Sb9vjN67SXS2DP+snu0=
 
-vue@^2.5.22:
+vue@^2.5.22, vue@^2.6.6:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.9.tgz#415c1cc1a5ed00c8f0acdd0a948139d12b7ea6b3"
   integrity sha512-t1+tvH8hybPM86oNne3ZozCD02zj/VoZIiojOBPJLjwBn7hxYU5e1gBObFpq8ts1NEn1VhPf/hVXBDAJ3X5ljg==

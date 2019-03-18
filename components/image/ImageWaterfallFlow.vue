@@ -1,22 +1,12 @@
 <style lang="scss">
 #image-waterfall-flow {
-  .vue-waterfall {
-    width: 848px;
-  }
-
-  .vue-waterfall-slot {
-    padding-right: 12px;
-    padding-bottom: 12px;
-    margin-left: 3px;
-    margin-top: 3px;
-  }
-
-  .image {
+  .image-item {
+    position: relative;
     width: 100%;
-    overflow: hidden;
-    background-color: #f2f3f5;
-    box-shadow: 0 1px 3px 0 rgba(80, 80, 80, 0.11);
+    height: 100%;
     border-radius: 8px;
+    border: 1px solid $color-gray-normal;
+    overflow: hidden;
 
     .image-box {
       position: relative;
@@ -70,10 +60,10 @@
         }
       }
 
-      img {
-        display: block;
-        transition: 0.3s;
-        transform-origin: center;
+      .image {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
       &:hover {
@@ -83,69 +73,77 @@
       }
     }
 
-    .intro {
-      height: 55px;
-      padding: 5px 15px;
+    .panel {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 106px;
       background-color: #fff;
 
-      .name,
-      .social {
-        height: 20px;
-        font-size: 12px;
-        line-height: 20px;
-      }
+      .intro {
+        height: 55px;
+        padding: 5px 15px;
+        background-color: #fff;
 
-      .social {
-        color: $color-text-light;
-        margin-top: 5px;
-
-        span {
-          margin-right: 10px;
+        .name,
+        .social {
+          height: 20px;
+          font-size: 12px;
+          line-height: 20px;
         }
 
-        .done {
-          color: $color-pink-deep;
-        }
-      }
-    }
-
-    .about {
-      height: 51px;
-      padding: 10px 15px;
-      border-top: 1px solid #f2f2f2;
-
-      .user-avatar,
-      .bangumi-avatar {
-        display: block;
-        margin-right: 10px;
-        overflow: hidden;
-        float: left;
-      }
-
-      .main-name {
-        line-height: 30px;
-        font-size: 12px;
-        word-wrap: break-word;
-        color: $color-text-normal;
-      }
-
-      .info {
-        overflow: hidden;
-        font-size: 12px;
-        line-height: 15px;
-
-        .main-info {
-          margin-bottom: 2px;
+        .social {
+          color: $color-text-light;
+          margin-top: 5px;
 
           span {
-            color: $color-text-light;
-            float: left;
+            margin-right: 10px;
+          }
+
+          .done {
+            color: $color-pink-deep;
           }
         }
+      }
 
-        a {
-          color: $color-text-normal;
+      .about {
+        height: 51px;
+        padding: 10px 15px;
+
+        .user-avatar,
+        .bangumi-avatar {
           display: block;
+          margin-right: 10px;
+          overflow: hidden;
+          float: left;
+        }
+
+        .main-name {
+          line-height: 30px;
+          font-size: 12px;
+          word-wrap: break-word;
+          color: $color-text-normal;
+        }
+
+        .info {
+          overflow: hidden;
+          font-size: 12px;
+          line-height: 15px;
+
+          .main-info {
+            margin-bottom: 2px;
+
+            span {
+              color: $color-text-light;
+              float: left;
+            }
+          }
+
+          a {
+            color: $color-text-normal;
+            display: block;
+          }
         }
       }
     }
@@ -155,41 +153,51 @@
 
 <template>
   <div id="image-waterfall-flow">
-    <no-ssr>
-      <waterfall :line-gap="width + 12" :auto-resize="false">
-        <waterfall-slot
-          v-for="(item, index) in list"
-          :key="item.id"
-          :height="computeBoxHeight(item.source)"
-          :order="index"
-          :width="width"
-        >
-          <div class="image">
-            <a
-              :href="$alias.image(item.id)"
-              :class="{ 'album-box': item.is_album }"
-              class="image-box"
-              target="_blank"
+    <waterfall
+      :line-count="4"
+      :margin-right="12"
+      :margin-bottom="12"
+      :extra-height="106"
+      :max-height="436"
+      :lazy-scale="2"
+      line-width="25%"
+    >
+      <waterfall-slot
+        v-for="(item, index) in list"
+        :key="item.id"
+        :index="index"
+        :width="item.source.width"
+        :height="item.source.height"
+      >
+        <div class="image-item">
+          <a
+            :href="$alias.image(item.id)"
+            :class="{ 'album-box': item.is_album }"
+            class="image-box"
+            target="_blank"
+          >
+            <el-tooltip
+              v-if="item.is_creator"
+              effect="dark"
+              content="原创"
+              placement="top"
             >
-              <el-tooltip
-                v-if="item.is_creator"
-                effect="dark"
-                content="原创"
-                placement="top"
-              >
-                <i class="is-creator iconfont icon-huangguan" />
-              </el-tooltip>
-              <v-img
-                :src="item.source.url"
-                :height="computeImageHeight(item.source)"
-                :width="width"
-                :lazy="false"
-              />
-              <div v-if="item.is_album" class="is-album">
-                <i class="el-icon-picture-outline" />
-                <span class="image-count" v-text="item.image_count" />
-              </div>
-            </a>
+              <i class="is-creator iconfont icon-huangguan" />
+            </el-tooltip>
+            <div
+              :style="{
+                backgroundColor: `${getRandomColor()}`,
+                backgroundImage: `url(${$resize(item.source.url, { width: 400, mode: 2 })})`,
+                paddingTop: `${item.source.height / item.source.width * 100}%`
+              }"
+              class="image"
+            />
+            <div v-if="item.is_album" class="is-album">
+              <i class="el-icon-picture-outline" />
+              <span class="image-count" v-text="item.image_count" />
+            </div>
+          </a>
+          <div class="panel">
             <div class="intro">
               <p class="name oneline" v-text="item.name" />
               <div class="social">
@@ -283,28 +291,21 @@
               </template>
             </div>
           </div>
-        </waterfall-slot>
-      </waterfall>
-    </no-ssr>
+        </div>
+      </waterfall-slot>
+    </waterfall>
   </div>
 </template>
 
 <script>
+import Waterfall from './waterfall/Waterfall'
+import WaterfallSlot from './waterfall/WaterfallSlot'
+
 export default {
   name: 'ImageWaterfallFlow',
   components: {
-    waterfall: () => {
-      if (typeof window === 'undefined') {
-        return import('~/assets/js/empty')
-      }
-      return import('vue-waterfall/lib/waterfall')
-    },
-    'waterfall-slot': () => {
-      if (typeof window === 'undefined') {
-        return import('~/assets/js/empty')
-      }
-      return import('vue-waterfall/lib/waterfall-slot')
-    }
+    Waterfall,
+    WaterfallSlot
   },
   props: {
     list: {
@@ -319,22 +320,19 @@ export default {
     userZone: {
       type: String,
       default: ''
-    },
-    width: {
-      type: Number,
-      default: 200
     }
   },
   methods: {
-    computeBoxHeight(image) {
-      return this.computeImageHeight(image) + 106
-    },
-    computeImageHeight(image) {
-      const result = parseInt((image.height / image.width) * this.width, 10)
-      if (result > 300) {
-        return 300
-      }
-      return result
+    getRandomColor() {
+      const colors = [
+        'rgba(21,174,103,.5)',
+        'rgba(245,163,59,.5)',
+        'rgba(255,230,135,.5)',
+        'rgba(194,217,78,.5)',
+        'rgba(195,123,177,.5)',
+        'rgba(125,205,244,.5)'
+      ]
+      return colors[~~(Math.random() * colors.length)]
     }
   }
 }
