@@ -1,0 +1,2 @@
+exports.ids=[39],exports.modules={553:function(e,t,r){"use strict";r.r(t);var d={fetch:({redirect:e})=>e("/role/trending/listed")},l=r(0),component=Object(l.a)(d,void 0,void 0,!1,null,null,"189601ca");t.default=component.exports}};
+//# sourceMappingURL=index.chunk.86d40e81.js.map

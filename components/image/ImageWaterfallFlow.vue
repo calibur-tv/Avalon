@@ -114,9 +114,24 @@
         .user-avatar,
         .bangumi-avatar {
           display: block;
-          margin-right: 10px;
           overflow: hidden;
           float: left;
+          text-align: center;
+          margin-right: 10px;
+          font-size: 0;
+
+          img {
+            width: 30px;
+            height: 30px;
+          }
+        }
+
+        .user-avatar {
+          border-radius: 50%;
+        }
+
+        .bangumi-avatar {
+          border-radius: 3px;
         }
 
         .main-name {
@@ -153,159 +168,134 @@
 
 <template>
   <div id="image-waterfall-flow">
-    <waterfall
+    <FlowRender
       :line-count="4"
       :margin-right="12"
       :margin-bottom="12"
       :extra-height="106"
       :max-height="436"
-      :lazy-scale="2"
+      :list="items"
       line-width="25%"
     >
-      <waterfall-slot
-        v-for="(item, index) in list"
-        :key="item.id"
-        :index="index"
-        :width="item.source.width"
-        :height="item.source.height"
-      >
-        <div class="image-item">
-          <a
-            :href="$alias.image(item.id)"
-            :class="{ 'album-box': item.is_album }"
-            class="image-box"
-            target="_blank"
+      <div slot="item" slot-scope="{ item }" class="image-item">
+        <a
+          :href="$alias.image(item.id)"
+          :class="{ 'album-box': item.is_album }"
+          class="image-box"
+          target="_blank"
+        >
+          <el-tooltip
+            v-if="item.is_creator"
+            effect="dark"
+            content="原创"
+            placement="top"
           >
-            <el-tooltip
-              v-if="item.is_creator"
-              effect="dark"
-              content="原创"
-              placement="top"
-            >
-              <i class="is-creator iconfont icon-huangguan" />
-            </el-tooltip>
-            <div
-              :style="{
-                backgroundColor: `${getRandomColor()}`,
-                backgroundImage: `url(${$resize(item.source.url, { width: 400, mode: 2 })})`,
-                paddingTop: `${item.source.height / item.source.width * 100}%`
-              }"
-              class="image"
-            />
-            <div v-if="item.is_album" class="is-album">
-              <i class="el-icon-picture-outline" />
-              <span class="image-count" v-text="item.image_count" />
-            </div>
-          </a>
-          <div class="panel">
-            <div class="intro">
-              <p class="name oneline" v-text="item.name" />
-              <div class="social">
-                <span v-if="item.is_creator">
-                  <i class="iconfont icon-fantuan" />
-                  {{ item.reward_count }}
-                </span>
-                <span v-else>
-                  <i class="iconfont icon-like" />
-                  {{ item.like_count }}
-                </span>
-                <span>
-                  <i class="iconfont icon-talk" />
-                  {{ item.comment_count }}
-                </span>
-                <span>
-                  <i class="iconfont icon-mark" />
-                  {{ item.mark_count }}
-                </span>
-              </div>
-            </div>
-            <div class="about">
-              <template v-if="userZone">
-                <a
-                  :href="$alias.bangumi(item.bangumi.id)"
-                  target="_blank"
-                  class="bangumi-avatar"
-                >
-                  <v-img
-                    :src="item.bangumi.avatar"
-                    :width="30"
-                    :height="30"
-                    :lazy="false"
-                  />
-                </a>
-                <div class="info">
-                  <a
-                    :href="$alias.bangumi(item.bangumi.id)"
-                    target="_blank"
-                    class="main-name oneline"
-                    v-text="item.bangumi.name"
-                  />
-                </div>
-              </template>
-              <user-card
-                v-else-if="bangumiId"
-                :id="item.user.id"
-                :zone="item.user.zone"
-              >
-                <v-img
-                  :src="item.user.avatar"
-                  :width="30"
-                  :height="30"
-                  :lazy="false"
-                  class="user-avatar"
-                />
-                <span class="main-name" v-text="item.user.nickname" />
-              </user-card>
-              <template v-else>
-                <a
-                  :href="$alias.bangumi(item.bangumi.id)"
-                  target="_blank"
-                  class="bangumi-avatar"
-                >
-                  <v-img
-                    :src="item.bangumi.avatar"
-                    :width="30"
-                    :height="30"
-                    :lazy="false"
-                  />
-                </a>
-                <div class="info">
-                  <p class="main-info">
-                    <span>UP：</span>
-                    <user-card
-                      :id="item.user.id"
-                      :zone="item.user.zone"
-                      style="float: none"
-                      custom-class="oneline"
-                    >
-                      {{ item.user.nickname }}
-                    </user-card>
-                  </p>
-                  <a
-                    :href="$alias.bangumi(item.bangumi.id)"
-                    target="_blank"
-                    class="oneline"
-                    v-text="item.bangumi.name"
-                  />
-                </div>
-              </template>
+            <i class="is-creator iconfont icon-huangguan" />
+          </el-tooltip>
+          <div
+            :style="{
+              backgroundImage: `url(${$resize(item.url, { width: 400, mode: 2 })})`,
+              paddingTop: `${item.height / item.width * 100}%`
+            }"
+            class="image"
+          />
+          <div v-if="item.is_album" class="is-album">
+            <i class="el-icon-picture-outline" />
+            <span class="image-count" v-text="item.image_count" />
+          </div>
+        </a>
+        <div class="panel">
+          <div class="intro">
+            <p class="name oneline" v-text="item.name" />
+            <div class="social">
+              <span v-if="item.is_creator">
+                <i class="iconfont icon-fantuan" />
+                {{ item.reward_count }}
+              </span>
+              <span v-else>
+                <i class="iconfont icon-like" />
+                {{ item.like_count }}
+              </span>
+              <span>
+                <i class="iconfont icon-talk" />
+                {{ item.comment_count }}
+              </span>
+              <span>
+                <i class="iconfont icon-mark" />
+                {{ item.mark_count }}
+              </span>
             </div>
           </div>
+          <div class="about">
+            <template v-if="userZone">
+              <a
+                :href="$alias.bangumi(item.bangumi.id)"
+                target="_blank"
+                class="bangumi-avatar"
+              >
+                <img :src="$resize(item.bangumi.avatar, { width: 60 })">
+              </a>
+              <div class="info">
+                <a
+                  :href="$alias.bangumi(item.bangumi.id)"
+                  target="_blank"
+                  class="main-name oneline"
+                  v-text="item.bangumi.name"
+                />
+              </div>
+            </template>
+            <user-card
+              v-else-if="bangumiId"
+              :id="item.user.id"
+              :zone="item.user.zone"
+            >
+              <div class="user-avatar">
+                <img :src="$resize(item.user.avatar, { width: 60 })">
+              </div>
+              <span class="main-name" v-text="item.user.nickname" />
+            </user-card>
+            <template v-else>
+              <a
+                :href="$alias.bangumi(item.bangumi.id)"
+                target="_blank"
+                class="bangumi-avatar"
+              >
+                <img :src="$resize(item.bangumi.avatar, { width: 60 })">
+              </a>
+              <div class="info">
+                <p class="main-info">
+                  <span>UP：</span>
+                  <user-card
+                    :id="item.user.id"
+                    :zone="item.user.zone"
+                    style="float: none"
+                    custom-class="oneline"
+                  >
+                    {{ item.user.nickname }}
+                  </user-card>
+                </p>
+                <a
+                  :href="$alias.bangumi(item.bangumi.id)"
+                  target="_blank"
+                  class="oneline"
+                  v-text="item.bangumi.name"
+                />
+              </div>
+            </template>
+          </div>
         </div>
-      </waterfall-slot>
-    </waterfall>
+      </div>
+    </FlowRender>
   </div>
 </template>
 
 <script>
-import Waterfall from './waterfall/Waterfall'
-import WaterfallSlot from './waterfall/WaterfallSlot'
+import FlowRender from 'vue-flow-render'
 
 export default {
   name: 'ImageWaterfallFlow',
   components: {
-    Waterfall,
-    WaterfallSlot
+    FlowRender
   },
   props: {
     list: {
@@ -322,17 +312,11 @@ export default {
       default: ''
     }
   },
-  methods: {
-    getRandomColor() {
-      const colors = [
-        'rgba(21,174,103,.5)',
-        'rgba(245,163,59,.5)',
-        'rgba(255,230,135,.5)',
-        'rgba(194,217,78,.5)',
-        'rgba(195,123,177,.5)',
-        'rgba(125,205,244,.5)'
-      ]
-      return colors[~~(Math.random() * colors.length)]
+  computed: {
+    items() {
+      return this.list.map(_ => {
+        return Object.assign(_, { ..._.source })
+      })
     }
   }
 }

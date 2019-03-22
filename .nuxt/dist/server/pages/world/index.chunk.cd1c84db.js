@@ -1,2 +1,0 @@
-exports.ids=[61],exports.modules={554:function(t,e,o){"use strict";o.r(e);var r={fetch:({redirect:t})=>t("/world/post")},d=o(0),component=Object(d.a)(r,void 0,void 0,!1,null,null,"0fb8210f");e.default=component.exports}};
-//# sourceMappingURL=index.chunk.cd1c84db.js.map
