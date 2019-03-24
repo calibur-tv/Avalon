@@ -63,8 +63,8 @@
     "a3c18625108a3830ebe3.css",
     "a5b2c3e1c6123fab819e.css",
     "a95d26336eb089547893.css",
-    "app.chunk.05a6c508.js",
-    "app.chunk.05a6c508.js.map",
+    "app.chunk.e445c736.js",
+    "app.chunk.e445c736.js.map",
     "b262a6eca5efab1b3ad2.css",
     "bb747703cf758b60b55e.css",
     "bbf513286328ceb16b05.css",
@@ -223,8 +223,8 @@
     "pages/world/qaq.chunk.802a4ae3.js.map",
     "pages/world/review.chunk.31b64f3f.js",
     "pages/world/review.chunk.31b64f3f.js.map",
-    "runtime.02144d63.js",
-    "runtime.02144d63.js.map",
+    "runtime.1bcc3b07.js",
+    "runtime.1bcc3b07.js.map",
     "vendors.app.chunk.ccff1c42.js",
     "vendors.app.chunk.ccff1c42.js.map",
     "vendors.pages/app/download.chunk.0c1ca9e7.js",
@@ -249,12 +249,12 @@
     "vendors.pages/world.chunk.c0c74a4d.js.map"
   ],
   "initial": [
-    "runtime.02144d63.js",
+    "runtime.1bcc3b07.js",
     "commons.app.chunk.4153f606.js",
     "7b849ad5389c12479481.css",
     "vendors.app.chunk.ccff1c42.js",
     "55876acc699a2c505968.css",
-    "app.chunk.05a6c508.js"
+    "app.chunk.e445c736.js"
   ],
   "async": [
     "02569f8686f6cdd10993.css",
@@ -6286,7 +6286,7 @@
   "assetsMapping": {
     "82.chunk.d1886fd1.js": "bba68bf6",
     "83.chunk.8b21b570.js": "bba68bf6",
-    "app.chunk.05a6c508.js": "1a3ae26b",
+    "app.chunk.e445c736.js": "1a3ae26b",
     "commons.app.chunk.4153f606.js": "0859c165",
     "pages/about/hello.chunk.090d307f.js": "169b6e62",
     "pages/about/invite/_id.chunk.6e8e476a.js": "11ae97d7",
@@ -6356,7 +6356,7 @@
     "pages/world/post.chunk.91d3406a.js": "07be381e",
     "pages/world/qaq.chunk.802a4ae3.js": "c5b1a5ba",
     "pages/world/review.chunk.31b64f3f.js": "13eeaf56",
-    "runtime.02144d63.js": "6fca0322",
+    "runtime.1bcc3b07.js": "6fca0322",
     "vendors.app.chunk.ccff1c42.js": "7ea1d828",
     "vendors.pages/app/download.chunk.0c1ca9e7.js": "abbf0f8c",
     "vendors.pages/bangumi/_id/pins.pages/user/_zone/pins.pages/world/pins.chunk.e570bcfa.js": "65eab28c",
