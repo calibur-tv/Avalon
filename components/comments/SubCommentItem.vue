@@ -99,8 +99,8 @@
           <v-img
             :src="comment.from_user_avatar"
             :avatar="true"
-            :width="24"
-            :height="24"
+            width="24"
+            height="24"
           />
         </user-card>
       </div>

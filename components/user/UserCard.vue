@@ -104,8 +104,8 @@
           <a :href="$alias.user(zone)" target="_blank" class="avatar">
             <v-img
               :src="user.avatar"
-              :width="55"
-              :height="55"
+              width="55"
+              height="55"
               :lazy="false"
               :avatar="true"
             />

@@ -132,8 +132,8 @@
         <v-img
           :src="comment.from_user_avatar"
           :avatar="true"
-          :width="48"
-          :height="48"
+          width="48"
+          height="48"
           class="avatar"
         />
       </user-card>

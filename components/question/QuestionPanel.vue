@@ -133,10 +133,8 @@
             >
               <v-img
                 :src="img.url"
-                :width="img.width"
-                :height="img.height"
-                :blur="true"
-                :full="true"
+                :img-width="img.width"
+                :img-height="img.height"
                 class="image"
               />
             </div>

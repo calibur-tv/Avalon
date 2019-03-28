@@ -5,7 +5,6 @@ import Hr from '~/components/common/Hr'
 import Header from '~/components/layouts/Header'
 import Dialog from '~/components/common/Dialog'
 import Layout from '~/components/layouts/Layout'
-import ImageLazyLoad from '~/components/common/ImageLazyLoad'
 import VueClipboards from 'vue-clipboards'
 import Affix from '~/components/common/Affix'
 import Share from '~/components/common/Share'
@@ -18,9 +17,15 @@ import BangumiPanel from '~/components/bangumi/BangumiPanel'
 import FlowList from '~/components/flow/FlowList'
 import LazyComponent from '~/components/common/LazyComponent'
 import BangumiSearch from '~/components/search/BangumiSearch'
+import VueImageLazier from 'vue-image-lazier'
+import 'vue-image-lazier/dist/vue-image-lazier.css'
+import resizeImage from '~/assets/js/resizeImage'
 
 Vue.use(VueClipboards)
-Vue.use(ImageLazyLoad, {})
+Vue.use(VueImageLazier, {
+  filter: resizeImage,
+  contentWidth: 700
+})
 Vue.component(LazyComponent.name, LazyComponent)
 Vue.component(NotSSR.name, NotSSR)
 Vue.component(BangumiSearch.name, BangumiSearch)

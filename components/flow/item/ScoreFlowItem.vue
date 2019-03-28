@@ -119,8 +119,8 @@
         <user-card v-if="bangumiId" :id="item.user.id" :zone="item.user.zone">
           <v-img
             :src="item.user.avatar"
-            :width="30"
-            :height="30"
+            width="30"
+            height="30"
             :avatar="true"
             class="user-avatar"
           />
@@ -129,8 +129,8 @@
         <a v-else :href="$alias.bangumi(item.bangumi.id)" target="_blank">
           <v-img
             :src="item.bangumi.avatar"
-            :width="30"
-            :heighr="30"
+            width="30"
+            heighr="30"
             class="bangumi-avatar"
           />
           <span class="name href-fade-blue" v-text="item.bangumi.name" />
@@ -149,9 +149,8 @@
       <v-img
         v-if="item.banner"
         :src="item.banner.url"
-        :width="190"
-        :height="105"
-        :blur="true"
+        width="190"
+        height="105"
         class="poster"
       />
       <div class="intro">

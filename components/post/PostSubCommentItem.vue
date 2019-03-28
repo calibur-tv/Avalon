@@ -58,9 +58,9 @@
     <user-card :id="comment.from_user_id" :zone="comment.from_user_zone">
       <v-img
         :src="comment.from_user_avatar"
-        :width="30"
-        :height="30"
         :avatar="true"
+        width="30"
+        height="30"
         class="avatar"
       />
       <span class="href-fade-blue" v-text="comment.from_user_name" />

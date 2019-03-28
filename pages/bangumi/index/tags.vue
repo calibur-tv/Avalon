@@ -36,6 +36,7 @@
       margin-right: 15px;
       overflow: hidden;
       float: left;
+      border-radius: 10%;
     }
 
     .content {
@@ -84,7 +85,7 @@
       <ul>
         <li v-for="item in bangumis.data" :key="item.id" class="bangumi">
           <a :href="$alias.bangumi(item.id)" target="_blank" class="avatar">
-            <v-img :src="item.avatar" :poster="true" :width="90" :height="90" />
+            <v-img :src="item.avatar" width="90" height="90" />
           </a>
           <div class="content">
             <a

@@ -119,10 +119,8 @@
       <v-img
         v-if="info.banner.width <= 1400"
         :src="info.banner.url"
-        :width="info.banner.width"
-        :height="info.banner.height"
-        :full="true"
-        :blur="true"
+        :img-width="info.banner.width"
+        :img-height="info.banner.height"
         :lazy="false"
         class="score-banner normal-size"
       />
@@ -160,8 +158,8 @@
                 <v-img
                   :src="user.avatar"
                   :avatar="true"
-                  :width="30"
-                  :height="30"
+                  width="30"
+                  height="30"
                   class="avatar"
                 />
                 <span class="name" v-text="user.nickname" />

@@ -236,11 +236,8 @@
           >
             <v-img
               :src="img.url"
-              :width="img.width"
-              :height="img.height"
-              :mime="img.type"
-              :full="true"
-              :blur="true"
+              :img-width="img.width"
+              :img-height="img.height"
               class="image"
             />
             <template v-if="editable">
@@ -266,11 +263,8 @@
           <div class="image-package">
             <v-img
               :src="source.url"
-              :width="source.width"
-              :height="source.height"
-              :mime="source.type"
-              :full="true"
-              :blur="true"
+              :img-width="source.width"
+              :img-height="source.height"
               class="image"
             />
           </div>

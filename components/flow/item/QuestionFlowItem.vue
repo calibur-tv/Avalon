@@ -93,7 +93,7 @@
         :zone="item.user.zone"
         custom-class="user-avatar"
       >
-        <v-img :src="item.user.avatar" :width="24" :height="24" />
+        <v-img :src="item.user.avatar" width="24" height="24" />
       </user-card>
       <a
         :href="$alias.user(item.user.zone)"
@@ -114,7 +114,6 @@
         <div v-if="item.answer.poster" class="poster">
           <v-img
             :src="item.answer.poster.url"
-            :blur="true"
             width="190"
             height="105"
           />

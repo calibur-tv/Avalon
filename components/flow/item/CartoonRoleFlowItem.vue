@@ -117,7 +117,7 @@
 <template>
   <li class="cartoon-role-flow-item">
     <a :href="$alias.cartoonRole(item.id)" target="_blank" class="avatar">
-      <v-img :src="item.avatar" :blur="true" :width="98" :height="98" />
+      <v-img :src="item.avatar" width="98" height="98" />
     </a>
     <div class="summary">
       <a :href="$alias.cartoonRole(item.id)" target="_blank" class="role">
@@ -130,8 +130,8 @@
           <span v-text="item.lover.nickname" />
           <v-img
             :src="item.lover.avatar"
-            :width="20"
-            :height="20"
+            width="20"
+            height="20"
             :avatar="true"
             class="image"
           />

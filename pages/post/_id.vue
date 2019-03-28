@@ -260,8 +260,8 @@
                 :src="master.avatar"
                 :avatar="true"
                 :lazy="false"
-                :width="80"
-                :height="80"
+                width="80"
+                height="80"
                 class="avatar"
               />
               <p class="nickname oneline" v-text="master.nickname" />
@@ -276,11 +276,8 @@
               >
                 <v-img
                   :src="img.url"
-                  :width="img.width"
-                  :height="img.height"
-                  :mime="img.type"
-                  :blur="true"
-                  :full="true"
+                  :img-width="img.width"
+                  :img-height="img.height"
                   class="image"
                 />
               </div>

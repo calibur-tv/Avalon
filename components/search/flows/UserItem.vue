@@ -54,7 +54,7 @@
 <template>
   <div class="search-item-user">
     <a :href="$alias.user(item.zone)" target="_blank" class="avatar">
-      <v-img :src="item.avatar" :avatar="true" :width="90" :height="90" />
+      <v-img :src="item.avatar" :avatar="true" width="90" height="90" />
     </a>
     <div class="intro">
       <div class="head">

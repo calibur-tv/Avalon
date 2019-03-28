@@ -94,7 +94,7 @@
         :zone="item.user.zone"
         custom-class="user-avatar"
       >
-        <v-img :src="item.user.avatar" :width="40" :height="40" />
+        <v-img :src="item.user.avatar" width="40" height="40" />
       </user-card>
       <div class="info">
         <a

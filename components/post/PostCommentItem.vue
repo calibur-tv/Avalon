@@ -124,8 +124,8 @@
         <v-img
           :src="post.from_user_avatar"
           :avatar="true"
-          :width="80"
-          :height="80"
+          width="80"
+          height="80"
           class="avatar"
         />
         <p class="nickname oneline" v-text="post.from_user_name" />
@@ -160,11 +160,8 @@
         <div v-for="(img, idx) in post.images" :key="idx" class="image-package">
           <v-img
             :src="img.url"
-            :width="img.width"
-            :height="img.height"
-            :mime="img.type"
-            :blur="true"
-            :full="true"
+            :img-width="img.width"
+            :img-height="img.height"
             class="image"
           />
         </div>

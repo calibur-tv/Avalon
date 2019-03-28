@@ -316,8 +316,8 @@
                 :src="upload_user.avatar"
                 :lazy="false"
                 :avatar="true"
-                :width="70"
-                :height="70"
+                width="70"
+                height="70"
               />
             </div>
             <div class="info">

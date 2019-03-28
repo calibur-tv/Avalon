@@ -15,6 +15,8 @@
 
   .avatar {
     margin: 0 auto 8px auto;
+    border-radius: 10%;
+    overflow: hidden;
   }
 
   .name {
@@ -44,9 +46,8 @@
       <v-img
         :class="$style.avatar"
         :src="avatar"
-        :poster="true"
-        :width="90"
-        :height="90"
+        width="90"
+        height="90"
       />
     </a>
     <a

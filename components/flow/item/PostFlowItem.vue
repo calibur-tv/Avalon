@@ -17,6 +17,8 @@
       float: left;
       margin-right: 10px;
       margin-top: 4px;
+      border-radius: 10%;
+      overflow: hidden;
     }
 
     .user-avatar {
@@ -224,8 +226,8 @@
         <v-img
           :src="item.user.avatar"
           :avatar="true"
-          :width="32"
-          :height="32"
+          width="32"
+          height="32"
         />
       </user-card>
       <el-tooltip
@@ -241,9 +243,8 @@
         >
           <v-img
             :src="item.bangumi.avatar"
-            :poster="true"
-            :width="24"
-            :height="24"
+            width="24"
+            height="24"
           />
         </a>
       </el-tooltip>
@@ -285,17 +286,22 @@
       class="content"
       v-text="item.desc"
     />
-    <div v-if="item.images.length" class="images clearfix">
-      <image-preview :images="item.images" :download="false" query="image-box">
+    <image-preview
+      v-if="item.images.length"
+      :images="item.images"
+      :download="false"
+      query="image-box"
+    >
+      <div class="images clearfix">
         <div
           v-for="(image, index) in item.images"
           :key="index"
           class="image-box"
         >
-          <v-img :src="image.url" :blur="true" width="auto" height="90" />
+          <v-img :src="image.url" height="90" :img-width="image.width" :img-height="image.height" />
         </div>
-      </image-preview>
-    </div>
+      </div>
+    </image-preview>
     <span class="counter" v-text="item.comment_count" />
     <div class="footer clearfix">
       <div class="stats">

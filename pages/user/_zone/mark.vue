@@ -189,7 +189,7 @@
               :href="item.deleted_at ? 'javascript:;' : $alias.image(item.id)"
               target="_blank"
             >
-              <v-img :src="item.url" :width="190" :height="300" />
+              <v-img :src="item.url" width="190" height="300" />
               <div v-if="item.deleted_at" class="delete-mask">该相册已删除</div>
             </a>
           </li>
@@ -246,7 +246,7 @@
               class="poster"
               target="_blank"
             >
-              <v-img :src="item.poster" :width="190" :height="119" />
+              <v-img :src="item.poster" width="190" height="119" />
               <div v-if="item.deleted_at" class="delete-mask">
                 视频已失效
               </div>

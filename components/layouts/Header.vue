@@ -518,8 +518,8 @@ $search-height: 32px;
                     :class="$style.avatar"
                     :avatar="true"
                     :lazy="false"
-                    :width="34"
-                    :height="34"
+                    width="34"
+                    height="34"
                   />
                 </a>
                 <el-dropdown-menu slot="dropdown">

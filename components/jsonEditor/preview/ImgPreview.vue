@@ -34,10 +34,8 @@
       <div v-if="item.url" class="wrapper">
         <v-img
           :src="item.url"
-          :width="item.width"
-          :height="item.height"
-          :blur="true"
-          :full="true"
+          :img-width="item.width"
+          :img-height="item.height"
           :lazy="false"
         />
         <el-input

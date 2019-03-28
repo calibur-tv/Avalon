@@ -59,8 +59,8 @@
       <header>
         <v-img
           :src="item.user.avatar"
-          :width="40"
-          :height="40"
+          width="40"
+          height="40"
           :avatar="true"
           class="avatar"
         />

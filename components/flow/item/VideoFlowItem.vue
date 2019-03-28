@@ -51,7 +51,6 @@
     <a :href="$alias.video(item.id)" target="_blank">
       <v-img
         :src="item.poster"
-        :blur="true"
         width="106"
         height="60"
         class="poster"

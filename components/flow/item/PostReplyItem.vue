@@ -39,6 +39,8 @@
       margin-top: 4px;
       position: relative;
       z-index: 1;
+      border-radius: 10%;
+      overflow: hidden;
     }
   }
 
@@ -114,9 +116,8 @@
         >
           <v-img
             :src="item.bangumi.avatar"
-            :poster="true"
-            :width="24"
-            :height="24"
+            width="24"
+            height="24"
           />
         </a>
       </el-tooltip>
@@ -136,7 +137,7 @@
           :key="index"
           class="image-box"
         >
-          <v-img :src="image.url" :blur="true" width="auto" height="90" />
+          <v-img :src="image.url" height="90" :img-width="image.width" :img-height="image.height" />
         </div>
       </div>
     </div>
@@ -148,7 +149,7 @@
           :key="index"
           class="image-box"
         >
-          <v-img :src="image.url" :blur="true" width="auto" height="90" />
+          <v-img :src="image.url" height="90" :img-width="image.width" :img-height="image.height" />
         </div>
       </div>
     </div>
