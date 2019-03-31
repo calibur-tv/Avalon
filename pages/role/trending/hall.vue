@@ -366,7 +366,7 @@ export default {
         return
       }
       let minBuyCount = parseFloat(0.01 / deal.product_price).toFixed(2)
-      const tail = deal.product_price.toString().split('.')[1]
+      const tail = (+deal.product_price).toString().split('.')[1]
       if (tail) {
         if (tail.length === 1) {
           minBuyCount = Math.max(minBuyCount, 0.1)
