@@ -1,0 +1,2 @@
+exports.ids=[1],exports.modules={184:function(e,t,r){"use strict";r.r(t);var c={name:"",components:{},props:{},data:()=>({}),computed:{},watch:{},created(){},mounted(){},methods:{}},o=r(0);var component=Object(o.a)(c,function(){var e=this.$createElement;return(this._self._c||e)("p",[this._ssrNode("站长是个没用勇气去死，也没有动力活着的废物，calibur 本就不该存在，到此为止吧")])},[],!1,function(e){},null,"5e16e0cc");t.default=component.exports}};
+//# sourceMappingURL=index.chunk.5f36aca7.js.map

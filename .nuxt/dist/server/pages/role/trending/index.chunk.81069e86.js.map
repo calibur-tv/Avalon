@@ -1,1 +1,0 @@
-{"version":3,"file":"pages/role/trending/index.chunk.81069e86.js","sources":["webpack:///pages/role/trending/index.vue"],"sourcesContent":["<script>\nexport default {\n  fetch({ redirect }) {\n    return redirect('/role/trending/listed')\n  }\n}\n</script>\n"],"mappings":"AACA","sourceRoot":""}

@@ -1,1 +1,0 @@
-{"version":3,"file":"67.chunk.f11f66f6.js","sources":["webpack:///./assets/js/empty.js"],"sourcesContent":["export default {\n  name: 'empty',\n  props: ['placeholder'],\n  render(h) {\n    return h('div', {\n      class: ['empty-component-placeholder']\n    })\n  }\n}\n"],"mappings":"AAAA","sourceRoot":""}
